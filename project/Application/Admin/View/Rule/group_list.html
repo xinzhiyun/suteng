@@ -1,0 +1,57 @@
+<extend name="Public/base" />
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>用户组 <small>用户组详情</small></h5>
+                    <div class="ibox-tools">
+                        <a href="{{:U('Admin/Rule/check_user', array('group_id'=>$group_data['group_id']))}}" >
+                            <i class="fa fa-user-plus"></i>
+                            添加成员
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-bordered table-hover">
+                        <caption><h3 class="ruleTitle"><span style="color:red">{{$name['title']}}</span>的成员分配情况</h3></caption>
+                        <thead>
+                            <tr>
+                                <th width="10%">
+                                    用户ID
+                                </th>
+                                <th>
+                                    用户名
+                                </th>
+                                <th>
+                                    操作
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <volist  name="data" id="v" empty="$empty">
+                                <tr>
+                                    <th>
+                                        {{$v['id']}}
+                                    </th>
+                                    <td>
+                                        {{$v['user']}}
+                                    </td>
+                                    <td>
+                                        <a href="javascript:if(confirm('确定删除？'))location='{{:U('Admin/Rule/delete_user_from_group',array('uid'=>$v['id']))}}'">
+                                            删除
+                                        </a>
+                                    </td>
+                                </tr>
+                            </volist >
+                        </tbody>
+                    </table>
+                </div>
+                <script>
+                    $('.pagination ul a').unwrap('div').wrap('<li></li>');
+                    $('.pagination ul span').wrap('<li class="active"></li>')
+                </script>
+            </div>
+        </div>
+    </div>
+</block>
