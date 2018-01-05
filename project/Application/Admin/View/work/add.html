@@ -1,0 +1,161 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                    <h5>经销商管理 <small>工单添加</small></h5>
+                </div>
+                    <div class="ibox-content">
+                        <form action="vendor_add" method="post" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">工单号</label>
+
+                                <div class="col-md-3">
+                                    <input type="text" name="name" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">处理人</label>
+
+                                <div class="col-md-3">
+                                    <input type="text" name="phone" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">处理人电话</label>
+
+                                <div class="col-md-3">
+                                    <input type="text" name="telphone" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">维护类型</label>
+                                <div class="radio i-checks">
+                                    <label class="">
+                                        <div class="iradio_square-green checked" style="position: relative;"><input type="radio" value="option1" name="a" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> <i></i> 安装
+                                    </label>
+                                    <label class="">                                       
+                                        <div class="iradio_square-green hover" style="position: relative;"><input type="radio" checked="" value="option2" name="a" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> <i></i> 维修
+                                    </label>
+                                    <label class="">
+                                        <div class="iradio_square-green hover" style="position: relative;"><input type="radio" checked="" value="option2" name="a" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> <i></i> 维护
+                                    </label>
+                                </div>                  
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">工作内容</label>
+
+                                <div class="col-md-3">
+                                    <textarea name="content" cols="30" rows="5" class="form-control" ></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">地址</label>
+
+                                <div class="col-md-3">
+                                    <input type="text" name="parent_vendor" readonly="" class="form-control" value="<{$_SESSION['adminInfo']['user']}>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">处理结果</label>
+                                <div class="radio i-checks">
+                                    <label class="">
+                                        <div class="iradio_square-green checked" style="position: relative;"><input type="radio" value="option1" name="a" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> <i></i> 未处理
+                                    </label>
+                                    <label class="">                                       
+                                        <div class="iradio_square-green hover" style="position: relative;"><input type="radio" checked="" value="option2" name="a" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> <i></i> 正在处理
+                                    </label>
+                                    <label class="">
+                                        <div class="iradio_square-green hover" style="position: relative;"><input type="radio" checked="" value="option2" name="a" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> <i></i> 已处理
+                                    </label>
+                                </div>                  
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group" id="data_1">
+                                <label class="col-sm-2 control-label">处理时间</label>
+                                <div class="input-group date col-md-3">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    <input type="text" class="form-control" value="2014-11-11">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit">申请</button>
+                                    <button class="btn btn-white" type="reset">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="myjs">
+        <!-- Clock picker -->
+    <script src="__PUBLIC__/Admin/js/plugins/clockpicker/clockpicker.js"></script>
+        <!-- 自定义js -->
+    <script src="__PUBLIC__/Admin/js/content.js?v=1.0.0"></script>
+
+    <!-- Chosen -->
+    <script src="__PUBLIC__/Admin/js/plugins/chosen/chosen.jquery.js"></script>
+
+    <!-- JSKnob -->
+    <script src="__PUBLIC__/Admin/js/plugins/jsKnob/jquery.knob.js"></script>
+
+    <!-- Input Mask-->
+    <script src="__PUBLIC__/Admin/js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
+    <!-- Data picker -->
+    <script src="__PUBLIC__/Admin/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
+    <!-- Prettyfile -->
+    <script src="__PUBLIC__/Admin/js/plugins/prettyfile/bootstrap-prettyfile.js"></script>
+
+    <!-- NouSlider -->
+    <script src="__PUBLIC__/Admin/js/plugins/nouslider/jquery.nouislider.min.js"></script>
+
+    <!-- Switchery -->
+    <script src="__PUBLIC__/Admin/js/plugins/switchery/switchery.js"></script>
+
+    <!-- IonRangeSlider -->
+    <script src="__PUBLIC__/Admin/js/plugins/ionRangeSlider/ion.rangeSlider.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="__PUBLIC__/Admin/js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- MENU -->
+    <script src="__PUBLIC__/Admin/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+
+    <!-- Color picker -->
+    <script src="__PUBLIC__/Admin/js/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+
+    <!-- Clock picker -->
+    <script src="__PUBLIC__/Admin/js/plugins/clockpicker/clockpicker.js"></script>
+
+    <!-- Image cropper -->
+    <script src="__PUBLIC__/Admin/js/plugins/cropper/cropper.min.js"></script>
+
+    <script src="__PUBLIC__/Admin/js/demo/form-advanced-demo.js"></script>
+    <script type="text/javascript">
+        $('.i-checks > label').hover(
+          function () {
+            $(this).children('div').addClass("hover");
+          },
+          function () {
+            $(this).children('div').removeClass("hover");
+          }
+        );
+        $('.i-checks > label').click( function () { 
+            $(this).children('div').addClass("checked").parent().siblings().children('div').removeClass("checked");
+        })
+    </script>
+</block>

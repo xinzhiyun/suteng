@@ -18,7 +18,7 @@ class CommonController extends Controller
     public function _initialize()
     {	
     	// 登录检测
-    	// if(empty($_SESSION['adminInfo'])) $this->redirect('Login/index');
+    	if(empty($_SESSION['adminInfo'])) $this->redirect('Login/index');
 
         $bool = $this->rule_check(session('adminInfo.id'));
         if(!$bool){

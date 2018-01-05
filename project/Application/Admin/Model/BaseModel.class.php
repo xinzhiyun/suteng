@@ -120,9 +120,4 @@ class BaseModel extends Model{
             );
         return $data;
     }
-
-
-
-
-
 }

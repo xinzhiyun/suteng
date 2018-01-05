@@ -1,0 +1,68 @@
+<extend name="Public/base" />
+
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>工单管理 <small>工单列表</small></h5>
+                        <div class="ibox-tools">
+                            <a href="vendor_add" class="close-link">
+                                <i class="fa fa-user-plus"></i>
+                                添加工单
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>工单编号</th>
+                                    <th>处理人</th>
+                                    <th>处理人电话</th>
+                                    <th>维护类型</th>
+                                    <th>工作内容</th>
+                                    <th>地址</th>
+                                    <th>处理结果</th>
+                                    <th>处理时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <empty name="pageList.data">
+                                    <tr><td><h3>暂无工单.....</h3></td></tr>
+                                <else />
+                                    <volist name="pageList.data" id="val">
+                                        <tr>
+                                            <td>{{$val.number}}</td>
+                                            <td>{{$val.name}}</td>
+                                            <td>{{$val.phone}}</td>
+                                            <td>{{$val.type}}</td>
+                                            <td>{{$val.content}}</td>
+                                            <td>{{$val.address}}</td>
+                                            <td>{{$val.result}}</td>
+                                            <td>{{$val.time|date='Y-m-d H:i:s',###}}</td>
+                                            <td>
+                                                <switch name="val.result">
+                                                    <case value="0"><a href="__URL__/edit/id/{{$val.id}}/result/1">正在处理</a></case>
+                                                    <case value="1"><a href="__URL__/edit/id/{{$val.id}}/result/2">已处理</a></case>
+                                                    <default />
+                                                </switch>
+                                            </td>
+                                        </tr>
+                                    </volist>
+                                </empty>
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <ul>
+                                {{$pageList.page}}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
