@@ -54,18 +54,17 @@
                                         <?php echo ($v['user']); ?>
                                     </td>
                                     <td>
-                                        <a href="javascript:if(confirm('确定删除？'))location='<?php echo U('Admin/Rule/delete_user_from_group',array('uid'=>$v['id']));?>'">
-                                            删除
-                                        </a>
+                                        <div class="btn-group">
+                                            <a class="btn btn-outline btn-primary" href="javascript:if(confirm('确定删除？'))location='<?php echo U('Admin/Rule/delete_user_from_group',array('uid'=>$v['id']));?>'">
+                                                删除
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr><?php endforeach; endif; else: echo "$empty" ;endif; ?>
                         </tbody>
                     </table>
                 </div>
-                <script>
-                    $('.pagination ul a').unwrap('div').wrap('<li></li>');
-                    $('.pagination ul span').wrap('<li class="active"></li>')
-                </script>
+                
             </div>
         </div>
     </div>
@@ -85,5 +84,10 @@
     <script src="/suteng/project/Public/Admin/js/plugins/pace/pace.min.js"></script>
 
     
+    <script>
+        $('.pagination ul a').unwrap('div').wrap('<li></li>');
+        $('.pagination ul span').wrap('<li class="active"></li>')
+    </script>
+
 </body>
 </html>

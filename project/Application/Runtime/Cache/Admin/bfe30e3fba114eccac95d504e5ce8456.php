@@ -46,30 +46,26 @@
                                             <?php echo ($v['title']); ?>
                                         </td>
                                         <td>
-                                            <a href="javascript:;" ruleId="<?php echo ($v['id']); ?>" ruleTitle="<?php echo ($v['title']); ?>" onclick="edit(this)">
-                                                修改
-                                            </a>
-                                            |
-                                            <a class="deleteBtn" ruleId="<?php echo ($v['id']); ?>" href="javascript:;">
-                                                删除
-                                            </a>
-                                            |
-                                            <a href="<?php echo U('Admin/Rule/rule_group',array('id'=>$v['id']));?>">
-                                                分配权限
-                                            </a>
-                                            |
-                                            <a href="<?php echo U('Admin/Rule/group_list',array('group_id'=>$v['id']));?>">
-                                                成员列表
-                                            </a>
+                                            <div class="btn-group">
+                                                <a class="btn btn-outline btn-success" href="javascript:;" ruleId="<?php echo ($v['id']); ?>" ruleTitle="<?php echo ($v['title']); ?>" onclick="edit(this)">
+                                                    修改
+                                                </a>
+                                                <a class="btn btn-outline btn-success deleteBtn" ruleId="<?php echo ($v['id']); ?>" href="javascript:;">
+                                                    删除
+                                                </a>
+                                                <a class="btn btn-outline btn-success" href="<?php echo U('Admin/Rule/rule_group',array('id'=>$v['id']));?>">
+                                                    分配权限
+                                                </a>
+                                                <a class="btn btn-outline btn-success" href="<?php echo U('Admin/Rule/group_list',array('group_id'=>$v['id']));?>">
+                                                    成员列表
+                                                </a>
+                                            </div>
                                         </td>
                                     </tr><?php endforeach; endif; ?>
                             </tbody>
                         </table>
                     </div>
-                    <script>
-                        $('.pagination ul a').unwrap('div').wrap('<li></li>');
-                        $('.pagination ul span').wrap('<li class="active"></li>')
-                    </script>
+                    
                 </div>
                 <!-- footer part -->
                 
@@ -79,7 +75,7 @@
     <!-- 弹框信息 -->
     <div class="modal fade" id="bjy-add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                         &times;
@@ -115,7 +111,7 @@
     </div>
     <div class="modal fade" id="bjy-edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                         &times;
@@ -166,31 +162,34 @@
     <script src="/suteng/project/Public/Admin/js/plugins/pace/pace.min.js"></script>
 
     
-<script>
-    // 添加菜单
-    function add() {
-        $("input[name='title']").val('');
-        $('#bjy-add').modal('show');
-    }
+    <script src="/suteng/project/Public/Admin/layui/layui.js"></script>
+    <script>
+        // 添加菜单
+        function add() {
+            $("input[name='title']").val('');
+            $('#bjy-add').modal('show');
+        }
 
-    // 修改菜单
-    function edit(obj) {
-        var ruleId = $(obj).attr('ruleId');
-        var ruletitle = $(obj).attr('ruletitle');
-        $("input[name='id']").val(ruleId);
-        $("input[name='title']").val(ruletitle);
-        $('#bjy-edit').modal('show');
-    }
-    $(".deleteBtn").click(function(){
-        var id=$(this).attr('ruleId');
-        layui.use('layer', function(){
-            var layer = layui.layer;
-            layer.confirm('确定删除?', {icon: 3, title:'温馨提示'}, function(index){
-                window.location.href='delete_group?id='+id;                
+        // 修改菜单
+        function edit(obj) {
+            var ruleId = $(obj).attr('ruleId');
+            var ruletitle = $(obj).attr('ruletitle');
+            $("input[name='id']").val(ruleId);
+            $("input[name='title']").val(ruletitle);
+            $('#bjy-edit').modal('show');
+        }
+        $(".deleteBtn").click(function(){
+            var id=$(this).attr('ruleId');
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                layer.confirm('确定删除?', {icon: 3, title:'温馨提示'}, function(index){
+                    window.location.href='delete_group?id='+id;                
+                });
             });
         });
-    });
-</script>
+        $('.pagination ul a').unwrap('div').wrap('<li></li>');
+        $('.pagination ul span').wrap('<li class="active"></li>')
+    </script>
 
 </body>
 </html>

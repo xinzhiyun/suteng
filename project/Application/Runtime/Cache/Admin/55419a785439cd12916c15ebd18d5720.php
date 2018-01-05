@@ -53,35 +53,32 @@
                                         <?php echo ($v['name']); ?>
                                     </td>
                                     <td>
-                                        <a href="javascript:;" ruleId="<?php echo ($v['id']); ?>" onclick="add_child(this)">
-                                            添加子权限
-                                        </a>
-                                        |
-                                        <a href="javascript:;" ruleId="<?php echo ($v['id']); ?>" ruleName="<?php echo ($v['name']); ?>" ruleTitle="<?php echo ($v['title']); ?>"
-                                        onclick="edit(this)">
-                                            修改
-                                        </a>
-                                        |
-                                        <a class="deletBnt" ruleId="<?php echo ($v['id']); ?>">
-                                            删除
-                                            
-                                        </a>
+                                        <div class="btn-group">
+                                            <a class="btn btn-outline btn-success" href="javascript:;" ruleId="<?php echo ($v['id']); ?>" onclick="add_child(this)">
+                                                添加子权限
+                                            </a>
+                                            <a class="btn btn-outline btn-success" href="javascript:;" ruleId="<?php echo ($v['id']); ?>" ruleName="<?php echo ($v['name']); ?>" ruleTitle="<?php echo ($v['title']); ?>"
+                                            onclick="edit(this)">
+                                                修改
+                                            </a>
+                                            <a class="btn btn-outline btn-success deletBnt" ruleId="<?php echo ($v['id']); ?>">
+                                                删除
+                                                
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr><?php endforeach; endif; ?>
                         </tbody>
                     </table>
                 </div>
-                <script>
-                    $('.pagination ul a').unwrap('div').wrap('<li></li>');
-                    $('.pagination ul span').wrap('<li class="active"></li>')
-                </script>
+                
             </div>
         </div>
     </div>
     <!-- 弹框信息 -->
     <div class="modal fade" id="bjy-add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                         &times;
@@ -126,7 +123,7 @@
     </div>
     <div class="modal fade" id="bjy-edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                         &times;
@@ -185,6 +182,7 @@
     <script src="/suteng/project/Public/Admin/js/plugins/pace/pace.min.js"></script>
 
     
+    <script src="/suteng/project/Public/Admin/layui/layui.js"></script>
     <script>
         // 添加菜单
         function add() {
@@ -225,6 +223,8 @@
                 });
             });
         });
+        $('.pagination ul a').unwrap('div').wrap('<li></li>');
+        $('.pagination ul span').wrap('<li class="active"></li>')
     </script>
 
 </body>

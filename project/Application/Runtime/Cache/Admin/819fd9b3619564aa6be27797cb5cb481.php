@@ -86,10 +86,7 @@
                     </table>
                 </form>
             </div>
-            <script>
-                $('.pagination ul a').unwrap('div').wrap('<li></li>');
-                $('.pagination ul span').wrap('<li class="active"></li>')
-            </script>
+            
         </div>
         <!-- footer part -->
         
@@ -99,7 +96,7 @@
 <div class="modal fade" id="bjy-add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
             aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content animated bounceInRight">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     &times;
@@ -136,7 +133,7 @@
 <div class="modal fade" id="bjy-edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content animated bounceInRight">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     &times;
@@ -191,6 +188,8 @@ aria-hidden="true">
     function checkAll(obj) {
         $(obj).parents('.b-group').eq(0).find("input[type='checkbox']").prop('checked', $(obj).prop('checked'));
     }
+    $('.pagination ul a').unwrap('div').wrap('<li></li>');
+    $('.pagination ul span').wrap('<li class="active"></li>')
 </script>
 
 </body>

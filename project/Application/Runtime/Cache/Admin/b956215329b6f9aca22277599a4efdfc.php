@@ -13,6 +13,8 @@
     <link href="/suteng/project/Public/Admin/css/animate.css" rel="stylesheet">
     <link href="/suteng/project/Public/Admin/css/style.css?v=4.1.0" rel="stylesheet">
     
+    <link rel="stylesheet" type="text/css" href="/suteng/project/Public/">
+
 </head>
 
 <body class="gray-bg">
@@ -59,18 +61,18 @@
                                             <?php echo ($v['mca']); ?>
                                         </td>
                                         <td>
-                                            <a data-toggle="modal" data-target="#myModal" href="javascript:;" navId="<?php echo ($v['id']); ?>" navName="<?php echo ($v['name']); ?>" onclick="add_child(this)">
-                                                添加子菜单
-                                            </a>
-                                            |
-                                            <a data-toggle="modal" data-target="#myModal" href="javascript:;" navId="<?php echo ($v['id']); ?>" navName="<?php echo ($v['name']); ?>" navMca="<?php echo ($v['mca']); ?>"
-                                            navIco="<?php echo ($v['ico']); ?>" onclick="edit(this)">
-                                                修改
-                                            </a>
-                                            |
-                                            <a class="deletBnt" ruleId="<?php echo ($v['id']); ?>" href="javascript:;">
-                                                删除
-                                            </a>
+                                            <div class="btn-group">
+                                                <a data-toggle="modal" class="btn btn-outline btn-success" data-target="#myModal" navId="<?php echo ($v['id']); ?>" navName="<?php echo ($v['name']); ?>" onclick="add_child(this)">
+                                                    添加子菜单
+                                                </a>
+                                                <a data-toggle="modal" class="btn btn-outline btn-success" data-target="#myModal" navId="<?php echo ($v['id']); ?>" navName="<?php echo ($v['name']); ?>" navMca="<?php echo ($v['mca']); ?>"
+                                                navIco="<?php echo ($v['ico']); ?>" onclick="edit(this)">
+                                                    修改
+                                                </a>
+                                                <a class="btn btn-outline btn-success deletBnt" ruleId="<?php echo ($v['id']); ?>">
+                                                    删除
+                                                </a>
+                                            </div>
                                         </td>
                                     </tr><?php endforeach; endif; ?>
                                 <tr>
@@ -88,10 +90,6 @@
                         </form>
                     </table>
                 </div>
-                <script>
-                    $('.pagination ul a').unwrap('div').wrap('<li></li>');
-                    $('.pagination ul span').wrap('<li class="active"></li>')
-                </script>
             </div>
             <!-- 弹框信息 -->
             <div class="modal inmodal" id="st-add" tabindex="-1" role="dialog" aria-hidden="true">
@@ -133,7 +131,7 @@
                                         </th>
                                         <td>
                                             <input class="input-medium" type="text" name="ico">
-                                            font-awesome图标 输入fa fa- 后边的即可
+                                            font-awesome图标 输入fa 后边的即可
                                         </td>
                                     </tr>
                                     <tr>
@@ -151,7 +149,7 @@
             </div>
             <div class="modal inmodal" id="st-edit" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content animated bounceInRight">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                 &times;
@@ -223,6 +221,7 @@
     <script src="/suteng/project/Public/Admin/js/plugins/pace/pace.min.js"></script>
 
     
+    <script src="/suteng/project/Public/Admin/layui/layui.js"></script>
     <script>
     // 添加菜单
     function add() {
@@ -266,6 +265,9 @@
             });
         });
     });
+
+    $('.pagination ul a').unwrap('div').wrap('<li></li>');
+    $('.pagination ul span').wrap('<li class="active"></li>')
     </script>
 
 </body>

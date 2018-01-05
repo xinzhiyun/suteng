@@ -1,4 +1,7 @@
 <extend name="Public/base" />
+<block name="mylink">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/">
+</block>
 <block name="content">
     <div class="content">
         <div class="row-fluid fl" id="main">
@@ -43,18 +46,18 @@
                                             {{$v['mca']}}
                                         </td>
                                         <td>
-                                            <a data-toggle="modal" data-target="#myModal" href="javascript:;" navId="{{$v['id']}}" navName="{{$v['name']}}" onclick="add_child(this)">
-                                                添加子菜单
-                                            </a>
-                                            |
-                                            <a data-toggle="modal" data-target="#myModal" href="javascript:;" navId="{{$v['id']}}" navName="{{$v['name']}}" navMca="{{$v['mca']}}"
-                                            navIco="{{$v['ico']}}" onclick="edit(this)">
-                                                修改
-                                            </a>
-                                            |
-                                            <a class="deletBnt" ruleId="{{$v['id']}}" href="javascript:;">
-                                                删除
-                                            </a>
+                                            <div class="btn-group">
+                                                <a data-toggle="modal" class="btn btn-outline btn-success" data-target="#myModal" navId="{{$v['id']}}" navName="{{$v['name']}}" onclick="add_child(this)">
+                                                    添加子菜单
+                                                </a>
+                                                <a data-toggle="modal" class="btn btn-outline btn-success" data-target="#myModal" navId="{{$v['id']}}" navName="{{$v['name']}}" navMca="{{$v['mca']}}"
+                                                navIco="{{$v['ico']}}" onclick="edit(this)">
+                                                    修改
+                                                </a>
+                                                <a class="btn btn-outline btn-success deletBnt" ruleId="{{$v['id']}}">
+                                                    删除
+                                                </a>
+                                            </div>
                                         </td>
                                     </tr>
                                 </foreach>
@@ -73,10 +76,6 @@
                         </form>
                     </table>
                 </div>
-                <script>
-                    $('.pagination ul a').unwrap('div').wrap('<li></li>');
-                    $('.pagination ul span').wrap('<li class="active"></li>')
-                </script>
             </div>
             <!-- 弹框信息 -->
             <div class="modal inmodal" id="st-add" tabindex="-1" role="dialog" aria-hidden="true">
@@ -118,7 +117,7 @@
                                         </th>
                                         <td>
                                             <input class="input-medium" type="text" name="ico">
-                                            font-awesome图标 输入fa fa- 后边的即可
+                                            font-awesome图标 输入fa 后边的即可
                                         </td>
                                     </tr>
                                     <tr>
@@ -136,7 +135,7 @@
             </div>
             <div class="modal inmodal" id="st-edit" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content animated bounceInRight">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                 &times;
@@ -194,6 +193,7 @@
     </div>
 </block>
 <block name="myjs">
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
     <script>
     // 添加菜单
     function add() {
@@ -237,5 +237,8 @@
             });
         });
     });
+
+    $('.pagination ul a').unwrap('div').wrap('<li></li>');
+    $('.pagination ul span').wrap('<li class="active"></li>')
     </script>
 </block>

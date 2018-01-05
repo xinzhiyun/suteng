@@ -38,20 +38,25 @@
                                         {{$v['user']}}
                                     </td>
                                     <td>
-                                        <a href="javascript:if(confirm('确定删除？'))location='{{:U('Admin/Rule/delete_user_from_group',array('uid'=>$v['id']))}}'">
-                                            删除
-                                        </a>
+                                        <div class="btn-group">
+                                            <a class="btn btn-outline btn-success" href="javascript:if(confirm('确定删除？'))location='{{:U('Admin/Rule/delete_user_from_group',array('uid'=>$v['id']))}}'">
+                                                删除
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                             </volist >
                         </tbody>
                     </table>
                 </div>
-                <script>
-                    $('.pagination ul a').unwrap('div').wrap('<li></li>');
-                    $('.pagination ul span').wrap('<li class="active"></li>')
-                </script>
+                
             </div>
         </div>
     </div>
+</block>
+<block name="myjs">
+    <script>
+        $('.pagination ul a').unwrap('div').wrap('<li></li>');
+        $('.pagination ul span').wrap('<li class="active"></li>')
+    </script>
 </block>
