@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+	<link rel="stylesheet" href="./css/resetstyle.css">
+	<script src="./js/public.js"></script>
+	<title>地址</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body {
+			width: 100vw;
+		    height: 100vh;
+		    background: #eee;
+			font-size: .7rem;
+			overflow-x: hidden;
+		}
+		.address {
+		    background: #fff;
+			border-bottom: 8px solid #eee;
+		}
+		.address>div>p {
+			padding: 6%;
+		}
+		.address>div:not(:nth-of-type(1)) {
+			border-top: 1px solid #eee;
+		}
+		.aTop>p>span:nth-of-type(1) {
+			float: left;
+		}
+		.aTop>p>span:nth-of-type(2) {
+			float: right;
+		}
+		.aTop>p>span:after {
+			content: '';
+			clear: both;
+		}
+		.aBottom {
+			padding: 3% 6%;
+		}
+		.aBottom>div {
+			display: flex;
+			align-items: center;
+		}
+
+		.aBottom>div>label {
+			width: 40%;
+			margin: 0 4vw;
+			white-space: nowrap;
+		}
+		.aBottom>div>p {
+			width: 50%;
+			display: inline-block;
+			float: right;
+			white-space: nowrap;
+		}
+		.aBottom>div>p:after {
+			content: '';
+			clear: both;
+		}
+		[id*="setAddress-"] {
+			width: 5vmin;
+			height: 5vmin;
+			border-radius: 3px;
+			border: 1px solid #dfdfdf;
+			-webkit-appearance: none;
+		}
+		.setAddress[index*="address-"]:checked {
+			border: none;
+			background: url('./images/check.png') #56AAF1 no-repeat;
+			background-size: 76%;
+			background-position: center;
+		}
+		.edit, .del {
+			display: inline-block;
+			margin-left: 8vw;
+			padding: 1% 4%;
+			font-size: .6rem;
+			border-radius: 6px;
+			border: 1px solid #dfdfdf;
+		}
+		#footer {
+			width: 100vw;
+			display: flex;
+			align-items: center;
+			position: fixed;
+			padding: 3% 0%;
+			bottom: 0;
+			border-top: 1px solid #ddd;
+		    background: #fff;
+		}
+		#footer>input {
+			width: 6vmin;
+			height: 6vmin;
+			margin: 0 20px;
+			border-radius: 4px;
+		    border: none;
+		    color: #fff;
+		    line-height: 6vmin;
+		    vertical-align: middle;
+		    font-size: 1.6rem;
+		    background: #2EB6AA;
+		}
+	</style>
+</head>
+<body>
+	<div class="address">
+		<div class="aTop">
+			<p>
+				<span>Yoo</span>
+				<span>13612345678</span>
+			</p>
+			<p>广州市番禺区大石街道五巷7号</p>
+		</div>
+		<div class="aBottom">
+			<div>
+				<input id="setAddress-1" class="setAddress" type="checkbox" index="address-1" checked />
+				<label for="setAddress-1">默认地址</label>
+				<p>
+					<span class="edit">编辑</span>
+					<span class="del">删除</span>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="address">
+		<div class="aTop">
+			<p>
+				<span>Yoo</span>
+				<span>13612345678</span>
+			</p>
+			<p>广州市番禺区大石街道五巷7号</p>
+		</div>
+		<div class="aBottom">
+			<div>
+				<input id="setAddress-2" class="setAddress" type="checkbox" index="address-2" />
+				<label for="setAddress-2">默认地址</label>
+				<p>
+					<span class="edit">编辑</span>
+					<span class="del">删除</span>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<footer id="footer">
+		<input type="button" id="newAddress" value="+">
+		<label for="newAddress">添加新地址</label>
+	</footer>
+</body>
+</html>

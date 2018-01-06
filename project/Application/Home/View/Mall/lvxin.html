@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+	<link rel="stylesheet" href="./css/resetstyle.css">
+	<script src="./js/public.js"></script>
+	<title>滤芯</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body {
+			overflow-x: hidden;
+		}
+		#content {
+			width: 100vw;
+			height: 100vh;
+			overflow-x: hidden;
+			overflow-y: scroll;
+			background: #f3f3f3;
+		}
+		#header, #footer {
+			width: 100vw;
+			height: 8vh;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			position: fixed;
+			font-size: .9rem;
+			background: #fff;
+		}
+		#header {
+			top: 0;
+			left: 0;
+			border-bottom: 1vh solid #ddd;
+		}
+		#header>span {
+			width: 33.33%;
+			height: 8vh;
+		    line-height: 8vh;
+    		text-align: center;
+		    vertical-align: middle;
+		}
+		#main {
+			width: 100vw;
+			height: 84vh;
+			position: relative;
+			top: 8vh;
+			left: 0;
+			background: #fff;
+		}
+		/*顶栏下划线，移动位置改这里*/
+		#line {
+			width: 33.33vw;
+			height: 1vh;
+			display: flex;
+			justify-content: center;
+			position: absolute;
+			left: 0;
+			bottom: 0vh;
+			margin-bottom: -1vh;
+			margin-left: 66%;
+			text-align: center;
+			transition: .5s ease;
+		}
+		#line>span {
+			width: 50%;
+			height: 100%;
+			display: block;
+		    position: relative;
+		    top: 0;
+			border-radius: 20px;
+			background: #76BAF3;
+		}
+		/*商品*/
+		.goods {
+			width: 94vw;
+			display: flex;
+			position: relative;
+			padding: 3% 0;
+			left: 50%;
+			margin-left: -47%;
+			border-bottom: 1px solid #eee;
+			font-size: .6rem;
+		}
+
+		/*商品图片*/
+		.goods>.img {
+			width: 36%;
+			margin: 2% 2% 2% 0;
+			border: 1px solid #ddd;
+			border-radius: 10px;
+		}	
+		.goods>.img>img {
+			width: 100%;
+			height: ;
+			display: inline-block;
+		}
+		/*商品描述*/
+		.goods>.dec {
+			width: 64%;
+			padding: 2% 0 2% 2%;
+			background: #fff;
+		}
+		.goods>.dec>p {
+			font-size: .5rem;
+			margin: 4% 0;
+			color: #555;
+		}
+
+		/*商品数量*/
+		.num {
+			width: 26%;
+			float: right;
+			white-space: nowrap;
+		}
+		.num:after {
+			content: '';
+			clear: both;
+		}
+
+		/*商品价格*/
+		.price {
+			color: #FC3132;
+			font-size: .7rem;
+		}
+		.num>b, .num>input {
+			width: 33%;
+			text-align: center;
+		}
+		#footer {
+			bottom: 0;
+			left: 0;
+			border-top: 1px solid #e0e0e0;
+		}
+		#footer>div, #footer>span {
+			height: 8vh;    
+			display: inline-block;
+		    line-height: 8vh;
+    		text-align: center;
+		    vertical-align: middle;
+		}
+		#footer>div {
+			width: 60%;
+		}
+		#footer>div>span {
+			color: #FC3132;
+		}
+		#footer>span {
+			width: 40%;
+			color: #fff;
+			background: #2EB6AA;
+		}
+	</style>
+</head>
+<body>
+	<div id="content">
+		<header id="header">
+			<span>滤芯详情</span>
+			<span>滤芯复位</span>
+			<span>滤芯购买</span>
+			<div id="line"><span></span></div>
+		</header>
+		<div id="main">
+			<div class="goods">
+				<div class="img"><img src="1.jpg" alt="正在加载..."></div>
+				<div class="dec">
+					<h5>RO膜</h5>
+					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+					<div>
+						<span class="price">￥120.00</span>
+						<span class="num">
+							<b>-&nbsp;</b>
+							<input class="number" type="text" value="0">
+							<b>+</b>
+						</span>
+					</div>
+					
+				</div>
+			</div>
+			<div class="goods">
+				<div class="img"><img src="1.jpg" alt="正在加载..."></div>
+				<div class="dec">
+					<h5>RO膜</h5>
+					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+					<div>
+						<span class="price">￥120.00</span>
+						<span class="num">
+							<b>-&nbsp;</b>
+							<input class="number" type="text" value="0">
+							<b>+</b>
+						</span>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<footer id="footer">
+			<div>合计：<span>￥240.00</span></div>
+			<span>去结算</span>
+		</footer>
+	</div>
+</body>
+</html>

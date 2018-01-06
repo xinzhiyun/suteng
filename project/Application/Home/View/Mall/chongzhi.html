@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+	<link rel="stylesheet" href="./css/resetstyle.css">
+	<script src="./js/public.js"></script>
+	<script src="./js/jquery-1.8.3.min.js"></script>
+	<title>会员充值</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body {
+			font-size: .7rem;
+			overflow-x: hidden;
+		}
+		#content {
+			width: 100vw;
+			height: 92vh;
+		}
+		/*充值类型*/
+		#content>div>p {
+			padding: 1% 4%;
+			text-align: left;
+		}
+		.taocan {
+			padding: 2% 0;
+			text-align: center;
+		}
+		.taocan>div {
+			width: 30%;
+			display: inline-block;
+			padding: 3vmin 8vmin;
+			margin: 5vmin;
+			text-align: center;
+			border-radius: 4px;
+			border: 1px solid #e8e8e8;
+		}
+		
+		.taocanSelectNow {
+			color: #fff;
+			border: 1px solid #56AAF1;
+			background: #56AAF1;
+		}
+		.money {
+			position: relative;
+		}
+		.money>div {
+			width: 100%;
+			position: absolute;
+			background: #fff;
+		}
+		.money>div>div {
+			width: 70%;
+			position: relative;
+			top: 0;
+			padding: 3vmin 8vmin;
+			margin: 2vh auto;
+			border-radius: 4px;
+			border: 1px solid #e8e8e8;
+			text-align: center;
+		}
+		.money>div:nth-of-type(2) {
+			left: 100vw;
+		}
+		#footer {
+			width: 100vw;
+			height: 8vh;
+			line-height: 8vh;
+			color: #fff;
+			font-size: .9rem;
+			text-align: center;
+			background: #2EB6AA;
+		}
+	</style>
+</head>
+<body>
+	<div id="content">
+		<div class="taocan">
+			<p>选择套餐类别</p>
+			<div class="taocanSelectNow" index="0" >
+				金币
+			</div>
+			<div index="1" >
+				银币
+			</div>
+		</div>
+		<div class="money">
+			<p>选择充值金额</p>
+			<!-- 金币 -->
+			<div class="moneySon">
+				<div class="moneyItem taocanSelectNow">100元100个金币</div>
+				<div class="moneyItem">200元200个金币</div>
+				<div class="moneyItem">300元300个金币</div>
+				<div class="moneyItem">400元500个金币</div>
+				<div class="moneyItem">500元600个金币</div>
+			</div>
+			<!-- 银币 -->
+			<div class="moneySon">
+				<div class="moneyItem taocanSelectNow">100元100个银币</div>
+				<div class="moneyItem">200元200个银币</div>
+				<div class="moneyItem">300元300个银币</div>
+				<div class="moneyItem">400元500个银币</div>
+				<div class="moneyItem">500元600个银币</div>
+			</div>
+		</div>
+	</div>
+	<footer id="footer">
+		立即充值
+	</footer>
+	<script>
+
+		$(".taocan div").on("click", function(){
+			$(this).addClass('taocanSelectNow').siblings().removeClass("taocanSelectNow");
+
+			$(this).attr("index") == 0 
+			? (
+				$(".moneySon").eq(0).animate({left: '0vw'}),
+				$(".moneySon").eq(1).animate({left: '100vw'})
+			) 
+			: (
+				$(".moneySon").eq(0).animate({left: '100vw'}),
+				$(".moneySon").eq(1).animate({left: '0vw'})
+			)
+			
+		})
+
+		$(".moneyItem").each(function(key, value){
+
+			$(value).on("click", function(){
+
+				$(value).addClass('taocanSelectNow').siblings().removeClass("taocanSelectNow");
+			});
+			
+		})
+	</script>
+</body>
+</html>
