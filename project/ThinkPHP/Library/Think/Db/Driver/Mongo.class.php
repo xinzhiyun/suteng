@@ -270,8 +270,11 @@ class Mongo extends Driver
      * @param string $pk 主键名
      * @return integer
      */
-    public function getMongoNextId($pk)
+    public function getMongoNextId($pk,$options=array())
     {
+        if (isset($options['table'])) {
+            $this->switchCollection($options['table']);
+        }
         if ($this->config['debug']) {
             $this->queryStr = $this->_dbName . '.' . $this->_collectionName . '.find({},{' . $pk . ':1}).sort({' . $pk . ':-1}).limit(1)';
         }
@@ -517,8 +520,12 @@ class Mongo extends Driver
         }
         try {
             $this->debug(true);
-            $option = array('condition' => $options['condition'], 'finalize' => $options['finalize'], 'maxTimeMS' => $options['maxTimeMS']);
-            $group  = $this->_collection->group($keys, $initial, $reduce, $options);
+            
+            $option = array();
+            isset($options['condition'])&&$option['condition']=$options['condition'];
+            isset($options['finalize'])&&$option['finalize']=$options['condition'];
+            isset($options['maxTimeMS'])&&$option['maxTimeMS']=$options['condition'];
+            $group = $this->_collection->group($keys,$initial,$reduce,$option); 
             $this->debug(false);
 
             if ($cache && $group['ok']) {
@@ -622,7 +629,7 @@ class Mongo extends Driver
             if (is_array($val)) {
                 switch ($val[0]) {
                     case 'inc':
-                        $result['$inc'][$key] = (int) $val[1];
+                        $result['$inc'][$key] = (float) $val[1];
                         break;
                     case 'set':
                     case 'unset':

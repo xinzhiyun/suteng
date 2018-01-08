@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <title>速腾后台 - 主页</title>
     <link rel="shortcut icon" href="favicon.ico"> 
-    <link href="/project/suteng/project/Public/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link href="/project/suteng/project/Public/Admin/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
-    <link href="/project/suteng/project/Public/Admin/css/animate.css" rel="stylesheet">
-    <link href="/project/suteng/project/Public/Admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="/Public/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/Public/Admin/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/Public/Admin/css/animate.css" rel="stylesheet">
+    <link href="/Public/Admin/css/style.css?v=4.1.0" rel="stylesheet">
 </head>
 
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
@@ -21,7 +21,7 @@
                 <ul class="nav" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                            <span><img alt="image" class="img-circle" src="/project/suteng/project/Public/Admin/img/profile_small.jpg" /></span>
+                            <span><img alt="image" class="img-circle" src="/Public/Admin/img/profile_small.jpg" /></span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
                                     <span class="block m-t-xs">
@@ -80,7 +80,7 @@
                                 <li class="m-t-xs">
                                     <div class="dropdown-messages-box">
                                         <a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="/project/suteng/project/Public/Admin/img/a7.jpg">
+                                            <img alt="image" class="img-circle" src="/Public/Admin/img/a7.jpg">
                                         </a>
                                         <div class="media-body">
                                             <small class="pull-right">46小时前</small>
@@ -94,7 +94,7 @@
                                 <li>
                                     <div class="dropdown-messages-box">
                                         <a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="/project/suteng/project/Public/Admin/img/a4.jpg">
+                                            <img alt="image" class="img-circle" src="/Public/Admin/img/a4.jpg">
                                         </a>
                                         <div class="media-body ">
                                             <small class="pull-right text-navy">25小时前</small>
@@ -164,7 +164,7 @@
                 </nav>
             </div>
             <div class="row J_mainContent" id="content-main">
-                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="" frameborder="0" data-id="index_v1.html" seamless></iframe>
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="welcome" frameborder="0" data-id="welcome" seamless></iframe>
             </div>
             <div class="footer">
                 <div class="pull-right">&copy; 2014-2015 <a href="http://www.zi-han.net/" target="_blank">zihan's blog</a>
@@ -277,7 +277,7 @@
                             <div class="sidebar-message">
                                 <a href="#">
                                     <div class="pull-left text-center">
-                                        <img alt="image" class="img-circle message-avatar" src="/project/suteng/project/Public/Admin/img/a1.jpg">
+                                        <img alt="image" class="img-circle message-avatar" src="/Public/Admin/img/a1.jpg">
 
                                         <div class="m-t-xs">
                                             <i class="fa fa-star text-warning"></i>
@@ -295,7 +295,7 @@
                             <div class="sidebar-message">
                                 <a href="#">
                                     <div class="pull-left text-center">
-                                        <img alt="image" class="img-circle message-avatar" src="/project/suteng/project/Public/Admin/img/a2.jpg">
+                                        <img alt="image" class="img-circle message-avatar" src="/Public/Admin/img/a2.jpg">
                                     </div>
                                     <div class="media-body">
                                         HCY48之音乐大魔王会员专属皮肤已上线，快来一键换装拥有他，宣告你对华晨宇的爱吧！
@@ -307,7 +307,7 @@
                             <div class="sidebar-message">
                                 <a href="#">
                                     <div class="pull-left text-center">
-                                        <img alt="image" class="img-circle message-avatar" src="/project/suteng/project/Public/Admin/img/a3.jpg">
+                                        <img alt="image" class="img-circle message-avatar" src="/Public/Admin/img/a3.jpg">
 
                                         <div class="m-t-xs">
                                             <i class="fa fa-star text-warning"></i>
@@ -325,7 +325,7 @@
                             <div class="sidebar-message">
                                 <a href="#">
                                     <div class="pull-left text-center">
-                                        <img alt="image" class="img-circle message-avatar" src="/project/suteng/project/Public/Admin/img/a4.jpg">
+                                        <img alt="image" class="img-circle message-avatar" src="/Public/Admin/img/a4.jpg">
                                     </div>
 
                                     <div class="media-body">
@@ -338,7 +338,7 @@
                             <div class="sidebar-message">
                                 <a href="#">
                                     <div class="pull-left text-center">
-                                        <img alt="image" class="img-circle message-avatar" src="/project/suteng/project/Public/Admin/img/a8.jpg">
+                                        <img alt="image" class="img-circle message-avatar" src="/Public/Admin/img/a8.jpg">
                                     </div>
                                     <div class="media-body">
 
@@ -351,7 +351,7 @@
                             <div class="sidebar-message">
                                 <a href="#">
                                     <div class="pull-left text-center">
-                                        <img alt="image" class="img-circle message-avatar" src="/project/suteng/project/Public/Admin/img/a7.jpg">
+                                        <img alt="image" class="img-circle message-avatar" src="/Public/Admin/img/a7.jpg">
                                     </div>
                                     <div class="media-body">
                                         这哥们的新视频又来了，创意杠杠滴，帅炸了！
@@ -363,7 +363,7 @@
                             <div class="sidebar-message">
                                 <a href="#">
                                     <div class="pull-left text-center">
-                                        <img alt="image" class="img-circle message-avatar" src="/project/suteng/project/Public/Admin/img/a3.jpg">
+                                        <img alt="image" class="img-circle message-avatar" src="/Public/Admin/img/a3.jpg">
 
                                         <div class="m-t-xs">
                                             <i class="fa fa-star text-warning"></i>
@@ -381,7 +381,7 @@
                             <div class="sidebar-message">
                                 <a href="#">
                                     <div class="pull-left text-center">
-                                        <img alt="image" class="img-circle message-avatar" src="/project/suteng/project/Public/Admin/img/a4.jpg">
+                                        <img alt="image" class="img-circle message-avatar" src="/Public/Admin/img/a4.jpg">
                                     </div>
                                     <div class="media-body">
                                         我发起了一个投票 【你认为下午大盘会翻红吗？】
@@ -584,18 +584,18 @@
     </div>
 
     <!-- 全局js -->
-    <script src="/project/suteng/project/Public/Admin/js/jquery.min.js?v=2.1.4"></script>
-    <script src="/project/suteng/project/Public/Admin/js/bootstrap.min.js?v=3.3.6"></script>
-    <script src="/project/suteng/project/Public/Admin/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="/project/suteng/project/Public/Admin/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="/project/suteng/project/Public/Admin/js/plugins/layer/layer.min.js"></script>
+    <script src="/Public/Admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/Public/Admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="/Public/Admin/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/Public/Admin/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/Public/Admin/js/plugins/layer/layer.min.js"></script>
 
     <!-- 自定义js -->
-    <script src="/project/suteng/project/Public/Admin/js/hplus.js?v=4.1.0"></script>
-    <script type="text/javascript" src="/project/suteng/project/Public/Admin/js/contabs.js"></script>
+    <script src="/Public/Admin/js/hplus.js?v=4.1.0"></script>
+    <script type="text/javascript" src="/Public/Admin/js/contabs.js"></script>
 
     <!-- 第三方插件 -->
-    <script src="/project/suteng/project/Public/Admin/js/plugins/pace/pace.min.js"></script>
+    <script src="/Public/Admin/js/plugins/pace/pace.min.js"></script>
 
 </body>
 
