@@ -17,32 +17,7 @@
 
 <body class="gray-bg">
     
-    <div class="middle-box text-center loginscreen  animated fadeInDown">
-        <div>
-            <div>
-
-                <h1 class="logo-name">DQ</h1>
-
-            </div>
-            <h3>欢迎回来</h3>
-
-            <form class="m-t" role="form" action="index" method="post">
-                <div class="form-group">
-                    <input name="name" type="text" class="form-control" placeholder="用户名" required="">
-                </div>
-                <div class="form-group">
-                    <input name="password" type="password" class="form-control" placeholder="密码" required="">
-                </div>
-                <div class="form-group">
-                    <input name="code" type="text" class="form-control" placeholder="验证码" required="">
-                </div>
-                <div class="form-group">
-                    <img class="" src="/index.php/Admin/Login/yzm" onclick="this.src='/index.php/Admin/Login/yzm?id=' + Math.random()">
-                </div>
-                <button type="submit" class="btn btn-primary block full-width m-b">登 录</button>
-            </form>
-        </div>
-    </div>
+    <h1>欢迎来到速腾后台管理页面</h1>
 
     <!-- 全局js -->
     <script src="/Public/Admin/js/jquery.min.js?v=2.1.4"></script>
@@ -59,12 +34,5 @@
     <script src="/Public/Admin/js/plugins/pace/pace.min.js"></script>
 
     
-    <!-- 全局js -->
-    <script src="js/jquery.min.js?v=2.1.4"></script>
-    <script src="js/bootstrap.min.js?v=3.3.6"></script>
-
-    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
-    <!--统计代码，可删除-->
-
 </body>
 </html>

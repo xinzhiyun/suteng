@@ -11,7 +11,6 @@ class LoginController extends Controller
             // 验证验证码是否OK
             $Verify = new \Think\Verify();
             $res = $Verify->check($_POST['code']);
-            // dump($res);die;
             if(!$res) $this->error('验证码不对');
 
             $password = md5($_POST['password']);

@@ -23,10 +23,12 @@
         <div class="row-fluid fl" id="main">
             <div class="tableBox">
                 <div class="ibox-title">
-                    <h5>菜单管理 <small>菜单编辑</small></h5>
+                    <h5>设备管理 <small>设备列表</small></h5>
                     <div class="ibox-tools">
                         <i class="fa fa-user-plus"></i>
-                        <a href="javascript:;" onclick="add()">添加菜单</a>
+                        <a href="javascript:;" onclick="add()">添加设备</a>
+                        <i class="fa fa-user-plus"></i>
+                        <a href="javascript:;" onclick="adds()">批量添加设备</a>
                     </div>
                 </div>
                 <div class="ibox-content">
@@ -35,13 +37,13 @@
                             <thead>
                                 <tr>
                                     <th width="5%">
-                                        排序
+                                        序号
                                     </th>
                                     <th>
-                                        菜单名
+                                        设备编码
                                     </th>
                                     <th>
-                                        连接
+                                        设备状态
                                     </th>
                                     <th>
                                         操作
@@ -100,17 +102,17 @@
                                 &times;
                             </button>
                             <h4 class="modal-title" id="myModalLabel">
-                                添加菜单
+                                添加设备
                             </h4>
                         </div>
                         <div class="modal-body">
-                            <form id="bjy-form" class="form-inline" action="<?php echo U('Admin/Menu/add');?>"
+                            <form id="bjy-form" class="form-inline" action="<?php echo U('Admin/Devices/add_device');?>"
                             method="post">
                                 <input type="hidden" name="pid" value="0">
                                 <table class="table table-striped table-bordered table-hover table-condensed">
                                     <tr>
-                                        <th width="12%">
-                                            菜单名：
+                                        <th width="20%">
+                                            设备编码：
                                         </th>
                                         <td>
                                             <input class="input-medium" type="text" name="name">
@@ -118,27 +120,19 @@
                                     </tr>
                                     <tr>
                                         <th>
-                                            连接：
+                                            设备类型：
                                         </th>
                                         <td>
-                                            <input class="input-medium" type="text" name="mca">
-                                            输入模块/控制器/方法即可 例如 Admin/Menu/index
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            图标：
-                                        </th>
-                                        <td>
-                                            <input class="input-medium" type="text" name="ico">
-                                            font-awesome图标 输入fa 后边的即可
+                                            <select name="type_id" class="selectAgency">
+                                                <?php if(is_array($res)): foreach($res as $key=>$vo): ?><option value="<?php echo ($vo["id"]); ?>"><?php echo ($vo["typename"]); ?></option><?php endforeach; endif; ?>
+                                            </select>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>
                                         </th>
                                         <td>
-                                            <input class="btn btn-success" type="submit" value="添加">
+                                            <input class="btn btn-success add_device" value="添加">
                                         </td>
                                     </tr>
                                 </table>
@@ -147,7 +141,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal inmodal" id="st-edit" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal inmodal" id="st-adds" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content animated bounceInRight">
                         <div class="modal-header">
@@ -155,46 +149,24 @@
                                 &times;
                             </button>
                             <h4 class="modal-title" id="myModalLabel">
-                                修改菜单
+                                批量添加设备
                             </h4>
                         </div>
                         <div class="modal-body">
-                            <form id="bjy-form" class="form-inline" action="<?php echo U('Admin/Menu/edit');?>"
+                            <form id="bjy-form" class="form-inline" action="<?php echo U('Admin/Devices/upload');?>"
                             method="post">
-                                <input type="hidden" name="id">
+                                <input type="hidden" name="pid" value="0">
                                 <table class="table table-striped table-bordered table-hover table-condensed">
                                     <tr>
-                                        <th width="12%">
-                                            菜单名：
+                                        <th width="30%">
+                                            添加导入文件：
                                         </th>
                                         <td>
-                                            <input class="input-medium" type="text" name="name">
+                                            <input type="file" name="batch" class="filename">
                                         </td>
-                                    </tr>
-                                    <tr>
                                         <th>
-                                            连接：
+                                            <button class="btn btn-success add_devices">添加</button>
                                         </th>
-                                        <td>
-                                            <input class="input-medium" type="text" name="mca">
-                                            输入模块/控制器/方法即可 例如 Admin/Menu/index
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            图标：
-                                        </th>
-                                        <td>
-                                            <input class="input-medium" type="text" name="ico">
-                                            font-awesome图标 输入fa fa- 后边的即可
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                        </th>
-                                        <td>
-                                            <input class="btn btn-success" type="submit" value="修改">
-                                        </td>
                                     </tr>
                                 </table>
                             </form>
@@ -223,51 +195,27 @@
     
     <script src="/Public/Admin/layui/layui.js"></script>
     <script>
-    // 添加菜单
+    // 添加设备
     function add() {
-        $("input[name='name'],input[name='mca']").val('');
-        $("input[name='pid']").val(0);
         $('#st-add').modal('show');
     }
-
-    // 添加子菜单
-    function add_child(obj) {
-        var navId = $(obj).attr('navId');
-        $("input[name='pid']").val(navId);
-        $("input[name='name']").val('');
-        $("input[name='mca']").val('');
-        $("input[name='ico']").val('');
-        $('#st-add').modal('show');
+    // 批量添加设备
+    function adds() {
+        $('#st-adds').modal('show');
     }
 
-    // 修改菜单
-    function edit(obj) {
-        var navId = $(obj).attr('navId');
-        var navName = $(obj).attr('navName');
-        var navMca = $(obj).attr('navMca');
-        var navIco = $(obj).attr('navIco');
-        $("input[name='id']").val(navId);
-        $("input[name='name']").val(navName);
-        $("input[name='mca']").val(navMca);
-        $("input[name='ico']").val(navIco);
-        $('#st-edit').modal('show');
-    }
-    //删除
-    $(".deletBnt").click(function(){
-        var _this=$(this);
-        var id = $(this).attr('ruleId');
-        layui.use('layer', function(){
-            var layer = layui.layer;
-            layer.confirm('确定删除?', {icon: 3, title:'温馨提示'}, function(index){
-                window.location.href='delete?id='+id;
-                layer.close(index);
-                
-            });
-        });
+    $(".add_device").ajax({
+        url:'Devices/add_device',
+        type:'post',
+        dataType:'json',
+        success:function(res){
+            alert(1);
+        }
     });
 
     $('.pagination ul a').unwrap('div').wrap('<li></li>');
     $('.pagination ul span').wrap('<li class="active"></li>')
+
     </script>
 
 </body>
