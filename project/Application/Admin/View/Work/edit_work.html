@@ -1,0 +1,97 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                    <h5>工单管理 <small>修改工单</small></h5>
+                </div>
+                    <div class="ibox-content">
+                        <form action="" method="post" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">工单号</label>
+
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" value="{{$data.number}}" readonly="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">工单标题</label>
+
+                                <div class="col-md-3">
+                                    <input type="text" name="title" class="form-control" value="{{$data.title}}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">维护类型</label>
+                                <div class="radio i-checks">
+                                    <label class="">
+                                        <div class="iradio_square-green {{$data['type'] == 0?'checked':''}}" style="position: relative;"><input type="radio" {{$data['type'] == 0?'checked':''}} name="type" value="0" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> <i></i> 安装
+                                    </label>
+                                    <label class="">                                       
+                                        <div class="iradio_square-green {{$data['type'] == 1?'checked':''}}" style="position: relative;"><input type="radio" name="type" {{$data['type'] == 1?'checked':''}} value="1" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> <i></i> 维修
+                                    </label>
+                                    <label class="">
+                                        <div class="iradio_square-green {{$data['type'] == 2?'checked':''}}" style="position: relative;"><input type="radio" name="type" {{$data['type'] == 2?'checked':''}} value="2" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> <i></i> 维护
+                                    </label>
+                                </div>                  
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">工作内容</label>
+
+                                <div class="col-md-3">
+                                    <textarea name="content" cols="30" rows="5" class="form-control" ></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">地址</label>
+
+                                <div class="col-md-3">
+                                    <input type="text" name="address" class="form-control" value="{{$data.address}}">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit">确认修改</button>
+                                    <button class="btn btn-white" type="reset">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="myjs">
+
+
+    <!-- Data picker -->
+    <script src="__PUBLIC__/Admin/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
+    <!-- Image cropper -->
+    <script src="__PUBLIC__/Admin/js/plugins/cropper/cropper.min.js"></script>
+
+    <script src="__PUBLIC__/Admin/js/demo/form-advanced-demo.js"></script>
+    <script type="text/javascript">
+        $('.i-checks > label').hover(
+          function () {
+            $(this).children('div').addClass("hover");
+          },
+          function () {
+            $(this).children('div').removeClass("hover");
+          }
+        );
+        $('.i-checks > label').click( function () { 
+            $(this).children('div').addClass("checked").parent().siblings().children('div').removeClass("checked");
+            $(this).children('div > input').attr("checked").parent().siblings().children('div > input').removeAttr("checked");
+        })
+    </script>
+</block>
