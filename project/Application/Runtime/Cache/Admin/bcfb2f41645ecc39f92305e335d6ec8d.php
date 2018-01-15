@@ -43,7 +43,13 @@
                                         设备编码
                                     </th>
                                     <th>
-                                        设备状态
+                                        设备类型
+                                    </th>
+                                    <th>
+                                        是否绑定
+                                    </th>
+                                    <th>
+                                        激活状态
                                     </th>
                                     <th>
                                         操作
@@ -51,43 +57,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if(is_array($data)): foreach($data as $key=>$v): ?><tr>
-                                        <td>
-                                            <input class="input-medium" style="width:40px;height:25px;" type="text"
-                                            name="<?php echo ($v['id']); ?>" value="<?php echo ($v['order_number']); ?>">
-                                        </td>
-                                        <td>
-                                            <?php echo ($v['_name']); ?>
-                                        </td>
-                                        <td>
-                                            <?php echo ($v['mca']); ?>
-                                        </td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <a data-toggle="modal" class="btn btn-outline btn-success" data-target="#myModal" navId="<?php echo ($v['id']); ?>" navName="<?php echo ($v['name']); ?>" onclick="add_child(this)">
-                                                    添加子菜单
-                                                </a>
-                                                <a data-toggle="modal" class="btn btn-outline btn-success" data-target="#myModal" navId="<?php echo ($v['id']); ?>" navName="<?php echo ($v['name']); ?>" navMca="<?php echo ($v['mca']); ?>"
-                                                navIco="<?php echo ($v['ico']); ?>" onclick="edit(this)">
-                                                    修改
-                                                </a>
-                                                <a class="btn btn-outline btn-success deletBnt" ruleId="<?php echo ($v['id']); ?>">
-                                                    删除
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr><?php endforeach; endif; ?>
-                                <tr>
-                                    <th>
-                                        <input class="btn btn-success" type="submit" value="排序">
-                                    </th>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                </tr>
+                                <?php if(empty($deviceInfo)): ?><tr><td>暂无设备数据</td></tr>
+                                <?php else: ?>
+                                    <?php if(is_array($deviceInfo)): $i = 0; $__LIST__ = $deviceInfo;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><tr>
+                                            <td><?php echo ($vo["id"]); ?></td>
+                                            <td><?php echo ($vo["device_code"]); ?></td>
+                                            <td><?php echo ($vo["LeasingMode"]); ?></td>
+                                            <td><?php echo ($vo["binding_statu"]); ?></td>
+                                            <td><?php echo ($vo["DeviceStause"]); ?></td>
+                                            <td>编辑|删除</td>
+                                        </tr><?php endforeach; endif; else: echo "" ;endif; endif; ?>
                             </tbody>
                         </form>
                     </table>
@@ -117,8 +96,11 @@
                                         <td>
                                             <input class="input-medium" type="text" name="name">
                                         </td>
+                                        <td>
+                                            <input class="btn btn-success add_device" value="添加">
+                                        </td>
                                     </tr>
-                                    <tr>
+                                    <!-- <tr>
                                         <th>
                                             设备类型：
                                         </th>
@@ -127,14 +109,14 @@
                                                 <?php if(is_array($res)): foreach($res as $key=>$vo): ?><option value="<?php echo ($vo["id"]); ?>"><?php echo ($vo["typename"]); ?></option><?php endforeach; endif; ?>
                                             </select>
                                         </td>
-                                    </tr>
-                                    <tr>
+                                    </tr> -->
+                                    <!-- <tr>
                                         <th>
                                         </th>
                                         <td>
                                             <input class="btn btn-success add_device" value="添加">
                                         </td>
-                                    </tr>
+                                    </tr> -->
                                 </table>
                             </form>
                         </div>
@@ -203,15 +185,27 @@
     function adds() {
         $('#st-adds').modal('show');
     }
-
-    $(".add_device").ajax({
-        url:'Devices/add_device',
-        type:'post',
-        dataType:'json',
-        success:function(res){
-            alert(1);
-        }
-    });
+    $(".add_device").click(function(){
+        var name = $("input[name='name']").val();
+        $.ajax({
+            url:'show_add_device',
+            type:'post',
+            dataType:'json',
+            data:{"code":name},
+            success:function(res){
+                $('#st-add').arrt('aria-hidden','true');
+                layui.use('layer', function(){
+                    var layer = layui.layer;
+                    layer.open({
+                        type: 1,
+                        title: ['批量添加', 'font-size:18px;'],
+                        area: ['500px', '300px'],
+                        content: $(".addBatch")
+                    });
+                });
+            }
+        })
+    })
 
     $('.pagination ul a').unwrap('div').wrap('<li></li>');
     $('.pagination ul span').wrap('<li class="active"></li>')

@@ -7,11 +7,11 @@
     <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
     <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
 
-    <link rel="shortcut icon" href="favicon.ico"> <link href="/Public/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link href="/Public/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
-    <link href="/Public/Admin/css/plugins/iCheck/custom.css" rel="stylesheet">
-    <link href="/Public/Admin/css/animate.css" rel="stylesheet">
-    <link href="/Public/Admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="/suteng/project/Public/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/suteng/project/Public/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="/suteng/project/Public/Admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/suteng/project/Public/Admin/css/animate.css" rel="stylesheet">
+    <link href="/suteng/project/Public/Admin/css/style.css?v=4.1.0" rel="stylesheet">
     
 </head>
 
@@ -22,14 +22,14 @@
             <div class="tableBox">
                 <div class="ibox-title">
                     <h5>权限管理 <small>权限列表</small></h5>
-                    
-                    <div class="ibox-tools">                  
+
+                    <div class="ibox-tools">
                         <i class="fa fa-user-plus"></i>
                         <a href="javascript:;" onclick="add()">添加权限</a>
                     </div>
                 </div>
                 <div class="ibox-content">
-                    
+
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
@@ -63,7 +63,7 @@
                                             </a>
                                             <a class="btn btn-outline btn-success deletBnt" ruleId="<?php echo ($v['id']); ?>">
                                                 删除
-                                                
+
                                             </a>
                                         </div>
                                     </td>
@@ -71,7 +71,7 @@
                         </tbody>
                     </table>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -92,7 +92,7 @@
                         <input type="hidden" name="pid" value="">
                         <table class="table table-bordered table-hover">
                             <tr>
-                                <th width="12%">
+                                <th width="15%">
                                     权限名：
                                 </th>
                                 <td>
@@ -103,9 +103,9 @@
                                 <th>
                                     权限：
                                 </th>
-                                <td>
+                                <td width="85%">
                                     <input class="input-medium" type="text" name="name">
-                                    输入模块/控制器/方法即可 例如 Admin/Rule/index
+                                    输入模块/控制器/方法即可 例如:Admin/Rule/index
                                 </td>
                             </tr>
                             <tr>
@@ -168,21 +168,21 @@
     </div>
 
     <!-- 全局js -->
-    <script src="/Public/Admin/js/jquery.min.js?v=2.1.4"></script>
-    <script src="/Public/Admin/js/bootstrap.min.js?v=3.3.6"></script>
-    <script src="/Public/Admin/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="/Public/Admin/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="/Public/Admin/js/plugins/layer/layer.min.js"></script>
+    <script src="/suteng/project/Public/Admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/suteng/project/Public/Admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="/suteng/project/Public/Admin/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/suteng/project/Public/Admin/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/suteng/project/Public/Admin/js/plugins/layer/layer.min.js"></script>
 
     <!-- 自定义js -->
-    <script src="/Public/Admin/js/hplus.js?v=4.1.0"></script>
-    <script type="text/javascript" src="/Public/Admin/js/contabs.js"></script>
+    <script src="/suteng/project/Public/Admin/js/hplus.js?v=4.1.0"></script>
+    <script type="text/javascript" src="/suteng/project/Public/Admin/js/contabs.js"></script>
 
     <!-- 第三方插件 -->
-    <script src="/Public/Admin/js/plugins/pace/pace.min.js"></script>
+    <script src="/suteng/project/Public/Admin/js/plugins/pace/pace.min.js"></script>
 
     
-    <script src="/Public/Admin/layui/layui.js"></script>
+    <script src="/suteng/project/Public/Admin/layui/layui.js"></script>
     <script>
         // 添加菜单
         function add() {
@@ -219,7 +219,7 @@
                 layer.confirm('确定删除?', {icon: 3, title:'温馨提示'}, function(index){
                     window.location.href='delete?id='+id;
                     layer.close(index);
-                    
+
                 });
             });
         });
