@@ -1,3 +1,3 @@
 .idea
-./project/Application/Runtime
-./project/Application/Common/Conf/config.php
+/project/Application/Common/Conf/config.php
+Runtime

@@ -11,16 +11,16 @@ class RegisteredVendorController extends Controller
 {
     public function index()
     {
-    	$open_id = 'oXwY4t-9clttAFWXjCcNRJrvch3w';
+    	//$open_id = 'oXwY4t-9clttAFWXjCcNRJrvch3w';
     	// 查询微信用户表-检测是否注册分销商
-    	$user = M('wechat')->where("open_id='{$open_id}'")->find();
+    	//$user = M('wechat')->where("open_id='{$open_id}'")->find();
     	// 注册类型[3:分公司邀请分销商 4:分销商邀请分销商]
-    	$reType = $user['recommend'];
+    	//$reType = $user['recommend'];
     	// 分销商级别[0:A级分销商 1:B级分销商 2:C级分销商]
-    	$leavel = $user['leavel'];
+    	//$leavel = $user['leavel'];
     	// 操作[]
-    	$action = $user['action'];
-
+    	//$action = $user['action'];
+   
     	if(IS_POST){
 
 
