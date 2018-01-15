@@ -3,8 +3,17 @@ namespace Home\Controller;
 
 use Think\Controller;
 
-class GetCodeController extends Controller
+class DimensionController extends Controller
 {
+	/**
+	 * [vedor 吴智彬]
+	 * @param  [number]		$num    	[二维码数量]
+	 * @param  [boolean]   	$type   	[永久或临时，默认临时]
+	 * @return [string]     $jsoninfo   [带参数二维码票据]
+	 * 临时票据有效时间：2590000秒 (既 29.97685185185天) 或 再次使用同样的参请求，生成新的票据时
+	 * 永久票据有效时间：长期有效
+	 * 使用票据：<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.$jsoninfo.'" alt="二维码票据">
+	 */
     public function vedor($num,$type=false)
     {
     	// 实例化微信JSSDK类对象
@@ -13,27 +22,26 @@ class GetCodeController extends Controller
         $accessToken = $wxJSSDK->getAccessToken();
         // 请求微信带参数二维码
         $url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={$accessToken}";
-
         // 临时二维码请求数据格式
         $lscode = '{"expire_seconds": 2590000, "action_name": "QR_SCENE", "action_info": {"scene": {"scene_id": '.$num.'}}}';
-
         // 永久二维码请求数据格式
         $yjcode = '{"action_name":"QR_LIMIT_SCENE","action_info":{"scene":{"scene_id":'.$num.'}}';
-
+        // 请求二维码数据格式
         $data = $type?$yjcode:$lscode;
-
-        
-
         // 发送请求
-        $result = $this->httpPost($url,$yjcode);
+        $result = $this->httpPost($url,$data);
         // 解析JSON格式数据
         $jsoninfo = json_decode($result,true)['ticket'];
-
-        // 请求获取二维码图片
+        // 返回获取二维码票据
         return $jsoninfo;
-        //echo '<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.$jsoninfo.'" alt="">';
     }
 
+    /**
+     * [httpPost 吴智彬]
+     * @param  [string] $url 		[请求地址]
+     * @param  [json] 	$data 		[请求参数]
+     * @return [json]   $tmpInfo    [返回票据]
+     */
 	public function httpPost($url, $data){
 	    $ch = curl_init();
 	    $header = "Accept-Charset: utf-8";
@@ -55,9 +63,5 @@ class GetCodeController extends Controller
 	        curl_close( $ch );
 	        return $tmpInfo;
 	    }
-
 	}
 }
-// gQE38DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTlBFd2tHMmJkOTAxMDAwMGcwM00AAgRVdlhaAwQAAAAA
-// gQE38DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTlBFd2tHMmJkOTAxMDAwMGcwM00AAgRVdlhaAwQAAAAA
-// gQHx8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQThuOWszMmJkOTAxMDAwMHcwM3AAAgS2dlhaAwQAAAAA

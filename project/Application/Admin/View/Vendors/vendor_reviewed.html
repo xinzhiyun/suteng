@@ -1,0 +1,74 @@
+<extend name="Public/base" />
+
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>经销商管理 <small>经销商审核</small></h5>
+                        <div class="ibox-tools">
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>姓名</th>
+                                    <th>电话</th>
+                                    <th>座机</th>
+                                    <th>身份证</th>
+                                    <th>上级经销商</th>
+                                    <th>分配用户名</th>
+                                    <th>提交时间</th>
+                                    <th>详情</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <empty name="data">
+                                    <tr><td><h3>没有待审核消息</h3></td></tr>
+                                <else />
+                                    <volist name="data" id="val">
+                                        <tr>
+                                            <td>{{$i}}</td>
+                                            <td>{{$val.name}}</td>
+                                            <td>{{$val.phone}}</td>
+                                            <td>{{$val.telphone}}</td>
+                                            <td>{{$val.idcard}}</td>
+                                            <td>{{$parent_user}}</td>
+                                            <td>{{$val.user}}</td>
+                                            <td>{{$val.addtime|date="Y-m-d H:i:s",###}}</td>
+                                            <td>
+                                                <a onclick="access('{{$val.id}}')" href="#">通过</a>
+                                                <a onclick="faild('{{$val.id}}')" href="#">拒绝</a>
+                                            </td>
+                                        </tr>
+                                    </volist>
+                                </empty>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function access(id){
+            $.ajax({
+                url:"reviewed",
+                type:"post",
+                data:{'id':id},
+                success:function(res){
+                    alert(res.message)
+                    window.location.reload()
+                },
+                error:function(res){
+                    alert(res.message)
+                }
+            })
+        }
+    </script>
+</block>
