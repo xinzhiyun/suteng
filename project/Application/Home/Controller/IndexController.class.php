@@ -2,11 +2,22 @@
 namespace Home\Controller;
 
 use Think\Controller;
-
+use Org\Util\Validate;
 class IndexController extends Controller
 {
     public function index()
     {
-        $this->show('<style type="text/css">*{ padding: 0; margin: 0; } div{ padding: 4px 48px;} body{ background: #fff; font-family: "微软雅黑"; color: #333;font-size:24px} h1{ font-size: 100px; font-weight: normal; margin-bottom: 12px; } p{ line-height: 1.8em; font-size: 36px } a,a:hover{color:blue;}</style><div style="padding: 24px 48px;"> <h1>:)</h1><p>欢迎使用 <b>ThinkPHP</b>！</p><br/>版本 V{$Think.version}</div><script type="text/javascript" src="http://ad.topthink.com/Public/static/client.js"></script><thinkad id="ad_55e75dfae343f5a1"></thinkad><script type="text/javascript" src="http://tajs.qq.com/stats?sId=9347272" charset="UTF-8"></script>','utf-8');
+        // $validate = new Validate;
+
+        // if($validate->original('/^\d+$/','1111111')){
+        // 	echo '验证通过！';
+        // }else{
+        // 	echo '不通过验证';
+        // }
+
+    	//U('Home/GetCode/vedor');
+    	$code = new DimensionController;
+    	$ticket = $code->vedor(123111111112255);
+    	echo '<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.$ticket.'" alt="">';
     }
 }

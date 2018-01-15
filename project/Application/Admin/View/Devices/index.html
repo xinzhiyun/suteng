@@ -42,7 +42,7 @@
                             </thead>
                             <tbody>
                                 <empty name="deviceInfo">
-                                    <tr><td>暂无设备数据</td></tr>
+                                    <tr><td colspan="6">暂无设备数据</td></tr>
                                 <else />
                                     <volist name="deviceInfo" id="vo">
                                         <tr>
@@ -88,25 +88,6 @@
                                             <input class="btn btn-success add_device" value="添加">
                                         </td>
                                     </tr>
-                                    <!-- <tr>
-                                        <th>
-                                            设备类型：
-                                        </th>
-                                        <td>
-                                            <select name="type_id" class="selectAgency">
-                                                <foreach name="res" item="vo">
-                                                    <option value="{{$vo.id}}">{{$vo.typename}}</option>
-                                                </foreach>
-                                            </select>
-                                        </td>
-                                    </tr> -->
-                                    <!-- <tr>
-                                        <th>
-                                        </th>
-                                        <td>
-                                            <input class="btn btn-success add_device" value="添加">
-                                        </td>
-                                    </tr> -->
                                 </table>
                             </form>
                         </div>

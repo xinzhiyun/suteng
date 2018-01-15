@@ -1,10 +1,11 @@
 <?php
 namespace Admin\Model;
-use Think\Model;
+use Think\Model\RelationModel;
+
 /**
  * 基础model
  */
-class BaseModel extends Model{
+class BaseModel extends RelationModel{
 
     /**
      * 添加数据
@@ -99,6 +100,7 @@ class BaseModel extends Model{
             ->where($map)
             ->count();
         $page=new_page($count,$limit);
+        // setPageConf($page);
         // 获取分页数据
         if (empty($field)) {
             $list=$model
@@ -120,9 +122,4 @@ class BaseModel extends Model{
             );
         return $data;
     }
-
-
-
-
-
 }

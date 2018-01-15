@@ -18,7 +18,7 @@ class DevicesController extends CommonController
         // 查询条件
         $map = '';
         if(!empty($_GET['code'])) $map['device_code'] = array('like',"%{$_GET['code']}%");
-        $devices = D('Devices')->getDevicesInfo($map);   
+        $devices = D('Devices')->getDevicesInfo($map);
 
         $assign = [
             'deviceInfo' => $devices,
@@ -32,6 +32,7 @@ class DevicesController extends CommonController
      */
     public function show_add_device()
     {
+        dump(I('post.'));
         $res = M('DeviceType')->select();
         $this->assign('res', $res);
         $this->display('show_add_device');
@@ -74,7 +75,7 @@ class DevicesController extends CommonController
             ->where($map)
             ->alias('d')
             ->join("__DEVICE_TYPE__ type ON d.type_id=type.id", 'LEFT')
-            ->field('type.*') 
+            ->field('type.*')
             ->find();
         $data['filterInfo'] = $this->getFilterDetail($filter);
         $this->ajaxReturn($data);
@@ -99,7 +100,7 @@ class DevicesController extends CommonController
      * @return [type] [description]
      */
     public function upload()
-    {   
+    {
         header("Content-Type:text/html;charset=utf-8");
         $upload = new \Think\Upload(); // 实例化上传类
         $upload->maxSize = 3145728; // 设置附件上传大小
@@ -113,23 +114,23 @@ class DevicesController extends CommonController
         $filename = './Uploads' . $info['savepath'] . $info['savename'];
         $exts = $info['ext'];
 
-        if (! $info) { 
+        if (! $info) {
             // 上传错误提示错误信息
             $this->error($upload->getError());
-        } else { 
+        } else {
             // 上传成功
             $this->goods_import($filename, $exts);
         }
     }
 
     public function save_import($data)
-    {   
+    {
         $i = 0;
         foreach ($data as $key => $val) {
             $_POST['device_code'] = $val['A'];
             $_POST['type_id'] = (string)$val['B'];
             $datas['addtime'] = time();
-            $Devices = D('Devices'); 
+            $Devices = D('Devices');
             $res = D('Devices')->getCate();
             $info = $Devices->create();
             if($info){
@@ -138,12 +139,12 @@ class DevicesController extends CommonController
                 }
                 $res = $Devices->add();
                 if (!$res) {
-                    
+
                     $this->error('导入失败啦！');
                 }
             } else {
                 $this->error('已导入' . $i . '条数据<br>' . $_POST['device_code'] . '不正确');
-            }   
+            }
             $i ++;
         }
 
@@ -168,10 +169,10 @@ class DevicesController extends CommonController
         $column = 2;
         $objActSheet = $objPHPExcel->getActiveSheet();
 
-        foreach ($data as $key => $rows) { 
+        foreach ($data as $key => $rows) {
             // 行写入
             $span = ord("A");
-            foreach ($rows as $keyName => $value) { 
+            foreach ($rows as $keyName => $value) {
                 // 列写入
                 $j = chr($span);
                 $objActSheet->setCellValue($j . $column, $value);
@@ -179,7 +180,7 @@ class DevicesController extends CommonController
             }
             $column ++;
         }
-        
+
         $fileName = iconv("utf-8", "gb2312", $fileName);
         // 重命名表
         // 设置活动单指数到第一个表,所以Excel打开这是第一个表
@@ -187,7 +188,7 @@ class DevicesController extends CommonController
         header('Content-Type: application/vnd.ms-excel');
         header("Content-Disposition: attachment;filename=\"$fileName\"");
         header('Cache-Control: max-age=0');
-        
+
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output'); // 文件通过浏览器下载
         exit();
@@ -202,11 +203,11 @@ class DevicesController extends CommonController
         // 如果excel文件后缀名为.xls，导入这个类
         if ($exts == 'xls') {
             $PHPReader = new \PHPExcel_Reader_Excel5();
-        } else 
+        } else
             if ($exts == 'xlsx') {
                 $PHPReader = new \PHPExcel_Reader_Excel2007();
             }
-        
+
         // 载入文件
         $PHPExcel = $PHPReader->load($filename);
         // 获取表中的第一个工作表，如果要获取第二个，把0改为1，依次类推

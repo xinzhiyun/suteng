@@ -1182,13 +1182,22 @@ function geetest_chcek_verify($data){
     }
 }
 
-// 分页配置
-function getPageConfig($page){
-    $page -> setConfig('header','共%TOTAL_ROW%条');
-    $page -> setConfig('first','首页');
-    $page -> setConfig('last','共%TOTAL_PAGE%页');
-    $page -> setConfig('prev','上一页');
-    $page -> setConfig('next','下一页');
-    $page -> setConfig('link','indexpagenumb');//pagenumb 会替换成页码
-    $page -> setConfig('theme','%HEADER% %FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%');
+/**
+ * Thinkphp默认分页样式转Bootstrap分页样式
+ * @author H.W.H
+ * @param string $page_html tp默认输出的分页html代码
+ * @return string 新的分页html代码
+ */
+function bootstrap_page_style($page_html){
+    if ($page_html) {
+        $page_show = str_replace('<div>','<nav><ul class="pagination">',$page_html);
+        $page_show = str_replace('</div>','</ul></nav>',$page_show);
+
+        $page_show = str_replace('<span class="current">','<li class="active"><a>',$page_show);
+        $page_show = str_replace('</span>','</a></li>',$page_show);
+
+        $page_show = str_replace(array('<a class="num"','<a class="prev"','<a class="next"','<a class="end"','<a class="first"'),'<li><a',$page_show);
+        $page_show = str_replace('</a>','</a></li>',$page_show);
+    }
+    return $page_show;
 }
