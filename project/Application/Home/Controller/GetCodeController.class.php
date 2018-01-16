@@ -5,7 +5,7 @@ use Think\Controller;
 
 class GetCodeController extends Controller
 {
-    public function vedor()
+    public function vedor($num,$type=false)
     {
     	// 实例化微信JSSDK类对象
         $wxJSSDK = new \Org\Util\WeixinJssdk;
@@ -13,10 +13,16 @@ class GetCodeController extends Controller
         $accessToken = $wxJSSDK->getAccessToken();
         // 请求微信带参数二维码
         $url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={$accessToken}";
-        // 永久二维码请求数据格式
-        $yjcode = '{"action_name":"QR_LIMIT_SCENE","action_info":{"scene":{"scene_id":100}}';
+
         // 临时二维码请求数据格式
-        $lscode = '{"expire_seconds": 604800, "action_name": "QR_SCENE", "action_info": {"scene": {"scene_id": 1}}}';
+        $lscode = '{"expire_seconds": 2590000, "action_name": "QR_SCENE", "action_info": {"scene": {"scene_id": '.$num.'}}}';
+
+        // 永久二维码请求数据格式
+        $yjcode = '{"action_name":"QR_LIMIT_SCENE","action_info":{"scene":{"scene_id":'.$num.'}}';
+
+        $data = $type?$yjcode:$lscode;
+
+        
 
         // 发送请求
         $result = $this->httpPost($url,$yjcode);
@@ -24,10 +30,8 @@ class GetCodeController extends Controller
         $jsoninfo = json_decode($result,true)['ticket'];
 
         // 请求获取二维码图片
-
-        echo '<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.$jsoninfo.'" alt="">';
-
-        //dump($jsoninfo);
+        return $jsoninfo;
+        //echo '<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.$jsoninfo.'" alt="">';
     }
 
 	public function httpPost($url, $data){

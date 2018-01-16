@@ -14,7 +14,7 @@ function app_upload_image($path,$maxSize=52428800){
     $path=trim($path,'/');
     $config=array(
         'rootPath'  =>'./',         //文件上传保存的根路径
-        'savePath'  =>'./'.$path.'/',   
+        'savePath'  =>'./'.$path.'/',
         'exts'      => array('jpg', 'gif', 'png', 'jpeg','bmp'),
         'maxSize'   => $maxSize,
         'autoSub'   => true,
@@ -116,7 +116,7 @@ function get_url($path){
     }else{
         return 'http://'.$alioss['BUCKET'].'.'.$alioss['END_POINT'].$path;
     }
-    
+
 }
 
 /**
@@ -495,7 +495,7 @@ function post_upload($path='file',$format='empty',$maxSize='52428800'){
             foreach($info as $file){
                 $data['name']=trim($file['savepath'].$file['savename'],'.');
                 return $data;
-            }               
+            }
         }
     }
 }
@@ -546,7 +546,7 @@ function upload($path='file',$format='empty',$maxSize='52428800'){
             foreach($info as $file){
                 $data['name']=trim($file['savepath'].$file['savename'],'.');
                 echo json_encode($data);
-            }               
+            }
         }
     }
 }
@@ -633,7 +633,7 @@ function get_min_image_path($file_path,$width=170,$height=170){
     $min_path=str_replace('.', '_'.$width.'_'.$height.'.', trim($file_path,'.'));
     $min_path=OSS_URL.$min_path;
     return $min_path;
-} 
+}
 
 /**
  * 不区分大小写的in_array()
@@ -742,7 +742,7 @@ function ajax_upload($path='file',$format='empty',$maxSize='52428800'){
                 $data['name']=trim($file['savepath'].$file['savename'],'.');
                 // p($data);
                 echo json_encode($data);
-            }               
+            }
         }
     }
 }
@@ -848,7 +848,7 @@ function get_device_type(){
     //分别进行判断
     if(strpos($agent, 'iphone')!==false || strpos($agent, 'ipad')!==false){
         $type = 2;
-    } 
+    }
     if(strpos($agent, 'android')!==false){
         $type = 3;
     }
@@ -988,9 +988,9 @@ function create_csv($data,$header=null,$filename='simple.csv'){
             $v=implode(',', $v);
         }
         // 替换掉换行
-        $v=preg_replace('/\s*/', '', $v); 
+        $v=preg_replace('/\s*/', '', $v);
         // 解决导出的数字会显示成科学计数法的问题
-        $v=str_replace(',', "\t,", $v); 
+        $v=str_replace(',', "\t,", $v);
         // 转成gbk以兼容office乱码的问题
         echo iconv('UTF-8','GBK',$v)."\t\r\n";
     }
@@ -1003,23 +1003,23 @@ function create_csv($data,$header=null,$filename='simple.csv'){
  */
 function import_excel($file){
     // 判断文件是什么格式
-    $type = pathinfo($file); 
+    $type = pathinfo($file);
     $type = strtolower($type["extension"]);
-    if ($type=='xlsx') { 
-        $type='Excel2007'; 
-    }elseif($type=='xls') { 
-        $type = 'Excel5'; 
-    } 
+    if ($type=='xlsx') {
+        $type='Excel2007';
+    }elseif($type=='xls') {
+        $type = 'Excel5';
+    }
     ini_set('max_execution_time', '0');
     Vendor('PHPExcel.PHPExcel');
     // 判断使用哪种格式
     $objReader = PHPExcel_IOFactory::createReader($type);
-    $objPHPExcel = $objReader->load($file); 
-    $sheet = $objPHPExcel->getSheet(0); 
-    // 取得总行数 
-    $highestRow = $sheet->getHighestRow();     
-    // 取得总列数      
-    $highestColumn = $sheet->getHighestColumn(); 
+    $objPHPExcel = $objReader->load($file);
+    $sheet = $objPHPExcel->getSheet(0);
+    // 取得总行数
+    $highestRow = $sheet->getHighestRow();
+    // 取得总列数
+    $highestColumn = $sheet->getHighestColumn();
     //总列数转换成数字
     $numHighestColum = PHPExcel_Cell::columnIndexFromString("$highestColumn");
     //循环读取excel文件,读取一条,插入一条
@@ -1032,8 +1032,8 @@ function import_excel($file){
             $columnIndex = PHPExcel_Cell::stringFromColumnIndex($k);
             // 读取单元格
             $data[$j][]=$objPHPExcel->getActiveSheet()->getCell("$columnIndex$j")->getValue();
-        } 
-    }  
+        }
+    }
     return $data;
 }
 
@@ -1104,12 +1104,12 @@ function validate_apple_pay($receipt_data){
         //小票信息
         $POSTFIELDS = array("receipt-data" => $receipt_data);
         $POSTFIELDS = json_encode($POSTFIELDS);
- 
+
         //正式购买地址 沙盒购买地址
         $url_buy     = "https://buy.itunes.apple.com/verifyReceipt";
         $url_sandbox = "https://sandbox.itunes.apple.com/verifyReceipt";
         $url = $sandbox ? $url_sandbox : $url_buy;
- 
+
         //简单的curl
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -1130,7 +1130,7 @@ function validate_apple_pay($receipt_data){
     // 请求验证
     $html = acurl($receipt_data);
     $data = json_decode($html,true);
- 
+
     // 如果是沙盒数据 则验证沙盒模式
     if($data['status']=='21007'){
         // 请求验证
@@ -1138,11 +1138,11 @@ function validate_apple_pay($receipt_data){
         $data = json_decode($html,true);
         $data['sandbox'] = '1';
     }
- 
+
     if (isset($_GET['debug'])) {
         exit(json_encode($data));
     }
-     
+
     // 判断是否购买成功
     if(intval($data['status'])===0){
         $result=array(

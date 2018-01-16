@@ -10,12 +10,6 @@ use Think\Controller;
  */
 class DevicesController extends CommonController
 {
-
-    public function index()
-    {
-        $this->display();
-    }
-
     /**
      * 显示设备列表
      */
@@ -24,9 +18,8 @@ class DevicesController extends CommonController
         // 查询条件
         $map = '';
         if(!empty($_GET['code'])) $map['device_code'] = array('like',"%{$_GET['code']}%");
-        $devices = D('Devices')->getDevicesInfo($map);   
+        $devices = D('Devices')->getDevicesInfo($map);
 
-        // dump($devices);     
         $assign = [
             'deviceInfo' => $devices,
         ];
@@ -49,17 +42,25 @@ class DevicesController extends CommonController
      */
     public function add_device( $code=null )
     {
-        $devices = D('Devices');
-        $code = I('post.');
-        dump($code);die;
-        if(!$devices->create()){
-            $this->error($devices->getError(), 'show_add_device');
+        try {
+            $devices = D('devices');
+            $code = I('post.');
+            if(!$devices->create()){
+                E($devices->getError(), 202);
+            }
+            if(!$devices->add()){
+                E('添加失败', 201);
+            } else {
+                E('添加成功', 200);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            return $this->ajaxReturn($err);
         }
-        if(!$devices->add()){
-            $this->error('添加失败', 'show_add_device');
-        } else {
-            $this->success('添加成功', 'show_add_device', 3);
-        }
+
     }
 
     // 设备详情
@@ -81,7 +82,7 @@ class DevicesController extends CommonController
             ->where($map)
             ->alias('d')
             ->join("__DEVICE_TYPE__ type ON d.type_id=type.id", 'LEFT')
-            ->field('type.*') 
+            ->field('type.*')
             ->find();
         $data['filterInfo'] = $this->getFilterDetail($filter);
         $this->ajaxReturn($data);
@@ -106,55 +107,59 @@ class DevicesController extends CommonController
      * @return [type] [description]
      */
     public function upload()
-    {   
-        header("Content-Type:text/html;charset=utf-8");
-        $upload = new \Think\Upload(); // 实例化上传类
-        $upload->maxSize = 3145728; // 设置附件上传大小
-        $upload->exts = array(
-            'xls',
-            'xlsx'
-        ); // 设置附件上传类
-        $upload->savePath = '/'; // 设置附件上传目录
-        // 上传文件
-        $info = $upload->uploadOne($_FILES['batch']);
-        $filename = './Uploads' . $info['savepath'] . $info['savename'];
-        $exts = $info['ext'];
+    {
+        try {
+            header("Content-Type:text/html;charset=utf-8");
+            $upload = new \Think\Upload(); // 实例化上传类
+            $upload->maxSize = 3145728; // 设置附件上传大小
+            $upload->exts = array(
+                'xls',
+                'xlsx'
+            ); // 设置附件上传类
+            $upload->savePath = '/'; // 设置附件上传目录
+            // 上传文件
+            $info = $upload->uploadOne($_FILES['batch']);
+            $filename = './Uploads' . $info['savepath'] . $info['savename'];
+            $exts = $info['ext'];
+            if (! $info) {
+                // 上传错误提示错误信息
+                E($upload->getError(),202);
+            } else {
+                // 上传成功
+                $this->goods_import($filename, $exts);
 
-        if (! $info) { 
-            // 上传错误提示错误信息
-            $this->error($upload->getError());
-        } else { 
-            // 上传成功
-            $this->goods_import($filename, $exts);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
         }
     }
 
     public function save_import($data)
-    {   
+    {
         $i = 0;
         foreach ($data as $key => $val) {
             $_POST['device_code'] = $val['A'];
-            $_POST['type_id'] = (string)$val['B'];
-            $datas['addtime'] = time();
-            $Devices = D('Devices'); 
+            $Devices = D('Devices');
             $res = D('Devices')->getCate();
             $info = $Devices->create();
             if($info){
-                if(!in_array($_POST['type_id'], $res)){
-                    $this->error('已导入' . $i . '条数据<br>' . $_POST['device_code'] . '设备类型不存在');
-                }
                 $res = $Devices->add();
                 if (!$res) {
-                    
-                    $this->error('导入失败啦！');
+                    E('导入失败啦！', 202);
+                    // $this->error('导入失败啦！');
                 }
             } else {
-                $this->error('已导入' . $i . '条数据<br>' . $_POST['device_code'] . '不正确');
-            }   
+                // $this->error('已导入' . $i . '条数据<br>' . $_POST['device_code'] . '不正确');
+                E('第'.($i+1).'条数据开始不正确或是已经添加', 203);
+            }
             $i ++;
         }
-
-        $this->success($i . '条数据导入成功');
+        // $this->success($i . '条数据导入成功');
+        E('共'.$i.'条数据导入成功', 200);
     }
 
     private function getExcel($fileName, $headArr, $data)
@@ -175,10 +180,10 @@ class DevicesController extends CommonController
         $column = 2;
         $objActSheet = $objPHPExcel->getActiveSheet();
 
-        foreach ($data as $key => $rows) { 
+        foreach ($data as $key => $rows) {
             // 行写入
             $span = ord("A");
-            foreach ($rows as $keyName => $value) { 
+            foreach ($rows as $keyName => $value) {
                 // 列写入
                 $j = chr($span);
                 $objActSheet->setCellValue($j . $column, $value);
@@ -186,7 +191,7 @@ class DevicesController extends CommonController
             }
             $column ++;
         }
-        
+
         $fileName = iconv("utf-8", "gb2312", $fileName);
         // 重命名表
         // 设置活动单指数到第一个表,所以Excel打开这是第一个表
@@ -194,7 +199,7 @@ class DevicesController extends CommonController
         header('Content-Type: application/vnd.ms-excel');
         header("Content-Disposition: attachment;filename=\"$fileName\"");
         header('Cache-Control: max-age=0');
-        
+
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output'); // 文件通过浏览器下载
         exit();
@@ -209,11 +214,11 @@ class DevicesController extends CommonController
         // 如果excel文件后缀名为.xls，导入这个类
         if ($exts == 'xls') {
             $PHPReader = new \PHPExcel_Reader_Excel5();
-        } else 
+        } else
             if ($exts == 'xlsx') {
                 $PHPReader = new \PHPExcel_Reader_Excel2007();
             }
-        
+
         // 载入文件
         $PHPExcel = $PHPReader->load($filename);
         // 获取表中的第一个工作表，如果要获取第二个，把0改为1，依次类推
@@ -242,7 +247,7 @@ class DevicesController extends CommonController
             $this->error('设备编码错误');
         }
         $res = M('devices')->where($code)->find();
-        
+        if($res['uid']) $this->error("已绑定了用户，不可删除");
         if($res){
             $delBind = M('binding')->where('did='.$res['id'])->delete();
         }

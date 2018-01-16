@@ -7,8 +7,13 @@ use Think\Model\RelationModel;
  * @package Admin\Model
  * @author 潘宏钢 <619328391@qq.com>
  */
+<<<<<<< HEAD
 class WorkModel extends RelationModel
 {   
+=======
+class WorkModel extends BaseModel
+{
+>>>>>>> eec6ff50f44b139212673fbf7867d33f2a875c6f
     protected $patchValidate = true;
     // 自动验证
     protected $_validate = array(
@@ -21,37 +26,41 @@ class WorkModel extends RelationModel
         array('name','require','name不能为空'),
         array('phone','/^1[34578]\d{9}$/','电话号码格式不对'),
         array('content','require','工作内容不能为空'),
-        array('address','require','地址不能为空'),        
+        array('address','require','地址不能为空'),
     );
 
-    protected $_link = array(        
-        'Vendors'=>array(            
-                'mapping_type'  => self::BELONGS_TO,    
-                'class_name'    => 'Vendors',    
-                'foreign_key'   => 'uid',    
+    protected $_link = array(
+        'Vendors'=>array(
+                'mapping_type'  => self::BELONGS_TO,
+                'class_name'    => 'Vendors',
+                'foreign_key'   => 'uid',
                 'mapping_name'  => 'Vendors',
-                'mapping_fields' => 'user,name,phone'                     
+                'mapping_fields' => 'user,name,phone'
         ),
-        'dwVendor'=>array(            
-                'mapping_type'  => self::BELONGS_TO,    
-                'class_name'    => 'Vendors',    
-                'foreign_key'   => 'dw_uid',    
+        'dwVendor'=>array(
+                'mapping_type'  => self::BELONGS_TO,
+                'class_name'    => 'Vendors',
+                'foreign_key'   => 'dw_uid',
                 'mapping_name'  => 'dwVendor',
-                'mapping_fields' => 'user,name,phone'                     
-        ),        
+                'mapping_fields' => 'user,name,phone'
+        ),
     );
 
     // 自动完成
     // protected $_auto = array (
-    //     array('addtime','time',3,'function'), // 对addtime字段在新增和编辑的时候写入当前时间戳 
+    //     array('addtime','time',3,'function'), // 对addtime字段在新增和编辑的时候写入当前时间戳
     // );
 
 
+<<<<<<< HEAD
     /**
      * 获取work表的记录
      * @param  array $map 查询条件
      * @return array      查询结果和分页数据
      */
+=======
+     //
+>>>>>>> eec6ff50f44b139212673fbf7867d33f2a875c6f
     public function getWorksInfo($map)
     {
         // 分页
@@ -101,12 +110,13 @@ class WorkModel extends RelationModel
         $result = array('未处理','正在处理','已处理');
         $list['create_at'] = date('Y-m-d H:i:s',$list['create_at']);
         if ($list['time']) {
-            $list['time'] = date('Y-m-d H:i:s',$list['time']);           
-        }       
+            $list['time'] = date('Y-m-d H:i:s',$list['time']);
+        }
         $list['type'] = $type[$list['type']];
         $list['result'] = $result[$list['result']];
         return $list;
     }
+<<<<<<< HEAD
 
     /**
      * 添加数据
@@ -159,3 +169,6 @@ class WorkModel extends RelationModel
         return $data;
     }
 }
+=======
+}
+>>>>>>> eec6ff50f44b139212673fbf7867d33f2a875c6f
