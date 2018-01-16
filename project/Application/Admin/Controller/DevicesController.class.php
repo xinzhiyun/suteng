@@ -32,7 +32,6 @@ class DevicesController extends CommonController
      */
     public function show_add_device()
     {
-        dump(I('post.'));
         $res = M('DeviceType')->select();
         $this->assign('res', $res);
         $this->display('show_add_device');
@@ -43,17 +42,25 @@ class DevicesController extends CommonController
      */
     public function add_device( $code=null )
     {
-        $devices = D('Devices');
-        $code = I('post.');
+        try {
+            $devices = D('devices');
+            $code = I('post.');
+            if(!$devices->create()){
+                E($devices->getError(), 202);
+            }
+            if(!$devices->add()){
+                E('添加失败', 201);
+            } else {
+                E('添加成功', 200);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            return $this->ajaxReturn($err);
+        }
 
-        if(!$devices->create()){
-            $this->error($devices->getError(), 'show_add_device');
-        }
-        if(!$devices->add()){
-            $this->error('添加失败', 'show_add_device');
-        } else {
-            $this->success('添加成功', 'show_add_device', 3);
-        }
     }
 
     // 设备详情
@@ -101,25 +108,33 @@ class DevicesController extends CommonController
      */
     public function upload()
     {
-        header("Content-Type:text/html;charset=utf-8");
-        $upload = new \Think\Upload(); // 实例化上传类
-        $upload->maxSize = 3145728; // 设置附件上传大小
-        $upload->exts = array(
-            'xls',
-            'xlsx'
-        ); // 设置附件上传类
-        $upload->savePath = '/'; // 设置附件上传目录
-        // 上传文件
-        $info = $upload->uploadOne($_FILES['batch']);
-        $filename = './Uploads' . $info['savepath'] . $info['savename'];
-        $exts = $info['ext'];
+        try {
+            header("Content-Type:text/html;charset=utf-8");
+            $upload = new \Think\Upload(); // 实例化上传类
+            $upload->maxSize = 3145728; // 设置附件上传大小
+            $upload->exts = array(
+                'xls',
+                'xlsx'
+            ); // 设置附件上传类
+            $upload->savePath = '/'; // 设置附件上传目录
+            // 上传文件
+            $info = $upload->uploadOne($_FILES['batch']);
+            $filename = './Uploads' . $info['savepath'] . $info['savename'];
+            $exts = $info['ext'];
+            if (! $info) {
+                // 上传错误提示错误信息
+                E($upload->getError(),202);
+            } else {
+                // 上传成功
+                $this->goods_import($filename, $exts);
 
-        if (! $info) {
-            // 上传错误提示错误信息
-            $this->error($upload->getError());
-        } else {
-            // 上传成功
-            $this->goods_import($filename, $exts);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
         }
     }
 
@@ -128,27 +143,23 @@ class DevicesController extends CommonController
         $i = 0;
         foreach ($data as $key => $val) {
             $_POST['device_code'] = $val['A'];
-            $_POST['type_id'] = (string)$val['B'];
-            $datas['addtime'] = time();
             $Devices = D('Devices');
             $res = D('Devices')->getCate();
             $info = $Devices->create();
             if($info){
-                if(!in_array($_POST['type_id'], $res)){
-                    $this->error('已导入' . $i . '条数据<br>' . $_POST['device_code'] . '设备类型不存在');
-                }
                 $res = $Devices->add();
                 if (!$res) {
-
-                    $this->error('导入失败啦！');
+                    E('导入失败啦！', 202);
+                    // $this->error('导入失败啦！');
                 }
             } else {
-                $this->error('已导入' . $i . '条数据<br>' . $_POST['device_code'] . '不正确');
+                // $this->error('已导入' . $i . '条数据<br>' . $_POST['device_code'] . '不正确');
+                E('第'.($i+1).'条数据开始不正确或是已经添加', 203);
             }
             $i ++;
         }
-
-        $this->success($i . '条数据导入成功');
+        // $this->success($i . '条数据导入成功');
+        E('共'.$i.'条数据导入成功', 200);
     }
 
     private function getExcel($fileName, $headArr, $data)

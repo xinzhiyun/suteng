@@ -12,11 +12,9 @@ class DevicesModel extends Model
 {
     // 自动验证
     protected $_validate = array(
-        array('code', '15', '请输入正确的设备编码', '0', 'length'),
-        array('code', '/^\d{15}$/', '设备编码只能是数字', '2', 'regex'),
-        array('code', '', '请不要重复录入', '1', 'unique'),
-        // array('type_id','require','设备类型不能为空'),
-
+        array('device_code', '15', '编码格式不正确', '0', 'length'),
+        array('device_code', '/^\d{15}$/', '编码格式不正确', '2', 'regex'),
+        array('device_code', '', '已经添加', '1', 'unique'),
     );
 
     // 自动完成

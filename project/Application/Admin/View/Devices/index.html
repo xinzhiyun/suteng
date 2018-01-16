@@ -1,6 +1,6 @@
 <extend name="Public/base" />
 <block name="mylink">
-    <link rel="stylesheet" type="text/css" href="__PUBLIC__/">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/layui/css/layui.css">
 </block>
 <block name="content">
     <div class="content">
@@ -106,19 +106,17 @@
                             </h4>
                         </div>
                         <div class="modal-body">
-                            <form id="bjy-form" class="form-inline" action="{{:U('Admin/Devices/upload')}}"
-                            method="post">
-                                <input type="hidden" name="pid" value="0">
+                            <form id="form" method="post" enctype="multipart/form-data" name="file">
                                 <table class="table table-striped table-bordered table-hover table-condensed">
                                     <tr>
                                         <th width="30%">
-                                            添加导入文件：
+                                            选择导入文件：
                                         </th>
                                         <td>
-                                            <input type="file" name="batch" class="filename">
+                                            <input type="file" name="batch">
                                         </td>
                                         <th>
-                                            <button class="btn btn-success add_devices">添加</button>
+                                            <button type="button" class="btn btn-success add_devices">添加</button>
                                         </th>
                                     </tr>
                                 </table>
@@ -138,30 +136,53 @@
     function add() {
         $('#st-add').modal('show');
     }
+    $(".add_device").click(function(){
+        $("#st-add").modal('hide');
+        var name = $("input[name='name']").val();
+        $.ajax({
+            url:'add_device',
+            type:'post',
+            dataType:'json',
+            data:{"device_code":name},
+            success:function(res){
+                if(res.code == 200){
+                    parent.layer.msg(res.msg);
+                } else {
+                    parent.layer.msg(res.msg);
+                }
+            }
+        })
+    })
     // 批量添加设备
     function adds() {
         $('#st-adds').modal('show');
     }
-    $(".add_device").click(function(){
-        var name = $("input[name='name']").val();
+    $(".add_devices").click(function(){
+        $("#st-adds").modal('hide');
+        var formData = new FormData(document.getElementById("form"));
         $.ajax({
-            url:'show_add_device',
-            type:'post',
-            dataType:'json',
-            data:{"code":name},
-            success:function(res){
-                $('#st-add').arrt('aria-hidden','true');
-                layui.use('layer', function(){
-                    var layer = layui.layer;
-                    layer.open({
-                        type: 1,
-                        title: ['批量添加', 'font-size:18px;'],
-                        area: ['500px', '300px'],
-                        content: $(".addBatch")
-                    });
-                });
+            url: 'upload' ,
+            type: 'post',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if(res.code == 200){
+                    parent.layer.msg(res.msg);
+                } else {
+                    parent.layer.msg(res.msg);
+                }
+            },
+            error: function (res) {
+                if(res.code == 200){
+                    parent.layer.msg(res.msg);
+                } else {
+                    parent.layer.msg(res.msg);
+                }
             }
-        })
+        });
     })
 
     $('.pagination ul a').unwrap('div').wrap('<li></li>');

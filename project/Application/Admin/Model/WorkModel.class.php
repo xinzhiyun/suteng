@@ -7,7 +7,7 @@ use Org\Util\Date;
  * @author 潘宏钢 <619328391@qq.com>
  */
 class WorkModel extends BaseModel
-{   
+{
     protected $patchValidate = true;
     // 自动验证
     protected $_validate = array(
@@ -20,33 +20,33 @@ class WorkModel extends BaseModel
         array('name','require','name不能为空'),
         array('phone','/^1[34578]\d{9}$/','电话号码格式不对'),
         array('content','require','工作内容不能为空'),
-        array('address','require','地址不能为空'),        
+        array('address','require','地址不能为空'),
     );
 
-    protected $_link = array(        
-        'Vendors'=>array(            
-                'mapping_type'  => self::BELONGS_TO,    
-                'class_name'    => 'Vendors',    
-                'foreign_key'   => 'uid',    
+    protected $_link = array(
+        'Vendors'=>array(
+                'mapping_type'  => self::BELONGS_TO,
+                'class_name'    => 'Vendors',
+                'foreign_key'   => 'uid',
                 'mapping_name'  => 'Vendors',
-                'mapping_fields' => 'user,name,phone'                     
+                'mapping_fields' => 'user,name,phone'
         ),
-        'dwVendor'=>array(            
-                'mapping_type'  => self::BELONGS_TO,    
-                'class_name'    => 'Vendors',    
-                'foreign_key'   => 'dw_uid',    
+        'dwVendor'=>array(
+                'mapping_type'  => self::BELONGS_TO,
+                'class_name'    => 'Vendors',
+                'foreign_key'   => 'dw_uid',
                 'mapping_name'  => 'dwVendor',
-                'mapping_fields' => 'user,name,phone'                     
-        ),        
+                'mapping_fields' => 'user,name,phone'
+        ),
     );
 
     // 自动完成
     // protected $_auto = array (
-    //     array('addtime','time',3,'function'), // 对addtime字段在新增和编辑的时候写入当前时间戳 
+    //     array('addtime','time',3,'function'), // 对addtime字段在新增和编辑的时候写入当前时间戳
     // );
 
 
-     // 
+     //
     public function getWorksInfo($map)
     {
         // 分页
@@ -87,8 +87,8 @@ class WorkModel extends BaseModel
         $result = array('未处理','正在处理','已处理');
         $list['create_at'] = date('Y-m-d H:i:s',$list['create_at']);
         if ($list['time']) {
-            $list['time'] = date('Y-m-d H:i:s',$list['time']);           
-        }       
+            $list['time'] = date('Y-m-d H:i:s',$list['time']);
+        }
         $list['type'] = $type[$list['type']];
         $list['result'] = $result[$list['result']];
         return $list;

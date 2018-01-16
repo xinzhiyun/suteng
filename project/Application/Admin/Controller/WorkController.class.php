@@ -1,24 +1,24 @@
 <?php
 namespace Admin\Controller;
 use Org\Util\Date;
-use Org\Util\String;
+use Org\Util\Strings;
 /**
  * 工单控制器
  * 用来添加工单，浏览工单列表等
- * 
+ *
  * @author Yi <675218529@qq.com>
  */
 
-class WorkController extends CommonController 
+class WorkController extends CommonController
 {
 
 	/**
      * 工单列表
-     * 
+     *
      * @author Yi <675218529@qq.com>
      */
     public function index()
-    {	
+    {
        // 根据名称进行搜索
         $map = '';
         if(!empty($_GET['name'])) $map['name'] = array('like',"%{$_GET['name']}%");
@@ -39,7 +39,7 @@ class WorkController extends CommonController
                         ];
             $this->ajaxReturn($message);
         }
-        $work = D('work');
+        $work = D('works');
         $data = $work->getWorkInfoByID($id);
                 $data = $work->getAll($data);
                 // dump($workList);die;
@@ -76,14 +76,14 @@ class WorkController extends CommonController
                         'code' => 200,
                         'msg' => '添加成功'.time(),
                         'status' => 'success'
-                    ]); 
+                    ]);
                 } else {
                     return $this->ajaxReturn([
                         'code' => 410,
                         'msg' => '添加失败',
                         'status' => 'error'
                     ]);
-                }           
+                }
             } else {
                 // getError是在数据创建验证时调用，提示的是验证失败的错误信息
                 return $this->ajaxReturn([
@@ -114,7 +114,7 @@ class WorkController extends CommonController
                         if ($data['result'] == 1) {
                 $data['name']       = I('name');
                 $data['phone']      = I('phone');
-            }  
+            }
             $data['time']  = time();
 
             $device_type = D('work');
@@ -127,14 +127,14 @@ class WorkController extends CommonController
                         'code' => 200,
                         'msg' => '工单修改成功啦！！！',
                         'status' => 'success'
-                    ]); 
+                    ]);
                 } else {
                     return $this->ajaxReturn([
                         'code' => 410,
                         'msg' => '工单修改失败',
                         'status' => 'error'
-                    ]); 
-                }                  
+                    ]);
+                }
             } else {
                 // getError是在数据创建验证时调用，提示的是验证失败的错误信息
                 return $this->ajaxReturn([
@@ -151,7 +151,7 @@ class WorkController extends CommonController
 
     /**
      * 删除类型方法（废除）
-     * 不做删除，只做隐藏，如果要做删除产品类型，请确保产品类型没有被设备所用 
+     * 不做删除，只做隐藏，如果要做删除产品类型，请确保产品类型没有被设备所用
      *
      * @author 潘宏钢 <619328391@qq.com>
      */
@@ -160,7 +160,7 @@ class WorkController extends CommonController
 
     }
 
-    
+
     /**
      * 生成工单编号
      * @return [type] [description]
@@ -168,7 +168,7 @@ class WorkController extends CommonController
     protected function getWorkNumber()
     {
         $date = new Date(time());
-        $string = new String;      
+        $string = new Strings;
         $dateStr = $date->format("%Y%m%d%H%M");   // 根据时间戳生成的字符串
         $str1 = $string->randString(3,0);   // 生成字母随机字符
         $str2 = $string->randString(5,1);   // 生成数字随机字符

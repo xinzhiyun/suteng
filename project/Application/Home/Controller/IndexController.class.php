@@ -14,7 +14,7 @@ class IndexController extends Controller
         // }else{
         // 	echo '不通过验证';
         // }
-
+        $this->display('VipCenter/vipCenter');
     	//U('Home/GetCode/vedor');
     	$code = new DimensionController;
     	$ticket = $code->vedor(123111111112255);
