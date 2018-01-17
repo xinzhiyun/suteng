@@ -3,280 +3,317 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-	<link rel="stylesheet" href="__PUBLIC__/home/css/resetstyle.css">
-	<script src="__PUBLIC__/home/js/public.js"></script>
-	<script src="__PUBLIC__/home/js/jquery-1.8.3.min.js"></script>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<title>订单确认</title>
 	<style>
 		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
-		body {
-			font-size: .7rem;
-			overflow-x: hidden;
-		}
-		#content {
-			width: 100vw;
-			height: 100vh;
-			min-height: 100vh;
-			overflow-x: hidden;
-			overflow-y: scroll;
-			background: #f1f1f1;
-		}
-		#header {
-			width: 100vw;
-			display: flex;
-			position: relative;
-			font-size: .6rem;    
-			padding: 5% 4%;
-			background: #fff;
-		}
-		#hLeft {
-			width: 79vw;
-			display: inline-block;
-			letter-spacing: 1px;
-		}
-		#hRight {
-			width: 20vw;
-			display: inline-block;
-			text-align: center;
-    		align-self: center;    
-    		font-size: 1rem;
-		}
-		#header>div>p {
-			width: 100%;
-			display: inline-block;
-			position: relative;
-			margin: 2% 0;
-		}
-		#header>div>p>span:nth-of-type(1) {
-			float: left;
-		}
-		#header>div>p>span:nth-of-type(2) {
-			float: right;
-		}
-		#header>div>p>span:after {
-			content: '';
-			clear: both;
-		}
-		#main {
-			width: 100vw;
-			/*height: 83vh;*/
-			position: relative;
-			left: 0;
-			border-top: 1vh solid #f1f1f1;
-			background: #fff;
-		}
+            margin: 0;
+            padding: 0;
+            -webkit-box-sizing: border-box;
+                    box-sizing: border-box;
+        }
+        body {
+            font-size: .7rem;
+            overflow-x: hidden;
+        }
+        #content {
+            width: 100vw;
+            height: 100vh;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            background: #f1f1f1;
+        }
+        #header {
+            width: 100vw;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            position: relative;
+            font-size: .6rem;    
+            padding: 5% 4%;
+            background: #fff;
+        }
+        #hLeft {
+            width: 79vw;
+            display: inline-block;
+            letter-spacing: 1px;
+        }
+        #hRight {
+            width: 20vw;
+            display: inline-block;
+            text-align: center;
+            -ms-flex-item-align: center;
+                -ms-grid-row-align: center;
+                align-self: center;    
+            font-size: 1rem;
+        }
+        #header>div>p {
+            width: 100%;
+            display: inline-block;
+            position: relative;
+            margin: 2% 0;
+        }
+        #header>div>p>span:nth-of-type(1) {
+            float: left;
+        }
+        #header>div>p>span:nth-of-type(2) {
+            float: right;
+        }
+        #header>div>p:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+        #main {
+            width: 100vw;
+            /*height: 83vh;*/
+            position: relative;
+            left: 0;
+            border-top: 1vh solid #f1f1f1;
+            background: #fff;
+        }
 
-		.goods {
-			width: 94vw;
-			display: flex;
-			position: relative;
-			padding: 3% 0;
-			left: 50%;
-			margin-left: -47%;
-			border-bottom: 1px solid #eee;
-			font-size: .6rem;
-		}
+        .goods {
+            width: 94vw;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            position: relative;
+            padding: 3% 0;
+            left: 50%;
+            margin-left: -47%;
+            border-bottom: 1px solid #eee;
+            font-size: .6rem;
+        }
 
-		.goods>.img {
-			width: 36%;
-			margin: 2% 2% 2% 0;
-			border: 1px solid #ddd;
-			border-radius: 10px;
-		}	
-		.goods>.img>img {
-			width: 100%;
-			height: ;
-			display: inline-block;
-		}
-		.goods>.dec {
-			width: 64%;
-			padding: 2% 0 2% 2%;
-			background: #fff;
-		}
-		.goods>.dec>p {
-			font-size: .5rem;
-			margin: 4% 0;
-			color: #555;
-		}
-		.num {
-			width: 26%;
-			float: right;
-			white-space: nowrap;
-		}
-		.num:after {
-			content: '';
-			clear: both;
-		}
-		.price {
-			color: #FC3132;
-			font-size: .7rem;
-		}
-		.num>b, .num>input {
-			width: 33%;
-			text-align: center;
-		}
-		#calc {
-		    color: #333;
-			border-bottom: 1px solid #eee;
-		}
-		#calc>p {
-		    margin: 4% 3%;
-		    font-size: .7rem;
-		    text-align: right;
-		}
-		#payWay {
-			width: 100vw;
-			height: 100vh;
-			min-height: 100vh;
-			display: none;
-			position: fixed;
-			left: 0;
-			bottom: -100vh;
-			z-index: 999;
-		}
-		#payWay>div {
-			position: relative;
-			background: #fff;
-		}
-		#payMask {
-			width: 100%;
-			height: 30vh;
-			background: rgba(0,0,0, 0) !important;
-		}
-		#choosePay {
-			height: 54vh;
-		}
-		#choosePay>div:not(:nth-of-type(1)) {
-			padding: 0 5%;
-		}
-		#payTitle {
-			position: relative;
-		    display: flex;
-		    justify-content: center;
-		    align-items: center;
-		    margin-bottom: 10px;
-			border-bottom: 1px solid #eee;
-		}
-		#closePay {
-			width: 14vmin;
-			height: 14vmin;
-			position: absolute;
-			left: 0;
-			border-radius: 14vmin;
-			line-height: 14vmin;
-			text-align: center;
-			font-size: .9rem;
-		}
-		#closePay:active {
-			background: #ddd;
-		}
-		#payTitle>p:nth-of-type(2) {
-			width: 100vw;
-			height: 8vh;
-		    display: flex;
-		    justify-content: center;
-		    align-items: center;
-		    flex-flow: column;
-		    padding: 2% 0;
-		    line-height: 32px;
-		    font-size: .8rem;
-    		font-weight: 600;
-			background: #fff;
-		}
-		#localPay {
-			border-bottom: 8px solid #eee;
-		}
-		#localPay>p, 
-		#othersPay>p {
-			padding: 3.8vw 0;
-			border-bottom: 1px solid #eee;
-		}
-		#localPay>p>label, 
-		#othersPay>p>label {
-			width: 84vw;
-			display: inline-block;
-		}
+        .goods>.img {
+            width: 36%;
+            margin: 2% 2% 2% 0;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }   
+        .goods>.img>img {
+            width: 100%;
+            height: ;
+            display: inline-block;
+        }
+        .goods>.dec {
+            width: 64%;
+            padding: 2% 0 2% 2%;
+            background: #fff;
+        }
+        .goods>.dec>p {
+            font-size: .5rem;
+            margin: 4% 0;
+            color: #555;
+        }
+        .num {
+            width: 26%;
+            float: right;
+            white-space: nowrap;
+        }
+        .goods>.dec:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+        .price {
+            color: #FC3132;
+            font-size: .7rem;
+        }
+        .num>b, .num>input {
+            width: 33%;
+            text-align: center;
+        }
+        #calc {
+            color: #333;
+            border-bottom: 1px solid #eee;
+        }
+        #calc>p {
+            margin: 4% 3%;
+            font-size: .7rem;
+            text-align: right;
+        }
+        #payWay {
+            width: 100vw;
+            height: 100vh;
+            min-height: 100vh;
+            display: none;
+            position: fixed;
+            left: 0;
+            bottom: -100vh;
+            z-index: 999;
+        }
+        #payWay>div {
+            position: relative;
+            background: #fff;
+        }
+        #payMask {
+            width: 100%;
+            height: 30vh;
+            background: rgba(0,0,0, 0) !important;
+        }
+        #choosePay {
+            height: 54vh;
+        }
+        #choosePay>div:not(:nth-of-type(1)) {
+            padding: 0 5%;
+        }
+        #payTitle {
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        #closePay {
+            width: 14vmin;
+            height: 14vmin;
+            position: absolute;
+            left: 0;
+            border-radius: 14vmin;
+            line-height: 14vmin;
+            text-align: center;
+            font-size: .9rem;
+        }
+        #closePay:active {
+            background: #ddd;
+        }
+        #payTitle>p:nth-of-type(2) {
+            width: 100vw;
+            height: 8vh;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+                -ms-flex-flow: column;
+                    flex-flow: column;
+            padding: 2% 0;
+            line-height: 32px;
+            font-size: .8rem;
+            font-weight: 600;
+            background: #fff;
+        }
+        #localPay {
+            border-bottom: 8px solid #eee;
+        }
+        #localPay>p, 
+        #othersPay>p {
+            padding: 3.8vw 0;
+            border-bottom: 1px solid #eee;
+        }
+        #localPay>p>label, 
+        #othersPay>p>label {
+            width: 84vw;
+            display: inline-block;
+        }
 
-		#localPay>p>input, 
-		#othersPay>p>input {
-			width: 6vw;
-    		height: 6vw;
-			position: relative;
-			float: right;
-			border-radius: 3px;
-			border: 1px solid #bdbdbd;
-			background: #fff;
-			appearance: none;
-			-webkit-appearance: none;
-		}
+        #localPay>p>input, 
+        #othersPay>p>input {
+            width: 6vw;
+            height: 6vw;
+            position: relative;
+            float: right;
+            border-radius: 3px;
+            border: 1px solid #bdbdbd;
+            background: #fff;
+            -moz-appearance: none;
+                 appearance: none;
+            -webkit-appearance: none;
+        }
 
-		#localPay>p>input:after, 
-		#othersPay>p>input:after {
-			content: '';
-			clear: both;
-		}
-		#localPay>p>input:checked, 
-		#othersPay>p>input:checked {
-			border: none;
-			background: url('./images/check.png') #56AAF1 no-repeat;
-			background-size: 76%;
-			background-position: center;
-		}
-		#payNow {
-			width: 100vw;
-			height: 16vh;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			border-top: 1px solid #eee;
-			background: #f3f3f3 !important;
-		}
-		#payNow>div {
-			width: 80%;
-			padding: 2% 0;
-			text-align: center;
-			font-weight: 600;
-			color: #fff;
-			border-radius: 5px;
-			background: #2EB6AA;
-		}
-		#footer {
-			width: 100vw;
-			height: 8vh;
-			display: flex;
-			justify-content: space-around;
-			align-items: center;
-			position: fixed;
-			bottom: 0;
-			left: 0;
-			border-top: 1px solid #e0e0e0;
-			font-size: .9rem;
-			background: #fff;
-		}
+        #localPay>p:after, 
+        #othersPay>p:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+        #localPay>p>input:checked, 
+        #othersPay>p>input:checked {
+            border: none;
+            background: url('./images/check.png') #56AAF1 no-repeat;
+            background-size: 76%;
+            background-position: center;
+        }
+        #payNow {
+            width: 100vw;
+            height: 16vh;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
+            border-top: 1px solid #eee;
+            background: #f3f3f3 !important;
+        }
+        #payNow>div {
+            width: 80%;
+            padding: 2% 0;
+            text-align: center;
+            font-weight: 600;
+            color: #fff;
+            border-radius: 5px;
+            background: #2EB6AA;
+        }
+        #footer {
+            width: 100vw;
+            height: 8vh;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-pack: distribute;
+                justify-content: space-around;
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            border-top: 1px solid #e0e0e0;
+            font-size: .9rem;
+            background: #fff;
+        }
 
-		#footer>div, 
-		#footer>span {
-			height: 8vh;    
-			display: inline-block;
-		    line-height: 8vh;
-    		text-align: center;
-		    vertical-align: middle;
-		}
-		#footer>div {
-			width: 60%;
-		}
-		#footer>div>span {
-			color: #FC3132;
-		}
-		#footer>span {
-			width: 40%;
-			color: #fff;
-			background: #2EB6AA;
-		}
+        #footer>div, 
+        #footer>span {
+            height: 8vh;    
+            display: inline-block;
+            line-height: 8vh;
+            text-align: center;
+            vertical-align: middle;
+        }
+        #footer>div {
+            width: 60%;
+        }
+        #footer>div>span {
+            color: #FC3132;
+        }
+        #footer>span {
+            width: 40%;
+            color: #fff;
+            background: #2EB6AA;
+        }
 	</style>
 </head>
 <body>

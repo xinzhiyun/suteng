@@ -1,6 +1,9 @@
 <?php
 namespace Admin\Model;
+<<<<<<< HEAD
+=======
 // use Think\Model\RelationModel;
+>>>>>>> eec6ff50f44b139212673fbf7867d33f2a875c6f
 use Think\Model;
 
 /**

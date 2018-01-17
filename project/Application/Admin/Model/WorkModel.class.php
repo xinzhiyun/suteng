@@ -1,13 +1,19 @@
 <?php
 namespace Admin\Model;
 use Org\Util\Date;
+use Think\Model\RelationModel;
 /**
  * Class 工单数据处理
  * @package Admin\Model
  * @author 潘宏钢 <619328391@qq.com>
  */
+<<<<<<< HEAD
+class WorkModel extends RelationModel
+{   
+=======
 class WorkModel extends BaseModel
 {
+>>>>>>> eec6ff50f44b139212673fbf7867d33f2a875c6f
     protected $patchValidate = true;
     // 自动验证
     protected $_validate = array(
@@ -46,7 +52,15 @@ class WorkModel extends BaseModel
     // );
 
 
+<<<<<<< HEAD
+    /**
+     * 获取work表的记录
+     * @param  array $map 查询条件
+     * @return array      查询结果和分页数据
+     */
+=======
      //
+>>>>>>> eec6ff50f44b139212673fbf7867d33f2a875c6f
     public function getWorksInfo($map)
     {
         // 分页
@@ -72,6 +86,11 @@ class WorkModel extends BaseModel
         return $assign;
     }
 
+    /**
+     * 获取work表的一条记录
+     * @param  int $id 主键id
+     * @return array     查询的数组数据
+     */
     public function getWorkInfoByID($id)
     {
          $data = $this
@@ -80,7 +99,11 @@ class WorkModel extends BaseModel
         return $data;
     }
 
-    // 处理查询数据
+    /**
+     * 处理查询数据
+     * @param  array $list 一维数组
+     * @return array       一维数组
+     */
     public function getAll($list)
     {
         $type = array('安装','维修','维护');
@@ -93,4 +116,59 @@ class WorkModel extends BaseModel
         $list['result'] = $result[$list['result']];
         return $list;
     }
+<<<<<<< HEAD
+
+    /**
+     * 添加数据
+     * @param  array $data  添加的数据
+     * @return int          新增的数据id
+     */
+    public function addData($data){
+        // 去除键值首尾的空格
+        foreach ($data as $k => $v) {
+            $data[$k]=trim($v);
+        }
+        $id=$this->add($data);
+        return $id;
+    }
+
+    /**
+     * 获取分页数据
+     * @param  subject  $model  model对象
+     * @param  array    $map    where条件
+     * @param  string   $order  排序规则
+     * @param  integer  $limit  每页数量
+     * @param  integer  $field  $field
+     * @return array            分页数据
+     */
+    public function getPage($model,$map,$order='',$limit=10,$field=''){
+        $count=$model
+            ->where($map)
+            ->count();
+        $page=new_page($count,$limit);
+        // setPageConf($page);
+        // 获取分页数据
+        if (empty($field)) {
+            $list=$model
+                ->where($map)
+                ->order($order)
+                ->limit($page->firstRow.','.$page->listRows)
+                ->select();         
+        }else{
+            $list=$model
+                ->field($field)
+                ->where($map)
+                ->order($order)
+                ->limit($page->firstRow.','.$page->listRows)
+                ->select();         
+        }
+        $data=array(
+            'data'=>$list,
+            'page'=>$page->show()
+            );
+        return $data;
+    }
 }
+=======
+}
+>>>>>>> eec6ff50f44b139212673fbf7867d33f2a875c6f

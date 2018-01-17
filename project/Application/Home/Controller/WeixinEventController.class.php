@@ -1,16 +1,12 @@
 <?php
 namespace Home\Controller;
-use Home\Controller\WechatController;
-class WeixinEventController
+use Think\Controller;
+
+class WeixinEventController extends Controller
 {
 	// 接受微信服务器下发的事件
     public function getEventData()
     {
-        $str = 'gQHU8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyd0lSUWtlMmJkOTAxMDAwMHcwMzgAAgRkqFhaAwQAAAAA';
-        $str2 ='gQHU8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyd0lSUWtlMmJkOTAxMDAwMHcwMzgAAgRkqFhaAwQAAAAA';
-        if($str===$str2){
-            echo '1111111';
-        }
     	// 实例化微信验证对象服务器第一次接入使用
     	// $wechatObj = new \Org\Util\WechatCallbackapiTest;
     	// 执行验证方法
@@ -18,17 +14,17 @@ class WeixinEventController
 
     	// 接受微信推送的事件
     	$xml=file_get_contents('php://input', 'r');
-        file_put_contents('./tmp.txt', $xml);
-     	$xml = "<xml>
-    <ToUserName><![CDATA[gh_0f61dfebc264]]></ToUserName>
-    <FromUserName><![CDATA[oQktJwL8ioR4DoxSQmikdzekbUyU]]></FromUserName>
-    <CreateTime>1515807148</CreateTime>
-    <MsgType><![CDATA[event]]></MsgType>
-    <Event><![CDATA[SCAN]]></Event>
-    <EventKey><![CDATA[100]]></EventKey>
-    <Ticket><![CDATA[gQHU8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyd0lSUWtlMmJkOTAxMDAwMHcwMzgAAgRkqFhaAwQAAAAA]]></Ticket>
-    <Encrypt><![CDATA[aGdkN02NePCRFYysQHaI0sQx7IW2BrMfl4LMKt5fi/SFyiOLtjnIH9qKQjwBTTFKE7xYvvVTc5+lkgZ0SVx+898kaEYygcoZ5RCQGYuJ3RuJnZUl3hST03cQ9O3179lmosxHDNqpMSI4CnZlsjsahLa+f3Jz2gNfDC5K9avm89vup2eB7f//qevadHK49Qtk9Icb82OJvah9d24DS7uowj07Ff2xo132OIhqz4mNtN11hw1PChsAh1c7zQYsY37QoxX7DEqWLj2jSo2VScsJx04jlo99upPV44oCCuL+kRFfhpqo1CBdyKS8PhKfOCWVlLqH3qKiN/iQYELEhCyTubZmohGOSQOR1XJdN0DUfUyyv8H2BnSXfR3AL2lhkgfzD1/3Yds1h+awE/3zrnkUWl6K1jcB2LXWhzbNImih4X/FcP9FGYW8dktgPeQVbsRpUCO5QTEKpvzYDkhpCwKfRw7diDIMh+vXs1ghbzM0eBHBAwCrboEmLwwhR1pox9AmxCn7uGRWE7Y3XEQ5+r3n3yt8kKyYf54HiNu7ErQfBLItxVc5+R8V096ED9pIFD6O5fZ2zi9D4KbUEEpX8RtjvQ==]]></Encrypt>
-</xml>";
+        // file_put_contents('./tmp.txt', $xml);die;
+//      	$xml = "<xml>
+//     <ToUserName><![CDATA[gh_0f61dfebc264]]></ToUserName>
+//     <FromUserName><![CDATA[oQktJwL8ioR4DoxSQmikdzekbUyU]]></FromUserName>
+//     <CreateTime>1516105460</CreateTime>
+//     <MsgType><![CDATA[event]]></MsgType>
+//     <Event><![CDATA[subscribe]]></Event>
+//     <EventKey><![CDATA[qrscene_7]]></EventKey>
+//     <Ticket><![CDATA[gQGa8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAya05pU2toMmJkOTAxMDAwMDAwM0IAAgQUVV1aAwQAAAAA]]></Ticket>
+//     <Encrypt><![CDATA[isgkM/NO3wGAYCXJNPEHMGz+ahlFD7jrsutnOgj39Up6AVvPmRA0wMRa/Gf+Bq2uvemnDS334VTsGUmts8ptR3ej3oJyr+sff+6etCXKgAl9Q5a/7XnZUGZmROWFMa/MGXauuDmMPYYUmNjjQ22LILVMQDLbB45aF2LGsH0+dUZNAMyhxdLaL2OP9w9fm3VDmcNonJ4qIN+24PoR81CvBnXZHuVjFH+w3s38GceCseW5yFUfafISRPEmHA6QoqEBBUKdsDByphfrCiuH5OKQ3wBa0XCFWHjInzwzkIWn1/G4WmDZ0WjZPrOd6YmgGn4IECP2irbOQ4VNxntWxwNUPfEs+fHLgVmz1boUG34doaPVWcygitFImMovROYDRCHWHgRTcJR0JD945S6dF6CPewpA8Ch19oMuJgHc7NcUzsNNO0/k5Nc5cUGGbjQs5R3U58EV+P9CUPCUqcz2cU5HD/yhb/4FI0WcrWjaa3yODDIS6B3iKKOBSGda6zoWkj+k4DA6G3yvhZH59cwRahds001RH8zpNFFyMFvgEVUYXLDYOH8t+V57tCGJMIQrl3/431ckJOAxvJJb0gq8RKIGvRquFJZdgfuVa8wx1txZ0ZZc5/DLBEchjIol3aGfdmRi]]></Encrypt>
+// </xml>";
 
 
 		if($xml){
@@ -37,20 +33,181 @@ class WeixinEventController
 
 			// 转成php数组
 			$data = $this->toArray($xml);
+            // 获取公众号微信用户
+            $toUser   = $data['FromUserName'];
+            // 获取微信号微信用户
+            $fromUser = $data['ToUserName'];
 
-            echo '<pre>';
-            print_r($data);
-            echo '</pre>';
-            dump($data);die;
             // 判断如果是关注事件
             if($data['Event'] == 'subscribe'){
-            //echo 2;   
-                // 实例化微信信息类型
-                $Wechat = new WechatController;
-                // 调用填写微信信息的方法
-                $Wechat->add($data['FromUserName']);
-                
-                // file_put_contents('./add.txt', $xml);
+                    // 查询微信二维码信息表
+                    $ticket = $data['Ticket'] ? true : false;
+
+                    if($ticket){
+                        // 查询微信用户类型
+                        $wxid = M('wechat')->where("`open_id`='{$data['FromUserName']}'")->find()['type'];
+
+                        // 匹配微信用户类型 {0：会员 1：分销商}
+                        switch ($wxid) {
+                            case '0':
+                                    //回复图文消息，回复用户登录图文消息
+                                    $this->reactUser($toUser,$fromUser);
+                                break;
+                            case '1':
+                                    // 新增成功，回复分销商注册图文消息
+                                    $this->reactVendor($toUser,$fromUser);
+                                break;
+                            default:
+                                    // 查询微信二维码信息表
+                                    $show['ticket'] = $data['Ticket'];
+                                    $dimensionData  = M('dimension')->where($show)->field('recommend,leavel')->find();
+                                    $recommend      = $dimensionData["recommend"]-0;
+
+                                    // 准备微信信息表数据
+                                    if($recommend>2){
+                                        // 分销商 类型
+                                        $addData['type']            = 1;
+                                        // 操作注册
+                                        $addData['action']          = 0;
+                                        // 用户微信唯一标识
+                                        $addData['open_id']             = $data['FromUserName'];
+                                        // 上级二维码票据
+                                        $addData['invitation_ticket']   = $data['Ticket'];
+                                        // 创建时间
+                                        $addData['addtime']             = time();
+                                        // 修改时间
+                                        $addData['updatetime']          = $addData['addtime'];
+                                        // 执行新增操作
+                                        $res = M('wechat')->add($addData);
+                                        // 判断是否新增成功
+                                        if($res){
+                                            // 新增成功，回复分销商注册图文消息
+                                            $this->reactVendor($toUser,$fromUser);
+                                        }else{
+                                            // 新增失败
+                                            echo '';
+                                        }
+
+                                    }else{
+                                        // 会员 类型
+                                        $addData['type']            = 0;
+                                        $addData['action']          = 1;
+                                        // 用户微信唯一标识
+                                        $addData['open_id']             = $data['FromUserName'];
+                                        // 上级二维码票据
+                                        $addData['invitation_ticket']   = $data['Ticket'];
+                                        // 创建时间
+                                        $addData['addtime']             = time();
+                                        // 修改时间
+                                        $addData['updatetime']          = $addData['addtime'];
+                                        // 执行新增操作
+                                        $res = M('wechat')->add($addData);
+
+                                        if($res){
+                                            //回复图文消息，回复用户登录图文消息
+                                            $this->reactUser($toUser,$fromUser);  
+                                        }else{
+                                            // 新增失败
+                                            echo '';
+                                        }
+                                    } 
+                                break;
+                        }
+
+                    }else{
+                        // 扫普通二维码
+                        // 会员 类型
+                        $addData['type']            = 0;
+                        $addData['action']          = 1;
+                        // 用户微信唯一标识
+                        $addData['open_id']             = $data['FromUserName'];
+                        // 创建时间
+                        $addData['addtime']             = time();
+                        // 修改时间
+                        $addData['updatetime']          = $addData['addtime'];
+                        // 执行新增操作
+                        $res = M('wechat')->add($addData);
+                        if($res){
+                            //回复图文消息，回复用户登录图文消息
+                            $this->reactUser($toUser,$fromUser);
+
+                        }else{
+                            echo '';
+                        }
+                    }
+                exit;
+            }
+
+            // 判断是否已关注带参数二维码事件
+            if($data['Event'] == 'SCAN'){
+                // 查询微信用户类型
+                $wxid = M('wechat')->where("`open_id`='{$data['FromUserName']}'")->find()['type'];
+
+                switch ($wxid) {
+                    case '0':
+                            //回复图文消息，回复用户登录图文消息
+                            $this->reactUser($toUser,$fromUser);
+                        break;
+                    case '1':
+                            // 新增成功，回复分销商注册图文消息
+                            $this->reactVendor($toUser,$fromUser);
+                        break;
+                    default:
+                            // 查询微信二维码信息表
+                            $show['ticket'] = $data['Ticket'];
+                            $dimensionData  = M('dimension')->where($show)->field('recommend,leavel')->find();
+                            $recommend      = $dimensionData["recommend"]-0;
+
+                            // 准备微信信息表数据
+                            if($recommend>2){
+                                // 分销商 类型
+                                $addData['type']            = 1;
+                                // 操作注册
+                                $addData['action']          = 0;
+                                // 用户微信唯一标识
+                                $addData['open_id']             = $data['FromUserName'];
+                                // 上级二维码票据
+                                $addData['invitation_ticket']   = $data['Ticket'];
+                                // 创建时间
+                                $addData['addtime']             = time();
+                                // 修改时间
+                                $addData['updatetime']          = $addData['addtime'];
+                                // 执行新增操作
+                                $res = M('wechat')->add($addData);
+                                // 判断是否新增成功
+                                if($res){
+                                    // 新增成功，回复分销商注册图文消息
+                                    $this->reactVendor($toUser,$fromUser);
+                                }else{
+                                    // 新增失败
+                                    echo '';
+                                }
+
+                            }else{
+                                // 会员 类型
+                                $addData['type']            = 0;
+                                $addData['action']          = 1;
+                                // 用户微信唯一标识
+                                $addData['open_id']             = $data['FromUserName'];
+                                // 上级二维码票据
+                                $addData['invitation_ticket']   = $data['Ticket'];
+                                // 创建时间
+                                $addData['addtime']             = time();
+                                // 修改时间
+                                $addData['updatetime']          = $addData['addtime'];
+                                // 执行新增操作
+                                $res = M('wechat')->add($addData);
+
+                                if($res){
+                                    //回复图文消息，回复用户登录图文消息
+                                    $this->reactUser($toUser,$fromUser); 
+                                }else{
+                                    // 新增失败
+                                    echo '';
+                                }
+                            } 
+                        break;
+                }
                 exit;
             }
 
@@ -75,6 +232,62 @@ class WeixinEventController
             }
 		}
 	}
+
+    public function reactUser($toUser,$fromUser){
+        //回复图文消息
+        // $toUser   = $toUser;
+        // $fromUser = $fromUser;
+        $title = '会员登录'; 
+        $description = '欢迎加入速腾集团，成为速腾集团全球合伙人。'; 
+        $src = 'http://wuzhibin.cn/Public/Vendors/user.png';
+        $url = 'http://wuzhibin.cn/Home/Index/index';
+        $template = "<xml>
+                        <ToUserName><![CDATA[%s]]></ToUserName>
+                        <FromUserName><![CDATA[%s]]></FromUserName>
+                        <CreateTime>%s</CreateTime>
+                        <MsgType><![CDATA[%s]]></MsgType>
+                        <ArticleCount>1</ArticleCount>
+                        <Articles>
+                            <item>
+                                <Title><![CDATA[%s]]></Title> 
+                                <Description><![CDATA[%s]]></Description>
+                                <PicUrl><![CDATA[%s]]></PicUrl>
+                                <Url><![CDATA[%s]]></Url>
+                            </item>
+                        </Articles>
+                    </xml> ";
+        
+        echo sprintf($template, $toUser, $fromUser, time(), 'news',$title,$description,$src,$url);
+    }
+
+    public function reactVendor($toUser,$fromUser){
+        //回复图文消息
+        $toUser   = $toUser;
+        $fromUser = $fromUser;
+        $title = '分销商注册'; 
+        $description = '欢迎加入速腾集团，成为速腾集团全球合伙人。'; 
+        $src = 'http://wuzhibin.cn/Public/Vendors/partner.jpg';
+        $url = 'http://wuzhibin.cn/Home/RegisteredVendor/index';  
+        $template = "<xml>
+                        <ToUserName><![CDATA[%s]]></ToUserName>
+                        <FromUserName><![CDATA[%s]]></FromUserName>
+                        <CreateTime>%s</CreateTime>
+                        <MsgType><![CDATA[%s]]></MsgType>
+                        <ArticleCount>1</ArticleCount>
+                        <Articles>
+                            <item>
+                                <Title><![CDATA[%s]]></Title> 
+                                <Description><![CDATA[%s]]></Description>
+                                <PicUrl><![CDATA[%s]]></PicUrl>
+                                <Url><![CDATA[%s]]></Url>
+                            </item>
+                        </Articles>
+                    </xml> ";
+        
+        echo sprintf($template, $toUser, $fromUser, time(), 'news',$title,$description,$src,$url);
+    }
+
+
 
     /**
      * 将xml转为array

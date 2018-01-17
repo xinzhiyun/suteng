@@ -1,0 +1,69 @@
+<extend name="Public/base" />
+
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>分公司管理 <small>分公司列表</small></h5>
+                        <div class="ibox-tools">
+                            <a href="company_add" class="close-link">
+                                <i class="fa fa-user-plus"></i>
+                                添加分公司
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>姓名</th>
+                                    <th>电话</th>
+                                    <th>A级分销商邀请</th>
+                                    <th>B级分销商邀请</th>
+                                    <th>C级分销商邀请</th>
+                                    <th>分配用户名</th>
+                                    <th>状态</th>
+                                    <th>加入时间</th>
+                                    <th>更新时间</th>
+                                    <th>详情</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <empty name="data">
+                                    <tr><td><h3>暂无消息</h3></td></tr>
+                                <else />
+                                    <volist name="data" id="val">
+                                        <tr>
+                                            <td>{{$i}}</td>
+                                            <td>{{$val.name}}</td>
+                                            <td>{{$val.phone}}</td>
+                                            <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_a}}" alt="A级邀请"></td>
+                                            <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_b}}" alt="B级邀请"></td>
+                                            <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_c}}" alt="C级邀请"></td>
+                                            <td>{{$val.user}}</td>
+                      <!--                       <switch name="val.status">
+                                                <case value="0"><td>待审核</td></case>
+                                                <case value="1"><td>使用中</td></case>
+                                                <case value="2"><td>已停用</td></case>
+                                                <default /> /
+                                            </switch> -->
+                                            <td>{{$val.status}}</td>
+                                            <td>{{$val.addtime|date="Y-m-d H:i:s",###}}</td>
+                                            <td>{{$val.updatetime|date="Y-m-d H:i:s",###}}</td>
+                                            <td>
+                                                <a href="#">查看</a>
+                                            </td>
+                                        </tr>
+                                    </volist>
+                                </empty>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

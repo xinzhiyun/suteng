@@ -3,8 +3,9 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-	<link rel="stylesheet" href="__PUBLIC__/home/css/resetstyle.css">
-	<script src="__PUBLIC__/home/js/public.js"></script>
+	<link rel="stylesheet" href="./css/resetstyle.css">
+	<script src="./js/jquery-1.8.3.min.js"></script>
+	<script src="./js/public.js"></script>
 	<title>滤芯</title>
 	<style>
 		* {
@@ -16,10 +17,12 @@
 			overflow-x: hidden;
 		}
 		#content {
-			width: 100vw;
-			height: 100vh;
-			overflow-x: hidden;
-			overflow-y: scroll;
+			width: 300vw;
+			height: 84vh;
+			position: relative;
+			top: 8vh;
+			left: -200vw;
+			margin-bottom: 8vh;
 			background: #f3f3f3;
 		}
 		#header, #footer {
@@ -31,6 +34,7 @@
 			position: fixed;
 			font-size: .9rem;
 			background: #fff;
+			z-index: 999;
 		}
 		#header {
 			top: 0;
@@ -44,13 +48,22 @@
     		text-align: center;
 		    vertical-align: middle;
 		}
-		#main {
+		/*滤芯详情，滤芯复位，滤芯购买*/
+		#lvxinDetail,
+		#lvxinReset,
+		#lvxinBuy {
 			width: 100vw;
 			height: 84vh;
-			position: relative;
-			top: 8vh;
-			left: 0;
+			display: inline-block;
+			position: absolute;
+			top: 0;
 			background: #fff;
+		}
+		#lvxinReset {
+		 	left: 100vw;
+		 }
+		#lvxinBuy{
+		 	left: 200vw;
 		}
 		/*顶栏下划线，移动位置改这里*/
 		#line {
@@ -157,14 +170,19 @@
 	</style>
 </head>
 <body>
+	<header id="header">
+		<span class="tabTitle" index="0">滤芯详情</span>
+		<span class="tabTitle" index="1">滤芯复位</span>
+		<span class="tabTitle" index="2">滤芯购买</span>
+		<div id="line"><span></span></div>
+	</header>
 	<div id="content">
-		<header id="header">
-			<span>滤芯详情</span>
-			<span>滤芯复位</span>
-			<span>滤芯购买</span>
-			<div id="line"><span></span></div>
-		</header>
-		<div id="main">
+		<!-- 滤芯详情 -->
+		<div id="lvxinDetail"></div>
+		<!-- 滤芯复位 -->
+		<div id="lvxinReset"></div>
+		<!-- 滤芯购买 -->
+		<div id="lvxinBuy">
 			<div class="goods">
 				<div class="img"><img src="1.jpg" alt="正在加载..."></div>
 				<div class="dec">
@@ -198,10 +216,34 @@
 				</div>
 			</div>
 		</div>
-		<footer id="footer">
-			<div>合计：<span>￥240.00</span></div>
-			<span>去结算</span>
-		</footer>
 	</div>
+	<footer id="footer">
+		<div>合计：<span>￥240.00</span></div>
+		<span>去结算</span>
+	</footer>
+	<script>
+		var lvxinArr = ['#lvxinDetail', '#lvxinReset' ,'#lvxinBuy']
+		// 点击顶部tab切换内容
+		$(".tabTitle").click(function(){
+
+			// 判断内容是否超出
+			if($("#content>div").length != 0){
+
+				$("#content")
+				.css({height: lvxinArr[$(this).attr("index")]
+					.height, 
+					overflowY: $(lvxinArr[$(this).attr("index")])[0].offsetHeight > $("#content")[0].offsetHeight 
+					? 'visible'
+					: 'hidden'
+				});
+			}
+			// 横线移动
+			$("#line").css({marginLeft: $(this).attr("index")*33.33 + '%'});
+
+			// 内容切换
+			$("#content").animate({left: '-'+$(this).attr("index") + '00vw'})
+			
+		})
+	</script>
 </body>
 </html>
