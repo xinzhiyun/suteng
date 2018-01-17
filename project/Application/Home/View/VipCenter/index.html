@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/iconfont/iconfont.css">
+	<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
+	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+    <script src="__PUBLIC__/Home/js/public.js"></script>
+	<title>会员中心</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body {
+			font-size: .7rem;
+		}
+		#header {
+			width: 100vw;
+			height: 24vh;
+			display: flex;
+			color: #fff;
+			background: -webkit-radial-gradient(top left, #99FCEF 35%, #5B97EF);
+		}
+		#header>#hLeft {
+			flex: 1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		/*头像*/
+		#hLeft>img {
+			width: 18vmin;
+			height: 18vmin;
+			display: block;
+			border-radius: 18vmin;
+			border: 1px solid #eee;
+			background: #eee;
+		}
+		#header>#hRight {
+			flex: 2;
+		}
+		#qrCode_share {
+			width: 100%;
+			height: 7vh;
+			display: block;
+			padding: 2% 6%;
+    		text-align: right;
+		}
+		/*我的钱包*/
+		#package {
+			display: flex;
+			margin: 10px 0;
+		}
+		#package>div {
+			margin-left: 2%;
+		}
+		#content {
+			width: 100vw;
+			height: 76vh;
+		}
+		#content>div {
+			padding: 1% 2%;
+			border-bottom: 8px solid #eee;
+		}
+		#content>div>p,
+		#content>div>div {
+			padding: 2%;
+		}
+		#more>div {
+			display: flex;
+   		 	align-items: center;
+		}
+		#more>div>span {
+			width: 95%;
+			display: flex;
+   		 	align-items: center;
+		}
+		
+		#income>p>i,
+		#indent>p>span:nth-of-type(2),
+		#more>div>i {
+			float: right;
+		}
+		/*#more>div>span {
+			display: flex;
+   		 	align-items: center;
+		}*/
+		#indent>div {
+			display: flex;
+			justify-content: space-between;
+		}
+		#indent>div>span {
+			text-align: center;
+			font-size: .6rem;
+		}
+		/*收益明细*/
+		#income>div {
+			display: flex;
+		}
+		#income>div>div {
+			padding: 1% 2%;
+			text-align: center;
+			border-radius: 5px;
+			box-shadow: 0 0 6px #d8d8d8;
+		}
+		#income>div>div:nth-of-type(1) {
+			width: 60%;
+			margin-right: 10px;
+		}
+		#income>div>div:nth-of-type(2) {
+			width: 40%;
+		}
+		#income>div>div>span {
+			display: inline-block;
+			margin: 8px;
+			color: #E55C1F;
+		}
+		.icon-erweima,
+		.icon-1 {
+			font-size: .8rem;
+		}
+		.icon-jinbi2 {
+			color: #ffc800;
+			font-size: 1rem;
+			text-shadow: 0 1px 10px #c0c0c0;
+		}
+		.icon-yinbi2 {
+			color: #c4f1c4;
+		}
+		.icon-qianbao,
+		.icon-daifahuo2,
+		.icon-daifahuo1,
+		.icon-hua,
+		.icon-shouhou {
+			display: inline-block;
+			color: #4192D6;
+			margin-bottom: 6px;
+			font-size: 1.2rem;
+		}
+		.icon-chongzhi1,
+		.icon-shouhuodizhi,
+		.icon-daipinglun2 {
+			font-size: 1.2rem;
+			margin-right: 2%;
+		}
+		.icon-chongzhi1 {
+			color: #2EB6AA;
+		}
+		.icon-shouhuodizhi {
+			color: #23A0E8;
+		}
+		.icon-daipinglun2 {
+			color: #E55C1F;
+		}
+	</style>
+</head>
+<body>
+	<header id="header">
+		<div id="hLeft">
+			<img src="./images/1.jpg" alt="">
+		</div>
+		<div id="hRight">
+			<div id="qrCode_share">
+				<i class="iconfont icon-erweima"></i>
+				<i class="iconfont icon-1"></i>
+			</div>
+			<p>Yoo</p>
+			<div id="package">
+				<span>我的钱包：</span>
+				<div>
+					<p><i class="iconfont icon-jinbi2"></i>金币300个</p>
+					<p><i class="iconfont icon-jinbi2 icon-yinbi2"></i>银币806个</p>
+				</div>
+			</div>
+		</div>
+	</header>
+	<div id="content">
+		<div id="indent">
+			<p>
+				<span>我的订单</span>
+				<span>
+					<span>查看全部订单</span>
+					<i class="iconfont icon-mjiantou"></i>
+				</span>
+			</p>
+			<div>
+				<span>
+					<i class="iconfont icon-qianbao"></i>
+					<p>待付款</p>
+				</span>
+				<span>
+					<i class="iconfont icon-daifahuo2"></i>
+					<p>待发货</p>
+				</span>
+				<span>
+					<i class="iconfont icon-daifahuo1"></i>
+					<p>待收货</p>
+				</span>
+				<span>
+					<i class="iconfont icon-hua"></i>
+					<p>待评论</p>
+				</span>
+				<span>
+					<i class="iconfont icon-shouhou"></i>
+					<p>退款/售后</p>
+				</span>
+			</div>
+		</div>
+		<div id="income">
+			<p>
+				收益明细
+				<i class="iconfont icon-mjiantou"></i>
+			</p>
+			<div>
+				<div>
+					<span>金币540</span>
+					<span>银币1266</span>
+					<p>我的奖励金</p>
+				</div>
+				<div>
+					<span>26</span>
+					<p>会员订单</p>
+				</div>
+			</div>
+		</div>
+		<div id="more">
+			<div id="pay">
+				<span>
+					<i class="iconfont icon-chongzhi1"></i>
+					会员充值
+				</span>
+				<i class="iconfont icon-mjiantou"></i>
+			</div>
+			<div id="addressManage">
+				<span>
+					<i class="iconfont icon-shouhuodizhi"></i>
+					收货地址管理
+				</span>
+				<i class="iconfont icon-mjiantou"></i>
+			</div>
+			<div id="comment">
+				<span>
+					<i class="iconfont icon-hua icon-daipinglun2"></i>
+					我的评论
+				</span>
+				<i class="iconfont icon-mjiantou"></i>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
