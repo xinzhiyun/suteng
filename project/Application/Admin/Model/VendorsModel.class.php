@@ -65,6 +65,31 @@ class VendorsModel extends BaseModel
 
     }
 
+    /**
+     * [companyList 分公司待审核列表]
+     * @return [type] [description]
+     */
+    public function vendorReviewed(){
+        
+        // 查询分公司数据
+        $list = $this->where('`leavel`=1 AND `status`=3')->order('updatetime desc')->select();
+        // 返回格式化后数据
+        return $this->formatData($list);
+    }
+    
+
+    /**
+     * [companyList 分销商列表]
+     * @return [type] [description]
+     */
+    public function vendorList(){
+        // 查询分公司数据
+        $list = $this->where('`leavel`=4')->order('updatetime desc')->select();
+        // 返回格式化后数据
+        return $this->formatData($list);
+
+    }
+
     public function formatData($list){
         $leavel = array('超级管理员','分公司','A级分销商','B级分销商','C级分销商');
         $status = array('身份信息填写','公司信息填写','签署协议','等待审批','身份证审批失败','公司信息审批失败','协议审批失败','审批成功','禁用分销商');
