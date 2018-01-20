@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost_3306
-Source Server Version : 50505
-Source Host           : localhost:3306
-Source Database       : suteng
+Source Server         : wuzhibin.cn
+Source Server Version : 50173
+Source Host           : sdm359768304.my3w.com:3306
+Source Database       : sdm359768304_db
 
 Target Server Type    : MYSQL
-Target Server Version : 50505
+Target Server Version : 50173
 File Encoding         : 65001
 
-Date: 2018-01-20 15:19:06
+Date: 2018-01-20 15:43:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,7 +26,7 @@ CREATE TABLE `st_address` (
   `address` varchar(255) NOT NULL COMMENT '收货人地址',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '地址状态，默认为0，设为默认地址，否则为1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_admin_menu
@@ -109,7 +109,7 @@ CREATE TABLE `st_blank` (
   `uid` int(11) NOT NULL COMMENT '关联用户',
   `addtime` varchar(12) NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_cart
@@ -122,7 +122,7 @@ CREATE TABLE `st_cart` (
   `price` double(6,2) NOT NULL COMMENT '商品单价',
   `addtime` varchar(12) NOT NULL COMMENT '添加购物时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_category
@@ -133,7 +133,7 @@ CREATE TABLE `st_category` (
   `pid` int(11) NOT NULL COMMENT '父ID',
   `name` varchar(12) NOT NULL COMMENT '分类名',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_comment
@@ -149,7 +149,7 @@ CREATE TABLE `st_comment` (
   `dressing` int(11) DEFAULT NULL COMMENT '着装评分',
   `addtime` varchar(12) NOT NULL COMMENT '评论时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_convert
@@ -162,7 +162,7 @@ CREATE TABLE `st_convert` (
   `uid` int(11) NOT NULL COMMENT '兑换人',
   `addtime` varchar(12) NOT NULL COMMENT '兑换时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_current_devices
@@ -307,7 +307,7 @@ CREATE TABLE `st_goods` (
   `addtime` varchar(12) NOT NULL COMMENT '商品添加时间',
   `updatetime` varchar(12) NOT NULL COMMENT '商品更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_orders
@@ -363,7 +363,7 @@ CREATE TABLE `st_shop_order` (
   `status` tinyint(1) NOT NULL COMMENT '0已下单，1处理中，2已发货，3已收货，4退货处理中，5已退货，6申诉中，7订单完成，8未支付',
   `express` varchar(32) DEFAULT NULL COMMENT '快递单号',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_users
