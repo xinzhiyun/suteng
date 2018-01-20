@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 192.168.37.76
-Source Server Version : 50548
-Source Host           : 192.168.37.76:3306
+Source Server         : localhost_3306
+Source Server Version : 50505
+Source Host           : localhost:3306
 Source Database       : suteng
 
 Target Server Type    : MYSQL
-Target Server Version : 50548
+Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-01-17 15:12:56
+Date: 2018-01-20 15:19:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -44,14 +44,14 @@ CREATE TABLE `st_admin_menu` (
   `ico` varchar(50) DEFAULT '' COMMENT 'font-awesome图标',
   `order_number` int(11) unsigned DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_admin_menu
 -- ----------------------------
-INSERT INTO `st_admin_menu` VALUES ('1', '0', '经销商管理', 'Admin/Rule', 'fa-hand-o-right', null);
-INSERT INTO `st_admin_menu` VALUES ('2', '1', '经销商列表', 'Admin/Vendor/vendor_list', null, null);
-INSERT INTO `st_admin_menu` VALUES ('3', '1', '经销商审核', 'Admin/Vendor/vendor_reviewed', null, null);
+INSERT INTO `st_admin_menu` VALUES ('1', '0', '经销商管理', 'Admin/Vendors/', 'fa-hand-o-right', null);
+INSERT INTO `st_admin_menu` VALUES ('2', '1', '经销商列表', 'Admin/Vendors/vendor_list', '', null);
+INSERT INTO `st_admin_menu` VALUES ('3', '1', '经销商审核', 'Admin/Vendors/vendor_reviewed', '', null);
 INSERT INTO `st_admin_menu` VALUES ('4', '0', '权限管理', 'Admin/Rule/', 'fa-hand-o-right', null);
 INSERT INTO `st_admin_menu` VALUES ('5', '4', '权限组', 'Admin/Rule/group', null, null);
 INSERT INTO `st_admin_menu` VALUES ('6', '5', '权限分配', 'Admin/Rule/rule_group', null, null);
@@ -65,6 +65,14 @@ INSERT INTO `st_admin_menu` VALUES ('15', '0', '工单管理', 'Admin/Work', 'fa
 INSERT INTO `st_admin_menu` VALUES ('16', '15', '工单列表', 'Admin/Work/index', '', null);
 INSERT INTO `st_admin_menu` VALUES ('17', '0', '净水器管理', 'Admin/Water', 'fa-hand-o-right', null);
 INSERT INTO `st_admin_menu` VALUES ('18', '17', '水机列表', 'Admin/Water/index', '', null);
+INSERT INTO `st_admin_menu` VALUES ('19', '0', '商城管理', 'Admin/Shop/', 'fa-hand-o-right', null);
+INSERT INTO `st_admin_menu` VALUES ('20', '19', '分类管理', 'Admin/Shop/category', '', null);
+INSERT INTO `st_admin_menu` VALUES ('21', '19', '商品管理', 'Admin/Shop/goods', '', null);
+INSERT INTO `st_admin_menu` VALUES ('22', '19', '订单管理', 'Admin/Shop/orders', '', null);
+INSERT INTO `st_admin_menu` VALUES ('23', '0', '分公司管理', 'Admin/Vendor', '', null);
+INSERT INTO `st_admin_menu` VALUES ('24', '23', '添加分公司', 'Admin/Vendors/company_add', '', null);
+INSERT INTO `st_admin_menu` VALUES ('25', '23', '分公司列表', 'Admin/Vendors/company_list', '', null);
+INSERT INTO `st_admin_menu` VALUES ('26', '23', '分公司审核', 'Admin/Vendors/company_reviewed', '', null);
 
 -- ----------------------------
 -- Table structure for st_auth_group
@@ -81,7 +89,7 @@ CREATE TABLE `st_auth_group` (
 -- ----------------------------
 -- Records of st_auth_group
 -- ----------------------------
-INSERT INTO `st_auth_group` VALUES ('1', '超级管理员', '1', '1,2,4,3,5,6,7,8,10,11,9,14,15,16,17,18,19');
+INSERT INTO `st_auth_group` VALUES ('1', '超级管理员', '1', '1,2,4,3,5,6,7,8,10,11,9,14,15,16,17,18,19,20,21,22,23,24,25,26,27');
 INSERT INTO `st_auth_group` VALUES ('2', '一级经销商', '1', '1,2,4,3');
 INSERT INTO `st_auth_group` VALUES ('3', '二级经销商', '1', '1,2,4,3');
 INSERT INTO `st_auth_group` VALUES ('4', '三级经销商', '1', '1,2,3');
@@ -118,15 +126,15 @@ CREATE TABLE `st_auth_rule` (
   `condition` char(100) NOT NULL DEFAULT '' COMMENT '规则表达式，为空表示存在就验证，不为空表示按照条件验证',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='规则表';
+) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COMMENT='规则表';
 
 -- ----------------------------
 -- Records of st_auth_rule
 -- ----------------------------
 INSERT INTO `st_auth_rule` VALUES ('1', '0', 'Admin/Vendors/', '经销商管理', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('2', '1', 'Admin/Vendor/vendor_list', '经销商列表', '1', '1', '');
+INSERT INTO `st_auth_rule` VALUES ('2', '1', 'Admin/Vendors/vendor_list', '经销商列表', '1', '1', '');
 INSERT INTO `st_auth_rule` VALUES ('3', '1', 'Admin/Vendor/vendor_reviewed', '经销商审核', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('4', '2', 'Admin/Vendor/vendor_add', '经销商添加', '1', '1', '');
+INSERT INTO `st_auth_rule` VALUES ('4', '2', 'Admin/Vendors/vendor_add', '经销商添加', '1', '1', '');
 INSERT INTO `st_auth_rule` VALUES ('5', '0', 'Admin/Menu/', '菜单管理', '1', '1', '');
 INSERT INTO `st_auth_rule` VALUES ('6', '5', 'Admin/Menu/index', '菜单编辑', '1', '1', '');
 INSERT INTO `st_auth_rule` VALUES ('7', '0', 'Admin/Rule/', '权限管理', '1', '1', '');
@@ -140,6 +148,14 @@ INSERT INTO `st_auth_rule` VALUES ('16', '0', 'Admin/Work', '工单管理', '1',
 INSERT INTO `st_auth_rule` VALUES ('17', '16', 'Admin/Work/index', '工单列表', '1', '1', '');
 INSERT INTO `st_auth_rule` VALUES ('18', '0', 'Admin/Water', '净水器管理', '1', '1', '');
 INSERT INTO `st_auth_rule` VALUES ('19', '18', 'Admin/Water/index', '水机列表', '1', '1', '');
+INSERT INTO `st_auth_rule` VALUES ('20', '0', 'Admin/Shop/', '商城系统', '1', '1', '');
+INSERT INTO `st_auth_rule` VALUES ('21', '20', 'Admin/Shop/category', '分类管理', '1', '1', '');
+INSERT INTO `st_auth_rule` VALUES ('22', '20', 'Admin/Shop/goods', '商品管理', '1', '1', '');
+INSERT INTO `st_auth_rule` VALUES ('23', '20', 'Admin/Shop/orders', '订单管理', '1', '1', '');
+INSERT INTO `st_auth_rule` VALUES ('24', '0', 'Admin/Vendor', '分公司管理', '1', '1', '');
+INSERT INTO `st_auth_rule` VALUES ('25', '24', 'Admin/Vendors/company_add', '添加分公司', '1', '1', '');
+INSERT INTO `st_auth_rule` VALUES ('26', '24', 'Admin/Vendors/company_list', '分公司列表', '1', '1', '');
+INSERT INTO `st_auth_rule` VALUES ('27', '24', 'Admin/Vendors/company_reviewed', '分公司审核', '1', '1', '');
 
 -- ----------------------------
 -- Table structure for st_binding
@@ -204,11 +220,28 @@ CREATE TABLE `st_category` (
   `pid` int(11) NOT NULL COMMENT '父ID',
   `name` varchar(12) NOT NULL COMMENT '分类名',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of st_category
 -- ----------------------------
+INSERT INTO `st_category` VALUES ('1', '0', 'aaa');
+INSERT INTO `st_category` VALUES ('2', '0', 'bbb');
+INSERT INTO `st_category` VALUES ('3', '0', 'aaa1');
+INSERT INTO `st_category` VALUES ('4', '2', 'bbb1ddd');
+INSERT INTO `st_category` VALUES ('5', '0', 'aaa2');
+INSERT INTO `st_category` VALUES ('6', '2', 'bbb2');
+INSERT INTO `st_category` VALUES ('7', '3', 'aaa1a');
+INSERT INTO `st_category` VALUES ('8', '3', 'aaa2a');
+INSERT INTO `st_category` VALUES ('10', '4', 'bbb2b');
+INSERT INTO `st_category` VALUES ('11', '0', '厉害');
+INSERT INTO `st_category` VALUES ('12', '0', '发财了');
+INSERT INTO `st_category` VALUES ('14', '5', '哈哈哈');
+INSERT INTO `st_category` VALUES ('15', '14', '大厦');
+INSERT INTO `st_category` VALUES ('16', '6', '止ddddd');
+INSERT INTO `st_category` VALUES ('17', '6', '123');
+INSERT INTO `st_category` VALUES ('21', '5', '添加成功');
+INSERT INTO `st_category` VALUES ('22', '7', '老子开心');
 
 -- ----------------------------
 -- Table structure for st_comment
@@ -329,6 +362,41 @@ CREATE TABLE `st_devices_statu` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for st_dimension
+-- ----------------------------
+DROP TABLE IF EXISTS `st_dimension`;
+CREATE TABLE `st_dimension` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `ticket` varchar(255) NOT NULL COMMENT '注册类型{0:会员直接注册 1:会员推荐会员 2:分销商推荐会员 3:分公司邀请分销商 4:分销商邀请分销商}',
+  `recommend` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员 4:分公司邀请分销商 5:分销商邀请分销商}',
+  `leavel` tinyint(1) unsigned DEFAULT NULL COMMENT '分销商级别{0:A级分销商 1:B级分销商 2:C级分销商}',
+  `effective` tinyint(1) unsigned DEFAULT '0' COMMENT '有效期{0:永久 1:临时（30天）}',
+  `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
+  `updatetime` int(11) unsigned DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of st_dimension
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for st_dimension_num
+-- ----------------------------
+DROP TABLE IF EXISTS `st_dimension_num`;
+CREATE TABLE `st_dimension_num` (
+  `users_num` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '临时二维码数量',
+  `vendors_num` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '永久二维码数量',
+  `id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of st_dimension_num
+-- ----------------------------
+INSERT INTO `st_dimension_num` VALUES ('1', '29', '1');
+
+-- ----------------------------
 -- Table structure for st_feeds
 -- ----------------------------
 DROP TABLE IF EXISTS `st_feeds`;
@@ -372,9 +440,12 @@ CREATE TABLE `st_flow` (
 DROP TABLE IF EXISTS `st_goods`;
 CREATE TABLE `st_goods` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cid` int(11) NOT NULL COMMENT '商品分类',
   `vid` int(11) NOT NULL COMMENT '关联卖家',
   `name` varchar(64) NOT NULL COMMENT '商品名称',
+  `pic` varchar(255) NOT NULL,
   `desc` text COMMENT '商品描述',
+  `parameter` varchar(255) NOT NULL COMMENT '商品参数',
   `price` double(6,2) NOT NULL COMMENT '商品单价',
   `stock` int(11) DEFAULT NULL COMMENT '商品库存',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '商品状态，默认0上架，1为下架',
@@ -460,15 +531,30 @@ CREATE TABLE `st_shop_order` (
 -- ----------------------------
 DROP TABLE IF EXISTS `st_users`;
 CREATE TABLE `st_users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) NOT NULL COMMENT '会员名称(微信名称)',
-  `open_id` varchar(100) NOT NULL COMMENT '微信OPENID',
-  `addtime` varchar(12) NOT NULL COMMENT '注册时间',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `open_id` varchar(50) NOT NULL COMMENT '微信的ID号',
+  `office_code` varchar(6) DEFAULT NULL COMMENT '分公司唯一标识',
+  `vendora_code` varchar(6) DEFAULT NULL COMMENT 'A级分销商唯一标识',
+  `vendorb_code` varchar(255) DEFAULT NULL COMMENT 'B级分销商唯一标识',
+  `vendorc_code` varchar(255) DEFAULT NULL COMMENT 'C级分销商唯一标识',
+  `invitation_code` varchar(11) DEFAULT NULL COMMENT '邀请人唯一标识',
+  `code` varchar(11) NOT NULL COMMENT '用户唯一标识',
+  `invite` tinyint(1) NOT NULL COMMENT '邀请人类型:{0：分公司，1：A级分销，2：B级分销，3：C级分销，4：会员 5：普通二维码}',
+  `ticket` varchar(255) NOT NULL COMMENT '二维码票据',
+  `parameter` int(11) unsigned NOT NULL COMMENT '请求二维码的参数',
+  `ticket_time` int(11) unsigned NOT NULL COMMENT '二维码有效时间',
+  `nickname` varchar(50) DEFAULT NULL COMMENT '微信昵称',
+  `head` varchar(255) DEFAULT NULL COMMENT '头像',
+  `sex` tinyint(1) unsigned DEFAULT '2' COMMENT '性别{0:女 1:男 2:保密}',
+  `area` varchar(20) DEFAULT NULL COMMENT '地区',
+  `address` varchar(255) DEFAULT NULL COMMENT '地址',
   `gold_num` int(11) NOT NULL COMMENT '金币数量 默认为0',
   `silver` int(11) NOT NULL COMMENT '金币数量 默认为0',
   `balance` double(6,2) NOT NULL DEFAULT '0.00' COMMENT '用户余额，默认0.00',
+  `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
+  `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_users
@@ -479,26 +565,41 @@ CREATE TABLE `st_users` (
 -- ----------------------------
 DROP TABLE IF EXISTS `st_vendors`;
 CREATE TABLE `st_vendors` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `open_id` varchar(50) DEFAULT NULL COMMENT '微信的ID号',
   `user` varchar(30) NOT NULL COMMENT '分销商帐号',
-  `password` varchar(32) NOT NULL COMMENT '用户密码',
-  `phone` varchar(11) NOT NULL COMMENT '手机号码',
-  `telphone` varchar(20) NOT NULL COMMENT '座机号码',
-  `name` varchar(32) NOT NULL COMMENT '真实姓名',
-  `idcard` varchar(20) NOT NULL COMMENT '身份证',
-  `parent_code` varchar(6) NOT NULL,
-  `code` varchar(6) NOT NULL COMMENT '分销商唯一验证码',
-  `leavel` tinyint(2) DEFAULT '0',
-  `status` tinyint(1) NOT NULL DEFAULT '0',
-  `addtime` varchar(20) NOT NULL,
-  `updatetime` varchar(20) NOT NULL COMMENT '更新时间',
+  `password` varchar(32) NOT NULL COMMENT '分销商密码',
+  `phone` varchar(11) DEFAULT NULL COMMENT '手机号码',
+  `name` varchar(32) DEFAULT NULL COMMENT '真实姓名',
+  `identity` varchar(18) DEFAULT NULL COMMENT '身份证号码',
+  `positive` varchar(255) DEFAULT NULL COMMENT '身份证正面图片',
+  `opposite` varchar(255) DEFAULT NULL COMMENT '身份证反面',
+  `handheld` varchar(255) DEFAULT NULL COMMENT '手持身份证正面',
+  `company` varchar(50) DEFAULT NULL COMMENT '公司名称',
+  `telephone` varchar(20) DEFAULT NULL COMMENT '座机号码',
+  `address` varchar(255) DEFAULT NULL COMMENT '地址',
+  `licence` varchar(255) DEFAULT NULL COMMENT '营业执照',
+  `protocol` varchar(255) DEFAULT NULL COMMENT '协议文件',
+  `leavel` tinyint(1) unsigned DEFAULT '0' COMMENT '{0:超级管理员 1:分公司 2:A级分销商 3:B级分销商 4:C级分销商}',
+  `code` varchar(6) DEFAULT NULL COMMENT '分销商唯一验证码',
+  `superior_code` varchar(6) DEFAULT NULL COMMENT '上级分销商唯一验证码',
+  `superiors_code` varchar(6) DEFAULT NULL COMMENT '上上级分销商唯一验证码',
+  `vendor_a` varchar(255) DEFAULT NULL COMMENT 'A级分销商邀请码',
+  `vendor_b` varchar(255) DEFAULT NULL COMMENT 'B级分销商邀请码',
+  `vendor_c` varchar(255) DEFAULT NULL COMMENT 'C级分销商邀请码',
+  `vendor_user` varchar(255) DEFAULT NULL COMMENT '分销商邀请会员',
+  `invitation_code` varchar(255) DEFAULT NULL COMMENT '分销商推荐人',
+  `office_code` varchar(6) DEFAULT NULL COMMENT '分公司唯一ID',
+  `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态{0:身份填写 1:公司信息填写 2:签协议 3:待审批 4:身份证审批失败 5:公司信息审批失败 6:协议审批失败  7：审批成功  8：禁用分销商}',
+  `addtime` int(11) unsigned NOT NULL COMMENT '添加时间',
+  `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_vendors
 -- ----------------------------
-INSERT INTO `st_vendors` VALUES ('1', 'admin', '202cb962ac59075b964b07152d234b70', '13800138000', '020-21526352', '超级管理员', '123121312123123123', '0', '156345', '1', '1', '1513872000', '1513872000');
+INSERT INTO `st_vendors` VALUES ('1', null, 'admin', '202cb962ac59075b964b07152d234b70', '13425492760', '超级管理员', null, null, null, null, null, null, null, null, null, '0', null, null, null, null, null, null, null, '', null, '7', '1513872000', '1513872000');
 
 -- ----------------------------
 -- Table structure for st_wechat
@@ -507,14 +608,15 @@ DROP TABLE IF EXISTS `st_wechat`;
 CREATE TABLE `st_wechat` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `open_id` varchar(50) NOT NULL COMMENT '微信的ID号',
-  `nickname` varchar(50) NOT NULL COMMENT '微信昵称',
-  `head` varchar(255) DEFAULT NULL COMMENT '头像',
-  `sex` tinyint(1) unsigned DEFAULT NULL COMMENT '性别',
-  `area` varchar(255) DEFAULT NULL COMMENT '地区',
-  `address` varchar(255) DEFAULT NULL COMMENT '地址',
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`open_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `invitation_ticket` varchar(255) DEFAULT NULL COMMENT '受邀请二维码票据',
+  `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '用户类型{0:会员 1:分销商}',
+  `leavel` tinyint(1) unsigned DEFAULT NULL COMMENT '分销商级别{0:A级分销商 1:B级分销商 2:C级分销商}',
+  `action` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '操作{0:注册 1:登录}',
+  `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
+  `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
+  `recommend` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员 4:分公司邀请分销商 5:分销商邀请分销商}',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_wechat
@@ -542,8 +644,9 @@ CREATE TABLE `st_work` (
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `dw_uid` (`dw_uid`)
-) ENGINE=MyISAM AUTO_INCREMENT=24112 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=24113 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_work
 -- ----------------------------
+INSERT INTO `st_work` VALUES ('24112', '1', null, '陈', 'hgR20180120114596815', null, '', '0', '显示器在城工珠援助佣兵 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城物城', '北京市北京市市辖区东城区', '0', '', '1516419920', '');
