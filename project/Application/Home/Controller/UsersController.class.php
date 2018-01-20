@@ -3,10 +3,10 @@ namespace Home\Controller;
 
 use Think\Controller;
 use \Org\Util\WeixinJssdk;
-class IndexController extends CommonController
+class UsersController extends CommonController
 {
     public function index()
     {
-        echo '网站主页';
+        echo '会员主页';
     }
 }

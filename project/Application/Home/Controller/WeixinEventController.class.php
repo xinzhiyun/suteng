@@ -58,15 +58,19 @@ class WeixinEventController extends Controller
                                     $this->reactVendor($toUser,$fromUser);
                                 break;
                             default:
-                                    // 查询微信二维码信息表
+                                    // 查询微信二维码信息表注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员 4:分公司邀请分销商 5:分销商邀请分销商}
                                     $show['ticket'] = $data['Ticket'];
-                                    $dimensionData  = M('dimension')->where($show)->field('recommend,leavel')->find();
+                                    $dimensionData  = M('dimension')->where($show)->field('recommend,leavel,recommend')->find();
                                     $recommend      = $dimensionData["recommend"]-0;
 
                                     // 准备微信信息表数据
-                                    if($recommend>2){
+                                    if($recommend>3){
                                         // 分销商 类型
                                         $addData['type']            = 1;
+                                        // 分销商级别
+                                        $addData['leavel']          = $dimensionData['leavel'];
+                                        // 邀请类型
+                                        $addData['recommend']          = $dimensionData['recommend'];
                                         // 操作注册
                                         $addData['action']          = 0;
                                         // 用户微信唯一标识
@@ -91,7 +95,9 @@ class WeixinEventController extends Controller
                                     }else{
                                         // 会员 类型
                                         $addData['type']            = 0;
-                                        $addData['action']          = 1;
+                                        $addData['action']          = 0;
+                                        // 邀请类型
+                                        $addData['recommend']          = $dimensionData['recommend'];
                                         // 用户微信唯一标识
                                         $addData['open_id']             = $data['FromUserName'];
                                         // 上级二维码票据
@@ -118,7 +124,7 @@ class WeixinEventController extends Controller
                         // 扫普通二维码
                         // 会员 类型
                         $addData['type']            = 0;
-                        $addData['action']          = 1;
+                        $addData['action']          = 0;
                         // 用户微信唯一标识
                         $addData['open_id']             = $data['FromUserName'];
                         // 创建时间
@@ -155,13 +161,17 @@ class WeixinEventController extends Controller
                     default:
                             // 查询微信二维码信息表
                             $show['ticket'] = $data['Ticket'];
-                            $dimensionData  = M('dimension')->where($show)->field('recommend,leavel')->find();
+                            $dimensionData  = M('dimension')->where($show)->field('recommend,leavel,recommend')->find();
                             $recommend      = $dimensionData["recommend"]-0;
 
                             // 准备微信信息表数据
-                            if($recommend>2){
+                            if($recommend>3){
                                 // 分销商 类型
                                 $addData['type']            = 1;
+                                // 分销商级别
+                                $addData['leavel']          = $dimensionData['leavel'];
+                                // 邀请类型
+                                $addData['recommend']          = $dimensionData['recommend'];
                                 // 操作注册
                                 $addData['action']          = 0;
                                 // 用户微信唯一标识
@@ -186,7 +196,9 @@ class WeixinEventController extends Controller
                             }else{
                                 // 会员 类型
                                 $addData['type']            = 0;
-                                $addData['action']          = 1;
+                                $addData['action']          = 0;
+                                // 邀请类型
+                                $addData['recommend']          = $dimensionData['recommend'];
                                 // 用户微信唯一标识
                                 $addData['open_id']             = $data['FromUserName'];
                                 // 上级二维码票据

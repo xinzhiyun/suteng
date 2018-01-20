@@ -6,13 +6,13 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>经销商管理 <small>经销商列表</small></h5>
-                        <div class="ibox-tools">
-                            <a href="vendor_add" class="close-link">
+                        <h5>分销商管理 <small>分销商列表</small></h5>
+<!--                         <div class="ibox-tools">
+                            <a href="company_add" class="close-link">
                                 <i class="fa fa-user-plus"></i>
-                                添加分销商
+                                添加分公司
                             </a>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="ibox-content">
                         <table class="table">
@@ -20,10 +20,11 @@
                                 <tr>
                                     <th>序号</th>
                                     <th>姓名</th>
-                                    <th>电话</th>
-                                    <th>座机</th>
-                                    <th>身份证</th>
-                                    <th>上级经销商</th>
+                                    <th>级别</th>
+                                    <th>A级分销商邀请</th>
+                                    <th>B级分销商邀请</th>
+                                    <th>C级分销商邀请</th>
+                                    <th>邀请会员注册</th>
                                     <th>分配用户名</th>
                                     <th>状态</th>
                                     <th>加入时间</th>
@@ -39,10 +40,11 @@
                                         <tr>
                                             <td>{{$i}}</td>
                                             <td>{{$val.name}}</td>
-                                            <td>{{$val.phone}}</td>
-                                            <td>{{$val.telphone}}</td>
-                                            <td>{{$val.idcard}}</td>
-                                            <td>{{$parent_user}}</td>
+                                            <td>{{$val.leavel}}</td>
+                                            <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_a}}" alt="A级邀请"></td>
+                                            <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_b}}" alt="B级邀请"></td>
+                                            <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_c}}" alt="C级邀请"></td>
+                                            <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_user}}" alt="C级邀请"></td>
                                             <td>{{$val.user}}</td>
                       <!--                       <switch name="val.status">
                                                 <case value="0"><td>待审核</td></case>

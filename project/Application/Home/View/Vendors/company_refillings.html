@@ -5,33 +5,34 @@
 	<title>注册经销商</title>
 	<link href="/Public/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
 </head>
-<style>
-    div.form-group{
-        width: 100%;
-    }
-</style>
 <body>
     <div class="ibox-content">
-        <form action="{{:U('Home/RegisteredVendor/index')}}" method="post" class="form-horizontal" enctype="multipart/form-data">
+        <form action="{{:U('Home/Vendors/company_refillings')}}" method="post" class="form-horizontal" enctype="multipart/form-data">    
             <div class="form-group">
-                <label class="col-sm-2 control-label">用户名</label>
+                <label class="col-sm-2 control-label">公司名称</label>
 
                 <div class="col-md-3">
-                    <input type="text" name='user' class="form-control">
+                    <input type="text" name="company" class="form-control">
+                </div>
+            </div> 
+            <div class="form-group">
+                <label class="col-sm-2 control-label">固定电话</label>
+
+                <div class="col-md-3">
+                    <input type="text" name="telephone" class="form-control">
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">密码</label>
+                <label class="col-sm-2 control-label">公司地址</label>
 
                 <div class="col-md-3">
-                    <input type="password" name="password" class="form-control" name="password">
+                    <input type="text" name="address" class="form-control">
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">密码确认</label>
-
+                <label class="col-sm-2 control-label">营业执照</label>
                 <div class="col-md-3">
-                    <input type="password" name="repassword" class="form-control" name="password">
+                    <input type="file" name="licence" class="form-control">
                 </div>
             </div>
             <div class="hr-line-dashed"></div>

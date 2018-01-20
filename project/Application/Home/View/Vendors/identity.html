@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>注册经销商</title>
+	<link href="/Public/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+</head>
+<body>
+    <div class="ibox-content">
+        <form action="{{:U('Home/Vendors/identity')}}" method="post" class="form-horizontal" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">姓名</label>
+                <div class="col-md-3">
+                    <input type="text" name="name" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">移动电话</label>
+                <div class="col-md-3">
+                    <input type="text" name="phone" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">身份证号</label>
+                <div class="col-md-3">
+                    <input type="text" name="identity" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">身份证正面</label>
+                <div class="col-md-3">
+                    <input type="file" name="positive" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">身份证反面</label>
+                <div class="col-md-3">
+                    <input type="file" name="opposite" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">手持身份证</label>
+                <div class="col-md-3">
+                    <input type="file" name="handheld" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-4 col-sm-offset-2">
+                    <button class="btn btn-primary" type="submit">提交</button>
+                    <button class="btn btn-white" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
