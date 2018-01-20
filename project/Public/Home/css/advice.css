@@ -1,0 +1,53 @@
+._advice{
+	width: 100%;
+}
+.adviceContainer{
+	width: 90%;
+	padding:0.533333rem 5% 0rem;
+	position: relative;
+}
+.adviceTop{
+	width: 100%;
+	height: 13.333333rem;
+}
+.adviceTop h3 {
+	font-size: 0.6rem;
+	line-height: 0.8rem;
+	margin-bottom: 0.266667rem;
+}
+.adviceTop h3 span{
+	margin-top: -0.133333rem;
+	color: #f00;
+	font-size: 0.213333rem;
+}
+.adviceTop textarea {
+	margin-top: 0.133333rem;
+	height:5.333333rem;
+	width: 100%;
+	display: inline-block;
+	resize: none;
+	overflow: hidden;
+	border: 1px dashed #CCC;
+}
+.adviceTop p {
+	line-height:0.933333rem;
+	color: #767676;
+	font-size: 0.266667rem;
+}
+.adviceFoot{
+	position: fixed;
+	bottom:1.5rem;
+	width: 90%;
+	margin:0 auto;
+
+
+}
+.adviceFoot input{
+	width: 100%;
+	height: 1.333333rem;
+	font-size: 0.8rem;
+	border-radius: 0.2rem;
+	background: #2EB6AA;
+	border:none;
+	color: #fff;
+}

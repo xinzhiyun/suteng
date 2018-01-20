@@ -7,13 +7,8 @@ use Think\Model\RelationModel;
  * @package Admin\Model
  * @author 潘宏钢 <619328391@qq.com>
  */
-<<<<<<< HEAD
 class WorkModel extends RelationModel
-{   
-=======
-class WorkModel extends BaseModel
 {
->>>>>>> eec6ff50f44b139212673fbf7867d33f2a875c6f
     protected $patchValidate = true;
     // 自动验证
     protected $_validate = array(
@@ -52,15 +47,11 @@ class WorkModel extends BaseModel
     // );
 
 
-<<<<<<< HEAD
     /**
      * 获取work表的记录
      * @param  array $map 查询条件
      * @return array      查询结果和分页数据
      */
-=======
-     //
->>>>>>> eec6ff50f44b139212673fbf7867d33f2a875c6f
     public function getWorksInfo($map)
     {
         // 分页
@@ -116,7 +107,6 @@ class WorkModel extends BaseModel
         $list['result'] = $result[$list['result']];
         return $list;
     }
-<<<<<<< HEAD
 
     /**
      * 添加数据
@@ -153,14 +143,14 @@ class WorkModel extends BaseModel
                 ->where($map)
                 ->order($order)
                 ->limit($page->firstRow.','.$page->listRows)
-                ->select();         
+                ->select();
         }else{
             $list=$model
                 ->field($field)
                 ->where($map)
                 ->order($order)
                 ->limit($page->firstRow.','.$page->listRows)
-                ->select();         
+                ->select();
         }
         $data=array(
             'data'=>$list,
@@ -169,6 +159,3 @@ class WorkModel extends BaseModel
         return $data;
     }
 }
-=======
-}
->>>>>>> eec6ff50f44b139212673fbf7867d33f2a875c6f

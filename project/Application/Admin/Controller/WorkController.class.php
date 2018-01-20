@@ -39,7 +39,7 @@ class WorkController extends CommonController
                         ];
             $this->ajaxReturn($message);
         }
-        $work = D('works');
+        $work = D('work');
         $data = $work->getWorkInfoByID($id);
                 $data = $work->getAll($data);
                 // dump($workList);die;

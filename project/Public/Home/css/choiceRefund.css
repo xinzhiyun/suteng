@@ -1,0 +1,92 @@
+body{
+	font-size: 0.7rem;
+}
+
+/*一个item的样式*/
+.appContain>.item{
+	height: 5.7rem;
+	border-bottom:1px solid #F3F3F3;
+	padding:0.666667rem 5%;
+}
+.item>.appLeft{
+	float: left;
+	width: 45%;
+	height: 100%;
+	line-height: 8rem;
+}
+.item>.appLeft>i{
+    float: left;
+    width: 16%;
+    height: 100%;
+    font-size: 0.9rem;
+    line-height: 5rem;
+    color: #ccc;
+}
+.item>.appLeft>i.icon-xuanze{
+	color: #56AAF1;
+}
+.item>.appLeft>span{
+	float: left;
+	width: 84%
+}
+.item>.appLeft>span>img{
+	width: 100%;
+	line-height: 8rem;
+}
+/*item右边*/
+.item>.appRight{
+	width: 50%;
+	height: 100%;
+	float: right;
+}
+.appRight>h4{
+	line-height: 1.0rem;
+}
+.appRight>.changTxt{
+	height:58%;
+	font-size: 0.213333rem;
+	overflow:hidden;
+	color: #5A5A5A; 
+	text-overflow:ellipsis;
+	display:-webkit-box; 
+	-webkit-box-orient:vertical;
+	box-orient:vertical;
+	-webkit-line-clamp:4; 
+	line-clamp:4; 
+}
+.appRight>p{
+	display: block;
+	width: 100%;
+	line-height: 1.5rem;
+}
+.appRight>p>b{
+	color: #FC2A2B;
+}
+.appRight>p>span{
+	float: right;
+}
+/*底部按钮*/
+.appFoot{
+	position: fixed;
+	bottom: 0;
+	height: 1.8rem;
+	width: 100%;
+	text-align: center;
+	line-height: 1.8rem;
+}
+.appFoot>span{
+	display: inline-block;
+	width: 50%;
+	height: 100%;
+}
+.appFoot>span>i{
+	margin-right: 0.2rem;
+}
+.appFoot>input{
+	width: 50%;
+	height: 100%;
+	border:none;
+	display: inline-block;
+	background: #2EB6AA;
+	color: #FFF;
+}

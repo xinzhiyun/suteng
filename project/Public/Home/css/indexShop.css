@@ -1,0 +1,245 @@
+
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body {
+			width: 100vw;
+			height: 100vh;
+			font-size: .7rem;
+			overflow-x: hidden;
+		}
+		#header {
+			width: 100vw;
+			height: 8vh;
+			position: fixed;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			background: #fff;
+			z-index: 999;
+		}
+		#header>span {
+			flex: 1;
+			height: 8vh;
+    		line-height: 8vh;
+		    display: block;
+		    text-align: center;
+		    font-size: 0.5rem;
+		}
+		
+
+/*<!-- <div class="shopTop bg2 clearfix">
+			<div class="search bg5 clearfix">
+				<label for="search-all">
+					<input type="text" placeholder="请输入您想买的东西" class="bg5"><i class="iconfont icon-msnui-find-bold"></i>
+				</label><span class="iconfont icon-icon--"></span>
+			</div>
+		</div> -->*/
+
+
+
+		/*顶部标题下面的线*/
+		/*标题切换 改这里left,20%,40%,60%,80%*/
+		#line {
+			width: 20vw;
+			height: 1vh;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			margin-bottom: -1vh;
+			transition: left .2s ease-in;
+		}
+		
+		#line>span {
+			width: 50%;
+    		height: 1vh;
+    		display: block;
+    		margin: -46px auto;
+    		border-radius: 10px;
+    		background: #60ACF0;
+		}
+		#content {
+			/*margin-top: 2rem;*/
+			width: 500vw;
+			/*height: 55rem;*/
+			position: relative;
+			padding: 1vh 0;
+		}
+		/*全部订单,待付款，待发货，待收货，待评论*/
+		#dingdanAll,
+		#dingdanDaifukuan,
+		#dingdanDaifahuo,
+		#dingdanDaishouhuo,
+		#dingdanDaipinglun {
+			
+			width: 100vw;
+			position: absolute;
+			padding: 1vh 0;
+			top: 0;
+			background: #fff;
+			transition: left .4s ease-out;
+		}
+
+		#dingdanAll {
+			left: 0;
+		}
+		#dingdanDaifukuan {
+			left: 100vw;
+		}
+		#dingdanDaifahuo {
+			left: 200vw;
+		}
+		#dingdanDaishouhuo {
+			left: 300vw;
+		}
+		#dingdanDaipinglun {
+			left: 400vw;
+		}
+		.goods{
+			/*height: 22rem;*/
+			
+			width: 100%;
+		}
+		
+		/*搜索栏 */
+		.shopTop{
+			width: 100%;
+   			margin-top: 2rem;
+   			margin-bottom: 1rem;
+    		/*height: 15rem;*/
+    		position: relative;
+    		top:1.0vh;
+    		z-index: 99;
+		}
+		.search{
+    			width: 12.5rem;
+			    height: 1.6rem;
+			    line-height: 1.4rem;
+    			margin: 0rem 0.8rem 0rem 1rem;
+    			border:1px solid #ccc;
+    			border-radius: 0.266667rem;
+    			position: relative;
+
+		}
+		.search>label>input{
+			display: inline-block;
+			margin-left: 0.2rem;
+			width: 90%;
+			height: 1.4rem;
+			border:none;
+			font-size: 0.2rem;
+
+
+		}
+		.search>label>i{
+			font-size: 0.426667rem;
+		}
+		.search>i{
+			display: inline-block;
+			width: 2%;
+			float: right;
+			position: absolute;
+			top:0;
+			right: -0.6rem;
+			font-size: 1.2rem;
+		}
+		.search>span{
+			position: absolute;
+		    display: inline-block;
+		    width: 0.8rem;
+		    height: 0.8rem;
+		    border-radius: 1rem;
+		    background: #F00;
+		    right: -1.8rem;
+		    font-size: 0.1rem;
+		    text-align: center;
+		    line-height: 0.8rem;
+		    color: #FFF;
+		}
+		/*<!-- 轮播图 -->*/
+		#myFocus{
+			border:1px solid #F6F6F6;
+		 width:90%; height:6rem;
+			margin:0.8rem 5%;
+			border-radius: 0.3rem;
+		}
+		.mF_fancy .prev,.mF_fancy .next{
+			top:25%!important;
+		}
+		.pic>ul>li>a>img{
+			/*width: 100%;*/
+		}
+		.mF_fancy_myFocus{
+			margin-top: 0.066667rem;
+		}
+
+		/*所有商品*/
+		.goodstitle>h3{
+			text-align: center;
+    	    font-weight: 600;
+    	    margin-bottom: 1rem;
+		}
+		.goodstitle>h3>span{
+			color: #F98D2D;
+		}
+		.allgoods{
+			width: 100%;
+			height: 12rem;
+			margin:0 auto;
+		}
+		/*.allgoods>ul{
+			width: 100%;
+		
+			
+		}*/
+		.allgoods>ul>li{
+			   float: left;
+			    display: block;
+			    width: 50%;
+			    height: 8rem;
+			    padding: 5% 5%;
+			    box-sizing: border-box;
+   
+		}
+		.allgoods>ul>li>a{
+			
+			display: block;
+			width: 5rem;
+		}
+		.allgoods>ul>li>a>p{
+			font-size: 0.213333rem;
+    		line-height: 1rem;
+		}
+		.allgoods>ul>li>a>i{
+			font-size: 0.8rem;
+		    color: #F00;
+		    position: relative;
+		    right: -66%;
+		}
+		.allgoods>ul>li>a>b{
+			font-size: 0.6rem;
+			color: #f00;
+		}
+		.allgoods>ul>li>a>img{
+
+			width: 130%;
+			/*height: 100%;*/
+
+		}
+		.allgoods>ul>li:nth-child(odd)>a>img{
+			border:1px solid #ccc;
+			border-radius: 0.2rem;
+
+		}
+		/*.allgoods>ul>li>a>img:nth-child(2n){
+			padding: 0.5rem 0.4rem 0.5rem 0rem;
+
+		}
+*/
+
+
+
+
+

@@ -1,0 +1,238 @@
+.appContain>h3,.appsureContain>h3{
+	padding:0.666667rem 5% 0;
+}
+body{
+	font-size: 0.7rem;
+}
+/*一个item的样式*/
+.itemContain>.item{
+	height: 5.7rem;
+	border-bottom:4px solid #F3F3F3;
+	padding:0.666667rem 5%;
+}
+.item>.appLeft{
+	float: left;
+	width: 45%;
+	height: 100%;
+	line-height: 8rem;
+}
+
+.item>.appLeft>span{
+	float: left;
+	width: 90%;
+}
+.item>.appLeft>span>img{
+	width: 100%;
+	line-height: 8rem;
+}
+/*item右边*/
+.item>.appRight{
+	width: 50%;
+	height: 100%;
+	float: right;
+}
+.appRight>h4{
+	line-height: 1.0rem;
+}
+.appRight>.changTxt{
+	height:58%;
+	font-size: 0.213333rem;
+	overflow:hidden;
+	color: #5A5A5A; 
+	text-overflow:ellipsis;
+	display:-webkit-box; 
+	-webkit-box-orient:vertical;
+	box-orient:vertical;
+	-webkit-line-clamp:4; 
+	line-clamp:4; 
+}
+.appRight>p{
+	display: block;
+	width: 100%;
+	line-height: 1.8rem;
+}
+.appRight>p>b{
+	color: #FC2A2B;
+}
+.appRight>p>span{
+	float: right;
+}
+/*商品状态块applist样式*/
+.applist{
+	border-bottom:4px solid #F3F3F3;
+
+}
+.applist>p{
+	padding:0 5%;
+	display: block;
+	height: 2.2rem;
+	line-height: 2rem;
+	border-bottom:1px solid #F3F3F3;
+}
+.applist>p>span{
+	float: right;
+}
+.applist>p>span>i{
+	margin-left: 0.4rem;
+	font-size: 0.6rem;
+}
+.applist>p.shuoming{
+	border:none;
+
+}
+.applist>p.shuoming>i{
+	font-weight: normal;
+	color: #F00;
+}
+.applist>p.tuikuang{
+	/*margin-top: 3rem;*/
+	border-top:1px solid #F3F3F3;
+}
+.applist>label{
+	display: block;
+
+}
+.applist>label>p{
+	padding:0 5%;
+	display: block;
+	height: 1.6rem;
+	line-height: 2rem;
+}
+.applist>label>p>i{
+	color: #F00;
+}
+.applist>label>textarea{
+	font-size: 0.453333rem;
+	height:5rem;
+	width:90%;
+	line-height: 0.8rem;
+	resize: none;
+	border: none;
+	padding:0 5%;
+}
+
+.applist>p.tuikuang>em{
+	color: #FC2A2B;
+	font-weight: 600;
+	margin-left: 0.2rem;
+}
+.applist>p.tuikuang>span{
+	font-size:0.186667rem;
+	color: #797979;
+
+}
+/*图片上传*/
+.sendpic{
+	width: 100%;
+	height: 8rem;
+	padding:0 5%;
+	margin-bottom: 5rem;
+}
+.sendpic>p{
+	line-height: 2rem;
+}
+.picBtn{
+	position: relative;
+}
+.picBtn>i{
+	font-size: 5rem;
+	color:#DCF8FF;
+}
+.picBtn>span{
+	position: absolute;
+    bottom: 0.7rem;
+    left: 1.4rem;
+    font-size: 0.213333rem;
+
+}
+.picBtn>input{
+	opacity: 0;
+	display: block;
+    width: 4.3rem;
+    height: 4.2rem;
+    position: absolute;
+    top: 0.58rem;
+    left: 0.3rem;
+}
+
+				
+/*底部按钮*/
+.appFoot{
+	height: 1.8rem;
+	width: 100%;
+	text-align: center;
+	line-height: 1.8rem;
+	z-index:12;
+
+}
+.appFoot>input{
+	width: 100%;
+	height: 100%;
+	border:none;
+	display: inline-block;
+	background: #2EB6AA;
+	color: #FFF;
+}
+
+/*确认申请退款*/
+.appsureContain{
+	position: absolute;
+	left:0;
+	top:0;
+	background: #C7C7C7;
+	height: 100%;
+	width: 100%;
+	opacity: 0.5;
+	z-index: 94;
+	display: none;
+
+	
+}
+.appsureFoot{
+	position: fixed;
+	bottom: 0;
+	height: 12rem;
+	width: 100%;
+	z-index: 999; 
+	background: #FFF;
+	display: none;
+
+}
+.appsureFoot>h3{
+	display: block;
+	height: 2rem;
+	width: 100%;
+	text-align: center;
+	line-height: 2rem;
+	margin-bottom: 2rem;
+
+}
+.appsureFoot>p{
+	width: 95;
+	padding: 0 5%;
+	display: block;
+	height: 2rem;
+	line-height: 2rem;
+}
+.appsureFoot>p>b{
+	display: inline-block;
+    width: 22%;
+    margin-right: 0.4rem;
+}
+.appsureFoot>p>span{
+	font-size: 0.186667rem;
+    color: #797979;
+}
+.appsureFoot>p>i{
+	float: right;
+	color: #56AAF1;
+	font-size: 0.8rem;
+}
+.appsureFoot>input{
+	width: 100%;
+    border: none;
+    background: #2EB6AA;
+    color: #FFF;
+    height: 2rem;
+    margin-top: 2rem;
+}

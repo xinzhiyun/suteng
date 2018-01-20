@@ -22,3 +22,21 @@ a:active{text-decoration:none;}/* 指正在点的链接*/
 .clearfix:after{content:"";height:0;line-height:0;display:block;visibility:hidden;clear:both}
 .clearfix{zoom:1;}/*为了兼容IE*/
 .clear{clear:both;}
+.bg1{
+	background: #FFC0CB;
+}
+.bg2{
+	background: #EE82EE;
+}
+.bg3{
+	background: #9400D3;
+}
+.bg4{
+	background: #F8F8FF;
+}
+.bg5{
+	background: #87CEEB;
+}
+.bg6{
+	background:	#98FB98;
+}
