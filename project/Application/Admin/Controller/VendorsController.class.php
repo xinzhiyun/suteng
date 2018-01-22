@@ -11,20 +11,6 @@ class VendorsController extends CommonController
     }
 
     /**
-     * [vendor_list 经销商列表]
-     * @return [type] [description]
-     */
-    public function vendor_list()
-    {
-        $data = D('vendors')->vendorList();
-        $assign = [
-            'data' => $data,
-        ];
-        $this->assign($assign);
-        $this->display();
-    }
-
-    /**
      * [company_add 分公司添加]
      * @return [type] [description]
      */
@@ -140,7 +126,7 @@ class VendorsController extends CommonController
                         // 设置级别为分公司
                         $data['leavel']     = 1;
                         // 设置状态为待审批
-                        $data['status']     = 3;
+                        $data['status']     = 7;
                         // 设置添加责任人
                         $data['add_liable'] = $_SESSION['adminInfo']['user'];
                         // 将图片合并入数据中
@@ -189,6 +175,21 @@ class VendorsController extends CommonController
     }
 
     /**
+     * [vendor_list 经销商列表]
+     * @return [type] [description]
+     */
+    public function vendor_list()
+    {
+        $data = D('vendors')->vendorList();
+        $assign = [
+            'data' => $data,
+        ];
+        $this->assign($assign);
+        $this->display();
+    }
+
+
+    /**
      * [vendor_reviewed 分销商审核列表]
      * @return [type] [description]
      */
@@ -203,7 +204,7 @@ class VendorsController extends CommonController
     }
 
     /**
-     * [vendor_reviewed 分销商审核列表]
+     * [reviewed 分销商审核]
      * @return [type] [description]
      */
     public function reviewed()
@@ -229,7 +230,7 @@ class VendorsController extends CommonController
     }
 
     /**
-     * [reviewed 分销商审核详情信息]
+     * [vendor_data 分销商审核详情信息]
      * @return [type] [description]
      */
     public function vendor_data()

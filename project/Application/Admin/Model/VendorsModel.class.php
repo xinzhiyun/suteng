@@ -66,13 +66,13 @@ class VendorsModel extends BaseModel
     }
 
     /**
-     * [companyList 分公司待审核列表]
+     * [vendorReviewed 分销商待审核列表]
      * @return [type] [description]
      */
     public function vendorReviewed(){
         
         // 查询分公司数据
-        $list = $this->where('`leavel`=1 AND `status`=3')->order('updatetime desc')->select();
+        $list = $this->where('`leavel`>1 AND `status`=3')->order('updatetime desc')->select();
         // 返回格式化后数据
         return $this->formatData($list);
     }
@@ -84,7 +84,7 @@ class VendorsModel extends BaseModel
      */
     public function vendorList(){
         // 查询分公司数据
-        $list = $this->where('`leavel`=4')->order('updatetime desc')->select();
+        $list = $this->where('`leavel`>1')->order('updatetime desc')->select();
         // 返回格式化后数据
         return $this->formatData($list);
 
