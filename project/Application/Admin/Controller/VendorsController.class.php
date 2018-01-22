@@ -138,11 +138,13 @@ class VendorsController extends CommonController
                         // 将分公司唯一标识加人数组中
                         $data['code']    = $this->vendor_code();
                         // 设置级别为分公司
-                        $data['leavel']  = 1;
+                        $data['leavel']     = 1;
                         // 设置状态为待审批
-                        $data['status']  = 3;
+                        $data['status']     = 3;
+                        // 设置添加责任人
+                        $data['add_liable'] = $_SESSION['adminInfo']['user'];
                         // 将图片合并入数据中
-                        $newData         = array_merge($data,$info,$ticket); 
+                        $newData            = array_merge($data,$info,$ticket); 
                         //dump($newData);die;
                         // 验证通过 写入新增数据
                         if($vendors->add($newData)){
@@ -187,37 +189,66 @@ class VendorsController extends CommonController
     }
 
     /**
-     * [vendor_reviewed 分公司审核列表]
+     * [vendor_reviewed 分销商审核列表]
      * @return [type] [description]
      */
-    public function company_reviewed()
+    public function vendor_reviewed()
     {
-        // $map['parent_code'] = 156345;
-        // $map['status'] = 0;
-        // $parent_user = M('vendors')->where("code=".$map['parent_code'])->getField('user');
-        // $data = M('vendors')->where($map)->select();
-        // $assign = [
-        //     'data' => $data,
-        //     'parent_user' => $parent_user,
-        // ];
-        // $this->assign($assign);
+        $data = D('vendors')->vendorReviewed();
+        $assign = [
+            'data' => $data,
+        ];
+        $this->assign($assign);
         $this->display();
     }
 
     /**
-     * [reviewed 分公司审核]
+     * [vendor_reviewed 分销商审核列表]
      * @return [type] [description]
      */
     public function reviewed()
     {
-        $id = I('post.');
-        $data = ['status' => 1, 'updatetime' => time()];
-        $res = M('vendors')->where($id)->save($data);
+        // 更新条件
+        $saveData['id'] = I('post.id');
+        // 更新数据
+        $data['status'] = I('post.status');
+        // 审核-责任人
+        $data['auditing'] = $_SESSION['adminInfo']['user'];
+        // 执行更新
+        $res = D('vendors')->where($saveData)->save($data);
+        // 判断信息是否修改成功
         if($res){
-            $message = ['code' => 200, 'message' => 'OK'];
+            // 查询成功，设置返回前端的数据
+            $message     = ['code' => 200, 'message' => '审核成功'];
         } else {
-            $message = ['code' => 403, 'message' => '审核失败'];
+            // 查询失败，设置返回前端的数据
+            $message     = ['code' => 403, 'message' => '审核失败'];
         }
+        // 返回JSON格式数据
+        $this->ajaxReturn($message);
+    }
+
+    /**
+     * [reviewed 分销商审核详情信息]
+     * @return [type] [description]
+     */
+    public function vendor_data()
+    {
+        // 接收查询的ID号
+        $showData['id'] = I('post.id');
+        // 根据ID查询分公司详细信息
+        $data = M('vendors')->where($showData)->find();
+        // 判断信息是否查询成功
+        if($data){
+            // 查询成功，设置返回前端的数据
+            $message['res']     = ['code' => 200, 'message' => 'OK'];
+            $message['data']    = $data;
+        } else {
+            // 查询失败，设置返回前端的数据
+            $message['res']     = ['code' => 403, 'message' => '查询失败'];
+            $message['data']    = null;
+        }
+        // 返回JSON格式数据
         $this->ajaxReturn($message);
     }
 

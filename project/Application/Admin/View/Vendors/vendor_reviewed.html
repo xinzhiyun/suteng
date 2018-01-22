@@ -6,69 +6,121 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>经销商管理 <small>经销商审核</small></h5>
+                        <h5>分公司管理 <small>分公司审核</small></h5>
                         <div class="ibox-tools">
+                            <a href="company_add" class="close-link">
+                                <i class="fa fa-user-plus"></i>
+                                添加分公司
+                            </a>
                         </div>
                     </div>
                     <div class="ibox-content">
-
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>序号</th>
+                                    <th>账号</th>
                                     <th>姓名</th>
-                                    <th>电话</th>
-                                    <th>座机</th>
-                                    <th>身份证</th>
-                                    <th>上级经销商</th>
-                                    <th>分配用户名</th>
-                                    <th>提交时间</th>
-                                    <th>详情</th>
+                                    <th>手机</th>
+                                    <th>身份证号码</th>
+                                    <th>公司名称</th>
+                                    <th>座机号码</th>
+                                    <th>地址</th>
+                                    <th>状态</th>
+                                    <th>添加责任人</th>
+                                    <th>创建时间</th>
+                                    <th>更新时间</th>
+                                    <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <empty name="data">
-                                    <tr><td><h3>没有待审核消息</h3></td></tr>
+                                    <tr><td><h3>暂无消息</h3></td></tr>
                                 <else />
                                     <volist name="data" id="val">
                                         <tr>
                                             <td>{{$i}}</td>
+                                            <td><a href="javascript:ajaxData({{$val.id}});">{{$val.user}}</a></td>
                                             <td>{{$val.name}}</td>
                                             <td>{{$val.phone}}</td>
-                                            <td>{{$val.telphone}}</td>
-                                            <td>{{$val.idcard}}</td>
-                                            <td>{{$parent_user}}</td>
-                                            <td>{{$val.user}}</td>
+                                            <td>{{$val.identity}}</td>
+                                            <td>{{$val.company}}</td>
+                                            <td>{{$val.telephone}}</td>
+                                            <td>{{$val.address}}</td>
+                                            <td>{{$val.status}}</td>
+                                            <td>{{$val.add_liable}}</td>
                                             <td>{{$val.addtime|date="Y-m-d H:i:s",###}}</td>
+                                            <td>{{$val.updatetime|date="Y-m-d H:i:s",###}}</td>
                                             <td>
-                                                <a onclick="access('{{$val.id}}')" href="#">通过</a>
-                                                <a onclick="faild('{{$val.id}}')" href="#">拒绝</a>
+                                                <a onclick="access({{$val.id}},7)" href="#">通过</a>
+                                                <a onclick="access({{$val.id}},4)" href="#">身份失败</a>
+                                                <a onclick="access({{$val.id}},5)" href="#">公司失败</a>
+                                                <a onclick="access({{$val.id}},6)" href="#">协议失败</a>
                                             </td>
                                         </tr>
                                     </volist>
                                 </empty>
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</block>
+<block name="myjs">
+<script src="__PUBLIC__/Admin/layui/layui.js"></script>
     <script>
-        function access(id){
-            $.ajax({
-                url:"reviewed",
-                type:"post",
-                data:{'id':id},
-                success:function(res){
-                    alert(res.message)
-                    window.location.reload()
-                },
-                error:function(res){
-                    alert(res.message)
+    /**
+     * [ajaxData 获取详情]
+     * @param  {[type]} id [ID属性值]
+     * @return {[type]}    [json数据]
+     */
+    function ajaxData(id){
+        $.ajax({
+            url:"{{:U('Admin/Vendors/reviewed_data')}}",
+            data:{"id":id},
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                console.dir(res);
+                if(res.res.code == 200){
+                    // 页面层
+                    parent.layer.open({
+                        type: 1,
+                        skin: 'layui-layer-rim', //加上边框
+                        area: ['60%', '100%'], //宽高
+                        content:'<h3>分销商详情页面</h3>'
+                    });
+                }else{
+                    // 查询失败提示
+                    parent.layer.msg(resdata.res.message);
                 }
-            })
-        }
+            }
+        });
+    }
+
+    /**
+     * [access 审核接口]
+     * @param  {[type]} id     [ID属性值]
+     * @param  {[type]} status [{7：通过审核，4：身份证审核失败，5：公司信息审核失败，6：协议审核失败}]
+     * @return {[type]}        [json数据]
+     */
+    function access(id,status){
+        $.ajax({
+            url:"{{:U('Admin/Vendors/reviewed')}}",
+            type:"post",
+            data:{'id':id,'status':status},
+            success:function(res){
+                // 查询失败提示
+                parent.layer.msg(res.message);
+                window.location.reload()
+            },
+            error:function(res){
+                // 失败提示
+                parent.layer.msg(res.message);
+            }
+        })
+    }
     </script>
 </block>
