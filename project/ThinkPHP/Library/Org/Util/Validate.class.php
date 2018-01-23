@@ -2,7 +2,7 @@
 namespace Org\Util;
 
 /**
-* 
+* Org\Util\Validate;
 */
 class Validate
 {
@@ -21,7 +21,7 @@ class Validate
 	// 检测是否合法用户名
 	public function isName($subject)
 	{
-		return preg_match('/^[\w\x{4e00}-\x{9fa5}]+$/u',$subject);
+		return preg_match('/^[a-zA-Z\x{4e00}-\x{9fa5}][\w\x{4e00}-\x{9fa5}]{1,30}$/u',$subject);
 	}
 
 	// 检测是否合法地址
@@ -40,6 +40,12 @@ class Validate
 	public function isMailbox($subject)
 	{
 		return preg_match('/^\w+@(\w+\.)+(([a-z]){2,6}|([\x{4e00}-\x{9fa5}]{2,3}))$/ui',$subject);
+	}
+
+	// 检测是否身份证
+	public function isIdentity($subject)
+	{
+		return preg_match('/(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}[0-9Xx]$)/',$subject);
 	}
 
 	/**

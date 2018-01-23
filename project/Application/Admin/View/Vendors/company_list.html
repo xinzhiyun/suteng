@@ -1,5 +1,7 @@
 <extend name="Public/base" />
-
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+</block>
 <block name="content">
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
@@ -29,7 +31,6 @@
                                     <th>状态</th>
                                     <th>加入时间</th>
                                     <th>更新时间</th>
-                                    <th>详情</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
@@ -40,27 +41,23 @@
                                     <volist name="data" id="val">
                                         <tr>
                                             <td>{{$i}}</td>
-                                            <td>{{$val.name}}</td>
+                                            <td><a href="javascript:ajaxData({{$val.id}})">{{$val.name}}</a></td>
                                             <td>{{$val.phone}}</td>
                                             <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_a}}" alt="A级邀请"></td>
                                             <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_b}}" alt="B级邀请"></td>
                                             <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_c}}" alt="C级邀请"></td>
                                             <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_user}}" alt="C级邀请"></td>
                                             <td>{{$val.user}}</td>
-                      <!--                       <switch name="val.status">
-                                                <case value="0"><td>待审核</td></case>
-                                                <case value="1"><td>使用中</td></case>
-                                                <case value="2"><td>已停用</td></case>
-                                                <default /> /
-                                            </switch> -->
                                             <td>{{$val.status}}</td>
                                             <td>{{$val.addtime|date="Y-m-d H:i:s",###}}</td>
                                             <td>{{$val.updatetime|date="Y-m-d H:i:s",###}}</td>
                                             <td>
-                                                <a href="#">查看</a>
-                                            </td>
-                                            <td>
-                                                <a href="javascript:del({{$val.id}})">删除</a>
+                                                <a class="btn btn-sm btn-success" href="javascript:revise({{$val.id}})">修改</a>
+                                                <a class="btn btn-sm btn-success" href="javascript:take_over({{$val.id}})">交接</a>
+                                                <if condition="$val.status eq 审批成功"><a class="btn btn-sm btn-success" href="javascript:forbidden({{$val.id}})">禁用</a>
+                                                    <else /> <a class="btn btn-sm btn-success" href="javascript:start({{$val.id}})">启用</a>
+                                                </if>
+                                                <a class="btn btn-danger btn-sm" href="javascript:del({{$val.id}})">删除</a>
                                             </td>
                                         </tr>
                                     </volist>
@@ -72,29 +69,498 @@
             </div>
         </div>
     </div>
+    <!-- 弹框信息 -->
+    <div class="modal inmodal" id="take_over" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        交接分公司
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="pid" value="0">
+                    <table class="table table-striped table-bordered table-hover table-condensed">
+                        <tr>
+                            <th width=15%>
+                                原分公司
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <input class="input-medium form-control" type="text" name="officeid" disabled="true">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width=15%>
+                                新分公司
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <select name="officeLeavel" id="officeLeavel" class="input-medium form-control">
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                            </th>
+                            <td>
+                                <input class="btn btn-success" id="over_company_qx" type="submit" value="取消">
+                                <input class="btn btn-success" id="over_company" type="submit" value="交接">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹框信息 -->
+    <div class="modal inmodal" id="revise" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        修改分公司
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <!-- 修改分公司 -->
+                    <div class="ibox-content">
+                        <form action="{{:U('Admin/Vendors/company_revise')}}" method="post" class="form-horizontal" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">姓名</label>
+                                <div class="col-md-8">
+                                    <input type="text" name="name" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">移动电话</label>
+                                <div class="col-md-8">
+                                    <input type="text" name="phone" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">身份证号</label>
+                                <div class="col-md-8">
+                                    <input type="text" name="identity" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">身份证正面</label>
+                                <div class="col-md-8">
+                                    <input type="file" name="positive" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">身份证反面</label>
+                                <div class="col-md-8">
+                                    <input type="file" name="opposite" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">手持身份证</label>
+                                <div class="col-md-8">
+                                    <input type="file" name="handheld" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">公司名称</label>
+
+                                <div class="col-md-8">
+                                    <input type="text" name="company" class="form-control">
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">固定电话</label>
+
+                                <div class="col-md-8">
+                                    <input type="text" name="telephone" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">公司地址</label>
+
+                                <div class="col-md-8">
+                                    <input type="text" name="address" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">营业执照</label>
+                                <div class="col-md-8">
+                                    <input type="file" name="licence" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">协议文件</label>
+                                <div class="col-md-8">
+                                    <input type="file" name="protocol" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">用户名</label>
+
+                                <div class="col-md-8">
+                                    <input type="text" name='user' disabled="true" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">密码</label>
+
+                                <div class="col-md-8">
+                                    <input type="password" name="password" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">密码确认</label>
+                                <div class="col-md-8">
+                                    <input type="password" name="repassword" class="form-control">
+                                    <input type="hidden" name="number" value="">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-md-8 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit">修改</button>
+                                    <button class="btn btn-white" type="reset">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
 </block>
 <block name="myjs">
+
 <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
     <script>
+
+    // 交接分公司模态框
+    function take_over_company(res) {
+        // 获取交接人
+        var officeLeavel = res.officeLeavel;
+        // 准备空字符串
+        var html = '';
+        for(var index in officeLeavel){  
+            // 遍历生成下拉菜单 
+            html += '<option value="'+officeLeavel[index].code+'">'+officeLeavel[index].company+'</option>';
+        }
+        // 设置原公司
+        $("input[name='officeid']").val(res.office.company);
+        $("input[name='officeid']").attr("title",res.office.code);
+        // 设置新公司下拉列表
+        $("#officeLeavel").html(html); 
+        // 显示模块
+        $('#take_over').modal('show');
+    }
+
+    // 执行分公司交接
+    $('#over_company').click(function(){
+        $('#take_over').modal('hide');
+        // 获取原分公司ID值
+        var ycode = $("input[name='officeid']").attr("title");
+        // 新公司ID值
+        var xcode = $('#officeLeavel').val();
+        // 确定要交接分公司吗
+        swal({
+            title: "您确定要交接分公司吗",
+            text: "交接后将无法恢复，请谨慎操作！",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "是的，我要交接！",
+            cancelButtonText: "让我再考虑一下…",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url:"{{:U('Admin/Vendors/company_over')}}",
+                    data:{"ycode":ycode,"xcode":xcode},
+                    dataType:"json",
+                    type: 'post',
+                    success:function(res){
+                        // console.dir(res);
+                        if(res.code==200){
+                            // 分公司交接成功
+                            swal("交接成功！", res.message, "success");
+
+                        }else{
+                            // 分公司交接失败
+                            swal("交接失败！",res.message, "error");
+                        }
+                    },
+                    error:function(res){
+                        // 交接失败提示
+                        swal("交接失败！",res.message, "error");
+                    }
+                });
+            } else {
+                swal("已取消", "您取消了删除操作！", "error");
+            }
+        });
+
+    });
+
+    /**
+     * [取消分公司交接]
+     */
+    $('#over_company_qx').click(function(){
+        $('#take_over').modal('hide');
+    });
+    
+    /**
+     * [take_over 分公司交接]
+     * @param  {[type]} id [ID属性值]
+     * @return {[type]}    [json数据]
+     */
+    function take_over(id){
+        $.ajax({
+            url:"{{:U('Admin/Vendors/take_over')}}",
+            data:{"id":id},
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                //console.dir(res);
+                if(res.code==200){
+                    // 弹出交接页面
+                    // parent.layer.msg(res.message);
+                    take_over_company(res);
+                }else{
+                    // 无可交接的分公司
+                    swal("交接失败！",res.message, "error");
+                }
+            },
+            error:function(res){
+                // 交接失败提示
+                swal("交接失败！",res.message, "error");
+            }
+        });
+    }
+
+    /**
+     * [forbidden 禁用分公司]
+     * @param  {[type]} id [分公司ID]
+     * @return {[type]}    [JSON]
+     */
+    function forbidden(id){
+        swal({
+            title: "您确定要禁用分公司吗",
+            text: "分公司被禁用后部分功能将无法使用，请谨慎操作！",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "是的，我要禁用！",
+            cancelButtonText: "让我再考虑一下…",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url:"{{:U('Admin/Vendors/company_forbidden')}}",
+                    data:{"id":id},
+                    dataType:"json",
+                    type: 'post',
+                    success:function(res){
+                        if(res.code==200){
+                            swal("禁用成功！", "您已经禁用这个分公司。", "success");
+                            window.location.reload();
+                        }else{
+                            swal("禁用失败！",res.message, "error");
+                        }
+                    },
+                    error:function(res){
+                        // 删除失败提示
+                        swal("禁用失败！", res.message, "error");
+                    }
+                });
+            } else {
+                swal("已取消", "您取消了删除操作！", "error");
+            }
+        });
+    }    
+
+    /**
+     * [forbidden 启用分公司]
+     * @param  {[type]} id [分公司ID]
+     * @return {[type]}    [JSON]
+     */
+    function start(id){
+        swal({
+            title: "您确定要启用分公司吗",
+            text: "分公司启用后全部功能将恢复使用，请谨慎操作！",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "是的，我要启用！",
+            cancelButtonText: "让我再考虑一下…",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url:"{{:U('Admin/Vendors/company_start')}}",
+                    data:{"id":id},
+                    dataType:"json",
+                    type: 'post',
+                    success:function(res){
+                        if(res.code==200){
+                            swal("启用成功！", "您已经启用这个分公司。", "success");
+                            window.location.reload();
+                        }else{
+                            swal("启用失败！",res.message, "error");
+                        }
+                    },
+                    error:function(res){
+                        // 删除失败提示
+                        swal("启用失败！", res.message, "error");
+                    }
+                });
+            } else {
+                swal("已取消", "您取消了删除操作！", "error");
+            }
+        });
+    }
+
+    /**
+     * [revise 查询要修改的分公司信息]
+     * @return {[type]} [description]
+     */
+    function revise(id){
+        $.ajax({
+            url:"{{:U('Admin/Vendors/reviewed_data')}}",
+            data:{"id":id},
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                if(res.res.code == 200){
+                    // 显示模块
+                    company_revise(res.data);
+                }else{
+                    swal("修改失败！",res.message, "error");
+                }
+            },
+            error:function(res){
+                // 删除失败提示
+                swal("修改失败！", res.message, "error");
+            }
+        });
+    }
+
+    /**
+     * [company_revise 显示修改页面]
+     * @return {[type]} [description]
+     */
+    function company_revise(data){
+        // 显示模态框
+        $('#revise').modal('show');
+        // 显示默认数据
+        // 姓名
+        $("#revise input[name='name']").val(data.name);
+        // 手机号码
+        $("#revise input[name='phone']").val(data.phone);
+        // 身份证号码
+        $("#revise input[name='identity']").val(data.identity);
+        // 公司名称
+        $("#revise input[name='company']").val(data.company);
+        // 固定电话
+        $("#revise input[name='telephone']").val(data.telephone);        
+        // 公司地址
+        $("#revise input[name='address']").val(data.address);
+        // 用户账号
+        $("#revise input[name='user']").val(data.user);
+        // 分公司ID
+        $("#revise input[name='number']").val(data.id);
+    }
+
+    /**
+     * [del 删除分公司]
+     * @param  {[type]} id [ID属性值]
+     * @return {[type]}    [json数据]
+     */
+    function del(id){
+            swal({
+                title: "您确定要删除这条信息吗",
+                text: "删除后将无法恢复，请谨慎操作！",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "是的，我要删除！",
+                cancelButtonText: "让我再考虑一下…",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        url:"{{:U('Admin/Vendors/company_del')}}",
+                        data:{"id":id},
+                        dataType:"json",
+                        type: 'post',
+                        success:function(res){
+                            if(res.code==200){
+                                swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                                window.location.reload();
+                            }else{
+                                swal("删除失败！",res.message, "error");
+                            }
+                        },
+                        error:function(res){
+                            // 删除失败提示
+                            swal("删除失败！", res.message, "error");
+                        }
+                    });
+                    
+                } else {
+                    swal("已取消", "您取消了删除操作！", "error");
+                }
+            });
+    }
+
     /**
      * [ajaxData 获取详情]
      * @param  {[type]} id [ID属性值]
      * @return {[type]}    [json数据]
      */
-    function del(id){
+    function ajaxData(id){
         $.ajax({
-            url:"{{:U('Admin/Vendors/company_del')}}",
+            url:"{{:U('Admin/Vendors/reviewed_data')}}",
             data:{"id":id},
             dataType:"json",
             type: 'post',
             success:function(res){
-                // 删除成功提示
-                parent.layer.msg(res.message);
-                window.location.reload()
-            },
-            error:function(res){
-                // 删除失败提示
-                parent.layer.msg(res.message);
+                // console.dir(res);
+                if(res.res.code == 200){
+                    // 页面层
+                    parent.layer.open({
+                        type: 1,
+                        skin: 'layui-layer-rim', //加上边框
+                        area: ['100%', '100%'], //宽高
+                        content:'<h3>分公司详情页面</h3>'
+                    });
+                }else{
+                    // 查询失败提示
+                    parent.layer.msg(resdata.res.message);
+                }
             }
         });
     }

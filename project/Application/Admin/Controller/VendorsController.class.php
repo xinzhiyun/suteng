@@ -136,7 +136,7 @@ class VendorsController extends CommonController
                         if($vendors->add($newData)){
                             // 执行事务
                             $vendors->commit();
-                            $this->success('申请已经提交，待审核中');
+                            $this->success('分公司添加成功，可以正常使用了！！！');
                             return false;
                         }else{
                             // 事务回滚
@@ -188,7 +188,7 @@ class VendorsController extends CommonController
         $office = $vendors->where($showData)->find();
         // 准备查询条件
         $showOffice['office_code'] = $office['code'];
-        // 查询分公司下所有分销商
+        // 查询分公司下是否有分销商
         $vendor = $vendors->where($showOffice)->field('id')->find()['id'];
 
         if($vendor){
@@ -204,18 +204,24 @@ class VendorsController extends CommonController
                 // 开启事务
                 $vendors->startTrans();
 
-                // 删除文件
+                // 准备文件路径
                 $positive   ='./Public'.$office['positive'];
                 $opposite   ='./Public'.$office['opposite'];
                 $handheld   ='./Public'.$office['handheld'];
                 $licence    ='./Public'.$office['licence'];
                 $protocol   ='./Public'.$office['protocol'];
-
+                // 删除文件
+                unlink($positive);
+                unlink($opposite);
+                unlink($handheld);
+                unlink($licence);
+                unlink($protocol);
+                
                 // 删除分公司信息
                 $companyDelRes = $vendors->where($showData)->delete();
 
                 // 如果图片删除成功并且信息删除成功
-                if(unlink($positive) && unlink($opposite) && unlink($handheld) && unlink($licence) && unlink($protocol) && $companyDelRes){
+                if($companyDelRes){
                     // 执行事务
                     $vendors->commit();
                     // 分公司删除成功
@@ -230,6 +236,296 @@ class VendorsController extends CommonController
         }
         // 返回JSON格式数据
         $this->ajaxReturn($message);
+    }
+
+    /**
+     * [take_over 查询是否需要交接分公司]
+     * @return [type] [description]
+     */
+    public function take_over()
+    {
+        // 接收查询的ID号
+        $showData['id'] = I('post.id');
+        // 实例化分销商模型
+        $vendors = M('vendors');
+        // 查询分公司资料
+        $office = $vendors->where($showData)->find();
+
+        // 查询分公司下是否有分销商
+        // 准备查询条件
+        $showOffice['office_code'] = $office['code'];
+        // 查询分公司下是否有分销商
+        $vendor = $vendors->where($showOffice)->field('id')->find()['id'];
+        // 查询分公司下是否有会员
+        $user = M('users')->where($showOffice)->field('id')->find()['id'];
+
+        if($vendor || $user){
+            // 获取分公司级别
+            $showLeavel['leavel'] = $office['leavel'];
+            // 查询同级分公司
+            $officeLeavel = $vendors->where($showLeavel)->select();
+            // 统计同级分公司数量，包括自己
+            $officeNum = count($officeLeavel);
+            // 如果同级分公司不止一个
+            if($officeNum>1){
+                // 获取分公司ID
+                $officeId = $office['id'];
+                // 遍历可以交接的分公司
+                foreach ($officeLeavel as $key => $value) {
+                    // 从同级分公司中找出当前分公司
+                    if($value['id']==$officeId){
+                        // 将当前分公司从交接分公司数组中删除
+                        unset($officeLeavel[$key]);
+                    }
+                }
+                // 提示信息
+                $message                    = ['code' => 200, 'message' => '请选择交接的分公司'];
+                // 当前分公司信息
+                $message['office']          = $office;
+                // 同级分公司信息
+                $message['officeLeavel']    = $officeLeavel;
+            }else{
+                // 请先添加一个分公司
+                $message                    = ['code' => 403, 'message' => '无人可交接，请先添加一个公司'];
+            }
+        }else{
+            // 不需要交接
+            $message                        = ['code' => 403, 'message' => '分公司名下没有分销商和会员，不需要交接！'];
+        }
+
+        // 返回JSON格式数据
+        $this->ajaxReturn($message); 
+    }
+
+    // 执行交接操作
+    public function company_over()
+    {
+        // 获取原分公司ID
+        $ycode = I('post.ycode');
+        // 获取新分公司ID
+        $xcode = I('post.xcode');
+
+        // 准备修改条件
+        $whereData['office_code'] = $ycode;
+        // 准备修改数据
+        $saveData['office_code']  = $xcode;
+
+        // 实例化分销商模型
+        $vendors = M('vendors');
+        // 开启事务
+        $vendors->startTrans();
+
+        // 查询是否有分销商
+        $is_vendor = $vendors->where($whereData)->find()['id'];
+        // 查询是否有会员
+        $is_userr = M('users')->where($whereData)->find()['id'];
+
+        if($is_vendor){
+            // 修改分销商上级分公司维新分公司
+            $vendorsRes = $vendors->where($whereData)->save($saveData);
+        }else{
+            $vendorsRes = true;
+        }
+
+        if($is_userr){
+            // 修改会员上级分公司
+            $usersRes = M('users')->where($whereData)->save($saveData);
+        }else{
+            $usersRes = true;
+        }
+
+        // 如果分销商上级分公司和会员上级分公司修改成功
+        if($vendorsRes && $usersRes){
+            // 执行事务
+            $vendors->commit();
+            // 分公司交接成功
+            $message     = ['code' => 200, 'message' => '分公司交接成功'];
+        }else{
+            // 事务回滚
+            $vendors->rollback();
+            // 分公司交接失败
+            $message     = ['code' => 403, 'message' => '分公司交接失败'];
+        }
+
+        // 返回JSON格式数据
+        $this->ajaxReturn($message);
+    }
+
+    /**
+     * [company_forbidden 禁用分公司]
+     * @return [type] [description]
+     */
+    public function company_forbidden()
+    {   
+        // 准备修改条件
+        $whereData['id']    = I('post.id');
+        // 准备修改数据
+        $saveData['status'] = 8;
+        // 执行修改操作
+        $res = M('vendors')->where($whereData)->save($saveData);
+        // 如果修改成功
+        if($res){
+            // 准备成功返回数据
+            $message     = ['code' => 200, 'message' => '分公司禁用成功'];
+        }else{
+            // 准备失败返回数据
+            $message     = ['code' => 403, 'message' => '分公司禁用失败'];
+        }
+        // 返回JSON格式数据
+        $this->ajaxReturn($message);
+    }
+
+    /**
+     * [company_forbidden 禁用分公司]
+     * @return [type] [description]
+     */
+    public function company_start()
+    {   
+        // 准备修改条件
+        $whereData['id']    = I('post.id');
+        // 准备修改数据
+        $saveData['status'] = 7;
+        // 执行修改操作
+        $res = M('vendors')->where($whereData)->save($saveData);
+        // 如果修改成功
+        if($res){
+            // 准备成功返回数据
+            $message     = ['code' => 200, 'message' => '分公司启用成功'];
+        }else{
+            // 准备失败返回数据
+            $message     = ['code' => 403, 'message' => '分公司启用失败'];
+        }
+        // 返回JSON格式数据
+        $this->ajaxReturn($message);
+    }
+
+    /**
+     * [company_revise 修改分公司]
+     * @return [type] [description]
+     */
+    public function company_revise(){
+        // 接收数据，去除两边空白
+        $name       = trim(I('post.name'));
+        $phone      = trim(I('post.phone'));        
+        $identity   = trim(I('post.identity'));        
+        $companys   = trim(I('post.company'));        
+        $telephone  = trim(I('post.telephone'));        
+        $address    = trim(I('post.address'));        
+        $password   = trim(I('post.password'));        
+        $repassword = trim(I('post.repassword'));
+        // 准备查询条件
+        $showData['id']     = trim(I('post.number'));
+        // 查询分公司原信息
+        $company = M('vendors')->where($showData)->find();
+
+        // 实例化验证类
+        $validate   = new \Org\Util\Validate;
+
+        // 判断姓名是否修改
+        if($company['name'] != $name){
+            // 验证是否合法用户名：字母或中文开头，数字字母下划线中文,2-30位
+            if($validate->isName($name)){
+                $data['name'] = $name;
+            }else{
+                $this->error('请输入真实性名！');
+            }        
+        }
+
+        // 判断手机号码是否修改
+        if($company['phone'] != $phone){
+            // 验证是否合法用户名：字母或中文开头，数字字母下划线中文,2-30位
+            if($validate->isMobilePhone($phone)){
+                $data['phone'] = $phone;
+            }else{
+                $this->error('请输入正确的手机号码！');
+            }        
+        }
+
+        // 判断身份证号码是否修改
+        if($company['identity'] != $identity){
+            // 验证是否合法用户名：字母或中文开头，数字字母下划线中文,2-30位
+            if($validate->isIdentity($identity)){
+                $data['identity'] = $identity;
+            }else{
+                $this->error('请输入正确的身份证号码！');
+            }        
+        }
+
+        // 判断公司名称是否修改
+        if($company['company'] != $companys){
+            // 验证是否合法用户名：字母或中文开头，数字字母下划线中文,2-30位
+            if($validate->isName($companys)){
+                $data['company'] = $companys;
+            }else{
+                $this->error('公司名称格式不正确，请重新输入！');
+            }        
+        }
+
+        // 判断座机号码是否修改
+        if($company['telephone'] != $telephone){
+            // 验证是否合法用户名：字母或中文开头，数字字母下划线中文,2-30位
+            if($validate->isPhone($telephone)){
+                $data['telephone'] = $telephone;
+            }else{
+                $this->error('座机号码格式不正确，请重新输入！');
+            }        
+        }
+
+        // 判断公司地址是否修改
+        if($company['address'] != $address){
+            // 验证是否合法用户名：字母或中文开头，数字字母下划线中文,2-30位
+            if($validate->isAddress($address)){
+                $data['address'] = $address;
+            }else{
+                $this->error('请输入完整的公司地址');
+            }        
+        }
+
+        // 判断密码是否为空
+        if(!empty($password)){
+            // 判断密码是否修改
+            if($company['password'] != MD5($password)){
+                // 判断两次输入密码是否一致
+                if($password == $repassword){
+                    $data['password'] = MD5($password);
+                }else{
+                    $this->error('两次输入的密码不一致！');
+                }        
+            }
+        }
+
+        // 处理图片
+        $info = $this->upload();
+
+        // 如果数据有修改，并且有上传图片
+        if($data && $info){
+            // 合并数据
+            $newData = array_merge($data,$info);
+
+        }elseif ($data) {
+            // 如果只修改没有上传图片
+            $newData = $data;
+        }elseif($info){
+            // 如果只上传图片
+            $newData = $info;
+        }else{
+            // 没有修改数据
+            $this->error('分公司您没有修改');
+        }
+
+        if(!empty($newData)){
+            // 判断更新数据不为空
+            // 执行更新
+            $res = M('vendors')->where($showData)->save($newData);
+            // 判断是否更新成功
+            if($res){
+                // 更新成功
+                $this->error('分公司修改成功');
+            }else{
+                // 更新失败
+                $this->error('分公司修改失败');
+            }
+        }
     }
 
     /**
