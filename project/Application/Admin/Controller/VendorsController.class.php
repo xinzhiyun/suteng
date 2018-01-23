@@ -175,6 +175,64 @@ class VendorsController extends CommonController
     }
 
     /**
+     * [vendor_data 删除分公司]
+     * @return [type] [description]
+     */
+    public function company_del()
+    {
+        // 接收查询的ID号
+        $showData['id'] = I('post.id');
+        // 实例化分销商模型
+        $vendors = M('vendors');
+        // 查询分公司唯一标识
+        $office = $vendors->where($showData)->find();
+        // 准备查询条件
+        $showOffice['office_code'] = $office['code'];
+        // 查询分公司下所有分销商
+        $vendor = $vendors->where($showOffice)->field('id')->find()['id'];
+
+        if($vendor){
+            // 分公司名下有分销商不可删除
+            $message     = ['code' => 403, 'message' => '分公司名下有分销商不可删除'];
+        }else{
+            // 查询分公司下是否有会员
+            $user = M('users')->where($showOffice)->field('id')->find()['id'];
+            if($user){
+                // 分公司名下有会员不可以直接删除
+                $message     = ['code' => 403, 'message' => '分公司名下有会员不可以直接删除'];
+            }else{
+                // 开启事务
+                $vendors->startTrans();
+
+                // 删除文件
+                $positive   ='./Public'.$office['positive'];
+                $opposite   ='./Public'.$office['opposite'];
+                $handheld   ='./Public'.$office['handheld'];
+                $licence    ='./Public'.$office['licence'];
+                $protocol   ='./Public'.$office['protocol'];
+
+                // 删除分公司信息
+                $companyDelRes = $vendors->where($showData)->delete();
+
+                // 如果图片删除成功并且信息删除成功
+                if(unlink($positive) && unlink($opposite) && unlink($handheld) && unlink($licence) && unlink($protocol) && $companyDelRes){
+                    // 执行事务
+                    $vendors->commit();
+                    // 分公司删除成功
+                    $message     = ['code' => 200, 'message' => '分公司删除成功'];
+                }else{
+                    // 事务回滚
+                    $vendors->rollback();
+                    // 分公司删除失败
+                    $message     = ['code' => 403, 'message' => '分公司删除失败'];
+                }
+            }
+        }
+        // 返回JSON格式数据
+        $this->ajaxReturn($message);
+    }
+
+    /**
      * [vendor_list 经销商列表]
      * @return [type] [description]
      */
@@ -233,7 +291,7 @@ class VendorsController extends CommonController
      * [vendor_data 分销商审核详情信息]
      * @return [type] [description]
      */
-    public function vendor_data()
+    public function reviewed_data()
     {
         // 接收查询的ID号
         $showData['id'] = I('post.id');

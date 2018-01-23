@@ -30,6 +30,7 @@
                                     <th>加入时间</th>
                                     <th>更新时间</th>
                                     <th>详情</th>
+                                    <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -58,6 +59,9 @@
                                             <td>
                                                 <a href="#">查看</a>
                                             </td>
+                                            <td>
+                                                <a href="javascript:del({{$val.id}})">删除</a>
+                                            </td>
                                         </tr>
                                     </volist>
                                 </empty>
@@ -68,4 +72,31 @@
             </div>
         </div>
     </div>
+</block>
+<block name="myjs">
+<script src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script>
+    /**
+     * [ajaxData 获取详情]
+     * @param  {[type]} id [ID属性值]
+     * @return {[type]}    [json数据]
+     */
+    function del(id){
+        $.ajax({
+            url:"{{:U('Admin/Vendors/company_del')}}",
+            data:{"id":id},
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                // 删除成功提示
+                parent.layer.msg(res.message);
+                window.location.reload()
+            },
+            error:function(res){
+                // 删除失败提示
+                parent.layer.msg(res.message);
+            }
+        });
+    }
+    </script>
 </block>
