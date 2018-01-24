@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-01-24 15:10:40
+Date: 2018-01-24 15:15:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -172,6 +172,17 @@ CREATE TABLE `st_comment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Table structure for st_commission
+-- ----------------------------
+DROP TABLE IF EXISTS `st_commission`;
+CREATE TABLE `st_commission` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `inviter` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '会员邀请人分配占比',
+  `vendor_a` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for st_convert
 -- ----------------------------
 DROP TABLE IF EXISTS `st_convert`;
@@ -321,7 +332,7 @@ CREATE TABLE `st_goods` (
   `pic` varchar(255) DEFAULT NULL,
   `desc` text COMMENT '商品描述',
   `price` double(6,2) NOT NULL COMMENT '商品单价',
-  `stock` int(11) DEFAULT NULL COMMENT '商品库存',
+  `stock` int(11) NOT NULL DEFAULT '0' COMMENT '商品库存',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '商品状态，默认0上架，1为下架',
   `addtime` varchar(12) NOT NULL COMMENT '商品添加时间',
   `updatetime` varchar(12) NOT NULL COMMENT '商品更新时间',
