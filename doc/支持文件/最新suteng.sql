@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost_3306
-Source Server Version : 50505
-Source Host           : localhost:3306
-Source Database       : suteng
+Source Server         : wuzhibin.cn
+Source Server Version : 50173
+Source Host           : sdm359768304.my3w.com:3306
+Source Database       : sdm359768304_db
 
 Target Server Type    : MYSQL
-Target Server Version : 50505
+Target Server Version : 50173
 File Encoding         : 65001
 
-Date: 2018-01-24 15:15:26
+Date: 2018-01-24 16:43:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -44,7 +44,7 @@ CREATE TABLE `st_admin_menu` (
   `ico` varchar(50) DEFAULT '' COMMENT 'font-awesome图标',
   `order_number` int(11) unsigned DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_admin_menu
@@ -72,6 +72,8 @@ INSERT INTO `st_admin_menu` VALUES ('22', '19', '订单管理', 'Admin/Shop/orde
 INSERT INTO `st_admin_menu` VALUES ('23', '0', '分公司管理', 'Admin/Vendor', '', null);
 INSERT INTO `st_admin_menu` VALUES ('24', '23', '添加分公司', 'Admin/Vendors/company_add', '', null);
 INSERT INTO `st_admin_menu` VALUES ('25', '23', '分公司列表', 'Admin/Vendors/company_list', '', null);
+INSERT INTO `st_admin_menu` VALUES ('28', '0', '佣金管理', 'Admin/Commission', '', null);
+INSERT INTO `st_admin_menu` VALUES ('29', '28', '佣金设置', 'Admin/Commission/commission_set', '', null);
 
 -- ----------------------------
 -- Table structure for st_attr
@@ -116,7 +118,7 @@ CREATE TABLE `st_auth_group` (
 -- ----------------------------
 -- Records of st_auth_group
 -- ----------------------------
-INSERT INTO `st_auth_group` VALUES ('1', '超级管理员', '1', '1,2,28,5,6,7,8,10,11,9,14,15,16,17,18,19,20,21,22,23,24,25,26');
+INSERT INTO `st_auth_group` VALUES ('1', '超级管理员', '1', '1,2,28,5,6,7,8,10,11,9,14,15,16,17,18,19,20,21,22,23,24,25,26,30,31');
 INSERT INTO `st_auth_group` VALUES ('2', '一级经销商', '1', '1,2,4,3');
 INSERT INTO `st_auth_group` VALUES ('3', '二级经销商', '1', '1,2,4,3');
 INSERT INTO `st_auth_group` VALUES ('4', '三级经销商', '1', '1,2,3');
@@ -153,7 +155,7 @@ CREATE TABLE `st_auth_rule` (
   `condition` char(100) NOT NULL DEFAULT '' COMMENT '规则表达式，为空表示存在就验证，不为空表示按照条件验证',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='规则表';
+) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COMMENT='规则表';
 
 -- ----------------------------
 -- Records of st_auth_rule
@@ -181,6 +183,8 @@ INSERT INTO `st_auth_rule` VALUES ('24', '0', 'Admin/Vendor', '分公司管理',
 INSERT INTO `st_auth_rule` VALUES ('25', '24', 'Admin/Vendors/company_add', '添加分公司', '1', '1', '');
 INSERT INTO `st_auth_rule` VALUES ('26', '24', 'Admin/Vendors/company_list', '分公司列表', '1', '1', '');
 INSERT INTO `st_auth_rule` VALUES ('28', '1', 'Admin/Vendors/vendor_reviewed', '分销商审核', '1', '1', '');
+INSERT INTO `st_auth_rule` VALUES ('30', '0', 'Admin/Commission', '佣金管理', '1', '1', '');
+INSERT INTO `st_auth_rule` VALUES ('31', '30', 'Admin/Commission/commission_set', '佣金设置', '1', '1', '');
 
 -- ----------------------------
 -- Table structure for st_binding
@@ -295,7 +299,12 @@ DROP TABLE IF EXISTS `st_commission`;
 CREATE TABLE `st_commission` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `inviter` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '会员邀请人分配占比',
-  `vendor_a` int(11) NOT NULL DEFAULT '0',
+  `vendor_a` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'A级分销商分配占比',
+  `vendor_b` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'B级分销商分配占比',
+  `vendor_c` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'C级分销商分配占比',
+  `vendor_i` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '分销商邀请人分配占比',
+  `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '分配类型{0：按比例分配，1：固定金额分配}',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
