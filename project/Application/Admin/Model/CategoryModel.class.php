@@ -19,4 +19,10 @@ class CategoryModel extends BaseModel
     protected $_auto = array(
 
     );
+
+    public function getAllCate()
+    {
+        $res = $this->getTreeData('tree','id, name');
+        return $res;
+    }
 }
