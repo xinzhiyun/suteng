@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="./css/resetstyle.css">
+	<link rel="stylesheet" href="./css/applicRefund.css">
+ 	<link rel="stylesheet" href="http://at.alicdn.com/t/font_527495_28aegdcv6hudte29.css">
+	<script src="./js/jquery-1.10.1.js"></script>
+	<script src="./js/public.js"></script>
+	<style>
+	</style>
+</head>
+<body>
+	<div class="appContain">
+		<h3>退款商品</h3>
+		<div class="itemContain clearfix">
+			<div class="item clearfix">
+				<div class="appLeft">
+					<span><img src="./images/ro_01_03.png" alt=""></span>
+				</div>
+				<div class="appRight">
+					<h4>RO膜</h4>
+					 <div class="changTxt">
+						RO膜能够有效地去除水中钙、 镁、细菌、有机物、无机物、金 属离子和放射性物质属离子性物质属离子离子性物质属离子
+					</div>
+					<p><b>￥120.00</b><span>X1</span></p> 
+				</div>
+			</div>
+			<div class="item clearfix">
+				<div class="appLeft">
+					<span><img src="./images/ro_01_03.png" alt=""></span>
+				</div>
+				<div class="appRight">
+					<h4>RO膜</h4>
+					 <div class="changTxt">
+						RO膜能够有效地去除水中钙、 镁、细菌、有机物、无机物、金 属离子和放射性物质属离子性物质属离子离子性物质属离子
+					</div>
+					<p><b>￥120.00</b><span>X1</span></p> 
+				</div>
+			</div>
+			<div class="item clearfix">
+				<div class="appLeft">
+					<span><img src="./images/ro_01_03.png" alt=""></span>
+				</div>
+				<div class="appRight">
+					<h4>RO膜</h4>
+					 <div class="changTxt">
+						RO膜能够有效地去除水中钙、 镁、细菌、有机物、无机物、金 属离子和放射性物质属离子性物质属离子离子性物质属离子
+					</div>
+					<p><b>￥120.00</b><span>X1</span></p> 
+				</div>
+			</div>
+			<div class="item clearfix">
+				<div class="appLeft">
+					<span><img src="./images/ro_01_03.png" alt=""></span>
+				</div>
+				<div class="appRight">
+					<h4>RO膜</h4>
+					 <div class="changTxt">
+						RO膜能够有效地去除水中钙、 镁、细菌、有机物、无机物、金 属离子和放射性物质属离子性物质属离子离子性物质属离子
+					</div>
+					<p><b>￥120.00</b><span>X1</span></p> 
+				</div>
+			</div>
+
+		</div>
+		<!-- list -->
+		<div class="applist">
+			<p class="clearfix"><b>商品状态</b><span>请选择<i class="iconfont icon-dayuhao-copy-copy"></i></span></p>
+			<p class="clearfix"><b>退款原因</b><span>请选择<i class="iconfont icon-dayuhao-copy-copy"></i></span></p>
+			<label for="Laddr">
+              <p><b>退款说明：</b><i>*</i></p>
+              <textarea name="" id="Laddr" cols="30" rows="10" placeholder=""></textarea>
+            </label>
+			<p class="tuikuang clearfix "><b>退款金额：</b><em>￥120.00</em><span>回原支付方式</span></p>
+		</div>
+		<!-- /*图片上传*/ -->
+		<div class="sendpic">
+			<p><b>上传凭证</b></p>
+			<div class="picBtn">
+				<i class="iconfont icon-tianjia"></i>
+				<span>限3张内</span>
+				<input class="" type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
+			</div>
+		</div>	
+	</div>
+
+	<div class="appFoot">
+		<input type="submit" value="提交">
+	</div>
+	<!-- 弹出层 -->
+	<div class="appsureContain">
+	</div>
+	<div class="appsureFoot">
+		<h3>商品状态</h3>
+		<p ><b>仅退款</b><span>（在商家未发货的情况下）</span><i class="iconfont icon-xuanze"></i></p>
+		<p ><b>退货退款</b><span>（已收到货，需要退货的商品））</span><i class="iconfont icon-kuang1"></i></p>
+		<input type="submit" value="确认">
+	</div>
+	<script>
+			
+            $('.appFoot>input').click(function(){
+            	
+            	 var height = $('.appFoot').height();
+            	 var i = $(window).height();
+            	 var _height = $(window).height()-height-2;
+            	 $('.appContain').css({
+            	 	height:_height+'px',
+            	 	overflow:'hidden'
+
+            	 });
+            	 $('.appFoot').css('display','none');
+            	 $('.appsureContain').css('height',i+'px').fadeIn();
+            	 $('.appsureFoot').fadeIn();
+
+            });
+
+		
+	</script>
+</body>
+</html>                                                                                                                                                                                                                                                                      	 

@@ -1,0 +1,64 @@
+
+.container{
+	width:90%;
+	/*height: 100vh;*/
+	position: relative;
+	margin:0 auto;
+}
+.Information h3{
+	font-size: 0.933333rem;
+	margin: 0.666667rem 0;
+	
+}
+.Information label {
+	display: block;
+	width: 100%;
+	height: 3rem;
+}
+.Information label i{
+	display: inline-block;
+	width: 8%;
+	font-size: 0.8rem;
+
+}
+.Information label div{
+	float: right;
+	width: 90%;
+	border-bottom: 1px solid #838383;
+	display: inline-block;
+	/*margin-top: 3vh;*/
+}
+.Information label div span{
+	display: inline-block;
+	width:24%;
+	font-size: 0.533333rem;
+	text-align: right;
+	line-height: 3vh;
+	color: #838383;
+}
+.Information label div input{
+	font-size: 0.533333rem;
+    width: 60%;
+    border: none;
+    height: 1.5rem;
+    color: #838383;
+}
+.bandBtn{
+	width: 100%;
+	position: absolute;
+	/*bottom: 6rem;*/
+	border-radius: 0.106667rem;
+}
+.bandBtn input{
+	position: fixed;
+	bottom: 2rem;
+	height: 1.5rem;
+	width: 90%;
+	text-align: center;
+	border-radius: 0.106667rem;
+	border:none;
+	margin:0 auto;
+	color: #fff;
+	background: #2EB6AA;
+
+}

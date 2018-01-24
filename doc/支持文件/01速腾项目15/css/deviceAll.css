@@ -1,0 +1,98 @@
+.device-contain{
+	width: 100%;
+}
+._deviceAll{
+	width: 90%;
+	padding:0.533333rem 5% 0rem;
+	position: relative;
+}
+.haveDevice{
+	/*display: none;*/
+}
+.deviceTop h3{
+	font-size: 0.666667rem;
+}
+.deviceTop  ul{
+	margin-top: 0.533333rem;
+	margin-left: 0.666667rem;
+}
+.deviceTop li{
+	display: block;
+	width: 100%;
+	height: 1.5rem;
+	line-height: 1.5rem;
+	margin-top: 0.4rem;
+
+}
+.deviceTop li span{
+	margin-right: 0.4rem;
+	display: inline-block;
+	width: 1.5rem;
+	height: 1.5rem;
+	background: green;
+	overflow: hidden;
+	float: left;
+
+}
+.deviceTop li span img{
+	width: 100%;
+}
+.deviceTop li b{
+	display: inline-block;
+	width: 60%;
+	margin-top:-2px;
+	font-size:0.373333rem;
+	float: left;
+
+	
+}
+.deviceTop li i{
+	width: 0.6rem;
+	height: 0.6rem;
+	float: right;
+	display: inline-block;
+	border:1px solid #ccc;
+	text-align: center;
+	line-height: 0.6rem;
+	margin-top: 0.3rem;
+
+}
+.deviceFoot{
+	width: 100%;
+
+	padding:0.266667rem;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	border-top: 1px solid #ccc;
+
+}
+.deviceFoot i{
+	margin:0 0.4rem;
+}
+.deviceFoot span{
+	font-size: 0.373333rem;
+}
+
+
+/*没有设备的页面*/
+.noDevice{
+	display: none;
+	width:100%;
+	margin-top: 6.666667rem;
+}
+.noContainer{
+	width: 5.333333rem;
+	margin:0 auto;
+	height: 5.333333rem;
+	/*background: green;*/
+	/*line-height: 2.666667rem;*/
+	text-align: center;
+}
+.noContainer i{
+	font-size: 4.0rem;
+	color:#FF6D00;
+}
+.noContainer p{
+	font-size: 0.8rem;
+}

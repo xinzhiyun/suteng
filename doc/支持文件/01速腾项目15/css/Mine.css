@@ -1,0 +1,88 @@
+._Mine{
+	width: 100%;
+}
+.MineContainer{
+
+/*	padding:0.933333rem 5% 0rem;*/
+	position: relative;
+}
+.MineTop{
+	height:6rem;
+	width: 100%;
+	border-bottom: 0.4rem solid #F3F3F3;
+	/*padding:0.933333rem 5% 0rem 5%;*/
+}
+.mineLeft{
+	margin-right: 5%;
+	width: 25%;
+
+}
+.mineLeft span{
+	margin:1.3rem auto;
+	display: block;
+	width:  3.4rem;
+	height:  3.4rem;
+	background:#2EB6AA;
+	border-radius:  3.0rem;
+	overflow: hidden;
+}
+.mineLeft span img{
+	width: 100%;
+}
+
+.mineRight{
+	width: 70%;
+}
+.mineLeft,.mineRight{
+	height:100%; 
+	float: left;
+}
+.mineRight ul li{
+	margin-top: 0.666667rem;
+	display: block;
+	width: 100%;
+	height: 0.933333rem;
+	line-height: 0.933333rem;
+	font-size: 0.533333rem;
+}
+.mineRight ul li b{
+	display: inline-block;
+	width: 25%;
+}
+.mineRight .m-left{
+	margin:0 0.2rem;
+}
+.mineRight .yingIcon{
+	width: 75%;
+	float: right;
+}
+/*.MineFoot{
+	padding:0.933333rem 5% 0rem 5% ;
+}*/
+.MineFoot ul li{
+	height: 1.6rem;
+	line-height: 1.6rem;
+	font-size: 0.533333rem;
+	border-bottom:1px solid #F3F3F3;
+	padding:0 5% ;
+
+}
+.MineFoot ul li.Mf-infor{
+
+	border-top:0.4rem solid #F3F3F3;
+	border-bottom: 0.4rem solid #F3F3F3;
+
+}
+.MineFoot .Mf-left{
+	margin:0.2rem;
+}
+.MineFoot b{
+	display: inline-block;
+	float: right;
+	font-size: 0.266667rem;
+
+}
+.MineFoot .Mf-right{
+	float: right;
+	margin-left: 0.133333rem;
+}

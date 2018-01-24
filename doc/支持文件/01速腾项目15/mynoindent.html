@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+	<link rel="stylesheet" href="./css/resetstyle.css">
+	<script src="./js/jquery-1.8.3.min.js"></script>
+    <script src="./js/public.js"></script>
+	<title>我的订单</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body {
+			width: 100vw;
+			height: 100vh;
+			font-size: .6rem;
+			overflow-x: hidden;
+		}
+		#header {
+			width: 100vw;
+			height: 8vh;
+			position: fixed;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			border-bottom: 1vh solid #eee;
+			background: #fff;
+			z-index: 999;
+		}
+		#header>span {
+			flex: 1;
+			height: 8vh;
+    		line-height: 8vh;
+		    display: block;
+		    text-align: center;
+		}
+		/*顶部标题下面的线*/
+		/*标题切换 改这里left,20%,40%,60%,80%*/
+		#line {
+			width: 20vw;
+			height: 1vh;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			margin-bottom: -1vh;
+			transition: left .2s ease-in;
+		}
+		#line>span {
+			width: 50%;
+			height: 1vh;
+		    display: block;
+		    margin: 0 auto;
+		    border-radius: 10px;
+			background: #60ACF0;
+		}
+		#content {
+			width: 500vw;
+			height: 92vh;
+			position: relative;
+			top: 8vh;
+			padding: 1vh 0;
+		}
+		/*全部订单,待付款，待发货，待收货，待评论*/
+		#dingdanAll,
+		#dingdanDaifukuan,
+		#dingdanDaifahuo,
+		#dingdanDaishouhuo,
+		#dingdanDaipinglun {
+			width: 100vw;
+			position: absolute;
+			padding: 1vh 0;
+			top: 0;
+			background: #fff;
+			transition: left .4s ease-out;
+		}
+
+		#dingdanAll {
+			left: 0;
+		}
+		#dingdanDaifukuan {
+			left: 100vw;
+		}
+		#dingdanDaifahuo {
+			left: 200vw;
+		}
+		#dingdanDaishouhuo {
+			left: 300vw;
+		}
+		#dingdanDaipinglun {
+			left: 400vw;
+		}
+		/*订单部分*/
+		.goods>p {
+			padding: 2%;
+		}
+		/*订单状态：等待买家付款，交易完成，等待发货等*/
+		.goods>p>span {
+			font-weight: bold;
+			float: right;
+			color: #FF843D;
+		}
+		.dingdan>p>span:after {
+			content: '';
+			clear: both;
+		}
+		.goods>p:nth-of-type(2) {
+			border-bottom: 1px solid #ddd;
+		}
+		/*订单项目*/
+		.goodsItem {
+			display: flex;
+			padding: 2%;
+			background: #F8F8F8;
+		}
+		
+		.goods>div.goodsItem:nth-of-type(2n) {
+			border-top: 4px solid #fff;
+		}
+		
+		/*订单图片*/
+		.giPicture {
+			flex: 1;
+			padding: 2%;
+		}
+		.giPicture>img {
+			width: 100%;
+			height: 100%;
+			display: block;
+			border-radius: 6px;
+			border: 1px solid #ccc;
+			background: #fff;
+		}
+		/*商品描述*/
+		.giDescription {
+			flex: 2;
+			padding: 2%;
+		}
+		.giDescription>p {
+			margin: 6px 0;
+			color: #666;
+			font-size: .6rem;
+		}
+		/*价格*/
+		.giDescription>div>b {
+			color: #FC2C2D;
+			letter-spacing: 2px;
+		}
+		/*数量*/
+		.giDescription>div>span {
+			float: right;
+		}
+		.giDescription>div>span:after {
+			content: '';
+			clear: both;
+		}
+		/*套餐*/
+		.taocan {
+			padding: 4%;
+			border-top: 4px solid #fff;
+			background: #F8F8F8;
+		}
+		.taocan>span {
+			float: right;
+		}
+		.taocan>span:after {
+			content: '';
+			clear: both;
+		}
+		/*价格*/
+		.taocan>span>b {
+			color: #FC2C2D;
+			letter-spacing: 2px;
+		}
+		/*合计、付款等*/
+		.calc {
+			padding-top: 5%;
+			border-top: 1px solid #ddd;
+			border-bottom: 1vh solid #eee;
+		}
+		.calc>div {
+			padding: 0 2%;
+			text-align: right;
+		}
+		/*价格*/
+		.calc>div>b {
+			color: #FC2C2D;
+			letter-spacing: 2px;
+		}
+		.calc>div:nth-of-type(2) {
+			width: 100%;
+			display: flex;
+			padding: 6% 4%;
+			align-items: center;
+		}
+		/*取消订单*/
+		.cancel {
+			width: 60%;
+			display: inline-block;
+			text-align: right;
+		}
+		.cancel>span {
+			display: inline-block;
+			padding: 2% 8%;
+			border-radius: 4px;
+			border: 1px solid #aaa;
+		}
+		/*付款*/
+		.pay {
+			width: 40%;
+			display: inline-block;
+			text-align: right;
+		}
+		.pay>span {
+			display: inline-block;
+			padding: 1vmin 3vmin;
+			border-radius: 4px;
+			color: #fff;
+			border: 1px solid #2EB6AA;
+			background: #2EB6AA;
+		}
+		/*没有内容时添加这个类*/
+		.none {
+			visibility: hidden;
+		}
+	</style>
+</head>
+<body>
+	<header id="header">
+		<span class="tab" index='0'>全&nbsp;部</span>
+		<span class="tab" index='1'>待付款</span>
+		<span class="tab" index='2'>待发货</span>
+		<span class="tab" index='3'>待收货</span>
+		<span class="tab" index='4'>待评论</span>
+		<div id="line">
+			<span></span>
+		</div>
+	</header>
+	<div id="content">
+		<!-- 全部订单 -->
+		<div id="dingdanAll">
+			<div class="goods">
+				<p>订单编号：123456767978123</p>
+				<p>订单时间：2017-12-16 13:10:56
+					<span>等待买家付款</span>
+				</p>
+				<div class="goodsItem">
+					<div class="giPicture">
+						<img src="./images/1.jpg" alt="">
+					</div>
+					<div class="giDescription">
+						<b>RO膜</b>
+						<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+						<div>
+							<b>￥120.00</b>
+							<span>X1</span>
+						</div>
+					</div>
+				</div>
+				<div class="goodsItem">
+					<div class="giPicture">
+						<img src="./images/1.jpg" alt="">
+					</div>
+					<div class="giDescription">
+						<b>RO膜</b>
+						<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+						<div>
+							<b>￥120.00</b>
+							<span>X1</span>
+						</div>
+					</div>
+				</div>
+				<div class="taocan">
+					200元包月套餐
+					<span>
+						<b>￥200.00</b>
+						&emsp;X1
+					</span>
+				</div>
+				<div class="calc">
+					<div>
+						共3件商品&emsp;
+						合计：<b>￥420.00</b>
+						<span>&nbsp;(含邮费￥0.00)</span>
+					</div>
+					<div>
+						<div class="cancel">
+							<span>取消订单</span>
+						</div>
+						<div class="pay">
+							<span>&nbsp;付&nbsp;&nbsp;款&nbsp;</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="goods">
+				<p>订单编号：123456767978123</p>
+				<p>订单时间：2017-12-16 13:10:56
+					<span>卖家已发货</span>
+				</p>
+				<div class="goodsItem">
+					<div class="giPicture">
+						<img src="./images/1.jpg" alt="">
+					</div>
+					<div class="giDescription">
+						<b>RO膜</b>
+						<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+						<div>
+							<b>￥120.00</b>
+							<span>X1</span>
+						</div>
+					</div>
+				</div>
+				<div class="calc">
+					<div>
+						共1件商品&emsp;
+						合计：<b>￥120.00</b>
+						<span>&nbsp;(含邮费￥0.00)</span>
+					</div>
+					<div>
+						<div class="cancel">
+							<span>&nbsp;退&nbsp;&nbsp;款&nbsp;</span>
+						</div>
+						<div class="pay">
+							<span>确认收货</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="goods">
+				<p>订单编号：123456767978123</p>
+				<p>订单时间：2017-12-16 13:10:56
+					<span>等待卖家发货</span>
+				</p>
+				<div class="goodsItem">
+					<div class="giPicture">
+						<img src="./images/1.jpg" alt="">
+					</div>
+					<div class="giDescription">
+						<b>RO膜</b>
+						<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+						<div>
+							<b>￥120.00</b>
+							<span>X1</span>
+						</div>
+					</div>
+				</div>
+				<div class="calc">
+					<div>
+						共1件商品&emsp;
+						合计：<b>￥120.00</b>
+						<span>&nbsp;(含邮费￥0.00)</span>
+					</div>
+					<div>
+						<div class="cancel">
+							<span>&nbsp;退&nbsp;&nbsp;款&nbsp;</span>
+						</div>
+						<div class="pay">
+							<span>提醒发货</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="goods">
+				<p>订单编号：123456767978123</p>
+				<p>订单时间：2017-12-16 13:10:56
+					<span>交易完成</span>
+				</p>
+				<div class="goodsItem">
+					<div class="giPicture">
+						<img src="./images/1.jpg" alt="">
+					</div>
+					<div class="giDescription">
+						<b>RO膜</b>
+						<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+						<div>
+							<b>￥120.00</b>
+							<span>X1</span>
+						</div>
+					</div>
+				</div>
+				<div class="calc">
+					<div>
+						共1件商品&emsp;
+						合计：<b>￥120.00</b>
+						<span>&nbsp;(含邮费￥0.00)</span>
+					</div>
+					<div>
+						<div class="cancel none">
+							<span></span>
+						</div>
+						<div class="pay">
+							<span>评论</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 待付款 -->
+		<div id="dingdanDaifukuan">
+			<div class="goods">
+				<p>订单编号：123456767978123</p>
+				<p>订单时间：2017-12-16 13:10:56
+					<span>等待买家付款</span>
+				</p>
+				<div class="goodsItem">
+					<div class="giPicture">
+						<img src="./images/1.jpg" alt="">
+					</div>
+					<div class="giDescription">
+						<b>RO膜</b>
+						<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+						<div>
+							<b>￥120.00</b>
+							<span>X1</span>
+						</div>
+					</div>
+				</div>
+				<div class="calc">
+					<div>
+						共1件商品&emsp;
+						合计：<b>￥420.00</b>
+						<span>&nbsp;(含邮费￥0.00)</span>
+					</div>
+					<div>
+						<div class="cancel">
+							<span>取消订单</span>
+						</div>
+						<div class="pay">
+							<span>&nbsp;付&nbsp;&nbsp;款&nbsp;</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 待发货 -->
+		<div id="dingdanDaifahuo">
+			<div class="goods">
+				<p>订单编号：123456767978123</p>
+				<p>订单时间：2017-12-16 13:10:56
+					<span>等待卖家发货</span>
+				</p>
+				<div class="goodsItem">
+					<div class="giPicture">
+						<img src="./images/1.jpg" alt="">
+					</div>
+					<div class="giDescription">
+						<b>RO膜</b>
+						<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+						<div>
+							<b>￥120.00</b>
+							<span>X1</span>
+						</div>
+					</div>
+				</div>
+				<div class="calc">
+					<div>
+						共1件商品&emsp;
+						合计：<b>￥420.00</b>
+						<span>&nbsp;(含邮费￥0.00)</span>
+					</div>
+					<div>
+						<div class="cancel">
+							<span>&nbsp;付&nbsp;&nbsp;款&nbsp;</span>
+						</div>
+						<div class="pay">
+							<span>提醒发货</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 待收货 -->
+		<div id="dingdanDaishouhuo">
+			<div class="goods">
+				<p>订单编号：123456767978123</p>
+				<p>订单时间：2017-12-16 13:10:56
+					<span>卖家已发货</span>
+				</p>
+				<div class="goodsItem">
+					<div class="giPicture">
+						<img src="./images/1.jpg" alt="">
+					</div>
+					<div class="giDescription">
+						<b>RO膜</b>
+						<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+						<div>
+							<b>￥120.00</b>
+							<span>X1</span>
+						</div>
+					</div>
+				</div>
+				<div class="calc">
+					<div>
+						共1件商品&emsp;
+						合计：<b>￥420.00</b>
+						<span>&nbsp;(含邮费￥0.00)</span>
+					</div>
+					<div>
+						<div class="cancel">
+							<span>&nbsp;退&nbsp;&nbsp;款&nbsp;</span>
+						</div>
+						<div class="pay">
+							<span>确认收货</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 待评论 -->
+		<div id="dingdanDaipinglun">
+			<div class="goods">
+				<p>订单编号：123456767978123</p>
+				<p>订单时间：2017-12-16 13:10:56
+					<span>交易完成</span>
+				</p>
+				<div class="goodsItem">
+					<div class="giPicture">
+						<img src="./images/1.jpg" alt="">
+					</div>
+					<div class="giDescription">
+						<b>RO膜</b>
+						<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+						<div>
+							<b>￥120.00</b>
+							<span>X1</span>
+						</div>
+					</div>
+				</div>
+				<div class="calc">
+					<div>
+						共1件商品&emsp;
+						合计：<b>￥120.00</b>
+						<span>&nbsp;(含邮费￥0.00)</span>
+					</div>
+					<div>
+						<div class="cancel none">
+							<span></span>
+						</div>
+						<div class="pay">
+							<span>评论</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		// 订单状态
+		var dingdanArr = ['#dingdanAll', '#dingdanDaifukuan','#dingdanDaifahuo','#dingdanDaishouhuo','#dingdanDaipinglun',]
+
+		$(function(){
+
+			// 订单状态
+			var $tab = $(".tab");
+
+			// 点击顶部导航栏，切换订单状态
+			$tab.on("click",function(){
+				
+				$("#content")
+				.css({height: dingdanArr[$(this).attr("index")]
+					.height, 
+					overflowY: $(dingdanArr[$(this).attr("index")])[0].offsetHeight > $("#content")[0].offsetHeight 
+					? 'visible'
+					: 'hidden'
+				});
+
+				// console.log( $(this).attr("index") );
+				// console.log( $("#content")[0].offsetHeight );
+
+				$("#content")
+				.animate({left: '-'+ $(this).attr("index") +'00vw'});
+
+				$("#line").css({left: $(this).attr("index")*2 + '0%'});
+
+				// console.log($(this).attr("index"))
+				
+			});
+		})
+
+	</script>
+</body>
+</html>

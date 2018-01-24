@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="./css/resetstyle.css">
+	<link rel="stylesheet" href="./css/setTime.css">
+	<link rel="stylesheet" href="./fonts/iconfont.css">
+	<script src="./js/jquery-1.10.1.js"></script>
+	<script src="./js/public.js"></script>
+	<script>
+    	window.onload=function(){
+        var divtwo=document.getElementById("divtwo");
+        var divone=document.getElementById("divone");
+        divtwo.onclick=function(){
+          divone.className=(divone.className=="close1")?"open1":"close1";
+          divtwo.className=(divtwo.className=="close2")?"open2":"close2";
+        }
+    }
+    </script>
+</head>
+<body>
+	<div class="_setTime">
+		<div class="_setTimecontain">
+			<hgroup>
+				<div class="hgContain .clearfix">
+					<div class="setLeft .clearfix">
+						<p><span  class="sLeft">关机时间</span><span class="sRight"><b>21</b>时：<b>00</b>分</span>	</p>
+						<p><span>关机时间</span><span class="sRight"><b>21</b>时：<b>00</b>分</span></p>
+					</div><div class="setRight">
+						<div id="divone" class="open1">
+       				 		<div id="divtwo" class="open2"></div>
+    					</div>
+					</div>
+					<div class="delBtn">
+					<input type="submit" value="删除">
+					</div>
+					
+				</div>
+			</hgroup>
+			<hgroup>
+				<div class="hgContain .clearfix">
+					<div class="setLeft .clearfix">
+						<p><span  class="sLeft">关机时间</span><span class="sRight"><b>21</b>时：<b>00</b>分</span>	</p>
+						<p><span>关机时间</span><span class="sRight"><b>21</b>时：<b>00</b>分</span></p>
+					</div><div class="setRight">
+						<div id="divone" class="open1">
+       				 		<div id="divtwo" class="open2"></div>
+    					</div>
+					</div>
+					<div class="delBtn">
+					<input type="submit" value="删除">
+					</div>
+					
+				</div>
+			</hgroup>
+		</div>
+		<div class="settimeFoot">
+			<p><i class="iconfont icon-plus"></i><span>添加新设置</span></p>
+		</div>
+	</div>
+</body>
+</html>                                                                                                                                                                                                                                                                      
