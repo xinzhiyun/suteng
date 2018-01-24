@@ -110,24 +110,68 @@ class ShopController extends CommonController
     // 添加商品
     public function goodsAdd()
     {
-        try {
-            $goods = D('Goods');
-            $data = I('post.');
-            if(!$goods->create()) E($goods->getError(),203);
+        // try {
+        //     $goods = D('Goods');
+        //     $data = I('post.');
+        //     if(!$goods->create()) E($goods->getError(),203);
+        //
+        //     $res = $goods->add();
+        //     if($res){
+        //         E('添加成功',200);
+        //     } else {
+        //         E('添加失败',203);
+        //     }
+        // } catch (Exception $e) {
+        //     $err = [
+        //         'code' => $e->getCode(),
+        //         'msg' => $e->getMessage(),
+        //     ];
+        //     return $this->ajaxReturn($err);
+        // }
+        $cate = D('Category');
+        $cateInfo = $cate->getAllCate();
+        $goods = D('Goods');
+        $goodsList = $goods->select();
+        $this->display();
+    }
 
-            $res = $goods->add();
+    // 产品属性
+    public function setAttr()
+    {
+        $cate = D('Category');
+        $attr = D('attr');
+        $cateInfo = $cate->getAllCate();
+        $attrInfo = $attr->select();
+        $assign = [
+            'cateInfo'=>$cateInfo,
+            'attrInfo'=>$attrInfo,
+        ];
+        $this->assign($assign);
+        $this->display();
+    }
+
+    // 添加属性
+    public function attrAdd()
+    {
+        try {
+            $attr = D('attr');
+            $data = I('post.');
+            if(!$attr->create()) E($attr->getError(),203);
+
+            $res = $attr->add();
             if($res){
                 E('添加成功',200);
             } else {
                 E('添加失败',203);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $err = [
                 'code' => $e->getCode(),
                 'msg' => $e->getMessage(),
             ];
-            return $this->ajaxReturn($err);
+            $this->ajaxReturn($err);
         }
+
     }
 
     /**

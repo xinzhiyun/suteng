@@ -1,0 +1,399 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>商城管理 <small>商品管理</small></h5>
+                    <div class="ibox-tools">
+                        <i class="fa fa-user-plus"></i>
+                        <a href="javascript:;" onclick="add()">添加商品</a>
+                        <i class="fa fa-user-plus"></i>
+                        <a href="javascript:;" onclick="add_attr()">设置参数</a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    商品ID
+                                </th>
+                                <th>
+                                    商品分类
+                                </th>
+                                <th>
+                                    商品名称
+                                </th>
+                                <th>
+                                    商品图片
+                                </th>
+                                <th>
+                                    商品描述
+                                </th>
+                                <th>
+                                    商品属性
+                                </th>
+                                <th>
+                                    商品参数
+                                </th>
+                                <th>
+                                    商品单价
+                                </th>
+                                <th>
+                                    商品库存
+                                </th>
+                                <th>
+                                    商品状态
+                                </th>
+                                <th>
+                                    添加时间
+                                </th>
+                                <th>
+                                    更新时间
+                                </th>
+                                <th>
+                                    操作
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <foreach name="data" item="v">
+                                <tr>
+                                    <td>
+                                        {{$v['id']}}
+                                    </td>
+                                    <td>
+                                        {{$v['cid']}}
+                                    </td>
+                                    <td>
+                                        {{$v['name']}}
+                                    </td>
+                                    <td>
+                                        <empty name="v.pic'">
+                                            <a class="btn btn-white" href="javascript:;" goodsTitle="{{$v['name']}}" onclick="addpic(this)">添加图片</a>
+                                        <else />
+                                            <img src="__PUBLIC__/{{$v['pic']}}">
+                                        </empty>
+                                    </td>
+                                    <td>
+                                        <empty name="v.desc'">
+                                            <a class="btn btn-white" href="javascript:;">添加描述</a>
+                                        <else />
+                                            {{$v['desc']}}
+                                        </empty>
+                                    </td>
+                                    <td>
+                                        {{$v['attr']}}
+                                    </td>
+                                    <td>
+                                        <empty name="v.attr'">
+                                            <a class="btn btn-white" href="javascript:;">添加参数</a>
+                                        <else />
+                                            {{$v['attr']}}
+                                        </empty>
+                                    </td>
+                                    <td>
+                                        {{$v['price']}}
+                                    </td>
+                                    <td>
+                                        {{$v['stock']}}
+                                    </td>
+                                    <td>
+                                        <switch name="v.status">
+                                            <case value="0">上架</case>
+                                            <case value="1">下架</case>
+                                        </switch>
+                                    </td>
+                                    <td>
+                                        {{$v['addtime']|date='Y-m-d H:i:s',###}}
+                                    </td>
+                                    <td>
+                                        {{$v['updatetime']|date='Y-m-d H:i:s',###}}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a class="btn btn-outline btn-success" href="javascript:;" ruleId="{{$v['id']}}" ruleName="{{$v['name']}}" ruleTitle="{{$v['pid']}}"
+                                            onclick="edit(this)">
+                                                更新
+                                            </a>
+                                            <a class="btn btn-outline btn-success deletBnt" ruleId="{{$v['id']}}">
+                                                删除
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </foreach>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- 弹框信息 -->
+    <div class="modal inmodal" id="st-add" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        添加商品
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-bordered table-hover table-condensed">
+                        <tr>
+                            <th width=15%>
+                                商品分类
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <select class="form-control m-b" name="cid">
+                                        <option value="--">--请选择分类--</option>
+                                        <volist name="cateInfo" id="vo">
+                                            <if condition="$vo['pid'] eq 0">
+                                                <option value="{{$vo['id']}}" disabled>{{$vo['_name']}}</option>
+                                                <else />
+                                                <option value="{{$vo['id']}}">{{$vo['_name']}}</option>
+                                            </if>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width=15%>
+                                商品名称
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <input class="input-medium form-control" type="text" name="name" placeholder="小米（至尊版）">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width=15%>
+                                商品单价
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <input class="input-medium form-control" type="text" name="price" placeholder="0.00">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width=15%>
+                                商品库存
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <input class="input-medium form-control" type="text" name="stock">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">
+                                <input class="btn btn-success add-goods" type="submit" value="确认">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal" id="st-addpic1" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title goodsName" id="myModalLabel">
+                        添加图片
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div id="uploader" class="wu-example">
+                        <!--用来存放文件信息-->
+                        <div id="thelist" class="uploader-list"></div>
+                        <div class="btns">
+                            <div id="picker">选择文件</div>
+                            <button id="ctlBtn" class="btn btn-default">开始上传</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal" id="st-desc" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        添加商品描述
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="ibox-content no-padding">
+
+                        <div class="summernote">
+                            <h2>H+ 后台主题</h2>
+                            <p>H+是一个完全响应式，基于Bootstrap3.3.6最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术，她提供了诸多的强大的可以重新组合的UI组件，并集成了最新的jQuery版本(v2.1.1)，当然，也集成了很多功能强大，用途广泛的就jQuery插件，她可以用于所有的Web应用程序，如<b>网站管理后台</b>，<b>网站会员中心</b>，<b>CMS</b>，<b>CRM</b>，<b>OA</b>等等，当然，您也可以对她进行深度定制，以做出更强系统。</p>
+                            <p>
+                                <b>当前版本：</b>v4.1.0
+                            </p>
+                            <p>
+                                <b>定价：</b><span class="label label-warning">&yen;988（不开发票）</span>
+                            </p>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal" id="st-setattr" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        商品参数设置
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <p style="color:red;">参数设置完成后，可以在商品添加时选择已经添加过的参数</p>
+                    <table class="table table-striped table-bordered table-hover table-condensed">
+                        <!-- <tr>
+                            <th width=15%>
+                                规格
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <input class="input-medium form-control" type="text" name="attr" placeholder="例如：内存、中号、运行内存">
+                                </div>
+                            </td>
+                        </tr> -->
+                        <tr>
+                            <th width=15%>
+                                属性值
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <input class="input-medium form-control" type="text" name="value" placeholder="例如：4G、M、128G">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">
+                                <input class="btn btn-success set-attr" type="submit" value="确认">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script>
+        // 添加商品
+        function add() {
+            $("select[name='cid']").val('--');
+            $("input[name='name']").val('');
+            $("input[name='price']").val('');
+            $("input[name='stock']").val(1);
+            $('#st-add').modal('show');
+        }
+        $('.add-goods').click(function(){
+            var cateId = $("select[name='cid']").val();
+            var goodsname = $("input[name='name']").val();
+            var price = $("input[name='price']").val();
+            var stock = $("input[name='stock']").val();
+            $.ajax({
+                url:'goodsAdd',
+                type:'post',
+                dataType:'json',
+                data:{'cid':cateId,'name':goodsname,'price':price,'stock':stock},
+                success:function(res){
+                    if(res.code = 200){
+                        // $('#st-add').modal('hide');
+                        location.reload();
+                        parent.layer.msg(res.msg);
+                    }
+                    parent.layer.msg(res.msg);
+                }
+            });
+        });
+
+        // 上传图片
+        function addpic(obj)
+        {
+            var goodsName = $(obj).attr('goodsTitle');
+            $('.goodsName').html('给'+goodsName+'添加图片');
+            $('#st-addpic').modal('show');
+        }
+
+        // 参数设置
+        function add_attr() {
+            $("input[name='attr']").val('');
+            $("input[name='value']").val('');
+            $('#st-setattr').modal('show');
+        }
+
+        $('.set-attr').click(function(){
+            // var attr = $("input[name='attr']").val();
+            var value = $("input[name='value']").val();
+            // $.ajax({
+            //     url:'set_attr',
+            //     data:{''}
+            // });
+        });
+
+
+        $('.pagination ul a').unwrap('div').wrap('<li></li>');
+        $('.pagination ul span').wrap('<li class="active"></li>')
+
+    </script>
+    <script src="__PUBLIC__/Admin/js/plugins/summernote/summernote.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/plugins/summernote/summernote-zh-CN.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Admin/js/plugins/webuploader/webuploader.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('.summernote').summernote({
+                lang: 'zh-CN'
+            });
+
+        });
+        var edit = function () {
+            $("#eg").addClass("no-padding");
+            $('.click2edit').summernote({
+                lang: 'zh-CN',
+                focus: true
+            });
+        };
+        var save = function () {
+            $("#eg").removeClass("no-padding");
+            var aHTML = $('.click2edit').code(); //save HTML If you need(aHTML: array).
+            $('.click2edit').destroy();
+        };
+    </script>
+</block>
