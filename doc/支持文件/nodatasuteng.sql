@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost_3306
-Source Server Version : 50505
-Source Host           : localhost:3306
-Source Database       : suteng
+Source Server         : wuzhibin.cn
+Source Server Version : 50173
+Source Host           : sdm359768304.my3w.com:3306
+Source Database       : sdm359768304_db
 
 Target Server Type    : MYSQL
-Target Server Version : 50505
+Target Server Version : 50173
 File Encoding         : 65001
 
-Date: 2018-01-24 15:15:41
+Date: 2018-01-24 15:47:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -50,7 +50,7 @@ CREATE TABLE `st_attr` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL COMMENT '属性名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_attr_val
@@ -60,7 +60,7 @@ CREATE TABLE `st_attr_val` (
   `gid` int(11) NOT NULL COMMENT '商品ID',
   `aid` int(11) NOT NULL COMMENT '属性ID',
   ` val` varchar(20) NOT NULL COMMENT '属性值'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_auth_group
