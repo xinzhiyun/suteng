@@ -127,6 +127,8 @@ class VendorsController extends CommonController
                         $data['leavel']     = 1;
                         // 设置状态为待审批
                         $data['status']     = 7;
+                        // 设置审核状态
+                        $data['reviewed']   = 3;
                         // 设置添加责任人
                         $data['add_liable'] = $_SESSION['adminInfo']['user'];
                         // 将图片合并入数据中
@@ -558,7 +560,33 @@ class VendorsController extends CommonController
     }
 
     /**
-     * [reviewed 分销商审核]
+     * [reviewed 分销商审核失败]
+     * @return [type] [description]
+     */
+    public function status()
+    {
+        // 更新条件
+        $saveData['id'] = I('post.id');
+        // 更新数据
+        $data['status'] = I('post.status');
+        // 审核-责任人
+        $data['auditing'] = $_SESSION['adminInfo']['user'];
+        // 执行更新
+        $res = D('vendors')->where($saveData)->save($data);
+        // 判断信息是否修改成功
+        if($res){
+            // 查询成功，设置返回前端的数据
+            $message     = ['code' => 200, 'message' => '审核成功'];
+        } else {
+            // 查询失败，设置返回前端的数据
+            $message     = ['code' => 403, 'message' => '审核失败'];
+        }
+        // 返回JSON格式数据
+        $this->ajaxReturn($message);
+    }
+
+    /**
+     * [reviewed 分销商审核成功]
      * @return [type] [description]
      */
     public function reviewed()
@@ -566,7 +594,12 @@ class VendorsController extends CommonController
         // 更新条件
         $saveData['id'] = I('post.id');
         // 更新数据
-        $data['status'] = I('post.status');
+        $data['reviewed'] = I('post.reviewed');
+
+        if($data['reviewed']==3){
+            // 如果完成审核流程
+            $data['status'] = 7;
+        }
         // 审核-责任人
         $data['auditing'] = $_SESSION['adminInfo']['user'];
         // 执行更新
