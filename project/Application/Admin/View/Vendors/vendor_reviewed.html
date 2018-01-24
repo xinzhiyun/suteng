@@ -1,5 +1,7 @@
 <extend name="Public/base" />
-
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+</block>
 <block name="content">
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
@@ -45,11 +47,19 @@
                                             <td>{{$val.add_liable}}</td>
                                             <td>{{$val.addtime|date="Y-m-d H:i:s",###}}</td>
                                             <td>{{$val.updatetime|date="Y-m-d H:i:s",###}}</td>
-                                            <td>
+<!--                                             <td>
                                                 <a onclick="access({{$val.id}},7)" href="#">通过</a>
                                                 <a onclick="access({{$val.id}},4)" href="#">身份失败</a>
                                                 <a onclick="access({{$val.id}},5)" href="#">公司失败</a>
                                                 <a onclick="access({{$val.id}},6)" href="#">协议失败</a>
+                                            </td> -->
+                                            <td>
+                                                <switch name="val.reviewed">
+                                                    <case value="0"><a class="btn btn-sm btn-success" href="javascript:identity({{$val.id}})">身份信息审核</a></case>
+                                                    <case value="1"><a class="btn btn-sm btn-success" href="javascript:company({{$val.id}})">公司信息审核</a></case>
+                                                    <case value="2"><a class="btn btn-sm btn-success" href="javascript:protocol({{$val.id}})">协议文件审核</a></case>
+                                                    <case value="3">已经审核完成</case>
+                                                </switch>
                                             </td>
                                         </tr>
                                     </volist>
@@ -61,9 +71,204 @@
             </div>
         </div>
     </div>
+
+    <!-- 弹框身份证信息 -->
+    <div class="modal inmodal" id="identity" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        身份信息审核
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-bordered table-hover table-condensed">
+                        <tr>
+                            <td width=20%>
+                                姓名
+                            </td>
+                            <td class="name">
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width=20%>
+                                手机号码
+                            </td>
+                            <td class="phone">
+                                13425492760
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width=20%>
+                                身份证号码
+                            </td>
+                            <td class="identity">
+                                440882198812045535
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                身份证正面：
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <img class="positive" width="100%" src="" alt="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                身份证反面面：
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <img class="opposite" width="100%" src="" alt="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                手持身份证正面：
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <img class="handheld" width="100%" src="" alt="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                            </th>
+                            <td>
+                                <input type="hidden" value="" name="id">
+                                <input class="btn btn-success" id="identity_ok" type="submit" value="审核通过">
+                                <input class="btn btn-success" id="identity_on" type="submit" value="审核失败">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹框公司信息 -->
+    <div class="modal inmodal" id="company" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        公司信息审核
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-bordered table-hover table-condensed">
+                        <tr>
+                            <td width=20%>
+                                公司名称
+                            </td>
+                            <td class="company">
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width=20%>
+                                座机号码
+                            </td>
+                            <td class="telephone">
+                                13425492760
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width=20%>
+                                公司地址
+                            </td>
+                            <td class="address">
+                                440882198812045535
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                营业执照：
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <img class="licence" width="100%" src="" alt="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                            </th>
+                            <td>
+                                <input type="hidden" value="" name="id">
+                                <input class="btn btn-success" id="company_ok" type="submit" value="审核通过">
+                                <input class="btn btn-success" id="company_on" type="submit" value="审核失败">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 弹框协议文件 -->
+    <div class="modal inmodal" id="protocol" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        协议文件审核
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-bordered table-hover table-condensed">
+                        <tr>
+                            <td width=20%>
+                                协议文件
+                            </td>
+                            <td>
+                                <a class="protocol" href="">文件</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                协议文件：
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <img class="protocol" width="100%" src="" alt="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                            </th>
+                            <td>
+                                <input type="hidden" value="" name="id">
+                                <input class="btn btn-success" id="protocol_ok" type="submit" value="审核通过">
+                                <input class="btn btn-success" id="protocol_on" type="submit" value="审核失败">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </block>
 <block name="myjs">
 <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
     <script>
     /**
      * [ajaxData 获取详情]
@@ -94,27 +299,277 @@
         });
     }
 
+    // /**
+    //  * [access 审核接口]
+    //  * @param  {[type]} id     [ID属性值]
+    //  * @param  {[type]} status [{7：通过审核，4：身份证审核失败，5：公司信息审核失败，6：协议审核失败}]
+    //  * @return {[type]}        [json数据]
+    //  */
+    // function access(id,status){
+    //     $.ajax({
+    //         url:"{{:U('Admin/Vendors/reviewed')}}",
+    //         type:"post",
+    //         data:{'id':id,'status':status},
+    //         success:function(res){
+    //             // 查询失败提示
+    //             parent.layer.msg(res.message);
+    //             window.location.reload()
+    //         },
+    //         error:function(res){
+    //             // 失败提示
+    //             parent.layer.msg(res.message);
+    //         }
+    //     })
+    // }
+
     /**
-     * [access 审核接口]
-     * @param  {[type]} id     [ID属性值]
-     * @param  {[type]} status [{7：通过审核，4：身份证审核失败，5：公司信息审核失败，6：协议审核失败}]
-     * @return {[type]}        [json数据]
+     * [protocol 协议文件审核]
+     * @param  {[type]} id [description]
+     * @return {[type]}    [description]
      */
-    function access(id,status){
+    function protocol(id){
+        $.ajax({
+            url:"{{:U('Admin/Vendors/reviewed_data')}}",
+            data:{"id":id},
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                // console.dir(res);
+                if(res.res.code == 200){
+                    $('#protocol img.protocol').attr('src','__PUBLIC__/'+res.data.protocol);
+                    $('#protocol a.protocol').attr('href','__PUBLIC__/'+res.data.protocol);
+                    $("#protocol input[name='id']").val(res.data.id);
+                    // 显示模块
+                    $('#protocol').modal('show');
+                }else{
+                    // 查询失败提示
+                    parent.layer.msg(resdata.res.message);
+                }
+            }
+        });
+    }
+
+    /**
+     * 协议文件审核审核成功
+     * @param  {[type]} 
+     * @return {[type]}     [description]
+     */
+    $('#protocol_ok').click(function(){
+        $('#protocol').modal('hide');
+        var id = $("#protocol input[name='id']").val();
         $.ajax({
             url:"{{:U('Admin/Vendors/reviewed')}}",
-            type:"post",
-            data:{'id':id,'status':status},
+            data:{"id":id,'reviewed':3},
+            dataType:"json",
+            type: 'post',
             success:function(res){
-                // 查询失败提示
-                parent.layer.msg(res.message);
-                window.location.reload()
-            },
-            error:function(res){
-                // 失败提示
-                parent.layer.msg(res.message);
+                console.dir(res);
+                if(res.code == 200){
+                    swal("协议文件审核成功！", "分销商审核流程完成。", "success");
+                    window.location.reload();
+                }else{
+                    // 查询失败提示
+                    // parent.layer.msg(resdata.res.message);
+                    swal("协议文件审核失败！", "请重新审核。", "success");
+                }
             }
-        })
+        });
+    });
+
+    /**
+     * [协议文件审核失败]
+     * @param  {[type]} )
+     * @return {[type]}     [description]
+     */
+    $('#protocol_on').click(function(){
+        $('#protocol').modal('hide');
+        var id = $("#protocol input[name='id']").val();
+        $.ajax({
+            url:"{{:U('Admin/Vendors/status')}}",
+            data:{"id":id,'status':6},
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                console.dir(res);
+                if(res.code == 200){
+                    swal("协议文件审核成功！", "等待用户重新提交资料。", "success");
+                    window.location.reload();
+                }else{
+                    // 查询失败提示
+                    // parent.layer.msg(resdata.res.message);
+                    swal("协议文件审核失败！", "请重新审核。", "success");
+                }
+            }
+        });
+    });
+
+
+
+    /**
+     * [company 公司信息审核模态]
+     * @param  {[type]} id [description]
+     * @return {[type]}    [description]
+     */
+    function company(id){
+        $.ajax({
+            url:"{{:U('Admin/Vendors/reviewed_data')}}",
+            data:{"id":id},
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                // console.dir(res);
+                if(res.res.code == 200){
+                    $('#company .company').html(res.data.company);
+                    $('#company .telephone').html(res.data.telephone);
+                    $('#company .address').html(res.data.address);
+                    $('#company .licence').attr('src','__PUBLIC__/'+res.data.licence);
+                    $("#company input[name='id']").val(res.data.id);
+                    // 显示模块
+                    $('#company').modal('show');
+                }else{
+                    // 查询失败提示
+                    parent.layer.msg(resdata.res.message);
+                }
+            }
+        });
+    }
+
+    /**
+     * 公司信息审核审核成功
+     * @param  {[type]} 
+     * @return {[type]}     [description]
+     */
+    $('#company_ok').click(function(){
+        $('#company').modal('hide');
+        var id = $("#company input[name='id']").val();
+        $.ajax({
+            url:"{{:U('Admin/Vendors/reviewed')}}",
+            data:{"id":id,'reviewed':2},
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                console.dir(res);
+                if(res.code == 200){
+                    swal("公司信息审核成功！", "请尽快完成协议文件审核。", "success");
+                    window.location.reload();
+                }else{
+                    // 查询失败提示
+                    // parent.layer.msg(resdata.res.message);
+                    swal("公司信息审核失败！", "请重新审核。", "success");
+                }
+            }
+        });
+    });
+
+    /**
+     * [公司信息审核审核失败]
+     * @param  {[type]} )
+     * @return {[type]}     [description]
+     */
+    $('#company_on').click(function(){
+        $('#company').modal('hide');
+        var id = $("#company input[name='id']").val();
+        $.ajax({
+            url:"{{:U('Admin/Vendors/status')}}",
+            data:{"id":id,'status':5},
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                console.dir(res);
+                if(res.code == 200){
+                    swal("公司信息审核成功！", "等待用户重新提交资料。", "success");
+                    window.location.reload();
+                }else{
+                    // 查询失败提示
+                    // parent.layer.msg(resdata.res.message);
+                    swal("公司信息审核失败！", "请重新审核。", "success");
+                }
+            }
+        });
+    });
+
+    /**
+     * 身份信息审核成功
+     * @param  {[type]} 
+     * @return {[type]}     [description]
+     */
+    $('#identity_ok').click(function(){
+        $('#identity').modal('hide');
+        var id = $("#identity input[name='id']").val();
+        $.ajax({
+            url:"{{:U('Admin/Vendors/reviewed')}}",
+            data:{"id":id,'reviewed':1},
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                console.dir(res);
+                if(res.code == 200){
+                    swal("身份证审核成功！", "请尽快完成公司信息审核。", "success");
+                    window.location.reload();
+                }else{
+                    // 查询失败提示
+                    // parent.layer.msg(resdata.res.message);
+                    swal("身份证审核失败！", "请重新审核。", "success");
+                }
+            }
+        });
+    });
+
+    /**
+     * [身份信息审核失败]
+     * @param  {[type]} )
+     * @return {[type]}     [description]
+     */
+    $('#identity_on').click(function(){
+        $('#identity').modal('hide');
+        var id = $("#identity input[name='id']").val();
+        $.ajax({
+            url:"{{:U('Admin/Vendors/status')}}",
+            data:{"id":id,'status':4},
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                console.dir(res);
+                if(res.code == 200){
+                    swal("身份证审核成功！", "等待用户重新提交资料。", "success");
+                    window.location.reload();
+                }else{
+                    // 查询失败提示
+                    // parent.layer.msg(resdata.res.message);
+                    swal("身份证审核失败！", "请重新审核。", "success");
+                }
+            }
+        });
+    });
+    /**
+     * [identity 身份信息审核模态框]
+     * @param  {[type]} id [description]
+     * @return {[type]}    [description]
+     */
+    function identity(id){
+        $.ajax({
+            url:"{{:U('Admin/Vendors/reviewed_data')}}",
+            data:{"id":id},
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                // console.dir(res);
+                if(res.res.code == 200){
+                    $('#identity .name').html(res.data.name);
+                    $('#identity .phone').html(res.data.phone);
+                    $('#identity .identity').html(res.data.identity);
+                    $('#identity .positive').attr('src','__PUBLIC__/'+res.data.positive);
+                    $('#identity .opposite').attr('src','__PUBLIC__/'+res.data.opposite);
+                    $('#identity .handheld').attr('src','__PUBLIC__/'+res.data.handheld);
+                    $("#identity input[name='id']").val(res.data.id);
+                    // 显示模块
+                    $('#identity').modal('show');
+                }else{
+                    // 查询失败提示
+                    parent.layer.msg(resdata.res.message);
+                }
+            }
+        });
     }
     </script>
 </block>

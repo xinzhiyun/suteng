@@ -1,0 +1,59 @@
+<extend name="Public/base" />
+
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                    <h5>分销商管理 <small>佣金分配</small></h5>
+                </div>
+
+                    <div class="ibox-content">
+                        <form action="commission_proportion" method="post" class="form-horizontal" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">会员邀请人分配占比</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="inviter" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">A级分销商分配占比</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="vendor_a" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">B级分销商分配占比</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="vendor_b" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">C级分销商分配占比</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="vendor_c" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">分销商邀请人分配占比</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="vendor_i" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit">保存</button>
+                                    <button class="btn btn-white" type="reset">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

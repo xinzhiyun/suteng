@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50173
 File Encoding         : 65001
 
-Date: 2018-01-22 16:41:03
+Date: 2018-01-24 16:44:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -40,7 +40,27 @@ CREATE TABLE `st_admin_menu` (
   `ico` varchar(50) DEFAULT '' COMMENT 'font-awesome图标',
   `order_number` int(11) unsigned DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for st_attr
+-- ----------------------------
+DROP TABLE IF EXISTS `st_attr`;
+CREATE TABLE `st_attr` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL COMMENT '属性名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for st_attr_val
+-- ----------------------------
+DROP TABLE IF EXISTS `st_attr_val`;
+CREATE TABLE `st_attr_val` (
+  `gid` int(11) NOT NULL COMMENT '商品ID',
+  `aid` int(11) NOT NULL COMMENT '属性ID',
+  ` val` varchar(20) NOT NULL COMMENT '属性值'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_auth_group
@@ -80,7 +100,7 @@ CREATE TABLE `st_auth_rule` (
   `condition` char(100) NOT NULL DEFAULT '' COMMENT '规则表达式，为空表示存在就验证，不为空表示按照条件验证',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='规则表';
+) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COMMENT='规则表';
 
 -- ----------------------------
 -- Table structure for st_binding
@@ -148,6 +168,22 @@ CREATE TABLE `st_comment` (
   `attitude` int(11) DEFAULT NULL COMMENT '服务态度评分',
   `dressing` int(11) DEFAULT NULL COMMENT '着装评分',
   `addtime` varchar(12) NOT NULL COMMENT '评论时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for st_commission
+-- ----------------------------
+DROP TABLE IF EXISTS `st_commission`;
+CREATE TABLE `st_commission` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `inviter` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '会员邀请人分配占比',
+  `vendor_a` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'A级分销商分配占比',
+  `vendor_b` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'B级分销商分配占比',
+  `vendor_c` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'C级分销商分配占比',
+  `vendor_i` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '分销商邀请人分配占比',
+  `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '分配类型{0：按比例分配，1：固定金额分配}',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -296,13 +332,12 @@ DROP TABLE IF EXISTS `st_goods`;
 CREATE TABLE `st_goods` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cid` int(11) NOT NULL COMMENT '商品分类',
-  `vid` int(11) NOT NULL COMMENT '关联卖家',
+  `vid` int(11) DEFAULT NULL COMMENT '关联卖家',
   `name` varchar(64) NOT NULL COMMENT '商品名称',
-  `pic` varchar(255) NOT NULL,
+  `pic` varchar(255) DEFAULT NULL,
   `desc` text COMMENT '商品描述',
-  `parameter` varchar(255) NOT NULL COMMENT '商品参数',
   `price` double(6,2) NOT NULL COMMENT '商品单价',
-  `stock` int(11) DEFAULT NULL COMMENT '商品库存',
+  `stock` int(11) NOT NULL DEFAULT '0' COMMENT '商品库存',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '商品状态，默认0上架，1为下架',
   `addtime` varchar(12) NOT NULL COMMENT '商品添加时间',
   `updatetime` varchar(12) NOT NULL COMMENT '商品更新时间',
@@ -374,8 +409,9 @@ CREATE TABLE `st_users` (
   `open_id` varchar(50) NOT NULL COMMENT '微信的ID号',
   `office_code` varchar(6) DEFAULT NULL COMMENT '分公司唯一标识',
   `vendora_code` varchar(6) DEFAULT NULL COMMENT 'A级分销商唯一标识',
-  `vendorb_code` varchar(255) DEFAULT NULL COMMENT 'B级分销商唯一标识',
-  `vendorc_code` varchar(255) DEFAULT NULL COMMENT 'C级分销商唯一标识',
+  `vendorb_code` varchar(6) DEFAULT NULL COMMENT 'B级分销商唯一标识',
+  `vendorc_code` varchar(6) DEFAULT NULL COMMENT 'C级分销商唯一标识',
+  `vendori_code` varchar(6) DEFAULT NULL COMMENT '分销商邀请人',
   `invitation_code` varchar(11) DEFAULT NULL COMMENT '邀请人唯一标识',
   `code` varchar(11) NOT NULL COMMENT '用户唯一标识',
   `invite` tinyint(1) NOT NULL COMMENT '邀请人类型:{0：分公司，1：A级分销，2：B级分销，3：C级分销，4：会员 5：普通二维码}',
@@ -393,7 +429,7 @@ CREATE TABLE `st_users` (
   `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_vendors

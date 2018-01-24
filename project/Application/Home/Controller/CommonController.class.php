@@ -70,7 +70,6 @@ class CommonController extends Controller
                                 $userRes = M('users')->add($newData);
 
                                 if($userRes){
-
                                     // 更新条件
                                     $userWhere['open_id'] = $_SESSION['open_id'];
                                     // 更新数据
@@ -85,18 +84,20 @@ class CommonController extends Controller
                                 $showUserData['ticket'] = $wechat['invitation_ticket'];
                                 // 查询用户
                                 $userdata = M('users')->where($showUserData)->find();
-                                 // 准备用户表数据
-                                 $newData['office_code']     = $userdata['office_code'];
-                                 // 邀请人
-                                 $newData['invitation_code'] = $userdata['code'];
-                                 // A级分销商
-                                 $newData['vendora_code']    = $userdata['vendora_code'];
-                                 // B级分销商
-                                 $newData['vendorb_code']    = $userdata['vendorb_code'];
-                                 // C级分销商
-                                 $newData['vendorc_code']    = $userdata['vendorc_code'];
-                                 // 邀请人类型
-                                 $newData['invite']          = 4;
+                                // 准备用户表数据
+                                $newData['office_code']     = $userdata['office_code'];
+                                // 邀请人
+                                $newData['invitation_code'] = $userdata['code'];
+                                // A级分销商
+                                $newData['vendora_code']    = $userdata['vendora_code'];
+                                // B级分销商
+                                $newData['vendorb_code']    = $userdata['vendorb_code'];
+                                // C级分销商
+                                $newData['vendorc_code']    = $userdata['vendorc_code'];
+                                // 邀请人类型
+                                $newData['invite']          = 4;
+                                // 分销商邀请人
+                                $newData['vendori_code']    = $userdata['vendori_code'];
                                 // 获取用户唯一标识
                                 $newData['code']            = $this->user_code();
                                 // 添加时间
@@ -151,6 +152,8 @@ class CommonController extends Controller
                                         $newData['vendorc_code']    = $vendor['code'];
                                         // 邀请人类型
                                         $newData['invite']          = 1;
+                                        // 分销商邀请人
+                                        $newData['vendori_code']    = $vendor['invitation_code'];
                                         break;
                                     case '3':
                                         // B级分销商邀请会员
@@ -166,6 +169,8 @@ class CommonController extends Controller
                                         $newData['vendorc_code']    = $vendor['code'];
                                         // 邀请人类型
                                         $newData['invite']          = 2;
+                                        // 分销商邀请人
+                                        $newData['vendori_code']    = $vendor['invitation_code'];
                                         break;
                                     case '4':
                                         // c级分销商邀请会员
@@ -181,6 +186,8 @@ class CommonController extends Controller
                                         $newData['vendorc_code']    = $vendor['code'];
                                         // 邀请人类型
                                         $newData['invite']          = 3;
+                                        // 分销商邀请人
+                                        $newData['vendori_code']    = $vendor['invitation_code'];
                                         break;
                                     default:
                                         # code...
