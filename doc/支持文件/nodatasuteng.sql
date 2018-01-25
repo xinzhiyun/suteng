@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50173
 File Encoding         : 65001
 
-Date: 2018-01-25 13:53:47
+Date: 2018-01-25 15:12:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -285,7 +285,7 @@ CREATE TABLE `st_dimension` (
   `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_dimension_num
@@ -410,7 +410,23 @@ CREATE TABLE `st_users` (
   `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for st_users_commission
+-- ----------------------------
+DROP TABLE IF EXISTS `st_users_commission`;
+CREATE TABLE `st_users_commission` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增',
+  `vendor_id` int(11) unsigned NOT NULL COMMENT '关联分销商表ID',
+  `order_id` varchar(12) DEFAULT NULL COMMENT '订单号码',
+  `abonus` double(6,2) unsigned DEFAULT '0.00' COMMENT '分红 默认为0.00',
+  `current_abonus` double(6,2) unsigned DEFAULT '0.00' COMMENT '当前分红 默认为0.00',
+  `describe` varchar(255) DEFAULT NULL COMMENT '佣金获得描述',
+  `type` tinyint(1) unsigned DEFAULT '0' COMMENT '分配类型{0：按比例分配，1：固定金额分配}',
+  `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=gbk;
 
 -- ----------------------------
 -- Table structure for st_vendors
@@ -442,7 +458,7 @@ CREATE TABLE `st_vendors` (
   `vendor_user` varchar(255) DEFAULT NULL COMMENT '分销商邀请会员',
   `invitation_code` varchar(255) DEFAULT NULL COMMENT '分销商推荐人',
   `office_code` varchar(6) DEFAULT NULL COMMENT '分公司唯一ID',
-  `abonus` int(11) unsigned NOT NULL DEFAULT '0',
+  `abonus` double(6,2) unsigned NOT NULL DEFAULT '0.00',
   `auditing` varchar(30) DEFAULT NULL COMMENT '审核-责任人',
   `add_liable` varchar(30) DEFAULT NULL COMMENT '添加-责任人',
   `reviewed_describe` varchar(255) DEFAULT NULL COMMENT '审核描述',
@@ -452,6 +468,24 @@ CREATE TABLE `st_vendors` (
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for st_vendors_commission
+-- ----------------------------
+DROP TABLE IF EXISTS `st_vendors_commission`;
+CREATE TABLE `st_vendors_commission` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增',
+  `user_id` int(11) unsigned NOT NULL COMMENT '关联用户表ID',
+  `order_id` varchar(12) DEFAULT NULL COMMENT '订单号码',
+  `gold_num` int(11) unsigned DEFAULT '0' COMMENT '金币数量 默认为0',
+  `silver` int(11) unsigned DEFAULT '0' COMMENT '银币数量 默认为0',
+  `current_gold_num` int(11) unsigned DEFAULT '0' COMMENT '当前金币数量 默认为0',
+  `current_silver` int(11) unsigned DEFAULT '0' COMMENT '当前银币数量 默认为0',
+  `describe` varchar(255) DEFAULT NULL COMMENT '佣金获得描述',
+  `type` tinyint(1) unsigned DEFAULT '0' COMMENT '分配类型{0：按比例分配，1：固定金额分配}',
+  `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=gbk;
 
 -- ----------------------------
 -- Table structure for st_wechat
@@ -468,7 +502,7 @@ CREATE TABLE `st_wechat` (
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   `recommend` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员 4:分公司邀请分销商 5:分销商邀请分销商}',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=342 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=357 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_work
