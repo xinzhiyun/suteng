@@ -116,7 +116,11 @@ class ShopController extends CommonController
             if(!$goods->create()) E($goods->getError(),203);
 
             $res = $goods->add();
-
+            if($res){
+                E('添加成功',200);
+            } else {
+                E('添加失败',203);
+            }
         } catch (Exception $e) {
             $err = [
                 'code' => $e->getCode(),
