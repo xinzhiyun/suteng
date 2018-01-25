@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50173
 File Encoding         : 65001
 
-Date: 2018-01-24 16:43:10
+Date: 2018-01-25 10:36:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -95,7 +95,7 @@ CREATE TABLE `st_attr` (
 DROP TABLE IF EXISTS `st_attr_val`;
 CREATE TABLE `st_attr_val` (
   `gid` int(11) NOT NULL COMMENT '商品ID',
-  `aid` int(11) NOT NULL COMMENT '属性ID',
+  `aid` int(11) DEFAULT NULL COMMENT '属性ID',
   ` val` varchar(20) NOT NULL COMMENT '属性值'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -298,6 +298,7 @@ CREATE TABLE `st_comment` (
 DROP TABLE IF EXISTS `st_commission`;
 CREATE TABLE `st_commission` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `user` int(11) unsigned NOT NULL DEFAULT '0',
   `inviter` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '会员邀请人分配占比',
   `vendor_a` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'A级分销商分配占比',
   `vendor_b` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'B级分销商分配占比',
@@ -306,11 +307,12 @@ CREATE TABLE `st_commission` (
   `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '分配类型{0：按比例分配，1：固定金额分配}',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_commission
 -- ----------------------------
+INSERT INTO `st_commission` VALUES ('1', '60', '40', '40', '30', '20', '10', '0', '0');
 
 -- ----------------------------
 -- Table structure for st_convert
@@ -506,6 +508,7 @@ CREATE TABLE `st_goods` (
   `name` varchar(64) NOT NULL COMMENT '商品名称',
   `pic` varchar(255) DEFAULT NULL,
   `desc` text COMMENT '商品描述',
+  `cost` double(6,2) NOT NULL COMMENT '商品成本',
   `price` double(6,2) NOT NULL COMMENT '商品单价',
   `stock` int(11) NOT NULL DEFAULT '0' COMMENT '商品库存',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '商品状态，默认0上架，1为下架',
@@ -516,34 +519,6 @@ CREATE TABLE `st_goods` (
 
 -- ----------------------------
 -- Records of st_goods
--- ----------------------------
-
--- ----------------------------
--- Table structure for st_orders
--- ----------------------------
-DROP TABLE IF EXISTS `st_orders`;
-CREATE TABLE `st_orders` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `order_id` varchar(32) NOT NULL COMMENT '订单编号',
-  `device_id` int(11) unsigned NOT NULL COMMENT '关联的设备ID号',
-  `user_id` int(11) unsigned NOT NULL COMMENT '关联的用户ID号',
-  `express_id` int(11) unsigned DEFAULT NULL COMMENT '关联快递信息ID号',
-  `total_num` int(11) unsigned NOT NULL COMMENT '商品的购买总数量',
-  `total_price` decimal(15,2) unsigned NOT NULL COMMENT '商品的购买总金额',
-  `created_at` int(11) DEFAULT NULL COMMENT '订单创建时间',
-  `updated_at` int(11) DEFAULT NULL COMMENT '订单修改时间',
-  `is_pay` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '付款状态(0：未付款1：已付款 2：已取消)',
-  `is_receipt` tinyint(1) unsigned DEFAULT '0' COMMENT '发货状态(0：未发货1：已发货)',
-  `is_ship` tinyint(1) unsigned DEFAULT '0' COMMENT '收货状态(0：未收货1：已收货)',
-  `is_recharge` tinyint(1) unsigned DEFAULT '0' COMMENT '充值状态(0：未充值1：已充值)',
-  `express` varchar(32) DEFAULT NULL COMMENT '快递名称',
-  `mca` varchar(32) DEFAULT NULL COMMENT '快递订单号',
-  PRIMARY KEY (`id`),
-  KEY `order_id` (`order_id`,`device_id`,`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of st_orders
 -- ----------------------------
 
 -- ----------------------------
@@ -574,6 +549,7 @@ CREATE TABLE `st_shop_order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` varchar(12) NOT NULL COMMENT '订单号码',
   `gid` int(11) NOT NULL COMMENT '商品ID',
+  `g_cost` double(6,2) NOT NULL,
   `g_price` double(6,2) NOT NULL COMMENT '商品单价',
   `g_num` int(11) NOT NULL COMMENT '商品数量',
   `addtime` varchar(12) NOT NULL COMMENT '订单添加时间',
@@ -651,6 +627,7 @@ CREATE TABLE `st_vendors` (
   `vendor_user` varchar(255) DEFAULT NULL COMMENT '分销商邀请会员',
   `invitation_code` varchar(255) DEFAULT NULL COMMENT '分销商推荐人',
   `office_code` varchar(6) DEFAULT NULL COMMENT '分公司唯一ID',
+  `abonus` int(11) unsigned NOT NULL DEFAULT '0',
   `auditing` varchar(30) DEFAULT NULL COMMENT '审核-责任人',
   `add_liable` varchar(30) DEFAULT NULL COMMENT '添加-责任人',
   `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态{0:身份填写 1:公司信息填写 2:签协议 3:待审批 4:身份证审批失败 5:公司信息审批失败 6:协议审批失败  7：审批成功  8：禁用分销商}',
@@ -662,10 +639,10 @@ CREATE TABLE `st_vendors` (
 -- ----------------------------
 -- Records of st_vendors
 -- ----------------------------
-INSERT INTO `st_vendors` VALUES ('1', null, 'admin', '202cb962ac59075b964b07152d234b70', '13425492760', '超级管理员', null, null, null, null, null, null, null, null, null, '0', null, null, null, null, null, null, null, '', null, null, null, '7', '1513872000', '1513872000');
-INSERT INTO `st_vendors` VALUES ('6', null, 'wuzhibin03', 'e10adc3949ba59abbe56e057f20f883e', '13425492760', '吴智彬', '440882198812045532', '/Vendors/2018-01-20/5a62f96d7e718.png', '/Vendors/2018-01-20/5a62f96d7f254.png', '/Vendors/2018-01-20/5a62f96d7fe79.png', '点球电子科技', '020-5656256-123', '公司地址很长很长', '/Vendors/2018-01-20/5a62f96d807d4.png', '/Vendors/2018-01-20/5a62f96d81105.png', '1', '5A6704', null, null, 'gQGK8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySml2TmtHMmJkOTAxMDAwMHcwM04AAgRU8F5aAwQAAAAA', 'gQF78DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV3h0VmxYMmJkOTAxMDAwMDAwM3AAAgRU8F5aAwQAAAAA', 'gQGW8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyWFlZeWxJMmJkOTAxMDAwMGcwMzUAAgRf815aAwQAAAAA', 'gQG28DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUk10WmswMmJkOTAxMDAwMHcwMzUAAgRf815aAwQAAAAA', null, null, null, null, '5', '1516435821', '1516435821');
-INSERT INTO `st_vendors` VALUES ('7', null, 'dew123dwer', 'e10adc3949ba59abbe56e057f20f883e', '13425492760', '分公司123', '440882198812045532', '/Vendors/2018-01-22/5a654a5c6632b.png', '/Vendors/2018-01-22/5a654a5c6edf2.png', '/Vendors/2018-01-22/5a654a5c6f9f7.png', '点球电子科技', '020-5656256-123', '公司地址很长很长', '/Vendors/2018-01-22/5a654a5c702dd.png', '/Vendors/2018-01-22/5a654a5c70bcf.png', '1', '273345', null, null, 'gQHu8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyRl8ySmxCMmJkOTAxMDAwMDAwM2wAAgRw815aAwQAAAAA', 'gQEZ8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAya2tEWGxzMmJkOTAxMDAwMHcwM3cAAgRx815aAwQAAAAA', 'gQE28TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNXNldGw4MmJkOTAxMDAwMHcwM0YAAgSx815aAwQAAAAA', 'gQGL8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyOU1NNGtBMmJkOTAxMDAwMHcwM2MAAgSx815aAwQAAAAA', null, null, null, 'admin', '7', '1516587612', '1516587612');
-INSERT INTO `st_vendors` VALUES ('8', null, 'wuzhibin0311', 'e10adc3949ba59abbe56e057f20f883e', '13425492760', '分公司1231', '440882198812045532', '/Vendors/2018-01-22/5a65823c0ff07.png', '/Vendors/2018-01-22/5a65823c107e5.png', '/Vendors/2018-01-22/5a65823c11309.png', '点球电子科技', '020-5656256-123', '公司地址很长很长', '/Vendors/2018-01-22/5a65823c11be0.png', '/Vendors/2018-01-22/5a65823c17e55.docx', '1', '27B3B0', null, null, 'gQFA8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyVU9aa2swMmJkOTAxMDAwME0wMzUAAgQC9F5aAwQAAAAA', 'gQHL8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyR2l1Y2t0MmJkOTAxMDAwMDAwM2QAAgQC9F5aAwQAAAAA', 'gQFS8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU21rZWw2MmJkOTAxMDAwMGcwM3MAAgRq9F5aAwQAAAAA', 'gQEZ8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyemNUZWx4MmJkOTAxMDAwMHcwM1QAAgRq9F5aAwQAAAAA', null, null, null, 'admin', '8', '1516601916', '1516601916');
+INSERT INTO `st_vendors` VALUES ('1', null, 'admin', '202cb962ac59075b964b07152d234b70', '13425492760', '超级管理员', null, null, null, null, null, null, null, null, null, '0', null, null, null, null, null, null, null, '', null, '0', null, null, '7', '1513872000', '1513872000');
+INSERT INTO `st_vendors` VALUES ('6', null, 'wuzhibin03', 'e10adc3949ba59abbe56e057f20f883e', '13425492760', '吴智彬', '440882198812045532', '/Vendors/2018-01-20/5a62f96d7e718.png', '/Vendors/2018-01-20/5a62f96d7f254.png', '/Vendors/2018-01-20/5a62f96d7fe79.png', '点球电子科技', '020-5656256-123', '公司地址很长很长', '/Vendors/2018-01-20/5a62f96d807d4.png', '/Vendors/2018-01-20/5a62f96d81105.png', '1', '5A6704', null, null, 'gQGK8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySml2TmtHMmJkOTAxMDAwMHcwM04AAgRU8F5aAwQAAAAA', 'gQF78DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV3h0VmxYMmJkOTAxMDAwMDAwM3AAAgRU8F5aAwQAAAAA', 'gQGW8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyWFlZeWxJMmJkOTAxMDAwMGcwMzUAAgRf815aAwQAAAAA', 'gQG28DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUk10WmswMmJkOTAxMDAwMHcwMzUAAgRf815aAwQAAAAA', null, null, '0', null, null, '5', '1516435821', '1516435821');
+INSERT INTO `st_vendors` VALUES ('7', null, 'dew123dwer', 'e10adc3949ba59abbe56e057f20f883e', '13425492760', '分公司123', '440882198812045532', '/Vendors/2018-01-22/5a654a5c6632b.png', '/Vendors/2018-01-22/5a654a5c6edf2.png', '/Vendors/2018-01-22/5a654a5c6f9f7.png', '点球电子科技', '020-5656256-123', '公司地址很长很长', '/Vendors/2018-01-22/5a654a5c702dd.png', '/Vendors/2018-01-22/5a654a5c70bcf.png', '1', '273345', null, null, 'gQHu8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyRl8ySmxCMmJkOTAxMDAwMDAwM2wAAgRw815aAwQAAAAA', 'gQEZ8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAya2tEWGxzMmJkOTAxMDAwMHcwM3cAAgRx815aAwQAAAAA', 'gQE28TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNXNldGw4MmJkOTAxMDAwMHcwM0YAAgSx815aAwQAAAAA', 'gQGL8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyOU1NNGtBMmJkOTAxMDAwMHcwM2MAAgSx815aAwQAAAAA', null, null, '0', null, 'admin', '7', '1516587612', '1516587612');
+INSERT INTO `st_vendors` VALUES ('8', null, 'wuzhibin0311', 'e10adc3949ba59abbe56e057f20f883e', '13425492760', '分公司1231', '440882198812045532', '/Vendors/2018-01-22/5a65823c0ff07.png', '/Vendors/2018-01-22/5a65823c107e5.png', '/Vendors/2018-01-22/5a65823c11309.png', '点球电子科技', '020-5656256-123', '公司地址很长很长', '/Vendors/2018-01-22/5a65823c11be0.png', '/Vendors/2018-01-22/5a65823c17e55.docx', '1', '27B3B0', null, null, 'gQFA8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyVU9aa2swMmJkOTAxMDAwME0wMzUAAgQC9F5aAwQAAAAA', 'gQHL8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyR2l1Y2t0MmJkOTAxMDAwMDAwM2QAAgQC9F5aAwQAAAAA', 'gQFS8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU21rZWw2MmJkOTAxMDAwMGcwM3MAAgRq9F5aAwQAAAAA', 'gQEZ8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyemNUZWx4MmJkOTAxMDAwMHcwM1QAAgRq9F5aAwQAAAAA', null, null, '0', null, 'admin', '7', '1516601916', '1516601916');
 
 -- ----------------------------
 -- Table structure for st_wechat
@@ -682,7 +659,7 @@ CREATE TABLE `st_wechat` (
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   `recommend` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员 4:分公司邀请分销商 5:分销商邀请分销商}',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=274 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=315 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_wechat
@@ -911,6 +888,47 @@ INSERT INTO `st_wechat` VALUES ('270', 'oQktJwCSlgcmzWTev5AJmoDg49zc', null, '0'
 INSERT INTO `st_wechat` VALUES ('271', 'oQktJwNsoKabLt6s4288yQksuERw', null, '0', null, '0', '1516609668', '1516609668', '0');
 INSERT INTO `st_wechat` VALUES ('272', 'oQktJwPr1m0vOmiLa5cBSHxvflsI', null, '0', null, '0', '1516609714', '1516609714', '0');
 INSERT INTO `st_wechat` VALUES ('273', 'oQktJwB1CPlVS9Rlpy9e8yxay0T8', null, '0', null, '0', '1516610303', '1516610303', '0');
+INSERT INTO `st_wechat` VALUES ('274', 'oQktJwMTHydIvohf5mYp7am0RTew', null, '0', null, '0', '1516784322', '1516784322', '0');
+INSERT INTO `st_wechat` VALUES ('275', 'oQktJwLKxFzol_N6wnjTpyCG1_Fo', null, '0', null, '0', '1516784603', '1516784603', '0');
+INSERT INTO `st_wechat` VALUES ('276', 'oQktJwJWUeehvobbcane1bU85izA', null, '0', null, '0', '1516784710', '1516784710', '0');
+INSERT INTO `st_wechat` VALUES ('277', 'oQktJwD_W56pRaRkO0fAfgYRDPyY', null, '0', null, '0', '1516785799', '1516785799', '0');
+INSERT INTO `st_wechat` VALUES ('278', 'oQktJwMXwuveOVcvl4JONaRuCSMk', null, '0', null, '0', '1516786314', '1516786314', '0');
+INSERT INTO `st_wechat` VALUES ('279', 'oQktJwDlh0I0xXIi8AosgnUlX6c8', null, '0', null, '0', '1516786620', '1516786620', '0');
+INSERT INTO `st_wechat` VALUES ('280', 'oQktJwKI1fVtYTtu8amP7fzJosQc', null, '0', null, '0', '1516788110', '1516788110', '0');
+INSERT INTO `st_wechat` VALUES ('281', 'oQktJwKKYeOAlJVHpfcBKtPFfYYE', null, '0', null, '0', '1516789718', '1516789718', '0');
+INSERT INTO `st_wechat` VALUES ('282', 'oQktJwBlNPRUxjVxamx-kkIOUFAc', null, '0', null, '0', '1516794215', '1516794215', '0');
+INSERT INTO `st_wechat` VALUES ('283', 'oQktJwNQWRpQMwrg10CvK-9VOpq4', null, '0', null, '0', '1516794887', '1516794887', '0');
+INSERT INTO `st_wechat` VALUES ('284', 'oQktJwD_02FbSekpvJJqNlYHipf0', null, '0', null, '0', '1516794970', '1516794970', '0');
+INSERT INTO `st_wechat` VALUES ('285', 'oQktJwOiqyu24Qfl07gYG2raNJ_M', null, '0', null, '0', '1516795060', '1516795060', '0');
+INSERT INTO `st_wechat` VALUES ('286', 'oQktJwKLs2ITlYQrA_-aqj2fmzh0', null, '0', null, '0', '1516796069', '1516796069', '0');
+INSERT INTO `st_wechat` VALUES ('287', 'oQktJwFa-kHGyj8fBiXK0BeHwXrE', null, '0', null, '0', '1516797007', '1516797007', '0');
+INSERT INTO `st_wechat` VALUES ('288', 'oQktJwC6Fw0-fejW1FRUXTycGufU', null, '0', null, '0', '1516802287', '1516802287', '0');
+INSERT INTO `st_wechat` VALUES ('289', 'oQktJwMAZfTwAIFDNcYfijW7VzDk', null, '0', null, '0', '1516802506', '1516802506', '0');
+INSERT INTO `st_wechat` VALUES ('290', 'oQktJwENhwmFvCBgmenDbQHnycBk', null, '0', null, '0', '1516803605', '1516803605', '0');
+INSERT INTO `st_wechat` VALUES ('291', 'oQktJwOKiExIYeNhMFr-Jcq-M5kg', null, '0', null, '0', '1516806055', '1516806055', '0');
+INSERT INTO `st_wechat` VALUES ('292', 'oQktJwGAKPif8VJ93IwFU6QB1dRQ', null, '0', null, '0', '1516806763', '1516806763', '0');
+INSERT INTO `st_wechat` VALUES ('293', 'oQktJwFe6t79wOaBjuncpvyraw3o', null, '0', null, '0', '1516809869', '1516809869', '0');
+INSERT INTO `st_wechat` VALUES ('294', 'oQktJwN2JG-8OwR4I9zSukFuo6Wg', null, '0', null, '0', '1516811834', '1516811834', '0');
+INSERT INTO `st_wechat` VALUES ('295', 'oQktJwM85XvHbN4wxxfZPf6qi3zo', null, '0', null, '0', '1516829829', '1516829829', '0');
+INSERT INTO `st_wechat` VALUES ('296', 'oQktJwDK_lpeGXuEZK_4rBAG7Yjo', null, '0', null, '0', '1516837161', '1516837161', '0');
+INSERT INTO `st_wechat` VALUES ('297', 'oQktJwDlqYnHPCGdHs-XCvGABUlY', null, '0', null, '0', '1516840901', '1516840901', '0');
+INSERT INTO `st_wechat` VALUES ('298', 'oQktJwLmb2Eb8lk1_BfaGQp2SfRE', null, '0', null, '0', '1516841036', '1516841036', '0');
+INSERT INTO `st_wechat` VALUES ('299', 'oQktJwPwd-HyCx-0PVX-ZP5ddnC0', null, '0', null, '0', '1516843394', '1516843394', '0');
+INSERT INTO `st_wechat` VALUES ('300', 'oQktJwLnIVyVO3O86UTPT-cUC8Vo', null, '0', null, '0', '1516843756', '1516843756', '0');
+INSERT INTO `st_wechat` VALUES ('301', 'oQktJwAGbfpf_vIZjGeM7R9EMX_M', null, '0', null, '0', '1516843877', '1516843877', '0');
+INSERT INTO `st_wechat` VALUES ('302', 'oQktJwPInlW5QD5GM5QVdhA-keIM', null, '0', null, '0', '1516844413', '1516844413', '0');
+INSERT INTO `st_wechat` VALUES ('303', 'oQktJwLAsBeEKk3GA9XLT9EDXPPk', null, '0', null, '0', '1516844511', '1516844511', '0');
+INSERT INTO `st_wechat` VALUES ('304', 'oQktJwKOlFJUPdlRuuf1nNH5grVE', null, '0', null, '0', '1516845306', '1516845306', '0');
+INSERT INTO `st_wechat` VALUES ('305', 'oQktJwKdwmTivGy3MdjD5i8Dnngk', null, '0', null, '0', '1516846682', '1516846682', '0');
+INSERT INTO `st_wechat` VALUES ('306', 'oQktJwKxGv5mTQTfBimQKFlbpX3c', null, '0', null, '0', '1516846731', '1516846731', '0');
+INSERT INTO `st_wechat` VALUES ('307', 'oQktJwDYehr-GcsoawlpQUWeCYaA', null, '0', null, '0', '1516846793', '1516846793', '0');
+INSERT INTO `st_wechat` VALUES ('308', 'oQktJwLmLJ1X6nEvkztjNrl3xbrY', null, '0', null, '0', '1516847048', '1516847048', '0');
+INSERT INTO `st_wechat` VALUES ('309', 'oQktJwGo1CKxMrzep6jZNVq8cK4o', null, '0', null, '0', '1516847276', '1516847276', '0');
+INSERT INTO `st_wechat` VALUES ('310', 'oQktJwLXvtOCd4cNLVbM04GUlJIM', null, '0', null, '0', '1516847320', '1516847320', '0');
+INSERT INTO `st_wechat` VALUES ('311', 'oQktJwEjlNrA0VzV_eskLXN28nK8', null, '0', null, '0', '1516847357', '1516847357', '0');
+INSERT INTO `st_wechat` VALUES ('312', 'oQktJwOT2k4UA5-L2B6CtWsQFz-k', null, '0', null, '0', '1516847486', '1516847486', '0');
+INSERT INTO `st_wechat` VALUES ('313', 'oQktJwDu7hS7TF5CQXcT1VgTXbZk', null, '0', null, '0', '1516847770', '1516847770', '0');
+INSERT INTO `st_wechat` VALUES ('314', 'oQktJwPkAqOpR_8WpnpzHOTEntOU', null, '0', null, '0', '1516847928', '1516847928', '0');
 
 -- ----------------------------
 -- Table structure for st_work
