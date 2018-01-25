@@ -1,5 +1,7 @@
 <extend name="Public/base" />
-
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+</block>
 <block name="content">
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
@@ -9,21 +11,34 @@
                     <h5>分销商管理 <small>佣金分配</small></h5>
                 </div>
                     <div class="ibox-content">
-                        <form action="commission_proportion" method="post" class="form-horizontal" enctype="multipart/form-data">
-                            <h3>网站币分配 <small>网站币合计：100%，会员+会员邀请人=100%网站币</small></h3>
+                        <form action="javascript:false;" method="post" class="form-horizontal" enctype="multipart/form-data">
+                            <h3>银币分配 <small>银币合计：100%，会员+会员邀请人=100</small></h3>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">会员分配占比</label>
+                                <label class="col-sm-2 control-label">会员分银币配占比</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="user" class="form-control" value="{{$data.user}}">
+                                    <input type="text" name="user_y" class="form-control" value="{{$data.user_y}}">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">会员邀请人分配占比</label>
+                                <label class="col-sm-2 control-label">会员邀请人银币分配占比</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="inviter" class="form-control" value="{{$data.inviter}}">
+                                    <input type="text" name="inviter_y" class="form-control" value="{{$data.inviter_y}}">
                                 </div>
                             </div>
-                            <h3>佣金分配 <small>佣金合计：100%，A、B、C级分销+分销商邀请人=100%佣金</small></h3>
+                            <h3>金币分配 <small>金币合计：100%，会员+会员邀请人=100</small></h3>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">会员分金币配占比</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="user_j" class="form-control" value="{{$data.user_j}}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">会员邀请人金币分配占比</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="inviter_j" class="form-control" value="{{$data.inviter_j}}">
+                                </div>
+                            </div>
+                            <h3>佣金分配 <small>佣金合计：100%，A、B、C级分销+分销商邀请人=100</small></h3>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">A级分销商分配占比</label>
                                 <div class="col-md-3">
@@ -70,38 +85,23 @@
      * [ajaxData 设置佣金分配]
      * @return {[type]}    [json数据]
      */
-    function proportion(){
-
-        $.ajax({
-            url:"{{:U('Admin/Commission/commission_proportion')}}",
-            data:{"id":id},
-            dataType:"json",
-            type: 'post',
-            success:function(res){
-                console.dir(res);
-                if(res.res.code == 200){
-
-                }else{
-                    // 查询失败提示
-
-                }
-            }
-        });
-    }
-
     $('#proportion').click(function(){
-        var user     = $("input[name='user']").val();
-        var inviter  = $("input[name='inviter']").val();
-        var vendor_a = $("input[name='vendor_a']").val();
-        var vendor_b = $("input[name='vendor_b']").val();
-        var vendor_c = $("input[name='vendor_c']").val();
-        var vendor_i = $("input[name='vendor_i']").val();
+        var user_y      = $("input[name='user_y']").val();
+        var inviter_y   = $("input[name='inviter_y']").val();
+        var user_j      = $("input[name='user_j']").val();
+        var inviter_j   = $("input[name='inviter_j']").val();
+        var vendor_a    = $("input[name='vendor_a']").val();
+        var vendor_b    = $("input[name='vendor_b']").val();
+        var vendor_c    = $("input[name='vendor_c']").val();
+        var vendor_i    = $("input[name='vendor_i']").val();
 
         $.ajax({
             url:"{{:U('Admin/Commission/commission_proportion')}}",
             data:{
-                "user":user,
-                "inviter":inviter,
+                "user_y":user_y,
+                "inviter_y":inviter_y,
+                "user_j":user_j,
+                "inviter_j":inviter_j,
                 "vendor_a":vendor_a,
                 "vendor_b":vendor_b,
                 "vendor_c":vendor_c,
@@ -111,15 +111,14 @@
             type: 'post',
             success:function(res){
                 //console.dir(res);
-                if(res.res.code == 200){
-
+                if(res.code==200){
+                    swal("设置成功！", "佣金分配比例已更新。", "success");
                 }else{
-                    // 查询失败提示
-
+                    swal("设置失败！", res.message, "success");
                 }
+
             }
         });
-
 
     });
 </script>
