@@ -8,15 +8,23 @@
                     <div class="ibox-title">
                     <h5>分销商管理 <small>佣金分配</small></h5>
                 </div>
-
+                    
                     <div class="ibox-content">
                         <form action="commission_proportion" method="post" class="form-horizontal" enctype="multipart/form-data">
+                            <h3>网站币分配</h3>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">会员分配占比</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="user" class="form-control">
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">会员邀请人分配占比</label>
                                 <div class="col-md-3">
                                     <input type="text" name="inviter" class="form-control">
                                 </div>
                             </div>
+                            <h3>佣金分配</h3>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">A级分销商分配占比</label>
                                 <div class="col-md-3">

@@ -24,8 +24,31 @@ class CommissionController extends CommonController
      */
     public function commission_proportion()
     {
-        dump(I());die;
-        $this->display();
+        if(IS_POST){
+            // dump(I());die;
+            // 实例化佣金模型
+            $commission = D('commission');
+
+            // 创建数据
+            if($commission->create()){
+               // 上传数据
+               if($commission->add()){
+                    $message = ['code' => 200, 'message' => '佣金比例添加成功'];
+               }else{
+                    $message = ['code' => 403, 'message' => '佣金比例添加失败'];
+               }
+            }else{
+                $this->error($commission->getError());
+                // 表单验证错误
+                $message = ['code' => 403, 'message' => $commission->getError()];
+            }
+            // 返回JSON格式数据
+            $this->ajaxReturn($message);
+                     
+        }else{
+            $this->display();  
+        }
+        
     }
 
 }
