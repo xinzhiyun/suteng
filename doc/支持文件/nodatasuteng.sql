@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50173
 File Encoding         : 65001
 
-Date: 2018-01-24 16:44:03
+Date: 2018-01-25 10:37:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -58,7 +58,7 @@ CREATE TABLE `st_attr` (
 DROP TABLE IF EXISTS `st_attr_val`;
 CREATE TABLE `st_attr_val` (
   `gid` int(11) NOT NULL COMMENT '商品ID',
-  `aid` int(11) NOT NULL COMMENT '属性ID',
+  `aid` int(11) DEFAULT NULL COMMENT '属性ID',
   ` val` varchar(20) NOT NULL COMMENT '属性值'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -177,6 +177,7 @@ CREATE TABLE `st_comment` (
 DROP TABLE IF EXISTS `st_commission`;
 CREATE TABLE `st_commission` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `user` int(11) unsigned NOT NULL DEFAULT '0',
   `inviter` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '会员邀请人分配占比',
   `vendor_a` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'A级分销商分配占比',
   `vendor_b` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'B级分销商分配占比',
@@ -185,7 +186,7 @@ CREATE TABLE `st_commission` (
   `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '分配类型{0：按比例分配，1：固定金额分配}',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_convert
@@ -336,36 +337,13 @@ CREATE TABLE `st_goods` (
   `name` varchar(64) NOT NULL COMMENT '商品名称',
   `pic` varchar(255) DEFAULT NULL,
   `desc` text COMMENT '商品描述',
+  `cost` double(6,2) NOT NULL COMMENT '商品成本',
   `price` double(6,2) NOT NULL COMMENT '商品单价',
   `stock` int(11) NOT NULL DEFAULT '0' COMMENT '商品库存',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '商品状态，默认0上架，1为下架',
   `addtime` varchar(12) NOT NULL COMMENT '商品添加时间',
   `updatetime` varchar(12) NOT NULL COMMENT '商品更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for st_orders
--- ----------------------------
-DROP TABLE IF EXISTS `st_orders`;
-CREATE TABLE `st_orders` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `order_id` varchar(32) NOT NULL COMMENT '订单编号',
-  `device_id` int(11) unsigned NOT NULL COMMENT '关联的设备ID号',
-  `user_id` int(11) unsigned NOT NULL COMMENT '关联的用户ID号',
-  `express_id` int(11) unsigned DEFAULT NULL COMMENT '关联快递信息ID号',
-  `total_num` int(11) unsigned NOT NULL COMMENT '商品的购买总数量',
-  `total_price` decimal(15,2) unsigned NOT NULL COMMENT '商品的购买总金额',
-  `created_at` int(11) DEFAULT NULL COMMENT '订单创建时间',
-  `updated_at` int(11) DEFAULT NULL COMMENT '订单修改时间',
-  `is_pay` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '付款状态(0：未付款1：已付款 2：已取消)',
-  `is_receipt` tinyint(1) unsigned DEFAULT '0' COMMENT '发货状态(0：未发货1：已发货)',
-  `is_ship` tinyint(1) unsigned DEFAULT '0' COMMENT '收货状态(0：未收货1：已收货)',
-  `is_recharge` tinyint(1) unsigned DEFAULT '0' COMMENT '充值状态(0：未充值1：已充值)',
-  `express` varchar(32) DEFAULT NULL COMMENT '快递名称',
-  `mca` varchar(32) DEFAULT NULL COMMENT '快递订单号',
-  PRIMARY KEY (`id`),
-  KEY `order_id` (`order_id`,`device_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -392,6 +370,7 @@ CREATE TABLE `st_shop_order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` varchar(12) NOT NULL COMMENT '订单号码',
   `gid` int(11) NOT NULL COMMENT '商品ID',
+  `g_cost` double(6,2) NOT NULL,
   `g_price` double(6,2) NOT NULL COMMENT '商品单价',
   `g_num` int(11) NOT NULL COMMENT '商品数量',
   `addtime` varchar(12) NOT NULL COMMENT '订单添加时间',
@@ -461,6 +440,7 @@ CREATE TABLE `st_vendors` (
   `vendor_user` varchar(255) DEFAULT NULL COMMENT '分销商邀请会员',
   `invitation_code` varchar(255) DEFAULT NULL COMMENT '分销商推荐人',
   `office_code` varchar(6) DEFAULT NULL COMMENT '分公司唯一ID',
+  `abonus` int(11) unsigned NOT NULL DEFAULT '0',
   `auditing` varchar(30) DEFAULT NULL COMMENT '审核-责任人',
   `add_liable` varchar(30) DEFAULT NULL COMMENT '添加-责任人',
   `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态{0:身份填写 1:公司信息填写 2:签协议 3:待审批 4:身份证审批失败 5:公司信息审批失败 6:协议审批失败  7：审批成功  8：禁用分销商}',
@@ -484,7 +464,7 @@ CREATE TABLE `st_wechat` (
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   `recommend` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员 4:分公司邀请分销商 5:分销商邀请分销商}',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=274 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=315 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_work

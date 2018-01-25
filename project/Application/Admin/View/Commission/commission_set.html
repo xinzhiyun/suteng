@@ -8,45 +8,44 @@
                     <div class="ibox-title">
                     <h5>分销商管理 <small>佣金分配</small></h5>
                 </div>
-                    
                     <div class="ibox-content">
                         <form action="commission_proportion" method="post" class="form-horizontal" enctype="multipart/form-data">
-                            <h3>网站币分配</h3>
+                            <h3>网站币分配 <small>网站币合计：100%，会员+会员邀请人=100%网站币</small></h3>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">会员分配占比</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="user" class="form-control">
+                                    <input type="text" name="user" class="form-control" value="{{$data.user}}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">会员邀请人分配占比</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="inviter" class="form-control">
+                                    <input type="text" name="inviter" class="form-control" value="{{$data.inviter}}">
                                 </div>
                             </div>
-                            <h3>佣金分配</h3>
+                            <h3>佣金分配 <small>佣金合计：100%，A、B、C级分销+分销商邀请人=100%佣金</small></h3>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">A级分销商分配占比</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="vendor_a" class="form-control">
+                                    <input type="text" name="vendor_a" class="form-control" value="{{$data.vendor_a}}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">B级分销商分配占比</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="vendor_b" class="form-control">
+                                    <input type="text" name="vendor_b" class="form-control" value="{{$data.vendor_b}}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">C级分销商分配占比</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="vendor_c" class="form-control">
+                                    <input type="text" name="vendor_c" class="form-control" value="{{$data.vendor_c}}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">分销商邀请人分配占比</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="vendor_i" class="form-control">
+                                    <input type="text" name="vendor_i" class="form-control" value="{{$data.vendor_i}}">
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -58,10 +57,13 @@
                             </div>
                         </form>
                     </div>
-
-                    
                 </div>
             </div>
         </div>
     </div>
+</block>
+<block name="myjs">
+<script src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+
 </block>
