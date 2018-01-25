@@ -129,10 +129,58 @@ class ShopController extends CommonController
         //     return $this->ajaxReturn($err);
         // }
         $cate = D('Category');
-        $cateInfo = $cate->getAllCate();
+        $cateInfo = $cate->where('pid=0')->select();
         $goods = D('Goods');
-        $goodsList = $goods->select();
+        $attr = D('Attr');
+        $attrInfo = $attr->select();
+        $goodsList = $goods->select();  //暂时无用
+        $assign = [
+            'cateInfo' => $cateInfo,
+            'attrInfo' => $attrInfo,
+        ];
+        $this->assign($assign);
         $this->display();
+    }
+
+    // 商品添加处理
+    public function goodsAction()
+    {
+        $data = I('post.');
+
+        // 确认分类
+        if($data['thirdcate'] != '--'){
+            $goods['cid'] = $data['thirdcate'];
+        } elseif ($data['seccate'] != '--'){
+            $goods['cid'] = $data['seccate'];
+        } elseif ($data['firscate'] != '--'){
+            $goods['cid'] = $data['firscate'];
+        } else {
+            E('请选择分类',205);
+        }
+
+        // 处理属性
+        foreach ($data['attr'] as $key => $value) {
+            dump($value);
+        }
+        dump($data);die;
+    }
+
+    // 根据pid获取分类
+    public function getCate()
+    {
+        try {
+            $cate = D('Category');
+            $pid['pid'] = I('post.pid');
+            $cateInfo = $cate->where($pid)->select();
+            $this->ajaxReturn($cateInfo);
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+
     }
 
     // 产品属性
@@ -156,11 +204,12 @@ class ShopController extends CommonController
         try {
             $attr = D('attr');
             $data = I('post.');
-            if(!$attr->create()) E($attr->getError(),203);
+            // dump($data);die;
+            if(!$attr->create()) E($attr->getError(),204);
 
             $res = $attr->add();
             if($res){
-                E('添加成功',200);
+                E('添加完成',$res);
             } else {
                 E('添加失败',203);
             }

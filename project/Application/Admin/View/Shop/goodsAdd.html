@@ -1,7 +1,10 @@
 <extend name="Public/base" />
 <block name="mylink">
     <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
 </block>
@@ -13,22 +16,317 @@
                     <h5>商城管理 <small>商品添加</small></h5>
                 </div>
                 <div class="ibox-content">
-                        <form method="get" class="form-horizontal">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">商品类别</label>
+                    <form onsubmit="false" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品类别：</label>
 
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="firscate">
+                                    <option value="--">--请选择--</option>
+                                    <volist name="cateInfo" id="vo">
+                                        <option value="{{$vo.id}}">{{$vo.name}}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <div class="col-sm-2" style="display:none">
+                                <select class="form-control m-b" name="seccate">
+                                    <option value="--">--请选择--</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2" style="display:none">
+                                <select class="form-control m-b" name="thirdcate">
+                                    <option value="--">--请选择--</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品名称：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="name" placeholder="定义商品的名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label _attr">商品属性：</label>
+                            <div class="col-sm-10">
+                                <div class="checkbox i-checks">
+                                    <volist name="attrInfo" id="vo">
+                                        <label>
+                                            <input type="checkbox" value="{{$vo.id}}" class="attr" > <i></i> {{$vo.attr}}
+                                        </label>
+                                    </volist>
+                                    <label class="attrList">
+                                        <button type="button" class="btn btn-outline btn-primary" onclick="add()">添加属性</button>
+                                    </label>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品规格：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="attr_val" placeholder="每次只可添加一种规格">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品图片：</label>
+                            <div class="col-sm-10">
+                                <input type="file" class="form-control" name="pic">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品描述：</label>
+                            <div class="col-sm-10">
+                                <div class="summernote">
+                                    <h2>H+ 后台主题</h2>
+                                    <p>H+是一个完全响应式，基于Bootstrap3.3.6最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术，她提供了诸多的强大的可以重新组合的UI组件，并集成了最新的jQuery版本(v2.1.1)，当然，也集成了很多功能强大，用途广泛的就jQuery插件，她可以用于所有的Web应用程序，如<b>网站管理后台</b>，<b>网站会员中心</b>，<b>CMS</b>，<b>CRM</b>，<b>OA</b>等等，当然，您也可以对她进行深度定制，以做出更强系统。</p>
+                                    <p>
+                                        <b>当前版本：</b>v4.1.0
+                                    </p>
+                                    <p>
+                                        <b>定价：</b><span class="label label-warning">&yen;988（不开发票）</span>
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品单价：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="price" placeholder="标准价钱格式，例如：2.00">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品成本：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="cost" placeholder="标准价钱格式，例如：2.00，只在管理页面可见">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品库存：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="cost" placeholder="至少为1，不可负数">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-primary goodsAdd">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹窗 -->
+    <div class="modal inmodal" id="st-attr_add" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        添加属性
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-bordered table-hover table-condensed">
+                        <tr>
+                            <th width=15%>
+                                属性名称
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <input class="input-medium form-control" type="text" name="attrname">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                            </th>
+                            <td>
+                                <input class="btn btn-success add-attr" type="submit" value="添加">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </block>
 <block name="myjs">
     <script>
-        // alert(1);
+        $("select[name='firscate']").change(function(){
+            var firscateId = $(this).children('option:selected').val();
+            var html = "";
+            $("select[name='seccate']").html('<option value="--">--请选择--</option>');
+            $("select[name='thirdcate']").html('<option value="--">--请选择--</option>');
+            $("select[name='seccate']").parent().css('display','none');
+            $("select[name='thirdcate']").parent().css('display','none');
+            if(/^[0-9]*$/.test(firscateId)){
+                $.ajax({
+                    url:'getCate',
+                    data:{'pid':firscateId},
+                    type:'post',
+                    dataType:'json',
+                    success:function(res){
+                        if(res.length!=0){
+                            $("select[name='seccate']").parent().css('display','inline');
+                            for(var i=0;i<res.length;i++){
+                                html += '<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
+                            }
+                            $("select[name='seccate']").html('<option value="--">--请选择--</option>');
+                            $("select[name='seccate']").append(html);
+                        }
+                    }
+                })
+            }
+        })
+        $("select[name='seccate']").change(function(){
+            var seccateId = $(this).children('option:selected').val();
+            var html = "";
+            $("select[name='thirdcate']").html('<option value="--">--请选择--</option>');
+            $("select[name='thirdcate']").parent().css('display','none');
+            if(/^[0-9]*$/.test(seccateId)){
+                $.ajax({
+                    url:'getCate',
+                    data:{'pid':seccateId},
+                    type:'post',
+                    dataType:'json',
+                    success:function(res){
+                        if(res.length!=0){
+                            $("select[name='thirdcate']").parent().css('display','inline');
+                            for(var i=0;i<res.length;i++){
+                                html += '<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
+                            }
+                            $("select[name='thirdcate']").html('<option value="--">--请选择--</option>');
+                            $("select[name='thirdcate']").append(html);
+                        }
+                    }
+                })
+            }
+        })
+
+        // 添加属性
+        function add() {
+            $("input[name='attrname']").val('');
+            $('#st-attr_add').modal('show');
+        }
+
+        // 添加功能
+        $('.add-attr').click(function(){
+            $('#st-attr_add').modal('hide');
+            var name = $("input[name='attrname']").val();
+            var html = '<label><input type="checkbox" value="" checked=""> <i></i> </label>'
+            $.ajax({
+                url:"attrAdd",
+                data:{"attr":name},
+                dataType:"json",
+                type: 'post',
+                success:function(res){
+                    if(res.code != 203 && res.code != 204){
+                        $(".attrList").before('<label><input type="checkbox" value="'+res.code+'" class="attr"> <i></i> '+name+'</label>');
+                        recheck();
+                        parent.layer.msg(res.msg);
+                    } else {
+                        parent.layer.msg(res.msg);
+                    }
+                }
+            })
+        });
+    </script>
+    <script src="__PUBLIC__/Admin/js/plugins/iCheck/icheck.min.js"></script>
+    <!-- SUMMERNOTE -->
+    <script src="__PUBLIC__/Admin/js/plugins/summernote/summernote.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/plugins/summernote/summernote-zh-CN.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            recheck();
+        });
+        function recheck(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        }
+        // 富文本
+        $(document).ready(function () {
+
+            $('.summernote').summernote({
+                lang: 'zh-CN'
+            });
+
+        });
+        var edit = function () {
+            $("#eg").addClass("no-padding");
+            $('.click2edit').summernote({
+                lang: 'zh-CN',
+                focus: true
+            });
+        };
+        var save = function () {
+            $("#eg").removeClass("no-padding");
+            var aHTML = $('.click2edit').code(); //save HTML If you need(aHTML: array).
+            $('.click2edit').destroy();
+        };
+
+        $(".goodsAdd").click(function(){
+            var firscate = $("select[name='firscate']").val();
+            var seccate = $("select[name='seccate']").val();
+            var thirdcate = $("select[name='thirdcate']").val();
+            var name = $("input[name='name']").val();
+            var attr = [];
+            $('input[type=checkbox]:checked').each(function(){
+                attr.push($(this).val());
+            });
+            var attr_val = $("input[name='attr_val']").val();
+            var price = $("input[name='price']").val();
+            var cost = $("input[name='cost']").val();
+            var stock = $("input[name='stcok']").val();
+            console.log(attr_val);
+            $.ajax({
+                url:'goodsAction',
+                type:'post',
+                data:{
+                    'firscate':firscate,
+                    'seccate':seccate,
+                    'thirdcate':thirdcate,
+                    'name':name,
+                    'attr':attr,
+                    'attr_val':attr_val,
+                    'price':price,
+                    'cost':cost,
+                    'stock':stock,
+                },
+                success:function(res){
+                    parent.layer.msg(res.msg);
+                }
+            });
+            // var formData = new FormData(document.getElementById("formdata"));
+            // $.ajax({
+            //     url: 'goodsAction' ,
+            //     type: 'post',
+            //     data: formData,
+            //     async: false,
+            //     cache: false,
+            //     contentType: false,
+            //     processData: false,
+            //     success: function (res) {
+            //         if(res.code == 200){
+            //             parent.layer.msg(res.msg);
+            //         } else {
+            //             parent.layer.msg(res.msg);
+            //         }
+            //     },
+            //     error: function (res) {
+            //         if(res.code == 200){
+            //             parent.layer.msg(res.msg);
+            //         } else {
+            //             parent.layer.msg(res.msg);
+            //         }
+            //     }
+            // })
+        });
     </script>
 </block>

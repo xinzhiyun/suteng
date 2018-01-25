@@ -17,7 +17,7 @@ class GoodsModel extends BaseModel
     );
 
     // 自动完成
-    protected $_auto = array ( 
+    protected $_auto = array (
         array('addtime','time',3,'function'),
         array('updatetime','time',3,'function'),
     );
