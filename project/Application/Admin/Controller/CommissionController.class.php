@@ -34,9 +34,10 @@ class CommissionController extends CommonController
         if(IS_POST){
             // 实例化佣金模型
             $commission = D('commission');
-
+            $data = $commission->create()
             // 创建数据
-            if($commission->create()){
+            if($data){
+                print_r($data);
                // // 上传数据
                // if($commission->add()){
                //      $message = ['code' => 200, 'message' => '佣金比例添加成功'];

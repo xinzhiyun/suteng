@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50173
 File Encoding         : 65001
 
-Date: 2018-01-25 10:36:45
+Date: 2018-01-25 11:07:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -659,7 +659,7 @@ CREATE TABLE `st_wechat` (
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   `recommend` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员 4:分公司邀请分销商 5:分销商邀请分销商}',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=315 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=322 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_wechat
@@ -929,6 +929,13 @@ INSERT INTO `st_wechat` VALUES ('311', 'oQktJwEjlNrA0VzV_eskLXN28nK8', null, '0'
 INSERT INTO `st_wechat` VALUES ('312', 'oQktJwOT2k4UA5-L2B6CtWsQFz-k', null, '0', null, '0', '1516847486', '1516847486', '0');
 INSERT INTO `st_wechat` VALUES ('313', 'oQktJwDu7hS7TF5CQXcT1VgTXbZk', null, '0', null, '0', '1516847770', '1516847770', '0');
 INSERT INTO `st_wechat` VALUES ('314', 'oQktJwPkAqOpR_8WpnpzHOTEntOU', null, '0', null, '0', '1516847928', '1516847928', '0');
+INSERT INTO `st_wechat` VALUES ('315', 'oQktJwKhsRhiJGD38nWP2Y4_Tn14', null, '0', null, '0', '1516848023', '1516848023', '0');
+INSERT INTO `st_wechat` VALUES ('316', 'oQktJwM_xGDNh33L-K0ZJcKX3jeM', null, '0', null, '0', '1516848493', '1516848493', '0');
+INSERT INTO `st_wechat` VALUES ('317', 'oQktJwDfT1k5uMoeCrOP_WIEGtXY', null, '0', null, '0', '1516848819', '1516848819', '0');
+INSERT INTO `st_wechat` VALUES ('318', 'oQktJwHC1I-5zEDA-AM6pJAzR7nI', null, '0', null, '0', '1516848936', '1516848936', '0');
+INSERT INTO `st_wechat` VALUES ('319', 'oQktJwBhxUcRePfzj1y-X9uEjSvM', null, '0', null, '0', '1516849157', '1516849157', '0');
+INSERT INTO `st_wechat` VALUES ('320', 'oQktJwEwNZDy-_XQEBNdM3FQL06s', null, '0', null, '0', '1516849263', '1516849263', '0');
+INSERT INTO `st_wechat` VALUES ('321', 'oQktJwHwSoFsrvswiJzClkzY2fU0', null, '0', null, '0', '1516849639', '1516849639', '0');
 
 -- ----------------------------
 -- Table structure for st_work
