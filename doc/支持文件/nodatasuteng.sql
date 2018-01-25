@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50173
 File Encoding         : 65001
 
-Date: 2018-01-25 15:12:24
+Date: 2018-01-25 15:22:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -418,10 +418,12 @@ CREATE TABLE `st_users` (
 DROP TABLE IF EXISTS `st_users_commission`;
 CREATE TABLE `st_users_commission` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增',
-  `vendor_id` int(11) unsigned NOT NULL COMMENT '关联分销商表ID',
+  `user_id` int(11) unsigned NOT NULL COMMENT '关联用户表ID',
   `order_id` varchar(12) DEFAULT NULL COMMENT '订单号码',
-  `abonus` double(6,2) unsigned DEFAULT '0.00' COMMENT '分红 默认为0.00',
-  `current_abonus` double(6,2) unsigned DEFAULT '0.00' COMMENT '当前分红 默认为0.00',
+  `gold_num` int(11) unsigned DEFAULT '0' COMMENT '金币数量 默认为0',
+  `silver` int(11) unsigned DEFAULT '0' COMMENT '银币数量 默认为0',
+  `current_gold_num` int(11) unsigned DEFAULT '0' COMMENT '当前金币数量 默认为0',
+  `current_silver` int(11) unsigned DEFAULT '0' COMMENT '当前银币数量 默认为0',
   `describe` varchar(255) DEFAULT NULL COMMENT '佣金获得描述',
   `type` tinyint(1) unsigned DEFAULT '0' COMMENT '分配类型{0：按比例分配，1：固定金额分配}',
   `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
@@ -475,12 +477,10 @@ CREATE TABLE `st_vendors` (
 DROP TABLE IF EXISTS `st_vendors_commission`;
 CREATE TABLE `st_vendors_commission` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增',
-  `user_id` int(11) unsigned NOT NULL COMMENT '关联用户表ID',
+  `vendor_id` int(11) unsigned NOT NULL COMMENT '关联分销商表ID',
   `order_id` varchar(12) DEFAULT NULL COMMENT '订单号码',
-  `gold_num` int(11) unsigned DEFAULT '0' COMMENT '金币数量 默认为0',
-  `silver` int(11) unsigned DEFAULT '0' COMMENT '银币数量 默认为0',
-  `current_gold_num` int(11) unsigned DEFAULT '0' COMMENT '当前金币数量 默认为0',
-  `current_silver` int(11) unsigned DEFAULT '0' COMMENT '当前银币数量 默认为0',
+  `abonus` double(6,2) unsigned DEFAULT '0.00' COMMENT '分红 默认为0.00',
+  `current_abonus` double(6,2) unsigned DEFAULT '0.00' COMMENT '当前分红 默认为0.00',
   `describe` varchar(255) DEFAULT NULL COMMENT '佣金获得描述',
   `type` tinyint(1) unsigned DEFAULT '0' COMMENT '分配类型{0：按比例分配，1：固定金额分配}',
   `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
