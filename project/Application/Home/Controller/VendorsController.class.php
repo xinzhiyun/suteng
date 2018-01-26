@@ -320,7 +320,7 @@ class VendorsController extends Controller
     }
 
     /**
-     * 公司信息填写_refillings
+     * 公司信息填写
      */
     public function company()
     {
@@ -436,7 +436,7 @@ class VendorsController extends Controller
     }
 
     /**
-     * 公司信息填写
+     * 公司信息重填写
      */
     public function company_refillings()
     {

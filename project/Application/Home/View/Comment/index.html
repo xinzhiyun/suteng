@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+ 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+  	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<title>发表评论</title>
+</head>
+<style>
+	body{
+		font-size: 0.7rem;
+	}
+	/*评论级别*/
+	.xuanping{
+		width: 90%;
+		padding: 1rem 5%;
+		border-bottom:10px solid #f3f3f3;
+
+	}
+	.xuanping>.pingpic{
+		box-sizing: border-box;
+		padding:0.1rem;
+		width: 25%;
+		float: left;
+	}
+	.xuanping>.pingpic>img{
+		width: 100%;
+	}
+	
+
+	/*商品评价*/
+	.shangpingpic{
+		width: 90%;
+		padding:0.4rem 5%;
+		position: relative;
+	}
+	/*文本域*/
+	.shangpingpic>label>textarea,.shangpingpic>label>p{
+		color:#5a5a5a;
+		font-size: 0.7rem;
+	}
+	.shangpingpic>label>textarea {
+		margin-top: 0.133333rem 0.5rem 0;
+		height:5.333333rem;
+		width: 100%;
+		display: inline-block;
+		resize: none;
+		overflow: hidden;
+		border:none;
+		font-size: 0.6rem;
+		letter-spacing: 0.05rem;
+		line-height: 0.9rem;
+	
+	}
+	.shangping{
+		border-bottom:10px solid #f3f3f3;
+	}
+
+	/*图片上传*/
+	.shangpingpic>span{
+		display: block;
+		margin-top: 0.5rem;
+	}
+	.shangpingpic>span>i{
+		font-size: 4.5rem;
+		color:#68b1f1;
+	}
+	.shangpingpic>span>em{
+		position: absolute;
+	    top: 10.98rem;
+	    left: 2.2rem;
+	    font-size: 0.5rem;
+	    color:#5a5a5a;
+
+	}
+	.saleBott{
+		width: 86%;
+		height: 1.8rem;
+		margin:0 7%;
+		position: fixed;
+		bottom: 1rem;
+	}
+	
+	.saleBott input{
+		height:1.8rem;
+		width: 100%;
+		color:#FFF;
+		background: #2EB6AA;
+		border:0.2rem;
+		font-size: 0.82rem;
+		letter-spacing: 0.1rem;
+		border-radius: 0.2rem;
+	}
+	.shangpingpic>input {
+	    opacity: 0;
+	    display: block;
+	    width: 4.2rem;
+	    height: 4.2rem;
+	    position: absolute;
+	    top: 7.9rem;
+	    left: 0.8rem;
+}
+/*中好差评的样式设置*/
+ .everyItem{
+            position: relative;
+            line-height: 3rem;
+            float: left;
+        }
+        
+      .everyItem>input[type="radio"] {
+            width: 2rem;
+            height: 2rem;
+            opacity: 0;
+        }
+        
+      .everyItem>label {
+            position: absolute;
+   			left: 1rem;
+   			top: 1.3rem;
+   			width: 0.8rem;
+   			height: 0.8rem;
+   			border-radius: 17%;
+   			border: 1px solid #999;
+        }
+       .everyItem>span{
+			font-size: 0.68rem;
+			color: #5a5a5a;
+       }
+        
+        /*设置选中的input的样式*/
+        /* + 是兄弟选择器,获取选中后的label元素*/
+      .everyItem>input:checked+label { 
+            background-color: #56aaf1;
+            border: 1px solid #56aaf1;
+            /*color:#56aaf1;*/
+        }
+        
+      .everyItem>input:checked+label::after {
+            position: absolute;
+   			content: "";
+   			width: 0.3rem;
+   			height: 0.5rem;
+   			top: 0rem;
+   			left: 0.2rem;
+   			border: 0.1rem solid #fff;
+   			border-top: none;
+   			border-left: none;
+   			transform: rotate(45deg);
+        }
+	
+</style>
+
+
+<body>
+	<div class="commentcontain">
+		<div class="xuanping clearfix">
+			<div class="pingpic"><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
+			<!-- <div class="pingGrade">
+				<label for="good"><input id="good"  type="radio" name="so" value="好评"/ checked> 好评 </label>
+				<label for="soso"><input id="soso"  type="radio" name="so" value="中评"/> 中评 </label>
+				<label for="bad"><input  id="bad" type="radio" name="so" value="差"/> 差 </label>
+			</div> -->
+			<form>
+    <div class='everyItem'>
+        <input id="item1" type="radio" name="item" value="
+        好评" checked>
+        <label for="item1"></label>
+        <span>好评</span>
+    </div>
+    <div class='everyItem'>
+        <input id="item2" type="radio" name="item" value="中评">
+        <label for="item2"></label>
+        <span>中评</span>
+    </div>
+    <div class='everyItem'>
+        <input id="item3" type="radio" name="item" value="差">
+        <label for="item3"></label>
+        <span>差</span>
+    </div>
+</form>
+
+		</div>
+		<div class="shangping">
+			<div class="shangpingpic">
+				<label for="shopping">
+					<p>请您对我们的商品做出评价……</p>
+					<textarea name="" id="shopping" cols="30" rows="10"></textarea>
+				</label>
+				<span><i class="iconfont icon-tianjia"></i><em>限3张内</em></span>
+				<input class="" type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
+			</div>
+			
+		</div>
+		<div class="saleBott">
+			<input type="submit" value="发表">
+		</div>
+		
+	</div>
+</body>
+</html>

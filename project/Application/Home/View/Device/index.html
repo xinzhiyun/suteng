@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<!-- <link rel="stylesheet" href="__PUBLIC__/Home/css/deviceAll.css"> -->
+	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_p8cbsn51ch2utyb9.css">
+	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<script>
+		
+	</script>
+	<style>
+		body{
+			font-size: 0.7rem;
+		}
+		.device-contain{
+			width: 100vw;
+			height: 100vh;
+		}
+		._deviceAll{
+			width: 90%;
+			padding:0.533333rem 3% 0rem;
+			position: relative;
+		}
+		.haveDevice{
+			/*display: none;*/
+		}
+		.deviceTop h3{
+			font-size: 0.7rem;
+			font-weight: 600;
+		}
+
+		/*每一个设备的样式*/
+		.deviceItem{
+			margin-top: 0.5rem;
+			position: relative;
+		}
+		.deviceitemLeft{
+			width: 15%;
+			padding:0;
+			height: 2rem;
+			overflow: hidden;
+			border-radius: 0.2rem;
+			float: left;
+		}
+		.deviceitemLeft>img{
+			width: 100%;
+		}
+		.deviceitemRight{
+			width: 82%;
+		    float: right;
+		    border-bottom: 1px solid #E5E5E5;
+		   /* padding: 0.5rem 0;*/
+		}
+		.deviceitemRight>p{
+			display: inline-block;
+			width: 90%;
+			padding: 0.5rem 0;
+		}
+		.deviceitemRight>i{
+			padding: 0.5rem 0;
+
+		}
+		.deviceitemRight>i.icon-xuanze{
+			color: #68B1F1;
+
+		}
+		.deviceitemRight>i.icon-kuang1{
+			color: #E5E5E5;
+
+		}
+		.deviceitemRight>p>span{
+			display: inline-block;
+			width: 35%;
+		}
+		/*隐藏付款块*/
+		.devicepay{
+			box-sizing: border-box;
+			width: 82%;
+			float: right;
+			padding:0.8rem 0.5rem;
+			background: #E6E6E6;
+			position: absolute;
+			top:-0.65rem;
+			border-radius: 0.2rem;
+			display: none;
+			-webkit-box-shadow: 1px 1px 3px; 
+			-moz-box-shadow: 1px 1px 3px; 
+			box-shadow: 1px 1px 3px;
+
+		}
+		.devicepay>span{
+			font-size: 0.2rem;
+			font-weight: 600;
+			color:#F00;
+		}
+		.devicepay>span>em{
+			padding-left:0.8rem; 
+			font-size: 0.2rem;
+			font-weight: 600;
+			color:#F00;
+
+		}
+		.devicepay>i{
+			display: inline-block;
+		    width: 2rem;
+		    height: 1rem;
+		    line-height: 1rem;
+		    font-weight: normal;
+		    background: #F00;
+		    color: #FFF;
+		    border-radius: 0.2rem;
+		    font-size: 0.3rem;
+		    text-align: center;
+		    float: right;
+		}
+		.deviceFoot{
+			width: 100%;
+			padding:0.266667rem;
+			position: fixed;
+			left: 0;
+			bottom: 0rem;
+			/*margin-top: 10vh;*/
+			border-top: 1px solid #ccc;
+			background: #fff;
+
+		}
+		.deviceFoot i{
+			margin:0 0.4rem;
+		}
+		.deviceFoot i.icon-tianjia{
+			color: #2EB6AA;	
+		}
+	
+		.deviceFoot span{
+			font-size: 0.373333rem;
+		}
+		/*没有设备的页面*/
+		.noDevice{
+			display: none;
+			width:100%;
+			margin-top: 6.666667rem;
+		}
+		.noContainer{
+			width: 5.333333rem;
+			margin:0 auto;
+			height: 5.333333rem;
+			/*background: green;*/
+			/*line-height: 2.666667rem;*/
+			text-align: center;
+		}
+		.noContainer i{
+			font-size: 4.0rem;
+			color:#64A0F2;
+		}
+		.noContainer p{
+			font-size: 0.8rem;
+		}
+		.icon-xuanze{
+			color: #68B1F1;
+
+		}
+
+		/*付款页面*/
+		.paystyle{
+			position:fixed;
+			top:0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			display: none;
+		}
+		.paystyleTop{
+			width: 100vw;
+			height: 100vh;
+			background: #000;
+			opacity: 0.5;
+		}
+		.payContain{
+			position: absolute;
+			bottom: 0;
+			height: 90vh;
+			width: 100vw;
+			opacity: 1;
+			z-index: 999;
+			background: #FFF;
+		}
+		.payContain>.paytop{
+			padding:0.5rem;
+    		border-bottom: 1px solid #E5E5E5;
+		}
+		.paytop>.paytopLeft>i{
+			float: left;
+    		padding: 0.6rem 0;
+    		margin-right: 4rem;
+    		font-size: 1.5rem;
+		}
+		/*支付图标的颜色*/
+		.icon-jinbi{
+			color:#FEDA02;
+		}
+		.icon-yingbi{
+			color:#97C3C0;
+			
+		}
+		.icon-z-weixin{
+			color:#149E23;
+			
+		}
+		.icon-zhifubao{
+			color:#22A8FF;
+			
+		}
+		.icon-yinhang-yinlian-{
+			color:#6BB5BB;
+			
+		}
+		.paytop>.paytopRight{
+			float: left;
+    		text-align: center;
+		}
+		.icon-kuang1{
+			color:#ccc;
+		}
+		.paytop>.paytopRight>h3{
+			font-size: 0.9rem;
+    		font-weight: 600;
+    		padding: 0 0 0.5rem;
+		}
+		.paytop>.paytopRight>p{
+			font-size: 0.9rem;
+			font-weight: 600;
+		}
+		.paymidd>h3{
+			padding:0.6rem;
+		}
+		.paymidd>ul>li{
+			padding:0.5rem 0.5rem;
+			border-bottom: 1px  solid #E5E5E5;
+		}
+		.paymidd>ul>li:nth-child(2){
+			border-bottom: 6px  solid #E5E5E5;
+			
+		}
+		.paymidd>ul>li>i{
+			padding-right:0.4rem; 
+			font-size: 1.2rem;
+		}
+		.paymidd>ul>li>span{
+			float: right;
+			font-size: 1rem;
+		}
+		/*底部按钮*/
+		.payBott{
+			width: 86vw;
+			margin:6vh 7vw 0vh;
+			background: #fff;
+		}
+		.payBott>input{
+			border:none;
+			padding:2vh  0;
+			width: 86vw;
+			background: #2EB6AA;
+			border-radius:0.2rem;
+			color: #FFF;
+		}
+		/*模态框样式*/
+	  .modelAll{width:100vw;height:100%;font-family: "mircoft yahei";font-size:14px;font-size: 0.7rem;line-height: 1; display: none;overflow: hidden;}
+      .modal{position:absolute;left:0;right:0;z-index: -1;}
+      .fade{opacity:0;top:-10%;display:block;-webkit-transition:top 0.3s linear;-o-transition:top 0.3s linear;transition:top 0.3s linear;}
+      .fade.in{opacity:1;top:10%;}
+      .modal-body{width:80%;margin:5rem auto;background-color: #fff;border-radius:0.5rem;}
+      .modal-title{position:relative;height:40px;background-color: #D31145;line-height: 40px;border-bottom:1px solid #ccc;}
+      .modal-backup{position:fixed;top:0;left:0;right:0;width:100%;height:100%;background-color: rgba(0, 0, 0, 0.5);z-index: 1000;display:none;}
+      .modal-content>p{
+      	padding:0.8rem;
+      	text-align: center;
+      	border-bottom:1px solid #E5E5E5;
+      }
+      .modal-content>p>a{
+      	color:#64A0F2;
+      }
+      .modal-content>p>input{
+      	border:none;
+      	background: none;
+      	color:#64A0F2;
+      }
+      .modal-content>p:nth-child(4){
+      	border:none;
+      }
+
+	</style>
+</head>
+<body>
+	<div class="device-contain">
+		<div class="_deviceAll">
+			<!-- ==================有设备的页面显示开始================== -->
+			<div class="haveDevice">
+				<div class="deviceTop">
+					<h3>所有设备</h3>
+					
+					<div class="deviceItem clearfix">
+						<div class="deviceitemLeft"><img src="__PUBLIC__/Home/images/yoo_01.png" alt=""></div>
+						<div class="deviceitemRight ">
+							<p><span>设备编码：</span>KD1234567889</p><i class="iconfont icon-xuanze"></i>
+							<div class="devicepay"><span>租赁机转个人<em>￥3620</em></span><i>付款</i></div>
+						</div>
+					</div>
+
+					<!-- 0 -->
+					
+					<div class="deviceItem clearfix">
+						<div class="deviceitemLeft"><img src="__PUBLIC__/Home/images/yoo_01.png" alt=""></div>
+						<div class="deviceitemRight ">
+							<p><span>设备编码：</span>KD1234567889</p>
+							<i class="iconfont icon-kuang1"></i>
+							<div class="devicepay"><span>个人设备</span></div>
+						</div>
+					</div>
+					<div class="deviceItem clearfix">
+						<div class="deviceitemLeft"><img src="__PUBLIC__/Home/images/yoo_01.png" alt=""></div>
+						<div class="deviceitemRight ">
+							<p><span>设备编码：</span>KD1234567889</p>
+							<i class="iconfont icon-kuang1"></i>
+							<div class="devicepay"><span>个人设备</span></div>
+						</div>
+					</div>
+					<!-- 付款页面 -->
+					<div class="paystyle">
+						<div class="paystyleTop"></div>
+						<div class="payContain">
+							<div class="paytop clearfix">
+								<div class="paytopLeft"><i class="iconfont icon-cuohao"></i></div>
+								<div class="paytopRight">
+									<h3>付款</h3>
+									<p>￥3620.00</p>
+								</div>	
+							</div>
+							<div class="paymidd">
+								<h3>选择支付方式</h3>
+								<ul class="clearfix">
+									<li><i class="iconfont icon-jinbi"></i>金币<span class="iconfont icon-xuanze"></span></li>
+									<li><i class="iconfont icon-yingbi"></i>银币<span class="iconfont icon-kuang1"></span></li>
+									<li><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-kuang1"></span></li>
+									<li><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
+									<li><i class="iconfont icon-yinhang-yinlian-"></i>银联<span class="iconfont icon-kuang1"></span></li>
+								</ul>
+							</div>
+							<div class="payBott">
+								<input class=" start" type="submit" value="立即支付">
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				<div class="deviceFoot">
+					<p><i class="iconfont icon-tianjia"></i><span>添加新设备</span></p>
+				</div>
+			</div>
+			<!-- ==================有设备的页面显示结束================== -->
+			
+			<!-- ==================没有设备的页面显示================== -->	
+			<div class="noDevice">
+				<div class="noContainer">
+					<i class="iconfont icon-plus"></i>
+					<p>请添加设备</p>
+					<div class="tupic"><a href="#"><i class="iconfont icon-tianjia"></i></a></div>
+				</div>
+			</div>
+		</div>
+		<!-- 模态框的内容 -->
+		
+		<div class="modal-backup">
+			<div class="modelAll" >
+				<!-- <a class="start" href="javascript:;">点击</a> -->
+				<div class="modal fade">
+					<div class="modal-body">
+						<div class="modal-content">
+							<p>您暂没有绑定银行卡</p>
+							<p class="close"><a href="#">去绑定</a></p>
+							<p class="close"><a href="#">其他支付方式</a></p>
+							<p><input class="close" type="submit" value="取消"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	
+
+
+	<script>
+		// 选中当前的设备
+		$('.deviceitemRight>i').click(function(){
+			$('.deviceitemRight>i').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+			$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+			$('.devicepay').css('display','none');
+		})
+		
+		// 查看当前设备的所属情况
+		$('.deviceitemRight>p').click(function(){
+			$('.devicepay').css('display','none');
+			var bb=$(this).next().attr('class');
+			// console.dir(bb);
+			// $(this).next().attr('class');
+			 if(bb=='iconfont icon-xuanze'){
+			 	console.dir($(this).nextAll().fadeIn("slow"))
+			 	$(this).nextAll().fadeIn("slow");
+			 		$('.devicepay>i').click(function(){
+			 			// console.dir(0);
+			 			$('.paystyle').slideDown("slow");
+			 			$('.deviceFoot').css('display','none');
+			 			
+
+			 		})
+			 }
+			
+		})
+		// 付款方式的单选框
+		$('.paymidd>ul>li>span').click(function(){
+			$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+			$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+		})
+		// 付款方式页面隐藏
+		$('.paytop>.paytopLeft>i').click(function(){
+			$('.paystyle').slideUp("slow");
+			$('.deviceFoot').css('display','block');
+		})
+
+		// 没有设备时的页面显示
+		// alert($('.deviceItem').length);
+		if($('.deviceItem').length==0){
+			$('.haveDevice').css('display','none');
+			$('.noDevice').css('display','block');
+		}
+		
+		
+
+		// 模态框的js
+		$(function(){
+	      	$(".start").on("click",function(){
+	       	   $(".modelAll").css('display','block');
+	       	   $(".modal").addClass("in");
+	       	   $(".modal").css('z-index','1001');
+	       	   $(".modal-backup").css('display','block');
+	       });
+	      	$(".close").on("click",function(){
+	       	   $(".modal").removeClass('in');
+	       	   $(".modal").css('z-index','-1');
+	       	   $(".modal-backup").fadeOut('slow');
+	       });
+      	})
+
+		
+		
+
+
+	</script>
+</body>
+</html>                                                                                                                                                                                                                                                   	

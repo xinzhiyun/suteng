@@ -5,26 +5,244 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
   	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
-  	<link rel="stylesheet" href="__PUBLIC__/Home/css/indexShop.css">
   	<link rel="stylesheet" href="__PUBLIC__/Home/css/mF_fancy.css">
-
-	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_e4w3qh1w050442t9.css">
+ 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/myfocus-2.0.1.min.js"></script>
-
   	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<title>Document</title>
 	<style>
+		
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body {
+			width: 100vw;
+			height: 100vh;
+			font-size: .7rem;
+			overflow-x: hidden;
+		}
+		#header {
+			width: 100vw;
+			height: 8vh;
+			position: fixed;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			background: #fff;
+			z-index: 999;
+		}
+		#header>span {
+			flex: 1;
+			height: 8vh;
+    		line-height: 8vh;
+		    display: block;
+		    text-align: center;
+		    font-size: 0.72rem;
+		    color:#5A5A5A;
+		}
+		#header>span:nth-child(1){
+			color:#373737;
+		}
+	
+		/*顶部标题下面的线*/
+		/*标题切换 改这里left,20%,40%,60%,80%*/
+		#line {
+			width: 20vw;
+			height: 1vh;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			margin-bottom: -1vh;
+			transition: left .2s ease-in;
+		}
+		
+		#line>span {
+			width: 50%;
+    		height: 1vh;
+    		display: block;
+    		margin: -8vh auto;
+    		border-radius: 10px;
+    		background: #60ACF0;
+		}
+		#content {
+			width: 500vw;
+			position: relative;
+			padding: 1vh 0;
+		}
+		/*全部订单,待付款，待发货，待收货，待评论*/
+		#dingdanAll,
+		#dingdanDaifukuan,
+		#dingdanDaifahuo,
+		#dingdanDaishouhuo,
+		#dingdanDaipinglun {
+			
+			width: 100vw;
+			position: absolute;
+			padding: 1vh 0;
+			top: 0;
+			background: #fff;
+			transition: left .4s ease-out;
+		}
 
+		#dingdanAll {
+			left: 0;
+		}
+		#dingdanDaifukuan {
+			left: 100vw;
+		}
+		#dingdanDaifahuo {
+			left: 200vw;
+		}
+		#dingdanDaishouhuo {
+			left: 300vw;
+		}
+		#dingdanDaipinglun {
+			left: 400vw;
+		}
+		.goods{
+			width: 100%;
+		}
+		
+		/*搜索栏 */
+		.shopTop{
+			width: 100%;
+   			margin-top: 2rem;
+   			margin-bottom: 1rem;
+    		position: relative;
+    		top:1.0vh;
+    		z-index: 99;
+		}
+		.search{
+    		width: 12.5rem;
+			height: 1.6rem;
+			line-height: 1.4rem;
+    		margin: 0rem 0.5rem 0rem 1rem;
+    		border:1px solid #ccc;
+    		border-radius: 0.266667rem;
+    		position: relative;
+
+		}
+		.search>label>input{
+			display: inline-block;
+			margin-left: 0.2rem;
+			width: 90%;
+			height: 1.4rem;
+			border:none;
+			font-size: 0.7rem;
+		}
+		.search>label>i{
+			font-size: 0.9rem;
+		}
+		.search>i{
+			display: inline-block;
+			width: 2%;
+			float: right;
+			color:#838383;
+			position: absolute;
+			top:0;
+			color: #464646;
+			right: -0.6rem;
+			font-size: 1.25rem;
+		}
+		.search>span{
+			position: absolute;
+		    display: inline-block;
+		    width: 0.8rem;
+		    height: 0.8rem;
+		    border-radius: 1rem;
+		    background: #F00;
+		    right: -1.8rem;
+		    top:-0.1rem;
+		    font-size: 0.53rem;
+		    font-weight: 600;
+		    text-align: center;
+		    line-height: 0.8rem;
+		    color: #FFF;
+		}
+		/*<!-- 轮播图 -->*/
+		#myFocus{
+			border:1px solid #F6F6F6;
+			width:90%;
+			height:6rem;
+			margin:0.8rem 5%;
+			border-radius: 0.3rem;
+		}
+		.mF_fancy .prev,.mF_fancy .next{
+			top:25%!important;
+		}
+		.pic>ul>li>a>img{
+			/*width: 100%;*/
+		}
+		.mF_fancy_myFocus{
+			margin-top: 0.066667rem;
+		}
+		/*所有商品*/
+		.goodstitle>h3{
+			text-align: center;
+    	    font-weight: 600;
+    	    margin-bottom: 0.5rem;
+    	    font-size: 0.73rem;
+    	    margin-top: 0.5rem;
+    	    color:#373737;
+		}
+		.goodstitle>h3>span{
+			color:#ff2e2e;
+		}
+		.allgoods{
+			width: 100%;
+			height: 12rem;
+			margin:0 auto;
+		}
+		.allgoods>ul>li{
+			   float: left;
+			    display: block;
+			    width: 50%;
+			    height: 8.5rem;
+			    padding: 5% 5%;
+			    box-sizing: border-box;
+		}
+		.allgoods>ul>li>a{
+			
+			display: block;
+			width: 5rem;
+		}
+		.allgoods>ul>li>a>p{
+			display: block;
+			font-size: 0.67rem;
+    		line-height: 1rem;
+    		width: 130%;
+
+
+		}
+		.allgoods>ul>li>a>i{
+			font-size: 1.2rem;
+			color: #ff3232;
+		    position: relative;
+		    right: -58%;
+		}
+		.allgoods>ul>li>a>b{
+			font-size: 0.68rem;
+			color: #ff3232;
+		}
+		.allgoods>ul>li>a>img{
+			width: 130%;
+		}
+		
+
+		
 	</style>
 </head>
 <body>
 	<header id="header">
-		<span class="tab" index='0'>每日精选</span>
-		<span class="tab" index='1'>母&nbsp;婴</span>
-		<span class="tab" index='2'>美&nbsp;妆</span>
-		<span class="tab" index='3'>家具家纺</span>
-		<span class="tab" index='4'>数码家电</span>
+
+		<span class="tab" index='0'>净水器</span>
+		<span class="tab" index='1'>净化器</span>
+		<span class="tab" index='2'>热水器</span>
+		<span class="tab" index='3'>生活用品</span>
+		<span class="tab" index='4'>瓦胆</span>
 		<div id="line">
 			<span></span>
 		</div>
@@ -33,7 +251,7 @@
 					<div class="search clearfix">
 						<label for="search-all">
 							<input type="text" placeholder="请输入您想买的东西" ><i class="iconfont icon-msnui-find-bold"></i>
-						</label><i class="iconfont  icon-icon--"></i><span>1</span>
+						</label><i class="iconfont  icon-gouwuche"></i><span>1</span>
 					</div>
 					<!-- 轮播图 -->
 					<div id="myFocus"><!--焦点图盒子-->
@@ -49,10 +267,10 @@
 						  </div>
 					</div>
 				</div>
-
+	
 	<div id="content">
-
-
+		
+	
 		<!-- 每日精选 -->
 		<div id="dingdanAll">
 			 <div class="goods" >
@@ -104,14 +322,14 @@
 								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
 							</a>
 						</li>
-
+						
 					</ul>
 				</div>
 
 
 			</div>
 		</div>
-
+	
 		<!-- 母婴 -->
 		<div id="dingdanDaifukuan">
 			  <div class="goods" >
@@ -163,7 +381,7 @@
 								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
 							</a>
 						</li>
-
+						
 					</ul>
 				</div>
 
@@ -222,7 +440,7 @@
 								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
 							</a>
 						</li>
-
+						
 					</ul>
 				</div>
 
@@ -280,7 +498,7 @@
 								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
 							</a>
 						</li>
-
+						
 					</ul>
 				</div>
 
@@ -338,7 +556,7 @@
 								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
 							</a>
 						</li>
-
+						
 					</ul>
 				</div>
 
@@ -346,25 +564,28 @@
 			</div>
 		</div>
 	</div>
-
+	
 	<script>
-
-
+		
+		
 		$(function(){
 			// 订单状态
 			var dingdanArr = ['#dingdanAll', '#dingdanDaifukuan','#dingdanDaifahuo','#dingdanDaishouhuo','#dingdanDaipinglun']
 
 			// 订单状态
 			var $tab = $(".tab");
+			console.dir($tab);
 
 			// 点击顶部导航栏，切换订单状态
 			$tab.on("click",function(){
 
 				// if($('#content>div').length != 0){
+					 $('#header>span').css('color','#5A5A5A').css('font-weight','400');
+					$(this).css('color','#373737').css('font-weight','600');
 					$("#content")
 					.css({height: dingdanArr[$(this).attr("index")]
-						.height,
-						overflowY: $(dingdanArr[$(this).attr("index")])[0].offsetHeight > $("#content")[0].offsetHeight
+						.height, 
+						overflowY: $(dingdanArr[$(this).attr("index")])[0].offsetHeight > $("#content")[0].offsetHeight 
 						? 'visible'
 						: 'hidden'
 					});
@@ -386,8 +607,12 @@
 		// 轮播
 		myFocus.set({
 			id:'myFocus',//ID
-			pattern:'mF_fancy'//风格
+			pattern:'mF_fancy',//风格
+			time:3,
+			height:172,
+			// width:600,
 		});
+		$('.pic>ul>li>a>img').css('width','94vw')
 
 	</script>
 </body>

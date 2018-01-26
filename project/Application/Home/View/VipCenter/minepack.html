@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+  <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+  <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+  <script src="__PUBLIC__/Home/js/public.js"></script>
+  <style>
+        body{
+          font-size: 0.7rem;
+        }
+        ._Mine{
+          width: 100%;
+        }
+        .MineContainer{
+          position: relative;
+        }
+        .MineTop{
+          height:6rem;
+          width: 100%;
+          border-bottom: 0.4rem solid #F3F3F3;
+           background: linear-gradient(to bottom right, #99FCEF ,#3B90E1); 
+        }
+        .mineLeft{
+          margin-right: 5%;
+          width: 25%;
+        }
+        .mineLeft span{
+          margin:1.3rem auto;
+          display: block;
+          width:  3.4rem;
+          height:  3.4rem;
+          background:#2EB6AA;
+          border-radius:  3.0rem;
+          overflow: hidden;
+        }
+        .mineLeft span img{
+          width: 100%;
+        }
+        .mineRight{
+          width: 70%;
+        }
+        .mineRight>ul>li>p,.mineRight>ul>li>b,.mineRight>ul>li>span{
+          color: #FFF;
+        }
+        .mineLeft,.mineRight{
+          height:100%; 
+          float: left;
+        }
+        .mineRight ul li{
+          margin-top: 0.666667rem;
+          display: block;
+          width: 100%;
+          height: 0.933333rem;
+          line-height: 0.933333rem;
+          font-size: 0.533333rem;
+        }
+        .mineRight ul li b{
+          display: inline-block;
+          width: 25%;
+          color: #FFF;
+        }
+        .mineRight .m-left{
+          margin:0 0.2rem;
+        }
+        .mineRight>ul>li>i.icon-jinbi{
+          color:#DEBA10; 
+          font-size: 1.2rem;
+        }
+        .mineRight>ul>li>i.icon-yingbi{
+          color: #8ABCBD;
+          font-size: 1.2rem;
+        }
+        .mineRight .yingIcon{
+          width: 75%;
+          float: right;
+        }
+        .MineFoot ul li{
+          height: 1.6rem;
+          line-height: 1.6rem;
+          font-size: 0.533333rem;
+          border-bottom:1px solid #F3F3F3;
+          padding:0.3rem 5% ;
+        }
+        .MineFoot ul li:nth-child(3){
+          border-bottom:0.4rem solid #F3F3F3;
+        }
+        .MineFoot ul li.Mf-infor{
+          border-top:0.4rem solid #F3F3F3;
+          border-bottom: 0.4rem solid #F3F3F3;
+        }
+        .MineFoot .Mf-left{
+          margin:0.2rem;
+        }
+        .MineFoot>ul>li>a>span{
+          font-weight: 600;
+        }
+        .MineFoot>ul>li>a>b{
+          display: inline-block;
+          float: right;
+          font-size: 0.266667rem;
+          font-weight: 500;
+          color:#909393;
+        }
+        .MineFoot .Mf-right{
+          float: right;
+          margin-left: 0.133333rem;
+        }
+        /*图标颜色*/
+        .icon-shebeiguanli,.icon-jilu1,.icon-dengpao1,.icon-naozhong{
+          color: #308BE8;
+        }
+        .icon-jiare,.icon-gerenxinxi{
+          color:#EA802B;
+        }
+        .icon-yongshuijilu,.icon-wuyebaoxiu{
+          color:#26A085;
+        }
+  </style>
+</head>
+<body>
+  <div class="_Mine">
+    <div class="MineContainer">
+        <div class="MineTop"> 
+            <div class="mineLeft">
+              <span><img src="__PUBLIC__/Home/images/yoo_01.png" alt=""></span>
+            </div>                   
+            <div class="mineRight">
+               <ul>
+                 <li><p>Yoo</p></li>
+                 <li><b>我的钱包:</b><i class="iconfont icon-jinbi m-left"></i><span>金币<em>300</em>个</span></li>
+                  <li class="yingIcon"><i class="iconfont icon-yingbi m-left"></i><span>金币<em>300</em>个</span></li>
+               </ul> 
+            </div>                                
+        </div>
+        <div class="MineFoot">
+          <ul>
+            <li><a href="#"><i class="iconfont icon-shebeiguanli Mf-left"></i><span>设备管理</span><i class="iconfont icon-dayuhao Mf-right"></i><b>当前设备：01234566585</b></a></li>
+            <li><a href="#"><i class="iconfont icon-naozhong Mf-left"></i><span>定时设置</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
+            <li><a href="#"><i class="iconfont icon-jiare Mf-left"></i><span>加热定时设置</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
+            <li><a href="#"><i class="iconfont icon-yongshuijilu Mf-left"></i><span>用水记录</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
+            <li><a href="#"><i class="iconfont icon-jilu1 Mf-left"></i><span>净水记录</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
+            <li class="Mf-infor"><a href="#"><i class="iconfont icon-gerenxinxi Mf-left"></i><span>个人信息</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
+            <li><a href="#"><i class="iconfont icon-wuyebaoxiu Mf-left"></i><span>保修</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
+            <li><a href="#"><i class="iconfont icon-dengpao1 Mf-left"></i><span>建议</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
+          </ul>
+        </div>
+    </div>
+  </div>
+</body>
+</html>                                                                                                                                                                                                                                                                      

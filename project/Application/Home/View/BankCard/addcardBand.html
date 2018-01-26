@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<meta charset="UTF-8">
+	<title>银行卡绑定</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<style>
+	body{
+		
+		font-size: .7rem;
+	}
+	.addcardBand-all{
+		width: 90%;
+		padding:0.666667rem 5%;
+	}
+	.addcardBand-all h3{
+			font-weight: 600;
+	}
+	.addcardBand-all label{
+		display: block;
+		width: 90%;
+		height: 1.6rem;
+		border-radius: 0.2rem;
+		line-height: 1.6rem;
+		margin: 0.933333rem auto;
+		border:1px solid #ccc;
+		background: #F0F1F1;
+
+	}
+	.addcardBand-all label input{
+		height: 1.45rem;
+		border:none;
+		background: #F0F1F1;
+
+	}
+	.addcardBand-all label span{
+		margin-left: 0.2rem;
+		padding-right:0.4rem; 
+	}
+	.addcardBtn{
+		width: 90%;
+		margin:5rem auto;
+		height: 1.6rem;
+
+	}
+	.addcardBtn input{
+		width: 100%;
+		height: 100%;
+		border:none;
+		border-radius: 0.2rem;
+		background: #2EB6AA;
+		color:#FFF;
+	}
+	</style>
+</head>
+<body>
+	<div class="addcardBand-contain">
+		<div class="addcardBand-all">
+			<h3>请绑定持卡人本人的银行卡</h3>
+			<label for="holdCard">
+				<span>持卡人 :</span><input id="holdCard" type="text">
+			</label>
+			<label for="cardNum">
+				<span>卡&nbsp;&nbsp;&nbsp;号 :</span> <input id="cardNum" type="text">
+			</label>
+			<div class="addcardBtn">
+				<input type="submit" value="下一步">
+			</div>
+		</div>
+	</div>
+	<script>
+		$('#holdCard').change( function() {
+		  	// 这里可以写些验证代码
+		  	var name = $(this).val();
+		  	if(name==name.match(/^[\u4e00-\u9fa5]{2,30}$/u)){// 中英文姓名支持支持 /^[a-zA-Z\u4e00-\u9fa5]{2,30}$/u
+		  		console.dir('验证通过');
+		  	}else{
+		  		console.dir('请输入真实的姓名！');
+		  	}
+		});
+
+	    var num = 0;
+	    var strCard = '';
+		$('#cardNum').bind("input propertychange",function(){
+		    //你要触发的函数内容
+		    var str = $('#cardNum').val();  
+		      
+		    var elem = document.getElementById("cardNum");  
+		      
+		    //console.log(elem);  
+		      
+		    if(str.length > num){  
+		        var c = str.replace(/\s/g,  "");   
+		          
+		        if(str != "" && c.length > 4 && c.length % 4 == 1){  
+		          $('#cardNum').val(str.substring(0, str.length - 1)+ " " + str.substring(str.length - 1, str.length));  
+		              
+		        }  
+		    }  
+		      
+		    if(elem.setSelectionRange){//W3C  
+		          setTimeout(function(){  
+		              elem.setSelectionRange(elem.value.length,elem.value.length);  
+		              elem.focus();  
+		          },0);  
+		      }else if(elem.createTextRange){//IE  
+		          var textRange=elem.createTextRange();  
+		          textRange.moveStart("character",elem.value.length);  
+		          textRange.moveEnd("character",0);  
+		          textRange.select();  
+		      }  
+		      
+		    num = str.length;
+
+		    if(num==23){
+		    	strCard = $(this).val();
+		    }
+
+		    if(num>23){
+		    	$(this).val(strCard);
+		    }
+		});
+
+		$('#cardNum').change( function() {
+		  	var card = $(this).val();
+		  	var len = card.length;
+		  	console.dir(typeof(len));
+		  	// 银行卡号 16 或 19位数字
+		  	if(len==19){
+		  		fncard();
+		  	}else if(len==23){
+		  		fncard();
+		  	}else{
+		  		console.dir('银行卡号长度不正确！');
+		  	}
+
+		  	function fncard(){
+			  	if(card==card.match(/^[\d]{4}\s[\d]{4}\s[\d]{4}\s[\d]{4}\s{0,1}[\d]{0,3}$/)){
+			  		console.dir('验证通过');
+			  	}else{
+			  		console.dir('请输入真实的卡号！');
+			  	}
+		  	}
+		});
+
+
+	</script>
+</body>
+</html>                                                                                                                                                                                                                                                                      	

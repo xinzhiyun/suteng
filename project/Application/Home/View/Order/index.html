@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_3mgodvjd6sp833di.css">
+
+	
+	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+    <script src="__PUBLIC__/Home/js/public.js"></script>
+	<title>我的订单</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body {
+			width: 100vw;
+			height: 100vh;
+			font-size: .6rem;
+			overflow-x: hidden;
+		}
+		#header {
+			width: 100vw;
+   			height: 10vh;
+   			padding:8vh 0 0.8rem;
+   			position: fixed;
+   			display: flex;
+   			justify-content: space-between;
+   			align-items: center;
+   			border-bottom: 1vh solid #eee;
+   			background: #fff;
+   			z-index: 999;
+		}
+		#header>span {
+			flex: 1;
+   			flex-direction:column;
+			height: 15vh;
+    		line-height: 5vh;
+		    display: block;
+		    text-align: center;
+		}
+		#header>span>p{
+			line-height: 2vh;
+		    position: relative;
+		    padding: 2vh 0 0;
+		}
+		#header>span>p>i{
+			font-size: 1.4rem;
+			color:#60ACF0;
+		}
+		#header>span>p>b{
+			position: absolute;
+		    left: 11vw;
+		    top: 0.5vh;
+		    width: 0.8rem;
+		    height: 0.8rem;
+		    line-height: 0.8rem;
+		    text-align: center;
+		    display: inline-block;
+		    background: red;
+		    border-radius: 1rem;
+		    font-size: 0.5rem;
+		    color: #fff;
+		    font-weight: 600;
+
+		}
+		/*顶部标题下面的线*/
+		/*标题切换 改这里left,20%,40%,60%,80%*/
+		#line {
+			width: 20vw;
+			height: 1vh;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			margin-bottom: -1vh;
+			transition: left .2s ease-in;
+		}
+		#line>span {
+			width: 50%;
+			height: 1vh;
+		    display: block;
+		    margin: 0 auto;
+		    border-radius: 10px;
+			background: #60ACF0;
+		}
+		#header>span>i{
+			display: inline-block;
+			height: 1rem;
+			width: 1rem;
+			border-radius: 0.6rem;
+			background: red;
+			font-size: 0.25rem;
+			text-align: center;
+			/*color:#FFF;*/
+		}
+		/*头部的图标样式*/
+		#header>.iconTop{
+			position: absolute;
+			top:0;
+			width: 100%;
+			padding: 0.4rem 0 0.2rem;
+
+		}
+		#header>.iconTop>p{
+			display: inline-block;
+			/*background: red;*/
+			text-align: center;
+			width: 20%;
+			position: relative;
+
+
+			/*padding:0 3.5%;*/
+		}
+		#header>.iconTop>p>i{
+			position: absolute;
+			display: inline-block;
+			font-size: 1.3rem;
+			color:#60ACF0;
+			position: relative;
+			
+			/*float: left;*/
+		}
+		#header>.iconTop>p>b{
+			width: 0.8rem;
+			height: 0.8rem;
+			line-height: 0.8rem;
+			text-align: center;
+			display: inline-block;
+   			background: red;
+   			/*padding: 0.2rem;*/
+   			border: 2rem;
+   			position: absolute;
+   			right: 0.6rem;
+   			top: -0.22rem;
+   			border-radius: 1rem;
+   			font-size: 0.5rem;
+   			color: #fff;
+			font-weight: 600;
+			/*padding: 0.1rem;*/
+		}
+
+
+		#content {
+			width: 500vw;
+			height: 92vh;
+			position: relative;
+			top: 8vh;
+			padding: 1vh 0;
+		}
+		/*全部订单,待付款，待发货，待收货，待评论*/
+		#saleAfter,
+		#dingdanDaifukuan,
+		#dingdanDaifahuo,
+		#dingdanDaishouhuo,
+		#dingdanDaipinglun {
+			width: 100vw;
+			position: absolute;
+			padding: 5vh 0;
+			top: 0;
+			background: #fff;
+			transition: left .4s ease-out;
+		}
+		#dingdanDaifukuan {
+			left: 0vw;
+		}
+		#dingdanDaifahuo {
+			left: 100vw;
+		}
+		#dingdanDaishouhuo {
+			left: 200vw;
+		}
+		#dingdanDaipinglun {
+			left: 300vw;
+		}
+		#saleAfter {
+			left: 400vw;
+		}
+		/*订单部分*/
+		.goods>p {
+			padding: 2%;
+		}
+		/*订单状态：等待买家付款，交易完成，等待发货等*/
+		.goods>p>span {
+			font-weight: bold;
+			float: right;
+			color: #FF843D;
+		}
+		.dingdan>p>span:after {
+			content: '';
+			clear: both;
+		}
+		.goods>p:nth-of-type(2) {
+			border-bottom: 1px solid #ddd;
+		}
+		/*订单项目*/
+		.goodsItem {
+			display: flex;
+			padding: 2%;
+			background: #F8F8F8;
+		}
+		
+		.goods>div.goodsItem:nth-of-type(2n) {
+			border-top: 4px solid #fff;
+		}
+		
+		/*订单图片*/
+		.giPicture {
+			flex: 1;
+			padding: 2%;
+		}
+		.giPicture>img {
+			width: 100%;
+			height: 100%;
+			display: block;
+			border-radius: 6px;
+			border: 1px solid #ccc;
+			background: #fff;
+		}
+		/*商品描述*/
+		.giDescription {
+			flex: 2;
+			padding: 2%;
+		}
+		.giDescription>p {
+			margin: 6px 0;
+			color: #666;
+			font-size: .6rem;
+		}
+		/*价格*/
+		.giDescription>div>b {
+			color: #FC2C2D;
+			letter-spacing: 2px;
+		}
+		/*数量*/
+		.giDescription>div>span {
+			float: right;
+		}
+		.giDescription>div>span:after {
+			content: '';
+			clear: both;
+		}
+		/*套餐*/
+		.taocan {
+			padding: 4%;
+			border-top: 4px solid #fff;
+			background: #F8F8F8;
+		}
+		.taocan>span {
+			float: right;
+		}
+		.taocan>span:after {
+			content: '';
+			clear: both;
+		}
+		/*价格*/
+		.taocan>span>b {
+			color: #FC2C2D;
+			letter-spacing: 2px;
+		}
+		/*合计、付款等*/
+		.calc {
+			padding-top: 5%;
+			border-top: 1px solid #ddd;
+			border-bottom: 1vh solid #eee;
+		}
+		.calc>div {
+			padding: 0 2%;
+			text-align: right;
+		}
+		/*价格*/
+		.calc>div>b {
+			color: #FC2C2D;
+			letter-spacing: 2px;
+		}
+		.calc>div:nth-of-type(2) {
+			width: 100%;
+			display: flex;
+			padding: 6% 4%;
+			align-items: center;
+		}
+		/*取消订单*/
+		.cancel {
+			width: 60%;
+			display: inline-block;
+			text-align: right;
+		}
+		.cancel>span {
+			display: inline-block;
+			padding: 2% 8%;
+			border-radius: 4px;
+			border: 1px solid #aaa;
+		}
+		/*付款*/
+		.pay {
+			width: 40%;
+			display: inline-block;
+			text-align: right;
+		}
+		.pay>span {
+			display: inline-block;
+			padding: 1vmin 3vmin;
+			border-radius: 4px;
+			color: #fff;
+			border: 1px solid #2EB6AA;
+			background: #2EB6AA;
+		}
+
+		/*没有内容时添加这个类*/
+		.none {
+			visibility: hidden;
+		}
+ 		/*没有相关订单 */
+ 	.noContain{
+      width: 46%;
+      height:6rem;
+      /*margin:9rem auto 0;*/
+      text-align: center;
+      position: fixed;
+      top: 9rem;
+      left: 27%;
+      display: none;
+    }
+  
+    .noContain p{
+      line-height: 2rem;
+    }
+    .noContain p a{
+    	color: #FF721F;
+    	display: block;
+    	text-decoration: underline;
+    }
+     .noContain p i{
+      font-size: 3rem;
+      color: #32C97C;
+     }
+	/*退款/售后*/
+	.tuikuangall{
+		width: 100vw;
+		padding-top:0.7rem ;
+		border-bottom:10px solid #E5E5E5;
+
+	}
+	.tuikuangall>p{
+		padding: 0 3% 0.5rem 3%;
+	}
+	.shangpingnei{
+		padding:0.5rem 3%;
+	}
+	.shangpingnei>.tuikuangLeft,.shangpingnei>.tuikuangRight{
+		float: left;
+
+	}
+	.shangpingnei>.tuikuangLeft{
+		
+		width: 28%;
+		/*background: red;*/
+	}
+	.shangpingnei>.tuikuangLeft>img{
+		width: 100%;
+   		 padding: 0.5rem;
+	}
+	.shangpingnei>.tuikuangRight{
+		/*background: green;*/
+		width: 72%;
+   		padding: 0.2rem;
+	}
+	.shangpingnei>.tuikuangRight>span{
+		line-height: 1.0rem;
+		display: inline-block;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    display: -webkit-box;
+	    -webkit-box-orient: vertical;
+	    box-orient: vertical;
+	    -webkit-line-clamp: 2;
+	    line-clamp: 2;
+	    color: #5A5A5A;
+	}
+	.shangpingnei>.tuikuangRight>p{
+		padding: 0.24rem 0;
+	}
+	.shangpingnei>.tuikuangRight>p>b{
+		color: #F00;
+	}
+	.shangpingnei>.tuikuangRight>p>span{
+		float: right;
+	}
+	.tuikuangall>p{
+		display: inline-block;
+		margin-bottom: 0.5rem;
+		width: 100%;
+
+	}
+	.tuikuangall>p>b{
+		color:#FF8A45;
+	}
+	.tuikuangall>p>span{
+		float: right;
+	}
+	.tuikuangall>p>span>i{
+		padding:0 0.2rem;
+		font-size: 0.6rem;
+		color:#FF8A45;
+
+	}
+	/*<!-- 隐藏的评论内容 -->*/
+	.commentHidden{
+		display: none;
+	}
+	.commentHidden>.hidTop{
+		padding:0.5rem 3% 1rem;
+		border-top:4px solid #E5E5E5;
+		border-bottom:4px solid #E5E5E5;
+		
+	}
+	.commentHidden>.hidTop>p{
+		padding:0.2rem 0;
+	}
+	.commentHidden>.hidTop>p>span{
+		padding-right: 1.5rem;
+	}
+	/*寄件点击按钮*/
+	.hidBott{
+		padding:0.5rem 3%;
+		text-align: center;
+	}
+	.hidBott>.hidbotttxt{
+		width: 40%;
+	    background: #E3F8FD;
+	    padding: 0.3rem;
+	    border-radius: 0.2rem;
+	    margin-left: 0.5rem;
+	}
+	.hidBott>.hidbotttxt>a{
+		margin-left: 3%;
+	}
+	.hidBott>.hidbotttxt>a>p{
+		line-height: 1rem;
+	}
+	/*报装中的评论按钮*/
+	.pinglunBtn{
+		width: 90%;
+		padding:0.5rem 3%;
+		
+	}
+	.pinglunBtn>input{
+		margin-left: 87%;
+	    border: none;
+	    color: #FFF;
+	    padding: 0.2rem 1rem;
+	    background: #2EB6AA;
+	    border-radius: 0.2rem;
+	}
+/*模态框样式*/
+    .modelAll,.modelAll2,.modelAll3{width:100vw;height:100vh;font-family: "mircoft yahei";font-size:14px;font-size: 0.7rem;line-height: 1;display: none;}
+      .modal{position:fixed;left:0;right:0;z-index: -1;}
+      .fade{opacity:0;top:-10%;display:block;-webkit-transition:top 0.3s linear;-o-transition:top 0.3s linear;transition:top 0.3s linear;}
+      .fade.in{opacity:1;top:10%;}
+      .modal-body{width:80%;margin:5rem auto;background-color: #fff;border-radius:0.5rem;}
+      .modal-title{position:relative;height:40px;background-color: #D31145;line-height: 40px;border-bottom:1px solid #ccc;}
+      .modal-backup,.modal-backup3{position:fixed;top:0;left:0;right:0;width:100%;height:100vh;background-color: rgba(0, 0, 0, 0.3);z-index: 1000;display:none;}
+      .modal-content>.dianyuan{
+        padding:0.8rem;
+        text-align: center;
+        border-bottom:1px solid #E5E5E5;
+      }
+      .modal-content>p{
+       
+        text-align: center;
+        /*border-bottom:1px solid #E5E5E5;*/
+      }
+
+      .modal-content>p.fahuola{
+      	padding: 0.6rem;
+      }
+      .modal-content>p>a{
+        color:#64A0F2;
+      }
+      .modal-content>p>input{
+      	box-sizing: border-box;
+      	text-align: center;
+        padding:0.8rem;
+        width: 50%;
+        border:none;
+        background: none;
+        color:#64A0F2;
+      }
+      .modal-content>p>input:nth-child(1){
+      	color:#ccc;
+        border-right: 1px solid #E5E5E5;
+      }
+      .modal-content>p:nth-child(2){
+        border:none;
+      } 
+      .icon-zhengque{
+      	color:#2EB6AA;
+      	font-size: 1.4rem;
+      }
+	
+
+	</style>
+</head>
+<body>
+	<!-- <div class="iconTop">
+		<p>
+			<i class="iconfont icon-daifahuo">
+			</i><i class="iconfont icon-daifahuo">
+			</i><i class="iconfont icon-daifahuo">
+			</i><i class="iconfont icon-daifahuo">
+			</i><i class="iconfont icon-daifahuo">
+			</i>
+			
+		</p>
+	</div> -->
+	
+	<header id="header">
+		<!-- <div class="iconTop">
+			<p><i class="iconfont icon-daifukuan"></i><b>12</b>
+			</p>
+			
+			</p>
+		</div> -->
+		<span class="tab" index='0'><p><i class="iconfont icon-daifukuan"></i><b>12</b></p>待付款</span>
+		<span class="tab" index='1'><p><i class="iconfont icon-daifahuo"></i><b>12</b></p>待发货</span>
+			
+		<span class="tab" index='2'><p><i class="iconfont icon-daishouhuo"></i><b>12</b></p>待收货</span>
+		<span class="tab" index='3'><p><i class="iconfont icon-pinglun"></i><b>12</b></p>待评论</span>
+		<span class="tab" index='4'><p><i class="iconfont icon-shouhoutuikuan"></i><b>12</b></p>退款/售后</span>
+		<div id="line">
+			<span></span>
+		</div>
+	</header>
+	<div id="content">
+		
+		<!-- 待付款 -->
+		<div id="dingdanDaifukuan">
+			<div class="goods">
+				<p>订单编号：123456767978123</p>
+				<p>订单时间：2017-12-16 13:10:56
+					<span>等待买家付款</span>
+				</p>
+				<div class="goodsItem">
+					<div class="giPicture">
+						<!-- <img src="__PUBLIC__/Home/images/1.jpg" alt=""> -->
+					</div>
+					<div class="giDescription">
+						<b>RO膜</b>
+						<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+						<div>
+							<b>￥120.00</b>
+							<span>X1</span>
+						</div>
+					</div>
+				</div>
+				<div class="calc">
+					<div>
+						共1件商品&emsp;
+						合计：<b>￥420.00</b>
+						<span>&nbsp;(含邮费￥0.00)</span>
+					</div>
+					<div>
+						<div class="cancel  start3">
+							<span>取消订单</span>
+						</div>
+						<div class="pay">
+							<span>&nbsp;付&nbsp;&nbsp;款&nbsp;</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 代付款模态框的内容 -->
+		 	<div class="modelAll">
+		 	  <!-- <a class="start" href="javascript:;">点击</a> -->
+		 	  <div class="modal fade">
+		 	    <div class="modal-body">
+		 	      <div class="modal-content">
+		 	        <p class="dianyuan">确认取消订单？</p>
+		 	        <p><input class="close" type="submit" value="是"><input class="close" type="submit" value="否"></p>
+		 	        <!-- <p><input class="close" type="submit" value="否"></p> -->
+		 	      </div>
+		 	    </div>
+		 	  </div>
+		 	  <div class="modal-backup"></div>
+		 	</div>
+		</div>
+
+		<!-- 待发货 -->
+		<div id="dingdanDaifahuo">
+			<div class="goods">
+				<p>订单编号：123456767978123</p>
+				<p>订单时间：2017-12-16 13:10:56
+					<span>等待卖家发货</span>
+				</p>
+				<div class="goodsItem">
+					<div class="giPicture">
+						<img src="__PUBLIC__/Home/images/1.jpg" alt="">
+					</div>
+					<div class="giDescription">
+						<b>RO膜</b>
+						<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+						<div>
+							<b>￥120.00</b>
+							<span>X1</span>
+						</div>
+					</div>
+				</div>
+				<div class="calc">
+					<div>
+						共1件商品&emsp;
+						合计：<b>￥420.00</b>
+						<span>&nbsp;(含邮费￥0.00)</span>
+					</div>
+					<div>
+						<div class="cancel">
+							<span>&nbsp;付&nbsp;&nbsp;款&nbsp;</span>
+						</div>
+						<div class="pay start2">
+							<span>提醒发货</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			 <!-- 待发模态框的内容 -->
+		  	<div class="modelAll2">
+		  	  <!-- <a class="start" href="javascript:;">点击</a> -->
+		  	  <div class="modal fade">
+		      <div class="modal-body">
+		        <div class="modal-content">
+		          <p class="dianyuan"><i class="iconfont icon-zhengque"></i></p>
+		          <p class="fahuola">亲~已提醒商家发货啦</p>
+		        </div>
+		      </div>
+		  	  </div>
+		  	  <div class="modal-backup"></div>
+		  	</div>
+		</div>
+		<!-- 待收货 -->
+		<div id="dingdanDaishouhuo">
+			<div class="goods">
+				<p>订单编号：123456767978123</p>
+				<p>订单时间：2017-12-16 13:10:56
+					<span>卖家已发货</span>
+				</p>
+				<div class="goodsItem">
+					<div class="giPicture">
+						<img src="__PUBLIC__/Home/images/1.jpg" alt="">
+					</div>
+					<div class="giDescription">
+						<b>RO膜</b>
+						<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+						<div>
+							<b>￥120.00</b>
+							<span>X1</span>
+						</div>
+					</div>
+				</div>
+				<div class="calc">
+					<div>
+						共1件商品&emsp;
+						合计：<b>￥420.00</b>
+						<span>&nbsp;(含邮费￥0.00)</span>
+					</div>
+					<div>
+						<div class="cancel">
+							<span>&nbsp;退&nbsp;&nbsp;款&nbsp;</span>
+						</div>
+						<div class="pay start3">
+							<span>确认收货</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 待收货模态框的内容 -->
+		  	<div class="modelAll3">
+		  	  <!-- <a class="start" href="javascript:;">点击</a> -->
+		  	  <div class="modal fade">
+		  	    <div class="modal-body">
+		  	      <div class="modal-content">
+		  	        <p class="dianyuan">确认已经收到货物？</p>
+		  	        <p><input class="close" type="submit" value="是"><input class="close" type="	submit" value="否"></p>
+		  	        <!-- <p><input class="close" type="submit" value="否"></p> -->
+		  	      </div>
+		  	    </div>
+		  	  </div>
+		  	  <div class="modal-backup3"></div>
+		  	</div>
+		</div>
+		<!-- 待评论 -->
+		<div id="dingdanDaipinglun">
+			<div class="goods">
+				<p>订单编号：123456767978123</p>
+				<p>订单时间：2017-12-16 13:10:56
+					<span>交易完成</span>
+				</p>
+				<div class="goodsItem">
+					<div class="giPicture">
+						<img src="__PUBLIC__/Home/images/1.jpg" alt="">
+					</div>
+					<div class="giDescription">
+						<b>RO膜</b>
+						<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+						<div>
+							<b>￥120.00</b>
+							<span>X1</span>
+						</div>
+					</div>
+				</div>
+				<div class="calc">
+					<div>
+						共1件商品&emsp;
+						合计：<b>￥120.00</b>
+						<span>&nbsp;(含邮费￥0.00)</span>
+					</div>
+					<div>
+						<div class="cancel none">
+							<span></span>
+						</div>
+						<div class="pay">
+							<span>评论</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 退款/售后 -->
+		<div id="saleAfter">
+			<div class="goods">
+				<div class="tuikuangall">
+					<p>信息更新时间：2018-1-4  10:26:39</p>
+					<div class="shangpingnei clearfix">
+						<div class="tuikuangLeft ">
+							<img src="__PUBLIC__/Home/images/comm_02.png" alt="">
+						</div>
+						<div class="tuikuangRight">
+							<span>尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头</span>
+							<p><b>￥269.00</b><span>x1</span></p>
+						</div>
+					</div>
+					<p><b>等待商家同样退款</b></p>
+				</div>
+				<div class="tuikuangall">
+					<p>信息更新时间：2018-1-4  10:26:39</p>
+					<div class="shangpingnei clearfix">
+						<div class="tuikuangLeft ">
+							<img src="__PUBLIC__/Home/images/comm_02.png" alt="">
+						</div>
+						<div class="tuikuangRight">
+							<span>尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头</span>
+							<p><b>￥269.00</b><span>x1</span></p>
+						</div>
+					</div>
+					<p><b>商家同意退款，请尽早退货</b><span>点击张开<i class="iconfont icon-shuangxiajiantou"></i></span></p>
+					<!-- 隐藏的评论内容 -->
+					<div class="commentHidden">
+						<div class="hidTop">
+							<p><span>收货人： 马晓东</span>13612345678</p>
+							<p>广东省广州市番禺区大石镇大石街 道五巷7号 </p>
+						</div>
+						<dic class="hidBott">
+							<div class="hidbotttxt">
+								<a href="#">
+									<p>我已寄件</p>
+									<p>点击填写物流单号</p>
+								</a>
+							</div>
+							
+						</dic>
+					</div>
+				</div>
+				<div class="tuikuangall">
+					<p>信息更新时间：2018-1-4  10:26:39</p>
+					<div class="shangpingnei clearfix">
+						<div class="tuikuangLeft ">
+							<img src="__PUBLIC__/Home/images/comm_02.png" alt="">
+						</div>
+						<div class="tuikuangRight">
+							<span>尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头</span>
+							<p><b>￥269.00</b><span>x1</span></p>
+						</div>
+					</div>
+					<p><b>退款成功</b></p>
+				</div>
+				<div class="tuikuangall">
+					<p>信息更新时间：2018-1-4  10:26:39</p>
+					<div class="shangpingnei clearfix">
+						<div class="tuikuangLeft ">
+							<img src="__PUBLIC__/Home/images/comm_02.png" alt="">
+						</div>
+						<div class="tuikuangRight">
+							<span>尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头</span>
+							<p><b>￥5669.00</b><span>x1</span></p>
+						</div>
+					</div>
+					<p><b>商品已寄出，退款退货中</b></p>
+				</div>
+				<div class="tuikuangall clearfix">
+					<p>信息更新时间：2018-1-4  10:26:39</p>
+					<div class="shangpingnei clearfix">
+						<div class="tuikuangLeft ">
+							<img src="__PUBLIC__/Home/images/comm_02.png" alt="">
+						</div>
+						<div class="tuikuangRight">
+							<span>三星 液晶4K高清电视 拷贝 2 </span>
+							<p><b>￥269.00</b><span>x1</span></p>
+						</div>
+					</div>
+					<p><b>报装中，客服电话：020-84765556</b></p>
+					<div class="pinglunBtn">
+					<input type="submit" value="评论">
+					</div>
+
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	<!-- 没有相关订单 -->
+	<div class="manageCard">
+        <div class="noContain">
+          <p>暂没有绑定的银行卡</p>
+          <p><a href="#">去绑定 》</a></p>
+        </div>
+    </div>
+	<script>
+		
+		if($('#content>div').length==0){
+
+			$('.noContain').show();
+
+		}
+
+		$(function(){
+
+			// 订单状态
+			var dingdanArr = [ '#dingdanDaifukuan','#dingdanDaifahuo','#dingdanDaishouhuo','#dingdanDaipinglun','#saleAfter']
+
+			// 订单状态
+			var $tab = $(".tab");
+
+			// 点击顶部导航栏，切换订单状态
+			$tab.on("click",function(){
+
+				if($('#content>div').length != 0){
+
+					$("#content")
+
+					.css({height: dingdanArr[$(this).attr("index")]
+
+						.height, 
+
+						overflowY: $(dingdanArr[$(this).attr("index")])[0].offsetHeight > $("#content")[0].offsetHeight 
+
+						? 'visible'
+
+						: 'hidden'
+
+					});
+
+					// console.log( $(this).attr("index") );
+					// console.log( $("#content")[0].offsetHeight );
+
+				}
+
+					$("#content")
+					
+					.animate({left: '-'+ $(this).attr("index") +'00vw'});
+
+					$("#line").css({left: $(this).attr("index")*2 + '0%'});
+
+					// console.log($(this).attr("index"))
+			});
+		})
+
+		// 寄件点击展开
+			var iClass=$('.tuikuangall>p>span>i').attr("class");
+			// console.dir(iClass);
+			$('.tuikuangall>p>span').click(function(){
+
+				if(iClass=='iconfont icon-shuangxiajiantou'){
+
+					$('.tuikuangall>p>span>i').removeClass('icon-shuangxiajiantou').addClass('icon-xiangshangjiantou');
+
+					$('.commentHidden').slideDown();
+
+					iClass='iconfont icon-xiangshangjiantou';
+				}
+				else{
+					
+					$('.tuikuangall>p>span>i').removeClass('icon-xiangshangjiantou').addClass('icon-shuangxiajiantou');
+
+					$('.commentHidden').slideUp();
+					
+					iClass='iconfont icon-shuangxiajiantou';
+				}
+
+			})
+
+			// 模态框的js
+			 // 提醒发货
+			 $(".start2").click(function(){
+
+		             $(".modal").addClass("in").css('position','absolute');
+
+		             $(".modal").css('z-index','1001');
+
+		             $(".modal-backup").css('display','block');
+
+		             $(".modelAll2").fadeOut(3000);
+
+		             $(".modelAll2").css('display','block');
+
+		             $(".modelAll2").fadeOut(3000);
+
+		             $(".modal-backup").fadeOut('slow');
+
+		         });
+
+		    $(function(){
+		          $(".start4").on("click",function(){
+
+		             $(".modal").css('position','absolute');
+
+
+		          	 $(".modelAll").css('display','block');
+
+		             $(".modal").addClass("in");
+
+		             $(".modal").css('z-index','1001');
+
+		             $(".modal-backup").css('display','block');
+
+		          });
+
+		          $(".close").on("click",function(){
+
+		             $(".modal").removeClass('in');
+
+		             $(".modal").css('z-index','-1');
+
+		             $(".modal-backup").fadeOut('slow');
+
+		          });
+
+		    })
+
+	      	
+	      	//待收货 模态框的js
+			$(function(){
+
+		      	$(".start3").on("click",function(){
+		      		$(".modal").css('position','absolute');
+		            $(".modal").css('position','fixed');
+
+
+		      		$(".modelAll3").css('display','block');
+
+		       	   $(".modal").addClass("in");
+
+		       	   $(".modal").css('z-index','1001');
+
+		       	   $(".modal-backup3").css('display','block');
+
+		      	});
+
+		      	$(".close").on("click",function(){
+
+		       	   $(".modal").removeClass('in');
+
+		       	   $(".modal").css('z-index','-1');
+
+		       	   $(".modal-backup3").fadeOut('slow');
+		       });
+	      	})
+				
+			
+
+	</script>
+</body>
+</html>

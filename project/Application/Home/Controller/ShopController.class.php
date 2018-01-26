@@ -27,12 +27,14 @@ class ShopController extends Controller
      * 订单管理
      */
     public function orders()
+
     {
         $this->display();
     }
 
     // 商品详情页面
     public function goods_detail()
+
     {
         $id['g.id'] = I('get.id');
         $goods = D('Goods');

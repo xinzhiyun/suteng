@@ -22,6 +22,13 @@ a:active{text-decoration:none;}/* 指正在点的链接*/
 .clearfix:after{content:"";height:0;line-height:0;display:block;visibility:hidden;clear:both}
 .clearfix{zoom:1;}/*为了兼容IE*/
 .clear{clear:both;}
+/*苹果兼容*/
+ul, li, dl, dt, dd, form, h1, h2, h3, h4, p, input, form {  
+	appearance:none;
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	-webkit-appearance: none;  
+}
 .bg1{
 	background: #FFC0CB;
 }
@@ -40,3 +47,344 @@ a:active{text-decoration:none;}/* 指正在点的链接*/
 .bg6{
 	background:	#98FB98;
 }
+
+
+/*================冲洗，制水，缺水，修检，水满================*/
+
+.chongTop{
+	width: 100%;
+	height: 63vh;
+	background: url(../images/chxi_01.png) no-repeat;
+	background-size: 100% 100%;
+	position: relative;
+}
+
+.heat{
+	width: 2.0rem;
+	height: 2.0rem;
+	/*border:1px solid #ccc;*/
+	float: right;
+	margin:5% 5%  0 0;
+	background: url(../images/huan_re.png) no-repeat;
+	background-size: 100% 100%;
+	-webkit-animation:aImg0 20s linear ;
+	animation:aImg0 20s linear;
+}
+.heat p,.kaiheat p{
+	text-align: center;
+	line-height: 2.0rem;
+	font-size: 0.213333rem;
+}
+.xuanhuan{
+	border-radius: 40vw;
+	width: 60vw;
+	height: 60vw;
+	margin:0 auto;
+	background: url(../images/xuanhuan_1.png) no-repeat;
+	background-size: 100% 100%;
+	position: relative;
+	-webkit-animation:aImg 20s linear infinite;
+	animation:aImg 20s linear infinite;
+}
+.xuannei{
+	margin:3.5vw;
+	width:53vw ;
+	height: 53vw;
+	background: #fff;
+	border-radius: 50vw;
+	position: absolute;
+}
+.xuantext{
+	width: 30vw;
+	height: 30vw;
+	text-align: center;
+	position: absolute;
+	top:35vw;
+	left: 35vw;
+}
+.xuantext h3{
+	font-size:1.066667rem;
+	line-height: 3.066667rem;
+}
+.xuantext p{
+	font-size:0.666667rem;
+	letter-spacing: 0.106667rem;
+} 
+.btmTxt{
+	width: 100%;
+	height:5vh;
+	text-align: center;
+	margin-top: 5vh;
+}
+.btmTxt h3{
+	font-size:1.066667rem;line-height: 0.8rem;
+}
+
+/*====================净水机底部开始====================*/
+.chongFoot{
+	height: 37vh;
+	width: 100%;
+}
+.chbuTop{
+	height: 15vh;
+	width: 90vw;
+	padding:4vw 5vw;
+}
+.chbuTop ul li{
+	width: 50%;
+	height: 6vh;
+	display: inline-block;
+	font-size: 0.533333rem;
+	line-height: 6vh;
+	margin-top: 2vh;
+}
+.chbuTop ul li i{
+	margin-right: 0.2rem;
+	font-size:0.933333rem;
+	color: #4CA3EA;
+}
+
+.chbuTop ul li b{
+	font-weight: normal;
+}
+.chbuTop ul li span{
+	margin:0 0.2rem;
+}
+.chbuBotom{
+	width:100%;
+	height: 10vh;
+	background: url(../images/dibu_01.png) no-repeat;
+	background-size: contain;
+}
+.chbuBotom ul li {
+	display: inline-block;
+	padding-top:6vh;
+	width: 20%;
+	text-align: center;
+}
+.chbuBotom ul li a i{
+	font-size: 1.2rem;
+}
+.chbuBotom ul li a i.colorChange{
+	color:#4EB9BB; 
+}
+.chbuBotom ul li a p{
+	font-size: 0.213333rem;
+}
+/*净水机开机状态*/
+.kaiji{
+	border-radius: 40vw;
+	width: 60vw;
+	height: 60vw;
+	margin:0 auto;
+	background: url(../images/kaiji.png) no-repeat;
+	background-size: 100% 100%;
+	position: relative;
+	
+}
+.kaiheat{
+	width: 2.0rem;
+	height: 2.0rem;
+	float: right;
+	margin:5% 5%  0 0;
+	background: url(../images/xiaohuan.png) no-repeat;
+	background-size: 100% 100%;
+}
+.kaichongTop{
+	width: 100%;
+	height: 63vh;
+	background: url(../images/kaijibg.png) no-repeat;
+	background-size: 100% 100%;
+	position: relative;
+}
+.txtColor{
+	color:#C7C7C7;
+}
+
+
+/*冲洗动画*/
+@keyframes aImg{
+			0%{transform:rotate(0deg);}
+			100%{transform:rotate(3600deg);}
+		}
+@keyframes aImg2{
+			0%{transform:rotate(0deg);}
+			50%{transform:rotate(-30deg);}
+			100%{transform:rotate(60deg);}
+		}
+/*加热动画*/
+@keyframes aImgre{
+			0%{transform:rotate(0deg);}
+			100%{transform:rotate(3600deg);}
+		}
+
+/*制水*/
+.makewater{
+	border-radius: 40vw;
+	width: 60vw;
+	height: 60vw;
+	margin:0 auto;
+	background: url(../images/makewater_01.png) no-repeat;
+	background-size: 100% 100%;
+	position: relative;
+	-webkit-animation:aImg 20s linear infinite;
+	animation:aImg 20s linear infinite;
+}
+/*修检*/
+  .overxuanhuan{
+        border-radius: 40vw;
+        width: 60vw;
+        height: 60vw;
+        margin:0 auto; 
+        background-image: url(../images/gx.gif); 
+        background-size: cover;
+        opacity: 1;
+        position: relative;
+/*        -webkit-animation:aImg5 4s linear  infinite;
+        animation:aImg5 4s linear  infinite;*/
+      }
+
+/*@keyframes aImg5{
+			0%{transform:rotate(0deg);}
+			100%{transform:rotate(360deg);}
+		}*/
+ /*缺水*/
+	.queshui{
+		border-radius: 40vw;
+		width: 60vw;
+		height: 60vw;
+		margin:0 auto;
+		background: url(../images/queshgui_1.png) no-repeat;
+		background-size: 100% 100%;
+		position: relative;
+		z-index: 0;
+	}
+
+	 .queshui>.cen1{
+	 	border-radius: 40vw;
+		width: 100%;
+		height: 100%;
+		margin:0 auto;
+		background: url(../images/queshgui_2.png) no-repeat;
+		background-size: 100% 100%;
+		position: absolute;
+		top:0;
+		left: 0;
+		z-index: 200;
+		opacity: 1;
+		-webkit-animation:aImg3 1.5s linear infinite;
+		animation:aImg3 1.5s linear infinite;
+	 }
+
+	 .queshui>.cen2{
+	 	border-radius: 40vw;
+		width: 60vw;
+		height: 60vw;
+		margin:0 auto;
+		background: url(../images/queshgui_3.png) no-repeat;
+		background-size: 100% 100%;
+		position: absolute;
+		top:0;
+		left: 0;
+		z-index: 300;
+	 }
+
+	.shuiman{
+		border-radius: 40vw;
+		width: 60vw;
+		height: 60vw;
+		margin:0 auto;
+		background: url(../images/queshudi_03.png) no-repeat;
+		background-size: 100% 100%;
+		position: relative;
+	}
+
+	.shuiman>.cen1{
+	 	border-radius: 40vw;
+		width: 100%;
+		height: 100%;
+		margin:0 auto;
+		background: url(../images/queshuiding_03.png) no-repeat;
+		background-size: 100% 100%;
+		position: absolute;
+		top:0;
+		left: 0;
+		z-index: 200;
+		-webkit-animation:aImg2 3s linear infinite;
+		animation:aImg2 3s linear infinite;
+	 }
+	/*水满的动画*/
+	@keyframes aImg2{
+				0%{transform:rotate(0deg);}
+				25%{transform:rotate(-13deg);}
+				50%{transform:rotate(0deg);}
+				75%{transform:rotate(11deg);}
+				100%{transform:rotate(0deg);}
+	}
+	/*缺水的动画*/
+	@keyframes aImg3{
+				0%{opacity: 1;}
+				50%{opacity: 0;}
+				100%{opacity: 1;}
+	}
+	
+	/*@media screen and (max-height:520px){ 
+		body{background:orange;}
+	}
+*/
+	/*温度接口*/
+	.wendu{
+        position: absolute;
+        top:0;
+        padding-left:0.5rem;
+        padding-top:0.5rem;
+        line-height:1.1rem;
+        bottom: 0;
+        width:20vw;
+        height: 15vh;
+        font-size: 0.6rem;
+      }
+      .wendu>p{
+        color:373737;
+      }
+      .wendu>p>span{
+        padding-right:0.3rem;
+      }
+      .wendu>p>b{
+        float:right;
+      }
+      .wendu>p>b.redu{
+          color:#F00;
+      }
+      .wendu>p>b.lengdu{
+          color:#2EB6AA;
+      }
+	  .shiwen{
+	  	position: absolute;
+	  	bottom: 2rem;
+	  	right:0.5rem;
+        font-size: 0.6rem;
+        line-height:1.1rem;
+	  }
+	  .shiwen>p{
+	  	color:373737;
+	  }
+	  .shiwen>p>span{
+        padding-right:0.3rem;
+	  }
+	   .shiwen>p>b{
+        color:#0A555F;
+
+	   }
+	   .zitihui{
+	   	color:#D6D3D6!important;
+	   }
+
+
+
+
+
+
+
+
+
