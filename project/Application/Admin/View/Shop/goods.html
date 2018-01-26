@@ -62,13 +62,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <foreach name="data" item="v">
+                            <volist name="data" id="v">
                                 <tr>
                                     <td>
-                                        {{$v['id']}}
+                                        {{$i}}
                                     </td>
                                     <td>
-                                        {{$v['cid']}}
+                                        {{$v['cname']}}
                                     </td>
                                     <td>
                                         {{$v['name']}}
@@ -94,7 +94,7 @@
                                         <empty name="v.attr'">
                                             <a class="btn btn-white" href="javascript:;">添加参数</a>
                                         <else />
-                                            {{$v['attr']}}
+                                            {{$v['val']}}
                                         </empty>
                                     </td>
                                     <td>
@@ -105,8 +105,8 @@
                                     </td>
                                     <td>
                                         <switch name="v.status">
-                                            <case value="0">上架</case>
-                                            <case value="1">下架</case>
+                                            <case value="1">上架</case>
+                                            <case value="0">下架</case>
                                         </switch>
                                     </td>
                                     <td>
@@ -127,7 +127,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                            </foreach>
+                            </volist>
                         </tbody>
                     </table>
                 </div>

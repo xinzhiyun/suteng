@@ -9,22 +9,22 @@ use Home\Controller\WechatController;
  * @author 吴智彬 <519002008@qq.com>
  */
 
-class CommonController extends Controller 
+class CommonController extends Controller
 {
 	/**
      * 初始化
      * @author 吴智彬 <519002008@qq.com>
      */
     public function _initialize()
-    {	 
+    {
         // 实例化微信JSSDK
         $weixin = new WeixinJssdk;
         // 获取用户open_id
         if(empty($_SESSION['open_id'])){
             // 如果不存在则，跳转获取open_id,并缓存
-            $_SESSION['open_id'] = $weixin->GetOpenid();
+            // $_SESSION['open_id'] = $weixin->GetOpenid();
             // 前端调试通道
-            // $_SESSION['open_id'] = 'oQktJwL8ioR4DoxSQmikdzekbUyU';
+            $_SESSION['open_id'] = 'oQktJwL8ioR4DoxSQmikdzekbUyU';
 
         }
         // 获取用户open_id
@@ -43,7 +43,7 @@ class CommonController extends Controller
                     case '0':
                         // 会员资料填写注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员}
                         // 邀请人类型:{0：分公司，1：A级分销，2：B级分销，3：C级分销，4：会员 5：普通二维码}
-                        
+
                         switch ($wechat['recommend']) {
                             case '0':
                                 // 会员扫不带参数二维码注册（公众号普通二维码）
@@ -126,7 +126,7 @@ class CommonController extends Controller
                                     $wechatRes = M('wechat')->where($userWhere)->save($userData);
                                 }
 
-                                
+
                                 break;
                             case '2':
                                 // 会员扫分销商推荐二维码注册
@@ -193,7 +193,7 @@ class CommonController extends Controller
                                         # code...
                                         break;
                                 }
-                                
+
                                 // 获取用户唯一标识
                                 $newData['code']            = $this->user_code();
                                 // 添加时间
@@ -353,7 +353,7 @@ class CommonController extends Controller
      * 获取用户唯一标识
      */
     public function user_code()
-    {        
+    {
         do {
           // 生成用户唯一标识
           $code = strtoupper(substr(md5(mt_rand(100000, 999999)), mt_rand(1,9), 11));

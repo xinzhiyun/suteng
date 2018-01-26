@@ -98,7 +98,8 @@ class ShopController extends CommonController
         $cate = D('Category');
         $cateInfo = $cate->getAllCate();
         $goods = D('Goods');
-        $goodsList = $goods->select();
+        $goodsList = $goods->getGoodsList();
+        // dump($goodsList);
         $assign = [
             'data' => $goodsList,
             'cateInfo'=>$cateInfo,
@@ -110,24 +111,6 @@ class ShopController extends CommonController
     // 添加商品
     public function goodsAdd()
     {
-        // try {
-        //     $goods = D('Goods');
-        //     $data = I('post.');
-        //     if(!$goods->create()) E($goods->getError(),203);
-        //
-        //     $res = $goods->add();
-        //     if($res){
-        //         E('添加成功',200);
-        //     } else {
-        //         E('添加失败',203);
-        //     }
-        // } catch (Exception $e) {
-        //     $err = [
-        //         'code' => $e->getCode(),
-        //         'msg' => $e->getMessage(),
-        //     ];
-        //     return $this->ajaxReturn($err);
-        // }
         $cate = D('Category');
         $cateInfo = $cate->where('pid=0')->select();
         $goods = D('Goods');
@@ -145,21 +128,57 @@ class ShopController extends CommonController
     // 商品添加处理
     public function goodsAction()
     {
-        $data = I('post.');
-        dump($_POST);die;
-        // 确认分类
-        // if($data['thirdcate'] != '--'){
-        //     $goods['cid'] = $data['thirdcate'];
-        // } elseif ($data['seccate'] != '--'){
-        //     $goods['cid'] = $data['seccate'];
-        // } elseif ($data['firscate'] != '--'){
-        //     $goods['cid'] = $data['firscate'];
-        // } else {
-        //     E('请选择分类',205);
-        // }
+        try{
+            $goods_add = D('Goods');
+            $attr_val = D('AttrVal');
+            $attr = D('Attr');
+            $goods_detail = D('GoodsDetail');
+            $cate = D('Category');
+            $data = I('post.');
+            $goods['cid'] = $cate->sureCate();
+            $goods['name'] = $data['name'];
 
-        // 处理属性
-        foreach ($data['attr'] as $key => $value) {
+            // $goods_check = $goods_add->create($goods);
+            // dump($goods);die;
+            // 事务开启
+            $goods_add->startTrans();
+            if(!$goods_add->create($goods)) {
+                E($goods_add->getError(),406);
+            }
+            // 商品添加
+            $goods_status = $goods_add->add();
+            $goodsDetail['gid'] = $goods_status;
+            $goodsDetail['price'] = $data['price'];
+            $goodsDetail['cost'] = $data['cost'];
+            $goodsDetail['stock'] = $data['stock'];
+            if(!$goods_detail->create($goodsDetail)) E($goods_detail->getError(),408);
+            // 商品详情添加
+            $goodsDetail_status = $goods_detail->add($goodsDetail);
+            $attrVal['val'] = $data['attr_val'];
+            $attrVal['gid'] = $goods_status;
+            if(!$attr_val->create($attrVal)) E($attr_val->getError(),407);
+            foreach ($data['attr'] as $key => $val) {
+                if($attr->where('id='.$val)->field('id')){
+                    $attrVal['aid'] = $val;
+                    // 属性值添加
+                    $attr_val_status = $attr_val->add($attrVal);
+                } else {
+                    E('属性缺失，请刷新页面', 506);
+                }
+            }
+            if($goods_status && $attr_val_status && $goodsDetail_status){
+                $goods_add->commit();
+                E('商品添加成功，可继续添加',200);
+            } else {
+                $goods_add->rollback();
+                E('商品添加失败，请重新添加',407);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
         }
     }
 

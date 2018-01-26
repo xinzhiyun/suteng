@@ -19,10 +19,31 @@ class CategoryModel extends BaseModel
     protected $_auto = array(
 
     );
-
+    // 获取所有分类
     public function getAllCate()
     {
         $res = $this->getTreeData('tree','id, name');
         return $res;
+    }
+
+    // 确认分类
+    public function sureCate()
+    {
+        if($_POST['thirdcate'] != '--'){
+            $cid = $_POST['thirdcate'];
+        } elseif ($_POST['seccate'] != '--'){
+            $cid = $_POST['seccate'];
+        } elseif ($_POST['firscate'] != '--'){
+            $cid = $_POST['firscate'];
+        } else {
+            $cid = "";
+        }
+
+        $res = $this->where('id='.$cid)->field('id');
+        if($res){
+            return $cid;
+        } else {
+            E('分类不存在，请刷新页面重试',506);
+        }
     }
 }
