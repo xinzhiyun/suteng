@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50173
 File Encoding         : 65001
 
-Date: 2018-01-25 15:22:34
+Date: 2018-01-26 18:11:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -285,7 +285,7 @@ CREATE TABLE `st_dimension` (
   `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_dimension_num
@@ -410,7 +410,7 @@ CREATE TABLE `st_users` (
   `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_users_commission
@@ -418,17 +418,20 @@ CREATE TABLE `st_users` (
 DROP TABLE IF EXISTS `st_users_commission`;
 CREATE TABLE `st_users_commission` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增',
-  `user_id` int(11) unsigned NOT NULL COMMENT '关联用户表ID',
+  `nexus_user` varchar(11) NOT NULL COMMENT '产生分红的会员',
+  `user_code` varchar(11) NOT NULL COMMENT '关联用户表ID',
   `order_id` varchar(12) DEFAULT NULL COMMENT '订单号码',
   `gold_num` int(11) unsigned DEFAULT '0' COMMENT '金币数量 默认为0',
   `silver` int(11) unsigned DEFAULT '0' COMMENT '银币数量 默认为0',
   `current_gold_num` int(11) unsigned DEFAULT '0' COMMENT '当前金币数量 默认为0',
   `current_silver` int(11) unsigned DEFAULT '0' COMMENT '当前银币数量 默认为0',
   `describe` varchar(255) DEFAULT NULL COMMENT '佣金获得描述',
-  `type` tinyint(1) unsigned DEFAULT '0' COMMENT '分配类型{0：按比例分配，1：固定金额分配}',
+  `type` tinyint(1) unsigned DEFAULT '0' COMMENT '分配类型{0：自己购买，1：邀请的会员购买}',
   `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
+  `addtime` int(11) unsigned DEFAULT NULL COMMENT '创建时间',
+  `updatetime` int(11) unsigned DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=gbk;
+) ENGINE=MyISAM AUTO_INCREMENT=95 DEFAULT CHARSET=gbk;
 
 -- ----------------------------
 -- Table structure for st_vendors
@@ -469,7 +472,7 @@ CREATE TABLE `st_vendors` (
   `addtime` int(11) unsigned NOT NULL COMMENT '添加时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_vendors_commission
@@ -477,15 +480,19 @@ CREATE TABLE `st_vendors` (
 DROP TABLE IF EXISTS `st_vendors_commission`;
 CREATE TABLE `st_vendors_commission` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增',
-  `vendor_id` int(11) unsigned NOT NULL COMMENT '关联分销商表ID',
+  `nexus_vendor` varchar(6) NOT NULL COMMENT '产生分成的关联分销商',
+  `vendor_code` varchar(6) NOT NULL COMMENT '关联分销商唯一标识',
   `order_id` varchar(12) DEFAULT NULL COMMENT '订单号码',
   `abonus` double(6,2) unsigned DEFAULT '0.00' COMMENT '分红 默认为0.00',
   `current_abonus` double(6,2) unsigned DEFAULT '0.00' COMMENT '当前分红 默认为0.00',
   `describe` varchar(255) DEFAULT NULL COMMENT '佣金获得描述',
-  `type` tinyint(1) unsigned DEFAULT '0' COMMENT '分配类型{0：按比例分配，1：固定金额分配}',
+  `type` tinyint(1) unsigned DEFAULT '0' COMMENT '分配类型{0：直接会员，1：下级的会员，2：下下级的会员，3:同级下的会员}',
   `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
+  `addtime` int(11) unsigned DEFAULT NULL COMMENT '创建时间',
+  `updatetime` int(11) unsigned DEFAULT NULL COMMENT '更新时间',
+  `nexus_user` varchar(11) NOT NULL COMMENT '产生分成的关联分销商',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=gbk;
+) ENGINE=MyISAM AUTO_INCREMENT=342 DEFAULT CHARSET=gbk;
 
 -- ----------------------------
 -- Table structure for st_wechat
@@ -502,7 +509,7 @@ CREATE TABLE `st_wechat` (
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   `recommend` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员 4:分公司邀请分销商 5:分销商邀请分销商}',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=357 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=547 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_work
