@@ -146,23 +146,21 @@ class ShopController extends CommonController
     public function goodsAction()
     {
         $data = I('post.');
-
+        dump($_POST);die;
         // 确认分类
-        if($data['thirdcate'] != '--'){
-            $goods['cid'] = $data['thirdcate'];
-        } elseif ($data['seccate'] != '--'){
-            $goods['cid'] = $data['seccate'];
-        } elseif ($data['firscate'] != '--'){
-            $goods['cid'] = $data['firscate'];
-        } else {
-            E('请选择分类',205);
-        }
+        // if($data['thirdcate'] != '--'){
+        //     $goods['cid'] = $data['thirdcate'];
+        // } elseif ($data['seccate'] != '--'){
+        //     $goods['cid'] = $data['seccate'];
+        // } elseif ($data['firscate'] != '--'){
+        //     $goods['cid'] = $data['firscate'];
+        // } else {
+        //     E('请选择分类',205);
+        // }
 
         // 处理属性
         foreach ($data['attr'] as $key => $value) {
-            dump($value);
         }
-        dump($data);die;
     }
 
     // 根据pid获取分类
@@ -202,11 +200,11 @@ class ShopController extends CommonController
     public function attrAdd()
     {
         try {
-            $attr = D('attr');
+            $attr = D('Attr');
             $data = I('post.');
-            // dump($data);die;
-            if(!$attr->create()) E($attr->getError(),204);
-
+            if(!$attr->create()) {
+                E($attr->getError(),204);
+            }
             $res = $attr->add();
             if($res){
                 E('添加完成',$res);
