@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+ 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+  	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<title>商品详情</title>
+</head>
+<style>
+	body{
+		font-size: 0.7rem;
+	}
+	.shopdetailContain{
+		padding-bottom: 2rem;
+	}
+	/*商品图片*/
+	.detailTop{
+		border-bottom:10px solid #E5E5E5;
+		padding-bottom: 4rem;
+	}
+	.detailTop>.detailpic{
+		box-sizing: border-box;
+	    width: 100%;
+	    padding: 1.5rem 4.5rem;
+	    text-align: center;
+	}
+	.detailTop>.detailpic>img{
+		width: 100%;
+	}
+	/*商品说明*/
+	.detailTop>.detailTxt{
+		width: 100%;
+	}
+	.detailTop>.detailTxt>span{
+		display: inline-block;
+		width: 90%;
+		padding: 0.2rem 5%;
+		color: #FFF;
+		background: #F04B7E;
+	}
+	.detailTop>.detailTxt>span>b{
+		float: left;
+	}
+	.detailTop>.detailTxt>span>em{
+		padding: 0.2rem 0;
+		float: right;
+		font-size: 0.6rem;
+	}
+	.detailTop>.detailTxt>p{
+		padding: 0.2rem 5%;
+
+	}
+	.detailTop>.detailTxt>em{
+		padding: 0.2rem 5%;
+		font-size: 0.5rem;
+		color: #F04B7E;
+	}
+	/*商品选择，数量，邮费*/
+	.detailist{
+		padding: 0.5rem 5% 0;
+	}
+	.detailist>p{
+		padding:0.4rem 0;
+		border-bottom:1px solid #E5E5E5;
+	}
+	.detailist>p>span{
+		font-size: 0.6rem;
+	}
+	.detailist>p>span:last-child{
+		float: right;
+	}
+	.detailist>p>span:last-child>em{
+		border:0.013333rem solid #000;
+		font-size: 0.4rem;
+		padding: 0.05rem 0.1rem;
+		margin:0 0.1rem;
+	}
+	/*评论内容*/
+	.detailContain{
+		padding: 2rem 0;
+	}
+	/*个人评论标题*/
+	.detailtitle{
+		position: relative;
+		text-align: center;
+	}
+	.detailtitle>p>b{
+		padding:0 0.5rem;
+	}
+	
+	.detailContain>p{
+		padding: 2.5rem 5% 0.4rem;
+		font-size: 0.4rem;
+
+	}
+	.detailContain>p>i{
+		font-size: 0.8rem;
+		padding-right: 0.05rem;
+		color:#FBC91D;
+	}
+	.detailItem>p>span{
+		font-size: 0.6rem;
+	}
+	/*个人评论内容*/
+	.detailItem{
+		padding:0.6rem 5%;
+		border-bottom:6px solid #E5E5E5;
+	}
+	.detailItem>p{
+		padding: 0.2rem 5% 0.2rem 0;
+	    font-size: 0.4rem;
+	    line-height: 1.0rem;
+
+	}
+	.detailItem>p>em{
+		display: inline-block;
+		height: 1.5rem;
+		width: 1.5rem;
+		border-radius: 1.5rem;
+		border:1px solid #ccc;
+		margin-right: 0.3rem;
+	}
+	.detailItem>p>em>img{
+		width: 100%;
+	}
+	.detailItem>p>b{
+		font-size: 0.6rem;
+	}
+	.detailItem>span{
+		margin-right: 0.8rem;
+		display: inline-block;
+		width: 20%;
+	}
+	.detailItem>span>img{
+		width: 100%;
+		padding: 0.2rem 0.15rem;
+		border:1px solid #ccc;
+		border-radius: 0.2rem;
+	}
+	/*查看更多*/
+	.detailContain>.pinglunshow{
+		position: relative;
+	    top: 0rem;
+	    right: 0;
+	    padding: 0.8rem 0 5%;
+	    color: #F04B7E;
+	}
+	
+	.pinglunshow>p{
+		display: block;
+	    height: 2rem;
+	    width: 25%;
+	    font-size: 0.3rem;
+	    float: right;
+	}
+	.pinglunshow>p>span{
+		padding-left: 5%;
+	}
+	/*底部*/
+	.shopdetailBott{
+		width: 100%;
+		position: fixed;
+		bottom: 0 ;
+		padding-top:0.6rem;
+		background: #FFF;
+	}
+	.shopdetailBott>span{
+		border-top:1px solid #E5E5E5;
+		display: inline-block;
+		width: 60%;
+		box-sizing: border-box;
+		padding:0 5% ;
+
+	}
+	.shopdetailBott>span>i{
+		font-size: 1.3rem;
+    	padding-right: 2rem;
+    	color: #F04B7E;
+	}
+	.shopdetailBott>input{
+		padding: 0.5rem;
+		background: #F04B7E;
+		border:none;
+		width: 40%;
+		color:#fff;
+
+	}
+
+
+
+	
+</style>
+<body>
+	<div class="shopdetailContain">
+		<div class="detailTop">
+			<!-- /*商品图片*/ -->
+			<div class="detailpic">
+				<img src="__PUBLIC__/Home/images/comm_02.png" alt="">
+			</div>
+			<!-- /*商品说明*/ -->
+			<div class="detailTxt">
+				<span><b>￥5699.00</b><em>已售： 210</em></span>
+				<p>尼康（Nikon）D3300 单反套机（AF-P DX 18- 55 mm/3.5-5.6G VR 防抖镜头</p>
+				<em>送包、滤镜、存储卡、读卡器、清洁套装</em>
+			</div>
+			<!-- /*商品选择，数量，邮费*/ -->
+			<div class="detailist">
+				<p><span>选择</span><span class="iconfont icon-dayuhao-copy-copy"></span></p>
+				<p><span>数量</span><span>-<em>1</em>+</span></p>
+				<p><span>邮费</span><span><b>￥8.88</b></span></p>
+			</div>
+		</div>
+		<div class="detailContain">
+			<!-- 个人评论标题 -->
+			<div class="detailtitle"><p>——<b>商品口碑</b>——</p></div>
+			<p><i class="iconfont icon-jingdiananli_wujiaoxing_shoucanghou"></i><span>总评：4.9</span></p>
+			<!-- 	/*个人评论内容*/ -->
+			<div class="detailItemall">
+				<div class="detailItem">
+					<p><em><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></em><b>CICI</b></p>
+					<p>宝贝好喜欢好喜欢</p>
+					<span><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></span>
+					<span><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></span>
+					<span><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></span>
+				</div>
+				<div class="detailItem">
+					<p><em><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></em><b>CICI</b></p>
+					<p>宝贝好喜欢好喜欢</p>
+					<span><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></span>
+					<span><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></span>
+					<span><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></span>
+				</div>
+				<div class="detailItem">
+					<p><em><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></em><b>CICI</b></p>
+					<p>宝贝好喜欢好喜欢</p>
+				</div>
+				<!-- 隐藏的评论 -->
+			</div>
+			<div class="pinglunshow"><p>查看更多<span class="iconfont icon-shuangxiajiantou"></span></p></div>
+		</div>
+		<div class="shopdetailBott">
+			<span><i class="iconfont icon-icon--"></i><b>加入购物车</b></span><input type="submit" value="立即购买">
+		</div>	
+	</div>
+	<script>
+		// console.dir($('.detailItem').length);
+		// 只显示2条评论
+		var _length=$('.detailItem').length;
+		if (_length>2) {
+			$('.detailItem').css('display','none');
+			$('.detailItem:nth-child(1)').css('display','block');
+			$('.detailItem:nth-child(2)').css('display','block');
+		}
+		// 点击时评论显示或者隐藏
+		$('.pinglunshow>p>span').click(function(){
+			// console.dir($(this).attr('class'));
+			var _class=$(this).attr('class');
+			
+			if(_class=='iconfont icon-shuangxiajiantou'){
+
+				$('.detailItem').slideDown('slow');
+
+				$(this).removeClass('iconfont icon-shuangxiajiantou').addClass('iconfont icon-xiangshangjiantou');
+
+			}else{
+
+				$(this).removeClass('iconfont icon-xiangshangjiantou').addClass('iconfont icon-shuangxiajiantou');
+
+				$('.detailItem').css('display','none');
+
+				$('.detailItem:nth-child(1)').css('display','block');
+
+				$('.detailItem:nth-child(2)').css('display','block');
+				
+			}
+			
+
+		})
+	</script>
+	
+</body>
+</html>

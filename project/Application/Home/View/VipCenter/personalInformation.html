@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<style>
+		.container{
+			width:90%;
+			position: relative;
+			margin:0 auto;
+		}
+		.Information h3{
+			font-size: 0.75rem;
+			margin: 0.666667rem 0;
+			color: 373737;
+		}
+		.Information label {
+			display: block;
+			width: 100%;
+			height: 3rem;
+		}
+		.Information label i{
+			display: inline-block;
+		    width: 8%;
+		    font-size: 1.2rem;
+		    color: #307DBB;
+		    padding: 0.4rem 0 0;
+		    font-weight: 550;
+		}
+		.Information label div{
+			float: right;
+			width: 90%;
+			border-bottom: 1px solid #838383;
+			display: inline-block;
+		}
+		.Information label div span{
+			display: inline-block;
+		    width: 29%;
+		    text-align: right;
+		    line-height: 3vh;
+		    font-size: 0.72rem;
+		}
+		.Information label div input,.Information label div select{
+			background: #fff!important;
+			font-size: 0.72rem;
+		    width: 68%;
+		    border: none;
+		    height: 1.5rem;
+		    padding-left:0.2rem;
+		    margin-bottom: 0.1rem;
+		    color: #737373;
+		    appearance:none;
+			-moz-appearance:none;
+			-webkit-appearance:none;
+		}
+		.Information label div select{
+			appearance:none;
+		  -moz-appearance:none;
+		  -webkit-appearance:none;
+		}
+		select::-ms-expand { display: none; }
+		select::-webkit-expand { display: none; }
+		select::expand { display: none; }
+
+		.bandBtn{
+			width: 100%;
+			position: absolute;
+			/*bottom: 6rem;*/
+			border-radius: 0.106667rem;
+			padding:3.9rem 0 0;
+		}
+		.bandBtn input{
+			height: 1.5rem;
+			width: 100%;
+			text-align: center;
+			border-radius: 0.106667rem;
+			border:none;
+			margin:0 auto;
+			color: #fff;
+			padding: 0.2rem 0;
+			background: #2EB6AA;
+
+		}
+	</style>
+</head>
+<body>
+	<div class="container ">
+		<div class="Information">
+			<h3>个人信息</h3>
+			<label for="name" class="">
+				<i class="iconfont icon-wode1"></i>
+				<div >
+					<span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input id="name" type="text">
+				</div>
+			</label>
+			<label for="sex">
+				<i class="iconfont icon-weibiaoti-"></i>
+				<div >
+					<span>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span><select name="select" >
+    				<option value="选择品牌">男</option>
+					<option value="选择品牌1">女</option>
+   					</select><!--下拉选择-->
+				</div>
+			</label>
+			<label for="birth">
+				<i class="iconfont icon-shengridangao2-copy"></i>
+				<div >
+					<span>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</span><input id="birth" type="date"><!--日期插件-->
+				</div>
+			</label>
+			
+			<label for="tel">
+				<i class="iconfont icon-shouji2-copy"></i>
+				<div >
+					<span>手机号码：</span><input id="tel" type="text">
+				</div>
+			</label>
+			
+			<label for="addr">
+				<i class="iconfont icon-dizhi"></i>
+				<div >
+					<span>住&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：</span><input id="addr" type="text">
+				</div>
+			</label>
+		</div>
+		<div class="bandBtn">
+			<input type="buttom" value="保存" readonly="readonly">
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		$('#name').change( function() {
+		  	// 这里可以写些验证代码
+		  	var name = $(this).val();
+		  	if(name==name.match(/^[a-zA-Z\u4e00-\u9fa5]{2,30}$/u)){// 纯中文姓名支持支持 /^[\u4e00-\u9fa5]{2,30}$/u
+		  		console.dir('验证通过');
+		  	}else{
+		  		console.dir('请输入真实的姓名！');
+		  	}
+		});
+
+		$('#tel').change( function() {
+		  	// 这里可以写些验证代码
+		  	var phone = $(this).val();
+		  	var rephone = phone.match(/^1((((3[0-35-9])|([5|8][0-9])|(4[5|7|9])|66|(7[3|5-8])|(9[8|9]))\d)|(34[0-8]))\d{7}$/);
+		  	if(rephone){
+			  	if(phone==rephone[0]){
+			  		console.dir('验证通过');
+			  	}else{
+			  		console.dir('请输入正确的手机号码！');
+			  	}	
+		  	}else{
+		  		console.dir('请输入正确的手机号码！');
+		  	}
+
+		});
+
+		$('#addr').change( function() {
+		  	// 这里可以写些验证代码
+		  	var addr = $(this).val();
+		  	if(addr==addr.match(/^[\w\-\u4e00-\u9fa5]{6,255}$/u)){// 公司地址，不为空时验证，数字字母下划线横线中文 6-255位
+		  		console.dir('验证通过');
+		  	}else{
+		  		console.dir('地址格式不正确！');
+		  	}
+		});
+	</script>
+	
+</body>
+</html>                                                                                                                                                                                                                                                                      

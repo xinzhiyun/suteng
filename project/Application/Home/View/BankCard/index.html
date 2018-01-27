@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+  <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+  <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+  <script src="__PUBLIC__/Home/js/public.js"></script>
+  <style>
+    body{
+      font-size: 0.7rem;
+    }
+    .manageTop{
+      width: 90%;
+      margin:0.666667rem auto 0;
+    }
+    .manageTop .add{
+      height: 5.2rem;
+      margin-bottom: 0.533333rem;
+    }
+    .manageTop .add img{
+      width: 100%;
+      height: 100%;
+    }
+     .manageTop>.add>span{
+      line-height: 4rem;
+     }
+    /*底部*/
+    .manageFoot{
+      width: 90%;
+      padding: 0 5%;
+      height: 1.6rem;
+      line-height:1.6rem;
+      position: fixed;
+      bottom: 0;
+      border-top: 1px solid #F6F6F6;
+
+    }
+    .manageFoot>p>i{
+      color: #41BDB1;
+      padding-bottom:0.2rem;
+      padding-right: 0.6rem;
+      float: left;
+      font-size: 1.2rem;
+    }
+    .add>span{
+      line-height:2.4rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+  </style>
+  <script>
+     
+  </script>
+</head>
+<body>
+    <div class="manageCard">
+        <div class="manageTop">
+           <div class="add" i="1">
+             <img src="__PUBLIC__/Home/images/yhancard_01.png" alt="">
+           </div>
+           <div class="add" i="2">
+             <img src="__PUBLIC__/Home/images/yhancard_01.png" alt="">
+           </div>
+        </div>
+        <div class="manageFoot">
+          <p><i class="iconfont icon-tianjia"></i> 添加银行卡</p>
+        </div>
+    </div>
+    <script type="text/javascript">
+			// 调用滑动删除
+			slipDel('.add','i');
+			
+//			/**
+//			 * 移动删除函数
+//			 * @param {Object} 选择器
+//			 * @param {Object} 自定义属性，用于记录要删除内容ID值
+//			 */
+//			function slipDel(obj,i){
+//				$(obj).on("touchstart", function(e) {
+//				    // 判断默认行为是否可以被禁用
+//				    if (e.cancelable) {
+//				        // 判断默认行为是否已经被禁用
+//				        if (!e.defaultPrevented) {
+//				            //e.preventDefault();
+//				        }
+//				    }   
+//				    startX = e.originalEvent.changedTouches[0].pageX,
+//				    startY = e.originalEvent.changedTouches[0].pageY;
+//				});
+//				$(obj).on("touchend", function(e) {         
+//				    // 判断默认行为是否可以被禁用
+//				    if (e.cancelable) {
+//				        // 判断默认行为是否已经被禁用
+//				        if (!e.defaultPrevented) {
+//				            //e.preventDefault();
+//				        }
+//				    }               
+//				    moveEndX = e.originalEvent.changedTouches[0].pageX,
+//				    moveEndY = e.originalEvent.changedTouches[0].pageY,
+//				    X = moveEndX - startX,
+//				    Y = moveEndY - startY;
+//				    //console.dir(this)
+//				    $(this).parent().css({'position': 'relative','overflow': 'hidden'});
+//				    // 右滑
+//				    if ( X > 0 ) {
+//				        $(this).css({'position': 'relative','left':'0px'});
+//				        $(this).children("span").remove();
+//				    }
+//				    // 左滑
+//				    else if ( X < 0 ) {
+//				        $(this).css({'position': 'relative','left':'-2rem'});
+//				        $(this).append("<span onclick='del("+$(this).attr(i)+")' style='display: inline-block;width: 2rem;height: 100%;line-height: 4rem;position: absolute;right: -2rem;top:0;text-align: center;background: #D3520C;color:#fff;'>删除</span>");
+//				    }
+//				});
+//			}
+			
+			
+			function del(i){
+				alert(i);
+			}
+
+      // .addcardClass-all>p>i
+    </script>
+    
+</body>
+</html>

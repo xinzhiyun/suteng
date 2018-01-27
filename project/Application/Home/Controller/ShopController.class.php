@@ -16,25 +16,9 @@ class ShopController extends Controller
     }
     
     /**
-     * 分类管理
+     * 商品详情
      */
-    public function category()
-    {
-        $this->display();
-    }
-    
-    /**
-     * 商品管理
-     */
-    public function goods()
-    {
-        $this->display();
-    }
-    
-    /**
-     * 订单管理
-     */
-    public function orders()
+    public function shoppingdetail()
     {
         $this->display();
     }
