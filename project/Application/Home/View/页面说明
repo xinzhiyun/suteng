@@ -1,0 +1,74 @@
+页面说明：
+Address/
+	|--index				地址				{{:U(Home/Address/index)}}
+	|--newAddress			添加新地址			{{:U(Home/Address/newAddress)}}
+BankCard/	
+	|--index				银行卡管理首页		{{:U(Home/BankCard/index)}}
+	|--addmanageCard		去绑定银行卡		{{:U(Home/BankCard/addmanageCard)}}
+	|--addcardClass			选择银行卡类型		{{:U(Home/BankCard/addcardClass)}}
+	|--addcardBand			银行卡绑定			{{:U(Home/BankCard/addcardBand)}}
+	|--identifyingCode		银行卡绑定验证码	{{:U(Home/BankCard/identifyingCode)}}
+	|--bandOk				绑定成功			{{:U(Home/BankCard/bandOk)}}
+	|--bandNo				绑定失败			{{:U(Home/BankCard/bandNo)}}
+Comment/
+	|--index				发表评论			{{:U(Home/Comment/index)}}
+	|--commentsucceed		商品评论成功		{{:U(Home/Comment/commentsucceed)}}
+	|--saleServic			售后评分			{{:U(Home/Comment/saleServic)}}
+Device/
+	|--index				设备主页			{{:U(Home/Device/index)}}
+Index/
+	|--index				网站主页			{{:U(Home/Index/index)}}	
+	|--filledwater			水满				{{:U(Home/Index/filledwater)}}	
+	|--queshui				缺水				{{:U(Home/Index/queshui)}}	
+	|--overhaul				修检				{{:U(Home/Index/overhaul)}}	
+	|--makewater			制水				{{:U(Home/Index/makewater)}}	
+	|--chongxi				冲洗				{{:U(Home/Index/chongxi)}}	
+Invoice/
+	|--index 				开具发票			{{:U(Home/Invoice/index)}}	
+Login/
+	|--index 				分销商登录			{{:U(Home/Login/index)}}
+Mall/
+	|--chongzhi				充值				{{:U(Home/Mall/chongzhi)}}		
+	|--lvxin				滤芯				{{:U(Home/Mall/lvxin)}}	
+Order/
+	|--index 				订单首页			{{:U(Home/Order/index)}}	
+	|--paysuccBtn 			提交成功			{{:U(Home/Order/paysuccBtn)}}	
+	|--payfailed 			提交失败			{{:U(Home/Order/payfailed)}}
+	|--memberOrder 			会员订单			{{:U(Home/Order/memberOrder)}}	
+	|--nomemberOrder 		会员没有订单		{{:U(Home/Order/nomemberOrder)}}	
+	|--applicRefund 		退款商品			{{:U(Home/Order/applicRefund)}}	
+	|--choiceRefund 		选择退款商品		{{:U(Home/Order/choiceRefund)}}
+PaymentSystem/
+	|--payConfirm			确认支付			{{:U(Home/PaymentSystem/payConfirm)}}
+	|--paytosuccess			支付成功			{{:U(Home/PaymentSystem/paytosuccess)}}
+	|--paytofailed			支付失败			{{:U(Home/PaymentSystem/paytofailed)}}
+RegisteredVendor/
+	|--index 				分销商注册			{{:U(Home/RegisteredVendor/index)}}
+Repair/
+	|--index 				报修主页			{{:U(Home/Repair/index)}}
+Shop/
+	|--index 				商城首页			{{:U(Home/Shop/index)}}
+	|--shoppingdetail 		商品详情			{{:U(Home/Shop/shoppingdetail)}}
+	|--chooseMeal 			套餐选择			{{:U(Home/Shop/chooseMeal)}}
+ShoppingCart/
+	|--index 				购物车主页			{{:U(Home/ShoppingCart/index)}}
+Suggest/
+	|--index 				建议主页			{{:U(Home/Suggest/index)}}
+Switch/
+	|--index 				定时开关			{{:U(Home/Switch/index)}}
+	|--setTime 				设置时间			{{:U(Home/Switch/setTime)}}
+Vendors/
+	|--index 				分销商主页			{{:U(Home/Vendors/index)}}
+	|--identity 			身份证信息填写		{{:U(Home/Vendors/identity)}}
+	|--identity_refillings 	身份证信息重填写	{{:U(Home/Vendors/identity_refillings)}}
+	|--company 				公司信息填写		{{:U(Home/Vendors/company)}}
+	|--company_refillings 	公司信息重填写		{{:U(Home/Vendors/company_refillings)}}
+	|--protocol 			签协议				{{:U(Home/Vendors/protocol)}}
+VipCenter/
+	|--index 				会员中心首页		{{:U(Home/VipCenter/index)}}
+	|--vipCenter 			会员中心列表页		{{:U(Home/VipCenter/vipCenter)}}
+	|--minepack 			钱包				{{:U(Home/VipCenter/minepack)}}
+	|--reward 				我的金银币			{{:U(Home/VipCenter/reward)}}
+	|--noReward 			没有金银币			{{:U(Home/VipCenter/noReward)}}
+	|--mycomment 			商品评价			{{:U(Home/VipCenter/mycomment)}}
+	|--personalInformation 	个人信息			{{:U(Home/VipCenter/personalInformation)}}

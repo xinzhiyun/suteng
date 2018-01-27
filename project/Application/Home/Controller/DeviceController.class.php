@@ -4,7 +4,7 @@ namespace Home\Controller;
 class DeviceController extends CommonController
 {
     /**
-     * [index 所有设备选择]
+     * [index 设备主页]
      * @return [type] [description]
      */
     public function index()

@@ -290,7 +290,7 @@ class CommonController extends Controller
                 break;
             default:
                 // 未关注
-                $this->follow();
+                // $this->follow();
                 break;
         }
 
@@ -300,7 +300,7 @@ class CommonController extends Controller
     public function follow()
     {
         // 显示模板
-        //$this->display('follow');
+        $this->display('follow');
     }
 
     // 获取微信信息
