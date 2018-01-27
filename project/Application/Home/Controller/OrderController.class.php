@@ -31,25 +31,7 @@ class OrderController extends CommonController
     }
 
     /**
-     * [reward 商品评论成功]
-     * @return [type] [description]
-     */
-    public function commentsucceed()
-    {
-        $this->display();
-    }
-
-    /**
-     * [reward 发表评论]
-     * @return [type] [description]
-     */
-    public function comment()
-    {
-        $this->display();
-    }
-
-    /**
-     * [reward 邀请的下级会员没有消费]
+     * [reward 会员没有订单]
      * @return [type] [description]
      */
     public function nomemberOrder()
@@ -58,10 +40,28 @@ class OrderController extends CommonController
     }
 
     /**
-     * [reward 邀请的下级会员消费产生的金银币奖励]
+     * [reward 会员订单]
      * @return [type] [description]
      */
     public function memberOrder()
+    {
+        $this->display();
+    }
+
+    /**
+     * [applicRefund 退款商品]
+     * @return [type] [description]
+     */
+    public function applicRefund()
+    {
+        $this->display();
+    }
+
+    /**
+     * [choiceRefund 选择退款商品]
+     * @return [type] [description]
+     */
+    public function choiceRefund()
     {
         $this->display();
     }

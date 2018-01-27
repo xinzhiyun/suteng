@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_3mgodvjd6sp833di.css">
+
+	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+	<title>订单确认</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body {
+			font-size: .7rem;
+			overflow-x: hidden;
+		}
+		#content {
+			width: 100vw;
+			height: 100vh;
+			min-height: 100vh;
+			overflow-x: hidden;
+			overflow-y: scroll;
+			background: #f1f1f1;
+		}
+		#header {
+			width: 100vw;
+			display: flex;
+			position: relative;
+			font-size: .6rem;    
+			padding: 5% 4%;
+			background: #fff;
+		}
+		#hLeft {
+			width: 79vw;
+			display: inline-block;
+			letter-spacing: 1px;
+		}
+		#hRight {
+			width: 20vw;
+			display: inline-block;
+			text-align: center;
+    		align-self: center;    
+    		font-size: 1rem;
+		}
+		#header>div>p {
+			width: 100%;
+			display: inline-block;
+			position: relative;
+			margin: 2% 0;
+		}
+		#header>div>p>span:nth-of-type(1) {
+			float: left;
+		}
+		#header>div>p>span:nth-of-type(2) {
+			float: right;
+		}
+		#header>div>p>span:after {
+			content: '';
+			clear: both;
+		}
+		#main {
+			width: 100vw;
+			/*height: 83vh;*/
+			position: relative;
+			left: 0;
+			border-top: 1vh solid #f1f1f1;
+			background: #fff;
+		}
+
+		.goods {
+			width: 94vw;
+			display: flex;
+			position: relative;
+			padding: 3% 0;
+			left: 50%;
+			margin-left: -47%;
+			border-bottom: 1px solid #eee;
+			font-size: .6rem;
+		}
+
+		.goods>.img {
+			width: 36%;
+			margin: 2% 2% 2% 0;
+			border: 1px solid #ddd;
+			border-radius: 10px;
+		}	
+		.goods>.img>img {
+			width: 100%;
+			height: ;
+			display: inline-block;
+		}
+		.goods>.dec {
+			width: 64%;
+			padding: 2% 0 2% 2%;
+			background: #fff;
+		}
+		.goods>.dec>p {
+			font-size: .5rem;
+			margin: 4% 0;
+			color: #555;
+		}
+		.num {
+			width: 26%;
+			float: right;
+			white-space: nowrap;
+		}
+		.num:after {
+			content: '';
+			clear: both;
+		}
+		.price {
+			color: #FC3132;
+			font-size: .7rem;
+		}
+		.num>b, .num>input {
+			width: 33%;
+			text-align: center;
+		}
+		#calc {
+		    color: #333;
+			border-bottom: 1px solid #eee;
+		}
+		.ynticket{
+			margin: 4% 3% 5%;
+			height: 1.6rem;
+			line-height: 1.6rem;
+			width: 94%;
+		}
+		.ynticke>b{
+			display: inline-block;
+			float: left;
+		}
+		.ynticket>span{
+			display: inline-block;
+			font-size: 0.213333rem;
+			float: right;
+		}
+		.ynticket>span>i{
+			font-size:0.453333rem; 
+		}
+		#calc>p {
+		    margin: 4% 3%;
+		    font-size: .7rem;
+		    text-align: right;
+		}
+		#payWay {
+			width: 100vw;
+			height: 100vh;
+			min-height: 100vh;
+			display: none;
+			position: fixed;
+			left: 0;
+			bottom: -100vh;
+			z-index: 999;
+		}
+		#payWay>div {
+			position: relative;
+			background: #fff;
+		}
+		#payMask {
+			width: 100%;
+			height: 30vh;
+			background: rgba(0,0,0, 0) !important;
+		}
+		#choosePay {
+			height: 54vh;
+		}
+		#choosePay>div:not(:nth-of-type(1)) {
+			padding: 0 5%;
+		}
+		#payTitle {
+			position: relative;
+		    display: flex;
+		    justify-content: center;
+		    align-items: center;
+		    margin-bottom: 10px;
+			border-bottom: 1px solid #eee;
+		}
+		#closePay {
+			width: 14vmin;
+			height: 14vmin;
+			position: absolute;
+			left: 0;
+			border-radius: 14vmin;
+			line-height: 14vmin;
+			text-align: center;
+			font-size: .9rem;
+		}
+		#closePay:active {
+			background: #ddd;
+		}
+		#payTitle>p:nth-of-type(2) {
+			width: 100vw;
+			height: 8vh;
+		    display: flex;
+		    justify-content: center;
+		    align-items: center;
+		    flex-flow: column;
+		    padding: 2% 0;
+		    line-height: 32px;
+		    font-size: .8rem;
+    		font-weight: 600;
+			background: #fff;
+		}
+		#localPay {
+			border-bottom: 8px solid #eee;
+		}
+		#localPay>p, 
+		#othersPay>p {
+			padding: 3.8vw 0;
+			border-bottom: 1px solid #eee;
+		}
+		#localPay>p>label, 
+		#othersPay>p>label {
+			width: 84vw;
+			display: inline-block;
+		}
+
+		#localPay>p>input, 
+		#othersPay>p>input {
+			width: 6vw;
+    		height: 6vw;
+			position: relative;
+			float: right;
+			border-radius: 3px;
+			border: 1px solid #bdbdbd;
+			background: #fff;
+			appearance: none;
+			-webkit-appearance: none;
+		}
+
+		#localPay>p>input:after, 
+		#othersPay>p>input:after {
+			content: '';
+			clear: both;
+		}
+		#localPay>p>input:checked, 
+		#othersPay>p>input:checked {
+			border: none;
+			background: url('__PUBLIC__/Home/images/check.png') #56AAF1 no-repeat;
+			background-size: 76%;
+			background-position: center;
+		}
+		#payNow {
+			width: 100vw;
+			height: 16vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border-top: 1px solid #eee;
+			background: #f3f3f3 !important;
+		}
+		#payNow>div {
+			width: 80%;
+			padding: 2% 0;
+			text-align: center;
+			font-weight: 600;
+			color: #fff;
+			border-radius: 5px;
+			background: #2EB6AA;
+		}
+		#footerContain {
+			width: 100vw;
+			height: 8vh;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			border-top: 1px solid #e0e0e0;
+			font-size: .9rem;
+			background: #fff;
+		}
+
+		#footerContain>div, 
+		#footerContain>span {
+			height: 8vh;    
+			display: inline-block;
+		    line-height: 8vh;
+    		text-align: center;
+		    vertical-align: middle;
+		}
+		#footerContain>div {
+			width: 60%;
+		}
+		#footerContain>div>span {
+			color: #FC3132;
+		}
+		#footerContain>span {
+			width: 40%;
+			color: #fff;
+			background: #2EB6AA;
+		}
+		/*付款页面*/
+		.paystyle{
+			position:absolute;
+			top:0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			display: none;
+		}
+		.paystyleTop{
+			width: 100vw;
+			height: 10vh;
+			background: #000;
+			opacity: 0.3;
+		}
+		.payContain{
+			position: absolute;
+			bottom: 0;
+			height: 90vh;
+			width: 100vw;
+			/*opacity: 0.5;*/
+			z-index: 999;
+			background: #FFF;
+		}
+		.payContain>.paytop{
+			padding:0.5rem;
+    		border-bottom: 1px solid #E5E5E5;
+		}
+		.paytop>.paytopLeft>i{
+			float: left;
+    		padding: 0.6rem 0;
+    		margin-right: 4rem;
+    		font-size: 1.5rem;
+		}
+		/*支付图标的颜色*/
+		.icon-jinbi{
+			color:#FEDA02;
+		}
+		.icon-yingbi{
+			color:#97C3C0;
+			
+		}
+		.icon-z-weixin{
+			color:#149E23;
+			
+		}
+		.icon-zhifubao{
+			color:#22A8FF;
+			
+		}
+		.icon-yinhang-yinlian-{
+			color:#6BB5BB;
+			
+		}
+		.paytop>.paytopRight{
+			float: left;
+    		text-align: center;
+		}
+		.icon-kuang1{
+			color:#ccc;
+		}
+		.paytop>.paytopRight>h3{
+			font-size: 0.9rem;
+    		font-weight: 600;
+    		padding: 0 0 0.5rem;
+		}
+		.paytop>.paytopRight>p{
+			font-size: 0.9rem;
+			font-weight: 600;
+		}
+		.paymidd>h3{
+			padding:0.8rem;
+		}
+		.paymidd>ul>li{
+			padding:0.8rem 0.5rem;
+			border-bottom: 1px  solid #E5E5E5;
+		}
+		.paymidd>ul>li:nth-child(2){
+			border-bottom: 6px  solid #E5E5E5;
+			
+		}
+		.paymidd>ul>li>i{
+			padding-right:0.4rem; 
+			font-size: 1.2rem;
+		}
+		.paymidd>ul>li>span{
+			float: right;
+			font-size: 1rem;
+		}
+		.paymidd>ul>li>span.icon-xuanze{
+			color: #4280EC;
+
+		}
+		/*底部按钮*/
+		.payBott{
+			width: 86vw;
+			margin:5.5vh 7vw 0;
+		}
+		.payBott>input{
+			border:none;
+			padding:1vh  0;
+			width: 86vw;
+			background: #2EB6AA;
+			border-radius:0.2rem;
+			color: #FFF;
+		}
+		/*模态框样式*/
+	  .modelAll{width:100vw;height:100vh;font-family: "mircoft yahei";font-size:14px;font-size: 0.7rem;line-height: 1; display: none;}
+      .modal{position:absolute;left:0;right:0;z-index: -1;}
+      .fade{opacity:0;top:-10%;display:block;-webkit-transition:top 0.3s linear;-o-transition:top 0.3s linear;transition:top 0.3s linear;}
+      .fade.in{opacity:1;top:10%;}
+      .modal-body{width:80%;margin:5rem auto;background-color: #fff;border-radius:0.5rem;}
+      .modal-title{position:relative;height:40px;background-color: #D31145;line-height: 40px;border-bottom:1px solid #ccc;}
+      .modal-backup{position:absolute;top:0;left:0;right:0;width:100%;height:100%;background-color: rgba(0, 0, 0, 0.5);z-index: 1000;display:none;}
+      .modal-content>p{
+      	padding:0.8rem;
+      	text-align: center;
+      	border-bottom:1px solid #E5E5E5;
+      }
+      .modal-content>p>a{
+      	color:#64A0F2;
+      }
+      .modal-content>p>input{
+      	border:none;
+      	background: none;
+      	color:#64A0F2;
+      }
+      .modal-content>p:nth-child(4){
+      	border:none;
+      }
+	</style>
+</head>
+<body>
+	<div id="content">
+		<header id="header">
+			<div id="hLeft">
+				<p>
+					<span>收货人：Yoo</span>
+					<span>13612345678</span>
+				</p>
+				<p>
+					<span>收货地址：广州市番禺区大石街道五巷子7号</span>
+				</p>
+			</div>
+			<div id="hRight">></div>
+		</header>
+		<div id="main">
+			<div class="goods">
+				<div class="img"><img src="1.jpg" alt="正在加载..."></div>
+				<div class="dec">
+					<h5>RO膜</h5>
+					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+					<div>
+						<span class="price">￥120.00</span>
+						<span class="num">
+							<b>-&nbsp;</b>
+							<input class="number" type="text" value="0">
+							<b>+</b>
+						</span>
+					</div>
+					
+				</div>
+			</div>
+			<div class="goods">
+				<div class="img"><img src="1.jpg" alt="正在加载..."></div>
+				<div class="dec">
+					<h5>RO膜</h5>
+					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+					<div>
+						<span class="price">￥120.00</span>
+						<span class="num">
+							<b>-&nbsp;</b>
+							<input class="number" type="text" value="0">
+							<b>+</b>
+						</span>
+					</div>
+					
+				</div>
+			</div>
+
+			<div id="calc">
+				<p>邮费：￥8.00</p>
+				<p>共 2 件商品&emsp;合计：￥448.00</p>
+			</div>
+			<div class="ynticket">
+				<b>开具发票</b><span>不开发票<i class="iconfont icon-dayuhao-copy-copy"></i></span>
+			</div>
+		</div>
+		<!-- <div id="payWay">
+			<div id="payMask">
+			</div>
+			<div id="choosePay">
+				<div id="payTitle">
+					<p id="closePay">X</p>
+					<p>
+						<span>付款</span>
+						<span>￥200.00</span>
+					</p>
+				</div>
+				<div>选择付款方式</div>
+				<div id="localPay">
+					<p>
+						<label for="gold"><i></i>金币</label>
+						<input id="gold" type="checkbox" checked>
+					</p>
+					<p>
+						<label for="silver"><i></i>银币</label>
+						<input id="silver" type="checkbox">
+					</p>
+				</div>
+				<div id="othersPay">
+					<p>
+						<label for="weixin"><i></i>微信支付</label>
+						<input id="weixin" type="checkbox">
+					</p>
+					<p>
+						<label for="zhifubao"><i></i>支付宝支付</label>
+						<input id="zhifubao" type="checkbox">
+					</p>
+					<p>
+						<label for="yinlian"><i></i>银联</label>
+						<input id="yinlian" type="checkbox">
+					</p>
+				</div>
+			</div>
+			<div id="payNow">
+				<div>立即付款</div>
+			</div>			
+		</div> -->
+		<footer id="footerContain">
+			<div>实付金额：<span>￥240.00</span></div>
+			<span id="_pay">付款</span>
+		</footer>
+		<div class="paystyle">
+		<div class="paystyleTop"></div>
+		<div class="payContain">
+			<div class="paytop clearfix">
+				<div class="paytopLeft"><i class="iconfont icon-cuohao"></i></div>
+				<div class="paytopRight">
+					<h3>付款</h3>
+					<p>￥3620.00</p>
+				</div>	
+			</div>
+			<div class="paymidd">
+				<h3>选择支付方式</h3>
+				<ul class="clearfix">
+					<li><i class="iconfont icon-jinbi"></i>金币<span class="iconfont icon-xuanze"></span></li>
+					<li><i class="iconfont icon-yingbi"></i>银币<span class="iconfont icon-kuang1"></span></li>
+					<li><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-kuang1"></span></li>
+					<li><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
+					<li><i class="iconfont icon-yinhang-yinlian-"></i>银联<span class="iconfont icon-kuang1"></span></li>
+				</ul>
+			</div>
+			<div class="payBott">
+				<input class=" start" type="submit" value="立即支付">
+			</div>
+		</div>
+	</div>
+	
+	<!-- 模态框的内容 -->
+	<div class="modelAll">
+		<!-- <a class="start" href="javascript:;">点击</a> -->
+		<div class="modal fade">
+			<div class="modal-body">
+				<div class="modal-content">
+					<p>您咱没有绑定银行卡</p>
+					<p><a href="#">去绑定</a></p>
+					<p><a href="#">其他支付方式</a></p>
+					<p><input class="close" type="submit" value="取消"></p>
+				</div>
+			</div>
+		</div>
+		<div class="modal-backup"></div>
+	</div>
+	</div>
+	<script>
+
+		// 点击付款界面左上角" X "
+		$("#closePay").on("click",function(){
+			$("#header").css({filter: 'brightness(100%)'});
+			$("#main").css({filter: 'brightness(100%)'});
+			$("#footer").css({filter: 'brightness(100%)'});
+
+			$("#payWay").animate({bottom: '-100vh'}).css({display: 'none'});
+		})
+
+		// 点击付款按钮
+		// $("#_pay").on("click",function(){
+		// 	$("#header").css({filter: 'brightness(80%)'});
+		// 	$("#main").css({filter: 'brightness(80%)'});
+		// 	$("#footer").css({filter: 'brightness(80%)'});
+
+		// 	$("#payWay").css({display: 'block'}).animate({bottom: '0vh'});
+		// })
+		//支付方式
+		$('#footerContain').click(function(){
+			$('.paystyle').slideDown("slow");
+		})
+		// 付款方式的单选框
+		$('.paymidd>ul>li>span').click(function(){
+			$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+			$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+		})
+		// 付款方式页面隐藏
+		$('.paytop>.paytopLeft>i').click(function(){
+			$('.paystyle').slideUp("slow");
+		})
+		// 模态框的js
+		$(function(){
+	      	$(".start").on("click",function(){
+	       	   $(".modal").addClass("in");
+	       	   $(".modal").css('z-index','1001');
+	       	   $(".modelAll").css('display','block');
+	       	   $(".modal-backup").css('display','block');
+	       });
+	      	$(".close").on("click",function(){
+	       	   $(".modal").removeClass('in');
+	       	   $(".modal").css('z-index','-1');
+	       	   $(".modal-backup").fadeOut('slow');
+	       });
+      	})
+
+	</script>
+</body>
+</html>

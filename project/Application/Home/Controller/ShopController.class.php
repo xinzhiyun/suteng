@@ -22,4 +22,12 @@ class ShopController extends Controller
     {
         $this->display();
     }
+
+    /**
+     * 套餐选择
+     */
+    public function chooseMeal()
+    {
+        $this->display();
+    }
 }

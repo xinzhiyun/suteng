@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+ 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+  	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<title>购物车</title>
+</head>
+<style>
+	body{
+		font-size: 0.7rem;
+	}
+	.shpingcarAll{
+		padding-bottom: 5.6rem;
+	}
+	/*一个商品的样式*/
+	.itemCar{
+		padding: 1rem 3%;
+		border-bottom: 10px solid #E5E5E5;
+	}
+	/*删除按钮的样式*/
+	.itemCar>span{
+		line-height: 8rem;
+		border-bottom:10px solid #E5E5E5;
+	}
+	/*选中及图片*/
+	.itemcarLeft{
+		width: 40%;
+		float: left;
+	}
+	.itemcarLeft>.xuanzhong{
+		float: left;
+	    padding: 2.35rem 0.2rem;
+	    width: 15%;
+	    text-align: center;
+	    /*color: #56AAF1;*/
+	}
+	.itemcarLeft>.xuanzhong>.icon-kuang1{
+		color:#ccc;
+	}
+	.itemcarLeft>.xuanzhong>.icon-xuanze{
+	    color: #56AAF1;
+		
+	}
+	.itemcarLeft>.carpic{
+		border:1px solid #ccc;
+		border-radius: 0.2rem;
+		box-sizing: border-box;
+		padding:1.2rem 0.3rem;
+		width: 77%;
+		float: right;
+	}
+	.itemcarLeft>.carpic>img{
+		width: 100%;
+	}
+	/*文字说明及价格*/
+	.itemcarRight{
+		box-sizing: border-box;
+		padding-left:0.5rem; 
+		width: 60%;
+		float: right;
+	}
+	.itemcarRight>h3{
+		padding-bottom:0.2rem; 
+	}
+	.itemcarRight>.roTxt{
+		font-size: 0.6rem;
+   		line-height: 1rem;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    display: -webkit-box;
+	    -webkit-box-orient: vertical;
+	    box-orient: vertical;
+	    -webkit-line-clamp: 3;
+	    line-clamp: 3;
+	    color: #5A5A5A;
+	}
+	.itemcarRight>.roPrice{
+		display: inline-block;
+		padding: 0.7rem 0rem;
+		width: 100%;
+	}
+	.itemcarRight>.roPrice>b{
+		color: #F00;
+	}
+	.itemcarRight>.roPrice>span{
+		float: right;
+	}
+	.itemcarRight>.roPrice>span>em{
+		display: inline-block;
+	    border: 1px solid #ccc;
+	    padding: 0rem 0.2rem;
+	    margin: 0 0.2rem;
+	    font-size: 0.2rem;
+	}
+	 /*底部结算按钮*/
+	 .shoppingcarBott{
+	 	position: fixed;
+	    bottom: 0;
+	    width: 100%;
+	    background: #FFF;	   
+	 }
+	 .shoppingcarBott>p{
+	 	display: inline-block;
+	 	width: 70%;
+	 	float: left;
+	    box-sizing: border-box;
+	 	padding: 0.5rem 0rem 0.5rem 3%;
+	 }
+	.shoppingcarBott>p>i{
+		padding-right: 0.2rem;
+	}
+	.shoppingcarBott>p>i.icon-xuanze{
+		 color: #56AAF1;
+	}
+	.shoppingcarBott>p>span{
+		padding-left: 0.8rem;
+
+	}
+	.shoppingcarBott>p>span>b{
+		color: #F00;
+	}
+	.shoppingcarBott>input{
+	 	float: right;
+		height: 2rem; 
+	    width: 30%;
+	    border: none;
+	    background: #2EB6AA;
+	    color: #FFF;
+	 }
+	
+	   
+
+	
+</style>
+
+<body>
+	<div class="shpingcarAll">
+		<div class="itemCar clearfix" goodsnumber="1" >
+			<!-- /*选中及图片*/ -->
+			<div class="itemcarLeft clearfix ">
+				<div class="xuanzhong "><i class="iconfont icon-xuanze"></i></div>
+				<div class="carpic "><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
+			</div>
+			<!-- /*文字说明及价格*/ -->
+			<div class="itemcarRight">
+				<h3>RO膜</h3>
+				<p class="roTxt">RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等</p>
+				<p class="roPrice clearfix"><b>￥120.00</b><span>-<em>1</em>+</span></p>
+
+			</div>
+			
+		</div>
+		<div class="itemCar clearfix" goodsnumber="2" >
+			<!-- /*选中及图片*/ -->
+			<div class="itemcarLeft clearfix ">
+				<div class="xuanzhong "><i class="iconfont icon-kuang1"></i></div>
+				<div class="carpic "><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
+			</div>
+			<!-- /*文字说明及价格*/ -->
+			<div class="itemcarRight">
+				<h3>RO膜</h3>
+				<p class="roTxt">RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等</p>
+				<p class="roPrice clearfix"><b>￥120.00</b><span>-<em>1</em>+</span></p>
+
+			</div>
+			
+		</div>
+		<div class="itemCar clearfix" goodsnumber="2" >
+			<!-- /*选中及图片*/ -->
+			<div class="itemcarLeft clearfix ">
+				<div class="xuanzhong "><i class="iconfont icon-kuang1"></i></div>
+				<div class="carpic "><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
+			</div>
+			<!-- /*文字说明及价格*/ -->
+			<div class="itemcarRight">
+				<h3>RO膜</h3>
+				<p class="roTxt">RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等</p>
+				<p class="roPrice clearfix"><b>￥120.00</b><span>-<em>1</em>+</span></p>
+
+			</div>
+			
+		</div>
+		<div class="itemCar clearfix" goodsnumber="3" >
+			<!-- /*选中及图片*/ -->
+			<div class="itemcarLeft clearfix ">
+				<div class="xuanzhong "><i class="iconfont icon-kuang1"></i></div>
+				<div class="carpic "><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
+			</div>
+			<!-- /*文字说明及价格*/ -->
+			<div class="itemcarRight">
+				<h3>RO膜</h3>
+				<p class="roTxt">RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等</p>
+				<p class="roPrice clearfix"><b>￥120.00</b><span>-<em>1</em>+</span></p>
+
+			</div>
+			
+		</div>
+	</div>
+	<!-- 底部结算按钮 -->
+	<div class="shoppingcarBott">
+		<p><i class="iconfont icon-kuang1"></i>全选<span>合计：<b>￥120.00</b></span></p>
+		<input type="submit" value="结算">
+	</div>
+	
+	
+	<script>
+		// 删除商品
+       slipDel('.itemCar','goodsnumbe');
+
+       function del(i){
+				alert(1);
+			}
+
+		// 选中框
+		$('.itemcarLeft>.xuanzhong>i').click(function(){
+			var _class=$(this).attr('class');
+			
+			if(_class=='iconfont icon-xuanze'){
+				$(this).removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+				
+
+			}else{
+				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+			
+			}
+
+		})
+		// 全选事件
+		$('.shoppingcarBott>p>i').click(function(){
+			var _quanclass=$(this).attr('class');
+			
+			if(_quanclass=='iconfont icon-kuang1'){
+				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+				var _class=$('.itemcarLeft>.xuanzhong>i').attr('class');
+				$('.itemcarLeft>.xuanzhong>i').removeClass(_class).addClass('iconfont icon-xuanze');
+			}else{
+				$(this).removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+				var _class=$('.itemcarLeft>.xuanzhong>i').attr('class');
+				$('.itemcarLeft>.xuanzhong>i').removeClass(_class).addClass('iconfont icon-kuang1');
+
+			}
+			
+			
+		})
+
+    </script>
+    
+</body>
+</html>

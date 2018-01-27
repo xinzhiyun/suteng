@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+  <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+  <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+  <script src="__PUBLIC__/Home/js/public.js"></script>
+  <style>
+    body{
+      font-size: 0.7rem;
+      }
+      ._repair{
+        width: 100%;
+      }
+      .repairTop{
+        width: 90%;
+        padding:0.533333rem 5% 0.933333rem 5%;
+        border-bottom: 0.4rem solid #F3F3F3;
+      }
+      .repairTop ul li{
+        display: block;
+        width: 80%;
+        height: 1.6rem;
+        line-height: 1.6rem;
+        /*background: red;*/
+      }
+      .repairTop ul li span{
+        display: inline-block;
+        width: 30%;
+        font-size: 0.426667rem;
+      }
+      .repairTop ul li span:nth-child(4){
+        margin-top: 0.1rem;
+      }
+      .repairTop ul li p{
+        display: inline-block;
+        font-size: 0.4rem;
+        width: 65%;
+      }
+      .repairTop ul li p input,.repairTop ul li p select{
+        float: right;
+        width: 100%;
+        border-radius: 0.133333rem;
+        border:1px solid #ccc;
+        text-align: center;
+      }
+      .repairTop ul li p select{
+        padding:0.12rem;
+      }
+      .repairMidd{
+        padding:0.533333rem 5% 0.933333rem 5%;
+        border-bottom: 0.4rem solid #F3F3F3;
+
+      }
+      .repairMidd h3 {
+        font-size: 0.8rem;
+        line-height: 0.8rem;
+        margin-bottom: 0.266667rem;
+      }
+      .repairMidd textarea {
+        margin-top: 0.133333rem;
+        height:5.333333rem;
+        width: 100%;
+        display: inline-block;
+        resize: none;
+        overflow: hidden;
+        border: 1px dashed #CCC;
+      }
+      .repairMidd>p {
+        margin:0.933333rem 0 0.4rem;
+        color: #767676;
+        font-size: 0.533333rem;
+      }
+      .repairPic {
+        position: relative;
+      }
+      .repairPic i{
+        font-size: 5.0rem;
+        color: #68B1F1;
+      }
+      .repairPic>span{
+        font-size: 0.533333rem;
+          position: absolute;
+          left: 0.5rem;
+          bottom: 0.65rem;
+          color: #FFF;
+      }
+
+      .repairPic>input {
+          opacity: 0;
+          display: block;
+          width: 4.2rem;
+          height: 4.2rem;
+          position: absolute;
+          top: 0.6rem;
+          left: 0.4rem;
+          z-index: 99;
+      }
+      .repairFoot{
+        padding:0.533333rem 5% 0.933333rem 5%;
+      }
+      .repairFoot h3{
+        font-size: 0.8rem;
+        line-height: 0.8rem;
+        margin-bottom: 0.266667rem;
+      }
+      .repairFoot li{
+        border:1px solid #ccc;
+        border-radius: 0.2rem;
+        margin-top: 0.533333rem;
+      }
+      .repairFoot li label{
+        height: 0.933333rem;
+        line-height: 0.933333rem;
+      }
+
+      .repairFoot li label span{
+        display: inline-block;
+        width: 24%;
+        text-align: right;
+        font-size: 0.453333rem;
+      }
+      .repairFoot li label input{
+        width: 70%;
+        height: 0.933333rem;
+        line-height: 0.933333rem;
+        border:none;
+        font-size: 0.453333rem;
+      }
+      .repairFoot li p{
+        width: 24%;
+        text-align: right;
+        font-size: 0.453333rem;
+        letter-spacing: 0.053333rem;
+      }
+      .repairFoot li textarea{
+        font-size: 0.453333rem;
+        height:4.0rem;
+        width: 100%;
+        line-height: 0.8rem;
+        resize: none;
+        border: none;
+        margin-top: 0;
+        padding: 0.3rem;
+          box-sizing: border-box;
+      }
+      .repairBtn{
+        margin: 3.0rem auto 1.0rem;
+        width: 80%;
+      }
+      .repairBtn input{
+        width: 100%;
+        border:none;
+        background: #2EB6AA;
+        padding: 0.133333rem;
+        border-radius: 0.2rem;
+        color: #fff;
+      }
+
+  </style>
+</head>
+<body>
+  <div class="_repair">
+    <div class="repairContainer">
+      <div class="repairTop">
+        <ul>
+          
+          <li><span>设备型号：</span><p>0120563</p></li>
+          <li><span>设备型号：</span><p><input type="date"></p></li>
+          <li><span>设备型号：</span><p><input type="time"></p></li>
+           <li>
+            <span>设备型号：</span><p>
+            <select>
+                <option value ="volvo">请输入</option>
+                <option value ="saab">Saab</option>
+                <option value="opel">Opel</option>
+                <option value="audi">Audi</option>
+            </select></p>
+            </li>
+        </ul>
+      </div>
+      <div class="repairMidd">
+          <h3>请写下您对设备的宝贵建议<span>*</span></h3>
+          <textarea name="" id="" cols="30" rows="10"></textarea>
+          <p>上传截图</p>
+          <div class="repairPic">
+            <i class="iconfont icon-tianjia"></i>
+            <span>最多可上传3张</span>
+            <input class="" type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
+            </div>
+      </div>
+      <div class="repairFoot">
+        <ul>
+          <h3>联系方式</h3>
+          <li>
+            <label for="Lname">
+              <span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input id="Lname" type="text" value="Hello">
+            </label>
+          </li>
+           <li>
+            <label for="Ltel">
+              <span>电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：</span><input id="Ltel" type="text" value="12345678911">
+            </label>
+          </li>
+          <li>
+            <label for="Laddr">
+              <p>维修地址：</p>
+              <textarea name="" id="Laddr" cols="30" rows="10" placeholder=""></textarea>
+            </label>
+          </li>
+        </ul>
+      </div>
+      <div class="repairBtn">
+        <input type="submit" value="提交">
+      </div>
+
+        
+       
+    </div>
+  </div>
+  <script type="text/javascript">
+    $('#Lname').change( function() {
+        // 这里可以写些验证代码
+        var name = $(this).val();
+        if(name==name.match(/^[a-zA-Z\u4e00-\u9fa5]{2,30}$/u)){// 纯中文姓名支持支持 /^[\u4e00-\u9fa5]{2,30}$/u
+          console.dir('验证通过');
+        }else{
+          console.dir('请输入真实的姓名！');
+        }
+    });
+
+    $('#Ltel').change( function() {
+        // 这里可以写些验证代码
+        var phone = $(this).val();
+        var rephone = phone.match(/^1((((3[0-35-9])|([5|8][0-9])|(4[5|7|9])|66|(7[3|5-8])|(9[8|9]))\d)|(34[0-8]))\d{7}$/);
+        if(rephone){
+          if(phone==rephone[0]){
+            console.dir('验证通过');
+          }else{
+            console.dir('请输入正确的手机号码！');
+          } 
+        }else{
+          console.dir('请输入正确的手机号码！');
+        }
+
+    });
+
+    $('#Laddr').change( function() {
+        // 这里可以写些验证代码
+        var addr = $(this).val();
+        if(addr==addr.match(/^[\w\-\u4e00-\u9fa5]{6,255}$/u)){// 公司地址，不为空时验证，数字字母下划线横线中文 6-255位
+          console.dir('验证通过');
+        }else{
+          console.dir('地址格式不正确！');
+        }
+    });
+  </script>
+</body>
+</html>                                                                                                                                                                                                                                                                      

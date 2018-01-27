@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<style>
+		body{
+			font-size: 0.7rem;
+		}
+		/*一个item的样式*/
+		.appContain>.item{
+			height: 5.7rem;
+			border-bottom:1px solid #F3F3F3;
+			padding:0.666667rem 5%;
+		}
+		.item>.appLeft{
+			float: left;
+			width: 45%;
+			height: 100%;
+			line-height: 8rem;
+		}
+		.item>.appLeft>i{
+		    float: left;
+		    width: 16%;
+		    height: 100%;
+		    font-size: 0.9rem;
+		    line-height: 5rem;
+		    color: #ccc;
+		}
+		.item>.appLeft>i.icon-xuanze{
+			color: #56AAF1;
+		}
+		.item>.appLeft>span{
+			float: left;
+			width: 84%
+		}
+		.item>.appLeft>span>img{
+			width: 100%;
+			line-height: 8rem;
+		}
+		/*item右边*/
+		.item>.appRight{
+			width: 50%;
+			height: 100%;
+			float: right;
+		}
+		.appRight>h4{
+			line-height: 1.0rem;
+		}
+		.appRight>.changTxt{
+			height:58%;
+			font-size: 0.213333rem;
+			overflow:hidden;
+			color: #5A5A5A; 
+			text-overflow:ellipsis;
+			display:-webkit-box; 
+			-webkit-box-orient:vertical;
+			box-orient:vertical;
+			-webkit-line-clamp:4; 
+			line-clamp:4; 
+		}
+		.appRight>p{
+			display: block;
+			width: 100%;
+			line-height: 1.5rem;
+		}
+		.appRight>p>b{
+			color: #FC2A2B;
+		}
+		.appRight>p>span{
+			float: right;
+		}
+		/*底部按钮*/
+		.appFoot{
+			position: fixed;
+			bottom: 0;
+			height: 1.8rem;
+			width: 100%;
+			text-align: center;
+			line-height: 1.8rem;
+		}
+		.appFoot>span{
+			display: inline-block;
+			width: 50%;
+			height: 100%;
+		}
+		.appFoot>span>i{
+			margin-right: 0.2rem;
+		}
+		.appFoot>input{
+			width: 50%;
+			height: 100%;
+			border:none;
+			display: inline-block;
+			background: #2EB6AA;
+			color: #FFF;
+		}
+		.icon-xuanze{
+			color: #56AAF1;
+		}
+	</style>
+</head>
+<body>
+	<div class="appContain">
+		<div class="item clearfix">
+			<div class="appLeft">
+				<i class="iconfont icon-xuanze"></i>
+				<span><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></span>
+			</div>
+			<div class="appRight">
+				<h4>RO膜</h4>
+				 <div class="changTxt">
+					RO膜能够有效地去除水中钙、 镁、细菌、有机物、无机物、金 属离子和放射性物质属离子性物质属离子离子性物质属离子
+				</div>
+				<p><b>￥120.00</b><span>X1</span></p> 
+			</div>
+		</div>
+		<div class="item clearfix">
+			<div class="appLeft">
+				<i class="iconfont confont icon-kuang1"></i>
+				<span><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></span>
+			</div>
+			<div class="appRight">
+				<h4>RO膜</h4>
+				 <div class="changTxt">
+					RO膜能够有效地去除水中钙、 镁、细菌、有机物、无机物、金 属离子和放射性物质属离子性物质属离子离子性物质属离子
+				</div>
+				<p><b>￥120.00</b><span>X1</span></p> 
+			</div>
+		</div>
+	</div>
+	<div class="appFoot">
+		<span><i class="iconfont icon-kuang1"></i>全选</span><input type="submit" value="确定">
+	</div>
+
+	<script>
+		
+		// 选中框
+		$('.item>.appLeft>i').click(function(){
+			var _class=$(this).attr('class');
+			
+			if(_class=='iconfont icon-xuanze'){
+				$(this).removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+				
+
+			}else{
+				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+			
+			}
+
+		})
+		// 全选事件
+		$('.appFoot>span>i').click(function(){
+			var _quanclass=$(this).attr('class');
+			
+			if(_quanclass=='iconfont icon-kuang1'){
+				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+				var _class=$('.item>.appLeft>i').attr('class');
+				$('.item>.appLeft>i').removeClass(_class).addClass('iconfont icon-xuanze');
+			}else{
+				$(this).removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+				var _class=$('.item>.appLeft>i').attr('class');
+				$('.item>.appLeft>i').removeClass(_class).addClass('iconfont icon-kuang1');
+
+			}
+			
+		})
+	</script>
+</body>
+</html>                                                                                                                                                                                                                                                                      	 
