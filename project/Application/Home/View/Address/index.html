@@ -152,5 +152,195 @@
 		<input type="button" id="newAddress" value="+">
 		<label for="newAddress">添加新地址</label>
 	</footer>
+	<script>
+    $(function(){
+        // 存放打开的地址的序号，新地址
+        var addressIndex, newAddressIndex;
+
+		// 存放姓名，电话，地址
+		var uName, uPhone, uAddress;
+
+		// 点击文字默认地址
+		$("#content").on('click','.normalAddress',function(){
+			$(".normalAddress").each(function(index,key){
+				$(".normalAddress").eq(index).siblings(".setAddress").attr("checked", false);
+				// console.log(index, key);
+			})
+			$(this).siblings(".setAddress").attr("checked", true);
+			// console.log($(this).siblings(".setAddress"));
+			uName = $(this).parent().parent().siblings(".aTop").find(".uName").text();
+			uPhone = $(this).parent().parent().siblings(".aTop").find(".uPhone").text();
+			uAddress = $(this).parent().parent().siblings(".aTop").find(".uAddress").text();
+
+			console.log('姓名：'+uName, '\n电话：'+uPhone, '\n地址：'+uAddress);
+		})
+        // 点击按钮设置默认地址
+        $("#content").on('click','.setAddress',function(){
+            $(".normalAddress").each(function(index,key){
+                $(".setAddress").eq(index).attr("checked", false);
+                // console.log(index, key);
+            })
+            $(this).attr("checked", true);
+            // console.log($(this).siblings(".setAddress"));
+            uName = $(this).parent().parent().siblings(".aTop").find(".uName").text();
+            uPhone = $(this).parent().parent().siblings(".aTop").find(".uPhone").text();
+            uAddress = $(this).parent().parent().siblings(".aTop").find(".uAddress").text();
+
+            console.log('姓名：'+uName, '\n电话：'+uPhone, '\n地址：'+uAddress);
+        })
+
+		// 点击“新地址”
+		$("#footer").click(
+			function(){
+                // 显示编辑面板
+                $("#editAddressPanel").show();
+                $("#editAddressPanel>div").animate({marginTop: '0'});
+                $("#editAddressPanel>div").html(editPanel());
+
+                // 设定保存时的判断依据,来自新建,不是编辑
+                newAddressIndex = true;
+			}
+		);
+		// 点击‘X’关闭添加地址面板
+		$("#editAddressPanel").on("click",".closePannel", function(){
+            // 设定保存时的判断依据,来自编辑,不是新建
+            newAddressIndex = false;
+			$("#editAddressPanel>div").animate({marginTop: '50vh'});
+			var int = setInterval(function(){
+				parseInt($("#editAddressPanel>div").css("marginTop")) >= $(window).height()/2-20
+				? (
+					$("#editAddressPanel").hide(),
+					clearInterval(int)
+				)
+				: ''
+			},100);
+		})
+		// 点击‘保存’关闭添加地址面板
+		$("#editAddressPanel").on("click",".saveAddress",function(){
+            
+			$("#editAddressPanel>div").animate({marginTop: '50vh'});
+            editPanel()
+			var int = setInterval(function(){
+				parseInt($("#editAddressPanel>div").css("marginTop")) >= $(window).height()/2-20
+				? (
+					$("#editAddressPanel").hide(),
+					clearInterval(int)
+				)
+				: ''
+			},100);
+            // 获取当前面板的姓名，电话，地址
+            var editName = $(this).siblings("div").find(".editName").val();
+            var editPhone = $(this).siblings("div").find(".editPhone").val();
+            var editAddress = $(this).siblings("div").find(".editAddress").val();
+
+            // console.log(editName, uPhone, uAddress)
+            // 显示编辑面板
+            $("#editAddressPanel").show();
+            $("#editAddressPanel>div").animate({marginTop: '0'});
+            $("#editAddressPanel>div").html(editPanel(editName, editPhone, editAddress))
+
+            //addressIndex：判断打开的是哪个地址, 点击'编辑'的时候获取
+            // console.log(addressIndex, $("#address").eq(addressIndex))
+            // 将修改更新到页面相应位置
+            if(newAddressIndex || !editName || !editPhone || !editAddress){
+                // 点击新建按钮
+                console.log('gQwjiouoi')
+                
+                $("#content").append(addressHTML(editName, editPhone, editAddress));
+            }else{
+                // 点击编辑进来的
+                $(".address").eq(addressIndex).find(".uName").text(editName)
+                $(".address").eq(addressIndex).find(".uPhone").text(editPhone)
+                $(".address").eq(addressIndex).find(".uAddress").text(editAddress)
+            }
+
+            setTimeout(function(){
+                // 设定保存时的判断依据,来自编辑,不是新建
+                newAddressIndex = false;
+            },1000)
+			
+		})
+
+		// 编辑面板字符串模板函数
+		function editPanel(name, phone, address){
+			name = name || ''; 
+			phone = phone || ''; 
+			address = address || '';
+			
+			// 生成编辑内容
+			return '<p class="closePannel">X</p>'+
+				'<div>'+
+					'<label for="">姓名:</label>'+
+					'<input type="text" placeholder="请输入姓名" autofocus class="editName" value='+ name +'>'+
+				'</div>'+
+				'<div>'+
+					'<label for="">电话:</label>'+
+					'<input type="text" placeholder="请输入电话" class="editPhone" value='+ phone +'>'+
+				'</div>'+
+				'<div>'+
+					'<label for="">地址:</label>'+
+					'<textarea name="" id="" cols="30" rows="5" class="editAddress" placeholder="请输入地址" >'+ address +'</textarea>'+
+				'</div>'+
+				'<span class="saveAddress">保存</span>';
+		}
+        // 新建地址保存生成HTML字符串模板函数
+        function addressHTML(editName, editPhone, editAddress){ 
+
+            return '<div class="address">'+
+                '<div class="aTop">'+
+                    '<p>'+
+                        '<span class="uName">'+ editName +'</span>'+
+                        '<span class="uPhone">'+ editPhone +'</span>'+
+                    '</p>'+
+                    '<p class="uAddress">'+ editAddress +'</p>'+
+                '</div>'+
+                '<div class="aBottom">'+
+                    '<div>'+
+                        '<input class="setAddress" type="checkbox" />'+
+                        '<span class="normalAddress">默认地址</span>'+
+                        '<p>'+
+                            '<span class="edit" addressIndex="'+ $(".address").length +'">编辑</span>'+
+                            '<span class="del">删除</span>'+
+                        '</p>'+
+                    '</div>'+
+                '</div>'+
+            '</div>';
+        }
+		// 点击编辑按钮
+		$("#content").on("click",'.edit',function(){
+            // 设定保存时的判断依据,来自编辑,不是新建
+            newAddressIndex = false;
+            //判断打开的是哪个地址
+            addressIndex = parseInt($(this).attr("addressIndex"));
+            // 将编辑所在条目的姓名，电话，地址填写到面板相应位置
+			var uName = $(this).parent().parent().parent().siblings(".aTop").find(".uName").text();
+			var uPhone = $(this).parent().parent().parent().siblings(".aTop").find(".uPhone").text();
+			var uAddress = $(this).parent().parent().parent().siblings(".aTop").find(".uAddress").text();
+			// console.log(uName, uPhone, uAddress)
+            // 显示编辑面板
+            $("#editAddressPanel").show();
+            $("#editAddressPanel>div").animate({marginTop: '0'});
+			$("#editAddressPanel>div").html(editPanel(uName, uPhone, uAddress))
+		})
+
+        //点击删除按钮
+        $("#content").on('click','.del',function(){
+            console.log($(this).parents(".address"))
+            $(this).parents(".address").remove()
+        })
+
+        // 将数据输出为JSON对象数组格式
+        var arr = [];
+        for(var i=0; i<$(".address").length; i++){
+            arr.push({
+                uName: $(".address").eq(i).find(".uName").text(),
+                uPhone: $(".address").eq(i).find(".uPhone").text(),
+                uAddress: $(".address").eq(i).find(".uAddress").text()
+            })
+        }
+        console.log(arr);
+       
+    })
+	</script>
 </body>
 </html>

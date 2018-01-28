@@ -124,12 +124,14 @@
 		#calc {
 		    color: #333;
 			border-bottom: 1px solid #eee;
+			background: #fff;
 		}
 		.ynticket{
-			margin: 4% 3% 5%;
-			height: 1.6rem;
+			padding: 4% 3% 5%;
+			/*height: 1.6rem;*/
 			line-height: 1.6rem;
-			width: 94%;
+			width: 100%;
+			background: #fff;
 		}
 		.ynticke>b{
 			display: inline-block;
@@ -144,7 +146,7 @@
 			font-size:0.453333rem; 
 		}
 		#calc>p {
-		    margin: 4% 3%;
+		    padding: 4% 3%;
 		    font-size: .7rem;
 		    text-align: right;
 		}
@@ -274,7 +276,7 @@
 			bottom: 0;
 			left: 0;
 			border-top: 1px solid #e0e0e0;
-			font-size: .9rem;
+			font-size: .8rem;
 			background: #fff;
 		}
 
@@ -444,46 +446,26 @@
 			<div id="hRight">></div>
 		</header>
 		<div id="main">
-			<div class="goods">
+			<!-- <div class="goods">
 				<div class="img"><img src="1.jpg" alt="正在加载..."></div>
 				<div class="dec">
 					<h5>RO膜</h5>
 					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
 					<div>
 						<span class="price">￥120.00</span>
-						<span class="num">
-							<b>-&nbsp;</b>
-							<input class="number" type="text" value="0">
-							<b>+</b>
-						</span>
+						<span class="num">X&nbsp;<b>2</b></span>
 					</div>
 					
 				</div>
-			</div>
-			<div class="goods">
-				<div class="img"><img src="1.jpg" alt="正在加载..."></div>
-				<div class="dec">
-					<h5>RO膜</h5>
-					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
-					<div>
-						<span class="price">￥120.00</span>
-						<span class="num">
-							<b>-&nbsp;</b>
-							<input class="number" type="text" value="0">
-							<b>+</b>
-						</span>
-					</div>
-					
-				</div>
-			</div>
+			</div> -->
+		</div>
 
-			<div id="calc">
-				<p>邮费：￥8.00</p>
-				<p>共 2 件商品&emsp;合计：￥448.00</p>
-			</div>
-			<div class="ynticket">
-				<b>开具发票</b><span>不开发票<i class="iconfont icon-dayuhao-copy-copy"></i></span>
-			</div>
+		<div id="calc">
+			<p>邮费：￥8.00</p>
+			<p>共 <b class="numAll">0</b> 件商品&emsp;合计：<b class="priceAll">0</b></p>
+		</div>
+		<div class="ynticket">
+			<b>开具发票</b><span>不开发票<i class="iconfont icon-dayuhao-copy-copy"></i></span>
 		</div>
 		<!-- <div id="payWay">
 			<div id="payMask">
@@ -527,7 +509,7 @@
 			</div>			
 		</div> -->
 		<footer id="footerContain">
-			<div>实付金额：<span>￥240.00</span></div>
+			<div>实付金额：<span>240.00</span></div>
 			<span id="_pay">付款</span>
 		</footer>
 		<div class="paystyle">
@@ -537,7 +519,7 @@
 				<div class="paytopLeft"><i class="iconfont icon-cuohao"></i></div>
 				<div class="paytopRight">
 					<h3>付款</h3>
-					<p>￥3620.00</p>
+					<p>3620.00</p>
 				</div>	
 			</div>
 			<div class="paymidd">
@@ -572,53 +554,95 @@
 		<div class="modal-backup"></div>
 	</div>
 	</div>
+	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script>
-
-		// 点击付款界面左上角" X "
-		$("#closePay").on("click",function(){
-			$("#header").css({filter: 'brightness(100%)'});
-			$("#main").css({filter: 'brightness(100%)'});
-			$("#footer").css({filter: 'brightness(100%)'});
-
-			$("#payWay").animate({bottom: '-100vh'}).css({display: 'none'});
-		})
-
-		// 点击付款按钮
-		// $("#_pay").on("click",function(){
-		// 	$("#header").css({filter: 'brightness(80%)'});
-		// 	$("#main").css({filter: 'brightness(80%)'});
-		// 	$("#footer").css({filter: 'brightness(80%)'});
-
-		// 	$("#payWay").css({display: 'block'}).animate({bottom: '0vh'});
-		// })
-		//支付方式
-		$('#footerContain').click(function(){
-			$('.paystyle').slideDown("slow");
-		})
-		// 付款方式的单选框
-		$('.paymidd>ul>li>span').click(function(){
-			$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-			$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
-		})
-		// 付款方式页面隐藏
-		$('.paytop>.paytopLeft>i').click(function(){
-			$('.paystyle').slideUp("slow");
-		})
-		// 模态框的js
 		$(function(){
-	      	$(".start").on("click",function(){
-	       	   $(".modal").addClass("in");
-	       	   $(".modal").css('z-index','1001');
-	       	   $(".modelAll").css('display','block');
-	       	   $(".modal-backup").css('display','block');
-	       });
-	      	$(".close").on("click",function(){
-	       	   $(".modal").removeClass('in');
-	       	   $(".modal").css('z-index','-1');
-	       	   $(".modal-backup").fadeOut('slow');
-	       });
-      	})
+			/*
+				订单遍历
+			 */
+			// 从本地sessionStorage中获取订单数据(从滤芯购买传来)
+			var goodsData = JSON.parse(sessionStorage.getItem("goodsData"));
+			// console.log(goodsData);
+			var goodsHTML = '';	//存放需要支付的滤芯商品信息
+			var numAll = 0;		//存放滤芯订单的总数量
+			var priceAll = 0;	//存放滤芯订单的总价格
 
+			// 遍历需要支付的滤芯商品信息
+			for(var i=0; i<goodsData.length; i++){
+				goodsHTML += '<div class="goods">'+
+					'<div class="img"><img src="'+ goodsData[i].picturepath +'" alt="正在加载..."></div>'+
+					'<div class="dec">'+
+						'<h5>'+ goodsData[i].filtername +'</h5>'+
+						'<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>'+
+						'<div>'+
+							'<span class="price">'+ goodsData[i].price +'</span>'+
+							'<span class="num">X&nbsp;<b>'+ goodsData[i].num +'</b></span>'+
+						'</div>'+
+					'</div>'+
+				'</div>';
+				// 统计数量和价格
+				numAll += parseInt(goodsData[i].num);
+				priceAll += parseInt(goodsData[i].priceAll);
+			}
+			$("#main").append(goodsHTML);	//滤芯订单的信息
+			$(".numAll").text(numAll);		//滤芯订单的总数量
+			$(".priceAll").text('￥'+priceAll);	//滤芯订单的总价格
+			$("#footerContain>div>span").text('￥'+priceAll);	//滤芯订单的总价格
+			$(".paytopRight>p").text('￥'+priceAll);	//滤芯订单的总价格
+
+			/******** 订单遍历--结束--	**********/
+			/*
+				付款过程--
+			 */
+			// 点击付款界面左上角" X "
+			$("#closePay").on("click",function(){
+				$("#header").css({filter: 'brightness(100%)'});
+				$("#main").css({filter: 'brightness(100%)'});
+				$("#footer").css({filter: 'brightness(100%)'});
+
+				$("#payWay").animate({bottom: '-100vh'}).css({display: 'none'});
+			})
+
+			// 点击付款按钮
+			// $("#_pay").on("click",function(){
+			// 	$("#header").css({filter: 'brightness(80%)'});
+			// 	$("#main").css({filter: 'brightness(80%)'});
+			// 	$("#footer").css({filter: 'brightness(80%)'});
+
+			// 	$("#payWay").css({display: 'block'}).animate({bottom: '0vh'});
+			// })
+			//支付方式
+			$('#footerContain').click(function(){
+				$('.paystyle').slideDown("slow");
+			})
+			// 付款方式的单选框
+			$('.paymidd>ul>li>span').click(function(){
+				$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+			})
+			// 付款方式页面隐藏
+			$('.paytop>.paytopLeft>i').click(function(){
+				$('.paystyle').slideUp("slow");
+			})
+			// 模态框的js
+			$(function(){
+		      	$(".start").on("click",function(){
+		       	   $(".modal").addClass("in");
+		       	   $(".modal").css('z-index','1001');
+		       	   $(".modelAll").css('display','block');
+		       	   $(".modal-backup").css('display','block');
+		       });
+		      	$(".close").on("click",function(){
+		       	   $(".modal").removeClass('in');
+		       	   $(".modal").css('z-index','-1');
+		       	   $(".modal-backup").fadeOut('slow');
+		       });
+	      	})
+
+			/******** 付款过程--结束--	**********/
+
+		})
+		
 	</script>
 </body>
 </html>

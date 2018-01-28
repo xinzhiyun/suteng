@@ -9,164 +9,214 @@
 	<title>滤芯</title>
 	<style>
 		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
-		body {
-			overflow-x: hidden;
-		}
-		#content {
-			width: 300vw;
-			height: 84vh;
-			position: relative;
-			top: 8vh;
-			left: -200vw;
-			margin-bottom: 8vh;
-			background: #f3f3f3;
-		}
-		#header, #footer {
-			width: 100vw;
-			height: 8vh;
-			display: flex;
-			justify-content: space-around;
-			align-items: center;
-			position: fixed;
-			font-size: .9rem;
-			background: #fff;
-			z-index: 999;
-		}
-		#header {
-			top: 0;
-			left: 0;
-			border-bottom: 1vh solid #ddd;
-		}
-		#header>span {
-			width: 33.33%;
-			height: 8vh;
-		    line-height: 8vh;
-    		text-align: center;
-		    vertical-align: middle;
-		}
-		/*滤芯详情，滤芯复位，滤芯购买*/
-		#lvxinDetail,
-		#lvxinReset,
-		#lvxinBuy {
-			width: 100vw;
-			height: 84vh;
-			display: inline-block;
-			position: absolute;
-			top: 0;
-			background: #fff;
-		}
-		#lvxinReset {
-		 	left: 100vw;
-		 }
-		#lvxinBuy{
-		 	left: 200vw;
-		}
-		/*顶栏下划线，移动位置改这里*/
-		#line {
-			width: 33.33vw;
-			height: 1vh;
-			display: flex;
-			justify-content: center;
-			position: absolute;
-			left: 0;
-			bottom: 0vh;
-			margin-bottom: -1vh;
-			margin-left: 66%;
-			text-align: center;
-			transition: .5s ease;
-		}
-		#line>span {
-			width: 50%;
-			height: 100%;
-			display: block;
-		    position: relative;
-		    top: 0;
-			border-radius: 20px;
-			background: #76BAF3;
-		}
-		/*商品*/
-		.goods {
-			width: 94vw;
-			display: flex;
-			position: relative;
-			padding: 3% 0;
-			left: 50%;
-			margin-left: -47%;
-			border-bottom: 1px solid #eee;
-			font-size: .6rem;
-		}
+            margin: 0;
+            padding: 0;
+            -webkit-box-sizing: border-box;
+                    box-sizing: border-box;
+        }
+        body {
+            overflow-x: hidden;
+        }
+        #content {
+            width: 300vw;
+            height: 84vh;
+            position: relative;
+            margin-top: 8vh;
+            left: -200vw;
+            margin-bottom: 8vh;
+            background: #f3f3f3;
+            overflow: scroll;
+        }
+        #header, #footer {
+            width: 100vw;
+            height: 8vh;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-pack: distribute;
+                justify-content: space-around;
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
+            position: fixed;
+            font-size: .8rem;
+            background: #fff;
+            z-index: 999;
+        }
+        #header {
+            top: 0;
+            left: 0;
+            border-bottom: 1vh solid #ddd;
+        }
+        #header>span {
+            width: 33.33%;
+            height: 8vh;
+            line-height: 8vh;
+            text-align: center;
+            vertical-align: middle;
+        }
+        /*滤芯详情，滤芯复位，滤芯购买*/
+        #lvxinDetail,
+        #lvxinReset,
+        #lvxinBuy {
+            width: 100vw;
+            /*height: 84vh;*/
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            background: #fff;
+        }
+        #lvxinReset {
+            left: 100vw;
+         }
+        #lvxinBuy{
+            left: 200vw;
+        }
+        /*顶栏下划线，移动位置改这里*/
+        #line {
+            width: 33.33vw;
+            height: 1vh;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+            position: absolute;
+            left: 0;
+            bottom: 0vh;
+            margin-bottom: -1vh;
+            margin-left: 66.66%;
+            text-align: center;
+            -webkit-transition: .2s ease;
+            transition: .2s ease;
+        }
+        #line>span {
+            width: 50%;
+            height: 100%;
+            display: block;
+            position: relative;
+            top: 0;
+            border-radius: 20px;
+            background: #76BAF3;
+        }
+        /*商品*/
+        .goods {
+            width: 94vw;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            position: relative;
+            padding: 3% 0;
+            left: 50%;
+            margin-left: -47%;
+            border-bottom: 1px solid #eee;
+            font-size: .6rem;
+        }
 
-		/*商品图片*/
-		.goods>.img {
-			width: 36%;
-			margin: 2% 2% 2% 0;
-			border: 1px solid #ddd;
-			border-radius: 10px;
-		}	
-		.goods>.img>img {
-			width: 100%;
-			height: ;
-			display: inline-block;
-		}
-		/*商品描述*/
-		.goods>.dec {
-			width: 64%;
-			padding: 2% 0 2% 2%;
-			background: #fff;
-		}
-		.goods>.dec>p {
-			font-size: .5rem;
-			margin: 4% 0;
-			color: #555;
-		}
+        /*商品图片*/
+        .goods>.img {
+            width: 36%;
+            margin: 2% 2% 2% 0;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }   
+        .goods>.img>img {
+            width: 100%;
+            height: ;
+            display: inline-block;
+        }
+        /*商品描述*/
+        .goods>.dec {
+            width: 64%;
+            padding: 2% 0 2% 2%;
+            background: #fff;
+        }
+        /*价格和数量*/
+        .dec>div {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: justify;
+                -ms-flex-pack: justify;
+                    justify-content: space-between;
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
+        }
+        .goods>.dec>p {
+            font-size: .5rem;
+            margin: 4% 0;
+            color: #555;
+        }
 
-		/*商品数量*/
-		.num {
-			width: 26%;
-			float: right;
-			white-space: nowrap;
-		}
-		.num:after {
-			content: '';
-			clear: both;
-		}
+        /*商品数量*/
+        .num {
+            width: 35%;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+            -webkit-box-align: stretch;
+                -ms-flex-align: stretch;
+                    align-items: stretch;
+        }
 
-		/*商品价格*/
-		.price {
-			color: #FC3132;
-			font-size: .7rem;
-		}
-		.num>b, .num>input {
-			width: 33%;
-			text-align: center;
-		}
-		#footer {
-			bottom: 0;
-			left: 0;
-			border-top: 1px solid #e0e0e0;
-		}
-		#footer>div, #footer>span {
-			height: 8vh;    
-			display: inline-block;
-		    line-height: 8vh;
-    		text-align: center;
-		    vertical-align: middle;
-		}
-		#footer>div {
-			width: 60%;
-		}
-		#footer>div>span {
-			color: #FC3132;
-		}
-		#footer>span {
-			width: 40%;
-			color: #fff;
-			background: #2EB6AA;
-		}
+        /*商品价格*/
+        .price {
+            color: #FC3132;
+            font-size: .7rem;
+        }
+        .num>input {
+            width: 33%;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
+            text-align: center;
+            font-size: 1rem;
+            border: none;
+            -webkit-appearance: none;
+            border-radius: 4px;
+        }
+        .num>.number {
+            width: 33%;
+            margin: 0 4px;
+            text-align: center;
+            border-radius: 4px;
+            border: 1px solid #a4a4a4;
+            font-size: .8rem;
+        }
+        #footer {
+            bottom: 0;
+            left: 0;
+            border-top: 1px solid #e0e0e0;
+        }
+        #footer>div, #footer>span {
+            height: 8vh;    
+            display: inline-block;
+            line-height: 8vh;
+            text-align: center;
+            vertical-align: middle;
+        }
+        #footer>div {
+            width: 60%;
+        }
+        #footer>div>span {
+            color: #FC3132;
+        }
+        #footer>span {
+            width: 40%;
+            color: #fff;
+            background: #2EB6AA;
+        }
 	</style>
 </head>
 <body>
@@ -178,9 +228,9 @@
 	</header>
 	<div id="content">
 		<!-- 滤芯详情 -->
-		<div id="lvxinDetail"></div>
+		<div id="lvxinDetail">滤芯详情</div>
 		<!-- 滤芯复位 -->
-		<div id="lvxinReset"></div>
+		<div id="lvxinReset">滤芯复位</div>
 		<!-- 滤芯购买 -->
 		<div id="lvxinBuy">
 			<div class="goods">
@@ -189,11 +239,43 @@
 					<h5>RO膜</h5>
 					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
 					<div>
-						<span class="price">￥120.00</span>
+						<span class="price">￥<span>120.00</span></span>
 						<span class="num">
-							<b>-&nbsp;</b>
-							<input class="number" type="text" value="0">
-							<b>+</b>
+							<input type="button" value="-" class="minus">
+							<input class="number" type="number" value="0">
+							<input type="button" value="+" class="plus">
+						</span>
+					</div>
+					
+				</div>
+			</div>
+			<div class="goods">
+				<div class="img"><img src="2.jpg" alt="正在加载..."></div>
+				<div class="dec">
+					<h5>RO膜</h5>
+					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+					<div>
+						<span class="price">￥<span>120.00</span></span>
+						<span class="num">
+							<input type="button" value="-" class="minus">
+							<input class="number" type="number" value="0" min="0" max="9">
+							<input type="button" value="+" class="plus">
+						</span>
+					</div>
+					
+				</div>
+			</div>
+			<div class="goods">
+				<div class="img"><img src="3.jpg" alt="正在加载..."></div>
+				<div class="dec">
+					<h5>RO膜</h5>
+					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+					<div>
+						<span class="price">￥ <span>120.00</span></span>
+						<span class="num">
+							<input type="button" value="-" class="minus">
+							<input class="number" type="number" value="0" min="0" max="9">
+							<input type="button" value="+" class="plus">
 						</span>
 					</div>
 					
@@ -205,24 +287,43 @@
 					<h5>RO膜</h5>
 					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
 					<div>
-						<span class="price">￥120.00</span>
+						<span class="price">￥<span>120.00</span></span>
 						<span class="num">
-							<b>-&nbsp;</b>
-							<input class="number" type="text" value="0">
-							<b>+</b>
+							<input type="button" value="-" class="minus">
+							<input class="number" type="number" value="0" min="0" max="9">
+							<input type="button" value="+" class="plus">
 						</span>
 					</div>
 					
 				</div>
 			</div>
+			<div class="goods">
+				<div class="img"><img src="1.jpg" alt="正在加载..."></div>
+				<div class="dec">
+					<h5>RO膜</h5>
+					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+					<div>
+						<span class="price">￥<span>120.00</span></span>
+						<span class="num">
+							<input type="button" value="-" class="minus">
+							<input class="number" type="number" value="0" min="0" max="9">
+							<input type="button" value="+" class="plus">
+						</span>
+					</div>
+					
+				</div>
+			</div>
+
+			<footer id="footer">
+				<div>合计：<span>￥0</span></div>
+				<span id="pay">去结算</span>
+			</footer>
 		</div>
 	</div>
-	<footer id="footer">
-		<div>合计：<span>￥240.00</span></div>
-		<span>去结算</span>
-	</footer>
 	<script>
-		var lvxinArr = ['#lvxinDetail', '#lvxinReset' ,'#lvxinBuy']
+	$(function(){
+		var lvxinArr = ['#lvxinDetail', '#lvxinReset' ,'#lvxinBuy'];
+		var priceAll = 0;	//合计价格
 		// 点击顶部tab切换内容
 		$(".tabTitle").click(function(){
 
@@ -244,6 +345,90 @@
 			$("#content").animate({left: '-'+$(this).attr("index") + '00vw'})
 			
 		})
+		// 按加'+'号
+		$(".plus").on("touchend",function(){
+			priceAll = 0;	//合计归零，后面重新计算
+			// 获取数量
+			var value = $(".number").val();
+			$(this).siblings(".number")[0].value++;
+
+			// 实时将总价格更新到合计
+			for(var i=0; i<$(".goods").length; i++){
+				if($(".goods").eq(i).find(".number")[0].value != 0){
+
+					priceAll += parseFloat($(".goods").eq(i).find(".number")[0].value)*parseFloat($(".goods").eq(i).find(".price>span").text());
+				}
+			}
+			// console.log(priceAll)
+			$("#footer>div>span").text('￥'+priceAll)
+		});
+
+		//按减'-'号
+		$(".minus").on("touchend",function(){
+			priceAll = 0;	//合计归零，后面重新计算
+			// 获取数量
+			var value = $(".number").val();
+			for(var i=0; i<$(this).siblings(".number").length; i++){
+				$(this).siblings(".number").val() <= 0
+				? 0
+				: $(this).siblings(".number")[i].value--
+			}
+			// console.log($(this).siblings(".number")[0].value);
+
+			// 实时将总价格更新到合计
+			for(var i=0; i<$(".goods").length; i++){
+				if($(".goods").eq(i).find(".number")[0].value != 0){
+
+					priceAll += parseFloat($(".goods").eq(i).find(".number")[0].value)*parseFloat($(".goods").eq(i).find(".price>span").text());
+				}
+			}
+			// console.log(priceAll)
+			priceAll = priceAll < 0 ? 0 : priceAll;
+			$("#footer>div>span").text('￥'+priceAll)
+		});
+
+		// 存储数量超过1的滤芯产品
+		var goodsArr = [];
+		var goods = $(".goods");
+		// 点击‘去结算’
+		$("#pay").click(function(){
+			for(var i=0; i<goods.length-1;i++){
+				if(goods.eq(i).find(".number").val() != 0){
+					var priceAll = parseInt(goods.eq(i).find(".price span").text())*parseInt(goods.eq(i).find(".number").val())
+					goodsArr.push(
+						{'filtername': goods.eq(i).find("h5").text(),
+						'picturepath': goods.eq(i).find(".img img").attr("src"),
+						'price': parseInt(goods.eq(i).find(".price span").text()),
+						'num': parseInt(goods.eq(i).find(".number").val()),
+						'priceAll': priceAll
+						}
+					)
+				}
+			}
+			var goodsData = JSON.stringify(goodsArr);
+			sessionStorage.setItem('goodsData',goodsData);
+			// console.log(goodsData);
+			// 选择滤芯后跳转
+			if(goodsData){
+				// 跳到订单确认界面
+				location.href = '{{:U("PaymentSystem/payConfirm")}}';
+				// // ajax提交数据到订单界面
+				// $.ajax({
+				// 	url: '{{:U("PaymentSystem/payConfirm")}}',
+				// 	type: 'post',
+				// 	datatype: 'json',
+				// 	data: goodsData,
+				// 	success: function(res){
+				// 		console.log(res);
+				// 		// 跳到订单确认界面
+				// 		location.href = '{{:U("PaymentSystem/payConfirm")}}';
+				// 	},
+				// 	error: function(res){}
+				// })
+			}
+			
+		})
+	})
 	</script>
 </body>
 </html>
