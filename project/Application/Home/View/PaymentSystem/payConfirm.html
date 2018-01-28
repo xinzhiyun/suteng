@@ -395,11 +395,11 @@
 		/*底部按钮*/
 		.payBott{
 			width: 86vw;
-			margin:5.5vh 7vw 0;
+			margin: 2.5vh 7vw 0;
 		}
 		.payBott>input{
 			border:none;
-			padding:1vh  0;
+			padding:1vh 0;
 			width: 86vw;
 			background: #2EB6AA;
 			border-radius:0.2rem;
@@ -525,15 +525,15 @@
 			<div class="paymidd">
 				<h3>选择支付方式</h3>
 				<ul class="clearfix">
-					<li><i class="iconfont icon-jinbi"></i>金币<span class="iconfont icon-xuanze"></span></li>
-					<li><i class="iconfont icon-yingbi"></i>银币<span class="iconfont icon-kuang1"></span></li>
-					<li><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-kuang1"></span></li>
-					<li><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
-					<li><i class="iconfont icon-yinhang-yinlian-"></i>银联<span class="iconfont icon-kuang1"></span></li>
+					<li index="1"><i class="iconfont icon-jinbi"></i>金币<span class="iconfont icon-xuanze"></span></li>
+					<li index="2"><i class="iconfont icon-yingbi"></i>银币<span class="iconfont icon-kuang1"></span></li>
+					<li index="3"><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-kuang1"></span></li>
+					<li index="4"><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
+					<li index="5"><i class="iconfont icon-yinhang-yinlian-"></i>银联<span class="iconfont icon-kuang1"></span></li>
 				</ul>
 			</div>
 			<div class="payBott">
-				<input class=" start" type="submit" value="立即支付">
+				<input class=" start" type="button" value="立即支付">
 			</div>
 		</div>
 	</div>
@@ -562,7 +562,7 @@
 			 */
 			// 从本地sessionStorage中获取订单数据(从滤芯购买传来)
 			var goodsData = JSON.parse(sessionStorage.getItem("goodsData"));
-			// console.log(goodsData);
+			console.log(goodsData);
 			var goodsHTML = '';	//存放需要支付的滤芯商品信息
 			var numAll = 0;		//存放滤芯订单的总数量
 			var priceAll = 0;	//存放滤芯订单的总价格
@@ -573,7 +573,7 @@
 					'<div class="img"><img src="'+ goodsData[i].picturepath +'" alt="正在加载..."></div>'+
 					'<div class="dec">'+
 						'<h5>'+ goodsData[i].filtername +'</h5>'+
-						'<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>'+
+						'<p>'+ goodsData[i].desc +'</p>'+
 						'<div>'+
 							'<span class="price">'+ goodsData[i].price +'</span>'+
 							'<span class="num">X&nbsp;<b>'+ goodsData[i].num +'</b></span>'+
@@ -592,7 +592,7 @@
 
 			/******** 订单遍历--结束--	**********/
 			/*
-				付款过程--
+				付款过程
 			 */
 			// 点击付款界面左上角" X "
 			$("#closePay").on("click",function(){
@@ -638,6 +638,54 @@
 		       	   $(".modal-backup").fadeOut('slow');
 		       });
 	      	})
+	      	// 点击立即支付
+			$(".payBott").click(function(){
+				// 判断选择的是什么支付方式
+				var index = $(".icon-xuanze").parents("li").attr("index");
+				// console.log(index);
+				switch(index){
+					case '1':
+						console.log('金币');
+						break;
+					case '2':
+						console.log('银币');
+						break;
+					case '3':
+						console.log('金币');
+						break;
+					case '4':
+						console.log('微信支付');
+						weixinPay()
+						break;
+					case '5':
+						console.log('支付宝支付');
+						break;
+					default:
+						console.log('无');
+						break;
+				}
+			})
+	      	/*
+	      		微信支付方法
+	      	 */ 
+	      	function weixinPay(res){
+	      		WeixinJSBridge.invoke(
+	      			'getBrandWCPayRequest',
+	      			JSON.parse(res),
+	      			function(res){
+	      				if(res.err_msg.substr(-2) == 'ok'){
+	      					//付款成功后的操作
+	      					location.href = '{{:U("PaymentSystem/paytosuccess")}}';
+
+	      				}else if(res.err_msg.substr(-6) == 'cancel'){
+	      					//取消订单操作
+	      				}else{
+	      					//付款失败操作
+	      					location.href = '{{:U("PaymentSystem/paytofailed")}}';
+	      				}
+	      			}
+	      		)
+	      	}
 
 			/******** 付款过程--结束--	**********/
 

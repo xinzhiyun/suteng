@@ -127,13 +127,13 @@
             display: inline-block;
         }
         /*商品描述*/
-        .goods>.dec {
+        .goods>.desc {
             width: 64%;
             padding: 2% 0 2% 2%;
             background: #fff;
         }
         /*价格和数量*/
-        .dec>div {
+        .desc>div {
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
@@ -144,7 +144,7 @@
                 -ms-flex-align: center;
                     align-items: center;
         }
-        .goods>.dec>p {
+        .goods>.desc>p {
             font-size: .5rem;
             margin: 4% 0;
             color: #555;
@@ -235,7 +235,7 @@
 		<div id="lvxinBuy">
 			<div class="goods">
 				<div class="img"><img src="1.jpg" alt="正在加载..."></div>
-				<div class="dec">
+				<div class="desc">
 					<h5>RO膜</h5>
 					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
 					<div>
@@ -251,7 +251,7 @@
 			</div>
 			<div class="goods">
 				<div class="img"><img src="2.jpg" alt="正在加载..."></div>
-				<div class="dec">
+				<div class="desc">
 					<h5>RO膜</h5>
 					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
 					<div>
@@ -267,7 +267,7 @@
 			</div>
 			<div class="goods">
 				<div class="img"><img src="3.jpg" alt="正在加载..."></div>
-				<div class="dec">
+				<div class="desc">
 					<h5>RO膜</h5>
 					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
 					<div>
@@ -283,7 +283,7 @@
 			</div>
 			<div class="goods">
 				<div class="img"><img src="1.jpg" alt="正在加载..."></div>
-				<div class="dec">
+				<div class="desc">
 					<h5>RO膜</h5>
 					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
 					<div>
@@ -299,7 +299,7 @@
 			</div>
 			<div class="goods">
 				<div class="img"><img src="1.jpg" alt="正在加载..."></div>
-				<div class="dec">
+				<div class="desc">
 					<h5>RO膜</h5>
 					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
 					<div>
@@ -386,7 +386,14 @@
 			priceAll = priceAll < 0 ? 0 : priceAll;
 			$("#footer>div>span").text('￥'+priceAll)
 		});
-
+		/*
+			filtername: 滤芯名称
+			picturepath：图片路径
+			desc：滤芯描述
+			price：滤芯价格
+			num：选择的数量
+			priceAll：合计价格
+		 */
 		// 存储数量超过1的滤芯产品
 		var goodsArr = [];
 		var goods = $(".goods");
@@ -398,6 +405,7 @@
 					goodsArr.push(
 						{'filtername': goods.eq(i).find("h5").text(),
 						'picturepath': goods.eq(i).find(".img img").attr("src"),
+						'desc': goods.eq(i).find(".desc>p").text(),
 						'price': parseInt(goods.eq(i).find(".price span").text()),
 						'num': parseInt(goods.eq(i).find(".number").val()),
 						'priceAll': priceAll
@@ -409,7 +417,7 @@
 			sessionStorage.setItem('goodsData',goodsData);
 			// console.log(goodsData);
 			// 选择滤芯后跳转
-			if(goodsData){
+			if(goodsArr.length){
 				// 跳到订单确认界面
 				location.href = '{{:U("PaymentSystem/payConfirm")}}';
 				// // ajax提交数据到订单界面
@@ -425,6 +433,8 @@
 				// 	},
 				// 	error: function(res){}
 				// })
+			}else{
+				
 			}
 			
 		})
