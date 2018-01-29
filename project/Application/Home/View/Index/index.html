@@ -3,76 +3,88 @@
 <head>
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
   <meta charset="UTF-8">
-  <title>水开机</title>
+  <title>Document</title>
   <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
-  <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
-  <script src="__PUBLIC__/Home/js/public.js"></script>
-  <script>
-    
-  </script>
+
 </head>
 <body>
+<!--<input type="hidden" class="getData" value= >-->
   <div class="_chongxi">
     <div class="chongContainer">
-      <div class="kaichongTop ">
-          <div class="kaiheat txtColor"><p>加热</p></div>
-          <div class="kaiji clear">
+      <div class="chongTop ">
+          <div class="heat"><p>加热</p></div>
+          <!--冲洗-->
+          <div class="xuanhuan clear">
               <div class="xuannei"></div>
           </div>
-          <div class="xuantext">
-            <p class="txtColor">纯水TDS</p>
-            <h3 class="txtColor">009</h3>
-            <p class="txtColor">PH值：7</p>
+          <!-- 缺水 -->
+          <div class="queshui clear">
+              <div class="xuannei"></div>
+              <div class="cen1"></div>
+              <div class="cen2"></div>
           </div>
-          <div class="btmTxt">
-            <h3 class="txtColor">水满</h3>
+          <!--水满-->
+          <div class="shuiman clear">
+              <div class="xuannei"></div>
+              <div class="cen1"></div>
           </div>
-          <!-- 接口的内容 -->
-          <div class="wendu zitihui">
-            <p>出水温度</p>
-            <p><span>(热)</span><b class="redu  zitihui">0 &#8451;</b></p>
-            <p><span>(冷)</span><b class="lengdu  zitihui">0 &#8451;</b></p>
+          <!--制水-->
+          <div class="makewater clear">
+              <div class="xuannei"></div>
           </div>
-          <div class="shiwen zitihui">
-            <p class="">室温</p>
-            <p><b class="redu zitihui">24~16 &#8451;</b></p>
-          </div>
+          <!--关机-->
+          <div class="kaiji clear">
+          <!--欠费-->
+          <div class="kaiji clear">
+          <!--离线-->
+          <div class="kaiji clear">
 
+
+          <div class="xuantext">
+            <p>纯水TDS</p>
+            <h3 class="rawtdsVal">009</h3>
+            <p>PH值：<span class="phVal"></span></p>
+          </div>
+          <div class="btmTxt">冲洗</div>
+          <!-- 接口的内容 -->
+          <div class="wendu">
+            <p>出水温度</p>
+            <p><span>(热)</span><b class="redu hotwater"></b></p>
+            <p><span>(冷)</span><b class="lengdu coldwater"></b></p>
+          </div>
+          <div class="shiwen">
+            <p>室温</p>
+            <p><b class="redu roomtemperature">24~16 &#8451;</b></p>
+          </div>
       </div>
 
 <!-- ====================净水机底部开始==================== -->
       <div class="chongFoot">
           <div class="chbuTop">
-            <ul style="color:#C3C3C3;">
-              <li><i class="iconfont icon-chunshui" style="color:#C3C3C3;"></i><b class="txtColor">纯水</b><span>9</span>ppm</li><li>
-              <i class="iconfont icon-shengyutianshu" style="color:#C3C3C3;"></i><b>剩余天数：</b><span>39</span>ppm</li><li>
-              <i class="iconfont icon-yuanshui1" style="color:#C3C3C3;"></i><b>原水</b><span>9</span>ppm</li><li>
-              <i class="iconfont icon-yiyongtianshu" style="color:#C3C3C3;"></i><b>已用天数：</b><span>39</span>ppm</li>
+            <ul>
+              <li><i class="iconfont icon-chunshui"></i><b>纯水</b><span class="rawtdsVal2">9</span>ppm</li><li>
+                <i class="iconfont icon-shengyutianshu"></i><p style="display: inline-block" class="surplusVal">剩余天数：9L</p></li><li>
+              <i class="iconfont icon-yuanshui1" ></i><b>原水</b><span class="puretdsVal">9</span>ppm</li><li>
+              <i class="iconfont icon-yiyongtianshu"></i><p style="display: inline-block" class="alreadyUsedVal"></p></li>
             </ul>
           </div>
           <div class="chbuBotom">
              <ul>
-               <li><a href="#"><i class="iconfont icon-guanji" style="color:#2EB6AA;"></i><p>电源</p></a></li><li>
-                   <a href="#"><i class="iconfont icon-lvxin txtColor"></i><p class="txtColor">滤芯</p></a></li><li>
-                   <a href="#"><i class="iconfont icon-chongxi1 colorChange txtColor" style="color:#C3C3C3;"></i><p class="txtColor">冲洗</p></a></li><li>
-                   <a href="#"><i class="iconfont icon-chongzhi txtColor"></i><p >充值</p></a></li><li>
-                   <a href="#"><i class="iconfont icon-wode txtColor"></i><p class="txtColor">我的</p></a></li>
+               <li><a href="#"><i class="iconfont icon-guanji clickBtn"></i><p>电源</p></a></li><li>
+                   <a href="{{:U('Home/Mall/lvxin')}}"><i class="iconfont icon-lvxin"></i><p>滤芯</p></a></li><li>
+                   <a href="javascript:;"><i class="iconfont icon-chongxi1 colorChange washBtn"></i><p>冲洗</p></a></li><li>
+                   <a href="{{:U('Home/Mall/chongzhi')}}"><i class="iconfont icon-chongzhi"></i><p>充值</p></a></li><li>
+                   <a href="{{:U('Home/VipCenter/index')}}"><i class="iconfont icon-wode"></i><p>我的</p></a></li>
              </ul>
           </div>
-
       </div>
-         
     </div>
   </div>
-  <script>
-    window.onload = function(){ 
-      var _status=0;
-      if(_status==0){
-        $('body').css('background','#ccc!important');
-    
-      } 
-    }
-  </script>
+  <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+  <script src="__PUBLIC__/Home/js/public.js"></script>
+  <script src="__PUBLIC__/Home/js/indexwebsocket.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
 </body>
 </html>                                                                                                                                                                                                                                                                    
