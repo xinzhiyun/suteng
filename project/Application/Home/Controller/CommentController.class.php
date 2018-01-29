@@ -33,6 +33,7 @@ class CommentController extends CommonController
                 E($upload->getError(),'606');
             }
             $comment->startTrans();
+            $data['addtime'] = time();
             $com_status = $comment->add($data);
             $com_pic['path'] = $info['pic']['savepath'].$info['pic']['savename'];
             $com_pic['cid'] = $com_status;
