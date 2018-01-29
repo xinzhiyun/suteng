@@ -12,10 +12,9 @@
   	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<title>Document</title>
 	<style>
-		
+		body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0; } 
+
 		* {
-			margin: 0;
-			padding: 0;
 			box-sizing: border-box;
 		}
 		body {
@@ -29,19 +28,26 @@
 			height: 8vh;
 			position: fixed;
 			display: flex;
-			justify-content: space-between;
+			justify-content: flex-start;
 			align-items: center;
 			background: #fff;
 			z-index: 999;
+			overflow-x: scroll;
+			overflow-y: hidden;
 		}
 		#header>span {
 			flex: 1;
+			width: 20vw;
 			height: 8vh;
     		line-height: 8vh;
+    		position: relative;
 		    display: block;
+		    margin: 0 5vw;
+    		left: 0;
 		    text-align: center;
 		    font-size: 0.72rem;
 		    color:#5A5A5A;
+		    white-space: nowrap;
 		}
 		#header>span:nth-child(1){
 			color:#373737;
@@ -72,12 +78,8 @@
 			position: relative;
 			padding: 1vh 0;
 		}
-		/*全部订单,待付款，待发货，待收货，待评论*/
-		#dingdanAll,
-		#dingdanDaifukuan,
-		#dingdanDaifahuo,
-		#dingdanDaishouhuo,
-		#dingdanDaipinglun {
+		/*商品块*/
+		.goodsBlock {
 			
 			width: 100vw;
 			position: absolute;
@@ -87,21 +89,6 @@
 			transition: left .4s ease-out;
 		}
 
-		#dingdanAll {
-			left: 0;
-		}
-		#dingdanDaifukuan {
-			left: 100vw;
-		}
-		#dingdanDaifahuo {
-			left: 200vw;
-		}
-		#dingdanDaishouhuo {
-			left: 300vw;
-		}
-		#dingdanDaipinglun {
-			left: 400vw;
-		}
 		.goods{
 			width: 100%;
 		}
@@ -236,16 +223,17 @@
 	</style>
 </head>
 <body>
+	<input type="hidden" value='{{$cate}}' id="_cate">
+	<input type='hidden' value='{{$goods}}' id='_goods'>
 	<header id="header">
-
-		<span class="tab" index='0'>净水器</span>
+		<!-- <span class="tab" index='0'>净水器</span>
 		<span class="tab" index='1'>净化器</span>
 		<span class="tab" index='2'>热水器</span>
 		<span class="tab" index='3'>生活用品</span>
 		<span class="tab" index='4'>瓦胆</span>
 		<div id="line">
 			<span></span>
-		</div>
+		</div> -->
 	</header>
 	<div class="shopTop clearfix">
 					<div class="search clearfix">
@@ -270,12 +258,11 @@
 	
 	<div id="content">
 		
-	
-		<!-- 每日精选 -->
-		<div id="dingdanAll">
-			 <div class="goods" >
+		<!-- 净水器 -->
+		<!-- <div id="waterPurifier">
+			 <div class="goods" > -->
 				<!-- /*所有商品*/ -->
-				<div class="goodstitle">
+				<!-- <div class="goodstitle">
 					<h3><span>——</span> 特惠专区 <span>——</span></h3>
 				</div>
 				<div class="allgoods">
@@ -287,319 +274,133 @@
 								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
 							</a>
 						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						
 					</ul>
 				</div>
-
-
 			</div>
-		</div>
-	
-		<!-- 母婴 -->
-		<div id="dingdanDaifukuan">
-			  <div class="goods" >
-				<!-- /*所有商品*/ -->
-				<div class="goodstitle">
-					<h3><span>——</span> 特惠专区 <span>——</span></h3>
-				</div>
-				<div class="allgoods">
-					<ul>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						
-					</ul>
-				</div>
-
-
-			</div>
-		</div>
-
-		<!-- 美妆 -->
-		<div id="dingdanDaifahuo">
-			 <div class="goods" >
-				<!-- /*所有商品*/ -->
-				<div class="goodstitle">
-					<h3><span>——</span> 特惠专区 <span>——</span></h3>
-				</div>
-				<div class="allgoods">
-					<ul>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						
-					</ul>
-				</div>
-
-
-			</div>
-		</div>
-		<!-- 家具家纺 -->
-		<div id="dingdanDaishouhuo">
-			  <div class="goods" >
-				<!-- /*所有商品*/ -->
-				<div class="goodstitle">
-					<h3><span>——</span> 特惠专区 <span>——</span></h3>
-				</div>
-				<div class="allgoods">
-					<ul>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						
-					</ul>
-				</div>
-
-
-			</div>
-		</div>
-		<!-- 数码数据 -->
-		<div id="dingdanDaipinglun">
-			  <div class="goods" >
-				<!-- /*所有商品*/ -->
-				<div class="goodstitle">
-					<h3><span>——</span> 特惠专区 <span>——</span></h3>
-				</div>
-				<div class="allgoods">
-					<ul>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
-							</a>
-						</li>
-						
-					</ul>
-				</div>
-
-
-			</div>
-		</div>
+		</div> -->
 	</div>
 	
 	<script>
-		
-		
 		$(function(){
-			// 订单状态
-			var dingdanArr = ['#dingdanAll', '#dingdanDaifukuan','#dingdanDaifahuo','#dingdanDaishouhuo','#dingdanDaipinglun']
+			//存放分栏的商品信息
+			var CategoryHTML = '', categoryArr = [];
+			var _htmlArr = [];	//存放对应分类数据的数组
+			// 获取商品信息
+			var _goods = JSON.parse($("#_goods").val());
+			// console.log(_goods);
+			// 获取商品分类
+			var _cate = JSON.parse($("#_cate").val());
+			// console.log(_cate);
 
-			// 订单状态
-			var $tab = $(".tab");
-			console.dir($tab);
+			for(var i=0;i<_cate.length; i++){
+				CategoryHTML += '<span class="tab" index='+i+'>'+ _cate[i].name +'</span>';
+				categoryArr.push(_cate[i].name);
+			}
+			// console.log(categoryArr)
+			// 横线
+			var _lineHTML = '<div id="line">'+
+					'<span></span>'+
+				'</div>';
+			$("#header").html(CategoryHTML+ _lineHTML);
+			var goodblockHTML = '';
+			/*
+				遍历模板
+			 */
+			for(var i=0; i<_cate.length; i++){
+				goodblockHTML += 
+					'<div class="goodsBlock" index='+i+'>'+
+					  '<div class="goods" >'+
+						<!-- /*所有商品*/ -->
+						'<div class="goodstitle">'+
+							'<h3><span>——</span> 特惠专区 <span>——</span></h3>'+
+						'</div>'+
+						'<div class="allgoods">'+
+							'<ul></ul>'+
+							'</div>'+
+						'</div>'+
+					'</div>';
+			}
+			$("#content").append(goodblockHTML);
+			
+			/*
+				遍历商品
+			 */
+			for(var i=0;i<_cate.length; i++){
+				_htmlArr[[i]] = '';		//使用前先定义
+				for(var j=0; j<_goods.length; j++){
+					if(_goods[j].cid == _cate[i].id){	//对应分类下有商品
+						// console.log(_goods[j].cid, _cate[i].id);
+						
+						_htmlArr[i] += 
+							'<li>'+
+								'<a class="pic" goods_gid="'+_goods[j].gid+'" href="{{:U('Shop/shoppingdetail')}}">'+
+									'<img src="__PUBLIC__/Home/images/goods1.png" alt="">'+
+									'<p class="name">'+ _goods[j].name+ _goods[j].cid +'</p>'+
+									'<b class="price">¥'+ _goods[j].price +'</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>'+
+								'</a>'+
+							'</li>';
+					}else{
+						_htmlArr[i] += '';
+					}
+				}
+			}
+			console.log(_htmlArr)
+			// 遍历偏移量
+			for(var i=0; i<categoryArr.length; i++){
+				$("#content").find('.goodsBlock').eq(i).css({left: i*100 +'vw'});
+				// console.log($("#content").find('.goodsBlock').attr("index"))
+			}
+			/*
+				如果第一页有内容则加载第一页
+			 */
+			if(_htmlArr[0]){
+				$(".allgoods>ul").eq(0).html(_htmlArr[0]);
+				console.log($("#content>div").eq(0).attr("index"))
+			}else{
+				$(".allgoods>ul").eq(0).html('暂无内容！')
+			}
 
-			// 点击顶部导航栏，切换订单状态
-			$tab.on("click",function(){
+			/*
+				点击的时候记录当前点击的商品，传给商品详情页面
+			 */
+			$(".goodsBlock").on('click','.pic',function(){
+				// console.log($(this).attr("goods_gid"))
+				sessionStorage.setItem("goods_gid", $(this).attr("goods_gid"))
+			})
 
+			/*
+				点击顶部导航栏，切换订单状态
+			 */ 
+			$("#header").on("click",'.tab',function(){
+				
+				if(_htmlArr[$(this).attr("index")]){
+					$(".allgoods>ul").eq($(this).attr("index")).html(_htmlArr[$(this).attr("index")]);
+					console.log($("#content>div").eq($(this).attr("index")).attr("index"))
+				}else{
+					$(".allgoods>ul").eq($(this).attr("index")).html('暂无内容！')
+				}
 				// if($('#content>div').length != 0){
 					 $('#header>span').css('color','#5A5A5A').css('font-weight','400');
 					$(this).css('color','#373737').css('font-weight','600');
-					$("#content")
-					.css({height: dingdanArr[$(this).attr("index")]
-						.height, 
-						overflowY: $(dingdanArr[$(this).attr("index")])[0].offsetHeight > $("#content")[0].offsetHeight 
-						? 'visible'
-						: 'hidden'
-					});
-
+					// $("#content")
+					// .css({height: dingdanArr[$(this).attr("index")]
+					// 	.height, 
+					// 	overflowY: $(dingdanArr[$(this).attr("index")])[0].offsetHeight > $("#content")[0].offsetHeight 
+					// 	? 'visible'
+					// 	: 'hidden'
+					// });
+					
 					// console.log( $(this).attr("index") );
 					// console.log( $("#content")[0].offsetHeight );
 
 					// }
-
+					// console.log($(this).offset().left+','+$(this).width()/2)
 					$("#content")
 					.animate({left: '-'+ $(this).attr("index") +'00vw'});
 
-					$("#line").css({left: $(this).attr("index")*2 + '0%'});
+					$("#line").css({left: $(this)[0].offsetLeft-$("#line").width()/4 + 'px'});
 
+					console.log($(this)[0].offsetLeft)
 					// console.log($(this).attr("index"))
 			});
 		})
