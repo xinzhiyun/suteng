@@ -16,8 +16,8 @@ class ShopController extends Controller
         $cate = M('Category')->select();
         $goodsList = $goods->getGoodsList();
         $assign = [
-            'cate' => $cate,
-            'goods' => $goodsList,
+            'cate' => json_encode($cate),
+            'goods' => json_encode($goodsList),
         ];
         $this->assign($assign);
         $this->display();
@@ -41,7 +41,7 @@ class ShopController extends Controller
         $goodsDetail = $goods->getGoodsList($id);
         dump($goodsDetail);
         $assign = [
-            'goods' => $goodsDetail,
+            'goods' => json_encode($goodsDetail),
         ];
         $this->assign($assign);
         $this->display();
