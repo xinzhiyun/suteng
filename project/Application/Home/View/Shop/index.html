@@ -394,13 +394,12 @@
 					// console.log( $("#content")[0].offsetHeight );
 
 					// }
-					// console.log($(this).offset().left+','+$(this).width()/2)
 					$("#content")
 					.animate({left: '-'+ $(this).attr("index") +'00vw'});
 
 					$("#line").css({left: $(this)[0].offsetLeft-$("#line").width()/4 + 'px'});
 
-					console.log($(this)[0].offsetLeft)
+					// console.log($(this)[0].offsetLeft)
 					// console.log($(this).attr("index"))
 			});
 		})

@@ -159,14 +159,12 @@
 		<form id="form" action="commentsucceed" method="post" enctype="multipart/form-data">
 			<div class="xuanping clearfix">
 				<div class="pingpic"><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
-				<!-- <div class="pingGrade">
-					<label for="good"><input id="good"  type="radio" name="so" value="好评"/ checked> 好评 </label>
-					<label for="soso"><input id="soso"  type="radio" name="so" value="中评"/> 中评 </label>
-					<label for="bad"><input  id="bad" type="radio" name="so" value="差"/> 差 </label>
-				</div> -->
+				<!-- 用户ID -->
+				<input type="hidden" name="uid" value="11111">
+				<!-- 商品ID -->
+				<input type="hidden" name="gid" value="22222">
 			    <div class='everyItem'>
-			        <input id="item1" type="radio" name="item" value="
-			        好评" checked>
+			        <input id="item1" type="radio" name="item" value="好评" checked>
 			        <label for="item1"></label>
 			        <span>好评</span>
 			    </div>
@@ -198,5 +196,21 @@
 			</a>
 		</form>
 	</div>
+	<script>
+	// {{:U('Home/Comment/commentsucceed')}}
+		// 实例化一个formdata对象
+		var formData = new FormData();
+		// 获取上传文件的input标签	
+		var file = $(".file_upload");
+		// 获取的图片文件
+		var fileList;
+		
+		// formData.append("picture"+(j+1),file.files[i]);
+
+		$("#submit").click(function(){
+			// fileList = file[0].files;
+			console.log(file)
+		})
+	</script>
 </body>
 </html>
