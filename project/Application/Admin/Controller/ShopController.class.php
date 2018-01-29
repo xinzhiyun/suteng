@@ -99,7 +99,7 @@ class ShopController extends CommonController
         $cateInfo = $cate->getAllCate();
         $goods = D('Goods');
         $goodsList = $goods->getGoodsList();
-        // dump($goodsList);
+        dump($goodsList);
         $assign = [
             'data' => $goodsList,
             'cateInfo'=>$cateInfo,
@@ -137,7 +137,7 @@ class ShopController extends CommonController
             $data = I('post.');
             $goods['cid'] = $cate->sureCate();
             $goods['name'] = $data['name'];
-
+            dump($data);die;
             // $goods_check = $goods_add->create($goods);
             // dump($goods);die;
             // 事务开启

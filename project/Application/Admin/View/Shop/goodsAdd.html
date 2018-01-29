@@ -51,7 +51,7 @@
                                 <div class="checkbox i-checks">
                                     <volist name="attrInfo" id="vo">
                                         <label class="attr">
-                                            <input type="checkbox" name="attr[]" attrName={{$vo.attr}} value="{{$vo.id}}"> <i></i> {{$vo.attr}}
+                                            <input type="checkbox" name="attr[]" data-name={{$vo.attr}} data-id="{{$vo.id}}"> <i></i> {{$vo.attr}}
                                         </label>
                                     </volist>
                                     <label class="attrList">
@@ -62,11 +62,11 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">商品规格：</label>
-                            <div class="col-sm-2 attr_val">
+                            <div class="col-sm-6 attr_val">
                                 <!-- <input type="text" class="form-control" name="attr_val" placeholder="每次只可添加一种规格"> -->
-                                <div class="input-group m-b"><span class="input-group-addon">@fdsafsafs</span>
+                                <!-- <div class="input-group m-b"><span class="input-group-addon">@fdsafsafs</span>
                                     <input type="text" placeholder="用户名" class="form-control">
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         <div class="form-group">
@@ -213,12 +213,6 @@
                 }
             })
         });
-        var attrName;
-        // 将属性添加到规格中
-        $(".attr").on('click',function(){
-            // attrName = $('.attr:checked');
-            console.dir(1);
-        })
 
     </script>
     <script src="__PUBLIC__/Admin/js/plugins/iCheck/icheck.min.js"></script>
@@ -227,9 +221,6 @@
     <script src="__PUBLIC__/Admin/js/plugins/summernote/summernote-zh-CN.js"></script>
 
     <script>
-        $(document).ready(function () {
-            recheck();
-        });
         function recheck(){
             $('.i-checks').iCheck({
                 checkboxClass: 'icheckbox_square-green',
@@ -238,12 +229,41 @@
         }
         // 富文本
         $(document).ready(function () {
-
+            recheck();
             $('.summernote').summernote({
                 lang: 'zh-CN'
             });
+            $("#form .attr").on("click", function(e){
+                bindClick();
+            });
+            $("#form .iCheck-helper").on("click", function(e){
+                bindClick();
+            });
 
         });
+        function bindClick(){
+            var attrId,attrName;
+            var arr = new Array();
+
+            $('.attr').each(function(i,item){
+                var aa = $(item).children('div').hasClass('checked');
+                var obj = $(this).find('input');
+                if(aa){
+                    attrName = obj.data('name');
+                    attrId = obj.data('id');
+                    arr.push({
+                        attrId:attrId,
+                        attrName:attrName,
+                    })
+                }
+            })
+            $('.attr_val').empty();
+            for(var i=0;i<arr.length;i++){
+                $('.attr_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].attrName+'</span><input type="text" placeholder="请输入'+arr[i].attrName+'的规格" name="'+arr[i].attrId+'" value="" class="form-control"></div>');
+            }
+        }
+
+
         var edit = function () {
             $("#eg").addClass("no-padding");
             $('.click2edit').summernote({
