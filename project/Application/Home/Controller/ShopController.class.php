@@ -34,16 +34,17 @@ class ShopController extends Controller
 
     // 商品详情页面
     public function goods_detail()
-
     {
         $id['g.id'] = I('get.id');
         $goods = D('Goods');
         $goodsDetail = $goods->getGoodsList($id);
-        // $assign = [
-        //     'goods' => json_encode($goodsDetail),
-        // ];
-        // $this->assign($assign);
-        // $this->display();
-        $this->ajaxReturn($goodsDetail);
+        $commentInfo = $goods->getComment($id);
+        echo $goods->_sql();
+        // dump($commentInfo);
+        $data = [
+            'goodsDetail' => $goodsDetail,
+            'commentInfo' => $commentInfo,
+        ];
+        $this->ajaxReturn($data);
     }
 }
