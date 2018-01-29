@@ -234,11 +234,13 @@ window.onload = function(){
             outLine();
         }
     }, 1000);
-    var bodyfilter=$("body").css('filter');
+    // var bodyfilter=$("body").css('filter');
+
     //冲洗按钮操作
     $('.washBtn').click(function(){
         var thisT=$(".washBtn p");
-        if(bodyfilter=='grayscale(100%)'){
+        var statusTxt=$(".btmTxt").html();
+        if(statusTxt=="设备已关机"||statusTxt=="设备已离线"||statusTxt=="欠费停机"){
             layui.use('layer', function(){
                 var layer = layui.layer;
                 layer.msg('设备不在线，不能冲洗');
@@ -287,12 +289,14 @@ window.onload = function(){
     });
     //开机/关机按钮操作
     $('.clickBtn').click(function(){
+        var statusTxt=$(".btmTxt").html();
         var _this='';
-        if(bodyfilter=='grayscale(100%)'){
+        if(statusTxt=="设备已离线"||statusTxt=="设备已关机"){
             _this='开机';
         }else{
             _this='关机';
         }
+        // alert(bodyfilter);
         var ajson;//数据对象
         //判断操作类型
         var tipsText = "确定要"+ _this + deviceId +"吗？";
