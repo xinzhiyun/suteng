@@ -50,7 +50,7 @@ window.onload = function(){
         $(".btmTxt").html("检修");
     }
     function shutdown(){//关机状态 7
-        $(".kaiji").show().siblings().hide();
+        $(".kaiji").show().siblings().hide(); 
         // var _class7= $('.chongContainer>div.chongTop>div:nth-child(2)').attr('class');
         //
         // $('.chongContainer>div.chongTop>div:nth-child(2)').show();
