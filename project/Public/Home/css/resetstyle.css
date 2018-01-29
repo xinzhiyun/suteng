@@ -23,7 +23,7 @@ a:active{text-decoration:none;}/* 指正在点的链接*/
 .clearfix{zoom:1;}/*为了兼容IE*/
 .clear{clear:both;}
 /*苹果兼容*/
-ul, li, dl, dt, dd, form, h1, h2, h3, h4, p, input, form {  
+ul, li, dl, dt, dd, form, h1, h2, h3, h4, p, input, form ,select{  
 	appearance:none;
 	-moz-appearance:none;
 	-webkit-appearance:none;
