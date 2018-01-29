@@ -164,17 +164,17 @@
 				<!-- 商品ID -->
 				<input type="hidden" name="gid" value="22222">
 			    <div class='everyItem'>
-			        <input id="item1" type="radio" name="item" value="好评" checked>
+			        <input id="item1" type="radio" name="status" value="好评" checked>
 			        <label for="item1"></label>
 			        <span>好评</span>
 			    </div>
 			    <div class='everyItem'>
-			        <input id="item2" type="radio" name="item" value="中评">
+			        <input id="item2" type="radio" name="status" value="中评">
 			        <label for="item2"></label>
 			        <span>中评</span>
 			    </div>
 			    <div class='everyItem'>
-			        <input id="item3" type="radio" name="item" value="差">
+			        <input id="item3" type="radio" name="status" value="差">
 			        <label for="item3"></label>
 			        <span>差</span>
 			    </div>
@@ -183,15 +183,15 @@
 				<div class="shangpingpic">
 					<label for="shopping">
 						<p>请您对我们的商品做出评价……</p>
-						<textarea name="" id="shopping" cols="30" rows="10"></textarea>
+						<textarea name="content" id="shopping" cols="30" rows="10"></textarea>
 					</label>
 					<span><i class="iconfont icon-tianjia"></i><em>限3张内</em></span>
 					<input class="file_upload" name="pic" type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
 				</div>
 			</div>
-			<a href="{{:U('Home/Comment/commentsucceed')}}">
+			<a href="javascript:;">
 				<div class="saleBott">
-					<input id="submit" type="submit" value="发表">
+					<input id="submit" type="button" value="发表">
 				</div>
 			</a>
 		</form>
