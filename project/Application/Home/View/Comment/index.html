@@ -156,7 +156,7 @@
 
 <body>
 	<div class="commentcontain">
-		<form id="form" action="commetsuccessed">
+		<form id="form" action="commentsuccessed" method="post" enctype="multipart/form-data">
 			<div class="xuanping clearfix">
 				<div class="pingpic"><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
 				<!-- <div class="pingGrade">
@@ -193,18 +193,10 @@
 			</div>
 			<a href="{{:U('Home/Comment/commentsucceed')}}">
 				<div class="saleBott">
-					<input id="submit" type="button" value="发表">
+					<input id="submit" type="submit" value="发表">
 				</div>
 			</a>
 		</form>
 	</div>
 </body>
-<script>
-	$(function(){
-		$("#submit").click(function(){
-			console.log($('input[type="file"]').val())
-			$("#form").submit();
-		})
-	})
-</script>
 </html>
