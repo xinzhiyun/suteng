@@ -1,78 +1,41 @@
 window.onload = function(){
-    // var _class= $('.chongContainer>div.chongTop>div:nth-child(2)').attr('class');
-    // console.dir(_class);
     function addwater(){//制水状态
         $(".makewater").show().siblings().hide();
-        // var _class= $('.chongContainer>div.chongTop>div:nth-child(2)').attr('class');
-        // console.dir(_class);
-        // $('.chongContainer>div.chongTop>div:nth-child(2)').removeClass(_class).addClass('makewater clear');
-        // $('.chongContainer>div.chongTop>div:nth-child(2)').show();
-        // $('.chongContainer>div.chongTop>div:nth-child(3)').hide();
-
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
         $(".btmTxt").html("制水");
     }
     function wash(){//冲洗状态 1
         $(".btmTxt").html("冲洗");
         $(".xuanhuan").show().siblings().hide();
-        // var _class1= $('.chongContainer>div.chongTop>div:nth-child(2)').attr('class');
-        // $('.chongContainer>div.chongTop>div:nth-child(2)').removeClass(_class1).addClass('shuiman clear');
-        // $('.chongContainer>div.chongTop>div:nth-child(3)').hide();
-        // $('.chongContainer>div.chongTop>div:nth-child(2)').show();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
     }
     function lesswater(){// 缺水状态
         $(".queshui").show().siblings().hide();
-        // $('.chongContainer>div.chongTop>div:nth-child(2)').hide();
-        // $('.chongContainer>div.chongTop>div:nth-child(3)').show();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
         $(".btmTxt").html("缺水");
     }
     function fullwater(){// 水满状态2
         $(".shuiman").show().siblings().hide();
-        // var _class2= $('.chongContainer>div.chongTop>div:nth-child(2)').attr('class');
-        // $('.chongContainer>div.chongTop>div:nth-child(2)').show();
-        // $('.chongContainer>div.chongTop>div:nth-child(3)').hide();
-        // $('.chongContainer>div.chongTop>div:nth-child(2)').removeClass(_class2).addClass('shuiman clear');
-        // var _cen1=$('.chongContainer>div.chongTop>div:nth-child(2)>div.xuannei').after("<div></div>");
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
-        _cen1.addClass('cen1');
         $(".btmTxt").html("水满");
     }
     function service (){// 修检状态 5
         $(".xuanhuan").show().siblings().hide();
-        // var _class5= $('.chongContainer>div.chongTop>div:nth-child(2)').attr('class');
-        //
-        // $('.chongContainer>div.chongTop>div:nth-child(2)').show();
-        // $('.chongContainer>div.chongTop>div:nth-child(3)').hide();
-        // $('.chongContainer>div.chongTop>div:nth-child(2)').removeClass(_class5).addClass('overxuanhuan clear');
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
         $(".btmTxt").html("检修");
     }
     function shutdown(){//关机状态 7
-        $(".kaiji").show().siblings().hide(); 
-        // var _class7= $('.chongContainer>div.chongTop>div:nth-child(2)').attr('class');
-        //
-        // $('.chongContainer>div.chongTop>div:nth-child(2)').show();
-        // $('.chongContainer>div.chongTop>div:nth-child(3)').hide();
-        // $('.chongContainer>div.chongTop>div:nth-child(2)').removeClass(_class7).addClass('kaiji clear');
+        $(".shutdown").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(100%)'});
         $(".btmTxt").html("设备已关机");
     }
     function arrearage(){//欠费停机 6
-        $(".kaiji").show().siblings().hide();
-        // var _class6= $('.chongContainer>div.chongTop>div:nth-child(2)').attr('class');
-        //
-        // $('.chongContainer>div.chongTop>div:nth-child(2)').show();
-        // $('.chongContainer>div.chongTop>div:nth-child(3)').hide();
+        $(".arrearage").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
         $(".btmTxt").html("欠费停机");
     }
     function outLine(){//离线 7
-        $(".kaiji").show().siblings().hide();
-        // $('.chongContainer>div.chongTop>div:nth-child(2)').show();
-        // $('.chongContainer>div.chongTop>div:nth-child(3)').hide();
-        // $('.chongContainer>div.chongTop>div:nth-child(2)').removeClass(_class7).addClass('kaiji clear');
+        $(".outLine").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
         $(".btmTxt").html("设备已离线");
     }
@@ -99,7 +62,7 @@ window.onload = function(){
     var getdataList={
         "id":"1",
         "deviceid":"228733445596778",
-        "devicestause":"7",
+        "devicestause":"6",
         "reflow":"34000",
         "reday":"1",
         "rawtds":"1",
