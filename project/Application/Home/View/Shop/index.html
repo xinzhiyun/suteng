@@ -355,7 +355,7 @@
 			 */
 			if(_htmlArr[0]){
 				$(".allgoods>ul").eq(0).html(_htmlArr[0]);
-				console.log($("#content>div").eq(0).attr("index"))
+				// console.log($("#content>div").eq(0).attr("index"))
 			}else{
 				$(".allgoods>ul").eq(0).html('暂无内容！')
 			}
@@ -375,7 +375,7 @@
 				
 				if(_htmlArr[$(this).attr("index")]){
 					$(".allgoods>ul").eq($(this).attr("index")).html(_htmlArr[$(this).attr("index")]);
-					console.log($("#content>div").eq($(this).attr("index")).attr("index"))
+					// console.log($("#content>div").eq($(this).attr("index")).attr("index"))
 				}else{
 					$(".allgoods>ul").eq($(this).attr("index")).html('暂无内容！')
 				}
