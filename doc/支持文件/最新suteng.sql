@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : wuzhibin.cn
-Source Server Version : 50173
-Source Host           : sdm359768304.my3w.com:3306
-Source Database       : sdm359768304_db
+Source Server         : 192.168.37.76
+Source Server Version : 50548
+Source Host           : 192.168.37.76:3306
+Source Database       : suteng
 
 Target Server Type    : MYSQL
-Target Server Version : 50173
+Target Server Version : 50548
 File Encoding         : 65001
 
-Date: 2018-01-26 18:11:00
+Date: 2018-01-29 19:39:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,16 +21,18 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `st_address`;
 CREATE TABLE `st_address` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL COMMENT '关联用户ID',
   `name` varchar(12) NOT NULL COMMENT '收货人姓名',
   `phone` varchar(12) NOT NULL COMMENT '收货人电话',
   `address` varchar(255) NOT NULL COMMENT '收货人地址',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '地址状态，默认为0，设为默认地址，否则为1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_address
 -- ----------------------------
+INSERT INTO `st_address` VALUES ('1', '2', ' aa', '13800138000', ' 广州', '0');
 
 -- ----------------------------
 -- Table structure for st_admin_menu
@@ -81,13 +83,16 @@ INSERT INTO `st_admin_menu` VALUES ('29', '28', '佣金设置', 'Admin/Commissio
 DROP TABLE IF EXISTS `st_attr`;
 CREATE TABLE `st_attr` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL COMMENT '属性名称',
+  `attr` varchar(20) NOT NULL COMMENT '属性名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_attr
 -- ----------------------------
+INSERT INTO `st_attr` VALUES ('1', '内存');
+INSERT INTO `st_attr` VALUES ('2', '运行内存');
+INSERT INTO `st_attr` VALUES ('3', '颜色');
 
 -- ----------------------------
 -- Table structure for st_attr_val
@@ -95,13 +100,35 @@ CREATE TABLE `st_attr` (
 DROP TABLE IF EXISTS `st_attr_val`;
 CREATE TABLE `st_attr_val` (
   `gid` int(11) NOT NULL COMMENT '商品ID',
-  `aid` int(11) DEFAULT NULL COMMENT '属性ID',
-  ` val` varchar(20) NOT NULL COMMENT '属性值'
+  `aid` int(11) NOT NULL COMMENT '属性ID',
+  `val` varchar(20) NOT NULL COMMENT '属性值'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_attr_val
 -- ----------------------------
+INSERT INTO `st_attr_val` VALUES ('1', '1', '4G');
+INSERT INTO `st_attr_val` VALUES ('1', '2', '4G');
+INSERT INTO `st_attr_val` VALUES ('4', '1', '64G');
+INSERT INTO `st_attr_val` VALUES ('5', '2', '3G');
+INSERT INTO `st_attr_val` VALUES ('6', '1', '64G');
+INSERT INTO `st_attr_val` VALUES ('7', '2', '20');
+INSERT INTO `st_attr_val` VALUES ('8', '1', '20');
+INSERT INTO `st_attr_val` VALUES ('9', '1', '20');
+INSERT INTO `st_attr_val` VALUES ('10', '1', '2');
+INSERT INTO `st_attr_val` VALUES ('11', '1', '2');
+INSERT INTO `st_attr_val` VALUES ('12', '2', '2.3');
+INSERT INTO `st_attr_val` VALUES ('13', '2', '230');
+INSERT INTO `st_attr_val` VALUES ('14', '2', '230');
+INSERT INTO `st_attr_val` VALUES ('15', '1', '23');
+INSERT INTO `st_attr_val` VALUES ('16', '1', '23');
+INSERT INTO `st_attr_val` VALUES ('17', '1', '320');
+INSERT INTO `st_attr_val` VALUES ('18', '1', '320');
+INSERT INTO `st_attr_val` VALUES ('19', '1', '320');
+INSERT INTO `st_attr_val` VALUES ('20', '1', '320');
+INSERT INTO `st_attr_val` VALUES ('22', '1', '64G');
+INSERT INTO `st_attr_val` VALUES ('22', '2', '4G');
+INSERT INTO `st_attr_val` VALUES ('22', '3', '红色');
 
 -- ----------------------------
 -- Table structure for st_auth_group
@@ -248,29 +275,45 @@ CREATE TABLE `st_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `pid` int(11) NOT NULL COMMENT '父ID',
   `name` varchar(12) NOT NULL COMMENT '分类名',
+  `leavel` int(11) NOT NULL COMMENT '分类级别',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_category
 -- ----------------------------
-INSERT INTO `st_category` VALUES ('1', '0', 'aaa');
-INSERT INTO `st_category` VALUES ('2', '0', 'bbb');
-INSERT INTO `st_category` VALUES ('3', '0', 'aaa1');
-INSERT INTO `st_category` VALUES ('4', '2', 'bbb1ddd');
-INSERT INTO `st_category` VALUES ('5', '0', 'aaa2');
-INSERT INTO `st_category` VALUES ('6', '2', 'bbb2');
-INSERT INTO `st_category` VALUES ('7', '3', 'aaa1a');
-INSERT INTO `st_category` VALUES ('8', '3', 'aaa2a');
-INSERT INTO `st_category` VALUES ('10', '4', 'bbb2b');
-INSERT INTO `st_category` VALUES ('11', '0', '厉害');
-INSERT INTO `st_category` VALUES ('12', '0', '发财了');
-INSERT INTO `st_category` VALUES ('14', '5', '哈哈哈');
-INSERT INTO `st_category` VALUES ('15', '14', '大厦');
-INSERT INTO `st_category` VALUES ('16', '6', '止ddddd');
-INSERT INTO `st_category` VALUES ('17', '6', '123');
-INSERT INTO `st_category` VALUES ('21', '5', '添加成功');
-INSERT INTO `st_category` VALUES ('22', '7', '老子开心');
+INSERT INTO `st_category` VALUES ('1', '0', 'aaa', '1');
+INSERT INTO `st_category` VALUES ('2', '0', 'bbb', '1');
+INSERT INTO `st_category` VALUES ('3', '0', 'aaa1', '1');
+INSERT INTO `st_category` VALUES ('4', '2', 'bbb1ddd', '2');
+INSERT INTO `st_category` VALUES ('5', '0', 'aaa2', '1');
+INSERT INTO `st_category` VALUES ('6', '2', 'bbb2', '2');
+INSERT INTO `st_category` VALUES ('7', '3', 'aaa1a', '2');
+INSERT INTO `st_category` VALUES ('8', '3', 'aaa2a', '2');
+INSERT INTO `st_category` VALUES ('10', '4', 'bbb2b', '3');
+INSERT INTO `st_category` VALUES ('11', '0', '厉害', '1');
+INSERT INTO `st_category` VALUES ('12', '0', '发财了', '1');
+INSERT INTO `st_category` VALUES ('14', '5', '哈哈哈', '2');
+INSERT INTO `st_category` VALUES ('15', '14', '大厦', '3');
+INSERT INTO `st_category` VALUES ('16', '6', '止ddddd', '3');
+INSERT INTO `st_category` VALUES ('17', '6', '123', '3');
+INSERT INTO `st_category` VALUES ('21', '5', '添加成功', '2');
+INSERT INTO `st_category` VALUES ('22', '7', '老子开心', '3');
+
+-- ----------------------------
+-- Table structure for st_com_pic
+-- ----------------------------
+DROP TABLE IF EXISTS `st_com_pic`;
+CREATE TABLE `st_com_pic` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cid` int(11) NOT NULL COMMENT '评论ID',
+  `path` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '图片地址',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of st_com_pic
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for st_comment
@@ -285,12 +328,14 @@ CREATE TABLE `st_comment` (
   `attitude` int(11) DEFAULT NULL COMMENT '服务态度评分',
   `dressing` int(11) DEFAULT NULL COMMENT '着装评分',
   `addtime` varchar(12) NOT NULL COMMENT '评论时间',
+  `status` tinyint(1) NOT NULL COMMENT '1好评2中评3差评',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_comment
 -- ----------------------------
+INSERT INTO `st_comment` VALUES ('1', '2', '22', '132', null, null, null, '', '0');
 
 -- ----------------------------
 -- Table structure for st_commission
@@ -314,7 +359,7 @@ CREATE TABLE `st_commission` (
 -- ----------------------------
 -- Records of st_commission
 -- ----------------------------
-INSERT INTO `st_commission` VALUES ('1', '40', '50', '60', '50', '40', '30', '10', '20', '0', '0');
+INSERT INTO `st_commission` VALUES ('1', '30', '40', '70', '60', '40', '30', '20', '10', '0', '0');
 
 -- ----------------------------
 -- Table structure for st_convert
@@ -427,7 +472,7 @@ CREATE TABLE `st_dimension` (
   `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_dimension
@@ -453,34 +498,6 @@ INSERT INTO `st_dimension` VALUES ('46', 'gQG-8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLn
 INSERT INTO `st_dimension` VALUES ('47', 'gQFz8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUWNHN2xMMmJkOTAxMDAwMGcwM1MAAgSXDGBaAwQAAAAA', '5', '2', '0', '1516858662', '1516858662');
 INSERT INTO `st_dimension` VALUES ('48', 'gQHC8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQ2NFUmtLMmJkOTAxMDAwMDAwMzIAAgSXDGBaAwQAAAAA', '2', null, '0', '1516858662', '1516858662');
 INSERT INTO `st_dimension` VALUES ('49', 'gQF47zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTWpaQ2x3MmJkOTAxSndUZzFxMVgAAgQwcmlaAwQwhScA', '1', null, '1', '1516859953', '1516859953');
-INSERT INTO `st_dimension` VALUES ('50', 'gQFq8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySkh1bGtRMmJkOTAxMDAwMDAwM0oAAgSaDWBaAwQAAAAA', '5', '0', '0', '1516942196', '1516942196');
-INSERT INTO `st_dimension` VALUES ('51', 'gQHz8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydVNxUmttMmJkOTAxMDAwMGcwM1YAAgSaDWBaAwQAAAAA', '5', '1', '0', '1516942196', '1516942196');
-INSERT INTO `st_dimension` VALUES ('52', 'gQEk8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyazV0X2xyMmJkOTAxMDAwMDAwM1oAAgSuDWBaAwQAAAAA', '5', '2', '0', '1516942196', '1516942196');
-INSERT INTO `st_dimension` VALUES ('53', 'gQH28DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyMlV3Z2xpMmJkOTAxMDAwMGcwM2gAAgSuDWBaAwQAAAAA', '2', null, '0', '1516942196', '1516942196');
-INSERT INTO `st_dimension` VALUES ('54', 'gQGb8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyMTJFUWxJMmJkOTAxeEdWaTFxMW8AAgQ6tGpaAwQwhScA', '1', null, '1', '1516942394', '1516942394');
-INSERT INTO `st_dimension` VALUES ('55', 'gQGR8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyMXBRamtsMmJkOTAxemdXaTFxMWoAAgSgtWpaAwQwhScA', '1', null, '1', '1516942752', '1516942752');
-INSERT INTO `st_dimension` VALUES ('56', 'gQHU8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAya0RTWmtFMmJkOTAxQVQyaTFxMVAAAgQHvWpaAwQwhScA', '1', null, '1', '1516944648', '1516944648');
-INSERT INTO `st_dimension` VALUES ('57', 'gQEN8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySHptQ2xwMmJkOTAxQnc0aWhxMU0AAgQwv2paAwQwhScA', '1', null, '1', '1516945201', '1516945201');
-INSERT INTO `st_dimension` VALUES ('58', 'gQGP8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyYjRpYmxxMmJkOTAxMDAwMDAwM3oAAgQ1DmBaAwQAAAAA', '5', '1', '0', '1516945361', '1516945361');
-INSERT INTO `st_dimension` VALUES ('59', 'gQHT8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQkQ0T2tmMmJkOTAxMDAwMHcwM1IAAgQ2DmBaAwQAAAAA', '5', '2', '0', '1516945361', '1516945361');
-INSERT INTO `st_dimension` VALUES ('60', 'gQG58DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAya1NSLWtZMmJkOTAxMDAwMHcwMzMAAgRIDmBaAwQAAAAA', '2', null, '0', '1516945361', '1516945361');
-INSERT INTO `st_dimension` VALUES ('61', 'gQF-8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTmk0Y2xBMmJkOTAxQzY1aXhxMTYAAgRWwGpaAwQwhScA', '1', null, '1', '1516945495', '1516945495');
-INSERT INTO `st_dimension` VALUES ('62', 'gQFB8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZHl2bGt5MmJkOTAxMDAwME0wMzMAAgRIDmBaAwQAAAAA', '5', '2', '0', '1516947144', '1516947144');
-INSERT INTO `st_dimension` VALUES ('63', 'gQHc8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUllHZ2xVMmJkOTAxMDAwMDAwMzcAAgSNymZaAwQAAAAA', '2', null, '0', '1516947144', '1516947144');
-INSERT INTO `st_dimension` VALUES ('64', 'gQGW8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZTJGNmtjMmJkOTAxQzNjaTFxMVEAAgRTx2paAwQwhScA', '1', null, '1', '1516947283', '1516947283');
-INSERT INTO `st_dimension` VALUES ('65', 'gQHe8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQjY1UGtOMmJkOTAxMDAwMHcwM1EAAgSOymZaAwQAAAAA', '5', '2', '0', '1516947909', '1516947909');
-INSERT INTO `st_dimension` VALUES ('66', 'gQEL8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybHVfcGtrMmJkOTAxMDAwMGcwM2QAAgSOymZaAwQAAAAA', '2', null, '0', '1516947909', '1516947909');
-INSERT INTO `st_dimension` VALUES ('67', 'gQHw7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyVmpPNWtGMmJkOTAxQ3hmaTFxMXoAAgRxympaAwQwhScA', '1', null, '1', '1516948082', '1516948082');
-INSERT INTO `st_dimension` VALUES ('68', 'gQFh8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySHhzQ2xiMmJkOTAxRHJqaXhxMTYAAgSrzmpaAwQwhScA', '1', null, '1', '1516949163', '1516949163');
-INSERT INTO `st_dimension` VALUES ('69', 'gQHE7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyR180c2xxMmJkOTAxQnZFaXhxMXcAAgQv42paAwQwhScA', '1', null, '1', '1516954416', '1516954416');
-INSERT INTO `st_dimension` VALUES ('70', 'gQFl8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTC00aWxoMmJkOTAxQmdLaTFxMW8AAgQg6WpaAwQwhScA', '1', null, '1', '1516955936', '1516955936');
-INSERT INTO `st_dimension` VALUES ('71', 'gQEL8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU2NDdGtsMmJkOTAxQzFLaU5xMVYAAgRR6WpaAwQwhScA', '1', null, '1', '1516955986', '1516955986');
-INSERT INTO `st_dimension` VALUES ('72', 'gQHp7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQmJPYmtwMmJkOTAxQzVOaWhxMWQAAgRV7GpaAwQwhScA', '1', null, '1', '1516956758', '1516956758');
-INSERT INTO `st_dimension` VALUES ('73', 'gQEW8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyOTU1TmtaMmJkOTAxRE9RaTFxMVoAAgTC72paAwQwhScA', '1', null, '1', '1516957634', '1516957634');
-INSERT INTO `st_dimension` VALUES ('74', 'gQGp7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZkNoa2tnMmJkOTAxQ0FSaXhxMUMAAgR08GpaAwQwhScA', '1', null, '1', '1516957813', '1516957813');
-INSERT INTO `st_dimension` VALUES ('75', 'gQFi8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyYmFxMmtzMmJkOTAxQTNTaWhxMVQAAgTT8GpaAwQwhScA', '1', null, '1', '1516957907', '1516957907');
-INSERT INTO `st_dimension` VALUES ('76', 'gQER8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyd3ZaRWx3MmJkOTAxQWpWaU5xMUcAAgTj82paAwQwhScA', '1', null, '1', '1516958692', '1516958692');
-INSERT INTO `st_dimension` VALUES ('77', 'gQEt8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyWmZ3aGxOMmJkOTAxQXRWaTFxMUoAAgTt82paAwQwhScA', '1', null, '1', '1516958702', '1516958702');
 
 -- ----------------------------
 -- Table structure for st_dimension_num
@@ -496,7 +513,7 @@ CREATE TABLE `st_dimension_num` (
 -- ----------------------------
 -- Records of st_dimension_num
 -- ----------------------------
-INSERT INTO `st_dimension_num` VALUES ('19', '60', '1');
+INSERT INTO `st_dimension_num` VALUES ('2', '49', '1');
 
 -- ----------------------------
 -- Table structure for st_feeds
@@ -547,17 +564,107 @@ CREATE TABLE `st_goods` (
   `name` varchar(64) NOT NULL COMMENT '商品名称',
   `pic` varchar(255) DEFAULT NULL,
   `desc` text COMMENT '商品描述',
-  `cost` double(6,2) NOT NULL COMMENT '商品成本',
-  `price` double(6,2) NOT NULL COMMENT '商品单价',
-  `stock` int(11) NOT NULL DEFAULT '0' COMMENT '商品库存',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '商品状态，默认0上架，1为下架',
-  `addtime` varchar(12) NOT NULL COMMENT '商品添加时间',
-  `updatetime` varchar(12) NOT NULL COMMENT '商品更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `cost` double(6,2) DEFAULT NULL COMMENT '商品成本',
+  `price` double(6,2) DEFAULT NULL COMMENT '商品单价',
+  `stock` int(11) DEFAULT '0' COMMENT '商品库存',
+  `status` tinyint(1) DEFAULT '0' COMMENT '商品状态，默认0上架，1为下架',
+  `addtime` int(12) NOT NULL COMMENT '商品添加时间',
+  `updatetime` int(12) NOT NULL COMMENT '商品更新时间',
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`,`cid`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_goods
+-- ----------------------------
+INSERT INTO `st_goods` VALUES ('1', '8', null, '小米', null, null, null, null, '0', '0', '1516970804', '1516970804');
+INSERT INTO `st_goods` VALUES ('4', '8', null, '三星', null, null, null, null, '0', '0', '1516970804', '1516971060');
+INSERT INTO `st_goods` VALUES ('5', '21', null, '三星', null, null, null, null, '0', '0', '1516970804', '1516971093');
+INSERT INTO `st_goods` VALUES ('6', '22', null, '苹果', null, null, null, null, '0', '0', '1516970804', '1516971093');
+INSERT INTO `st_goods` VALUES ('22', '10', null, '手机', null, null, null, null, '0', '0', '1517190942', '1517190942');
+
+-- ----------------------------
+-- Table structure for st_goods_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `st_goods_detail`;
+CREATE TABLE `st_goods_detail` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `gid` int(11) NOT NULL COMMENT '关联商品ID',
+  `price` double(6,2) NOT NULL COMMENT '商品单价',
+  `cost` double(6,2) NOT NULL COMMENT '商品成本',
+  `stock` int(11) NOT NULL COMMENT '库存',
+  `desc` text CHARACTER SET utf8 COMMENT '商品描述',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '商品状态，0下架，默认1为上架',
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`,`gid`,`status`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of st_goods_detail
+-- ----------------------------
+INSERT INTO `st_goods_detail` VALUES ('1', '1', '1988.00', '1500.00', '325', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('3', '4', '3.00', '2.00', '12', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('4', '5', '30.25', '20.00', '215', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('5', '6', '300.00', '20.00', '302', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('6', '7', '2.00', '2.00', '10', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('7', '8', '3.02', '2.00', '362', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('8', '9', '3.02', '2.00', '362', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('9', '10', '3.00', '2.00', '265', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('10', '11', '3.00', '2.00', '265', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('11', '12', '3.20', '2.00', '12', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('12', '13', '3.20', '15.01', '1562', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('13', '14', '3.20', '15.01', '1562', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('14', '15', '3.20', '2.00', '123', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('15', '16', '3.20', '2.00', '123', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('16', '17', '2.02', '23.02', '123', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('17', '18', '2.02', '23.02', '123', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('18', '19', '2.02', '23.02', '123', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('19', '20', '2.02', '23.02', '123', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('20', '22', '306.00', '201.00', '165', null, '1');
+
+-- ----------------------------
+-- Table structure for st_orders
+-- ----------------------------
+DROP TABLE IF EXISTS `st_orders`;
+CREATE TABLE `st_orders` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `order_id` varchar(32) NOT NULL COMMENT '订单编号',
+  `device_id` int(11) unsigned NOT NULL COMMENT '关联的设备ID号',
+  `user_id` int(11) unsigned NOT NULL COMMENT '关联的用户ID号',
+  `express_id` int(11) unsigned DEFAULT NULL COMMENT '关联快递信息ID号',
+  `total_num` int(11) unsigned NOT NULL COMMENT '商品的购买总数量',
+  `total_price` decimal(15,2) unsigned NOT NULL COMMENT '商品的购买总金额',
+  `created_at` int(11) DEFAULT NULL COMMENT '订单创建时间',
+  `updated_at` int(11) DEFAULT NULL COMMENT '订单修改时间',
+  `is_pay` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '付款状态(0：未付款1：已付款 2：已取消)',
+  `is_receipt` tinyint(1) unsigned DEFAULT '0' COMMENT '发货状态(0：未发货1：已发货)',
+  `is_ship` tinyint(1) unsigned DEFAULT '0' COMMENT '收货状态(0：未收货1：已收货)',
+  `is_recharge` tinyint(1) unsigned DEFAULT '0' COMMENT '充值状态(0：未充值1：已充值)',
+  `express` varchar(32) DEFAULT NULL COMMENT '快递名称',
+  `mca` varchar(32) DEFAULT NULL COMMENT '快递订单号',
+  PRIMARY KEY (`id`),
+  KEY `order_id` (`order_id`,`device_id`,`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of st_orders
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for st_pic
+-- ----------------------------
+DROP TABLE IF EXISTS `st_pic`;
+CREATE TABLE `st_pic` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '图片ID',
+  `gid` int(11) NOT NULL COMMENT '关联商品ID',
+  `picname` varchar(100) CHARACTER SET utf8 NOT NULL COMMENT '图片名称',
+  `path` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '图片地址',
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`,`gid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of st_pic
 -- ----------------------------
 
 -- ----------------------------
@@ -587,19 +694,22 @@ DROP TABLE IF EXISTS `st_shop_order`;
 CREATE TABLE `st_shop_order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` varchar(12) NOT NULL COMMENT '订单号码',
+  `uid` int(11) NOT NULL COMMENT '关联用户ID',
   `gid` int(11) NOT NULL COMMENT '商品ID',
   `g_cost` double(6,2) NOT NULL,
   `g_price` double(6,2) NOT NULL COMMENT '商品单价',
   `g_num` int(11) NOT NULL COMMENT '商品数量',
   `addtime` varchar(12) NOT NULL COMMENT '订单添加时间',
   `status` tinyint(1) NOT NULL COMMENT '0已下单，1处理中，2已发货，3已收货，4退货处理中，5已退货，6申诉中，7订单完成，8未支付',
+  `mode` tinyint(1) NOT NULL COMMENT '支付方式(0-微信、1-支付宝、2-银联)',
   `express` varchar(32) DEFAULT NULL COMMENT '快递单号',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_shop_order
 -- ----------------------------
+INSERT INTO `st_shop_order` VALUES ('1', '1352641253', '2', '22', '200.00', '300.00', '3', '1516970804', '0', '0', null);
 
 -- ----------------------------
 -- Table structure for st_users
@@ -630,22 +740,12 @@ CREATE TABLE `st_users` (
   `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_users
 -- ----------------------------
-INSERT INTO `st_users` VALUES ('13', 'oQktJwL8ioR4DoxSQmikdzekbABCu', '53AB0F', '428777', '1CE019', '7352CF', '1CE019', '7352CF', '06DCFD672A7', '3', 'gQHw7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyVmpPNWtGMmJkOTAxQ3hmaTFxMXoAAgRxympaAwQwhScA', '8', '1519538082', '吴智彬-13425492760', 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132', '1', '广东', '中国 广东 广州', '14800', '24660', '0.00', '1516948080', '1516959607');
-INSERT INTO `st_users` VALUES ('14', 'oQktJwL8ioR4DoxSQmikdzekbUyU', '53AB0F', '428777', '1CE019', '7352CF', '1CE019', '06DCFD672A7', 'E8EDB67CF5F', '4', 'gQFh8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySHhzQ2xiMmJkOTAxRHJqaXhxMTYAAgSrzmpaAwQwhScA', '9', '1519539163', '吴智彬-13425492760', 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132', '1', '广东', '中国 广东 广州', '14160', '16110', '0.00', '1516949162', '1516959607');
-INSERT INTO `st_users` VALUES ('15', 'oQktJwH4pvWGmyzQW5Pw2QlsgoMA', null, null, null, null, null, null, '4B4CE0F8477', '5', 'gQHE7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyR180c2xxMmJkOTAxQnZFaXhxMXcAAgQv42paAwQwhScA', '10', '1519544416', '艳阳天', 'http://wx.qlogo.cn/mmopen/8RP9wLClmUicRxrG1wwicpcnpREmJiakXfuMKaqVyKIYqWIf4vB74NRNDzJDWdkocvFicwXIKHlksGl3q6Wwam45DHgxrLxpM8Nu/132', '0', '堪培拉', '澳大利亚 堪培拉 ', '0', '0', '0.00', '1516954415', '1516954415');
-INSERT INTO `st_users` VALUES ('16', 'oQktJwIWnouiVZV7ks9OqtDWg_kI', null, null, null, null, null, null, '2442F6394A2', '5', 'gQFl8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTC00aWxoMmJkOTAxQmdLaTFxMW8AAgQg6WpaAwQwhScA', '11', '1519545936', '宝松', 'http://wx.qlogo.cn/mmopen/PCxWjnicpibLPrVPt1nibibI8YA52IrlohXVhVR1NIA4jibyTAj1OgmicGF1ITYBp4TwqrQ2LlqJpszTRPgfmYZ104yHuEoXyCeXxb/132', '1', '北区', '中国香港 北区 ', '0', '0', '0.00', '1516955935', '1516955935');
-INSERT INTO `st_users` VALUES ('17', 'oQktJwOg4MgSWV2vvkeYXWLRhPLE', null, null, null, null, null, null, '568A6CC8281', '5', 'gQEL8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU2NDdGtsMmJkOTAxQzFLaU5xMVYAAgRR6WpaAwQwhScA', '12', '1519545986', 'dyf', 'http://wx.qlogo.cn/mmopen/PCxWjnicpibLPvBkEAoIzHcCltJGicycMNrJoOv7GxT7ibv7hNHPwAYQmoKZD928SBhbibpjZgFHLyiaxbB3G1WRfTyOgIVictNVkicib/132', '2', '', '  ', '0', '0', '0.00', '1516955985', '1516955985');
-INSERT INTO `st_users` VALUES ('18', 'oQktJwDcehCKazprwaD6cCBi_gMQ', null, null, null, null, null, null, '79C543ACFD4', '5', 'gQHp7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQmJPYmtwMmJkOTAxQzVOaWhxMWQAAgRV7GpaAwQwhScA', '13', '1519546758', '人心难测', 'http://wx.qlogo.cn/mmopen/tW8icv6f6mGOAdZXcK6W4ic7skeRicHKcHD24zk5avRDoRamBVbpWgWxN6NfXIU9uEHPUthHmkzIE4ib5xJHTF76e7GqcMicvDkibP/132', '1', '辽宁', '中国 辽宁 朝阳', '1000', '1200', '0.00', '1516956757', '1516956930');
-INSERT INTO `st_users` VALUES ('19', 'oQktJwFlFLD07FF0E5qsKEnnljgY', null, null, null, null, null, null, '171DF1BF3E5', '5', 'gQEW8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyOTU1TmtaMmJkOTAxRE9RaTFxMVoAAgTC72paAwQwhScA', '14', '1519547634', '乐施林视力康复18088833688', 'http://wx.qlogo.cn/mmopen/uFDO94xgj3E5CyZj7FEvbb4GgaeGso4TCibsduQHSSe5ibqu1ErJgrXHTiafvgYqd9qSVDGk8EPWvW5uxeQng5qZfcPlzup4MJ7/132', '1', '广东', '中国 广东 佛山', '0', '0', '0.00', '1516957633', '1516957633');
-INSERT INTO `st_users` VALUES ('20', 'oQktJwKn6We-LT7EVXYmFjcPA6Lg', null, null, null, null, null, null, '5017D5BDDAF', '5', 'gQGp7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZkNoa2tnMmJkOTAxQ0FSaXhxMUMAAgR08GpaAwQwhScA', '15', '1519547813', '芦妈', 'http://wx.qlogo.cn/mmopen/GB58cfpy0hJyv1ic5FKXibE2UF1iazT5SoicOITsNibyAySVR2YShpIIvRc2ToMzPKxegEQDRgCibfSNRUIurFrJUKO2PEaPORB9Vw/132', '2', '', '  ', '0', '0', '0.00', '1516957812', '1516957812');
-INSERT INTO `st_users` VALUES ('21', 'oQktJwM_1gtIGWFOr2J9IWNGTbOE', null, null, null, null, null, null, 'A375F99A52F', '5', 'gQFi8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyYmFxMmtzMmJkOTAxQTNTaWhxMVQAAgTT8GpaAwQwhScA', '16', '1519547907', '凌艺', 'http://wx.qlogo.cn/mmopen/KQas9Orx7ZuqYibMGMDvXJdNEt6zfRuTEuPxlPhNNnJ8YLoht0RXXKuCgM2jGDibDEriafVI4CyBrPGRAxga8aW7yqJnDXFsoBe/132', '2', '', '  ', '0', '0', '0.00', '1516957906', '1516957906');
-INSERT INTO `st_users` VALUES ('22', 'oQktJwAxpRl83nGeNg5eFQlmb2t4', null, null, null, null, null, null, '935F68985DD', '5', 'gQER8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyd3ZaRWx3MmJkOTAxQWpWaU5xMUcAAgTj82paAwQwhScA', '17', '1519548692', '随遇而安', 'http://wx.qlogo.cn/mmopen/8RP9wLClmU9hmtqEUSkEScenlic1fbBnZ9icevLB36xD2ibEr8P6Xicp6XclCicsiaB8uhTsKkOf2INwWpLqpKBpTzib7kiaKZiahU0SY/132', '0', '辽宁', '中国 辽宁 朝阳', '1000', '1200', '0.00', '1516958691', '1516959110');
-INSERT INTO `st_users` VALUES ('23', 'oQktJwJNaHdSZDpd5vZELuZWvRlA', null, null, null, null, null, null, '1C3B2C374E3', '5', 'gQEt8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyWmZ3aGxOMmJkOTAxQXRWaTFxMUoAAgTt82paAwQwhScA', '18', '1519548702', '是福', 'http://wx.qlogo.cn/mmopen/8RP9wLClmU9icRwTlWjLdB5zMwdpM63JjYL4ibNicoGWwia3ymXE22rZM3picTcPYBRwmozvEjDfp2UtARamQk6QwfkiaLrX0MWJibg/132', '1', '内蒙古', '中国 内蒙古 赤峰', '0', '0', '0.00', '1516958701', '1516958701');
+INSERT INTO `st_users` VALUES ('2', 'oQktJwL8ioR4DoxSQmikdzekbUyU', '53AB0F', '428777', '428777', '428777', null, '428777', '81375E7BC3E', '1', 'gQF47zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTWpaQ2x3MmJkOTAxSndUZzFxMVgAAgQwcmlaAwQwhScA', '1', '1519449953', '吴智彬-13425492760', 'http://wx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132', '1', '广东', '中国 广东 广州', '2400', '2700', '0.00', '1516859952', '1516981319');
 
 -- ----------------------------
 -- Table structure for st_users_commission
@@ -653,76 +753,24 @@ INSERT INTO `st_users` VALUES ('23', 'oQktJwJNaHdSZDpd5vZELuZWvRlA', null, null,
 DROP TABLE IF EXISTS `st_users_commission`;
 CREATE TABLE `st_users_commission` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增',
-  `nexus_user` varchar(11) NOT NULL COMMENT '产生分红的会员',
-  `user_code` varchar(11) NOT NULL COMMENT '关联用户表ID',
+  `user_id` int(11) unsigned NOT NULL COMMENT '关联用户表ID',
   `order_id` varchar(12) DEFAULT NULL COMMENT '订单号码',
   `gold_num` int(11) unsigned DEFAULT '0' COMMENT '金币数量 默认为0',
   `silver` int(11) unsigned DEFAULT '0' COMMENT '银币数量 默认为0',
   `current_gold_num` int(11) unsigned DEFAULT '0' COMMENT '当前金币数量 默认为0',
   `current_silver` int(11) unsigned DEFAULT '0' COMMENT '当前银币数量 默认为0',
   `describe` varchar(255) DEFAULT NULL COMMENT '佣金获得描述',
-  `type` tinyint(1) unsigned DEFAULT '0' COMMENT '分配类型{0：自己购买，1：邀请的会员购买}',
+  `type` tinyint(1) unsigned DEFAULT '0' COMMENT '分配类型{0：按比例分配，1：固定金额分配}',
   `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
-  `addtime` int(11) unsigned DEFAULT NULL COMMENT '创建时间',
-  `updatetime` int(11) unsigned DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=95 DEFAULT CHARSET=gbk;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=gbk;
 
 -- ----------------------------
 -- Records of st_users_commission
 -- ----------------------------
-INSERT INTO `st_users_commission` VALUES ('43', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '40', '30', '40', '30', '自己购买，单号为[123456]的商品获得金币奖励:40个,获得银币奖励：30个', '0', '0', '1516951755', '1516951755');
-INSERT INTO `st_users_commission` VALUES ('44', 'E8EDB67CF5F', '06DCFD672A7', '123456', '60', '70', '60', '70', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:60个,获得银币奖励：70个', '1', '0', '1516951755', '1516951755');
-INSERT INTO `st_users_commission` VALUES ('45', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '40', '30', '80', '60', '自己购买，单号为[123456]的商品获得金币奖励:40个,获得银币奖励：30个', '0', '0', '1516951895', '1516951895');
-INSERT INTO `st_users_commission` VALUES ('46', 'E8EDB67CF5F', '06DCFD672A7', '123456', '60', '70', '120', '140', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:60个,获得银币奖励：70个', '1', '0', '1516951895', '1516951895');
-INSERT INTO `st_users_commission` VALUES ('47', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '40', '30', '120', '90', '自己购买，单号为[123456]的商品获得金币奖励:40个,获得银币奖励：30个', '0', '0', '1516952022', '1516952022');
-INSERT INTO `st_users_commission` VALUES ('48', 'E8EDB67CF5F', '06DCFD672A7', '123456', '60', '70', '180', '210', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:60个,获得银币奖励：70个', '1', '0', '1516952022', '1516952022');
-INSERT INTO `st_users_commission` VALUES ('49', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '40', '30', '160', '120', '自己购买，单号为[123456]的商品获得金币奖励:40个,获得银币奖励：30个', '0', '0', '1516952063', '1516952063');
-INSERT INTO `st_users_commission` VALUES ('50', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '40', '30', '160', '120', '自己购买，单号为[123456]的商品获得金币奖励:40个,获得银币奖励：30个', '0', '0', '1516952063', '1516952063');
-INSERT INTO `st_users_commission` VALUES ('51', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '40', '30', '160', '120', '自己购买，单号为[123456]的商品获得金币奖励:40个,获得银币奖励：30个', '0', '0', '1516952063', '1516952063');
-INSERT INTO `st_users_commission` VALUES ('52', 'E8EDB67CF5F', '06DCFD672A7', '123456', '60', '70', '240', '280', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:60个,获得银币奖励：70个', '1', '0', '1516952063', '1516952063');
-INSERT INTO `st_users_commission` VALUES ('53', 'E8EDB67CF5F', '06DCFD672A7', '123456', '60', '70', '240', '280', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:60个,获得银币奖励：70个', '1', '0', '1516952063', '1516952063');
-INSERT INTO `st_users_commission` VALUES ('54', 'E8EDB67CF5F', '06DCFD672A7', '123456', '60', '70', '300', '350', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:60个,获得银币奖励：70个', '1', '0', '1516952063', '1516952063');
-INSERT INTO `st_users_commission` VALUES ('55', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '40', '30', '200', '150', '自己购买，单号为[123456]的商品获得金币奖励:40个,获得银币奖励：30个', '0', '0', '1516952081', '1516952081');
-INSERT INTO `st_users_commission` VALUES ('56', 'E8EDB67CF5F', '06DCFD672A7', '123456', '60', '70', '360', '420', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:60个,获得银币奖励：70个', '1', '0', '1516952081', '1516952081');
-INSERT INTO `st_users_commission` VALUES ('57', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '40', '30', '240', '180', '自己购买，单号为[123456]的商品获得金币奖励:40个,获得银币奖励：30个', '0', '0', '1516952082', '1516952082');
-INSERT INTO `st_users_commission` VALUES ('58', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '40', '30', '280', '210', '自己购买，单号为[123456]的商品获得金币奖励:40个,获得银币奖励：30个', '0', '0', '1516952082', '1516952082');
-INSERT INTO `st_users_commission` VALUES ('59', 'E8EDB67CF5F', '06DCFD672A7', '123456', '60', '70', '420', '490', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:60个,获得银币奖励：70个', '1', '0', '1516952082', '1516952082');
-INSERT INTO `st_users_commission` VALUES ('60', 'E8EDB67CF5F', '06DCFD672A7', '123456', '60', '70', '480', '560', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:60个,获得银币奖励：70个', '1', '0', '1516952082', '1516952082');
-INSERT INTO `st_users_commission` VALUES ('61', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '40', '30', '320', '240', '自己购买，单号为[123456]的商品获得金币奖励:40个,获得银币奖励：30个', '0', '0', '1516952082', '1516952082');
-INSERT INTO `st_users_commission` VALUES ('62', 'E8EDB67CF5F', '06DCFD672A7', '123456', '60', '70', '540', '630', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:60个,获得银币奖励：70个', '1', '0', '1516952082', '1516952082');
-INSERT INTO `st_users_commission` VALUES ('63', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '40', '30', '360', '270', '自己购买，单号为[123456]的商品获得金币奖励:40个,获得银币奖励：30个', '0', '0', '1516952117', '1516952117');
-INSERT INTO `st_users_commission` VALUES ('64', 'E8EDB67CF5F', '06DCFD672A7', '123456', '60', '70', '600', '700', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:60个,获得银币奖励：70个', '1', '0', '1516952117', '1516952117');
-INSERT INTO `st_users_commission` VALUES ('65', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '800', '240', '1160', '510', '自己购买，单号为[123456]的商品获得金币奖励:800个,获得银币奖励：240个', '0', '0', '1516952206', '1516952206');
-INSERT INTO `st_users_commission` VALUES ('66', 'E8EDB67CF5F', '06DCFD672A7', '123456', '1200', '560', '1800', '1260', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:1200个,获得银币奖励：560个', '1', '0', '1516952206', '1516952206');
-INSERT INTO `st_users_commission` VALUES ('67', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '1000', '1200', '2160', '1710', '自己购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1200个', '0', '0', '1516952902', '1516952902');
-INSERT INTO `st_users_commission` VALUES ('68', 'E8EDB67CF5F', '06DCFD672A7', '123456', '1000', '1800', '2800', '3060', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1800个', '1', '0', '1516952902', '1516952902');
-INSERT INTO `st_users_commission` VALUES ('69', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '1000', '1200', '3160', '2910', '自己购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1200个', '0', '0', '1516953004', '1516953004');
-INSERT INTO `st_users_commission` VALUES ('70', 'E8EDB67CF5F', '06DCFD672A7', '123456', '1000', '1800', '3800', '4860', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1800个', '1', '0', '1516953004', '1516953004');
-INSERT INTO `st_users_commission` VALUES ('71', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '1000', '1200', '4160', '4110', '自己购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1200个', '0', '0', '1516953037', '1516953037');
-INSERT INTO `st_users_commission` VALUES ('72', 'E8EDB67CF5F', '06DCFD672A7', '123456', '1000', '1800', '4800', '6660', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1800个', '1', '0', '1516953037', '1516953037');
-INSERT INTO `st_users_commission` VALUES ('73', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '1000', '1200', '5160', '5310', '自己购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1200个', '0', '0', '1516953082', '1516953082');
-INSERT INTO `st_users_commission` VALUES ('74', 'E8EDB67CF5F', '06DCFD672A7', '123456', '1000', '1800', '5800', '8460', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1800个', '1', '0', '1516953082', '1516953082');
-INSERT INTO `st_users_commission` VALUES ('75', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '1000', '1200', '6160', '6510', '自己购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1200个', '0', '0', '1516953236', '1516953236');
-INSERT INTO `st_users_commission` VALUES ('76', 'E8EDB67CF5F', '06DCFD672A7', '123456', '1000', '1800', '6800', '10260', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1800个', '1', '0', '1516953236', '1516953236');
-INSERT INTO `st_users_commission` VALUES ('77', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '1000', '1200', '7160', '7710', '自己购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1200个', '0', '0', '1516953747', '1516953747');
-INSERT INTO `st_users_commission` VALUES ('78', 'E8EDB67CF5F', '06DCFD672A7', '123456', '1000', '1800', '7800', '12060', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1800个', '1', '0', '1516953747', '1516953747');
-INSERT INTO `st_users_commission` VALUES ('79', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '1000', '1200', '8160', '8910', '自己购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1200个', '0', '0', '1516953786', '1516953786');
-INSERT INTO `st_users_commission` VALUES ('80', 'E8EDB67CF5F', '06DCFD672A7', '123456', '1000', '1800', '8800', '13860', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1800个', '1', '0', '1516953786', '1516953786');
-INSERT INTO `st_users_commission` VALUES ('81', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '1000', '1200', '9160', '10110', '自己购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1200个', '0', '0', '1516953905', '1516953905');
-INSERT INTO `st_users_commission` VALUES ('82', 'E8EDB67CF5F', '06DCFD672A7', '123456', '1000', '1800', '9800', '15660', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1800个', '1', '0', '1516953905', '1516953905');
-INSERT INTO `st_users_commission` VALUES ('83', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '1000', '1200', '10160', '11310', '自己购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1200个', '0', '0', '1516953912', '1516953912');
-INSERT INTO `st_users_commission` VALUES ('84', 'E8EDB67CF5F', '06DCFD672A7', '123456', '1000', '1800', '10800', '17460', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1800个', '1', '0', '1516953912', '1516953912');
-INSERT INTO `st_users_commission` VALUES ('85', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '1000', '1200', '11160', '12510', '自己购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1200个', '0', '0', '1516953923', '1516953923');
-INSERT INTO `st_users_commission` VALUES ('86', 'E8EDB67CF5F', '06DCFD672A7', '123456', '1000', '1800', '11800', '19260', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1800个', '1', '0', '1516953923', '1516953923');
-INSERT INTO `st_users_commission` VALUES ('87', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '1000', '1200', '12160', '13710', '自己购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1200个', '0', '0', '1516953934', '1516953934');
-INSERT INTO `st_users_commission` VALUES ('88', 'E8EDB67CF5F', '06DCFD672A7', '123456', '1000', '1800', '12800', '21060', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1800个', '1', '0', '1516953934', '1516953934');
-INSERT INTO `st_users_commission` VALUES ('89', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '1000', '1200', '13160', '14910', '自己购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1200个', '0', '0', '1516955083', '1516955083');
-INSERT INTO `st_users_commission` VALUES ('90', 'E8EDB67CF5F', '06DCFD672A7', '123456', '1000', '1800', '13800', '22860', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1800个', '1', '0', '1516955084', '1516955084');
-INSERT INTO `st_users_commission` VALUES ('91', '79C543ACFD4', '79C543ACFD4', '123456', '1000', '1200', '1000', '1200', '自己购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1200个', '0', '0', '1516956930', '1516956930');
-INSERT INTO `st_users_commission` VALUES ('92', '935F68985DD', '935F68985DD', '123456', '1000', '1200', '1000', '1200', '自己购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1200个', '0', '0', '1516959110', '1516959110');
-INSERT INTO `st_users_commission` VALUES ('93', 'E8EDB67CF5F', 'E8EDB67CF5F', '123456', '1000', '1200', '14160', '16110', '自己购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1200个', '0', '0', '1516959607', '1516959607');
-INSERT INTO `st_users_commission` VALUES ('94', 'E8EDB67CF5F', '06DCFD672A7', '123456', '1000', '1800', '14800', '24660', '邀请会员吴智彬-13425492760购买，单号为[123456]的商品获得金币奖励:1000个,获得银币奖励：1800个', '1', '0', '1516959607', '1516959607');
+INSERT INTO `st_users_commission` VALUES ('1', '0', '123456', '800', '900', '800', '900', '自己购买，单号为[123456]的商品获得金币奖励:800个,获得银币奖励：900个', '0', '0');
+INSERT INTO `st_users_commission` VALUES ('2', '0', '123456', '800', '900', '1600', '1800', '自己购买，单号为[123456]的商品获得金币奖励:800个,获得银币奖励：900个', '0', '0');
+INSERT INTO `st_users_commission` VALUES ('3', '0', '123456', '800', '900', '2400', '2700', '自己购买，单号为[123456]的商品获得金币奖励:800个,获得银币奖励：900个', '0', '0');
 
 -- ----------------------------
 -- Table structure for st_vendors
@@ -763,18 +811,14 @@ CREATE TABLE `st_vendors` (
   `addtime` int(11) unsigned NOT NULL COMMENT '添加时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_vendors
 -- ----------------------------
 INSERT INTO `st_vendors` VALUES ('1', null, 'admin', '202cb962ac59075b964b07152d234b70', '13425492760', '超级管理员', null, null, null, null, null, null, null, null, null, '0', null, null, null, null, null, null, null, '', null, '0.00', null, null, null, '0', '7', '1513872000', '1513872000');
 INSERT INTO `st_vendors` VALUES ('9', null, 'wuzhibin', 'e10adc3949ba59abbe56e057f20f883e', '13425492760', '分公司', '440882198812045532', '/Vendors/2018-01-25/5a696cb0e9927.png', '/Vendors/2018-01-25/5a696cb0f09a4.png', '/Vendors/2018-01-25/5a696cb0f10c7.png', '点球电子科技', '020-5656256-123', '公司地址很长很长', '/Vendors/2018-01-25/5a696cb0f145d.png', '/Vendors/2018-01-25/5a696cb0f178b.png', '1', '53AB0F', null, null, 'gQFp8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydmFWRms2MmJkOTAxMDAwME0wM2sAAgST9F5aAwQAAAAA', 'gQFI8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZ2ROU2tPMmJkOTAxMDAwME0wM3oAAgST9F5aAwQAAAAA', 'gQE18TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySHN4ZGxfMmJkOTAxMDAwMDAwM2EAAgSf9V5aAwQAAAAA', 'gQFC8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyM0tfb2t1MmJkOTAxMDAwMGcwM1MAAgSf9V5aAwQAAAAA', null, null, '0.00', null, 'admin', null, '0', '7', '1516858544', '1516858544');
-INSERT INTO `st_vendors` VALUES ('10', 'oQktJwL8ioR4DoxSQmikdzekbUyA', 'wuzhibinA', 'e10adc3949ba59abbe56e057f20f883e', '13425492760', '分公司下A级分销', '440882198812045535', '/Vendors/2018-01-25/5a696d6e883ad.png', '/Vendors/2018-01-25/5a696d6e889b2.png', '/Vendors/2018-01-25/5a696d6e88fea.png', '分公司A级分销', '020-8685856-12', '访问的时间段', '/Vendors/2018-01-25/5a696d89cc469.png', '/Vendors/2018-01-25/5a696d98633e7.docx', '2', '428777', null, null, 'gQEe8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySWpOdGw4MmJkOTAxMDAwMDAwMzgAAgQf-l5aAwQAAAAA', 'gQG-8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySmlVQWxVMmJkOTAxMDAwMHcwM18AAgQf-l5aAwQAAAAA', 'gQFz8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUWNHN2xMMmJkOTAxMDAwMGcwM1MAAgSXDGBaAwQAAAAA', 'gQHC8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQ2NFUmtLMmJkOTAxMDAwMDAwMzIAAgSXDGBaAwQAAAAA', null, '53AB0F', '6000.00', 'admin', null, null, '3', '7', '1516858661', '1516959607');
-INSERT INTO `st_vendors` VALUES ('11', 'oQktJwL8ioR4DoxSQmikdzekbUAA', 'WZBa_a', 'e10adc3949ba59abbe56e057f20f883e', '13425492760', 'A_A', '440882198812045532', '/Vendors/2018-01-26/5a6ab38f4fc69.png', '/Vendors/2018-01-26/5a6ab38f57004.png', '/Vendors/2018-01-26/5a6ab38f57653.png', '点球电子科技a_a', '020-5656256-123', '公司地址很长很长', '/Vendors/2018-01-26/5a6ab39b5ec99.png', '/Vendors/2018-01-26/5a6ab3a121c8f.png', '2', 'C571CE', null, null, 'gQFq8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySkh1bGtRMmJkOTAxMDAwMDAwM0oAAgSaDWBaAwQAAAAA', 'gQHz8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydVNxUmttMmJkOTAxMDAwMGcwM1YAAgSaDWBaAwQAAAAA', 'gQEk8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyazV0X2xyMmJkOTAxMDAwMDAwM1oAAgSuDWBaAwQAAAAA', 'gQH28DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyMlV3Z2xpMmJkOTAxMDAwMGcwM2gAAgSuDWBaAwQAAAAA', '428777', '53AB0F', '0.00', 'admin', null, null, '3', '7', '1516942194', '1516945201');
-INSERT INTO `st_vendors` VALUES ('12', 'oQktJwL8ioR4DoxSQmikdzekbUAB', 'w123wzA_B', 'e10adc3949ba59abbe56e057f20f883e', '13425492760', '分公司A_B', '440882198812045532', '/Vendors/2018-01-26/5a6abfee2d9a4.png', '/Vendors/2018-01-26/5a6abfee3106f.png', '/Vendors/2018-01-26/5a6abfee316e9.png', '点球电子科技', '020-5656256-123', '公司地址很长很长', '/Vendors/2018-01-26/5a6abff8ddfa8.png', '/Vendors/2018-01-26/5a6abffca6be1.png', '3', '1CE019', '428777', null, null, 'gQGP8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyYjRpYmxxMmJkOTAxMDAwMDAwM3oAAgQ1DmBaAwQAAAAA', 'gQHT8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQkQ0T2tmMmJkOTAxMDAwMHcwM1IAAgQ2DmBaAwQAAAAA', 'gQG58DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAya1NSLWtZMmJkOTAxMDAwMHcwMzMAAgRIDmBaAwQAAAAA', '428777', '53AB0F', '7500.00', 'admin', null, null, '3', '7', '1516945360', '1516959607');
-INSERT INTO `st_vendors` VALUES ('13', 'oQktJwL8ioR4DoxSQmikdzekbABC', 'wuzhibinA_B_C', 'e10adc3949ba59abbe56e057f20f883e', '13425492760', '吴智彬A_B_C', '440882198812045532', '/Vendors/2018-01-26/5a6ac6d73fb6e.png', '/Vendors/2018-01-26/5a6ac6d740181.png', '/Vendors/2018-01-26/5a6ac6d7407f9.png', '点球电子科技', '020-5656256-123', '公司地址很长很长', '/Vendors/2018-01-26/5a6ac6e0c510f.png', '/Vendors/2018-01-26/5a6ac6e914a21.png', '4', 'F552EA', '428777', '428777', null, null, 'gQFB8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZHl2bGt5MmJkOTAxMDAwME0wMzMAAgRIDmBaAwQAAAAA', 'gQHc8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUllHZ2xVMmJkOTAxMDAwMDAwMzcAAgSNymZaAwQAAAAA', '428777', '53AB0F', '0.00', 'admin', null, null, '3', '7', '1516947143', '1516947311');
-INSERT INTO `st_vendors` VALUES ('14', 'oQktJwL8ioR4DoxSQmikdzekbABCC', 'wuA_B_C', 'e10adc3949ba59abbe56e057f20f883e', '13425492760', '吴智彬A_B_CC', '440882198812045532', '/Vendors/2018-01-26/5a6ac9d65e8f3.png', '/Vendors/2018-01-26/5a6ac9d65ef70.png', '/Vendors/2018-01-26/5a6ac9d65f570.png', '点球abc', '020-5656256-123', '公司地址很长很长', '/Vendors/2018-01-26/5a6ac9e398798.png', '/Vendors/2018-01-26/5a6ac9e790db1.png', '4', '7352CF', '1CE019', '428777', null, null, 'gQHe8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQjY1UGtOMmJkOTAxMDAwMHcwM1EAAgSOymZaAwQAAAAA', 'gQEL8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybHVfcGtrMmJkOTAxMDAwMGcwM2QAAgSOymZaAwQAAAAA', '1CE019', '53AB0F', '1480.00', 'admin', null, null, '3', '7', '1516947909', '1516959607');
+INSERT INTO `st_vendors` VALUES ('10', 'oQktJwL8ioR4DoxSQmikdzekbUyU', 'wuzhibinA', 'e10adc3949ba59abbe56e057f20f883e', '13425492760', '分公司下A级分销', '440882198812045535', '/Vendors/2018-01-25/5a696d6e883ad.png', '/Vendors/2018-01-25/5a696d6e889b2.png', '/Vendors/2018-01-25/5a696d6e88fea.png', '分公司A级分销', '020-8685856-12', '访问的时间段', '/Vendors/2018-01-25/5a696d89cc469.png', '/Vendors/2018-01-25/5a696d98633e7.docx', '2', '428777', null, null, 'gQEe8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySWpOdGw4MmJkOTAxMDAwMDAwMzgAAgQf-l5aAwQAAAAA', 'gQG-8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySmlVQWxVMmJkOTAxMDAwMHcwM18AAgQf-l5aAwQAAAAA', 'gQFz8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUWNHN2xMMmJkOTAxMDAwMGcwM1MAAgSXDGBaAwQAAAAA', 'gQHC8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQ2NFUmtLMmJkOTAxMDAwMDAwMzIAAgSXDGBaAwQAAAAA', null, '53AB0F', '3000.00', 'admin', null, null, '3', '7', '1516858661', '1516981319');
 
 -- ----------------------------
 -- Table structure for st_vendors_commission
@@ -782,123 +826,22 @@ INSERT INTO `st_vendors` VALUES ('14', 'oQktJwL8ioR4DoxSQmikdzekbABCC', 'wuA_B_C
 DROP TABLE IF EXISTS `st_vendors_commission`;
 CREATE TABLE `st_vendors_commission` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增',
-  `nexus_vendor` varchar(6) NOT NULL COMMENT '产生分成的关联分销商',
-  `vendor_code` varchar(6) NOT NULL COMMENT '关联分销商唯一标识',
+  `vendor_id` int(11) unsigned NOT NULL COMMENT '关联分销商表ID',
   `order_id` varchar(12) DEFAULT NULL COMMENT '订单号码',
   `abonus` double(6,2) unsigned DEFAULT '0.00' COMMENT '分红 默认为0.00',
   `current_abonus` double(6,2) unsigned DEFAULT '0.00' COMMENT '当前分红 默认为0.00',
   `describe` varchar(255) DEFAULT NULL COMMENT '佣金获得描述',
-  `type` tinyint(1) unsigned DEFAULT '0' COMMENT '分配类型{0：直接会员，1：下级的会员，2：下下级的会员，3:同级下的会员}',
+  `type` tinyint(1) unsigned DEFAULT '0' COMMENT '分配类型{0：按比例分配，1：固定金额分配}',
   `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
-  `addtime` int(11) unsigned DEFAULT NULL COMMENT '创建时间',
-  `updatetime` int(11) unsigned DEFAULT NULL COMMENT '更新时间',
-  `nexus_user` varchar(11) NOT NULL COMMENT '产生分成的关联分销商',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=342 DEFAULT CHARSET=gbk;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=gbk;
 
 -- ----------------------------
 -- Records of st_vendors_commission
 -- ----------------------------
-INSERT INTO `st_vendors_commission` VALUES ('242', '7352CF', '1CE019', '123456', '20.00', '20.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:20元', '3', '0', '1516951755', '1516951755', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('243', '7352CF', '428777', '123456', '40.00', '40.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:40元', '2', '0', '1516951755', '1516951755', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('244', '7352CF', '1CE019', '123456', '30.00', '50.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:30元', '1', '0', '1516951755', '1516951755', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('245', '7352CF', '7352CF', '123456', '10.00', '10.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:10元', '0', '0', '1516951755', '1516951755', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('246', '7352CF', '1CE019', '123456', '20.00', '70.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:20元', '3', '0', '1516951895', '1516951895', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('247', '7352CF', '428777', '123456', '40.00', '80.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:40元', '2', '0', '1516951895', '1516951895', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('248', '7352CF', '1CE019', '123456', '30.00', '100.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:30元', '1', '0', '1516951895', '1516951895', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('249', '7352CF', '7352CF', '123456', '10.00', '20.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:10元', '0', '0', '1516951895', '1516951895', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('250', '7352CF', '1CE019', '123456', '20.00', '120.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:20元', '3', '0', '1516952022', '1516952022', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('251', '7352CF', '428777', '123456', '40.00', '120.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:40元', '2', '0', '1516952022', '1516952022', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('252', '7352CF', '1CE019', '123456', '30.00', '150.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:30元', '1', '0', '1516952022', '1516952022', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('253', '7352CF', '7352CF', '123456', '10.00', '30.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:10元', '0', '0', '1516952022', '1516952022', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('254', '7352CF', '1CE019', '123456', '20.00', '170.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:20元', '3', '0', '1516952063', '1516952063', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('255', '7352CF', '1CE019', '123456', '20.00', '170.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:20元', '3', '0', '1516952063', '1516952063', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('256', '7352CF', '428777', '123456', '40.00', '160.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:40元', '2', '0', '1516952063', '1516952063', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('257', '7352CF', '1CE019', '123456', '20.00', '190.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:20元', '3', '0', '1516952063', '1516952063', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('258', '7352CF', '428777', '123456', '40.00', '200.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:40元', '2', '0', '1516952063', '1516952063', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('259', '7352CF', '1CE019', '123456', '30.00', '220.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:30元', '1', '0', '1516952063', '1516952063', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('260', '7352CF', '428777', '123456', '40.00', '200.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:40元', '2', '0', '1516952063', '1516952063', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('261', '7352CF', '1CE019', '123456', '30.00', '250.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:30元', '1', '0', '1516952063', '1516952063', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('262', '7352CF', '7352CF', '123456', '10.00', '40.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:10元', '0', '0', '1516952063', '1516952063', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('263', '7352CF', '1CE019', '123456', '30.00', '250.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:30元', '1', '0', '1516952063', '1516952063', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('264', '7352CF', '7352CF', '123456', '10.00', '40.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:10元', '0', '0', '1516952063', '1516952063', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('265', '7352CF', '7352CF', '123456', '10.00', '40.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:10元', '0', '0', '1516952063', '1516952063', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('266', '7352CF', '1CE019', '123456', '20.00', '270.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:20元', '3', '0', '1516952081', '1516952081', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('267', '7352CF', '428777', '123456', '40.00', '240.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:40元', '2', '0', '1516952081', '1516952081', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('268', '7352CF', '1CE019', '123456', '30.00', '300.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:30元', '1', '0', '1516952082', '1516952082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('269', '7352CF', '7352CF', '123456', '10.00', '50.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:10元', '0', '0', '1516952082', '1516952082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('270', '7352CF', '1CE019', '123456', '20.00', '320.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:20元', '3', '0', '1516952082', '1516952082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('271', '7352CF', '428777', '123456', '40.00', '280.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:40元', '2', '0', '1516952082', '1516952082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('272', '7352CF', '1CE019', '123456', '20.00', '340.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:20元', '3', '0', '1516952082', '1516952082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('273', '7352CF', '1CE019', '123456', '30.00', '370.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:30元', '1', '0', '1516952082', '1516952082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('274', '7352CF', '428777', '123456', '40.00', '320.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:40元', '2', '0', '1516952082', '1516952082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('275', '7352CF', '7352CF', '123456', '10.00', '60.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:10元', '0', '0', '1516952082', '1516952082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('276', '7352CF', '1CE019', '123456', '30.00', '400.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:30元', '1', '0', '1516952082', '1516952082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('277', '7352CF', '7352CF', '123456', '10.00', '60.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:10元', '0', '0', '1516952082', '1516952082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('278', '7352CF', '1CE019', '123456', '20.00', '420.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:20元', '3', '0', '1516952082', '1516952082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('279', '7352CF', '428777', '123456', '40.00', '360.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:40元', '2', '0', '1516952082', '1516952082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('280', '7352CF', '1CE019', '123456', '30.00', '450.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:30元', '1', '0', '1516952082', '1516952082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('281', '7352CF', '7352CF', '123456', '10.00', '70.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:10元', '0', '0', '1516952082', '1516952082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('282', '7352CF', '1CE019', '123456', '20.00', '470.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:20元', '3', '0', '1516952117', '1516952117', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('283', '7352CF', '428777', '123456', '40.00', '400.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:40元', '2', '0', '1516952117', '1516952117', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('284', '7352CF', '1CE019', '123456', '30.00', '500.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:30元', '1', '0', '1516952117', '1516952117', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('285', '7352CF', '7352CF', '123456', '10.00', '80.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:10元', '0', '0', '1516952117', '1516952117', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('286', '7352CF', '1CE019', '123456', '200.00', '700.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:200元', '3', '0', '1516952206', '1516952206', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('287', '7352CF', '428777', '123456', '400.00', '800.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:400元', '2', '0', '1516952206', '1516952206', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('288', '7352CF', '1CE019', '123456', '300.00', '1000.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:300元', '1', '0', '1516952206', '1516952206', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('289', '7352CF', '7352CF', '123456', '100.00', '180.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:100元', '0', '0', '1516952206', '1516952206', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('290', '7352CF', '1CE019', '123456', '200.00', '1200.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:200元', '3', '0', '1516952902', '1516952902', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('291', '7352CF', '428777', '123456', '400.00', '1200.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:400元', '2', '0', '1516952902', '1516952902', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('292', '7352CF', '1CE019', '123456', '300.00', '1500.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:300元', '1', '0', '1516952903', '1516952903', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('293', '7352CF', '7352CF', '123456', '100.00', '280.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:100元', '0', '0', '1516952903', '1516952903', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('294', '7352CF', '1CE019', '123456', '200.00', '1700.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:200元', '3', '0', '1516953004', '1516953004', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('295', '7352CF', '428777', '123456', '400.00', '1600.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:400元', '2', '0', '1516953004', '1516953004', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('296', '7352CF', '1CE019', '123456', '300.00', '2000.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:300元', '1', '0', '1516953004', '1516953004', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('297', '7352CF', '7352CF', '123456', '100.00', '380.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:100元', '0', '0', '1516953004', '1516953004', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('298', '7352CF', '1CE019', '123456', '200.00', '2200.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:200元', '3', '0', '1516953037', '1516953037', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('299', '7352CF', '428777', '123456', '400.00', '2000.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:400元', '2', '0', '1516953037', '1516953037', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('300', '7352CF', '1CE019', '123456', '300.00', '2500.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:300元', '1', '0', '1516953037', '1516953037', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('301', '7352CF', '7352CF', '123456', '100.00', '480.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:100元', '0', '0', '1516953037', '1516953037', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('302', '7352CF', '1CE019', '123456', '200.00', '2700.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:200元', '3', '0', '1516953082', '1516953082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('303', '7352CF', '428777', '123456', '400.00', '2400.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:400元', '2', '0', '1516953082', '1516953082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('304', '7352CF', '1CE019', '123456', '300.00', '3000.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:300元', '1', '0', '1516953082', '1516953082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('305', '7352CF', '7352CF', '123456', '100.00', '580.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:100元', '0', '0', '1516953082', '1516953082', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('306', '7352CF', '1CE019', '123456', '200.00', '3200.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:200元', '3', '0', '1516953236', '1516953236', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('307', '7352CF', '428777', '123456', '400.00', '2800.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:400元', '2', '0', '1516953236', '1516953236', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('308', '7352CF', '1CE019', '123456', '300.00', '3500.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:300元', '1', '0', '1516953236', '1516953236', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('309', '7352CF', '7352CF', '123456', '100.00', '680.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:100元', '0', '0', '1516953236', '1516953236', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('310', '7352CF', '1CE019', '123456', '200.00', '3700.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:200元', '3', '0', '1516953747', '1516953747', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('311', '7352CF', '428777', '123456', '400.00', '3200.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:400元', '2', '0', '1516953747', '1516953747', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('312', '7352CF', '1CE019', '123456', '300.00', '4000.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:300元', '1', '0', '1516953747', '1516953747', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('313', '7352CF', '7352CF', '123456', '100.00', '780.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:100元', '0', '0', '1516953747', '1516953747', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('314', '7352CF', '1CE019', '123456', '200.00', '4200.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:200元', '3', '0', '1516953786', '1516953786', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('315', '7352CF', '428777', '123456', '400.00', '3600.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:400元', '2', '0', '1516953786', '1516953786', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('316', '7352CF', '1CE019', '123456', '300.00', '4500.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:300元', '1', '0', '1516953786', '1516953786', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('317', '7352CF', '7352CF', '123456', '100.00', '880.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:100元', '0', '0', '1516953786', '1516953786', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('318', '7352CF', '1CE019', '123456', '200.00', '4700.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:200元', '3', '0', '1516953905', '1516953905', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('319', '7352CF', '428777', '123456', '400.00', '4000.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:400元', '2', '0', '1516953905', '1516953905', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('320', '7352CF', '1CE019', '123456', '300.00', '5000.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:300元', '1', '0', '1516953905', '1516953905', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('321', '7352CF', '7352CF', '123456', '100.00', '980.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:100元', '0', '0', '1516953905', '1516953905', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('322', '7352CF', '1CE019', '123456', '200.00', '5200.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:200元', '3', '0', '1516953912', '1516953912', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('323', '7352CF', '428777', '123456', '400.00', '4400.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:400元', '2', '0', '1516953912', '1516953912', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('324', '7352CF', '1CE019', '123456', '300.00', '5500.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:300元', '1', '0', '1516953912', '1516953912', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('325', '7352CF', '7352CF', '123456', '100.00', '1080.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:100元', '0', '0', '1516953912', '1516953912', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('326', '7352CF', '1CE019', '123456', '200.00', '5700.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:200元', '3', '0', '1516953923', '1516953923', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('327', '7352CF', '428777', '123456', '400.00', '4800.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:400元', '2', '0', '1516953923', '1516953923', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('328', '7352CF', '1CE019', '123456', '300.00', '6000.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:300元', '1', '0', '1516953923', '1516953923', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('329', '7352CF', '7352CF', '123456', '100.00', '1180.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:100元', '0', '0', '1516953923', '1516953923', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('330', '7352CF', '1CE019', '123456', '200.00', '6200.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:200元', '3', '0', '1516953934', '1516953934', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('331', '7352CF', '428777', '123456', '400.00', '5200.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:400元', '2', '0', '1516953934', '1516953934', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('332', '7352CF', '1CE019', '123456', '300.00', '6500.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:300元', '1', '0', '1516953934', '1516953934', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('333', '7352CF', '7352CF', '123456', '100.00', '1280.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:100元', '0', '0', '1516953934', '1516953934', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('334', '7352CF', '1CE019', '123456', '200.00', '6700.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:200元', '3', '0', '1516955084', '1516955084', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('335', '7352CF', '428777', '123456', '400.00', '5600.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:400元', '2', '0', '1516955084', '1516955084', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('336', '7352CF', '1CE019', '123456', '300.00', '7000.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:300元', '1', '0', '1516955084', '1516955084', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('337', '7352CF', '7352CF', '123456', '100.00', '1380.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:100元', '0', '0', '1516955084', '1516955084', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('338', '7352CF', '1CE019', '123456', '200.00', '7200.00', '邀请的分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:200元', '3', '0', '1516959607', '1516959607', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('339', '7352CF', '428777', '123456', '400.00', '6000.00', '下下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:400元', '2', '0', '1516959607', '1516959607', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('340', '7352CF', '1CE019', '123456', '300.00', '7500.00', '下级分销商吴智彬A_B_CC下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:300元', '1', '0', '1516959607', '1516959607', 'E8EDB67CF5F');
-INSERT INTO `st_vendors_commission` VALUES ('341', '7352CF', '7352CF', '123456', '100.00', '1480.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:100元', '0', '0', '1516959607', '1516959607', 'E8EDB67CF5F');
+INSERT INTO `st_vendors_commission` VALUES ('1', '0', '123456', '1000.00', '1000.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:1000元', '0', '0');
+INSERT INTO `st_vendors_commission` VALUES ('2', '0', '123456', '1000.00', '2000.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:1000元', '0', '0');
+INSERT INTO `st_vendors_commission` VALUES ('3', '0', '123456', '1000.00', '3000.00', '分销商下的会员吴智彬-13425492760购买单号：123456的商品获得佣金奖励:1000元', '0', '0');
 
 -- ----------------------------
 -- Table structure for st_wechat
@@ -915,42 +858,30 @@ CREATE TABLE `st_wechat` (
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   `recommend` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员 4:分公司邀请分销商 5:分销商邀请分销商}',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=547 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=357 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_wechat
 -- ----------------------------
-INSERT INTO `st_wechat` VALUES ('516', 'oQktJwI8cu9_dU7_kenwyhhYduwA', 'gQHw7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyVmpPNWtGMmJkOTAxQ3hmaTFxMXoAAgRxympaAwQwhScA', '0', null, '0', '1516953901', '1516953901', '1');
-INSERT INTO `st_wechat` VALUES ('517', 'oQktJwLCJ3YzYnaz-Z5FIcPvllzo', null, '0', null, '0', '1516953938', '1516953938', '0');
-INSERT INTO `st_wechat` VALUES ('518', 'oQktJwH4pvWGmyzQW5Pw2QlsgoMA', null, '0', null, '1', '1516954176', '1516954176', '0');
-INSERT INTO `st_wechat` VALUES ('519', 'oQktJwJnzFES9JDZ_mdEb5YcPke4', null, '0', null, '0', '1516954205', '1516954205', '0');
-INSERT INTO `st_wechat` VALUES ('520', 'oQktJwB9nb6JvNXwl5zWp8VhBEV4', null, '0', null, '0', '1516954385', '1516954385', '0');
-INSERT INTO `st_wechat` VALUES ('521', 'oQktJwD_CG9l5LGbDU7Wf0RuEbg0', null, '0', null, '0', '1516954388', '1516954388', '0');
-INSERT INTO `st_wechat` VALUES ('522', 'oQktJwP9lcJA_z5hNK3oYzoHlFLE', null, '0', null, '0', '1516954465', '1516954465', '0');
-INSERT INTO `st_wechat` VALUES ('523', 'oQktJwMN2XEgnVPPLoLX4v5ogMB8', null, '0', null, '0', '1516954674', '1516954674', '0');
-INSERT INTO `st_wechat` VALUES ('524', 'oQktJwEQta10FtyC9TejH8gLPzrI', null, '0', null, '0', '1516955784', '1516955784', '0');
-INSERT INTO `st_wechat` VALUES ('525', 'oQktJwIWnouiVZV7ks9OqtDWg_kI', null, '0', null, '1', '1516955912', '1516955912', '0');
-INSERT INTO `st_wechat` VALUES ('526', 'oQktJwOg4MgSWV2vvkeYXWLRhPLE', null, '0', null, '1', '1516955976', '1516955976', '0');
-INSERT INTO `st_wechat` VALUES ('527', 'oQktJwEdqGd1nycK3BCVMm2y_5lI', null, '0', null, '0', '1516956091', '1516956091', '0');
-INSERT INTO `st_wechat` VALUES ('528', 'oQktJwCnohpog1iVGHuX4GsQnn5I', null, '0', null, '0', '1516956192', '1516956192', '0');
-INSERT INTO `st_wechat` VALUES ('529', 'oQktJwHnLzw1q7lAoMg5Pis89cZI', null, '0', null, '0', '1516956646', '1516956646', '0');
-INSERT INTO `st_wechat` VALUES ('530', 'oQktJwDcehCKazprwaD6cCBi_gMQ', null, '0', null, '1', '1516956749', '1516956749', '0');
-INSERT INTO `st_wechat` VALUES ('531', 'oQktJwKuKTuoVLGX46RA1wG9Q0dk', null, '0', null, '0', '1516956933', '1516956933', '0');
-INSERT INTO `st_wechat` VALUES ('532', 'oQktJwEAyaS7KadNV0KYSStQN7Go', null, '0', null, '0', '1516957292', '1516957292', '0');
-INSERT INTO `st_wechat` VALUES ('533', 'oQktJwFlFLD07FF0E5qsKEnnljgY', null, '0', null, '1', '1516957620', '1516957620', '0');
-INSERT INTO `st_wechat` VALUES ('534', 'oQktJwKn6We-LT7EVXYmFjcPA6Lg', null, '0', null, '1', '1516957797', '1516957797', '0');
-INSERT INTO `st_wechat` VALUES ('535', 'oQktJwM_1gtIGWFOr2J9IWNGTbOE', null, '0', null, '1', '1516957900', '1516957900', '0');
-INSERT INTO `st_wechat` VALUES ('536', 'oQktJwDE_7cCU9rns6vxSFSTz-6s', null, '0', null, '0', '1516958589', '1516958589', '0');
-INSERT INTO `st_wechat` VALUES ('537', 'oQktJwAxpRl83nGeNg5eFQlmb2t4', null, '0', null, '1', '1516958681', '1516958681', '0');
-INSERT INTO `st_wechat` VALUES ('538', 'oQktJwJNaHdSZDpd5vZELuZWvRlA', null, '0', null, '1', '1516958690', '1516958690', '0');
-INSERT INTO `st_wechat` VALUES ('539', 'oQktJwDcehCKazprwaD6cCBi_gMQ', null, '0', null, '0', '1516959251', '1516959251', '0');
-INSERT INTO `st_wechat` VALUES ('540', 'oQktJwFhla2OPZsqMAqZNewMhAr4', null, '0', null, '0', '1516959793', '1516959793', '0');
-INSERT INTO `st_wechat` VALUES ('541', 'oQktJwANOmLv2R0cjuqMvgTN1VDU', null, '0', null, '0', '1516960144', '1516960144', '0');
-INSERT INTO `st_wechat` VALUES ('542', 'oQktJwGFr7CF9pGrNyXSsIZcfn_0', null, '0', null, '0', '1516960901', '1516960901', '0');
-INSERT INTO `st_wechat` VALUES ('543', 'oQktJwBwqrUJtl8Zl-cmZAqZtux8', null, '0', null, '0', '1516961328', '1516961328', '0');
-INSERT INTO `st_wechat` VALUES ('544', 'oQktJwCnns-UplUc-YgdzXYohyb8', null, '0', null, '0', '1516961425', '1516961425', '0');
-INSERT INTO `st_wechat` VALUES ('545', 'oQktJwPZVJBAOD_sd6WOsnzU_rrs', null, '0', null, '0', '1516961572', '1516961572', '0');
-INSERT INTO `st_wechat` VALUES ('546', 'oQktJwLcyHkc3xwRdgaHN7Dpjp70', null, '0', null, '0', '1516961623', '1516961623', '0');
+INSERT INTO `st_wechat` VALUES ('338', 'oQktJwDU8eoTdj6qVoTwYSsacTZY', null, '0', null, '0', '1516858462', '1516858462', '0');
+INSERT INTO `st_wechat` VALUES ('339', 'oQktJwHva-elcriUlKXp44NXSIYY', null, '0', null, '0', '1516858478', '1516858478', '0');
+INSERT INTO `st_wechat` VALUES ('340', 'oQktJwL8ioR4DoxSQmikdzekbUyA', 'gQFp8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydmFWRms2MmJkOTAxMDAwME0wM2sAAgST9F5aAwQAAAAA', '1', '0', '1', '1516858563', '1516858563', '4');
+INSERT INTO `st_wechat` VALUES ('341', 'oQktJwC6ju6OD2FN5dEWH93vzvfo', null, '0', null, '0', '1516859288', '1516859288', '0');
+INSERT INTO `st_wechat` VALUES ('342', 'oQktJwL8ioR4DoxSQmikdzekbUyU', 'gQHC8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQ2NFUmtLMmJkOTAxMDAwMDAwMzIAAgSXDGBaAwQAAAAA', '0', null, '1', '1516859946', '1516859946', '2');
+INSERT INTO `st_wechat` VALUES ('343', 'oQktJwEqdQ3qla-b5cuZWIdI1HLQ', null, '0', null, '0', '1516860165', '1516860165', '0');
+INSERT INTO `st_wechat` VALUES ('344', 'oQktJwFg3eGGLTCkmMurhhH8cbzc', null, '0', null, '0', '1516860334', '1516860334', '0');
+INSERT INTO `st_wechat` VALUES ('345', 'oQktJwK06sxn2kAluOExkXThvWqs', null, '0', null, '0', '1516860371', '1516860371', '0');
+INSERT INTO `st_wechat` VALUES ('346', 'oQktJwMnL6AjUyEK7eLsGr2kZ1Sc', null, '0', null, '0', '1516860517', '1516860517', '0');
+INSERT INTO `st_wechat` VALUES ('347', 'oQktJwEUYefq32wZE7rmHWLaLixk', null, '0', null, '0', '1516861449', '1516861449', '0');
+INSERT INTO `st_wechat` VALUES ('348', 'oQktJwKLbmoQ6FVrpMATbQYfWbGs', null, '0', null, '0', '1516861509', '1516861509', '0');
+INSERT INTO `st_wechat` VALUES ('349', 'oQktJwEb5hfMfsDnSalvKGQGPxFU', null, '0', null, '0', '1516861516', '1516861516', '0');
+INSERT INTO `st_wechat` VALUES ('350', 'oQktJwOenDl0E-cJ7Vq8RPjw9OI4', null, '0', null, '0', '1516861581', '1516861581', '0');
+INSERT INTO `st_wechat` VALUES ('351', 'oQktJwKC16owdHUGxAauR9OQxlk4', null, '0', null, '0', '1516861651', '1516861651', '0');
+INSERT INTO `st_wechat` VALUES ('352', 'oQktJwDVvXcc-GlHjkz_A0yS0Epg', null, '0', null, '0', '1516862730', '1516862730', '0');
+INSERT INTO `st_wechat` VALUES ('353', 'oQktJwAkdlZCvvZEheSajImNlOos', null, '0', null, '0', '1516863025', '1516863025', '0');
+INSERT INTO `st_wechat` VALUES ('354', 'oQktJwJAMRdDUc8xYj-lDmkKksr8', null, '0', null, '0', '1516863310', '1516863310', '0');
+INSERT INTO `st_wechat` VALUES ('355', 'oQktJwN744STBtWdcVwXhv0l6kQ0', null, '0', null, '0', '1516864462', '1516864462', '0');
+INSERT INTO `st_wechat` VALUES ('356', 'oQktJwFccBXc9PqvxlK5LM0QLdKE', null, '0', null, '0', '1516864472', '1516864472', '0');
 
 -- ----------------------------
 -- Table structure for st_work
