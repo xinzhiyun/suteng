@@ -30,15 +30,18 @@ class CommentController extends CommonController
             // 上传文件
             $info   =   $upload->upload();
             if(!$info) {// 上传错误提示错误信息
-                $this->error($upload->getError());
+                E($upload->getError(),'606');
             }
-            $picpath = app_upload_image();
-            dump($data);die;
-
-            $res = $comment->add();
-            if($res){
+            $comment->startTrans();
+            $com_status = $comment->add();
+            $com_pic['path'] = $info['pic']['savepath'].$info['pic']['savename'];
+            $com_pic['cid'] = $com_status;
+            $pic_status = M("com_pic")->add($com_pic);
+            if($com_status&&$pic_status){
+                $comment->commit();
                 E('评论成功', 200);
             } else {
+                $comment->rollback();
                 E('评论失败', 603);
             }
         } catch (\Exception $e) {
