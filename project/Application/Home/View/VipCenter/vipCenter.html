@@ -296,20 +296,24 @@
 		<div id="indent">
 			<p>
 				<span>我的订单</span>
-				<span>
-					<span>查看全部订单</span>
-					<i class="iconfont icon-dayuhao-copy-copy"></i>
-				</span>
+				<a href="{{:U('Home/Order/index')}}">
+					<span>
+						<span>查看全部订单</span>
+						<i class="iconfont icon-dayuhao-copy-copy"></i>
+					</span>
+				</a>
 			</p>
 			<div>
 				<span>
 					<i class="iconfont icon-zulin-"></i>
 					<p>租赁订单</p>
 				</span>
+				
 				<span>
 					<i class="iconfont icon-shangpin-"></i>
-					<p>商品订单</p>
+					<p><a href="{{:U('Home/Order/index')}}">商品订单</a></p>
 				</span>
+
 				<span>
 					<i class="iconfont icon-haocai-"></i>
 					<p>耗材订单</p>
@@ -323,18 +327,20 @@
 		</div>
 		<div id="income">
 			<p>
-				收益明细
+				<a href="{{:U('Home/VipCenter/reward')}}">
+				收益明细</a>
 				<i class="iconfont icon-dayuhao-copy-copy"></i>
+
 			</p>
 			<div>
 				<div>
 					<span>金币540</span>
 					<span>银币1266</span>
-					<p>我的奖励金</p>
+					<p><a href="{{:U('Home/VipCenter/reward')}}">我的奖励金</a></p>
 				</div>
 				<div>
 					<span>26</span>
-					<p>会员订单</p>
+					<p><a href="{{:U('Home/Order/memberOrder')}}">会员订单</a></p>
 				</div>
 			</div>
 		</div>
@@ -342,28 +348,28 @@
 			<div id="pay">
 				<span>
 					<i class="iconfont icon-chongzhi1"></i>
-					会员充值
+					<a href="{{:U('Home/Mall/chongzhi')}}">会员充值</a>
 				</span>
 				<i class="iconfont icon-dayuhao-copy-copy"></i>
 			</div>
 			<div id="addressManage">
 				<span>
 					<i class="iconfont icon-dizhi"></i>
-					收货地址管理
+					<a href="{{:U('Home/Address/index')}}">收货地址管理</a>
 				</span>
 				<i class="iconfont icon-dayuhao-copy-copy"></i>
 			</div>
 			<div id="yinhanka">
 				<span>
 					<i class="iconfont icon-yinhangqia"></i>
-					银行卡
+					<a href="{{:U('Home/BankCard/index')}}">银行卡</a>
 				</span>
 				<i class="iconfont icon-dayuhao-copy-copy"></i>
 			</div>
 			<div id="comment">
 				<span>
 					<i class="iconfont  icon-pinglun"></i>
-					我的评论
+					<a href="{{:U('Home/VipCenter/mycomment')}}">我的评论</a>
 				</span>
 				<i class="iconfont icon-dayuhao-copy-copy"></i>
 			</div>
