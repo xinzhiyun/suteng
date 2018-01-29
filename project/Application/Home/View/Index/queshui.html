@@ -67,7 +67,34 @@
     /*缺水的动画*/
     // window.setInterval(function(){ 
     //   $('.cen1').fadeOut(600).fadeIn(600);
-    // }, 1200); 
+    // }, 1200);
+  
+    
+    window.onload = function(){ 
+      // 状态变量
+      var _status=1;
+
+      // 开机状态
+       var _class= $('.chongContainer>div.chongTop>div:nth-child(2)').attr('class');
+      if(_status==0){
+          console.dir(_class);
+         $('.chongContainer>div.chongTop>div:nth-child(2)').removeClass(_class).addClass('kaiji clear');
+      }
+      else if(_status==1){
+
+      }
+
+
+
+
+    }
+
+
+
+     // $('.chongContainer>div.chongTop>div:nth-child(2)').click(function(){
+        //   alert(1);
+        // })
+  </script> 
   </script>
 </body>
 </html>                                                                                                                                                                                                                                                                    
