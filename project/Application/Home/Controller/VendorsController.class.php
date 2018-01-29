@@ -66,8 +66,57 @@ class VendorsController extends Controller
 	        		$this->display('protocol_refillings');
 	        		break;
 	        	case '7':
+                    $leavel = $vendor['vendor'];
+                    switch ($leavel) {
+                        case '2':
+                            // A级分销商
+                            $showA['invitation_code'] =  $vendor['code'];
+                            $showA['leavel'] =  2;
+                            // 查询同级邀请的A级分销商
+                            $data['vendor_a'] = M('vendors')->where($showA)->select();
+                            // B级分销商
+                            $showB['superior_code'] =  $vendor['code'];
+                            $showB['leavel'] =  3;
+                            $data['vendor_b'] = M('vendors')->where($showB)->select();
+                            // C级分销商
+                            $showC['superiors_code'] =  $vendor['code'];
+                            $showC['leavel'] =  4;
+                            $data['vendor_c'] = M('vendors')->where($showC)->select();
+                            // 会员
+                            $showUser['vendora_code'] =  $vendor['code'];
+                            $data['vendor_user'] = M('users')->where($showUser)->select();
+                            break;
+                        case '3':
+                            // B级分销商
+                            $showB['invitation_code'] =  $vendor['code'];
+                            $showB['leavel'] =  3;
+                            // 查询同级邀请的A级分销商
+                            $data['vendor_b'] = M('vendors')->where($showB)->select();
+                            // C级分销商
+                            $showC['superior_code'] =  $vendor['code'];
+                            $showC['leavel'] =  4;
+                            $data['vendor_c'] = M('vendors')->where($showC)->select();
+                            // 会员
+                            $showUser['vendorb_code'] =  $vendor['code'];
+                            $data['vendor_user'] = M('users')->where($showUser)->select();
+                        case '4':
+                            // C级分销商
+                            $showC['invitation_code'] =  $vendor['code'];
+                            $showC['leavel'] =  4;
+                            // 查询同级邀请的A级分销商
+                            $data['vendor_b'] = M('vendors')->where($showC)->select();
+                            // 会员
+                            $showUser['vendorc_code'] =  $vendor['code'];
+                            $data['vendor_user'] = M('users')->where($showUser)->select();
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
+                    $this->assign('data',$data);
+                    $this->assign('vendor',$vendor);
 	        		// 审批成功
-	        		echo '审批成功';
+	        		$this->display('index');
 	        		break;
 	        	case '8':
 	        		// 禁用分销商
@@ -84,6 +133,7 @@ class VendorsController extends Controller
         }
 
     }
+
 
     // 身份证信息填写
     public function identity()
@@ -580,6 +630,8 @@ class VendorsController extends Controller
 
     	// dump($info);
     }
+
+
 
 
     /**

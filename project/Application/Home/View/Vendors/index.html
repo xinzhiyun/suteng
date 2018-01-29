@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<!-- {{$vendor|dump}} -->
+	<div>
+		<h1>分销商收益</h1>
+		<b style="font-size: 40px;color:red;">{{$vendor['abonus']}}</b>元
+	</div>
+	<div>
+		<h1>分销商邀请二维码</h1>
+		<notempty name="vendor.vendor_a">
+			<p>A级邀请码：</p>
+			<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_a}}" alt=""><br/>
+		</notempty>
+		<notempty name="vendor.vendor_b">
+			<p>B级邀请码：</p>
+			<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_b}}" alt=""><br/>
+		</notempty>
+		<notempty name="vendor.vendor_c">
+			<p>C级邀请码:</p>
+			<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_c}}" alt=""><br/>
+		</notempty>
+		<notempty name="vendor.vendor_user">
+			<p>会员邀请码：</p>
+			<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_user}}" alt=""><br/>
+		</notempty>
+	</div>
+	<div>
+		<h1>我的团队</h1>
+		{{$data|dump}}
+		<p>A级分销商</p>
+		<p>B级分销商</p>
+		<p>C级分销商</p>
+		<p>会员</p>
+	</div>
+</body>
+</html>
