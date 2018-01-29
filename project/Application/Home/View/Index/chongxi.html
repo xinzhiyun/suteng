@@ -17,6 +17,12 @@
           <div class="xuanhuan clear">
               <div class="xuannei"></div>
           </div>
+          <!-- 缺水 -->
+          <div class="queshui clear">
+              <div class="xuannei"></div>
+              <div class="cen1"></div>
+              <div class="cen2"></div>
+          </div>
           <div class="xuantext">
             <p>纯水TDS</p>
             <h3>009</h3>
@@ -60,7 +66,74 @@
     </div>
   </div>
   <script>
-    // $('.heat')
+    
+    window.onload = function(){ 
+      // 对应状态值：
+      //            0 开机状态
+      //            1 制水状态
+      //            2 修检状态
+      //            3 水满状态
+      //            4 缺水状态
+      //            5 冲洗
+      // 状态变量
+      var _status=4;
+
+      // 开机状态
+       var _class= $('.chongContainer>div.chongTop>div:nth-child(2)').attr('class');
+
+      if(_status==0){
+
+          console.dir(_class);
+
+         $('.chongContainer>div.chongTop>div:nth-child(2)').removeClass(_class).addClass('kaiji clear');
+
+      }
+
+      // 制水状态
+      else if(_status==1){
+
+          $('.chongContainer>div.chongTop>div:nth-child(2)').removeClass(_class).addClass('makewater clear');
+      }
+
+      // 修检状态
+      else if(_status==2){
+
+          $('.chongContainer>div.chongTop>div:nth-child(2)').removeClass(_class).addClass('overxuanhuan clear');
+
+      }
+
+      // 水满状态
+      else if(_status==3){
+
+           $('.chongContainer>div.chongTop>div:nth-child(2)').removeClass(_class).addClass('shuiman clear');
+
+            var _cen1=$('.chongContainer>div.chongTop>div:nth-child(2)>div.xuannei').after("<div></div>");
+
+            _cen1.addClass('cen1');
+      }
+
+      // 缺水状态
+      else if(_status==4){
+
+           $('.chongContainer>div.chongTop>div:nth-child(2)').css('display','none');
+
+           $('.chongContainer>div.chongTop>div:nth-child(3)').css('display','block');
+
+      }else if(_status==5){
+        
+      }
+
+
+
+
+
+    }
+
+
+
+     // $('.chongContainer>div.chongTop>div:nth-child(2)').click(function(){
+        //   alert(1);
+        // })
   </script>
 </body>
 </html>                                                                                                                                                                                                                                                                    

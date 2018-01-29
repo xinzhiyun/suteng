@@ -243,6 +243,25 @@ ul, li, dl, dt, dd, form, h1, h2, h3, h4, p, input, form {
 /*        -webkit-animation:aImg5 4s linear  infinite;
         animation:aImg5 4s linear  infinite;*/
       }
+      /*.xuanhuan{
+	border-radius: 40vw;
+	width: 60vw;
+	height: 60vw;
+	margin:0 auto;
+	background: url(../images/xuanhuan_1.png) no-repeat;
+	background-size: 100% 100%;
+	position: relative;
+	-webkit-animation:aImg 20s linear infinite;
+	animation:aImg 20s linear infinite;
+}
+.xuannei{
+	margin:3.5vw;
+	width:53vw ;
+	height: 53vw;
+	background: #fff;
+	border-radius: 50vw;
+	position: absolute;
+}*/
 
 /*@keyframes aImg5{
 			0%{transform:rotate(0deg);}
@@ -258,6 +277,7 @@ ul, li, dl, dt, dd, form, h1, h2, h3, h4, p, input, form {
 		background-size: 100% 100%;
 		position: relative;
 		z-index: 0;
+		display: none;
 	}
 
 	 .queshui>.cen1{
