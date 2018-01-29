@@ -118,7 +118,7 @@
 		</div>
 		<div class="aBottom">
 			<div>
-				<input id="setAddress-1" class="setAddress" type="checkbox" index="address-1" checked />
+				<input id="setAddress-1" class="setAddress" type="radio" name="radio" index="address-1" checked />
 				<label for="setAddress-1">默认地址</label>
 				<p>
 					<span class="edit">编辑</span>
@@ -138,7 +138,7 @@
 		</div>
 		<div class="aBottom">
 			<div>
-				<input id="setAddress-2" class="setAddress" type="checkbox" index="address-2" />
+				<input id="setAddress-2" class="setAddress" type="radio" name="radio" index="address-2" />
 				<label for="setAddress-2">默认地址</label>
 				<p>
 					<span class="edit">编辑</span>
@@ -150,7 +150,7 @@
 
 	<footer id="footer">
 		<input type="button" id="newAddress" value="+">
-		<label for="newAddress">添加新地址</label>
+		<label for="newAddress"><a href="{{:U('Home/Address/newAddress')}}">添加新地址</a></label>
 	</footer>
 	<script>
     $(function(){

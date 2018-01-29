@@ -170,7 +170,7 @@
 			</div>
 			<p>Yoo</p>
 			<div id="package">
-				<span>我的钱包：</span>
+				<span><a href="{{:U('Home/VipCenter/minepack')}}">我的钱包：</a></span>
 				<div>
 					<p><i class="iconfont icon-jinbi2"></i>金币300个</p>
 					<p><i class="iconfont icon-jinbi2 icon-yinbi2"></i>银币806个</p>
@@ -183,47 +183,67 @@
 			<p>
 				<span>我的订单</span>
 				<span>
-					<span>查看全部订单</span>
-					<i class="iconfont icon-mjiantou"></i>
+					<a href="{{:U('Home/Order/index')}}">
+						<span>查看全部订单</span>
+						<i class="iconfont icon-mjiantou"></i>
+					</a>
 				</span>
 			</p>
 			<div>
 				<span>
-					<i class="iconfont icon-qianbao"></i>
-					<p>待付款</p>
+					<a href="{{:U('Home/Order/index')}}">
+						<i class="iconfont icon-qianbao"></i>
+						<p>待付款</p>
+					</a>
 				</span>
 				<span>
-					<i class="iconfont icon-daifahuo2"></i>
-					<p>待发货</p>
+					<a href="{{:U('Home/Order/index')}}">
+						<i class="iconfont icon-daifahuo2"></i>
+						<p>待发货</p>
+					</a>
 				</span>
 				<span>
-					<i class="iconfont icon-daifahuo1"></i>
-					<p>待收货</p>
+					<a href="{{:U('Home/Order/index')}}">
+						<i class="iconfont icon-daifahuo1"></i>
+						<p>待收货</p>
+					</a>
 				</span>
 				<span>
-					<i class="iconfont icon-hua"></i>
-					<p>待评论</p>
+					<a href="{{:U('Home/Order/index')}}">
+						<i class="iconfont icon-hua"></i>
+						<p>待评论</p>
+					</a>
 				</span>
 				<span>
-					<i class="iconfont icon-shouhou"></i>
-					<p>退款/售后</p>
+					<a href="{{:U('Home/Order/index')}}">
+						<i class="iconfont icon-shouhou"></i>
+						<p>退款/售后</p>
+					</a>
 				</span>
 			</div>
 		</div>
 		<div id="income">
 			<p>
-				收益明细
-				<i class="iconfont icon-mjiantou"></i>
+				<a href="{{:U('Home/VipCenter/reward')}}">
+					收益明细
+					<i class="iconfont icon-mjiantou"></i>
+				</a>
 			</p>
 			<div>
 				<div>
 					<span>金币540</span>
 					<span>银币1266</span>
-					<p>我的奖励金</p>
+					<p>
+						<a href="{{:U('Home/VipCenter/reward')}}">我的奖励金</a>
+					</p>
 				</div>
 				<div>
+					
 					<span>26</span>
-					<p>会员订单</p>
+					<p>
+						<a href="{{:U('Home/Order/memberOrder')}}">会员订单</a>
+					</p>
+						
 				</div>
 			</div>
 		</div>
@@ -231,21 +251,21 @@
 			<div id="pay">
 				<span>
 					<i class="iconfont icon-chongzhi1"></i>
-					会员充值
+					<a href="{{:U('Home/Mall/chongzhi')}}">会员充值</a>
 				</span>
 				<i class="iconfont icon-mjiantou"></i>
 			</div>
 			<div id="addressManage">
 				<span>
 					<i class="iconfont icon-shouhuodizhi"></i>
-					收货地址管理
+					<a href="{{:U('Home/Address/index')}}">收货地址管理</a>
 				</span>
 				<i class="iconfont icon-mjiantou"></i>
 			</div>
 			<div id="comment">
 				<span>
 					<i class="iconfont icon-hua icon-daipinglun2"></i>
-					我的评论
+					<a href="{{:U('Home/VipCenter/mycomment')}}">我的评论</a>
 				</span>
 				<i class="iconfont icon-mjiantou"></i>
 			</div>

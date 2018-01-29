@@ -71,9 +71,11 @@
 		<div class="identTex">
 				<input type="text" id="code"  placeholder="请写验证码"><input type="submit" value="获取验证(60)">
 		</div>
-		<div class="identifyingCodeBtn">
-			<input type="submit" value="下一步">
-		</div>
+		<a href="{{:U('Home/BankCard/bandOk')}}">
+			<div class="identifyingCodeBtn">
+				<input type="submit" value="下一步">
+			</div>
+		</a>
 	</div>
 	<script>
 		$('#code').change( function() {
