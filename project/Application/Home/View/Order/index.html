@@ -41,6 +41,8 @@
     		line-height: 5vh;
 		    display: block;
 		    text-align: center;
+		    font-size: 0.72rem;
+		    color:#373737;
 		}
 		#header>span>p{
 			line-height: 2vh;
@@ -181,12 +183,16 @@
 		/*订单部分*/
 		.goods>p {
 			padding: 2%;
+			color: #5a5a5a;
+			font-size: 0.68rem;
 		}
 		/*订单状态：等待买家付款，交易完成，等待发货等*/
 		.goods>p>span {
 			font-weight: bold;
 			float: right;
-			color: #FF843D;
+			color:#ff721f;
+			font-size: 0.72rem;
+
 		}
 		.dingdan>p>span:after {
 			content: '';
@@ -224,19 +230,28 @@
 			flex: 2;
 			padding: 2%;
 		}
+		.giDescription>b{
+			color: #7d7d7d;
+			font-size: 0.72rem;
+		}
 		.giDescription>p {
 			margin: 6px 0;
 			color: #666;
 			font-size: .6rem;
+			color: #5a5a5a;
+			font-size: 0.68 rem;
 		}
 		/*价格*/
 		.giDescription>div>b {
-			color: #FC2C2D;
+			color:#fc2a2b;
 			letter-spacing: 2px;
+			font-size: 0.68rem;
 		}
 		/*数量*/
 		.giDescription>div>span {
 			float: right;
+			font-size: 0.68rem;
+			color: #5a5a5a;
 		}
 		.giDescription>div>span:after {
 			content: '';
@@ -265,10 +280,14 @@
 			padding-top: 5%;
 			border-top: 1px solid #ddd;
 			border-bottom: 1vh solid #eee;
+			font-size: 0.68rem;
+			color: #5a5a5a;
 		}
 		.calc>div {
 			padding: 0 2%;
 			text-align: right;
+			font-size: 0.68rem;
+
 		}
 		/*价格*/
 		.calc>div>b {
@@ -286,18 +305,24 @@
 			width: 60%;
 			display: inline-block;
 			text-align: right;
+			color: #5a5a5a;
+			font-size: 0.72rem;
 		}
 		.cancel>span {
 			display: inline-block;
 			padding: 2% 8%;
 			border-radius: 4px;
 			border: 1px solid #aaa;
+			font-size: 0.82rem;
+			letter-spacing: 0.05rem;
+			color: #7d7d7d;
 		}
 		/*付款*/
 		.pay {
 			width: 40%;
 			display: inline-block;
 			text-align: right;
+			padding: 2% 0;
 		}
 		.pay>span {
 			display: inline-block;
@@ -306,6 +331,8 @@
 			color: #fff;
 			border: 1px solid #2EB6AA;
 			background: #2EB6AA;
+			font-size: 0.82rem;
+			letter-spacing: 0.05rem;
 		}
 
 		/*没有内容时添加这个类*/
@@ -347,7 +374,7 @@
 		padding: 0 3% 0.5rem 3%;
 	}
 	.shangpingnei{
-		padding:0.5rem 3%;
+		padding:0rem 3%;
 	}
 	.shangpingnei>.tuikuangLeft,.shangpingnei>.tuikuangRight{
 		float: left;
@@ -378,37 +405,46 @@
 	    -webkit-line-clamp: 2;
 	    line-clamp: 2;
 	    color: #5A5A5A;
+	    font-size: 0.68rem;
 	}
 	.shangpingnei>.tuikuangRight>p{
 		padding: 0.24rem 0;
 	}
 	.shangpingnei>.tuikuangRight>p>b{
-		color: #F00;
+		color:#fc2a2b;
+		font-size: 0.68rem;
 	}
 	.shangpingnei>.tuikuangRight>p>span{
 		float: right;
+		color:#fc2a2b;
+		font-size: 0.72rem;
 	}
 	.tuikuangall>p{
 		display: inline-block;
-		margin-bottom: 0.5rem;
 		width: 100%;
-
+		color: #5a5a5a;
+		font-size: 0.68rem;
 	}
 	.tuikuangall>p>b{
-		color:#FF8A45;
+		color:#ff721f;
+		font-size: 0.68rem;
 	}
 	.tuikuangall>p>span{
 		float: right;
+		color: #5a5a5a;
 	}
 	.tuikuangall>p>span>i{
 		padding:0 0.2rem;
-		font-size: 0.6rem;
-		color:#FF8A45;
+		font-size: 0.65rem;
+		color:#ff721f;
+		font-weight: 600;
 
 	}
 	/*<!-- 隐藏的评论内容 -->*/
 	.commentHidden{
 		display: none;
+		color: #5a5a5a;
+		font-size: 0.68rem;
 	}
 	.commentHidden>.hidTop{
 		padding:0.5rem 3% 1rem;
@@ -426,6 +462,8 @@
 	.hidBott{
 		padding:0.5rem 3%;
 		text-align: center;
+		color: #5a5a5a;
+	    font-size: 0.72rem;
 	}
 	.hidBott>.hidbotttxt{
 		width: 40%;
@@ -436,9 +474,11 @@
 	}
 	.hidBott>.hidbotttxt>a{
 		margin-left: 3%;
+		color: #5a5a5a;
 	}
 	.hidBott>.hidbotttxt>a>p{
 		line-height: 1rem;
+		color: #5a5a5a;
 	}
 	/*报装中的评论按钮*/
 	.pinglunBtn{
@@ -450,9 +490,13 @@
 		margin-left: 87%;
 	    border: none;
 	    color: #FFF;
-	    padding: 0.2rem 1rem;
+	    text-align: center;
+	    padding: 0.2rem 0.5rem;
 	    background: #2EB6AA;
 	    border-radius: 0.2rem;
+	    font-size: 0.82rem;
+		letter-spacing: 0.1rem;
+	
 	}
 /*模态框样式*/
     .modelAll,.modelAll2,.modelAll3{width:100vw;height:100vh;font-family: "mircoft yahei";font-size:14px;font-size: 0.7rem;line-height: 1;display: none;}
