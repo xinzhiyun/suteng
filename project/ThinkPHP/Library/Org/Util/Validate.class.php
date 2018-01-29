@@ -21,7 +21,7 @@ class Validate
 	// 检测是否合法用户名
 	public function isName($subject)
 	{
-		return preg_match('/^[a-zA-Z\x{4e00}-\x{9fa5}][\w\x{4e00}-\x{9fa5}]{1,30}$/u',$subject);
+		return preg_match('/^[a-zA-Z\x{4e00}-\x{9fa5}][\w——\-_\x{4e00}-\x{9fa5}]{1,30}$/u',$subject);
 	}
 
 	// 检测是否合法地址
