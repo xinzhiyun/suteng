@@ -52,4 +52,5 @@ class GoodsModel extends BaseModel
         return $attr;
     }
 
+
 }

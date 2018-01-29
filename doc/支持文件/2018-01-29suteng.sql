@@ -365,7 +365,7 @@ CREATE TABLE `st_current_devices` (
   `uid` int(11) unsigned NOT NULL COMMENT '用户',
   `did` int(11) unsigned NOT NULL COMMENT '当前设备',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=gbk;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_current_devices
@@ -574,7 +574,7 @@ CREATE TABLE `st_goods_detail` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '商品状态，0下架，默认1为上架',
   PRIMARY KEY (`id`),
   KEY `id` (`id`,`gid`,`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_goods_detail
@@ -637,7 +637,7 @@ CREATE TABLE `st_pic` (
   `path` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '图片地址',
   PRIMARY KEY (`id`),
   KEY `id` (`id`,`gid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_pic
@@ -736,7 +736,7 @@ CREATE TABLE `st_users_commission` (
   `type` tinyint(1) unsigned DEFAULT '0' COMMENT '分配类型{0：按比例分配，1：固定金额分配}',
   `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=gbk;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_users_commission
@@ -807,7 +807,7 @@ CREATE TABLE `st_vendors_commission` (
   `type` tinyint(1) unsigned DEFAULT '0' COMMENT '分配类型{0：按比例分配，1：固定金额分配}',
   `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=gbk;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_vendors_commission

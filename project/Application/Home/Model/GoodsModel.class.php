@@ -22,4 +22,17 @@ class GoodsModel extends Model
             ->select();
         return $goods;
     }
+
+    public function getComment($where=null)
+    {
+        $data = $this
+            ->where($where)
+            ->alias('g')
+            ->join('__COMMENT__ c ON g.id=c.gid', 'LEFT')
+            ->join('__COM_PIC__ cp ON c.id=cp.cid', 'LEFT')
+            ->join()
+            ->field()
+            ->select();
+        return $data;
+    }
 }
