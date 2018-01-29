@@ -51,7 +51,7 @@
                                 <div class="checkbox i-checks">
                                     <volist name="attrInfo" id="vo">
                                         <label class="attr">
-                                            <input type="checkbox" name="attr[]" data-name={{$vo.attr}} data-id="{{$vo.id}}"> <i></i> {{$vo.attr}}
+                                            <input type="checkbox" data-name={{$vo.attr}} data-id="{{$vo.id}}"> <i></i> {{$vo.attr}}
                                         </label>
                                     </volist>
                                     <label class="attrList">
@@ -259,7 +259,7 @@
             })
             $('.attr_val').empty();
             for(var i=0;i<arr.length;i++){
-                $('.attr_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].attrName+'</span><input type="text" placeholder="请输入'+arr[i].attrName+'的规格" name="'+arr[i].attrId+'" value="" class="form-control"></div>');
+                $('.attr_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].attrName+'</span><input type="text" placeholder="请输入'+arr[i].attrName+'的规格" name="attr['+arr[i].attrId+']" value="" class="form-control"></div>');
             }
         }
 

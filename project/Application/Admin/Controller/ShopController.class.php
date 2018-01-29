@@ -99,7 +99,14 @@ class ShopController extends CommonController
         $cateInfo = $cate->getAllCate();
         $goods = D('Goods');
         $goodsList = $goods->getGoodsList();
-        dump($goodsList);
+        foreach ($goodsList as $key => $value) {
+            $attr = $goods->AttrAction($value['gid']);
+            foreach ($attr as $k => $v) {
+                dump($v);
+            }
+            $goodsList[$key]['attr'] = $attrs;
+        }
+        // dump($goodsList);
         $assign = [
             'data' => $goodsList,
             'cateInfo'=>$cateInfo,
@@ -137,7 +144,7 @@ class ShopController extends CommonController
             $data = I('post.');
             $goods['cid'] = $cate->sureCate();
             $goods['name'] = $data['name'];
-            dump($data);die;
+            // dump($data);die;
             // $goods_check = $goods_add->create($goods);
             // dump($goods);die;
             // 事务开启
@@ -154,12 +161,15 @@ class ShopController extends CommonController
             if(!$goods_detail->create($goodsDetail)) E($goods_detail->getError(),408);
             // 商品详情添加
             $goodsDetail_status = $goods_detail->add($goodsDetail);
-            $attrVal['val'] = $data['attr_val'];
+            // $attrVal['val'] = $data['attr_val'];
+
             $attrVal['gid'] = $goods_status;
-            if(!$attr_val->create($attrVal)) E($attr_val->getError(),407);
             foreach ($data['attr'] as $key => $val) {
-                if($attr->where('id='.$val)->field('id')){
-                    $attrVal['aid'] = $val;
+                if($attr->where('id='.$key)->field('id')){
+
+                    $attrVal['aid'] = $key;
+                    $attrVal['val'] = $val;
+                    if(!$attr_val->create($attrVal)) E($attr_val->getError(),407);
                     // 属性值添加
                     $attr_val_status = $attr_val->add($attrVal);
                 } else {

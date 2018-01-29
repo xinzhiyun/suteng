@@ -23,26 +23,32 @@ class GoodsModel extends BaseModel
         array('updatetime', 'time', 3, 'function'),
     );
 
-    public function getGoodsList()
+    public function getGoodsList($where=array('g.status=0'))
     {
         $goodsData = $this
+            ->where($where)
             ->alias('g')
             // ->join('__ATTR_VAL__ av ON g.id=av.gid', 'LEFT')
             // ->join('__ATTR__ a ON av.aid=a.id', 'LEFT')
             ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
             ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
             ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
-            ->field('g.*,p.*,gd.*,c.name cname')
+            ->field('p.*,gd.*,g.*,c.name cname')
             ->order(' addtime desc')
             ->select();
         return $goodsData;
     }
 
     // 属性处理
-    public function AttrAction()
+    public function AttrAction($gid)
     {
-        
-
+        $attr = $this
+            ->where('av.gid=22')
+            ->alias('g')
+            ->join('__ATTR_VAL__ av ON g.id=av.gid', 'LEFT')
+            ->join('__ATTR__ a ON av.aid=a.id', 'LEFT')
+            ->field('a.attr,av.val')
+            ->select();
         return $attr;
     }
 }
