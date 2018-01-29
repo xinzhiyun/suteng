@@ -7,11 +7,12 @@ class WeixinEventController extends Controller
 	// 接受微信服务器下发的事件
     public function getEventData()
     {
+        // echo md5('suteng');
     	// 实例化微信验证对象服务器第一次接入使用
     	// $wechatObj = new \Org\Util\WechatCallbackapiTest;
     	// 执行验证方法
     	// $wechatObj->valid();
-
+        // dump($wechatObj->valid());die;
     	// 接受微信推送的事件
     	$xml=file_get_contents('php://input', 'r');
         // file_put_contents('./tmp.txt', $xml);die;
