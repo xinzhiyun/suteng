@@ -28,15 +28,16 @@ window.onload = function(){
         $(".shutdown").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(100%)'});
         $(".btmTxt").html("设备已关机");
+        $(".clickBtn").css({color:'#f00',filter:'grayscale(0%)'});
     }
     function arrearage(){//欠费停机 6
         $(".arrearage").show().siblings().hide();
-        $("body").css({height:'100vh',filter:'grayscale(0%)'});
-        $(".btmTxt").html("欠费停机");
+        $("body").css({height:'100vh',filter:'grayscale(100%)'});
+        $(".btmTxt").html("欠费");
     }
     function outLine(){//离线 7
         $(".outLine").show().siblings().hide();
-        $("body").css({height:'100vh',filter:'grayscale(0%)'});
+        $("body").css({height:'100vh',filter:'grayscale(100%)'});
         $(".btmTxt").html("设备已离线");
     }
     function machineStatus() {
@@ -64,9 +65,9 @@ window.onload = function(){
         "deviceid":"228733445596778",
         "devicestause":"6",
         "reflow":"34000",
-        "reday":"1",
-        "rawtds":"1",
-        "puretds":"1",
+        "reday":"85",
+        "rawtds":"75",
+        "puretds":"42",
         "temperature":"24",
         "reflowfilter1":null,
         "redayfilter1":null,
@@ -89,9 +90,9 @@ window.onload = function(){
         "roomtemperature":"26",
          "sumflow":"24",
         "sumday":"65",
-        "phval":"7",
+        "phval":"3.8",
         "coldwater":"20",
-        "hotwater":"80",
+        "hotwater":"95",
         "filtermode":"1",
         "device":"GPRS",
         "iccid":"11223344556677889900",
@@ -103,7 +104,7 @@ window.onload = function(){
 
     var _status=getdataList.devicestause;//获取设备当前状态-> 0:制水 1:冲洗 2:水满 3:缺水 4漏水 5:检修 6:欠费停机 7:关机 8:开机(仅命令)
 
-    machineStatus();
+    machineStatus();//执行当前设备状态
 
     $(".rawtdsVal").html(getdataList.rawtds);//纯水值
     $(".phVal").html(getdataList.phval);//ph酸碱值
@@ -117,15 +118,15 @@ window.onload = function(){
     var reflow = getdataList.reflow;
     var reday = getdataList.reday;
     if(getdataList.leasingmode=="0"){//按零售
-        $(".surplusVal").html("已用流量："+(usedflow?usedflow:0)+"L");
-        $(".alreadyUsedVal").html("已用天数："+(usedday?usedday:0)+"");
+        $(".surplusVal").html("已用流量："+(usedflow?usedflow:84)+"L");
+        $(".alreadyUsedVal").html("已用天数："+(usedday?usedday:70)+"天");
 
     }else if(getdataList.leasingmode=="1"){//按流量
-        $(".surplusVal").html("剩余流量："+(reflow?reflow:0)+"L");
-        $(".alreadyUsedVal").html("已用流量："+(usedflow?usedflow:0)+"L");
+        $(".surplusVal").html("剩余流量："+(reflow?reflow:7)+"L");
+        $(".alreadyUsedVal").html("已用流量："+(usedflow?usedflow:6)+"L");
     }else if(getdataList.leasingmode=="2"){//按天数
-        $(".surplusVal").html("剩余天数："+(reday?reday:0)+"天");
-        $(".alreadyUsedVal").html("已用天数：" + (usedday?usedday:0) + "天");
+        $(".surplusVal").html("剩余天数："+(reday?reday:7)+"天");
+        $(".alreadyUsedVal").html("已用天数：" + (usedday?usedday:5) + "天");
     }else if(getdataList.leasingmode=="3"){//流量&时间
 
     }
@@ -137,7 +138,7 @@ window.onload = function(){
     var websoket=new WebSocket("ws://120.27.12.1:6001");
     var PackNum=0;//包数据
     var CmdList=[];//命令队列
-    var identify=0;
+    // var identify=0;
     var numAdd=0;
     // var deviceId=dataList.DeviceID;
     var deviceId=228733445596778;
@@ -175,32 +176,35 @@ window.onload = function(){
             var hotwater = dataList.hotwater;
             var coldwater = dataList.coldwater;
             var roomtemperature = dataList.roomtemperature;
+            var rawtds = dataList.RawTDS;
+            var phval = dataList.phval;
+            var puretds = dataList.PureTDS;
             //1.设备状态页面数据显示
-            $(".rawtdsVal").html(dataList.RawTDS);//纯水值
-            $(".phVal").html(dataList.phval);//ph酸碱值
-            $(".puretdsVal").html(dataList.PureTDS);//原水值
-            $(".rawtdsVal2").html(dataList.RawTDS);//纯水值
-            $(".hotwater").html((hotwater?hotwater:0)+"&#8451;");//热水温度
-            $(".coldwater").html((coldwater?coldwater:0)+"&#8451;");//冷水温度
-            $(".roomtemperature").html((roomtemperature?roomtemperature:0)+"&#8451;");//室内温度
+            $(".rawtdsVal").html((rawtds?rawtds:54));//纯水值
+            $(".phVal").html(phval?phval:3.8);//ph酸碱值
+            $(".puretdsVal").html((puretds?puretds:567));//原水值
+            $(".rawtdsVal2").html((rawtds?rawtds:54));//纯水值
+            $(".hotwater").html((hotwater?hotwater:98)+"&#8451;");//热水温度
+            $(".coldwater").html((coldwater?coldwater:12)+"&#8451;");//冷水温度
+            $(".roomtemperature").html((roomtemperature?roomtemperature:45)+"&#8451;");//室内温度
 
             if(dataList.LeasingMode=="0"){//按零售
-                $(".surplusVal").html("已用流量："+(usedflow?usedflow:0)+"L");
-                $(".alreadyUsedVal").html("已用天数："+(usedday?usedday:0)+"");
+                $(".surplusVal").html("已用流量："+(usedflow?usedflow:75)+"L");
+                $(".alreadyUsedVal").html("已用天数："+(usedday?usedday:55)+"天");
 
             }else if(dataList.LeasingMode=="1"){//按流量
-                $(".surplusVal").html("剩余流量："+(reflow?reflow:0)+"L");
-                $(".alreadyUsedVal").html("已用流量："+(usedflow?usedflow:0)+"L");
+                $(".surplusVal").html("剩余流量："+(reflow?reflow:75)+"L");
+                $(".alreadyUsedVal").html("已用流量："+(usedflow?usedflow:77)+"L");
             }else if(dataList.LeasingMode=="2"){//按天数
-                $(".surplusVal").html("剩余天数："+(reday?reday:0)+"天");
-                $(".alreadyUsedVal").html("已用天数：" + (usedday?usedday:0) + "天");
+                $(".surplusVal").html("剩余天数："+(reday?reday:45)+"天");
+                $(".alreadyUsedVal").html("已用天数：" + (usedday?usedday:65) + "天");
             }else if(dataList.LeasingMode=="3"){//流量&时间
             }
 
         }
         else if(dataList.PackType=="SetData")//设置数据类型数据
         {
-            identify=0;
+            // identify=0;
             for(var i=0;i<CmdList.length;i++){
                 if(CmdList[i].cmd.PackNum==dataList.PackNum)
                 {
@@ -234,16 +238,14 @@ window.onload = function(){
             outLine();
         }
     }, 1000);
-    // var bodyfilter=$("body").css('filter');
 
     //冲洗按钮操作
     $('.washBtn').click(function(){
-        var thisT=$(".washBtn p");
         var statusTxt=$(".btmTxt").html();
-        if(statusTxt=="设备已关机"||statusTxt=="设备已离线"||statusTxt=="欠费停机"){
+        if(statusTxt=="设备已关机"||statusTxt=="设备已离线"||statusTxt=="欠费"||statusTxt=="检修"){
             layui.use('layer', function(){
                 var layer = layui.layer;
-                layer.msg('设备不在线，不能冲洗');
+                layer.msg('当前设备状态不能冲洗');
             });
             return false;
         }else{
@@ -271,17 +273,6 @@ window.onload = function(){
                         cmd:ajson,
                         type:"冲洗中"
                     });
-                    identify=1;
-                    setTimeout(function(){
-                        if(identify==1){
-                            layui.use('layer', function(){
-                                var layer = layui.layer;
-                                // layer.msg('操作超时！');
-                                thisT.html('冲洗')
-                            });
-                            identify=0;
-                        }
-                    },10000)
                 });
             });
         }
@@ -296,7 +287,6 @@ window.onload = function(){
         }else{
             _this='关机';
         }
-        // alert(bodyfilter);
         var ajson;//数据对象
         //判断操作类型
         var tipsText = "确定要"+ _this + deviceId +"吗？";
@@ -330,12 +320,24 @@ window.onload = function(){
                     cmd:ajson,
                     type:type
                 });
-                identify=1;
-                setTimeout(function(){
-                    if(identify==1){
-                        identify=0;
-                    }
-                },10000)
+                // identify=1;
+                // setTimeout(function(){
+                //     if(identify==1){
+                //         identify=0;
+                //     }
+                // },10000)
+            });
+        });
+    });
+    $('.heat').click(function(){
+        layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.confirm('亲，确定要加热吗?', {icon: 3, title:'温馨提示'}, function(index){
+                layer.close(index);
+                layui.use('layer', function(){
+                    var layer = layui.layer;
+                    layer.msg('已经给您加热了，天气冷小心烫着！');
+                });
             });
         });
     });
