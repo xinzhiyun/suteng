@@ -99,14 +99,6 @@ class ShopController extends CommonController
         $cateInfo = $cate->getAllCate();
         $goods = D('Goods');
         $goodsList = $goods->getGoodsList();
-        foreach ($goodsList as $key => $value) {
-            $attr = $goods->AttrAction($value['gid']);
-            foreach ($attr as $k => $v) {
-                dump($v);
-            }
-            $goodsList[$key]['attr'] = $attrs;
-        }
-        // dump($goodsList);
         $assign = [
             'data' => $goodsList,
             'cateInfo'=>$cateInfo,
@@ -130,6 +122,31 @@ class ShopController extends CommonController
         ];
         $this->assign($assign);
         $this->display();
+    }
+
+    // 商品管理首页删除商品
+    public function goodsDel()
+    {
+        try {
+            $goods = D('Goods');
+            $id = I('post.id');
+            $where = [
+                'id' => $id,
+            ];
+            $data = ['status'=>2];
+            $del = $goods->where($where)->save($data);
+            if($del){
+                E('删除成功', 200);
+            } else {
+                E('删除失败', 606);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
     }
 
     // 商品添加处理
@@ -255,6 +272,12 @@ class ShopController extends CommonController
      */
     public function orders()
     {
+        $order = D('ShopOrder');
+        $data = $order->getOrders();
+        $assign = [
+            'data' => $data,
+        ];
+        $this->assign($assign);
         $this->display();
     }
 }

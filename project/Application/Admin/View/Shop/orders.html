@@ -1,0 +1,145 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>商城管理 <small>订单管理</small></h5>
+                    <!-- <div class="ibox-tools">
+                        <i class="fa fa-user-plus"></i>
+                        <a href="{{:U('goodsAdd')}}">添加商品</a>
+                    </div> -->
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    订单ID
+                                </th>
+                                <th>
+                                    收货人姓名
+                                </th>
+                                <th>
+                                    收货人电话
+                                </th>
+                                <th>
+                                    收货人地址
+                                </th>
+                                <th>
+                                    订单数量
+                                </th>
+                                <th>
+                                    订单金额
+                                </th>
+                                <th>
+                                    下单时间
+                                </th>
+                                <th>
+                                    支付方式
+                                </th>
+                                <th>
+                                    订单状态
+                                </th>
+                                <th>
+                                    操作
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <volist name="data" id="v">
+                                <tr>
+                                    <td>
+                                        {{$v['order_id']}}
+                                    </td>
+                                    <td>
+                                        {{$v['name']}}
+                                    </td>
+                                    <td>
+                                        {{$v['phone']}}
+                                    </td>
+                                    <td>
+                                        {{$v['address']}}
+                                    </td>
+                                    <td>
+                                        {{$v['g_num']}}
+                                    </td>
+                                    <td>
+                                        {{$v['g_price']}}
+                                    </td>
+                                    <td>
+                                        {{$v['addtime']|date='Y-m-d H:i:s',###}}
+                                    </td>
+                                    <td>
+                                        <switch name="v.mode">
+                                            <case value="0">微信</case>
+                                            <case value="1">支付宝</case>
+                                            <case value="2">银联</case>
+                                        </switch>
+                                    </td>
+                                    <td>
+                                        <!-- 0已下单，1处理中，2已发货，3已收货，4退货处理中，5已退货，6申诉中，7订单完成，8未支付 -->
+                                        <switch name="v.status">
+                                            <case value="0">已下单</case>
+                                            <case value="1">处理中</case>
+                                            <case value="2">已发货</case>
+                                            <case value="3">已收货</case>
+                                            <case value="4">退货处理中</case>
+                                            <case value="5">已退货</case>
+                                            <case value="6">申诉中</case>
+                                            <case value="7">订单完成</case>
+                                            <case value="8">未支付</case>
+                                        </switch>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a class="btn btn-outline btn-success" href="javascript:;" goodsId="{{$v['id']}}" ruleName="{{$v['name']}}" ruleTitle="{{$v['pid']}}"
+                                            onclick="edit(this)">
+                                                查看
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script>
+        $('.btn-group').on('click','.deletBnt',function(e){
+            var goodsId = $(this).attr('goodsId');
+            var goodsName = $(this).attr('goodsName');
+            parent.layer.confirm('确认删除'+goodsName+'这款商品吗？', {
+                btn: ['确认','取消'], //按钮
+                shade: false //不显示遮罩
+            }, function(){
+                $.ajax({
+                    url:'goodsDel',
+                    type:'post',
+                    dataType:'json',
+                    data:{'id':goodsId},
+                    success:function(res){
+                        if(res.code == 200){
+                            location.reload();
+                            parent.layer.msg(res.msg);
+                        }
+                    }
+                });
+            }, function(){
+                parent.layer.msg('已取消', {shift: 6});
+            });
+        })
+
+    </script>
+</block>

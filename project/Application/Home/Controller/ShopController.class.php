@@ -39,11 +39,11 @@ class ShopController extends Controller
         $id['g.id'] = I('get.id');
         $goods = D('Goods');
         $goodsDetail = $goods->getGoodsList($id);
-        dump($goodsDetail);
-        $assign = [
-            'goods' => json_encode($goodsDetail),
-        ];
-        $this->assign($assign);
-        $this->display();
+        // $assign = [
+        //     'goods' => json_encode($goodsDetail),
+        // ];
+        // $this->assign($assign);
+        // $this->display();
+        $this->ajaxReturn($goodsDetail);
     }
 }

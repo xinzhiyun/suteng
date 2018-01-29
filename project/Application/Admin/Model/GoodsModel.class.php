@@ -23,7 +23,7 @@ class GoodsModel extends BaseModel
         array('updatetime', 'time', 3, 'function'),
     );
 
-    public function getGoodsList($where=array('g.status=0'))
+    public function getGoodsList($where=array('g.status'=>0))
     {
         $goodsData = $this
             ->where($where)
@@ -43,12 +43,13 @@ class GoodsModel extends BaseModel
     public function AttrAction($gid)
     {
         $attr = $this
-            ->where('av.gid=22')
+            ->where('av.gid='.$gid)
             ->alias('g')
             ->join('__ATTR_VAL__ av ON g.id=av.gid', 'LEFT')
             ->join('__ATTR__ a ON av.aid=a.id', 'LEFT')
-            ->field('a.attr,av.val')
+            ->field('av.gid,a.attr,av.val')
             ->select();
         return $attr;
     }
+
 }

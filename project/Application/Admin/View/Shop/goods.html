@@ -105,8 +105,8 @@
                                     </td>
                                     <td>
                                         <switch name="v.status">
-                                            <case value="1">上架</case>
-                                            <case value="0">下架</case>
+                                            <case value="0">上架</case>
+                                            <case value="1">下架</case>
                                         </switch>
                                     </td>
                                     <td>
@@ -117,11 +117,11 @@
                                     </td>
                                     <td>
                                         <div class="btn-group">
-                                            <a class="btn btn-outline btn-success" href="javascript:;" ruleId="{{$v['id']}}" ruleName="{{$v['name']}}" ruleTitle="{{$v['pid']}}"
+                                            <a class="btn btn-outline btn-success" href="javascript:;" goodsId="{{$v['id']}}" ruleName="{{$v['name']}}" ruleTitle="{{$v['pid']}}"
                                             onclick="edit(this)">
                                                 更新
                                             </a>
-                                            <a class="btn btn-outline btn-success deletBnt" ruleId="{{$v['id']}}">
+                                            <a id="del" class="btn btn-outline btn-success deletBnt" goodsName="{{$v['name']}}" goodsId="{{$v['id']}}">
                                                 删除
                                             </a>
                                         </div>
@@ -135,4 +135,32 @@
             </div>
         </div>
     </div>
+</block>
+<block name="myjs">
+    <script>
+        $('.btn-group').on('click','.deletBnt',function(e){
+            var goodsId = $(this).attr('goodsId');
+            var goodsName = $(this).attr('goodsName');
+            parent.layer.confirm('确认删除'+goodsName+'这款商品吗？', {
+                btn: ['确认','取消'], //按钮
+                shade: false //不显示遮罩
+            }, function(){
+                $.ajax({
+                    url:'goodsDel',
+                    type:'post',
+                    dataType:'json',
+                    data:{'id':goodsId},
+                    success:function(res){
+                        if(res.code == 200){
+                            location.reload();
+                            parent.layer.msg(res.msg);
+                        }
+                    }
+                });
+            }, function(){
+                parent.layer.msg('已取消', {shift: 6});
+            });
+        })
+
+    </script>
 </block>
