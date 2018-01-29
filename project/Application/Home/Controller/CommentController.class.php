@@ -29,13 +29,12 @@ class CommentController extends CommonController
 
             // 上传文件
             $info   =   $upload->upload();
-            dump($info);
             if(!$info) {// 上传错误提示错误信息
                 $this->error($upload->getError());
-            }else{// 上传成功
-                $this->success('上传成功！');
             }
             $picpath = app_upload_image();
+            dump($data);die;
+
             $res = $comment->add();
             if($res){
                 E('评论成功', 200);

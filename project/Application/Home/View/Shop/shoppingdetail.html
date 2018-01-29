@@ -11,7 +11,7 @@
 	<title>商品详情</title>
 </head>
 <style>
-	body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0; } 
+	body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0; }
 
 	body{
 		font-size: 0.7rem;
@@ -93,7 +93,7 @@
 	.detailtitle>p>b{
 		padding:0 0.5rem;
 	}
-	
+
     /*商品数量*/
     .num {
         width: 30%;
@@ -191,7 +191,7 @@
 	    padding: 0.8rem 0 5%;
 	    color: #F04B7E;
 	}
-	
+
 	.pinglunshow>p{
 		display: block;
 	    height: 2rem;
@@ -290,7 +290,7 @@
 		</div>
 		<div class="shopdetailBott">
 			<span><i class="iconfont icon-icon--"></i><b>加入购物车</b></span><input type="submit" value="立即购买">
-		</div>	
+		</div>
 	</div>
 	<script>
 	$(function(){
@@ -298,7 +298,7 @@
 		var goodsDetail;
 		// 从本地sessionStorage中获取从商城首页点击的商品唯一id
 		var goods_gid = sessionStorage.getItem("goods_gid");
-		// console.log(goods_gid)
+		console.log(goods_gid)
 		// ajax发送商品id查询商品详情
 		$.ajax({
 			url: '{{:U("Shop/goods_detail")}}',
@@ -406,7 +406,7 @@
 		$('.pinglunshow>p>span').click(function(){
 			// console.dir($(this).attr('class'));
 			var _class=$(this).attr('class');
-			
+
 			if(_class=='iconfont icon-shuangxiajiantou'){
 
 				$('.detailItem').slideDown('slow');
@@ -422,14 +422,14 @@
 				$('.detailItem:nth-child(1)').css('display','block');
 
 				$('.detailItem:nth-child(2)').css('display','block');
-				
+
 			}
-			
+
 
 		})
 	})
 
 	</script>
-	
+
 </body>
 </html>

@@ -39,12 +39,12 @@ class ShopController extends Controller
         $goods = D('Goods');
         $goodsDetail = $goods->getGoodsList($id);
         $commentInfo = $goods->getComment($id);
-        echo $goods->_sql();
+        // echo $goods->_sql();
         // dump($commentInfo);
         $data = [
             'goodsDetail' => $goodsDetail,
             'commentInfo' => $commentInfo,
         ];
-        $this->ajaxReturn($data);
+        $this->ajaxReturn($commentInfo);
     }
 }
