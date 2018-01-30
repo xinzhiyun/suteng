@@ -272,17 +272,17 @@
 				sessionStorage.setItem("shopCar_data",JSON.stringify(shopCar_data));
 				// console.log(shopCar_data)
 				// 跳转到订单确认页面
-				location.href = '{{:U("PaymentSystem/payConfirm")}}';
+				// location.href = '{{:U("PaymentSystem/payConfirm")}}';
 				// 发送ajax请求让后台生成订单号
 				$.ajax({
 					url: '{{:U("PaymentSystem/information")}}',
 					type: 'post',
-					data: JSON.stringify(shopCar_data),
+					data: {'data':JSON.stringify(shopCar_data)},
 					success: function(res){
-						console.log('成功！', res)
+						console.log('成功！', res);
 					},
 					error: function(res){
-						console.log('失败！', res)
+						console.log('失败！', res);
 					}
 				})
 			}else{
