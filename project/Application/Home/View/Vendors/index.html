@@ -5,8 +5,7 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<script src="__PUBLIC__/Home/js/public.js"></script>
-	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_3mgodvjd6sp833di.css">
-	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_rj8k5mm663i8uxr.css">
+	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_n9r4gvjlv5dsra4i.css">
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<title>经销商首页</title>
 	<style>
@@ -118,6 +117,11 @@
 			padding: 0 5vw;
 			line-height: 2rem;
 		}
+		.list>h3>i{
+			font-size: 1rem;
+			margin-right: 2vw;
+			color: #4caf50;
+		}
 		.list>p{
 			/*padding:3vh 1vh;*/
 			 padding:0 5vw;
@@ -128,8 +132,22 @@
 		}
 		.list>p>i{
 			margin-right: 2vw;
-			color:#56aaf1;
+			color:#03a9f4;
+
 		}
+		.list>p:nth-child(1)>i{
+			color:#f5dc04;
+		}
+		.list>p:nth-child(2)>i{
+			color:#f5dc04;
+		}
+		.list>p:nth-child(3)>i{
+			color:#ff5722;
+		}
+		.list>p:last-child>i{
+			color:#8400d4;
+		}
+
 		.list>p>i.icon-jingxiaoshang{
 			color:#ff721f;
 		}
@@ -179,22 +197,22 @@
 				<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_b}}" alt=""><br/>
 			</div>
 			<div class="moneySon">
-				<p>会员邀请码：</p>
+				<p>C会员邀请码：</p>
 			<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_user}}" alt=""><br/>
 			</div>
 			<div class="moneySon">
-				<p>会员邀请码：</p>
+				<p>D会员邀请码：</p>
 				<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_user}}" alt=""><br/>
 			</div>
 		</div>
 		
 	</div>
 	<div class="list clearfix">
-			<h3>我的团队</h3>
-			<p><i class="iconfont icon-jingxiaoshang"></i><span>A级分销商<b>30人</b></span><em>今日新增2人</em></p>
-			<p><i class="iconfont icon-hezuoguanxi-xianxing"></i><span>B级分销商<b>30人</b></span><em>今日新增2人</em></p>
-			<p><i class="iconfont icon-jingxiaoshang"></i><span>C级分销商<b>30人</b></span><em>今日新增2人</em></p>
-			<p><i class="iconfont icon-hezuoguanxi-xianxing"></i><span>D级分销商<b>30人</b></span><em>今日新增2人</em></p>
+			<h3><i class="iconfont icon-tuandui"></i>我的团队</h3>
+			<p><i class="iconfont icon-huiyuanjibie"></i><span>A级分销商<b>30人</b></span><em>今日新增2人</em></p>
+			<p><i class="iconfont icon-huiyuanjibie"></i><span>B级分销商<b>30人</b></span><em>今日新增2人</em></p>
+			<p><i class="iconfont icon-huiyuanjibie"></i><span>C级分销商<b>30人</b></span><em>今日新增2人</em></p>
+			<p><i class="iconfont icon-huiyuanjibie"></i><span>D级分销商<b>30人</b></span><em>今日新增2人</em></p>
 
 	</div>
 	
