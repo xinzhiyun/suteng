@@ -225,6 +225,9 @@
 		line-height: 6vh;
 		text-align: center;
 	}
+	.shopdetailBott>a:active>i{
+		color: #960532;
+	}
 	.shopdetailBott>a>i{
 		font-size: 1.3rem;
     	color: #F04B7E;
@@ -423,7 +426,7 @@
 		$("#add2ShopCart").click(function(){
 			var num = $(".number").val();	//选择的数量
 			console.log(goodsDetail)
-			var data = [{'sid': sid,'num':num}]
+			var data = [{'gid': gid,'num':num}]
 			$.ajax({
 				url: '{{:U("ShoppingCart/shopAdd")}}',
 				type: 'post',

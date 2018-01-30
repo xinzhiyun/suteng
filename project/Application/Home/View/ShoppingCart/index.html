@@ -41,10 +41,11 @@
 	}
 	.itemcarLeft>.xuanzhong>.icon-kuang1{
 		color:#ccc;
+		font-size: .9rem;
 	}
 	.itemcarLeft>.xuanzhong>.icon-xuanze{
 	    color: #56AAF1;
-		
+		font-size: .9rem;
 	}
 	.itemcarLeft>.carpic{
 		border:1px solid #ccc;
@@ -132,48 +133,50 @@
 	    background: #2EB6AA;
 	    color: #FFF;
 	 }
-	
+	  /*商品数量*/
+    .num {
+        width: 40%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        -webkit-box-align: stretch;
+            -ms-flex-align: stretch;
+                align-items: stretch;
+    }
+
+    .num>input {
+        width: 33%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        text-align: center;
+        font-size: 1rem;
+        border: none;
+        -webkit-appearance: none;
+        border-radius: 4px;
+        /*background: #fff;*/
+    }
+    .num>.number {
+        width: 33%;
+        margin: 0 4px;
+        text-align: center;
+        border-radius: 4px;
+        border: 1px solid #a4a4a4;
+        font-size: .8rem;
+    }
 </style>
 <body>
 	<div class="shpingcarAll">
-		<div class="itemCar clearfix" goodsnumber="1" >
-			<!-- /*选中及图片*/ -->
-			<div class="itemcarLeft clearfix ">
-				<div class="xuanzhong "><i class="iconfont icon-xuanze"></i></div>
-				<div class="carpic "><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
-			</div>
-			<!-- /*文字说明及价格*/ -->
-			<div class="itemcarRight">
-				<h3>RO膜</h3>
-				<p class="roTxt">RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等</p>
-				<p class="roPrice clearfix"><b>￥120.00</b><span>-<em>1</em>+</span></p>
-
-			</div>
-			
-		</div>
-		<!-- <div class="itemCar clearfix" goodsnumber="2" > -->
-			<!-- /*选中及图片*/ -->
-			<!-- <div class="itemcarLeft clearfix ">
-				<div class="xuanzhong "><i class="iconfont icon-kuang1"></i></div>
-				<div class="carpic "><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
-			</div> -->
-			<!-- /*文字说明及价格*/ -->
-			、
-			<!-- /*选中及图片*/ -->
-			<!-- <div class="itemcarLeft clearfix ">
-				<div class="xuanzhong "><i class="iconfont icon-kuang1"></i></div>
-				<div class="carpic "><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
-			</div> -->
-			<!-- /*文字说明及价格*/ -->
-		<!-- 	<div class="itemcarRight">
-				<h3>RO膜</h3>
-				<p class="roTxt">RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等</p>
-				<p class="roPrice clearfix"><b>￥120.00</b><span>-<em>1</em>+</span></p>
-
-			</div>
-			
-		</div>
-		<div class="itemCar clearfix" goodsnumber="3" > -->
+		<!-- <div class="itemCar clearfix" gid="1" > -->
 			<!-- /*选中及图片*/ -->
 			<!-- <div class="itemcarLeft clearfix ">
 				<div class="xuanzhong "><i class="iconfont icon-kuang1"></i></div>
@@ -183,58 +186,225 @@
 			<!-- <div class="itemcarRight">
 				<h3>RO膜</h3>
 				<p class="roTxt">RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等</p>
-				<p class="roPrice clearfix"><b>￥120.00</b><span>-<em>1</em>+</span></p>
+				<p class="roPrice clearfix">
+					<b class="price">￥<span>120.00</span></b>
+					<span class="num">
+						<input type="button" value="-" class="minus">
+						<input class="number" type="number" value="1" min="1" max="19">
+						<input type="button" value="+" class="plus">
+					</span>
+				</p>
 
 			</div>
+		</div> -->
+		<!-- <div class="itemCar clearfix" gid="2" > -->
+			<!-- /*选中及图片*/ -->
+			<!-- <div class="itemcarLeft clearfix ">
+				<div class="xuanzhong "><i class="iconfont icon-kuang1"></i></div>
+				<div class="carpic "><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
+			</div> -->
 			
+			<!-- /*文字说明及价格*/ -->
+			<!-- <div class="itemcarRight">
+				<h3>RO膜</h3>
+				<p class="roTxt">RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等</p>
+				<p class="roPrice clearfix">
+					<b class="price">￥<span>120.00</span></b>
+					<span class="num">
+						<input type="button" value="-" class="minus">
+						<input class="number" type="number" value="1" min="1" max="19">
+						<input type="button" value="+" class="plus">
+					</span>
+				</p>
+
+			</div>
 		</div> -->
 	</div>
 	<!-- 底部结算按钮 -->
 	<div class="shoppingcarBott">
-		<p><i class="iconfont icon-kuang1"></i>全选<span>合计：<b>￥120.00</b></span></p>
-		<input type="submit" value="结算">
+		<p><i class="iconfont icon-kuang1"></i>全选<span>合计：<b class="priceAll">￥0</b></span></p>
+		<input id="toPay" type="button" value="结算">
 	</div>
-	 
+
 	<script>
 	$(function(){
-		// 请求购物车列表数据
+		/*
+			请求购物车列表数据
+		 */ 
+		var itemCarHTML = '';
 		$.ajax({
 			url: '{{:U("ShoppingCart/index")}}',
 			type: 'post',
 			success: function(res){
-				console.log("成功！", res)
+				// console.log("成功！", res);
+				res = [
+					{'gid': 1,'name':'RO膜','price':'120.00','picpath':'__PUBLIC__/Home/images/comm_03.png','desc':'RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等'},
+					{'gid': 2,'name':'RO膜','price':'100.00','picpath':'__PUBLIC__/Home/images/comm_02.png','desc':'RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等'},
+					{'gid': 3,'name':'RO膜','price':'220.00','picpath':'__PUBLIC__/Home/images/comm_03.png','desc':'RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等'},
+					{'gid': 4,'name':'RO膜','price':'420.00','picpath':'__PUBLIC__/Home/images/comm_02.png','desc':'RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等'},
+					{'gid': 5,'name':'RO膜','price':'20.00','picpath':'__PUBLIC__/Home/images/comm_02.png','desc':'RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等'}
+				];
+				for(var i=0; i<res.length; i++){
+					itemCarHTML += '<div class="itemCar clearfix" gid="'+ res[i].gid +'" >'+
+						'<!-- /*选中及图片*/ -->'+
+						'<div class="itemcarLeft clearfix ">'+
+							'<div class="xuanzhong "><i class="iconfont icon-kuang1"></i></div>'+
+							'<div class="carpic "><img src="'+ res[i].picpath +'" alt=""></div>'+
+						'</div>'+
+						'<!-- /*文字说明及价格*/ -->'+
+						'<div class="itemcarRight">'+
+							'<h3>'+ res[i].name +'</h3>'+
+							'<p class="roTxt">'+ res[i].desc +'</p>'+
+							'<p class="roPrice clearfix">'+
+								'<b class="price">￥<span>'+ res[i].price +'</span></b>'+
+								'<span class="num">'+
+									'<input type="button" value="-" class="minus">'+
+									'<input class="number" type="number" value="1" min="1" max="19">'+
+									'<input type="button" value="+" class="plus">'+
+								'</span>'+
+							'</p>'+
+						'</div>'+
+					'</div>';
+				}
+				$(".shpingcarAll").html(itemCarHTML);
 			},
 			error: function(res){
 				console.log("失败！", res)
 			}
 		})
+		/*
+			结算
+		 */
+		$("#toPay").click(function(){
+			var data = [];
+			var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
+			for(var i=0; i<chooseGoods.length; i++){
+				data.push({
+					'gid': chooseGoods.eq(i).parents(".itemCar").attr("gid"),
+					'num': chooseGoods.eq(i).parents(".itemCar").find(".number").val(),
+					'money': parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text())*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number").val())
+				});
+			}
+			console.log(data)
+		})
+
+		var priceAll = 0;
+		/*
+			 按加'+'号
+		 */
+		$(".shpingcarAll").on("touchend",'.plus',function(){
+			var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
+			priceAll = 0;	//合计归零，后面重新计算
+			// 获取数量
+			var value = $(".number").val();
+			$(this).siblings(".number")[0].value++;
+
+			// 将金额实时更新到合计
+			for(var i=0; i<chooseGoods.length; i++){
+				if($(".itemCar").find("i[class='iconfont icon-xuanze']")){
+					var itemCar = $(".shpingcarAll").find(".itemCar").eq(i);
+					priceAll += parseFloat(itemCar.find(".price>span").text())*parseFloat(itemCar.find(".number").val())
+				}
+				// console.log('price: ',itemCar.find(".price>span").text())
+				// console.log('num: ',itemCar.find(".number").val())
+			}
+			$(".priceAll").text('￥'+priceAll);
+		});
+		/*
+			按减'-'号
+		 */
+		$(".shpingcarAll").on("touchend",".minus",function(){
+			var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
+			priceAll = 0;	//合计归零，后面重新计算
+			// 获取数量
+			var value = $(".number").val();
+			for(var i=0; i<$(this).siblings(".number").length; i++){
+				$(this).siblings(".number").val() <= 1
+				? 1
+				: $(this).siblings(".number")[i].value--
+			}
+			// console.log($(this).siblings(".number")[0].value);
+			// 将金额实时更新到合计
+			for(var i=0; i<chooseGoods.length; i++){
+				if($(".itemCar").find("i[class='iconfont icon-xuanze']")){
+					var itemCar = $(".shpingcarAll").find(".itemCar").eq(i);
+					priceAll += parseFloat(itemCar.find(".price>span").text())*parseFloat(itemCar.find(".number").val())
+				}
+				// console.log('price: ',itemCar.find(".price>span").text())
+				// console.log('num: ',itemCar.find(".number").val())
+			}
+			$(".priceAll").text('￥'+priceAll);
+
+		});
 		// 删除商品
        slipDel('.itemCar','goodsnumbe');
 
        function del(i){
-				alert(1);
-			}
+			alert(1);
+		}
 
 		// 选中框
-		$('.itemcarLeft>.xuanzhong>i').click(function(){
+		$('.shpingcarAll').on('click','.itemcarLeft>.xuanzhong>i',function(){
+			var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
 			var _class=$(this).attr('class');
-			
+
+			// 无选择商品
 			if(_class=='iconfont icon-xuanze'){
 				$(this).removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-		
+				
+				priceAll = 0;
+				var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
+				// 实时将总价格更新到合计
+				for(var i=0; i<chooseGoods.length; i++){
+					
+					priceAll += parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value)*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
+
+					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value);
+					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
+				} 
+				// 将价格显示到合计
+				$(".priceAll").text('￥'+ priceAll);
+			// 有选择商品
 			}else{
 				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+				priceAll = 0;
+				var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
+				// 实时将总价格更新到合计
+				for(var i=0; i<chooseGoods.length; i++){
+					
+					priceAll += parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value)*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
+
+					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value);
+					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
+				} 
+				// 将价格显示到合计
+				$(".priceAll").text('￥'+ priceAll);
+			}
+			// 如果没有一个选中
+			if(!$(".icon-xuanze").length){
+				console.log('没了');
+				$(".priceAll").text('￥'+ 0);
+			}
+
+			// 全部选中了
+			if($(".itemCar").find(".icon-xuanze").length == $(".itemCar").length){
+				$('.shoppingcarBott>p>i').removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+			}else if($(".itemCar").find(".icon-xuanze").length != $(".itemCar").length){
+				// 未全选
+				$('.shoppingcarBott>p>i').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 			}
 		})
 		// 全选事件
 		$('.shoppingcarBott>p>i').click(function(){
 			var _quanclass=$(this).attr('class');
 			
+			// 全选
 			if(_quanclass=='iconfont icon-kuang1'){
 				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
 				var _class=$('.itemcarLeft>.xuanzhong>i').attr('class');
 				$('.itemcarLeft>.xuanzhong>i').removeClass(_class).addClass('iconfont icon-xuanze');
 			}else{
+				// 全不选
 				$(this).removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 				var _class=$('.itemcarLeft>.xuanzhong>i').attr('class');
 				$('.itemcarLeft>.xuanzhong>i').removeClass(_class).addClass('iconfont icon-kuang1');
