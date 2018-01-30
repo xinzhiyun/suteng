@@ -552,6 +552,7 @@ class VendorsController extends CommonController
     public function vendor_reviewed()
     {
         $data = D('vendors')->vendorReviewed();
+        // dump($data);die;
         $assign = [
             'data' => $data,
         ];

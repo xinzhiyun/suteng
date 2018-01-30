@@ -1,57 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>注册经销商</title>
-	<link href="/Public/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>注册经销商</title>
+    <link href="/Public/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+    <script src="__PUBLIC__/Home/js/public.js"></script>
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_eele8rs3vvwh4cxr.css">
+   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+    <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 </head>
+<style>
+    * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+        }
+    body{
+        font-size: 0.7rem;
+        color:#373737;
+    }
+    .ibox-content{
+        width: 100vw;
+    }
+     header{
+        padding-top: 0.6rem;
+        height: 6rem;
+        margin-bottom: 2vh;
+        background: -webkit-radial-gradient(top left, #99FCEF 35%, #5B97EF);
+
+     }
+    header>p {
+            padding: 2% 4% 3%;
+            text-align: left;
+            color: #5a5a5a;
+            font-size: 0.72rem;
+        }
+        header>p>b{
+            display: inline-block;
+            width: 4rem;
+            height: 4rem;
+            border-radius: 4rem; 
+            background: #ccc;
+            float: left;
+            overflow: hidden;
+            padding-right: 0.5rem;
+
+        }
+         header>p>b>img{
+            width: 100%;
+        }
+         header>p>span{
+            line-height: 3rem;
+            margin-left: 1rem;
+            color: #5a5a5a;
+        }
+      
+        form>.form-group{
+            width: 100vw;
+            padding:0.6rem 0.8rem;
+            height: 2.5rem;
+            clear:both;
+            border-bottom:1px solid #d4d4d4!important;
+        }
+        form>.form-group:nth-of-type(7){
+            border-bottom:none!important;
+            border-top: 10px solid #d4d4d4;
+            margin-top: 1rem;
+        }
+
+        form>.form-group1{
+             height: 4rem;
+             border-bottom: none!important;
+             position: relative;        }
+        form>div.form-group:nth-of-type(3){
+            border-bottom:10px solid #d4d4d4!important;
+             margin-bottom: 1rem;
+        }
+        form>div.form-group:nth-of-type(5){
+            border:none!important;
+            
+        }
+        form>div.form-group:nth-of-type(4)>label{
+            display: block;
+        }
+        form>div.form-group:nth-of-type(4)>.col-md-3{
+            position: relative;
+
+        }
+        form>.form-group>i{
+            float: left;
+            font-size: 1.2rem;
+        }
+     
+        form>.form-group>label{
+            float: left;
+            letter-spacing: 0.12rem;
+            line-height: 1.2rem;
+            font-size: 0.72rem;
+        }
+        form>.form-group1>label{
+            line-height: 2.5rem;
+        }
+         form>.form-group>.col-md-3>input{
+            width: 56vw;
+            height: 1.2rem;
+            border:none;
+         }
+         /*重置样式和申请*/
+          form>.form-group{
+            border-bottom: none;
+            width: 100vw !important;
+          }
+         form>.form-group>.col-sm-4{
+            position: relative;
+            margin-top: 1rem;
+            bottom: 1rem;
+         }
+         form>.form-group>.col-sm-offset-2>input{
+            letter-spacing: 0.1rem;
+            font-size: 0.72rem;
+            background: #fff;
+            border-radius: 0.4rem;
+            padding:0.2rem 2rem;
+            border:1px solid #737373;
+         }
+         form>.form-group>.col-sm-offset-2>input.btn-primary{
+            margin-right: 2.7rem;
+         }
+         form>.form-group>.col-sm-offset-2>input.btn-white{
+            float: right;
+         }
+
+         .icon-gongsimingcheng{
+            color: #2EB6AA;
+        }
+        .icon-shouji {
+            color: #23A0E8;
+        }
+        .icon-dizhi {
+            color: #E55C1F;
+        }
+
+        .form-group>.col-md-5{
+            display: inline-block;
+            width: 20vw;
+        }
+       form>.form-group>.col-md-5>input{
+           position: absolute;
+            margin-left: 1rem;
+            width: 2rem;
+            height: 2.7rem;
+            background: green;
+            opacity: 0;
+            z-index: 999;
+            
+        }
+        .form-group>.col-md-5>i{
+            position: relative;
+            top: -0.4rem;
+            left: 0.8rem;
+            font-size: 3rem;
+            color: #56aaf1;
+            z-index: 666;
+            
+        }
+</style>
 <body>
     <div class="ibox-content">
-        <form action="{{:U('Home/Vendors/identity_refillings')}}" method="post" class="form-horizontal" enctype="multipart/form-data">
+        <header>
+            <p><b></b><span>注册经销商</span></p>
+        </header>
+        <form action="{{:U('Home/Vendors/identity_refillings')}}" method="post" class="form-horizontal clearfix" enctype="multipart/form-data">    
             <div class="form-group">
-                <label class="col-sm-2 control-label">姓名</label>
-                <div class="col-md-3">
-                    <input type="text" name="name" class="form-control">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">移动电话</label>
-                <div class="col-md-3">
-                    <input type="text" name="phone" class="form-control">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">身份证号</label>
-                <div class="col-md-3">
-                    <input type="text" name="identity" class="form-control">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">身份证正面</label>
-                <div class="col-md-3">
-                    <input type="file" name="positive" class="form-control">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">身份证反面</label>
-                <div class="col-md-3">
-                    <input type="file" name="opposite" class="form-control">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">手持身份证</label>
-                <div class="col-md-3">
-                    <input type="file" name="handheld" class="form-control">
-                </div>
-            </div>
+                <i class="iconfont icon-gongsimingcheng"></i>
+                <label class="col-sm-2 control-label" for="comName">姓 &nbsp; &nbsp;名&nbsp;： </label>
 
+                <div class="col-md-3">
+                    <input id="comName" type="text" name="name" class="form-control">
+                </div>
+            </div> 
+           <div class="form-group">
+                <i class="iconfont icon-shouji"></i>
+                <label class="col-sm-2 control-label" for="comTel">移动电话： </label>
+
+                <div class="col-md-3">
+                    <input id="comTel" type="text" name="phone" class="form-control">
+                </div>
+            </div>
+             <div class="form-group">
+                <i class="iconfont icon-dizhi"></i>
+                <label class="col-sm-2 control-label" for="comAddr">身份证号：</label>
+
+                <div class="col-md-3">
+                    <input id="comAddr" type="text" name="identity" class="form-control">
+                </div>
+            </div>
+            <div class="form-group  form-group1">
+                <label class="col-sm-2 control-label" for="comLicen">身份证正面</label>
+                <div class="col-md-5">
+                    <input type="file" id="comLicen" name="positive" class="form-control">
+                    <i class="iconfont icon-tianjia tianjiatubiao"></i>
+                </div>
+            </div> 
+             <div class="form-group form-group1">
+                <label class="col-sm-2 control-label" for="comLicen">身份证反面</label>
+                <div class="col-md-5">
+                    <input type="file" id="comLicen" name="opposite" class="form-control">
+                    <i class="iconfont icon-tianjia tianjiatubiao"></i>
+                </div>
+            </div> 
+             <div class="form-group form-group1">
+                <label class="col-sm-2 control-label" for="comLicen">手持身份证</label>
+                <div class="col-md-5">
+                    <input type="file" id="comLicen" name="handheld" class="form-control">
+                    <i class="iconfont icon-tianjia tianjiatubiao"></i>
+                </div>
+            </div> 
+            <!-- <div class="hr-line-dashed"></div> -->
             <div class="form-group">
                 <div class="col-sm-4 col-sm-offset-2">
-                    <button class="btn btn-primary" type="submit">提交</button>
-                    <button class="btn btn-white" type="reset">重置</button>
+                    <input class="btn btn-primary" type="submit" value="申请"></input>
+                    <input class="btn btn-white" type="reset" value="重置"></input>
+                   
                 </div>
             </div>
         </form>
     </div>
 </body>
 </html>
+
+
+

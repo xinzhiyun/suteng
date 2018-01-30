@@ -1,47 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<meta charset="UTF-8">
-	<title>注册经销商</title>
-	<link href="/Public/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+    <title><block name="title">页面</block></title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/login.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <block name="mylink"></block>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+    <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+    <script src="__PUBLIC__/Home/js/public.js"></script>
 </head>
-<style>
-    div.form-group{
+    <style>
+
+        body{
+            font-size: 0.7rem;
+            color:#737373;
+            background:url("__PUBLIC__/Admin/img/adminbg.png") no-repeat center fixed;
+            -webkit-background-size: cover;
+            background-size: cover;
+        }
+        .signinpanel {
+            width: 80vw;
+            margin: 10% auto 0 auto;
+        }
+        .gray-bg {
+            background-color: #f3f3f4;
+        }
+        content{
+            background: red;
+            opacity: 1;
+            height: 100vh;
+            width: 100vw;
+        }
+        .loginscreen.middle-box {
+        width: 70%;
+         display: flex; 
+        flex-flow: column;
+        position: relative;
+        top: 14%;
+        padding: 3% 5%;
+        background: rgba(256,256,256,.6);
+        box-shadow: 0 0 10px rgba(0,0,0,.1);
+        }
+        .logo-name {
         width: 100%;
-    }
-</style>
-<body>
-    <div class="ibox-content">
-        <form action="{{:U('Home/RegisteredVendor/index')}}" method="post" class="form-horizontal" enctype="multipart/form-data">
-            <div class="form-group">
-                <label class="col-sm-2 control-label">用户名</label>
+        height: 17vh;
+        color: #e6e6e6;
+        font-size: 6rem;
+        font-weight: 800;
+        letter-spacing: -10px;
+        margin-bottom: 10%;
+        background: url(__PUBLIC__/Admin/img/logo.png);
+        background-size: 100% 100%;
+        }
 
-                <div class="col-md-3">
-                    <input type="text" name='user' class="form-control">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">密码</label>
+        .m-t {
+            margin-top: 1rem;
+        }
 
-                <div class="col-md-3">
-                    <input type="password" name="password" class="form-control" name="password">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">密码确认</label>
+/*        .loginDiv {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 2%;
+            border: 2px solid #8BAFD0;
+            border-radius: 9px;
+            background: #DFF3FE;
+        }
+        .loginDiv:nth-of-type(3)>input {
+            height: 100%;
+            padding: 4%;
+            border: 2px solid #8BAFD0;
+            border-radius: 9px;
+            background: #DFF3FE;
+        }
+        .loginDiv:nth-of-type(3)>span {
+            flex: 1;
+            height: 26px;
+            display: inline-block;
+            margin: 0 4%;
+            background: url(__PUBLIC__/Admin/img/passw.png) no-repeat;
+            background-size: contain;
+        }*/
+    </style>
 
-                <div class="col-md-3">
-                    <input type="password" name="repassword" class="form-control" name="password">
-                </div>
+<body class="gray-bg">
+<block name="content">
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name"></h1>
+
             </div>
-            <div class="hr-line-dashed"></div>
-            <div class="form-group">
-                <div class="col-sm-4 col-sm-offset-2">
-                    <button class="btn btn-primary" type="submit">申请</button>
-                    <button class="btn btn-white" type="reset">重置</button>
+            <h3>还原加入！</h3>
+
+            <form class="m-t" role="form" action="{{:U('Home/RegisteredVendor/index')}}" method="post">
+                <div class="form-group loginDiv">
+                    <span></span>
+                    <input name="user" type="text" class="form-control" placeholder="账户" required="">
                 </div>
-            </div>
-        </form>
+                <div class="form-group loginDiv">
+                    <span></span>
+                    <input name="password" type="password" class="form-control" placeholder="密码" required="">
+                </div>
+                <div class="form-group loginDiv">
+                    <span></span>
+                    <input name="repassword" type="password" class="form-control" placeholder="密码" required="">
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b loginbtn">申 请</button>
+            </form>
+        </div>
     </div>
-</body>
-</html>
+</block>
+<block name="myjs">
+    <!-- 全局js -->
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="js/bootstrap.min.js?v=3.3.6"></script>
+
+    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+    <!--统计代码，可删除-->
+</block>
