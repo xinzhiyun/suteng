@@ -23,6 +23,7 @@ class GoodsModel extends Model
         return $goods;
     }
 
+    // 获取评论数据
     public function getComment($where=null)
     {
         $data = $this
@@ -30,9 +31,15 @@ class GoodsModel extends Model
             ->alias('g')
             ->join('__COMMENT__ c ON g.id=c.gid', 'LEFT')
             ->join('__COM_PIC__ cp ON c.id=cp.cid', 'LEFT')
-            ->join()
-            ->field()
+            ->join('__USERS__ u ON c.uid=u.id', 'LEFT')
+            ->field('cp.path,u.nickname,u.head,c.content')
             ->select();
         return $data;
+    }
+
+    // 属性参数处理
+    public function attrAction()
+    {
+        
     }
 }

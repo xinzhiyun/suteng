@@ -37,10 +37,19 @@ class ShopController extends Controller
     {
         $id['g.id'] = I('get.id');
         $goods = D('Goods');
+        $arr = [];
         $goodsDetail = $goods->getGoodsList($id);
+    	foreach($goodsDetail as $val){
+    		$key = $val['gid'];
+    		if(isset($arr[$key])) {
+    			$arr[$key]['attr'] .= $val['attr'].':'.$val['val'].'|';
+    		} else {
+                $arr[$key] = $val;
+    			$arr[$key]['attr'] = $val['attr'].':'.$val['val'].'|';
+    		}
+    	}
+    	$goodsDetail = array_values($arr);
         $commentInfo = $goods->getComment($id);
-        // echo $goods->_sql();
-        // dump($commentInfo);
         $data = [
             'goodsDetail' => $goodsDetail,
             'commentInfo' => $commentInfo,
