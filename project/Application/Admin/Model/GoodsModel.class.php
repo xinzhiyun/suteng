@@ -28,12 +28,12 @@ class GoodsModel extends BaseModel
         $goodsData = $this
             ->where($where)
             ->alias('g')
-            // ->join('__ATTR_VAL__ av ON g.id=av.gid', 'LEFT')
-            // ->join('__ATTR__ a ON av.aid=a.id', 'LEFT')
+            ->join('__ATTR_VAL__ av ON g.id=av.gid', 'LEFT')
+            ->join('__ATTR__ a ON av.aid=a.id', 'LEFT')
             ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
             ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
             ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
-            ->field('p.*,gd.*,g.*,c.name cname')
+            ->field('p.*,g.*,c.name cname,av.val,a.attr,gd.*')
             ->order(' addtime desc')
             ->select();
         return $goodsData;

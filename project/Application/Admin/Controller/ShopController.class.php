@@ -99,7 +99,16 @@ class ShopController extends CommonController
         $cateInfo = $cate->getAllCate();
         $goods = D('Goods');
         $goodsList = $goods->getGoodsList();
-        // dump($goodsList);die;
+        foreach($goodsList as $val){
+            $key = $val['gid'];
+            if(isset($arr[$key])) {
+                $arr[$key]['attr'] .= $val['attr'].':'.$val['val'].'|';
+            } else {
+                $arr[$key] = $val;
+                $arr[$key]['attr'] = $val['attr'].':'.$val['val'].'|';
+            }
+        }
+        $goodsList = array_values($arr);
         $assign = [
             'data' => $goodsList,
             'cateInfo'=>$cateInfo,

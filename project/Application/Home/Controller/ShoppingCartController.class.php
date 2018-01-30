@@ -19,6 +19,7 @@ class ShoppingCartController extends CommonController
             $cart = D('Cart');
             $where['c.uid'] = session('user.id');
             $data = $cart->getCart($where);
+            // dump($data);die;
             foreach($data as $val){
         		$key = $val['gid'];
         		if(isset($arr[$key])) {
@@ -29,9 +30,6 @@ class ShoppingCartController extends CommonController
         		}
         	}
         	$data = array_values($arr);
-            $assign = [
-                'data' => json_encode($data),
-            ];
             $this->ajaxReturn($data);
         } catch (\Exception $e) {
             $err = [
@@ -60,7 +58,11 @@ class ShoppingCartController extends CommonController
                 E('无法加入购物车', 603);
             }
         } catch (\Exception $e) {
-
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
         }
 
     }
