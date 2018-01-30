@@ -259,11 +259,12 @@
 			if($(".priceAll>span").text() != 0){
 				for(var i=0; i<chooseGoods.length; i++){
 					shopCar_data.push({
-						'path': shopList.path,
-						'desc': shopList.desc,
-						'name': shopList.name,
+						'path': chooseGoods.eq(i).parents(".itemCar").find(".carpic>img").attr("src"),
+						'desc': chooseGoods.eq(i).parents(".itemCar").find(".roTxt").text(),
+						'name': chooseGoods.eq(i).parents(".itemCar").find(".itemcarRight>h3").text(),
 						'gid': chooseGoods.eq(i).parents(".itemCar").attr("gid"),
 						'num': chooseGoods.eq(i).parents(".itemCar").find(".number").val(),
+						'price': chooseGoods.eq(i).parents(".itemCar").find(".price>span").text(),
 						'money': parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text())*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number").val())
 					});
 				}
@@ -276,6 +277,7 @@
 				$.ajax({
 					url: '{{:U("PaymentSystem/information")}}',
 					type: 'post',
+					data: JSON.stringify(shopCar_data),
 					success: function(res){
 						console.log('成功！', res)
 					},
