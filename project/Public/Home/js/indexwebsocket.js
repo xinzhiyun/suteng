@@ -7,7 +7,7 @@ window.onload = function(){
     function wash(){//冲洗状态 1
         $(".btmTxt").html("冲洗");
         $(".xuanhuan").show().siblings().hide();
-        $("body").css({height:'100vh',filter:'grayscale(0%)'});
+        $("body").css({height:'100vh',filter:'grayscale(0%)'}); 
     }
     function lesswater(){// 缺水状态
         $(".queshui").show().siblings().hide();
@@ -140,8 +140,8 @@ window.onload = function(){
     var CmdList=[];//命令队列
     // var identify=0;
     var numAdd=0;
-    // var deviceId=dataList.DeviceID;
-    var deviceId=228733445596778;
+    var deviceId=getdataList.deviceid;
+    // var deviceId=228733445596778;
     websoket.onopen=function(){
         //包数据
         ajson={
