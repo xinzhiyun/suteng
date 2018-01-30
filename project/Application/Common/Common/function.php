@@ -1201,3 +1201,29 @@ function bootstrap_page_style($page_html){
     }
     return $page_show;
 }
+
+/**
+ * 生产唯一的订单ID
+ */
+function gerOrderId()
+{
+  do {
+    // $did = $_SESSION['homeuser']['did'];
+    // $uid = M('Users')->where("open_id='{$orderId}'")->find()['id'];
+    // 生成唯一订单号
+    $orderId = onlyOrderId();
+    //查询订单号是否存在
+    $oid = M('Orders')->where("`order_id`='{$orderId}'")->field('id')->find();
+    // 如果订单号已存在再重新获取一次
+  } while ($oid);
+
+  // 绝对唯一的32位订单ID号
+  return $orderId;
+}
+
+function onlyOrderId(){                     
+  // $str = date('Ymd').time().mt_rand(1111111111, 9999999999).mt_rand(1111111111, 9999999999);
+  $str = mt_rand(1111111111, 9999999999).mt_rand(1111111111, 9999999999).time();
+  $yCode = mb_substr($str, 0, 15);
+  return $yCode;
+}

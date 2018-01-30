@@ -252,7 +252,7 @@ class WeixinEventController extends Controller
         // $fromUser = $fromUser;
         $title = '会员登录'; 
         $description = '欢迎加入速腾集团，成为速腾集团全球合伙人。'; 
-        $src = 'http://suteng.dianqiukj.com/suteng/project/index.php/Public/Vendors/user.png';
+        $src = 'http://suteng.dianqiukj.com/suteng/project/index.php/Public/Vendors/user.jpg';
         $url = 'http://suteng.dianqiukj.com/suteng/project/index.php/Home/Index/index';
         $template = "<xml>
                         <ToUserName><![CDATA[%s]]></ToUserName>

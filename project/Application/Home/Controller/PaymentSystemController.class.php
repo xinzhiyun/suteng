@@ -1,5 +1,6 @@
 <?php
 namespace Home\Controller;
+use \Org\Util\WeixinJssdk;
 
 class PaymentSystemController extends CommonController
 {
@@ -29,6 +30,98 @@ class PaymentSystemController extends CommonController
     {
         $this->display();
     }
+
+    /**
+     * [chongzhi 微信充值接口]
+     * @return [type] [description]
+     */
+    public function wxchongzhi()
+    {
+        $id = I('post.id')-1;
+        $jeArr =   [
+                    100,
+                    200,
+                    300,
+                    400,
+                    500,
+                    100,
+                    200,
+                    300,
+                    400,
+                    500,
+                    100,
+                    200,
+                    300,
+                    400,
+                    500
+                ];
+        $je = $jeArr[$id];
+
+        // echo $je;
+        $this->uniformOrder($je,12345678,'速腾商城充值');
+    }
+
+    /**
+     * 统一下单并返回数据
+     * @return string json格式的数据，可以直接用于js支付接口的调用
+     * @param  [type] $money    [订单金额]
+     * @param  [type] $order_id [订单号码]
+     * @param  [type] $content  [订单详情]
+     */
+    public function uniformOrder($money,$order_id,$content)
+    {
+        //dump($_SESSION);die;
+        // $content = substr($content,0,80);
+        // 将金额强转换整数
+        $money = $money * 100;
+        // 冲值测试额1分钱
+        $money = 1;
+        // 用户在公众号的唯一ID
+        $openId = $_SESSION['user']['open_id'];
+
+
+        //微信examle的WxPay.JsApiPay.php
+        vendor('WxPay.jsapi.WxPay#JsApiPay');
+
+        $tools = new \JsApiPay();
+
+        //②、统一下单
+        vendor('WxPay.jsapi.WxPay#JsApiPay');
+        $input = new \WxPayUnifiedOrder();
+        // 傳用戶ID
+        //$input->SetDetail($uid);
+        // 产品内容
+        $input->SetBody('点球科技商品购买');
+        // 唯一订单ID
+        $input->SetAttach($order_id);
+        // 设置商户系统内部的订单号,32个字符内、可包含字母, 其他说明见商户订单号
+        $input->SetOut_trade_no(gerOrderId());
+        // 产品金额单位为分
+        // $input->SetTotal_fee($money);
+        // 调试用1分钱
+        $input->SetTotal_fee($money);
+        // 设置订单生成时间
+        // $input->SetTime_start(date("YmdHis"));
+        // 设置订单失效时间
+        // $input->SetTime_expire(date("YmdHis", time() + 300));
+        //$input->SetGoods_tag($uid);
+        // 支付成功的回调地址
+        //$input->SetNotify_url("http://xinpin.dianqiukj.com/index.php/Home/Weixinpay/notify.html");
+        $input->SetNotify_url('http://pub.dianqiukj.com/index.php/Home/PaymentSystem/notify');
+        // 支付方式 JS-SDK 类型是：JSAPI
+        $input->SetTrade_type("JSAPI");
+        // 用户在公众号的唯一标识
+        $input->SetOpenid($openId);
+        // 统一下单 
+        $order = \WxPayApi::unifiedOrder($input);
+        
+        // 返回支付需要的对象JSON格式数据
+        $jsApiParameters = $tools->GetJsApiParameters($order);
+
+        echo $jsApiParameters;
+        exit;
+    }
+
 }
 
 
