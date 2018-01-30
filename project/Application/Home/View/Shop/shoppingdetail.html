@@ -434,7 +434,7 @@
 			var data = JSON.stringify([{'gid':goods_gid,'num':num}])
 			// console.log(data);
 			$.ajax({
-				url: '{{:U("ShoppingCart/index")}}',
+				url: '{{:U("ShoppingCart/shopAdd")}}',
 				type: 'post',
 				data: {'data': data},
 				success: function(res){

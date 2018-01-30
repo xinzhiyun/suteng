@@ -29,8 +29,8 @@ function solveCompatible(obj){
  * @param {Object} 选择器
  * @param {Object} 自定义属性，用于记录要删除内容ID值
  */
-function slipDel(obj,i){
-	$(obj).on("touchstart", function(e) {
+function slipDel(parent,obj,i){
+	$(parent).on("touchstart", obj, function(e) {
 	    // 判断默认行为是否可以被禁用
 	    if (e.cancelable) {
 	        // 判断默认行为是否已经被禁用
@@ -41,7 +41,7 @@ function slipDel(obj,i){
 	    startX = e.originalEvent.changedTouches[0].pageX,
 	    startY = e.originalEvent.changedTouches[0].pageY;
 	});
-	$(obj).on("touchend", function(e) {         
+	$(parent).on("touchend",obj, function(e) {         
 	    // 判断默认行为是否可以被禁用
 	    if (e.cancelable) {
 	        // 判断默认行为是否已经被禁用
