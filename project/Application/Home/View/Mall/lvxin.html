@@ -792,7 +792,7 @@
 		var goods = $(".goods");
 		// 点击‘去结算’
 		$("#pay").click(function(){
-			for(var i=0; i<goods.length-1;i++){
+			for(var i=0; i<goods.length;i++){
 				if(goods.eq(i).find(".number").val() != 0){
 					//这个priceAll是单一商品的价格合计
 					var priceAll = parseInt(goods.eq(i).find(".price span").text())*parseInt(goods.eq(i).find(".number").val())
