@@ -315,8 +315,7 @@
 			data: {'id': goods_gid},
 			success: function(res){
 				console.log('成功！ ',res);
-				goodsDetail = res.goodsDetail;
-				// console.log(res.goodsDetail)
+				console.log(res.goodsDetail[0])
 				var goodsDetail_html = '', commentInfo_html = '';
 				// 输出商品详情
 				goodsDetail_html = '<div class="detailpic">'+
@@ -341,14 +340,15 @@
 						'</p>'+
 						'<p><span>邮费</span><span><b>￥8.88</b></span></p>'+
 					'</div>';
-
+				console.log(res.commentInfo[0])
 				// 如果有评价则遍历出来		
 				if(res.commentInfo){
+
 					for(var i=0; i<res.commentInfo.length; i++){
 						commentInfo_html += '<div class="detailItem">'+
-							'<p><em><img src="'+ res.commentInfo[i].pic +'" alt=""></em><b>'+ res.commentInfo[i].name +'</b></p>'+
+							'<p><em><img src="'+ res.commentInfo[i].head +'" alt=""></em><b>'+ res.commentInfo[i].nickname +'</b></p>'+
 							'<p>'+ res.commentInfo[i].content +'</p>'+
-							'<span><img src="'+ res.commentInfo[i].pic +'" alt=""></span>'+
+							'<span><img src="'+ res.commentInfo[i].path +'" alt=""></span>'+
 						'</div>';
 					}
 				}else{
@@ -425,10 +425,16 @@
 		 */
 		$("#add2ShopCart").click(function(){
 			var num = $(".number").val();	//选择的数量
-			console.log(goodsDetail)
-			var data = [{'gid': gid,'num':num}]
+			var addtime = new Date().getTime();	//添加进购物车的时间
+			console.log(goods_gid, addtime)
+			/*
+				goods_gid:商品唯一ID
+				num: 商品数量
+			 */
+			var data = JSON.stringify([{'gid':goods_gid,'num':num}])
+			// console.log(data);
 			$.ajax({
-				url: '{{:U("ShoppingCart/shopAdd")}}',
+				url: '{{:U("ShoppingCart/index")}}',
 				type: 'post',
 				data: {'data': data},
 				success: function(res){
@@ -445,7 +451,12 @@
 		 */
 		$("#buyNow").click(function(){
 			var num = $(".number").val();	//选择的数量
-			var data = {'gid': goodsDetail.gid,'uid': uid,'num': num};
+			/*
+				goods_gid:商品唯一ID
+				num: 商品数量
+				uid: 用户id
+			 */
+			var data = {'gid': goods_gid,'uid': uid,'num': num};
 			a.ajax({
 				url: '{{:U("")}}',
 				type: 'post',
