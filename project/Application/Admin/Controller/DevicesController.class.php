@@ -300,7 +300,12 @@ class DevicesController extends CommonController
     // 滤芯显示
     public function filterList()
     {
-
+        $filters = D('Filters');
+        $data = $filters->where('status=0')->select();
+        $assign = [
+            'data' => $data,
+        ];
+        $this->assign($assign);
         $this->display();
     }
 
@@ -308,7 +313,27 @@ class DevicesController extends CommonController
     public function filterAction()
     {
         try {
-
+            $filters = D('Filters');
+            $data = I('post.');
+            if(!$filters->create()) E($filters->getError(),'606');
+            // $upload = new \Think\Upload();// 实例化上传类
+            // $upload->maxSize   =     3145728 ;// 设置附件上传大小
+            // $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
+            // $upload->rootPath  =     './Uploads/'; // 设置附件上传根目录
+            // $upload->savePath  =     ''; // 设置附件上传（子）目录
+            //
+            // // 上传文件
+            // $info   =   $upload->upload();
+            // if(!$info) {// 上传错误提示错误信息
+            //     E($upload->getError(),'606');
+            // }
+            // $data['picpath'] = $info['pic']['savepath'].$info['pic']['savename'];
+            $res = $filters->add();
+            if($res){
+                E('添加成功',200);
+            } else {
+                E('添加失败',603);
+            }
         } catch (\Exception $e) {
             $err = [
                 'code' => $e->getCode(),
@@ -316,6 +341,67 @@ class DevicesController extends CommonController
             ];
             $this->ajaxReturn($err);
         }
+    }
 
+    // 滤芯删除
+    public function filtersDel()
+    {
+        try {
+            $filter = D('Filters');
+            $id['id'] = I('post.id');
+            $res = $filter->where($id)->save(['status'=>1]);
+            if($res) {
+                E('删除成功', 200);
+            } else {
+                E('删除失败', 604);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    // 产品类型
+    public function product()
+    {
+        $filters = D('Filters');
+        $data = $filters->where('status=0')->select();
+        $assign = [
+            'data' => $data,
+        ];
+        $this->assign($assign);
+        $this->display();
+    }
+
+    // 产品类型添加
+    public function productAction()
+    {
+        try {
+            $type = D('Type');
+            $filter = I('post.filter');
+            $data['typename'] = I('post.typename');
+            $data['addtime'] = time();
+            $i = 1;
+            foreach ($filter as $key => $value) {
+                $data['filter'.$i] = $value;
+                $i++;
+            }
+            if(!$type->create($data)) E($type->getError());
+            $res = $type->add($data);
+            if($res){
+                E('设置成功', 200);
+            } else {
+                E('设置失败', 603);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
     }
 }
