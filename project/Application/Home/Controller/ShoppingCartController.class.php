@@ -64,6 +64,26 @@ class ShoppingCartController extends CommonController
             ];
             $this->ajaxReturn($err);
         }
+    }
 
+    // 购物车删除
+    public function cartDel()
+    {
+        try {
+            $cart = D('Cart');
+            $data['id'] = I('post.id');
+            $res = $cart->where($data)->delete();
+            if($res){
+                E('删除',200);
+            } else {
+                E('失败', 603);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
     }
 }

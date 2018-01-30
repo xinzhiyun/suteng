@@ -10,9 +10,33 @@ class PaymentSystemController extends CommonController
      */
     public function payConfirm()
     {
+        // try {
+        //     $data = I('post.');
+        // } catch (\Exception $e) {
+        //     $err = [
+        //         'code' => $e->getCode(),
+        //         'msg' => $e->getMessage(),
+        //     ];
+        // }
+
         $this->display();
     }
-    
+
+    // 信息确认并生成订单
+    public function information()
+    {
+        try {
+            $data = I('post.');
+
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+        }
+
+    }
+
     /**
      * [paytosuccess 支付成功]
      * @return [type] [description]
@@ -112,9 +136,9 @@ class PaymentSystemController extends CommonController
         $input->SetTrade_type("JSAPI");
         // 用户在公众号的唯一标识
         $input->SetOpenid($openId);
-        // 统一下单 
+        // 统一下单
         $order = \WxPayApi::unifiedOrder($input);
-        
+
         // 返回支付需要的对象JSON格式数据
         $jsApiParameters = $tools->GetJsApiParameters($order);
 
@@ -123,5 +147,3 @@ class PaymentSystemController extends CommonController
     }
 
 }
-
-
