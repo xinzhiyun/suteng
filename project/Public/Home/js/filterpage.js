@@ -542,10 +542,11 @@ $(function(){
 				: 'hidden'
 			});
 		}
-		if($(this).html()=="立即购买"){
-			$("#footer").show();
+		if($(this).html()=="滤芯购买"){
+			$("button").hide().siblings().show();
 		}else{
-			$("#footer").hide();
+			$("button").show().siblings().hide();
+			$("#footer").css("border-top","none");
 		}
 		// 横线移动
 		$("#line").css({marginLeft: $(this).attr("index")*33.33 + '%'});
@@ -554,14 +555,6 @@ $(function(){
 		$("#content").animate({left: '-'+$(this).attr("index") + '00vw'});
 		
 		//滤芯选中状态样式
-		// $("#lvxinReset").on("click","li",function(){
-		// 	$(this).children(".progress").children(".iconfont icon-kuang1").children(".icon-zhengque").css({"visibility":"visible"});
-		// 	$(this).siblings().children(".progress").children(".iconfont").children(".icon-zhengque").css({"visibility":"hidden"});
-		// 	filterName=$(this).children("p").children().eq(0).text();
-		// 	filterNumber=$(this).index();
-
-		// });
-			// 选中框
 		$("#lvxinReset").on("click","li",function(){
 			$(this).children(".progress").children(".iconfont").removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
 			$(this).siblings().children(".progress").children(".iconfont").removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');

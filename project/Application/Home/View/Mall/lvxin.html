@@ -26,7 +26,6 @@
             margin-top: 8vh;
             left: -200vw;
             margin-bottom: 8vh;
-            background: #f3f3f3;
             overflow: scroll;
         }
         #header, #footer {
@@ -199,7 +198,7 @@
 	    .progress>.icon-kuang1 {
 		    color: #ccc;
 		}
-		.progress>.xuanze {
+		.progress>.icon-xuanze {
 		    color: #4280EC;
 		}
 	    .progress>.checkbox>input[type="checkbox"]:checked {
@@ -309,7 +308,7 @@
             border: 1px solid #a4a4a4;
             font-size: .8rem;
         }
-        #footer {
+        .footer {
             bottom: 0;
             left: 0;
             border-top: 1px solid #e0e0e0;
@@ -331,6 +330,16 @@
             width: 40%;
             color: #fff;
             background: #2EB6AA;
+        }
+        #footer > button{
+        	width: 80vw;
+        	height: 10vw;
+        	background: #2EB6AA;
+        	color: #fff;
+        	display: none;
+        	border: none;
+        	border-radius: 5px;
+        	font-size: .8rem;
         }
 	</style>
 </head>
@@ -448,9 +457,10 @@
 				</div>
 			</div>
 
-			<footer id="footer">
+			<footer id="footer" class="footer">
 				<div>合计：<span>￥0</span></div>
 				<span id="pay">去结算</span>
+				<button type="button">确定复位</button>
 			</footer>
 		</div>
 	</div>
