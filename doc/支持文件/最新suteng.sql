@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50548
 File Encoding         : 65001
 
-Date: 2018-01-29 19:39:41
+Date: 2018-01-30 10:00:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -46,7 +46,7 @@ CREATE TABLE `st_admin_menu` (
   `ico` varchar(50) DEFAULT '' COMMENT 'font-awesome图标',
   `order_number` int(11) unsigned DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_admin_menu
@@ -76,6 +76,8 @@ INSERT INTO `st_admin_menu` VALUES ('24', '23', '添加分公司', 'Admin/Vendor
 INSERT INTO `st_admin_menu` VALUES ('25', '23', '分公司列表', 'Admin/Vendors/company_list', '', null);
 INSERT INTO `st_admin_menu` VALUES ('28', '0', '佣金管理', 'Admin/Commission', '', null);
 INSERT INTO `st_admin_menu` VALUES ('29', '28', '佣金设置', 'Admin/Commission/commission_set', '', null);
+INSERT INTO `st_admin_menu` VALUES ('30', '13', '设备绑定', 'Admin/Devices/bind', '', null);
+INSERT INTO `st_admin_menu` VALUES ('31', '13', '滤芯列表', 'Admin/Devices/filterList', '', null);
 
 -- ----------------------------
 -- Table structure for st_attr
@@ -145,7 +147,7 @@ CREATE TABLE `st_auth_group` (
 -- ----------------------------
 -- Records of st_auth_group
 -- ----------------------------
-INSERT INTO `st_auth_group` VALUES ('1', '超级管理员', '1', '1,2,28,5,6,7,8,10,11,9,14,15,16,17,18,19,20,21,22,23,24,25,26,30,31');
+INSERT INTO `st_auth_group` VALUES ('1', '超级管理员', '1', '1,2,28,5,6,7,8,10,11,9,14,15,32,33,16,17,18,19,20,21,22,23,24,25,26,30,31');
 INSERT INTO `st_auth_group` VALUES ('2', '一级经销商', '1', '1,2,4,3');
 INSERT INTO `st_auth_group` VALUES ('3', '二级经销商', '1', '1,2,4,3');
 INSERT INTO `st_auth_group` VALUES ('4', '三级经销商', '1', '1,2,3');
@@ -182,7 +184,7 @@ CREATE TABLE `st_auth_rule` (
   `condition` char(100) NOT NULL DEFAULT '' COMMENT '规则表达式，为空表示存在就验证，不为空表示按照条件验证',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COMMENT='规则表';
+) ENGINE=MyISAM AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COMMENT='规则表';
 
 -- ----------------------------
 -- Records of st_auth_rule
@@ -212,6 +214,8 @@ INSERT INTO `st_auth_rule` VALUES ('26', '24', 'Admin/Vendors/company_list', '�
 INSERT INTO `st_auth_rule` VALUES ('28', '1', 'Admin/Vendors/vendor_reviewed', '分销商审核', '1', '1', '');
 INSERT INTO `st_auth_rule` VALUES ('30', '0', 'Admin/Commission', '佣金管理', '1', '1', '');
 INSERT INTO `st_auth_rule` VALUES ('31', '30', 'Admin/Commission/commission_set', '佣金设置', '1', '1', '');
+INSERT INTO `st_auth_rule` VALUES ('32', '14', 'Admin/Devices/bind', '设备绑定', '1', '1', '');
+INSERT INTO `st_auth_rule` VALUES ('33', '14', 'Admin/Devices/filterList', '滤芯列表', '1', '1', '');
 
 -- ----------------------------
 -- Table structure for st_binding
@@ -309,11 +313,12 @@ CREATE TABLE `st_com_pic` (
   `cid` int(11) NOT NULL COMMENT '评论ID',
   `path` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '图片地址',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of st_com_pic
 -- ----------------------------
+INSERT INTO `st_com_pic` VALUES ('1', '3', '2018-01-29/5a6f0ac6c12d9.jpg');
 
 -- ----------------------------
 -- Table structure for st_comment
@@ -330,12 +335,13 @@ CREATE TABLE `st_comment` (
   `addtime` varchar(12) NOT NULL COMMENT '评论时间',
   `status` tinyint(1) NOT NULL COMMENT '1好评2中评3差评',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_comment
 -- ----------------------------
 INSERT INTO `st_comment` VALUES ('1', '2', '22', '132', null, null, null, '', '0');
+INSERT INTO `st_comment` VALUES ('3', '11111', '22222', 'fdsafsa', null, null, null, '', '0');
 
 -- ----------------------------
 -- Table structure for st_commission
@@ -401,15 +407,18 @@ CREATE TABLE `st_devices` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `device_code` varchar(20) NOT NULL COMMENT '设备编码',
   `device_statu` tinyint(1) unsigned NOT NULL COMMENT '设备状态：1已入库，2待激活，3已激活',
+  `bind_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '绑定状态 0未绑定1绑定',
+  `vid` int(11) DEFAULT NULL COMMENT '绑定的经销商',
   `addtime` int(11) NOT NULL COMMENT '添加时间',
   `type_id` int(11) NOT NULL COMMENT '产品类型ID',
   PRIMARY KEY (`id`),
   KEY `id` (`id`,`device_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_devices
 -- ----------------------------
+INSERT INTO `st_devices` VALUES ('1', '123456123456123', '1', '1', '9', '1517230209', '0');
 
 -- ----------------------------
 -- Table structure for st_devices_statu
@@ -529,6 +538,31 @@ CREATE TABLE `st_feeds` (
 
 -- ----------------------------
 -- Records of st_feeds
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for st_filters
+-- ----------------------------
+DROP TABLE IF EXISTS `st_filters`;
+CREATE TABLE `st_filters` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `filtername` varchar(30) NOT NULL COMMENT '滤芯名称',
+  `alias` varchar(30) DEFAULT '暂无别名' COMMENT '滤芯别名',
+  `picpath` varchar(255) NOT NULL COMMENT '滤芯图片',
+  `price` decimal(15,2) NOT NULL COMMENT '滤芯单价',
+  `timelife` int(11) unsigned NOT NULL COMMENT '时间寿命（小时）',
+  `flowlife` int(11) unsigned NOT NULL COMMENT '流量寿命（升）',
+  `balancatime` int(11) unsigned DEFAULT NULL COMMENT '时间寿命使能',
+  `balancaflow` int(11) unsigned DEFAULT NULL COMMENT '流量寿命使能',
+  `introduce` varchar(255) DEFAULT '暂无简介' COMMENT '滤芯简介',
+  `url` varchar(255) DEFAULT NULL COMMENT '滤芯购买网址',
+  `addtime` int(11) NOT NULL COMMENT '添加时间',
+  PRIMARY KEY (`id`),
+  KEY `device_id` (`filtername`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of st_filters
 -- ----------------------------
 
 -- ----------------------------

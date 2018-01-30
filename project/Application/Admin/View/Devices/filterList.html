@@ -121,18 +121,10 @@
                         </tr>
                         <tr>
                             <th>
-                                滤芯价格：
-                            </th>
-                            <td>
-                                <input class="input-medium form-control" type="text" name="price">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
                                 时间寿命(小时)：
                             </th>
                             <td>
-                                <input class="input-medium form-control" type="text" name="timelife">
+                                <input class="input-medium form-control" placeholder="1-9999之间整数" type="text" name="timelife">
                             </td>
                         </tr>
                         <tr>
@@ -140,7 +132,15 @@
                                 流量寿命(升)：
                             </th>
                             <td>
-                                <input class="input-medium form-control" type="text" name="flowlife">
+                                <input class="input-medium form-control" placeholder="1-9999之间整数" type="text" name="flowlife">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                滤芯价格：
+                            </th>
+                            <td>
+                                <input class="input-medium form-control" placeholder="192.03" type="text" name="price">
                             </td>
                         </tr>
                         <tr>
@@ -148,7 +148,7 @@
                                 滤芯简介：
                             </th>
                             <td>
-                                <textarea class="input-medium form-control" type="text" name="introduce"></textarea>
+                                <textarea class="input-medium form-control" placeholder="在这里输入滤芯简介" type="url" name="introduce"></textarea>
                             </td>
                         </tr>
                         <tr>
@@ -156,7 +156,7 @@
                                 购买网址：
                             </th>
                             <td>
-                                <input class="input-medium form-control" type="text" name="url">
+                                <input class="input-medium form-control" placeholder="http:://" type="text" name="url">
                             </td>
                         </tr>
                         <tr>
@@ -180,10 +180,10 @@
             $("input[name='filtername']").val('');
             $("input[name='alias']").val('');
             $("input[name='price']").val('');
-            $("input[name='timelife']").val(0);
-            $("input[name='flowlife']").val(0);
-            $("input[name='url']").val(0);
-            $("textarea").val(0);
+            $("input[name='timelife']").val('');
+            $("input[name='flowlife']").val('');
+            $("input[name='url']").val('');
+            $("textarea").val('');
             $('#st-add').modal('show');
         }
         $('.st-add').click(function(e){
@@ -195,12 +195,18 @@
             var url = $("input[name='url']").val();
             var introduce = $("textarea").val();
             // var goodsName = $(this).attr('goodsName');
-            parent.layer.confirm('确认将'+Vname+'与'+Dname+'绑定吗？', {
+            parent.layer.confirm('请确认添加的信息<br>'+
+            '<p>滤芯名称：'+filtername+'</p>'+
+            '<p>滤芯别名：'+alias+'</p>'+
+            '<p>时间寿命(小时):'+timelife+'</p>'+
+            '<p>流量寿命(升)：'+flowlife+'</p>'+
+            '<p>滤芯简介：'+introduce+'</p>'+
+            '<p>购买地址：'+url+'</p>', {
                 btn: ['确认','取消'], //按钮
                 shade: false //不显示遮罩
             }, function(){
                 $.ajax({
-                    url:'bindAction',
+                    url:'filterAction',
                     type:'post',
                     dataType:'json',
                     data:{'vid':Vid,'id':Did},
