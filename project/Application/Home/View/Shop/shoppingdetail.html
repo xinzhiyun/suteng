@@ -11,7 +11,7 @@
 	<title>商品详情</title>
 </head>
 <style>
-	body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0; }
+	body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td,span { margin:0; padding:0; box-sizing: border-box;}
 
 	body{
 		font-size: 0.7rem;
@@ -39,7 +39,7 @@
 	}
 	.detailTxt>span{
 		display: inline-block;
-		width: 90%;
+		width: 100%;
 		padding: 0.2rem 5%;
 		color: #FFF;
 		background: #F04B7E;
@@ -206,28 +206,47 @@
 	.shopdetailBott{
 		width: 100%;
 		position: fixed;
+		display: flex;
 		bottom: 0 ;
-		padding-top:0.6rem;
+		margin-top:0.6rem;
 		background: #FFF;
-	}
-	.shopdetailBott>span{
+		overflow: hidden;
 		border-top:1px solid #E5E5E5;
-		display: inline-block;
-		width: 60%;
-		box-sizing: border-box;
-		padding: 0 5%;
 	}
-	.shopdetailBott>span>i{
+	.shopdetailBott>div{
+		display: inline-block;
+		width: 80%;
+		box-sizing: border-box;
+	}
+	.shopdetailBott>a {
+		width: 20%;
+		height: 6vh;
+		display: inline-block;
+		line-height: 6vh;
+		text-align: center;
+	}
+	.shopdetailBott>a>i{
 		font-size: 1.3rem;
-    	padding-right: 2rem;
     	color: #F04B7E;
 	}
-	.shopdetailBott>input{
+	.shopdetailBott>div>input{
 		padding: 0.5rem;
 		background: #F04B7E;
 		border:none;
-		width: 40%;
+		width: 48%;
 		color:#fff;
+	}
+	/*加入购物车*/
+	#add2ShopCart {
+		height: 6vh;
+		width: 50%;
+	    display: inline-block;
+	    line-height: 6vh;
+	    text-align: center;
+	}
+	#add2ShopCart:active {
+		color: #fff;
+		background: #F04B7E;
 	}
 
 </style>
@@ -247,18 +266,6 @@
 				</div> -->
 			</div>
 			<!-- /*商品数量，邮费*/ -->
-			<div class="detailist">
-				<p><span></span><span class=""></span></p>
-				<p>
-					<span>数量</span>
-					<span class="num">
-						<input type="button" value="-" class="minus">
-						<input class="number" type="number" value="0" min="0" max="9">
-						<input type="button" value="+" class="plus">
-					</span>
-				</p>
-				<p><span>邮费</span><span><b>￥8.88</b></span></p>
-			</div>
 		</div>
 		<div class="detailContain">
 			<!-- 个人评论标题 -->
@@ -266,13 +273,6 @@
 			<p><i class="iconfont icon-jingdiananli_wujiaoxing_shoucanghou"></i><span>总评：4.9</span></p>
 			<!-- 	/*个人评论内容*/ -->
 			<div class="detailItemall">
-				<div class="detailItem">
-					<p><em><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></em><b>CICI</b></p>
-					<p>宝贝好喜欢好喜欢</p>
-					<span><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></span>
-					<span><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></span>
-					<span><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></span>
-				</div>
 				<!-- <div class="detailItem">
 					<p><em><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></em><b>CICI</b></p>
 					<p>宝贝好喜欢好喜欢</p>
@@ -283,13 +283,19 @@
 				<div class="detailItem">
 					<p><em><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></em><b>CICI</b></p>
 					<p>宝贝好喜欢好喜欢</p>
-				</div> -->
+				</div>  -->
 				<!-- 隐藏的评论 -->
 			</div>
 			<div class="pinglunshow"><p>查看更多<span class="iconfont icon-shuangxiajiantou"></span></p></div>
 		</div>
 		<div class="shopdetailBott">
-			<span><i class="iconfont icon-icon--"></i><b>加入购物车</b></span><input type="submit" value="立即购买">
+			<a href="{{:U('ShoppingCart/index')}}">
+				<i class="iconfont icon-icon-- "></i>
+			</a>
+			<div>
+				<div id="add2ShopCart">加入购物车</div>
+				<input id="buyNow" type="button" value="立即购买">
+			</div>
 		</div>
 	</div>
 	<script>
@@ -306,15 +312,17 @@
 			data: {'id': goods_gid},
 			success: function(res){
 				console.log('成功！ ',res);
-				var info = res[0];
-				var goodsDetail_html, pingjia_html;
+				goodsDetail = res.goodsDetail;
+				// console.log(res.goodsDetail)
+				var goodsDetail_html = '', commentInfo_html = '';
+				// 输出商品详情
 				goodsDetail_html = '<div class="detailpic">'+
 						'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
 					'</div>'+
 					'<!-- /*商品说明*/ -->'+
 					'<div class="detailTxt">'+
-						'<span><b>￥'+ info.price +'</b><em>已售： 210</em></span>'+
-						'<p>'+ info.desc +'</p>'+
+						'<span><b>￥'+ res.goodsDetail[0].price +'</b><em>已售： 210</em></span>'+
+						'<p>'+ res.goodsDetail[0].desc +'</p>'+
 						'<em>送包、滤镜、存储卡、读卡器、清洁套装</em>'+
 					'</div>'+
 					'<!-- /*商品选择，数量，邮费*/ -->'+
@@ -324,107 +332,132 @@
 							'<span>数量</span>'+
 							'<span class="num">'+
 								'<input type="button" value="-" class="minus">'+
-								'<input class="number" type="number" value="0" min="0" max="9">'+
+								'<input class="number" type="number" value="1" min="1" max="19">'+
 								'<input type="button" value="+" class="plus">'+
 							'</span>'+
 						'</p>'+
 						'<p><span>邮费</span><span><b>￥8.88</b></span></p>'+
 					'</div>';
 
-				if(res.pingjia){
-					pingjia_html += '<div class="detailItem">'+
-						'<p><em><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></em><b>CICI</b></p>'+
-						'<p>宝贝好喜欢好喜欢</p>'+
-						'<span><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></span>'+
-						'<span><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></span>'+
-						'<span><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></span>'+
-					'</div>';
+				// 如果有评价则遍历出来		
+				if(res.commentInfo){
+					for(var i=0; i<res.commentInfo.length; i++){
+						commentInfo_html += '<div class="detailItem">'+
+							'<p><em><img src="'+ res.commentInfo[i].pic +'" alt=""></em><b>'+ res.commentInfo[i].name +'</b></p>'+
+							'<p>'+ res.commentInfo[i].content +'</p>'+
+							'<span><img src="'+ res.commentInfo[i].pic +'" alt=""></span>'+
+						'</div>';
+					}
 				}else{
-					pingjia_html = '暂无评价';
+					commentInfo_html = '暂无评价';
 				}
 
 				// 将商品信息添加到页面
 				$(".detailTop>div").html(goodsDetail_html);
 				// 将评价添加到页面
-				$(".detailItemall").append(pingjia_html)
+				$(".detailItemall").append(commentInfo_html);
+
+				// console.dir($('.detailItem').length);
+				// 只显示2条评论
+				var _length=$('.detailItem').length;
+				if (_length>2) {
+					$('.detailItem').css('display','none');
+					$('.detailItem:nth-child(1)').css('display','block');
+					$('.detailItem:nth-child(2)').css('display','block');
+				}
 			},
 			error: function(res){
 				console.log('失败！ ',res)
 			}
 		})
 		var price;
-		// 按加'+'号
+		/*
+			 按加'+'号
+		 */
 		$(".shopdetailContain").on("touchend",'.plus',function(){
 			price = 0;	//合计归零，后面重新计算
 			// 获取数量
 			var value = $(".number").val();
 			$(this).siblings(".number")[0].value++;
 
-			// 实时将总价格更新到合计
-			for(var i=0; i<$(".goods").length; i++){
-				if($(".goods").eq(i).find(".number")[0].value != 0){
-
-					price += parseFloat($(".goods").eq(i).find(".number")[0].value)*parseFloat($(".goods").eq(i).find(".price>span").text());
-				}
-			}
 		});
-
-		//按减'-'号
+		/*
+			按减'-'号
+		 */
 		$(".shopdetailContain").on("touchend",".minus",function(){
 			price = 0;	//合计归零，后面重新计算
 			// 获取数量
 			var value = $(".number").val();
 			for(var i=0; i<$(this).siblings(".number").length; i++){
-				$(this).siblings(".number").val() <= 0
-				? 0
+				$(this).siblings(".number").val() <= 1
+				? 1
 				: $(this).siblings(".number")[i].value--
 			}
 			// console.log($(this).siblings(".number")[0].value);
 
-			// 实时将总价格更新到合计
-			for(var i=0; i<$(".goods").length; i++){
-				if($(".goods").eq(i).find(".number")[0].value != 0){
-
-					price += parseFloat($(".goods").eq(i).find(".number")[0].value)*parseFloat($(".goods").eq(i).find(".price>span").text());
-				}
-			}
 		});
-		// console.dir($('.detailItem').length);
-		// 只显示2条评论
-		var _length=$('.detailItem').length;
-		if (_length>2) {
-			$('.detailItem').css('display','none');
-			$('.detailItem:nth-child(1)').css('display','block');
-			$('.detailItem:nth-child(2)').css('display','block');
-		}
-		// 点击时评论显示或者隐藏
-		$('.pinglunshow>p>span').click(function(){
-			// console.dir($(this).attr('class'));
-			var _class=$(this).attr('class');
+		// 点击‘更多’展开评论或者收起
+		$('.pinglunshow>p').click(function(){
+			// console.dir($(this).find("span").attr('class'));
+			var _class=$(this).find("span").attr('class');
 
 			if(_class=='iconfont icon-shuangxiajiantou'){
-
 				$('.detailItem').slideDown('slow');
 
-				$(this).removeClass('iconfont icon-shuangxiajiantou').addClass('iconfont icon-xiangshangjiantou');
+				$(this).find("span").removeClass('iconfont icon-shuangxiajiantou').addClass('iconfont icon-xiangshangjiantou');
 
 			}else{
+				$(this).find("span").removeClass('iconfont icon-xiangshangjiantou').addClass('iconfont icon-shuangxiajiantou');
 
-				$(this).removeClass('iconfont icon-xiangshangjiantou').addClass('iconfont icon-shuangxiajiantou');
+				$('.detailItem').slideUp('fast');
 
-				$('.detailItem').css('display','none');
-
-				$('.detailItem:nth-child(1)').css('display','block');
-
-				$('.detailItem:nth-child(2)').css('display','block');
-
+				$('.detailItem').eq(0).slideDown('slow');
+				$('.detailItem').eq(1).slideDown('slow');
+			
 			}
+		})
 
+		/*
+			点击‘加入购物车’
+		 */
+		$("#add2ShopCart").click(function(){
+			var num = $(".number").val();	//选择的数量
+			console.log(goodsDetail)
+			var data = [{'sid': sid,'num':num}]
+			$.ajax({
+				url: '{{:U("ShoppingCart/shopAdd")}}',
+				type: 'post',
+				data: {'data': data},
+				success: function(res){
+					console.log('成功！ ', res)
+				},
+				error: function(res){
+					console.log('失败！ ', res)
+				}
+			})
+		})
 
+		/*
+			点击‘立即购买’
+		 */
+		$("#buyNow").click(function(){
+			var num = $(".number").val();	//选择的数量
+			var data = {'gid': goodsDetail.gid,'uid': uid,'num': num};
+			a.ajax({
+				url: '{{:U("")}}',
+				type: 'post',
+				data: data,
+				dataType: json,
+				success: function(res){
+					console.log("成功！ ", res);
+				},
+				error: function(res){
+					console.log("失败！ ", res);
+				}
+			})
 		})
 	})
 
 	</script>
-
 </body>
 </html>

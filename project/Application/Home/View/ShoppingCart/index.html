@@ -133,11 +133,7 @@
 	    color: #FFF;
 	 }
 	
-	   
-
-	
 </style>
-
 <body>
 	<div class="shpingcarAll">
 		<div class="itemCar clearfix" goodsnumber="1" >
@@ -155,14 +151,21 @@
 			</div>
 			
 		</div>
-		<div class="itemCar clearfix" goodsnumber="2" >
+		<!-- <div class="itemCar clearfix" goodsnumber="2" > -->
 			<!-- /*选中及图片*/ -->
-			<div class="itemcarLeft clearfix ">
+			<!-- <div class="itemcarLeft clearfix ">
 				<div class="xuanzhong "><i class="iconfont icon-kuang1"></i></div>
 				<div class="carpic "><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
-			</div>
+			</div> -->
 			<!-- /*文字说明及价格*/ -->
-			<div class="itemcarRight">
+			、
+			<!-- /*选中及图片*/ -->
+			<!-- <div class="itemcarLeft clearfix ">
+				<div class="xuanzhong "><i class="iconfont icon-kuang1"></i></div>
+				<div class="carpic "><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
+			</div> -->
+			<!-- /*文字说明及价格*/ -->
+		<!-- 	<div class="itemcarRight">
 				<h3>RO膜</h3>
 				<p class="roTxt">RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等</p>
 				<p class="roPrice clearfix"><b>￥120.00</b><span>-<em>1</em>+</span></p>
@@ -170,36 +173,21 @@
 			</div>
 			
 		</div>
-		<div class="itemCar clearfix" goodsnumber="2" >
+		<div class="itemCar clearfix" goodsnumber="3" > -->
 			<!-- /*选中及图片*/ -->
-			<div class="itemcarLeft clearfix ">
+			<!-- <div class="itemcarLeft clearfix ">
 				<div class="xuanzhong "><i class="iconfont icon-kuang1"></i></div>
 				<div class="carpic "><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
-			</div>
+			</div> -->
 			<!-- /*文字说明及价格*/ -->
-			<div class="itemcarRight">
+			<!-- <div class="itemcarRight">
 				<h3>RO膜</h3>
 				<p class="roTxt">RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等</p>
 				<p class="roPrice clearfix"><b>￥120.00</b><span>-<em>1</em>+</span></p>
 
 			</div>
 			
-		</div>
-		<div class="itemCar clearfix" goodsnumber="3" >
-			<!-- /*选中及图片*/ -->
-			<div class="itemcarLeft clearfix ">
-				<div class="xuanzhong "><i class="iconfont icon-kuang1"></i></div>
-				<div class="carpic "><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
-			</div>
-			<!-- /*文字说明及价格*/ -->
-			<div class="itemcarRight">
-				<h3>RO膜</h3>
-				<p class="roTxt">RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等</p>
-				<p class="roPrice clearfix"><b>￥120.00</b><span>-<em>1</em>+</span></p>
-
-			</div>
-			
-		</div>
+		</div> -->
 	</div>
 	<!-- 底部结算按钮 -->
 	<div class="shoppingcarBott">
@@ -207,8 +195,19 @@
 		<input type="submit" value="结算">
 	</div>
 	
-	
 	<script>
+	$(function(){
+		// 请求购物车列表数据
+		$.ajax({
+			url: '{{:U("ShoppingCart/index")}}',
+			type: 'post',
+			success: function(res){
+				console.log("成功！", res)
+			},
+			error: function(res){
+				console.log("失败！", res)
+			}
+		})
 		// 删除商品
        slipDel('.itemCar','goodsnumbe');
 
@@ -222,13 +221,10 @@
 			
 			if(_class=='iconfont icon-xuanze'){
 				$(this).removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-				
-
+		
 			}else{
 				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
-			
 			}
-
 		})
 		// 全选事件
 		$('.shoppingcarBott>p>i').click(function(){
@@ -245,9 +241,8 @@
 
 			}
 			
-			
 		})
-
+	})
     </script>
     
 </body>
