@@ -8,8 +8,8 @@
     <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
 
     <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link href="__PUBLIC__/Admin/css/login.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/login.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/style.css?v=4.1.0" rel="stylesheet">
@@ -20,11 +20,53 @@
     <script src="__PUBLIC__/Home/js/public.js"></script>
 </head>
     <style>
+
         body{
             font-size: 0.7rem;
             color:#737373;
+            background:url("__PUBLIC__/Admin/img/adminbg.png") no-repeat center fixed;
+            -webkit-background-size: cover;
+            background-size: cover;
         }
-        
+        .signinpanel {
+            width: 80vw;
+            margin: 10% auto 0 auto;
+        }
+        .gray-bg {
+            background-color: #f3f3f4;
+        }
+        content{
+            background: red;
+            opacity: 1;
+            height: 100vh;
+            width: 100vw;
+        }
+        .loginscreen.middle-box {
+        width: 70%;
+         display: flex; 
+        flex-flow: column;
+        position: relative;
+        top: 14%;
+        padding: 3% 5%;
+        background: rgba(256,256,256,.6);
+        box-shadow: 0 0 10px rgba(0,0,0,.1);
+        }
+        .logo-name {
+        width: 100%;
+        height: 17vh;
+        color: #e6e6e6;
+        font-size: 6rem;
+        font-weight: 800;
+        letter-spacing: -10px;
+        margin-bottom: 10%;
+        background: url(__PUBLIC__/Admin/img/logo.png);
+        background-size: 100% 100%;
+        }
+
+        .m-t {
+            margin-top: 1rem;
+        }
+
 
 
     </style>
@@ -38,9 +80,9 @@
                 <h1 class="logo-name"></h1>
 
             </div>
-            <!-- <h3>欢迎回来</h3> -->
+            <h3>欢迎回来</h3>
 
-            <!-- <form class="m-t" role="form" action="index" method="post">
+            <form class="m-t" role="form" action="index" method="post">
                 <div class="form-group loginDiv">
                     <span></span>
                     <input name="name" type="text" class="form-control" placeholder="账户" required="">
@@ -54,7 +96,7 @@
                     <img class="" src="__URL__/yzm" onclick="this.src='__URL__/yzm?id=' + Math.random()">
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b loginbtn">登 录</button>
-            </form> -->
+            </form>
         </div>
     </div>
 </block>
