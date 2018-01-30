@@ -103,7 +103,8 @@
 	 	position: fixed;
 	    bottom: 0;
 	    width: 100%;
-	    background: #FFF;	   
+	    background: #FFF;	    
+	    border-top: 1px solid #e0e0e0;   
 	 }
 	 .shoppingcarBott>p{
 	 	display: inline-block;
@@ -210,23 +211,19 @@
 			请求购物车列表数据
 		 */ 
 		var itemCarHTML = '';
-		var shopList;
 		$.ajax({
 			url: '{{:U("ShoppingCart/cart")}}',
 			type: 'post',
 			success: function(res){
 				console.log("成功！", res);
-				shopList = res[0];
 				for(var i=0; i<res.length; i++){
-					//图片多于一张时
-					if(res[i].price.length >1){}
 					itemCarHTML += '<div class="itemCar clearfix" gid="'+ res[i].gid +'" >'+
-						'<!-- /*选中及图片*/ -->'+
+						'<!-- 选中及图片 -->'+
 						'<div class="itemcarLeft clearfix ">'+
 							'<div class="xuanzhong "><i class="iconfont icon-kuang1"></i></div>'+
 							'<div class="carpic "><img src="__PUBLIC__/Uploads/'+ res[i].path +'" alt=""></div>'+
 						'</div>'+
-						'<!-- /*文字说明及价格*/ -->'+
+						'<!-- 文字说明及价格 -->'+
 						'<div class="itemcarRight">'+
 							'<h3>'+ res[i].name +'</h3>'+
 							'<p class="roTxt">'+ res[i].desc +'</p>'+
@@ -254,7 +251,6 @@
 		$("#toPay").click(function(){
 			var shopCar_data = [];
 			var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
-			// console.log(shopList);
 			
 			if($(".priceAll>span").text() != 0){
 				for(var i=0; i<chooseGoods.length; i++){
@@ -268,11 +264,16 @@
 						'money': parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text())*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number").val())
 					});
 				}
+
+				//清除其他页面的sessionStorage
+				sessionStorage.setItem("lvxinData", '');
+				sessionStorage.setItem("goods_data", '');
+				
 				// 将购物车选中的商品存到本地sessionStorage, 给订单确认页面使用
 				sessionStorage.setItem("shopCar_data",JSON.stringify(shopCar_data));
+						// 跳转到订单确认页面
+						location.href = '{{:U("PaymentSystem/payConfirm")}}';
 				// console.log(shopCar_data)
-				// 跳转到订单确认页面
-				// location.href = '{{:U("PaymentSystem/payConfirm")}}';
 				// 发送ajax请求让后台生成订单号
 				$.ajax({
 					url: '{{:U("PaymentSystem/information")}}',
@@ -280,9 +281,13 @@
 					data: {'data':JSON.stringify(shopCar_data)},
 					success: function(res){
 						console.log('成功！', res);
+
+						// 跳转到订单确认页面
+						location.href = '{{:U("PaymentSystem/payConfirm")}}';
 					},
 					error: function(res){
 						console.log('失败！', res);
+
 					}
 				})
 			}else{

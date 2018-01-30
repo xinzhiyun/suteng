@@ -448,6 +448,9 @@
 			点击‘立即购买’
 		 */
 		$("#buyNow").click(function(){
+			//清除其他页面的sessionStorage
+			sessionStorage.setItem("lvxinData", '');
+			sessionStorage.setItem("shopCar_data", '');
 			var num = $(".number").val();	//选择的数量
 			var expressMoney = $(".expressMoney>span").text();	//快递费
 			/*

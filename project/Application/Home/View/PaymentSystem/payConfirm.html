@@ -591,18 +591,18 @@
 			if(sessionStorage.getItem("lvxinData")){
 				// 从滤芯购买传来
 				lvxinData = JSON.parse(sessionStorage.getItem("lvxinData"));
-
-			}else if(sessionStorage.getItem("goods_data")){
+			}
+			if(sessionStorage.getItem("goods_data")){
 				// 从商品详情传来
 				goods_data = JSON.parse(sessionStorage.getItem("goods_data"));
-
-			}else if(sessionStorage.getItem("shopCar_data")){
+			}
+			if(sessionStorage.getItem("shopCar_data")){
 				// 购物车传来
 				shopCar_data = JSON.parse(sessionStorage.getItem("shopCar_data"));
 			}
 			console.log('lvxinData： ',lvxinData);
-			console.log('goods_data ',goods_data);
-			console.log('shopCar_data ',shopCar_data);
+			console.log('goods_data： ',goods_data);
+			console.log('shopCar_data： ',shopCar_data);
 			var goodsHTML = '';	//存放需要支付的商品信息
 			var numAll = 0;		//存放订单的总数量
 			var priceAll = 0;	//存放订单的总价格

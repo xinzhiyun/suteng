@@ -573,6 +573,11 @@
 				)
 			}
 		}
+
+		//清除其他页面的sessionStorage
+		sessionStorage.setItem("goods_data", '');
+		sessionStorage.setItem("shopCar_data", '');
+
 		var lvxinData = JSON.stringify(goodsArr);
 			sessionStorage.setItem('lvxinData',lvxinData);
 		// console.log(goodsData);
