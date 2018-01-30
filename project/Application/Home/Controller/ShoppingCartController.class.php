@@ -10,24 +10,37 @@ class ShoppingCartController extends CommonController
      */
     public function index()
     {
-        $cart = D('Cart');
-        $where['c.uid'] = session('user.id');
-        $data = $cart->getCart($where);
-        foreach($data as $val){
-    		$key = $val['gid'];
-    		if(isset($arr[$key])) {
-    			$arr[$key]['attr'] .= $val['attr'].':'.$val['val'].'|';
-    		} else {
-                $arr[$key] = $val;
-    			$arr[$key]['attr'] = $val['attr'].':'.$val['val'].'|';
-    		}
-    	}
-    	$data = array_values($arr);
-        $assign = [
-            'data' => $data,
-        ];
-        $this->assign($assign);
         $this->display();
+    }
+
+    public function cart()
+    {
+        try {
+            $cart = D('Cart');
+            $where['c.uid'] = session('user.id');
+            $data = $cart->getCart($where);
+            foreach($data as $val){
+        		$key = $val['gid'];
+        		if(isset($arr[$key])) {
+        			$arr[$key]['attr'] .= $val['attr'].':'.$val['val'].'|';
+        		} else {
+                    $arr[$key] = $val;
+        			$arr[$key]['attr'] = $val['attr'].':'.$val['val'].'|';
+        		}
+        	}
+        	$data = array_values($arr);
+            $assign = [
+                'data' => json_encode($data),
+            ];
+            $this->ajaxReturn($data);
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+
     }
 
     // 加入购物车

@@ -61,12 +61,12 @@
 	/*文字说明及价格*/
 	.itemcarRight{
 		box-sizing: border-box;
-		padding-left:0.5rem; 
+		padding-left:0.5rem;
 		width: 60%;
 		float: right;
 	}
 	.itemcarRight>h3{
-		padding-bottom:0.2rem; 
+		padding-bottom:0.2rem;
 	}
 	.itemcarRight>.roTxt{
 		font-size: 0.6rem;
@@ -103,7 +103,7 @@
 	 	position: fixed;
 	    bottom: 0;
 	    width: 100%;
-	    background: #FFF;	   
+	    background: #FFF;
 	 }
 	 .shoppingcarBott>p{
 	 	display: inline-block;
@@ -127,7 +127,7 @@
 	}
 	.shoppingcarBott>input{
 	 	float: right;
-		height: 2rem; 
+		height: 2rem;
 	    width: 30%;
 	    border: none;
 	    background: #2EB6AA;
@@ -203,7 +203,7 @@
 				<div class="xuanzhong "><i class="iconfont icon-kuang1"></i></div>
 				<div class="carpic "><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
 			</div> -->
-			
+
 			<!-- /*文字说明及价格*/ -->
 			<!-- <div class="itemcarRight">
 				<h3>RO膜</h3>
@@ -230,13 +230,13 @@
 	$(function(){
 		/*
 			请求购物车列表数据
-		 */ 
+		 */
 		var itemCarHTML = '';
 		$.ajax({
-			url: '{{:U("ShoppingCart/index")}}',
+			url: '{{:U("ShoppingCart/aa")}}',
 			type: 'post',
 			success: function(res){
-				// console.log("成功！", res);
+				console.log("成功！", res);
 				res = [
 					{'gid': 1,'name':'RO膜','price':'120.00','picpath':'__PUBLIC__/Home/images/comm_03.png','desc':'RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等'},
 					{'gid': 2,'name':'RO膜','price':'100.00','picpath':'__PUBLIC__/Home/images/comm_02.png','desc':'RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质放射性物质放射性物质放射性物质等'},
@@ -351,17 +351,17 @@
 			// 无选择商品
 			if(_class=='iconfont icon-xuanze'){
 				$(this).removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-				
+
 				priceAll = 0;
 				var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
 				// 实时将总价格更新到合计
 				for(var i=0; i<chooseGoods.length; i++){
-					
+
 					priceAll += parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value)*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
 
 					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value);
 					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
-				} 
+				}
 				// 将价格显示到合计
 				$(".priceAll").text('￥'+ priceAll);
 			// 有选择商品
@@ -371,12 +371,12 @@
 				var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
 				// 实时将总价格更新到合计
 				for(var i=0; i<chooseGoods.length; i++){
-					
+
 					priceAll += parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value)*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
 
 					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value);
 					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
-				} 
+				}
 				// 将价格显示到合计
 				$(".priceAll").text('￥'+ priceAll);
 			}
@@ -397,7 +397,7 @@
 		// 全选事件
 		$('.shoppingcarBott>p>i').click(function(){
 			var _quanclass=$(this).attr('class');
-			
+
 			// 全选
 			if(_quanclass=='iconfont icon-kuang1'){
 				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
@@ -410,10 +410,10 @@
 				$('.itemcarLeft>.xuanzhong>i').removeClass(_class).addClass('iconfont icon-kuang1');
 
 			}
-			
+
 		})
 	})
     </script>
-    
+
 </body>
 </html>
