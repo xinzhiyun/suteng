@@ -2,40 +2,262 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_3mgodvjd6sp833di.css">
+	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_rj8k5mm663i8uxr.css">
+	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+	<title>经销商首页</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body {
+			font-size: .7rem;
+			overflow-x: hidden;
+			color:#373737;
+		}
+		#content {
+			width: 100vw;
+			height: 64vh;
+		}
+		/*头像*/
+		#content>div>p {
+			padding: 2% 4% 3%;
+			text-align: left;
+			color: #5a5a5a;
+			font-size: 0.72rem;
+		}
+		#content>div>p>b{
+			display: inline-block;
+			width: 30vw;
+			height: 30vw;
+			border-radius: 20vw;
+			background: #ccc;
+			float: left;
+			overflow: hidden;
+			padding-right: 0.5rem;
+
+		}
+		#content>div>p>b>img{
+			width: 100%;
+		}
+		#content>div>p>span{
+			line-height: 30vw;
+			margin-left: 1rem;
+			color: #5a5a5a;
+		}
+		.taocan {
+			padding: 2% 0;
+			text-align: center;
+		}
+		.taocan>div {
+			display: inline-flex;
+			padding: 3vmin 1vmin;
+			align-content:center;
+
+			text-align: center;
+			border-radius: 4px;
+			border: 1px solid #e8e8e8;
+		}
+		
+		.taocanSelectNow {
+			color: #fff;
+			border: 1px solid #56AAF1;
+			background: #56AAF1;
+		}
+		
+		.money {
+			position: relative;
+		}
+		.money>div {
+			width: 50%;
+			position: absolute;
+			margin:0 25%;
+			background: #fff;
+			height: 30vh;
+		}
+		.money>div>p{
+			text-align: center;
+		}
+		.moneySon>img{
+			width: 100%;
+		}
+		.money>div>div {
+			width: 70%;
+			position: relative;
+			top: 0;
+			padding: 3vmin 8vmin;
+			margin: 2vh auto;
+			border-radius: 4px;
+			border: 1px solid #e8e8e8;
+			text-align: center;
+		}
+		.money>div:nth-of-type(2) {
+			left: 100vw;
+		}
+		.money>div:nth-of-type(3) {
+			left: 200vw;
+		}
+		.money>div:nth-of-type(4) {
+			left: 300vw;
+		}
+		.list{
+			/*background: red;*/
+		    display: fixed;
+		    /*position: absolute;*/
+		    bottom: 0;
+		    align-content: center;
+		    width: 100vw;
+		   
+		}
+		.list>h3{
+			padding: 0 5vw;
+			line-height: 2rem;
+		}
+		.list>p{
+			/*padding:3vh 1vh;*/
+			 padding:0 5vw;
+			line-height: 6.5vh;
+			display: block;
+			height: 6.5vh;
+			border-bottom:1px solid #f3f3f3;
+		}
+		.list>p>i{
+			margin-right: 2vw;
+			color:#56aaf1;
+		}
+		.list>p>i.icon-jingxiaoshang{
+			color:#ff721f;
+		}
+		.list>p>span{
+			padding:0 3vw 0 0;
+		}
+		.list>p>span>b{
+			padding-left:10vw;
+			color:#fc2a2b;
+		}
+		.list>p>em{
+			float: right;
+			font-size: 0.62rem;
+		}
+		
+		
+		
+	
+	</style>
 </head>
 <body>
-<!-- {{$vendor|dump}} -->
-	<div>
-		<h1>分销商收益</h1>
-		<b style="font-size: 40px;color:red;">{{$vendor['abonus']}}</b>元
-	</div>
-	<div>
-		<h1>分销商邀请二维码</h1>
-		<notempty name="vendor.vendor_a">
-			<p>A级邀请码：</p>
-			<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_a}}" alt=""><br/>
-		</notempty>
-		<notempty name="vendor.vendor_b">
-			<p>B级邀请码：</p>
-			<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_b}}" alt=""><br/>
-		</notempty>
-		<notempty name="vendor.vendor_c">
-			<p>C级邀请码:</p>
-			<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_c}}" alt=""><br/>
-		</notempty>
-		<notempty name="vendor.vendor_user">
-			<p>会员邀请码：</p>
+	<div id="content">
+		<div class="taocan">
+			<p class="clearfix"><b></b><span>分销商名</span></p>
+			<div class="taocanSelectNow" index="0" >
+				A级分销商
+			</div>
+			<div index="1" >
+				B级分销商
+			</div>
+			<div index="2" >
+				C级分销商
+			</div>
+			<div index="3" >
+				D级分销商
+			</div>
+		</div>
+		<div class="money clearfix">
+			
+			<div class="moneySon">
+				<p>A级邀请码：</p>
+				<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_a}}" alt=""><br/>
+			</div>
+			<!-- 银币 -->
+			<div class="moneySon">
+				<p>B级邀请码：</p>
+				<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_b}}" alt=""><br/>
+			</div>
+			<div class="moneySon">
+				<p>会员邀请码：</p>
 			<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_user}}" alt=""><br/>
-		</notempty>
+			</div>
+			<div class="moneySon">
+				<p>会员邀请码：</p>
+				<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_user}}" alt=""><br/>
+			</div>
+		</div>
+		
 	</div>
-	<div>
-		<h1>我的团队</h1>
-		{{$data|dump}}
-		<p>A级分销商</p>
-		<p>B级分销商</p>
-		<p>C级分销商</p>
-		<p>会员</p>
+	<div class="list clearfix">
+			<h3>我的团队</h3>
+			<p><i class="iconfont icon-jingxiaoshang"></i><span>A级分销商<b>30人</b></span><em>今日新增2人</em></p>
+			<p><i class="iconfont icon-hezuoguanxi-xianxing"></i><span>B级分销商<b>30人</b></span><em>今日新增2人</em></p>
+			<p><i class="iconfont icon-jingxiaoshang"></i><span>C级分销商<b>30人</b></span><em>今日新增2人</em></p>
+			<p><i class="iconfont icon-hezuoguanxi-xianxing"></i><span>D级分销商<b>30人</b></span><em>今日新增2人</em></p>
+
 	</div>
+	
+	
+	
+	<script>
+
+		$(".taocan div").on("click", function(){
+			$(this).addClass('taocanSelectNow').siblings().removeClass("taocanSelectNow");
+
+			// $(this).attr("index") == 0 
+			// ? (
+			// 	$(".moneySon").eq(0).animate({left: '0vw'}),
+			// 	$(".moneySon").eq(1).animate({left: '100vw'}),
+			// 	$(".moneySon").eq(2).animate({left: '200vw'})
+
+			// ) 
+			// : (
+			// 	$(".moneySon").eq(0).animate({left: '100vw'}),
+			// 	$(".moneySon").eq(1).animate({left: '0vw'}),
+			// 	$(".moneySon").eq(2).animate({left: '-100vw'})
+
+			// )
+			var _index=$(this).attr("index");
+			if(_index==0){
+				$(".moneySon").eq(0).animate({left: '0vw'}),
+				$(".moneySon").eq(1).animate({left: '100vw'}),
+				$(".moneySon").eq(2).animate({left: '200vw'}),
+				$(".moneySon").eq(3).animate({left: '300vw'})
+
+				// $('#footer').click(function
+			}else if(_index==1){
+				$(".moneySon").eq(0).animate({left: '-100vw'}),
+			 	$(".moneySon").eq(1).animate({left: '0vw'}),
+			 	$(".moneySon").eq(2).animate({left: '100vw'}),
+				$(".moneySon").eq(3).animate({left: '200vw'})
+
+			}else if(_index==2){
+				$(".moneySon").eq(0).animate({left: '-200vw'}),
+			 	$(".moneySon").eq(1).animate({left: '-100vw'}),
+			 	$(".moneySon").eq(2).animate({left: '0vw'}),
+				$(".moneySon").eq(3).animate({left: '100vw'})
+
+			}else if(_index==3){
+				$(".moneySon").eq(0).animate({left: '-300vw'}),
+			 	$(".moneySon").eq(1).animate({left: '-200vw'}),
+				$(".moneySon").eq(2).animate({left: '-100vw'}),
+			 	$(".moneySon").eq(3).animate({left: '0vw'})
+			}
+			
+		})
+
+		$(".moneyItem").each(function(key, value){
+
+			$(value).on("click", function(){
+
+				$(value).addClass('taocanSelectNow').siblings().removeClass("taocanSelectNow");
+			});
+			
+		})
+		
+
+
+	</script>
 </body>
 </html>
