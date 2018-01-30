@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50548
 File Encoding         : 65001
 
-Date: 2018-01-30 10:00:43
+Date: 2018-01-30 16:25:21
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -46,7 +46,7 @@ CREATE TABLE `st_admin_menu` (
   `ico` varchar(50) DEFAULT '' COMMENT 'font-awesome图标',
   `order_number` int(11) unsigned DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_admin_menu
@@ -78,6 +78,7 @@ INSERT INTO `st_admin_menu` VALUES ('28', '0', '佣金管理', 'Admin/Commission
 INSERT INTO `st_admin_menu` VALUES ('29', '28', '佣金设置', 'Admin/Commission/commission_set', '', null);
 INSERT INTO `st_admin_menu` VALUES ('30', '13', '设备绑定', 'Admin/Devices/bind', '', null);
 INSERT INTO `st_admin_menu` VALUES ('31', '13', '滤芯列表', 'Admin/Devices/filterList', '', null);
+INSERT INTO `st_admin_menu` VALUES ('32', '13', '产品类型', 'Admin/Devices/product', '', null);
 
 -- ----------------------------
 -- Table structure for st_attr
@@ -147,7 +148,7 @@ CREATE TABLE `st_auth_group` (
 -- ----------------------------
 -- Records of st_auth_group
 -- ----------------------------
-INSERT INTO `st_auth_group` VALUES ('1', '超级管理员', '1', '1,2,28,5,6,7,8,10,11,9,14,15,32,33,16,17,18,19,20,21,22,23,24,25,26,30,31');
+INSERT INTO `st_auth_group` VALUES ('1', '超级管理员', '1', '1,2,28,5,6,7,8,10,11,9,14,15,32,33,34,16,17,18,19,20,21,22,23,24,25,26,30,31');
 INSERT INTO `st_auth_group` VALUES ('2', '一级经销商', '1', '1,2,4,3');
 INSERT INTO `st_auth_group` VALUES ('3', '二级经销商', '1', '1,2,4,3');
 INSERT INTO `st_auth_group` VALUES ('4', '三级经销商', '1', '1,2,3');
@@ -184,7 +185,7 @@ CREATE TABLE `st_auth_rule` (
   `condition` char(100) NOT NULL DEFAULT '' COMMENT '规则表达式，为空表示存在就验证，不为空表示按照条件验证',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COMMENT='规则表';
+) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COMMENT='规则表';
 
 -- ----------------------------
 -- Records of st_auth_rule
@@ -216,6 +217,7 @@ INSERT INTO `st_auth_rule` VALUES ('30', '0', 'Admin/Commission', '佣金管理'
 INSERT INTO `st_auth_rule` VALUES ('31', '30', 'Admin/Commission/commission_set', '佣金设置', '1', '1', '');
 INSERT INTO `st_auth_rule` VALUES ('32', '14', 'Admin/Devices/bind', '设备绑定', '1', '1', '');
 INSERT INTO `st_auth_rule` VALUES ('33', '14', 'Admin/Devices/filterList', '滤芯列表', '1', '1', '');
+INSERT INTO `st_auth_rule` VALUES ('34', '14', 'Admin/Devices/product', '产品类型', '1', '1', '');
 
 -- ----------------------------
 -- Table structure for st_binding
@@ -262,14 +264,16 @@ CREATE TABLE `st_cart` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `gid` int(11) NOT NULL COMMENT '商品ID',
   `num` int(11) NOT NULL COMMENT '商品数量',
-  `price` double(6,2) NOT NULL COMMENT '商品单价',
+  `uid` int(11) NOT NULL COMMENT '用户ID',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '购物车状态0未结算，1已结算',
   `addtime` varchar(12) NOT NULL COMMENT '添加购物时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_cart
 -- ----------------------------
+INSERT INTO `st_cart` VALUES ('1', '22', '3', '2', '0', '');
 
 -- ----------------------------
 -- Table structure for st_category
@@ -313,12 +317,18 @@ CREATE TABLE `st_com_pic` (
   `cid` int(11) NOT NULL COMMENT '评论ID',
   `path` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '图片地址',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of st_com_pic
 -- ----------------------------
 INSERT INTO `st_com_pic` VALUES ('1', '3', '2018-01-29/5a6f0ac6c12d9.jpg');
+INSERT INTO `st_com_pic` VALUES ('2', '4', '');
+INSERT INTO `st_com_pic` VALUES ('3', '10', '2018-01-30/5a700923bda78.jpg|2018-01-30/5a700923bde07.jpg|');
+INSERT INTO `st_com_pic` VALUES ('4', '11', '2018-01-30/5a7009436b4e5.jpg|2018-01-30/5a7009436b7f9.jpg|');
+INSERT INTO `st_com_pic` VALUES ('5', '12', '2018-01-30/5a700a6749ba0.jpg|2018-01-30/5a700a6749e1a.jpg|');
+INSERT INTO `st_com_pic` VALUES ('6', '13', '2018-01-30/5a700a7821745.jpg|2018-01-30/5a700a78219e8.jpg|');
+INSERT INTO `st_com_pic` VALUES ('7', '14', '2018-01-30/5a700a8d8f539.jpg|2018-01-30/5a700a8d8f9e7.jpg|2018-01-30/5a700a8d8fdc3.jpg|');
 
 -- ----------------------------
 -- Table structure for st_comment
@@ -335,13 +345,19 @@ CREATE TABLE `st_comment` (
   `addtime` varchar(12) NOT NULL COMMENT '评论时间',
   `status` tinyint(1) NOT NULL COMMENT '1好评2中评3差评',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_comment
 -- ----------------------------
 INSERT INTO `st_comment` VALUES ('1', '2', '22', '132', null, null, null, '', '0');
-INSERT INTO `st_comment` VALUES ('3', '11111', '22222', 'fdsafsa', null, null, null, '', '0');
+INSERT INTO `st_comment` VALUES ('3', '2', '22', 'fdsafsa', null, null, null, '', '0');
+INSERT INTO `st_comment` VALUES ('4', '2', '22', '', null, null, null, '1517291267', '1');
+INSERT INTO `st_comment` VALUES ('10', '2', '22', '', null, null, null, '1517291811', '1');
+INSERT INTO `st_comment` VALUES ('11', '2', '22', '', null, null, null, '1517291843', '1');
+INSERT INTO `st_comment` VALUES ('12', '2', '22', '', null, null, null, '1517292135', '1');
+INSERT INTO `st_comment` VALUES ('13', '2', '22', '', null, null, null, '1517292152', '1');
+INSERT INTO `st_comment` VALUES ('14', '2', '22', '', null, null, null, '1517292173', '1');
 
 -- ----------------------------
 -- Table structure for st_commission
@@ -555,15 +571,18 @@ CREATE TABLE `st_filters` (
   `balancatime` int(11) unsigned DEFAULT NULL COMMENT '时间寿命使能',
   `balancaflow` int(11) unsigned DEFAULT NULL COMMENT '流量寿命使能',
   `introduce` varchar(255) DEFAULT '暂无简介' COMMENT '滤芯简介',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '滤芯状态（0使用中1禁用中)',
   `url` varchar(255) DEFAULT NULL COMMENT '滤芯购买网址',
   `addtime` int(11) NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`),
   KEY `device_id` (`filtername`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_filters
 -- ----------------------------
+INSERT INTO `st_filters` VALUES ('13', 'fdsa', 'fsa', '', '2.33', '300', '3000', null, null, '', '0', '', '1517279226');
+INSERT INTO `st_filters` VALUES ('14', '土木工程', '123', '', '3.22', '320', '32510', null, null, '', '0', '', '1517281868');
 
 -- ----------------------------
 -- Table structure for st_flow
@@ -744,6 +763,33 @@ CREATE TABLE `st_shop_order` (
 -- Records of st_shop_order
 -- ----------------------------
 INSERT INTO `st_shop_order` VALUES ('1', '1352641253', '2', '22', '200.00', '300.00', '3', '1516970804', '0', '0', null);
+
+-- ----------------------------
+-- Table structure for st_type
+-- ----------------------------
+DROP TABLE IF EXISTS `st_type`;
+CREATE TABLE `st_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `typename` varchar(255) NOT NULL COMMENT '类型名称',
+  `filter1` varchar(30) DEFAULT NULL COMMENT '一级滤芯',
+  `filter2` varchar(30) DEFAULT NULL,
+  `filter3` varchar(30) DEFAULT NULL,
+  `filter4` varchar(30) DEFAULT NULL,
+  `filter5` varchar(30) DEFAULT NULL,
+  `filter6` varchar(30) DEFAULT NULL,
+  `filter7` varchar(30) DEFAULT NULL,
+  `filter8` varchar(30) DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态0使用中1禁用中',
+  `addtime` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of st_type
+-- ----------------------------
+INSERT INTO `st_type` VALUES ('32', '魂牵梦萦', '13', null, null, null, null, null, null, null, '0', null);
+INSERT INTO `st_type` VALUES ('33', '圾', '13', '14', null, null, null, null, null, null, '0', '1517284707');
+INSERT INTO `st_type` VALUES ('34', '脸扔', '13', '14', null, null, null, null, null, null, '0', '1517284766');
 
 -- ----------------------------
 -- Table structure for st_users

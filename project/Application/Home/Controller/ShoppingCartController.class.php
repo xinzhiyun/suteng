@@ -23,7 +23,10 @@ class ShoppingCartController extends CommonController
     		}
     	}
     	$data = array_values($arr);
-        dump($data);
+        $assign = [
+            'data' => $data,
+        ];
+        $this->assign($assign);
         $this->display();
     }
 

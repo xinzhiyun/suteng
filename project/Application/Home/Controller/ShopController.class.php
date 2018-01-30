@@ -15,6 +15,16 @@ class ShopController extends Controller
         $goods = D('Goods');
         $cate = M('Category')->select();
         $goodsList = $goods->getGoodsList();
+        foreach($goodsList as $val){
+    		$key = $val['gid'];
+    		if(isset($arr[$key])) {
+    			$arr[$key]['attr'] .= $val['attr'].':'.$val['val'].'|';
+    		} else {
+                $arr[$key] = $val;
+    			$arr[$key]['attr'] = $val['attr'].':'.$val['val'].'|';
+    		}
+    	}
+    	$goodsList = array_values($arr);
         $assign = [
             'cate' => json_encode($cate),
             'goods' => json_encode($goodsList),
