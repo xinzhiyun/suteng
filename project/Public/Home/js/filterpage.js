@@ -1,5 +1,48 @@
 $(function(){
-	//页面加载时获取数据
+	var lvxinArr = ['#lvxinDetail', '#lvxinReset' ,'#lvxinBuy'];
+	var filterName='';
+	var filterNumber=0;
+	// 点击顶部tab切换内容
+	$(".tabTitle").click(function(){
+		// 判断内容是否超出
+		if($("#content>div").length != 0){
+			$("#content")
+			.css({height: lvxinArr[$(this).attr("index")]
+				.height, 
+				overflowY: $(lvxinArr[$(this).attr("index")])[0].offsetHeight > $("#content")[0].offsetHeight 
+				? 'visible'
+				: 'hidden'
+			});
+		}
+		if($(this).html()=="滤芯购买"){
+			$("#footer").show();
+			$("button").hide().siblings().show();
+		}else{
+			
+			$("#footer").css("border-top","none");
+			if($(this).html()=="滤芯详情"){
+				$("#footer").hide();
+			}else{
+				$("#footer").show();
+				$("button").show().siblings().hide();
+			}
+		}
+		// 横线移动
+		$("#line").css({marginLeft: $(this).attr("index")*33.33 + '%'});
+
+		// 内容切换
+		$("#content").animate({left: '-'+$(this).attr("index") + '00vw'});
+		
+		//滤芯选中状态样式
+		$("#lvxinReset").on("click","li",function(){
+			$(this).children(".progress").children(".iconfont").removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+			$(this).siblings().children(".progress").children(".iconfont").removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+			filterName=$(this).children("p").children().eq(0).text();
+			filterNumber=$(this).index();
+		})
+		
+	})
+	//页面加载时获取滤芯数据
     var data={
         "id":"1",
         "deviceid":"228733445596778",
@@ -49,6 +92,12 @@ $(function(){
 		{filtername:'啊5',timelife: 50,flowlife:50,introduce: '是否合适肯定会诉求'},
 		{filtername:'啊6',timelife: 60,flowlife:90,introduce: '是否合适肯定会诉求'}
 	];
+
+	var lvxinBuy = [ 
+		{"imgurl":"image/65454.jpg", "filtername":"RO膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120"}, 
+		{"imgurl":"image/65454.jpg", "filtername":"RO膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120"}, 
+		{"imgurl":"image/65454.jpg", "filtername":"RO膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120"}, 
+	]; 
 	console.log(data);
 	var filtermode = data.filtermode;
 	var moHTML = '',lvxinIntroduceHTML='';//html box
