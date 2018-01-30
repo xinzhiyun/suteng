@@ -61,12 +61,12 @@
 	/*文字说明及价格*/
 	.itemcarRight{
 		box-sizing: border-box;
-		padding-left:0.5rem;
+		padding-left:0.5rem; 
 		width: 60%;
 		float: right;
 	}
 	.itemcarRight>h3{
-		padding-bottom:0.2rem;
+		padding-bottom:0.2rem; 
 	}
 	.itemcarRight>.roTxt{
 		font-size: 0.6rem;
@@ -103,7 +103,7 @@
 	 	position: fixed;
 	    bottom: 0;
 	    width: 100%;
-	    background: #FFF;
+	    background: #FFF;	   
 	 }
 	 .shoppingcarBott>p{
 	 	display: inline-block;
@@ -127,7 +127,7 @@
 	}
 	.shoppingcarBott>input{
 	 	float: right;
-		height: 2rem;
+		height: 2rem; 
 	    width: 30%;
 	    border: none;
 	    background: #2EB6AA;
@@ -200,7 +200,7 @@
 	</div>
 	<!-- 底部结算按钮 -->
 	<div class="shoppingcarBott">
-		<p><i class="iconfont icon-kuang1"></i>全选<span>合计：<b class="priceAll">￥0</b></span></p>
+		<p><i class="iconfont icon-kuang1"></i>全选<span>合计：<b class="priceAll">￥<span>0</span></b></span></p>
 		<input id="toPay" type="button" value="结算">
 	</div>
 
@@ -208,14 +208,15 @@
 	$(function(){
 		/*
 			请求购物车列表数据
-		 */
+		 */ 
 		var itemCarHTML = '';
+		var shopList;
 		$.ajax({
 			url: '{{:U("ShoppingCart/cart")}}',
 			type: 'post',
 			success: function(res){
 				console.log("成功！", res);
-
+				shopList = res[0];
 				for(var i=0; i<res.length; i++){
 					//图片多于一张时
 					if(res[i].price.length >1){}
@@ -223,7 +224,7 @@
 						'<!-- /*选中及图片*/ -->'+
 						'<div class="itemcarLeft clearfix ">'+
 							'<div class="xuanzhong "><i class="iconfont icon-kuang1"></i></div>'+
-							'<div class="carpic "><img src="'+ res[i].picpath +'" alt=""></div>'+
+							'<div class="carpic "><img src="__PUBLIC__/Uploads/'+ res[i].path +'" alt=""></div>'+
 						'</div>'+
 						'<!-- /*文字说明及价格*/ -->'+
 						'<div class="itemcarRight">'+
@@ -251,16 +252,40 @@
 			结算
 		 */
 		$("#toPay").click(function(){
-			var data = [];
+			var shopCar_data = [];
 			var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
-			for(var i=0; i<chooseGoods.length; i++){
-				data.push({
-					'gid': chooseGoods.eq(i).parents(".itemCar").attr("gid"),
-					'num': chooseGoods.eq(i).parents(".itemCar").find(".number").val(),
-					'money': parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text())*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number").val())
-				});
+			// console.log(shopList);
+			
+			if($(".priceAll>span").text() != 0){
+				for(var i=0; i<chooseGoods.length; i++){
+					shopCar_data.push({
+						'path': shopList.path,
+						'desc': shopList.desc,
+						'name': shopList.name,
+						'gid': chooseGoods.eq(i).parents(".itemCar").attr("gid"),
+						'num': chooseGoods.eq(i).parents(".itemCar").find(".number").val(),
+						'money': parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text())*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number").val())
+					});
+				}
+				// 将购物车选中的商品存到本地sessionStorage, 给订单确认页面使用
+				sessionStorage.setItem("shopCar_data",JSON.stringify(shopCar_data));
+				// console.log(shopCar_data)
+				// 跳转到订单确认页面
+				location.href = '{{:U("PaymentSystem/payConfirm")}}';
+				// 发送ajax请求让后台生成订单号
+				$.ajax({
+					url: '{{:U("PaymentSystem/information")}}',
+					type: 'post',
+					success: function(res){
+						console.log('成功！', res)
+					},
+					error: function(res){
+						console.log('失败！', res)
+					}
+				})
+			}else{
+				alert('你还没选择购买的商品！')
 			}
-			console.log(data)
 		})
 
 		var priceAll = 0;
@@ -283,7 +308,7 @@
 				// console.log('price: ',itemCar.find(".price>span").text())
 				// console.log('num: ',itemCar.find(".number").val())
 			}
-			$(".priceAll").text('￥'+priceAll);
+			$(".priceAll>span").text(priceAll);
 		});
 		/*
 			按减'-'号
@@ -308,14 +333,26 @@
 				// console.log('price: ',itemCar.find(".price>span").text())
 				// console.log('num: ',itemCar.find(".number").val())
 			}
-			$(".priceAll").text('￥'+priceAll);
+			$(".priceAll>span").text(priceAll);
 
 		});
 		// 删除商品
        slipDel('.shpingcarAll','.itemCar','goodsnumbe');
 
-       function del(i){
+       function del(){
 			alert(1);
+			var data;
+			// $.ajx({
+			// 	url: '{{:U("")}}',
+			// 	type: 'post',
+			// 	data: data,
+			// 	success: function(res){
+			// 		console.log('成功！ ',res);
+			// 	},
+			// 	error: function(res){
+			// 		console.log('失败！ ',res);
+			// 	}
+			// })
 		}
 
 		// 选中框
@@ -326,19 +363,19 @@
 			// 无选择商品
 			if(_class=='iconfont icon-xuanze'){
 				$(this).removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-
+				
 				priceAll = 0;
 				var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
 				// 实时将总价格更新到合计
 				for(var i=0; i<chooseGoods.length; i++){
-
+					
 					priceAll += parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value)*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
 
 					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value);
 					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
-				}
+				} 
 				// 将价格显示到合计
-				$(".priceAll").text('￥'+ priceAll);
+				$(".priceAll>span").text(priceAll);
 			// 有选择商品
 			}else{
 				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
@@ -346,19 +383,19 @@
 				var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
 				// 实时将总价格更新到合计
 				for(var i=0; i<chooseGoods.length; i++){
-
+					
 					priceAll += parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value)*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
 
 					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value);
 					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
-				}
+				} 
 				// 将价格显示到合计
-				$(".priceAll").text('￥'+ priceAll);
+				$(".priceAll>span").text(priceAll);
 			}
 			// 如果没有一个选中
 			if(!$(".icon-xuanze").length){
 				console.log('没了');
-				$(".priceAll").text('￥'+ 0);
+				$(".priceAll>span").text(0);
 			}
 
 			// 全部选中了
@@ -372,7 +409,7 @@
 		// 全选事件
 		$('.shoppingcarBott>p>i').click(function(){
 			var _quanclass=$(this).attr('class');
-
+			
 			// 全选
 			if(_quanclass=='iconfont icon-kuang1'){
 				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
@@ -385,10 +422,10 @@
 				$('.itemcarLeft>.xuanzhong>i').removeClass(_class).addClass('iconfont icon-kuang1');
 
 			}
-
+			
 		})
 	})
     </script>
-
+    
 </body>
 </html>

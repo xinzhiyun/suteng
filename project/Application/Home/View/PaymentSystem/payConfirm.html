@@ -470,7 +470,7 @@
 		</div>
 
 		<div id="calc">
-			<p>邮费：￥8.00</p>
+			<p>邮费：￥<span>8.00</span></p>
 			<p>共 <b class="numAll">0</b> 件商品&emsp;合计：<b class="priceAll">0</b></p>
 		</div>
 		<div class="ynticket">
@@ -565,39 +565,124 @@
 	</div>
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script>
+		// 页面关闭清空本地sessionStorage数据
+		$(window).unload(function(){
+			sessionStorage.setItem("lvxinData", '')
+			sessionStorage.setItem("goods_data", '')
+			sessionStorage.setItem("shopCar_data", '')
+		})
 		$(function(){
+			var dangdanID;	//从后台传来的订单号
+			// $.ajax({
+			// 	url:'{{:U("")}}',
+			// 	type: 'post',
+			// 	success: function(res){
+			// 		console.log('成功！ ', res)
+			// 	},
+			// 	error: function(res){
+			// 		console.log('失败！ ', res)
+			// 	}
+			// })
 			/*
 				订单遍历
 			 */
-			// 从本地sessionStorage中获取订单数据(从滤芯购买传来)
-			var goodsData = JSON.parse(sessionStorage.getItem("goodsData"));
-			// console.log(goodsData);
-			var goodsHTML = '';	//存放需要支付的滤芯商品信息
-			var numAll = 0;		//存放滤芯订单的总数量
-			var priceAll = 0;	//存放滤芯订单的总价格
+			// 从本地sessionStorage中获取订单数据
+			var lvxinData, goods_data, shopCar_data;
+			if(sessionStorage.getItem("lvxinData")){
+				// 从滤芯购买传来
+				lvxinData = JSON.parse(sessionStorage.getItem("lvxinData"));
 
-			// 遍历需要支付的滤芯商品信息
-			for(var i=0; i<goodsData.length;i++){
+			}else if(sessionStorage.getItem("goods_data")){
+				// 从商品详情传来
+				goods_data = JSON.parse(sessionStorage.getItem("goods_data"));
+
+			}else if(sessionStorage.getItem("shopCar_data")){
+				// 购物车传来
+				shopCar_data = JSON.parse(sessionStorage.getItem("shopCar_data"));
+			}
+			console.log('lvxinData： ',lvxinData);
+			console.log('goods_data ',goods_data);
+			console.log('shopCar_data ',shopCar_data);
+			var goodsHTML = '';	//存放需要支付的商品信息
+			var numAll = 0;		//存放订单的总数量
+			var priceAll = 0;	//存放订单的总价格
+			// 如果有购买滤芯，从’滤芯购买‘过来
+			if(lvxinData){
+				// 遍历需要支付的滤芯商品信息
+				for(var i=0; i<lvxinData.length;i++){
+					goodsHTML += '<div class="goods">'+
+						'<div class="img"><img src="'+ lvxinData[i].picturepath +'" alt="正在加载..."></div>'+
+						'<div class="dec">'+
+							'<h5>'+ lvxinData[i].filtername +'</h5>'+
+							'<p>'+ lvxinData[i].desc +'</p>'+
+							'<div>'+
+								'<span class="price">'+ lvxinData[i].price +'</span>'+
+								'<span class="num">X&nbsp;<b>'+ lvxinData[i].num +'</b></span>'+
+							'</div>'+
+						'</div>'+
+					'</div>';
+					// 统计数量和价格
+					numAll += parseInt(lvxinData[i].num);
+					priceAll += parseInt(lvxinData[i].priceAll);
+				}
+				$("#main").append(goodsHTML);	//滤芯订单的信息
+				$(".numAll").text(numAll);		//滤芯订单的总数量
+				$(".priceAll").text('￥'+priceAll);	//滤芯订单的总价格
+				$("#footerContain>div>span").text('￥'+priceAll);	//滤芯订单的总价格
+				$(".paytopRight>p").text('￥'+priceAll);	//滤芯订单的总价格
+
+			}else if(goods_data){	// 如果有商品购买，从商品详情’立即购买‘过来
+				// 遍历需要支付的商品信息
 				goodsHTML += '<div class="goods">'+
-					'<div class="img"><img src="'+ goodsData[i].picturepath +'" alt="正在加载..."></div>'+
+					'<div class="img"><img src="'+ goods_data.goodsDetail.path +'" alt="正在加载..."></div>'+
 					'<div class="dec">'+
-						'<h5>'+ goodsData[i].filtername +'</h5>'+
-						'<p>'+ goodsData[i].desc +'</p>'+
+						'<h5>'+ goods_data.goodsDetail.name +'</h5>'+
+						'<p>'+ goods_data.goodsDetail.desc +'</p>'+
 						'<div>'+
-							'<span class="price">'+ goodsData[i].price +'</span>'+
-							'<span class="num">X&nbsp;<b>'+ goodsData[i].num +'</b></span>'+
+							'<span class="price">'+ goods_data.goodsDetail.price +'</span>'+
+							'<span class="num">X&nbsp;<b>'+ goods_data.num +'</b></span>'+
 						'</div>'+
 					'</div>'+
 				'</div>';
 				// 统计数量和价格
-				numAll += parseInt(goodsData[i].num);
-				priceAll += parseInt(goodsData[i].priceAll);
+				numAll = parseInt(goods_data.num);
+				priceAll = parseInt(goods_data.goodsDetail.price);
+				//快递费
+				$("#calc>p>span").text(goods_data.expressMoney);
+				$("#main").append(goodsHTML);	//订单的信息
+				$(".numAll").text(numAll);		//订单的总数量
+				$(".priceAll").text('￥'+ numAll*priceAll);	//订单的总价格
+				$("#footerContain>div>span").text('￥'+numAll*priceAll);	//订单的总价格
+				$(".paytopRight>p").text('￥'+numAll*priceAll);	//订单的总价格
+
+			}else if(shopCar_data){	// 如果有商品购买，从购物车’结算‘过来
+				for(var i=0; i<shopCar_data.length; i++){
+					if(shopCar_data[i]){
+						// 遍历需要支付的商品信息
+						goodsHTML += '<div class="goods">'+
+							'<div class="img"><img src="'+ shopCar_data[i].path +'" alt="正在加载..."></div>'+
+							'<div class="dec">'+
+								'<h5>'+ shopCar_data[i].name +'</h5>'+
+								'<p>'+ shopCar_data[i].desc +'</p>'+
+								'<div>'+
+									'<span class="price">'+ shopCar_data[i].price +'</span>'+
+									'<span class="num">X&nbsp;<b>'+ shopCar_data[i].num +'</b></span>'+
+								'</div>'+
+							'</div>'+
+						'</div>';
+					}
+					// 统计数量和价格
+					numAll += parseInt(shopCar_data[i].num);
+					priceAll += parseInt(shopCar_data[i].money);
+				}
+				//快递费
+				// $("#calc>p>span").text(goods_data.expressMoney);
+				$("#main").append(goodsHTML);	//订单的信息
+				$(".numAll").text(numAll);		//订单的总数量
+				$(".priceAll").text('￥'+ priceAll);	//订单的总价格
+				$("#footerContain>div>span").text('￥'+priceAll);	//订单的总价格
+				$(".paytopRight>p").text('￥'+priceAll);	//订单的总价格
 			}
-			$("#main").append(goodsHTML);	//滤芯订单的信息
-			$(".numAll").text(numAll);		//滤芯订单的总数量
-			$(".priceAll").text('￥'+priceAll);	//滤芯订单的总价格
-			$("#footerContain>div>span").text('￥'+priceAll);	//滤芯订单的总价格
-			$(".paytopRight>p").text('￥'+priceAll);	//滤芯订单的总价格
 
 			/******** 订单遍历--结束--	**********/
 			/*

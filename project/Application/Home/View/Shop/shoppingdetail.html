@@ -315,7 +315,7 @@
 			data: {'id': goods_gid},
 			success: function(res){
 				console.log('成功！ ',res);
-				console.log(res.goodsDetail[0])
+				goodsDetail = res.goodsDetail[0];
 				var goodsDetail_html = '', commentInfo_html = '';
 				// 输出商品详情
 				goodsDetail_html = '<div class="detailpic">'+
@@ -325,11 +325,10 @@
 					'<div class="detailTxt">'+
 						'<span><b>￥'+ res.goodsDetail[0].price +'</b><em>已售： 210</em></span>'+
 						'<p>'+ res.goodsDetail[0].desc +'</p>'+
-						'<em>送包、滤镜、存储卡、读卡器、清洁套装</em>'+
+						'<em>'+ res.goodsDetail[0].attr +'</em>'+
 					'</div>'+
 					'<!-- /*商品选择，数量，邮费*/ -->'+
 					'<div class="detailist">'+
-						'<p>这里放商品规格</p>'+
 						'<p>'+
 							'<span>数量</span>'+
 							'<span class="num">'+
@@ -338,7 +337,7 @@
 								'<input type="button" value="+" class="plus">'+
 							'</span>'+
 						'</p>'+
-						'<p><span>邮费</span><span><b>￥8.88</b></span></p>'+
+						'<p><span>邮费</span><span><b class="expressMoney">￥<span>8.88</span></b></span></p>'+
 					'</div>';
 				console.log(res.commentInfo[0])
 				// 如果有评价则遍历出来		
@@ -426,13 +425,12 @@
 		$("#add2ShopCart").click(function(){
 			var num = $(".number").val();	//选择的数量
 			var addtime = new Date().getTime();	//添加进购物车的时间
-			console.log(goods_gid, addtime)
 			/*
 				goods_gid:商品唯一ID
 				num: 商品数量
 			 */
 			var data = JSON.stringify([{'gid':goods_gid,'num':num}])
-			// console.log(data);
+			console.log(data)
 			$.ajax({
 				url: '{{:U("ShoppingCart/shopAdd")}}',
 				type: 'post',
@@ -444,31 +442,35 @@
 					console.log('失败！ ', res)
 				}
 			})
-		})
+		})	
  
 		/*
 			点击‘立即购买’
 		 */
 		$("#buyNow").click(function(){
 			var num = $(".number").val();	//选择的数量
+			var expressMoney = $(".expressMoney>span").text();	//快递费
 			/*
 				goods_gid:商品唯一ID
 				num: 商品数量
 				uid: 用户id
 			 */
-			var data = {'gid': goods_gid,'uid': uid,'num': num};
-			a.ajax({
-				url: '{{:U("")}}',
-				type: 'post',
-				data: data,
-				dataType: json,
-				success: function(res){
-					console.log("成功！ ", res);
-				},
-				error: function(res){
-					console.log("失败！ ", res);
-				}
-			})
+			var goods_data = JSON.stringify({'goodsDetail': goodsDetail,'num': num,'expressMoney':expressMoney});
+			sessionStorage.setItem("goods_data",goods_data)
+			// 跳到订单确认界面
+			location.href = '{{:U("PaymentSystem/payConfirm")}}';
+			// $.ajax({
+			// 	url: '{{:U("PaymentSystem/payConfirm")}}',
+			// 	type: 'post',
+			// 	data: data,
+			// 	dataType: 'json',
+			// 	success: function(res){
+			// 		console.log("成功！ ", res);
+			// 	},
+			// 	error: function(res){
+			// 		console.log("失败！ ", res);
+			// 	}
+			// })
 		})
 	})
 
