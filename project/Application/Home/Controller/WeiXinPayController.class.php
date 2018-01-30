@@ -1,16 +1,17 @@
 <?php
 namespace Home\Controller;
 use \Org\Util\WeixinJssdk;
+use Think\Controller;
 
-class WeiXinPayController extends CommonController
+class WeiXinPayController extends Controller
 {
     /**
      * 处理订单写入数据
      * @return array 返回数组格式的notify数据
      */
-    public function notify()
+    public function congzhiNotify()
     {
-        //dump($_SESSION);die;
+        // echo 'http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/congzhiNotify');
         // 实例化微信JSSDK类对象
         //$wxJSSDK = new \Org\Util\WeixinJssdk;
         // 獲取微信微信ID
@@ -22,174 +23,87 @@ class WeiXinPayController extends CommonController
         $xml=file_get_contents('php://input', 'r');
         //file_put_contents('./wx_pay.txt',$xml."\r\n", FILE_APPEND);die;
         //echo 1;die;
-//         $xml = '<xml><appid><![CDATA[wxae48f3bbcda86ab1]]></appid>
-// <attach><![CDATA[316904214969787641]]></attach>
+//         $xml = '<xml><appid><![CDATA[wx0bab2f4b5b7ec3b5]]></appid>
+// <attach><![CDATA[3]]></attach>
 // <bank_type><![CDATA[CFT]]></bank_type>
 // <cash_fee><![CDATA[1]]></cash_fee>
 // <fee_type><![CDATA[CNY]]></fee_type>
 // <is_subscribe><![CDATA[Y]]></is_subscribe>
-// <mch_id><![CDATA[1394894802]]></mch_id>
-// <nonce_str><![CDATA[s5qfmwv8zk7es4r8iz65v98klr4ijgc1]]></nonce_str>
-// <openid><![CDATA[oXwY4t-9clttAFWXjCcNRJrvch3w]]></openid>
-// <out_trade_no><![CDATA[614841407334299817]]></out_trade_no>
+// <mch_id><![CDATA[1490274062]]></mch_id>
+// <nonce_str><![CDATA[kbdzxh20tp4o0ox36kve28bzc5n2cj1i]]></nonce_str>
+// <openid><![CDATA[oQktJwL8ioR4DoxSQmikdzekbUyU]]></openid>
+// <out_trade_no><![CDATA[728016708453580]]></out_trade_no>
 // <result_code><![CDATA[SUCCESS]]></result_code>
 // <return_code><![CDATA[SUCCESS]]></return_code>
-// <sign><![CDATA[79A94BC290092A928F851539742BFA3A]]></sign>
-// <time_end><![CDATA[20180112102104]]></time_end>
+// <sign><![CDATA[93AC5BF364A6843CC87EB3B1755B0659]]></sign>
+// <time_end><![CDATA[20180130174703]]></time_end>
 // <total_fee>1</total_fee>
 // <trade_type><![CDATA[JSAPI]]></trade_type>
-// <transaction_id><![CDATA[4200000052201801122671865383]]></transaction_id>
+// <transaction_id><![CDATA[4200000056201801303706399965]]></transaction_id>
 // </xml>';
         
         if($xml){
             //解析微信返回数据数组格式
             $result = $this->notifyData($xml);
-            //show($result);die;
-            //$uid = M('Users')->where("open_id='{$result['']}'")->find()['id'];
-            //file_put_contents('./wx_pay1.txt',$xml."\r\n", FILE_APPEND);
-            // 如果订单号不为空
-            if(!empty($result['out_trade_no'])){
-                $did = substr($result['out_trade_no'],15);
-                //file_put_contents('./wx_pay1.txt',$result['out_trade_no']."\r\n", FILE_APPEND);
-                //file_put_contents('./wx_pay1.txt',$uid."\r\n", FILE_APPEND);
-                // 获取传回来的订单号
-                $data['order_id'] = $result['attach'];
 
-                // 查询订单是否已处理
-                $orderData = M('Orders')->where($data)->field('is_pay,total_price')->find();
+            $showFlow['order_id'] = $result['out_trade_no'];
+            $flowData = M('flow')->where($showFlow)->find();
 
-                // 1分钱测试数据
-                $orderData['total_price'] = 1;
-                // 如果订单未处理，订单支付金额等于订单实际金额
-                if(empty($orderData['is_pay']) && $orderData['total_price'] == $result['total_fee']){
-                    //file_put_contents('./wx_pay121.txt',$xml."\r\n", FILE_APPEND);
-                    //dump($result);
-                    // 处理订单
-                    // 实例化订单对象
-                    $orders = M('Orders');  
-                    // 实例化订单滤芯对象
-                    $orderFilter = M('OrderFilter');
-                    // 实例化订单套餐对象
-                    $orderSetmeal = M('OrderSetmeal');
-                    // 实例化设备详细信息对象
-                    $devicesStatu = M('devicesStatu');
-                    // 实例化设备对象
-                    $device = M('Devices');
-                    // 实例化充值流水对象
-                    $flowObj = M('Flow');
-                    
-                    // 开启事务
-                     $orders->startTrans();
-
-                    // 修改订单状态为已付款
-                    $isPay['is_pay'] = 1;
-                    
-                    
-                    //show($isPayRes);die;
-                    // 查询订单包含的全部套餐
-                    $orderSetmealData = $orderSetmeal->where($data)->select();
+            if(empty($flowData)){
+                // 充值套餐ID
+                $id = $result['attach'];
+                // 充值金额
+                $je = [100,200,300,400,500,100,200,300,400,500];
+                $jyb = [100,200,300,500,600,200,400,600,1000,1200];
+                $contentArr =   [
+                        '100元100个金币',
+                        '200元200个金币',
+                        '300元300个金币',
+                        '400元500个金币',
+                        '500元600个金币',
+                       ' 100元200个银币',
+                        '200元400个银币',
+                        '300元600个银币',
+                        '400元1000个银币',
+                        '500元1200个银币',
+                    ];
+                // 查询用户
+                $showUser['open_id'] = $result['openid'];
 
 
-                    if($orderSetmealData){
-                        $isPay['is_recharge'] = 1;
-                    }
+                $user = M('users')->where($showUser)->find();
 
-                    $isPayRes = $orders->where($data)->save($isPay);
-                    
-                    // 充值状态
-                    $status = 0;
-                    if($orderSetmealData){
-                        //show($orderSetmealData);die;
-                        // 统计未处理套餐数量
-                        $countNun = count($orderSetmealData);
-                        // 定义计数器
-                        $num     = 0;
-                        $flownum = 0;
-                        //file_put_contents('./wx_pay1uid.txt',$result['out_trade_no']."\r\n", FILE_APPEND);
-                        // 查询当前设备编号
-                        $deviceId['id'] = $did;
-                        //file_put_contents('./wx_pay2uid.txt',$uid."\r\n", FILE_APPEND);
-                        $deviceCode['DeviceID'] = $device->where($deviceId)->find()['device_code'];
-                        
-                        foreach ($orderSetmealData as $value) {
-                            //show($value);die;
-                            // 查询设备当前剩余流量
-                            $devicesStatuReFlow = $devicesStatu->where($deviceCode)->find()['reflow']-0;
-
-                            // 充值后流量应剩余流量
-                            $Flow['ReFlow'] = $devicesStatuReFlow + ($value['flow']*$value['goods_num']);
-
-                            // 修改设备剩余流量
-                            $FlowRes = $devicesStatu->where($deviceCode)->save($Flow);
-
-                            // 写充值流水
-                            // 订单编号
-                            $flowData['order_id']       = $value['order_id'];
-                            // 用户ID
-                            $flowData['did']            = $did;
-                            // 充值金额
-                            $flowData['money']          = $value['money'];
-                            // 充值方式
-                            $flowData['mode']           = 1;
-                            // 充值流量
-                            $flowData['flow']           = $value['flow'];
-                            // 套餐数量
-                            $flowData['num']            = $value['goods_num'];
-                            // 套餐描述
-                            $flowData['describe']       = $value['describe'];
-                            // 当前流量
-                            $flowData['currentflow']    = $Flow['ReFlow'];
-                            // 充值时间
-                            $flowData['addtime']           = time();
-                            //show($flowData);die;
-                            // 创建充值流水
-                            $flowObjRes = $flowObj->add($flowData);
-
-
-                            // 判断流水是否创建成果
-                            if($flowObjRes){
-                                // 定时器++
-                                $flownum++;
-                            }
-
-                            // 判断修改结果
-                            if($FlowRes){
-                                // 计数器++
-                                $num++;  
-                            }
-                            
-                        }
-
-                        // 全部套餐充值完成
-                        if($countNun == $num && $countNun == $flownum){
-                            // 充值和流水完成，状态设为1
-                            $status = 1;
-                        }
-
-                    }else{
-                        // 没有套餐默认值，状态设为1
-                        $status = 1;
-                    }
-                    
-                    //show($status);die;
-                    //file_put_contents('saaa',$isPayRes .'jfdslajfds'. $status);
-                    if($isPayRes && $status){
-                        
-                        // 执行事务
-                        $orders->commit();
-                        file_put_contents('./wx_notifyYes.txt','订单号：'.$result['attach']."充值完成 \r\n", FILE_APPEND);
-                    }else{
-                        // 事务回滚
-                        $orders->rollback();
-                        file_put_contents('./wx_notifyEeor.txt','订单号：'.$result['attach']."充值失败 \r\n", FILE_APPEND);
-                    }
+                $addData['order_id'] = $result['openid'];
+                $addData['user_id'] = $user['id'];
+                $addData['order_id'] = $result['out_trade_no'];
+                $addData['money']   = $je[$id];
+                if($id<5){
+                    $addData['gold_num'] = $jyb[$id];
                 }else{
-                    // 充值金额不匹配
-                    // if($orderData['total_price'] != $result['total_fee']){
-                    //    file_put_contents('./wx_notifymoney.txt','订单号：'.$result['attach']."充值失败,金额不匹配。订单金额：{$orderData['total_price']} ，充值金额：{$result['total_fee']} \r\n", FILE_APPEND); 
-                    // }  
+                    $addData['silver'] = $jyb[$id];
                 }
-            } 
+                $addData['mode']    = 2;
+                $addData['describe'] = $contentArr[$id];
+
+
+                if($id<5){
+                    $addData['current_gold_num'] = $saveData['gold_num'] = $jyb[$id] + $user['gold_num'];
+                    $addData['current_silver'] = $user['silver'];
+                }else{
+                    $addData['current_silver'] = $saveData['silver'] = $jyb[$id] + $user['silver'];
+                    $addData['current_gold_num'] = $user['gold_num'];
+                }
+                $addData['addtime'] = $addData['updatetime'] =  time();
+                // 写充值流水
+                $addRes = M('flow')->add($addData);
+                // 更新用户账户
+                $saveRes = M('users')->where($showUser)->save($saveData);
+            }
+
+
+
+            
+
         }
 
     }
@@ -221,7 +135,7 @@ class WeiXinPayController extends CommonController
         $sign=$this->makeSign($data);
         // file_put_contents('./wx_notify.txt','原签: '.$dataSign.'现签：'.$sign, FILE_APPEND);  
         // 判断签名是否正确  判断支付状态
-        if ($sign==$dataSign && $data['return_code']=='SUCCESS' && $data['result_code']=='SUCCESS') {
+        if ($sign==$dataSign && $data['return_code']=='SUCCESS') {
 
             // 返回状态给微信服务器
             echo '<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>';
@@ -261,13 +175,13 @@ class WeiXinPayController extends CommonController
         $string_a=urldecode($string_a);
         //签名步骤二：在string后加入KEY
         $config=$this->config;
-        $string_sign_temp=$string_a."&key=CAA5EAE2CE5AC44A3F8930E6F127B423";
+        $string_sign_temp=$string_a."&key=".C('KEY');
         //签名步骤三：MD5加密
         $sign = md5($string_sign_temp);
         // 签名步骤四：所有字符转为大写
         $result=strtoupper($sign);
         return $result;
-    }
+    }   
 
 }
 

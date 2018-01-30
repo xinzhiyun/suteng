@@ -10,33 +10,9 @@ class PaymentSystemController extends CommonController
      */
     public function payConfirm()
     {
-        // try {
-        //     $data = I('post.');
-        // } catch (\Exception $e) {
-        //     $err = [
-        //         'code' => $e->getCode(),
-        //         'msg' => $e->getMessage(),
-        //     ];
-        // }
-
         $this->display();
     }
-
-    // 信息确认并生成订单
-    public function information()
-    {
-        try {
-            $data = I('post.');
-
-        } catch (\Exception $e) {
-            $err = [
-                'code' => $e->getCode(),
-                'msg' => $e->getMessage(),
-            ];
-        }
-
-    }
-
+    
     /**
      * [paytosuccess 支付成功]
      * @return [type] [description]
@@ -73,16 +49,26 @@ class PaymentSystemController extends CommonController
                     300,
                     400,
                     500,
-                    100,
-                    200,
-                    300,
-                    400,
-                    500
+                ];
+        $contentArr =   [
+                    '100元100个金币',
+                    '200元200个金币',
+                    '300元300个金币',
+                    '400元400个金币',
+                    '500元500个金币',
+                   ' 100元200个银币',
+                    '200元400个银币',
+                    '300元600个银币',
+                    '400元1000个银币',
+                    '500元1200个银币',
                 ];
         $je = $jeArr[$id];
+        // 
+        //$openId = $_SESSION['user']['open_id'];
 
+        //dump($openId);die;
         // echo $je;
-        $this->uniformOrder($je,12345678,'速腾商城充值');
+        $this->uniformOrder($je,$id,'速腾商城充值');
     }
 
     /**
@@ -130,15 +116,15 @@ class PaymentSystemController extends CommonController
         // $input->SetTime_expire(date("YmdHis", time() + 300));
         //$input->SetGoods_tag($uid);
         // 支付成功的回调地址
-        //$input->SetNotify_url("http://xinpin.dianqiukj.com/index.php/Home/Weixinpay/notify.html");
-        $input->SetNotify_url('http://pub.dianqiukj.com/index.php/Home/PaymentSystem/notify');
+        // 微信充值回调地址
+        $input->SetNotify_url('http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/congzhiNotify'));
         // 支付方式 JS-SDK 类型是：JSAPI
         $input->SetTrade_type("JSAPI");
         // 用户在公众号的唯一标识
         $input->SetOpenid($openId);
-        // 统一下单
+        // 统一下单 
         $order = \WxPayApi::unifiedOrder($input);
-
+        
         // 返回支付需要的对象JSON格式数据
         $jsApiParameters = $tools->GetJsApiParameters($order);
 
@@ -147,3 +133,5 @@ class PaymentSystemController extends CommonController
     }
 
 }
+
+
