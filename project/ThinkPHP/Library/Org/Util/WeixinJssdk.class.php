@@ -22,8 +22,8 @@ class WeixinJssdk
    */
   public $APPID     = 'wx0bab2f4b5b7ec3b5';
   public $APPSECRET = 'f42c83b8207410b9b4e994ee42868cff';
-  public $MCHID     = '';
-  public $KEY       = '';
+  public $MCHID     = '1490274062';
+  public $KEY       = 'aef7027c47745a0c6c25607c25ca652d';
 
   //=======【证书路径设置】=====================================
   /**
