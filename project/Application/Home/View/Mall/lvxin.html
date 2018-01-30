@@ -580,7 +580,7 @@
 
 		var lvxinData = JSON.stringify(goodsArr);
 			sessionStorage.setItem('lvxinData',lvxinData);
-		// console.log(goodsData);
+		// console.log(lvxinData);
 		// 选择滤芯后跳转
 		if(goodsArr.length){
 			// 跳到订单确认界面
@@ -590,7 +590,7 @@
 			// 	url: '{{:U("PaymentSystem/payConfirm")}}',
 			// 	type: 'post',
 			// 	datatype: 'json',
-			// 	data: goodsData,
+			// 	data: lvxinData,
 			// 	success: function(res){
 			// 		console.log(res);
 			// 		// 跳到订单确认界面
