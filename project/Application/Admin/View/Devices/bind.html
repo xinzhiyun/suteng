@@ -12,8 +12,8 @@
                 <div class="ibox-content">
                     <form id="form" onsubmit="false" class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">请选择经销商：</label>
-                            <div class="col-sm-2">
+                            <label class="col-sm-3 control-label">请选择经销商：</label>
+                            <div class="col-sm-3">
                                 <select class="form-control m-b" name="vendors">
                                     <option value="--">--请选择--</option>
                                     <volist name="user" id="vo">
@@ -23,8 +23,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">请选择设备：</label>
-                            <div class="col-sm-2">
+                            <label class="col-sm-3 control-label">请选择设备：</label>
+                            <div class="col-sm-3">
                                 <select class="form-control m-b" name="devices">
                                     <option value="--">--请选择--</option>
                                     <volist name="devices" id="vo">
@@ -34,7 +34,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-4 col-sm-offset-2">
+                            <div class="col-sm-3 col-sm-offset-3">
                                 <button type="button" class="btn btn-primary bind">提交</button>
                             </div>
                         </div>
@@ -51,9 +51,6 @@
             var Vname = $("select[name='vendors'] option:selected").html();
             var Did = $("select[name='devices'] option:selected").val();
             var Dname = $("select[name='devices'] option:selected").html();
-            console.log(Vid);
-            console.log(Did);
-            // var goodsName = $(this).attr('goodsName');
             parent.layer.confirm('确认将'+Vname+'与'+Dname+'绑定吗？', {
                 btn: ['确认','取消'], //按钮
                 shade: false //不显示遮罩

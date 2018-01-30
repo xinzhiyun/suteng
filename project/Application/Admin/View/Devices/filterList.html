@@ -59,17 +59,52 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <empty name="deviceInfo">
+                                <empty name="data">
                                     <tr><td colspan="11">暂无滤芯数据</td></tr>
                                 <else />
-                                    <volist name="deviceInfo" id="vo">
+                                    <volist name="data" id="vo">
                                         <tr>
-                                            <td>{{$vo.id}}</td>
-                                            <td>{{$vo.device_code}}</td>
-                                            <td>{{$vo.LeasingMode}}</td>
-                                            <td>{{$vo.binding_statu}}</td>
-                                            <td>{{$vo.DeviceStause}}</td>
-                                            <td>编辑|删除</td>
+                                            <td>
+                                                {{$vo.id}}
+                                            </td>
+                                            <td>
+                                                {{$vo.filtername}}
+                                            </td>
+                                            <td>
+                                                {{$vo.alias}}
+                                            </td>
+                                            <td>
+                                                {{$vo.price}}
+                                            </td>
+                                            <td>
+                                                {{$vo.picpath}}
+                                            </td>
+                                            <td>
+                                                {{$vo.timelife}}
+                                            </td>
+                                            <td>
+                                                {{$vo.flowlife}}
+                                            </td>
+                                            <td>
+                                                {{$vo.introduce}}
+                                            </td>
+                                            <td>
+                                                {{$vo.url}}
+                                            </td>
+                                            <td>
+                                                {{$vo['addtime']|date='Y-m-d H:i:s',###}}
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a class="btn btn-outline btn-success" href="javascript:;" ruleId="{{$vo['id']}}" ruleName="{{$v['name']}}" ruleTitle="{{$v['pid']}}"
+                                                    onclick="edit(this)">
+                                                        修改
+                                                    </a>
+                                                    <a class="btn btn-outline btn-success deletBnt" filterId="{{$vo['id']}}">
+                                                        删除
+                                                    </a>
+                                                </div>
+                                            </td>
                                         </tr>
                                     </volist>
                                 </empty>
@@ -99,7 +134,7 @@
                             </th>
                             <td>
                                 <div class="form-group">
-                                    <input class="input-medium form-control" type="text" name="filtername">
+                                    <input class="input-medium form-control" placeholder="请输入滤芯名称..." type="text" name="filtername">
                                 </div>
                             </td>
                         </tr>
@@ -108,7 +143,7 @@
                                 滤芯别名：
                             </th>
                             <td>
-                                <input class="input-medium form-control" type="text" name="alias">
+                                <input class="input-medium form-control" placeholder="请输入滤芯别名..." type="text" name="alias">
                             </td>
                         </tr>
                         <tr>
@@ -124,7 +159,7 @@
                                 时间寿命(小时)：
                             </th>
                             <td>
-                                <input class="input-medium form-control" placeholder="1-9999之间整数" type="text" name="timelife">
+                                <input class="input-medium form-control" placeholder="请输入数字..." type="text" name="timelife">
                             </td>
                         </tr>
                         <tr>
@@ -132,7 +167,7 @@
                                 流量寿命(升)：
                             </th>
                             <td>
-                                <input class="input-medium form-control" placeholder="1-9999之间整数" type="text" name="flowlife">
+                                <input class="input-medium form-control" placeholder="请输入数字..." type="text" name="flowlife">
                             </td>
                         </tr>
                         <tr>
@@ -140,7 +175,7 @@
                                 滤芯价格：
                             </th>
                             <td>
-                                <input class="input-medium form-control" placeholder="192.03" type="text" name="price">
+                                <input class="input-medium form-control" placeholder="请输入滤芯价格..." type="text" name="price">
                             </td>
                         </tr>
                         <tr>
@@ -193,6 +228,7 @@
             var timelife = $("input[name='timelife']").val();
             var flowlife = $("input[name='flowlife']").val();
             var url = $("input[name='url']").val();
+            // var picpath = $("input[name='picpath']").val();
             var introduce = $("textarea").val();
             // var goodsName = $(this).attr('goodsName');
             parent.layer.confirm('请确认添加的信息<br>'+
@@ -209,7 +245,41 @@
                     url:'filterAction',
                     type:'post',
                     dataType:'json',
-                    data:{'vid':Vid,'id':Did},
+                    data:{
+                        'filtername':filtername,
+                        'alias':alias,
+                        'price':price,
+                        'timelife':timelife,
+                        'flowlife':flowlife,
+                        'url':url,
+                        'introduce':introduce,
+                    },
+                    success:function(res){
+                        if(res.code == 200){
+                            location.reload();
+                            parent.layer.msg(res.msg);
+                        } else {
+                            parent.layer.close;
+                            parent.layer.msg(res.msg);
+                        }
+                    }
+                });
+            }, function(){
+                parent.layer.msg('已取消', {shift: 6});
+            });
+        })
+        $('.deletBnt').click(function(e){
+            var id = $(this).attr('filterId');
+            console.log(id);
+            parent.layer.confirm('确认要删除这条滤芯吗？', {
+                btn: ['确认','取消'], //按钮
+                shade: false //不显示遮罩
+            }, function(){
+                $.ajax({
+                    url:'filtersDel',
+                    type:'post',
+                    dataType:'json',
+                    data:{'id':id},
                     success:function(res){
                         if(res.code == 200){
                             location.reload();

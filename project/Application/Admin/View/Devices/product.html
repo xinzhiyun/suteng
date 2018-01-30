@@ -1,0 +1,81 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/layui/css/layui.css">
+</block>
+<block name="content">
+    <div class="content">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>设备管理 <small>产品类型设置</small></h5>
+                </div>
+                <div class="ibox-content">
+                    <form id="form" onsubmit="false" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">类型名称：</label>
+                            <div class="col-sm-3">
+                                <input class="input-medium form-control" placeholder="请输入滤芯名称..." type="text" name="typename">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                请选择滤芯：<br />
+                                按CTRL+鼠标左键多选
+                            </label>
+                            <div class="col-sm-3">
+                                <select class="form-control m-b" multiple="true" name="filter[]">
+                                    <volist name="data" id="vo">
+                                        <option value="{{$vo.id}}">{{$vo.filtername}}-{{$vo.alias}}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group">
+                            <label class="col-sm-3 control-label">已选择滤芯：</label>
+                            <div class="col-sm-3">
+                                <span class="elected" >已选择滤芯</span>
+                                <div class="textareaBox textarea inline"></div>
+                            </div>
+                        </div> -->
+                        <div class="form-group">
+                            <div class="col-sm-3 col-sm-offset-3">
+                                <button type="button" class="btn btn-primary product">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script>
+        $('.product').click(function(e){
+            var form = $("#form").serializeArray();
+            console.log(form);
+            parent.layer.confirm('确认设置该滤芯吗？', {
+                btn: ['确认','取消'], //按钮
+                shade: false //不显示遮罩
+            }, function(){
+                $.ajax({
+                    url:'productAction',
+                    type:'post',
+                    dataType:'json',
+                    data:form,
+                    success:function(res){
+                        if(res.code == 200){
+                            location.reload();
+                            parent.layer.msg(res.msg);
+                        } else {
+                            parent.layer.close;
+                            parent.layer.msg(res.msg);
+                        }
+                    }
+                });
+            }, function(){
+                parent.layer.msg('已取消', {shift: 6});
+            });
+        })
+    </script>
+</block>
