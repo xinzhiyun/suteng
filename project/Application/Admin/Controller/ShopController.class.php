@@ -99,6 +99,7 @@ class ShopController extends CommonController
         $cateInfo = $cate->getAllCate();
         $goods = D('Goods');
         $goodsList = $goods->getGoodsList();
+        // dump($goodsList);die;
         $assign = [
             'data' => $goodsList,
             'cateInfo'=>$cateInfo,

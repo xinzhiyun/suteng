@@ -1,0 +1,81 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/layui/css/layui.css">
+</block>
+<block name="content">
+    <div class="content">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>设备管理 <small>设备绑定</small></h5>
+                </div>
+                <div class="ibox-content">
+                    <form id="form" onsubmit="false" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">请选择经销商：</label>
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="vendors">
+                                    <option value="--">--请选择--</option>
+                                    <volist name="user" id="vo">
+                                        <option value="{{$vo.id}}">{{$vo.user}}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">请选择设备：</label>
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="devices">
+                                    <option value="--">--请选择--</option>
+                                    <volist name="devices" id="vo">
+                                        <option value="{{$vo.id}}">{{$vo.device_code}}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button type="button" class="btn btn-primary bind">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script>
+        $('.bind').click(function(e){
+            var Vid = $("select[name='vendors'] option:selected").val();
+            var Vname = $("select[name='vendors'] option:selected").html();
+            var Did = $("select[name='devices'] option:selected").val();
+            var Dname = $("select[name='devices'] option:selected").html();
+            console.log(Vid);
+            console.log(Did);
+            // var goodsName = $(this).attr('goodsName');
+            parent.layer.confirm('确认将'+Vname+'与'+Dname+'绑定吗？', {
+                btn: ['确认','取消'], //按钮
+                shade: false //不显示遮罩
+            }, function(){
+                $.ajax({
+                    url:'bindAction',
+                    type:'post',
+                    dataType:'json',
+                    data:{'vid':Vid,'id':Did},
+                    success:function(res){
+                        if(res.code == 200){
+                            location.reload();
+                            parent.layer.msg(res.msg);
+                        } else {
+                            parent.layer.close;
+                            parent.layer.msg(res.msg);
+                        }
+                    }
+                });
+            }, function(){
+                parent.layer.msg('已取消', {shift: 6});
+            });
+        })
+    </script>
+</block>

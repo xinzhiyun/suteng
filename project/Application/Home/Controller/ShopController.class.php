@@ -45,6 +45,6 @@ class ShopController extends Controller
             'goodsDetail' => $goodsDetail,
             'commentInfo' => $commentInfo,
         ];
-        $this->ajaxReturn($commentInfo);
+        $this->ajaxReturn($data);
     }
 }

@@ -260,4 +260,62 @@ class DevicesController extends CommonController
         $this->success('删除成功');
 
     }
+
+    // 设备绑定经销商方法
+    public function bind()
+    {
+        $vendors = M('vendors')->field('id,user,leavel')->select();
+        $devices = M('devices')->where('bind_status=0')->select();
+        $assign = [
+            'user' => $vendors,
+            'devices' => $devices,
+        ];
+        $this->assign($assign);
+        $this->display();
+    }
+
+    public function bindAction()
+    {
+        try {
+            $where['id'] = I('post.id');
+            $data['vid'] = I('post.vid');
+            if($_POST['vid'] == '--') E('请选择经销商','605');
+            if($_POST['id'] == '--') E('请选择设备','604');
+            $data['bind_status'] = 1;
+            $res = M('devices')->where($where)->save($data);
+            if($res){
+                E('绑定成功',200);
+            } else {
+                E('绑定失败',603);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+
+    }
+    // 滤芯显示
+    public function filterList()
+    {
+
+        $this->display();
+    }
+
+    // 滤芯添加处理
+    public function filterAction()
+    {
+        try {
+
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+
+    }
 }
