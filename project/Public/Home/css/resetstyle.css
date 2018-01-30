@@ -400,7 +400,7 @@ ul, li, dl, dt, dd, form, h1, h2, h3, h4, p, input, form ,select{
 	   	color:#D6D3D6!important;
 	   }
 	   .statusList > div{
-		   display:none;
+		   display:none; 
 	   } 
 
 
