@@ -20,6 +20,7 @@ class DimensionController extends Controller
         $wxJSSDK = new \Org\Util\WeixinJssdk;
         // 调用获取公众号的全局唯一接口调用凭据
         $accessToken = $wxJSSDK->getAccessToken();
+
         // 请求微信带参数二维码
         $url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={$accessToken}";
         // 临时二维码请求数据格式
