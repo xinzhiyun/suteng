@@ -140,7 +140,7 @@
 			right: 0rem;
 			font-size: 1.25rem;
 		}
-		.search>span{
+		.search>a>span{
 			position: absolute;
 		    display: inline-block;
 		    width: 0.8rem;
@@ -224,8 +224,33 @@
 		.allgoods>ul>li>a>img{
 			width: 130%;
 		}
-		
-
+		.allgoods h3>div{
+			width: 5vh;
+			height: 5vh;
+			position: absolute;
+			left: 50%;
+			margin-left: -4vh;
+			border: .7vh solid #eee;
+			border-radius: 40%;
+			animation: shape 5s ease infinite;
+		}
+		@keyframes shape {
+			0%,20% {
+				transform: translate(10%, -20%) scale(.5) rotate(1turn);
+			}
+			20%,40% {
+				transform: translate(30%, 0%) scale(.9) rotate(.1turn);
+			}
+			40%,60% {
+				transform: translate(60%, 20%) scale(.5) rotate(1turn);
+			}
+			60%,80% {
+				transform: translate(60%, 20%) scale(.5) rotate(1turn);
+			}
+			80%,100% {
+				transform: translate(60%, 20%) scale(.5) rotate(1turn);
+			}
+		}
 		
 	</style>
 </head>
@@ -247,7 +272,7 @@
 			<label for="search-all" >
 				<input type="text" placeholder="请输入您想买的东西" ><i class="iconfont icon-msnui-find-bold"></i>
 			</label>
-			<a href="{{:U('ShoppingCart/index')}}" class="iconfont  icon-gouwuche"></a><span>1</span>
+			<a href="{{:U('ShoppingCart/index')}}" class="iconfont  icon-gouwuche"><span>1</span></a>
 		</div>
 		<!-- 轮播图 -->
 		<div id="myFocus"><!--焦点图盒子-->
@@ -366,7 +391,7 @@
 				}
 			}else{
 				//无数据
-				$(".allgoods>ul").html('<h3 style="text-align:center;padding:5% 0;">暂无内容，敬请期待！</h3>');
+				$(".allgoods>ul").html('<h3 style="text-align:center;padding:5% 0;">暂无内容，敬请期待！<div></div></h3>');
 				console.log('暂无商品');
 			}
 			
@@ -382,7 +407,7 @@
 				$(".allgoods>ul").eq(0).html(_htmlArr[0]);
 				// console.log($("#content>div").eq(0).attr("index"))
 			}else{
-				$(".allgoods>ul").eq(0).html('<h3 style="text-align:center;padding:5% 0;">暂无内容，敬请期待！</h3>');
+				$(".allgoods>ul").eq(0).html('<h3 style="text-align:center;padding:5% 0;">暂无内容，敬请期待！<div></div></h3>');
 			}
 
 			/*
@@ -402,7 +427,7 @@
 					$(".allgoods>ul").eq($(this).attr("index")).html(_htmlArr[$(this).attr("index")]);
 					// console.log($("#content>div").eq($(this).attr("index")).attr("index"))
 				}else{
-					$(".allgoods>ul").eq($(this).attr("index")).html('<h3 style="text-align: center;padding:5% 0;">暂无内容，敬请期待！</h3>')
+					$(".allgoods>ul").eq($(this).attr("index")).html('<h3 style="text-align: center;padding:5% 0;">暂无内容，敬请期待！<div></div></h3>')
 				}
 				// if($('#content>div').length != 0){
 					 $('#header>span').css('color','#5A5A5A').css('font-weight','400');
@@ -441,6 +466,7 @@
 					data: {'gid': gid,'num': 1},
 					success: function(res){
 						console.log('成功！ ',res);
+						alert('已加入购物车！')
 					},
 					error: function(res){
 						console.log('失败！ ',res);

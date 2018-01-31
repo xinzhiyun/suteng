@@ -253,6 +253,7 @@
 				console.log("成功！", res);
 				if(res){
 					for(var i=0; i<res.length; i++){
+						res[i].desc = !res[i].desc ? '暂无描述' : res[i].desc;
 						itemCarHTML += '<div class="itemCar clearfix" gid="'+ res[i].gid +'"  index_id="'+ res[i].id +'">'+
 							'<!-- 选中及图片 -->'+
 							'<div class="itemcarLeft clearfix ">'+
