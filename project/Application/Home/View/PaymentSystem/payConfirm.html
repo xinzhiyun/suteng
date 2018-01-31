@@ -47,7 +47,7 @@
 			text-align: center;
     		align-self: center;    
     		font-size: 1rem;
-    		margin-top: -1.4rem;
+    		/*margin-top: -1.4rem;*/
 		}
 		#header>div>p {
 			width: 100%;
@@ -442,16 +442,17 @@
 	</style>
 </head>
 <body>
+	<input type="hidden" value='{{$data}}' id="addressInfo">
 	<div id="content">
 		<header id="header">
 			<div id="hLeft">
-				<p>
+				<!-- <p>
 					<span>收货人：Yoo</span>
 					<span>13612345678</span>
 				</p>
 				<p>
 					<span>收货地址：广州市番禺区大石街道五巷子7号</span>
-				</p>
+				</p> -->
 			</div>
 			<a class="iconfont icon-dayuhao-copy-copy" id="hRight" href="{{:U('Address/index')}}"></a>
 		</header>
@@ -567,17 +568,30 @@
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script>
 		$(function(){
+			// 获取后台传来的默认地址
+			var addressInfo = JSON.parse($("#addressInfo").val());
+			console.log(addressInfo);
+			var addresssHTML = 
+				'<p>'+
+					'<span>收货人：'+ addressInfo.name +'</span>'+
+					'<span>'+ addressInfo.phone +'</span>'+
+				'</p>'+
+				'<p>'+
+					'<span>收货地址：'+ addressInfo.address +'</span>'+
+				'</p>';
+			// 将用户收货信息添加到页面上
+			$("#hLeft").html(addresssHTML);
 			var dangdanID;	//从后台传来的订单号
-			// $.ajax({
-			// 	url:'{{:U("")}}',
-			// 	type: 'post',
-			// 	success: function(res){
-			// 		console.log('成功！ ', res)
-			// 	},
-			// 	error: function(res){
-			// 		console.log('失败！ ', res)
-			// 	}
-			// })
+			$.ajax({
+				url:'{{:U("PaymentSystem/information")}}',
+				type: 'post',
+				success: function(res){
+					console.log('成功！ ', res)
+				},
+				error: function(res){
+					console.log('失败！ ', res)
+				}
+			})
 			/*
 				订单遍历
 			 */

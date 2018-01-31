@@ -13,9 +13,8 @@ class AddressController extends CommonController
         $address = D('Address');
         $data['uid'] = session('user.id');
         $data = $address ->where($data)->select();
-
         $assign = [
-            'data' => json_encode($data),
+            'data' => $data,
         ];
         $this->assign($assign);
         $this->display();
@@ -27,23 +26,27 @@ class AddressController extends CommonController
      */
     public function newAddress()
     {
-        try {
-            $address = D('Address');
-            $data = I('post.');
-            $res = $address->create();
-            if(!$res) E($address->getError(),603);
-            $res = $address->add();
-            if($res){
-                E('地址已添加',200);
-            } else {
-                E('请重新添加',605);
+        if(IS_POST){
+            try {
+                $address = D('Address');
+                $data = I('post.');
+                $res = $address->create();
+                if(!$res) E($address->getError(),603);
+                $res = $address->add();
+                if($res){
+                    E('地址已添加',200);
+                } else {
+                    E('请重新添加',605);
+                }
+            } catch (\Exception $e) {
+                $err = [
+                    'code' => $e->getCode(),
+                    'msg' => $e->getMessage(),
+                ];
+                $this->ajaxReturn($err);
             }
-        } catch (\Exception $e) {
-            $err = [
-                'code' => $e->getCode(),
-                'msg' => $e->getMessage(),
-            ];
-            $this->ajaxReturn($err);
+        } else {
+            $this->display();
         }
     }
 
@@ -59,9 +62,12 @@ class AddressController extends CommonController
             $res_status = $address->where($where)->save(['status'=>$status]);
             if(!$res_status) E('请刷新页面',603);
             $res = $address->where($data)->save(['status'=>0]);
+            // dump($res);die;
             if($res){
+                $address->commit();
                 E('已修改默认地址',200);
             } else {
+                $address->rollback();
                 E('请重试',605);
             }
         } catch (\Exception $e) {

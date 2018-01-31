@@ -32,15 +32,15 @@ class PaymentSystemController extends CommonController
             $orders->startTrans();
             $order['uid'] = session('user.id');
             $order['order_id'] = gerOrderId();
-            $order['time'] = time();
-            $order['cost'] = "";
+            $order['addtime'] = time();
+            $order['g_cost'] = "";
             $detail = [];
             foreach($data as $key => $value){
                 $where['gid'] = $value['gid'];
                 $order['g_price'] += $value['money'];
-                $order['num'] += $value['num'];
+                $order['g_num'] += $value['num'];
                 $arr = $goods->alias('g')->where($where)->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')->field('gd.price,gd.cost')->find();
-                $order['cost'] += $value['num']*$arr['cost'];
+                $order['g_cost'] += $value['num']*$arr['cost'];
                 $detail['order_id'] = $order['order_id'];
                 $detail['gid'] = $value['gid'];
                 $detail['num'] = $value['num'];
@@ -51,7 +51,6 @@ class PaymentSystemController extends CommonController
                 if(!$detail_statut) E('请重新结算',603);
             }
             $res = $orders->add($order);
-            // dump($order['order']);die;
             if($res){
                 $orders->commit();
                 $this->ajaxReturn($order['order_id']);
@@ -64,6 +63,7 @@ class PaymentSystemController extends CommonController
                 'code' => $e->getCode(),
                 'msg' => $e->getMessage(),
             ];
+            $this->ajaxReturn($err);
         }
     }
 
@@ -141,7 +141,7 @@ class PaymentSystemController extends CommonController
         // 冲值测试额1分钱
         $money = 1;
         // 用户在公众号的唯一ID
-        $openId = $_SESSION['open_id'];
+        $openId = $_SESSION['user']['open_id'];
 
 
         //微信examle的WxPay.JsApiPay.php

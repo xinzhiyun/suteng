@@ -70,7 +70,7 @@
 			border: 1px solid #dfdfdf;
 			-webkit-appearance: none;
 		}
-		.setAddress[index*="address-"]:checked {
+		.setAddress[id*="setAddress-"]:checked {
 			border: none;
 			background: url('__PUBLIC__/Home/images/check.png') #56AAF1 no-repeat;
 			background-size: 76%;
@@ -213,27 +213,40 @@
 </head>
 <body>
 	<div id="content">
+	<volist name="data" id="v">
 		<div class="address">
 			<div class="aTop">
 				<p>
-					<span class="uName">Yoo</span>
-					<span class="uPhone">13612345678</span>
+					<span class="uName">{{$v.name}}</span>
+					<span class="uPhone">{{$v.phone}}</span>
 				</p>
-				<p class="uAddress">广州市番禺区大石街道五巷7号</p>
+				<p class="uAddress">{{$v.address}}</p>
 			</div>
 			<div class="aBottom">
 				<div>
-					<input id="setAddress-1" class="setAddress" type="radio" name="radio" index="address-1" checked />
-					<label for="setAddress-1">默认地址</label>
-					<p>
-						<span class="edit" index="0">编辑</span>
-						<span class="del">删除</span>
-					</p>
+					<switch name="v.status">
+						<case value="0">
+							<input id="setAddress-{{$v.id}}" class="setAddress" type="radio" name="radio" index="{{$v.id}}" checked />
+							<label for="setAddress-{{$v.id}}" index='{{$v.id}}'>默认地址</label>
+							<p>
+								<span class="edit" index="{{$v.id}}">编辑</span>
+								<span class="del">删除</span>
+							</p>
+						</case>
+						<case value="1">
+							<input id="setAddress-{{$v.id}}" class="setAddress" type="radio" name="radio" index="{{$v.id}}" />
+							<label for="setAddress-{{$v.id}}" index='{{$v.id}}'>默认地址</label>
+							<p>
+								<span class="edit" index="{{$v.id}}">编辑</span>
+								<span class="del">删除</span>
+							</p>
+						</case>
+					</switch>
 				</div>
 			</div>
 		</div>
-
-		<div class="address">
+	</volist>
+		<!-- <div class="address">
 			<div class="aTop">
 				<p>
 					<span class="uName">Yoofds</span>
@@ -243,15 +256,15 @@
 			</div>
 			<div class="aBottom">
 				<div>
-					<input id="setAddress-2" class="setAddress" type="radio" name="radio" index="address-2" />
-					<label for="setAddress-2">默认地址</label>
+					<input id="setAddress-1" class="setAddress" type="radio" name="radio" index="1" />
+					<label for="setAddress-1" index='1'>默认地址</label>
 					<p>
 						<span class="edit" index="1">编辑</span>
 						<span class="del">删除</span>
 					</p>
 				</div>
 			</div>
-		</div>
+		</div> -->
 	</div>
 	<!-- 添加地址弹出面板 -->
 	<div id="editAddressPanel">
@@ -266,6 +279,8 @@
 	</footer>
 	<script>
     $(function(){
+    	// 获取后台传来的地址列表
+    	
         // 存放打开的地址的序号
         var addressIndex;
 
@@ -285,21 +300,22 @@
 			uAddress = $(this).parents(".address").find(".uAddress").text();
 
 			console.log('姓名：'+uName, '\n电话：'+uPhone, '\n地址：'+uAddress);
-			var address_id;		//地址id
+			var address_id = parseInt($(this).attr("index"));		//地址id
 			// 发送ajax请求告诉后台，哪个是默认地址
 			$.ajax({
-				url: '{{:U("")}}',
+				url: '{{:U("Address/edit_address")}}',
 				type: 'post',
-				data: {'address_id': address_id},
+				data: {'address_id': address_id,'status': 0},
 				success: function(res){
 					console.log('成功！ ', res)
+					// 选择默认地址后，返回上一页
+					location.href = '{{:U("PaymentSystem/payConfirm")}}';
 				},
 				error: function(res){
 					console.log('失败！ ', res)
 				}
 			});
-			// 选择默认地址后，返回上一页
-			location.href = '{{:U("PaymentSystem/payConfirm")}}'
+			console.log(address_id)
 
 		})
         // 点击按钮设置默认地址
@@ -316,8 +332,22 @@
 
             console.log('姓名：'+uName, '\n电话：'+uPhone, '\n地址：'+uAddress);
 			
-			// 选择默认地址后，返回上一页
-			location.href = '{{:U("PaymentSystem/payConfirm")}}'
+			var address_id = parseInt($(this).attr("index"));		//地址id
+			// 发送ajax请求告诉后台，哪个是默认地址
+			$.ajax({
+				url: '{{:U("Address/edit_address")}}',
+				type: 'post',
+				data: {'id': address_id,'status': 0},
+				success: function(res){
+					// console.log('成功！ ', res)
+					// 选择默认地址后，返回上一页
+					location.href = '{{:U("PaymentSystem/payConfirm")}}';
+				},
+				error: function(res){
+					console.log('失败！ ', res)
+				}
+			});
+			console.log(address_id)
         })
 
 		// // 点击“新地址”
@@ -441,7 +471,7 @@
 			$("#editAddressPanel>div").html(editPanel(uName, uPhone, uAddress))
 
 			// 发送给后台
-			$.post('{{:U("")}}',{},function(res){
+			$.post('{{:U("Address/edit_address")}}',{},function(res){
 				console.log(res);
 			})
 		})

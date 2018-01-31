@@ -1,7 +1,7 @@
 <?php
 namespace Home\Model;
 use Think\Model;
-class AddressModel extends BaseMode
+class AddressModel extends Model
 {
     // 自动验证
     protected $_validate = array(
