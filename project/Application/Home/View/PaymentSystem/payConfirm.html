@@ -770,7 +770,25 @@
 						break;
 					case '4':
 						console.log('微信支付');
-						weixinPay()
+						//请求微信支付方法
+						$.ajax({
+							url: "{{:U('Home/PaymentSystem/orderPay')}}",
+							type: 'post',
+							data: {order: dangdanID},
+							success: function(res){
+								console.log(res);
+								if(res == -1){
+									console.log('支付错误！');
+								}else{
+									// 调用微信支付方法
+									weixinPay(res);
+								}
+							},
+							error: function(res){
+								console.log('失败！ ',res);
+							}
+
+						});
 						break;
 					case '5':
 						console.log('支付宝支付');
