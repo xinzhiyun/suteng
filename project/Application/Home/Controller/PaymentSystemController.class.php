@@ -17,6 +17,18 @@ class PaymentSystemController extends CommonController
         $assign = [
             'data' => json_encode($data),
         ];
+
+        //调用微信JS-SDK类获取签名需要用到的数据
+        $weixin = new WeixinJssdk;
+        $signPackage = $weixin->getSignPackage();
+        // 查询用户微信中的openid
+        $openId = $weixin->GetOpenid();
+        //分配数据        
+        $this->assign('info',$signPackage);
+        $this->assign('openId',$openId);
+
+
+
         $this->assign($assign);
         $this->display();
     }
