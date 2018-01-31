@@ -76,7 +76,10 @@
 			border-top: 1vh solid #f1f1f1;
 			background: #fff;
 		}
-
+		/*订单ID*/
+		.dingdanID {
+			padding: 1% 4%;
+		}
 		.goods {
 			width: 94vw;
 			display: flex;
@@ -568,9 +571,13 @@
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script>
 		$(function(){
+			//获取从后台传来的订单号
+			var dangdanID = sessionStorage.getItem('order_id');	
+			// console.log(dangdanID);
+
 			// 获取后台传来的默认地址
 			var addressInfo = JSON.parse($("#addressInfo").val());
-			console.log(addressInfo);
+			// console.log(addressInfo);
 			var addresssHTML = 
 				'<p>'+
 					'<span>收货人：'+ addressInfo.name +'</span>'+
@@ -581,17 +588,7 @@
 				'</p>';
 			// 将用户收货信息添加到页面上
 			$("#hLeft").html(addresssHTML);
-			var dangdanID;	//从后台传来的订单号
-			$.ajax({
-				url:'{{:U("PaymentSystem/information")}}',
-				type: 'post',
-				success: function(res){
-					console.log('成功！ ', res)
-				},
-				error: function(res){
-					console.log('失败！ ', res)
-				}
-			})
+			$("#main").append('<h3 class="dingdanID">订单编号：'+dangdanID+'</h3>')
 			/*
 				订单遍历
 			 */

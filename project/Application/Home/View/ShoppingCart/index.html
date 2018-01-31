@@ -271,9 +271,8 @@
 				
 				// 将购物车选中的商品存到本地sessionStorage, 给订单确认页面使用
 				sessionStorage.setItem("shopCar_data",JSON.stringify(shopCar_data));
-						// 跳转到订单确认页面
-						// location.href = '{{:U("PaymentSystem/payConfirm")}}';
 				// console.log(shopCar_data)
+				
 				// 发送ajax请求让后台生成订单号
 				$.ajax({
 					url: '{{:U("PaymentSystem/information")}}',
@@ -281,13 +280,12 @@
 					data: {'data':JSON.stringify(shopCar_data)},
 					success: function(res){
 						console.log('成功！', res);
-
+						sessionStorage.setItem('order_id',res);
 						// 跳转到订单确认页面
-						// location.href = '{{:U("PaymentSystem/payConfirm")}}';
+						location.href = '{{:U("PaymentSystem/payConfirm")}}';
 					},
 					error: function(res){
 						console.log('失败！', res);
-
 					}
 				})
 			}else{
@@ -346,21 +344,23 @@
 		// 删除商品
        slipDel('.shpingcarAll','.itemCar','goodsnumbe');
 
-       function del(){
-			alert(1);
-			var data;
-			// $.ajx({
-			// 	url: '{{:U("")}}',
-			// 	type: 'post',
-			// 	data: data,
-			// 	success: function(res){
-			// 		console.log('成功！ ',res);
-			// 	},
-			// 	error: function(res){
-			// 		console.log('失败！ ',res);
-			// 	}
-			// })
-		}
+       // 购物车删除
+       $(".shpingcarAll").on("click",'.del', function(e){
+	       	console.log(e);
+	       	var gid = $(this).parents(".itemCar").attr("gid");
+	       	console.log(gid)
+	       	$.ajax({
+				url: '{{:U("ShoppingCart/cartDel")}}',
+				type: 'post',
+				data: {'id': gid},
+				success: function(res){
+					console.log('成功！ ',res);
+				},
+				error: function(res){
+					console.log('失败！ ',res);
+				}
+			})
+       })
 
 		// 选中框
 		$('.shpingcarAll').on('click','.itemcarLeft>.xuanzhong>i',function(){
@@ -422,12 +422,37 @@
 				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
 				var _class=$('.itemcarLeft>.xuanzhong>i').attr('class');
 				$('.itemcarLeft>.xuanzhong>i').removeClass(_class).addClass('iconfont icon-xuanze');
+
+				priceAll = 0;
+				var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
+				// 实时将总价格更新到合计
+				for(var i=0; i<chooseGoods.length; i++){
+					
+					priceAll += parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value)*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
+
+					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value);
+					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
+				} 
+				// 将价格显示到合计
+				$(".priceAll>span").text(priceAll);
 			}else{
 				// 全不选
 				$(this).removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 				var _class=$('.itemcarLeft>.xuanzhong>i').attr('class');
 				$('.itemcarLeft>.xuanzhong>i').removeClass(_class).addClass('iconfont icon-kuang1');
 
+				priceAll = 0;
+				var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
+				// 实时将总价格更新到合计
+				for(var i=0; i<chooseGoods.length; i++){
+					
+					priceAll += parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value)*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
+
+					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value);
+					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
+				} 
+				// 将价格显示到合计
+				$(".priceAll>span").text(priceAll);
 			}
 			
 		})

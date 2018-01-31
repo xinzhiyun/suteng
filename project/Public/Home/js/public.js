@@ -66,7 +66,7 @@ function slipDel(parent,obj,i){
 	    	// console.dir(parentHeight);
 	    	// line-height: 4rem;	字体居中给obj>span{line-height:X}
 	        $(this).css({'position': 'relative','left':'-2rem'});
-	        $(this).append("<span onclick='del("+$(this).attr(i)+")' style='display: inline-block;width: 2rem;height: 100%;position: absolute;right: -2rem;top:0;text-align: center;background: #D3520C;color:#fff;'>删除</span>");
+	        $(this).append("<span class='del' style='display: inline-block;width: 2rem;height: 100%;position: absolute;right: -2rem;top:0;text-align: center;background: #D3520C;color:#fff;'>删除</span>");
 	    }
 	});
 }
