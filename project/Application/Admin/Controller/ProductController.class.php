@@ -26,7 +26,7 @@ class ProductController extends CommonController
         
         $total =$type->where($map)->count();
         $page  = new \Think\Page($total,8);
-        D('devices')->getPageConfig($page);
+        // D('devices')->getPageConfig($page);
         $pageButton =$page->show();
 
         $list = $type->where($map)->limit($page->firstRow.','.$page->listRows)->select();

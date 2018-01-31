@@ -18,11 +18,18 @@ class DevicesController extends CommonController
         // 查询条件
         $map = '';
         if(!empty($_GET['code'])) $map['device_code'] = array('like',"%{$_GET['code']}%");
-        $devices = D('Devices')->getDevicesInfo($map);
-
+        $devices = D('Devices')
+            ->where($map)
+            ->alias('d')
+            ->join('__TYPE__ t ON d.type_id=t.id', 'LEFT')
+            ->join('__DEVICES_STATU__ ds ON d.device_code=ds.DeviceID', 'LEFT')
+            ->select();
+        $filterType = M('type')->where(['status'=>0])->select();
         $assign = [
             'deviceInfo' => $devices,
+            'deviceType' => $filterType,
         ];
+        // dump($devices);die;
         $this->assign($assign);
         $this->display('devicesList');
     }
@@ -316,17 +323,17 @@ class DevicesController extends CommonController
             $filters = D('Filters');
             $data = I('post.');
             if(!$filters->create()) E($filters->getError(),'606');
-            $upload = new \Think\Upload();// 实例化上传类
-            $upload->maxSize   =     3145728 ;// 设置附件上传大小
-            $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
-            $upload->rootPath  =     './Uploads/'; // 设置附件上传根目录
-            $upload->savePath  =     ''; // 设置附件上传（子）目录
+            // $upload = new \Think\Upload();// 实例化上传类
+            // $upload->maxSize   =     3145728 ;// 设置附件上传大小
+            // $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
+            // $upload->rootPath  =     './Uploads/'; // 设置附件上传根目录
+            // $upload->savePath  =     ''; // 设置附件上传（子）目录
             
-            // 上传文件
-            $info   =   $upload->upload();
-            if(!$info) {// 上传错误提示错误信息
-                E($upload->getError(),'606');
-            }
+            // // 上传文件
+            // $info   =   $upload->upload();
+            // if(!$info) {// 上传错误提示错误信息
+            //     E($upload->getError(),'606');
+            // }
             $data['picpath'] = $info['pic']['savepath'].$info['pic']['savename'];
             $res = $filters->add();
             if($res){
@@ -367,7 +374,7 @@ class DevicesController extends CommonController
     // 产品类型
     public function product()
     {
-        $filters = D('Filters');
+        $filters = D('Type');
         $data = $filters->where('status=0')->select();
         $assign = [
             'data' => $data,
@@ -386,7 +393,8 @@ class DevicesController extends CommonController
             $data['addtime'] = time();
             $i = 1;
             foreach ($filter as $key => $value) {
-                $data['filter'.$i] = $value;
+                $res = M('filters')->where('id='.$value)->field('filtername,alias')->find();
+                $data['filter'.$i] = $res['filtername'].'-'.$res['alias'];
                 $i++;
             }
             if(!$type->create($data)) E($type->getError());

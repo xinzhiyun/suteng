@@ -33,16 +33,33 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <empty name="deviceInfo">
+                                <empty name="data">
                                     <tr><td colspan="6">暂无类型相关数据</td></tr>
                                 <else />
-                                    <volist name="deviceInfo" id="vo">
+                                    <volist name="data" id="vo">
                                         <tr>
                                             <td>{{$vo.id}}</td>
-                                            <td>{{$vo.device_code}}</td>
-                                            <td>{{$vo.LeasingMode}}</td>
-                                            <td>{{$vo.binding_statu}}</td>
-                                            <td>{{$vo.DeviceStause}}</td>
+                                            <td>{{$vo.typename}}</td>
+                                            <td>
+                                                <if condition="$vo.filter1 neq null">
+                                                    {{$vo.filter1}}
+                                                <elseif condition="$vo.filter2 neq null">
+                                                     {{$vo.filter2}}
+                                                <elseif condition="$vo.filter3 neq null">
+                                                    {{$vo.filter3}}
+                                                <elseif condition="$vo.filter4 neq null">
+                                                    {{$vo.filter4}}
+                                                <elseif condition="$vo.filter5 neq null">
+                                                    {{$vo.filter5}}
+                                                <elseif condition="$vo.filter6 neq null">
+                                                    {{$vo.filter6}}
+                                                <elseif condition="$vo.filter7 neq null">
+                                                    {{$vo.filter7}}
+                                                <elseif condition="$vo.filter8 neq null">
+                                                    {{$vo.filter8}}
+                                                <else>
+                                                </if>
+                                            </td>
                                             <td>编辑|删除</td>
                                         </tr>
                                     </volist>

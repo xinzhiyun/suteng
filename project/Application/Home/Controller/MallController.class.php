@@ -35,6 +35,11 @@ class MallController extends CommonController
      */
     public function lvxin()
     {
+
+        $filter = D('Filters');
+        $devices['d.id'] = 1;
+        $res = $filter->getFilters($devices);
+        // dump($res);die;
         $this->display();
     }
 }

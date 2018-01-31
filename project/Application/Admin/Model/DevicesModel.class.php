@@ -34,20 +34,20 @@ class DevicesModel extends Model
     public function getDevicesInfo($map)
     {
         // 分页
-        $count = $this
-            ->where($map)
-            ->alias('d')
-            ->join("__DEVICES_STATU__ statu ON d.device_code=statu.DeviceID", 'LEFT')
-            ->join("__BINDING__ bind ON d.id=bind.did", 'LEFT')
-            ->join("__VENDORS__ vendors ON bind.vid=vendors.id", 'LEFT')
-            // ->join("__DEVICE_TYPE__ type ON d.type_id=type.id", 'LEFT')
-            ->order('statu.updatetime')
-            ->limit($page->firstRow.','.$page->listRows)
-            ->count();
-        $page = new \Think\Page($count, 15);
-        $page->rollPage = 10;
-        getPageConfig($page);
-        $show = $page->show();
+        // $count = $this
+        //     ->where($map)
+        //     ->alias('d')
+        //     ->join("__DEVICES_STATU__ statu ON d.device_code=statu.DeviceID", 'LEFT')
+        //     ->join("__BINDING__ bind ON d.id=bind.did", 'LEFT')
+        //     ->join("__VENDORS__ vendors ON bind.vid=vendors.id", 'LEFT')
+        //     // ->join("__DEVICE_TYPE__ type ON d.type_id=type.id", 'LEFT')
+        //     ->order('statu.updatetime')
+        //     ->limit($page->firstRow.','.$page->listRows)
+        //     ->count();
+        // $page = new \Think\Page($count, 15);
+        // $page->rollPage = 10;
+        // getPageConfig($page);
+        // $show = $page->show();
 
         // 查询数据
         $data = $this
