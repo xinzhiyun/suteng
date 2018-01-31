@@ -36,7 +36,7 @@ class PaymentSystemController extends CommonController
     // 信息确认并生成订单
     public function information()
     {
-        print_r($_POST);die;
+        // print_r($_POST);die;
         try {
             $goods = D('Goods');
             $orders = D('ShopOrder');
