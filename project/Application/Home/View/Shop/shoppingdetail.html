@@ -499,7 +499,8 @@
 			sessionStorage.setItem("goods_data",goods_data);
 			//发送给后台生成订单编号的数据
 			var goods_dataArr = [];
-			goods_dataArr.push({'num':num,'gid': goodsDetail.gid});
+			var money = num*(goodsDetail.price);	//订单总价
+			goods_dataArr.push({'num':num,'gid': goodsDetail.gid,'money': money});
 
 			sessionStorage.setItem("goods_dataArr",JSON.stringify(goods_dataArr));
 
