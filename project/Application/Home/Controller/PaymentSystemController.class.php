@@ -105,24 +105,25 @@ class PaymentSystemController extends CommonController
     public function orderPay()
     {
         if(IS_POST){
-            // 准备订单查询数据
-            $showWhere['order'] = I('post.order');
-            // 查询订单表
-            $orderData = M('shop_order')->where($showWhere)->find();
+            // // 准备订单查询数据
+            // $showWhere['order'] = I('post.order');
+            // // 查询订单表
+            // $orderData = M('shop_order')->where($showWhere)->find();
 
-            // 判断订单是否存在
-            if($orderData){
-                // 订单金额
-                $money = $orderData['g_price'];
-                // 订单号码
-                $order_id = $orderData['order_id'];
-                // 订单描述
-                $content = '速腾商城商品购买';
-                $this->uniformOrder($money,$order_id,$content);
-            }else{
-                // 订单不存在
-                echo -1;
-            }
+            // // 判断订单是否存在
+            // if($orderData){
+            //     // 订单金额
+            //     $money = $orderData['g_price'];
+            //     // 订单号码
+            //     $order_id = $orderData['order_id'];
+            //     // 订单描述
+            //     $content = '速腾商城商品购买';
+            //     $this->uniformOrder($money,$order_id,$content);
+            // }else{
+            //     // 订单不存在
+            //     echo -1;
+            // }
+            $this->uniformOrder(100,123456,'content');
         }
     }
 
