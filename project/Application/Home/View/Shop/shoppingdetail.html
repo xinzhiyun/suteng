@@ -303,6 +303,10 @@
 	</div>
 	<script>
 	$(function(){
+
+		//清除历史发票信息sessionStorage
+		sessionStorage.setItem("voiceArr", '');
+
 		//存放ajax请求成功返回的商品信息
 		var goodsDetail;
 		// 从本地sessionStorage中获取从商城首页点击的商品唯一id
