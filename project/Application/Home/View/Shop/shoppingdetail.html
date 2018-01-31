@@ -501,7 +501,7 @@
 			var goods_dataArr = [];
 			var money = num*(goodsDetail.price);	//订单总价
 			goods_dataArr.push({'num':num,'gid': goodsDetail.gid,'money': money});
-
+			
 			sessionStorage.setItem("goods_dataArr",JSON.stringify(goods_dataArr));
 
 			// 发送ajax请求让后台生成订单号

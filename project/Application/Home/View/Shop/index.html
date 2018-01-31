@@ -58,6 +58,8 @@
 		#line {
 			width: 20vw;
 			height: 1vh;
+			display: flex;
+			justify-content: center;
 			position: absolute;
 			bottom: 0;
 			left: 0;
@@ -103,14 +105,18 @@
     		z-index: 99;
 		}
 		.search{
-    		width: 12.5rem;
+    		width: 90%;
 			height: 1.6rem;
 			line-height: 1.4rem;
-    		margin: 0rem 0.5rem 0rem 1rem;
-    		border:1px solid #ccc;
+    		margin: 0rem auto;
     		border-radius: 0.266667rem;
     		position: relative;
-
+		}
+		.search>label {
+			width: 88%;
+		    display: inline-block;
+		    border: 1px solid #ccc;
+    		border-radius: 0.266667rem;
 		}
 		.search>label>input{
 			display: inline-block;
@@ -120,18 +126,18 @@
 			border:none;
 			font-size: 0.7rem;
 		}
-		.search>label>i{
+		.search>label>a{
 			font-size: 0.9rem;
 		}
-		.search>i{
+		.search>a{
 			display: inline-block;
-			width: 2%;
+			width: 10%;
 			float: right;
 			color:#838383;
 			position: absolute;
 			top:0;
 			color: #464646;
-			right: -0.6rem;
+			right: 0rem;
 			font-size: 1.25rem;
 		}
 		.search>span{
@@ -141,8 +147,8 @@
 		    height: 0.8rem;
 		    border-radius: 1rem;
 		    background: #F00;
-		    right: -1.8rem;
-		    top:-0.1rem;
+		    right: 0rem;
+		    top: 0rem;
 		    font-size: 0.53rem;
 		    font-weight: 600;
 		    text-align: center;
@@ -184,12 +190,13 @@
 			margin:0 auto;
 		}
 		.allgoods>ul>li{
-			   float: left;
-			    display: block;
-			    width: 50%;
-			    height: 8.5rem;
-			    padding: 5% 5%;
-			    box-sizing: border-box;
+		   	float: left;
+		    display: block;
+		    position: relative;
+		    width: 50%;
+		    height: 8.5rem;
+		    padding: 5% 5%;
+		    box-sizing: border-box;
 		}
 		.allgoods>ul>li>a{
 			
@@ -201,14 +208,14 @@
 			font-size: 0.67rem;
     		line-height: 1rem;
     		width: 130%;
-
-
 		}
-		.allgoods>ul>li>a>i{
+		.allgoods>ul>li>i{
 			font-size: 1.2rem;
 			color: #ff3232;
-		    position: relative;
-		    right: -58%;
+		    position: absolute;
+		    right: 8%;
+		    bottom: 8%;
+		    z-index: 999;
 		}
 		.allgoods>ul>li>a>b{
 			font-size: 0.68rem;
@@ -236,25 +243,26 @@
 		</div> -->
 	</header>
 	<div class="shopTop clearfix">
-					<div class="search clearfix">
-						<label for="search-all">
-							<input type="text" placeholder="请输入您想买的东西" ><i class="iconfont icon-msnui-find-bold"></i>
-						</label><i class="iconfont  icon-gouwuche"></i><span>1</span>
-					</div>
-					<!-- 轮播图 -->
-					<div id="myFocus"><!--焦点图盒子-->
-						 <div class="loading"><img src="__PUBLIC__/Home/images/loading.gif" alt="请稍候..." /></div><!--载入画面(可删除)-->
-						  <div class="pic"><!--图片列表-->
-						  	<ul>
-						        <li><a href="#1"><img src="__PUBLIC__/Home/images/1a.jpg" thumb="" alt="" text="" /></a></li>
-						        <li><a href="#2"><img src="__PUBLIC__/Home/images/2a.jpg"  /></a></li>
-						        <li><a href="#3"><img src="__PUBLIC__/Home/images/3a.jpg" /></a></li>
-						        <li><a href="#4"><img src="__PUBLIC__/Home/images/4a.jpg" /></a></li>
-						        <li><a href="#5"><img src="__PUBLIC__/Home/images/5a.jpg" /></a></li>
-						  	</ul>
-						  </div>
-					</div>
-				</div>
+		<div class="search clearfix">
+			<label for="search-all" >
+				<input type="text" placeholder="请输入您想买的东西" ><i class="iconfont icon-msnui-find-bold"></i>
+			</label>
+			<a href="{{:U('ShoppingCart/index')}}" class="iconfont  icon-gouwuche"></a><span>1</span>
+		</div>
+		<!-- 轮播图 -->
+		<div id="myFocus"><!--焦点图盒子-->
+			 <div class="loading"><img src="__PUBLIC__/Home/images/loading.gif" alt="请稍候..." /></div><!--载入画面(可删除)-->
+			  <div class="pic"><!--图片列表-->
+			  	<ul>
+			        <li><a href="#1"><img src="__PUBLIC__/Home/images/1a.jpg" thumb="" alt="" text="" /></a></li>
+			        <li><a href="#2"><img src="__PUBLIC__/Home/images/2a.jpg"  /></a></li>
+			        <li><a href="#3"><img src="__PUBLIC__/Home/images/3a.jpg" /></a></li>
+			        <li><a href="#4"><img src="__PUBLIC__/Home/images/4a.jpg" /></a></li>
+			        <li><a href="#5"><img src="__PUBLIC__/Home/images/5a.jpg" /></a></li>
+			  	</ul>
+			  </div>
+		</div>
+	</div>
 	
 	<div id="content">
 		
@@ -345,8 +353,9 @@
 										'<a class="pic" goods_gid="'+_goods[j].gid+'" href="{{:U('Shop/shoppingdetail')}}">'+
 											'<img src="__PUBLIC__/Home/images/goods1.png" alt="">'+
 											'<p class="name">'+ _goods[j].name +'</p>'+
-											'<b class="price">¥'+ _goods[j].price +'</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>'+
+											'<b class="price">¥'+ _goods[j].price +'</b><span class="iconfont "></span>'+
 										'</a>'+
+										'<i class="iconfont icon-gouwuchetianjia "></i>'
 									'</li>';
 							}else{
 								_htmlArr[i] += '';
@@ -413,11 +422,31 @@
 					$("#content")
 					.animate({left: '-'+ $(this).attr("index") +'00vw'});
 
-					$("#line").css({left: $(this)[0].offsetLeft-$("#line").width()/4 + 'px'});
+					$("#line").css({left: $(this).attr("index")*2 + '0%'});
 
 					// console.log($(this)[0].offsetLeft)
 					// console.log($(this).attr("index"))
 			});
+
+			/*
+				点击商品旁边的购物车图标
+			 */
+			$(".allgoods").on("click",".icon-gouwuchetianjia",function(){
+				// 获取商品id
+				var gid = $(this).siblings(".pic").attr("goods_gid");
+				console.log(gid);
+				$.ajax({
+					url: '{{:U("ShoppingCart/shopAdd")}}',
+					type: 'post',
+					data: {'id': gid,'num': 1},
+					success: function(res){
+						console.log('成功！ ',res);
+					},
+					error: function(res){
+						console.log('失败！ ',res);
+					}
+				})
+			})
 		})
 
 		// 轮播
