@@ -204,6 +204,7 @@
                 type: 'post',
                 success:function(res){
                     if(res.code != 203 && res.code != 204){
+                        location.reload();
                         $(".attrList").before('<label><input type="checkbox" name="attr[]" value="'+res.code+'" class="attr"> <i></i> '+name+'</label>');
                         recheck();
                         parent.layer.msg(res.msg);
