@@ -538,7 +538,10 @@
 				}
 			})
 		}else{
-			alert('请先选择需要购买的商品！')
+			layui.use('layer', function(){
+                var layer = layui.layer;
+                layer.msg('请先选择需要购买的商品！');
+            });
 		}
 		
 	})

@@ -63,7 +63,7 @@ window.onload = function(){
     var getdataList={
         "id":"1",
         "deviceid":"228733445596778",
-        "devicestause":"6",
+        "devicestause":"0",
         "reflow":"34000",
         "reday":"85",
         "rawtds":"75",
@@ -329,7 +329,7 @@ window.onload = function(){
             });
         });
     });
-    $('.heat').click(function(){
+    $('.heatTxt').click(function(){
         var statusTxt=$(".btmTxt").html();
         if(statusTxt=="设备已关机"||statusTxt=="设备已离线"||statusTxt=="欠费"||statusTxt=="检修"){
             layui.use('layer', function(){
@@ -345,6 +345,7 @@ window.onload = function(){
                     layui.use('layer', function(){
                         var layer = layui.layer;
                         layer.msg('已经给您加热了，天气冷小心烫着！');
+                        $('.heat').show().fadeOut(6000);;
                     });
                 });
             });

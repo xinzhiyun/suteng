@@ -526,10 +526,10 @@ $(function(){
                     identify=1;
 					timer=setTimeout(function(){
                         if(identify==1){
-                            layui.use('layer', function(){
-                                var layer = layui.layer;
-                                layer.msg('复位超时！');
-                            });
+                            // layui.use('layer', function(){
+                            //     var layer = layui.layer;
+                            //     layer.msg('复位超时！');
+                            // });
 
                             identify=0;
                         }
