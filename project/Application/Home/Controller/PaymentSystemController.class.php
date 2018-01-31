@@ -113,8 +113,8 @@ class PaymentSystemController extends CommonController
             // // 查询订单表
             $orderData = M('shop_order')->where($showWhere)->find();
             // print_r($orderData);
-            // 判断订单是否存在
-            if($orderData){
+            // 判断订单未支付
+            if($orderData['status']==8){
                 // 订单金额
                 $money = $orderData['g_price'];
                 // 订单号码
