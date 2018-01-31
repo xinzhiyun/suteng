@@ -484,18 +484,22 @@
 			sessionStorage.setItem("goods_data",goods_data)
 			// 跳到订单确认界面
 			location.href = '{{:U("PaymentSystem/payConfirm")}}';
-			// $.ajax({
-			// 	url: '{{:U("PaymentSystem/payConfirm")}}',
-			// 	type: 'post',
-			// 	data: data,
-			// 	dataType: 'json',
-			// 	success: function(res){
-			// 		console.log("成功！ ", res);
-			// 	},
-			// 	error: function(res){
-			// 		console.log("失败！ ", res);
-			// 	}
-			// })
+			
+			// 发送ajax请求让后台生成订单号
+			$.ajax({
+				url: '{{:U("PaymentSystem/information")}}',
+				type: 'post',
+				data: {'data':JSON.stringify(goods_data)},
+				success: function(res){
+					console.log('成功！', res);
+					sessionStorage.setItem('order_id',res);
+					// 跳转到订单确认页面
+					location.href = '{{:U("PaymentSystem/payConfirm")}}';
+				},
+				error: function(res){
+					console.log('失败！', res);
+				}
+			})
 		})
 	})
 

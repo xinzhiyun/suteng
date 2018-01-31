@@ -577,24 +577,27 @@
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script>
 		//微信接口
-		wx.config({
-		    debug: false,
-		    appId: '{{$info["appId"]}}',
-		    timestamp: '{{$info["timestamp"]}}',
-		    nonceStr: '{{$info["nonceStr"]}}',
-		    signature: '{{$info["signature"]}}',
-		    jsApiList: [
-		      // 所有要调用的 API 都要加到这个列表中
-		      'chooseWXPay'
-		    ]
-		});
+		// wx.config({
+		//     debug: false,
+		//     appId: '{{$info["appId"]}}',
+		//     timestamp: '{{$info["timestamp"]}}',
+		//     nonceStr: '{{$info["nonceStr"]}}',
+		//     signature: '{{$info["signature"]}}',
+		//     jsApiList: [
+		//       // 所有要调用的 API 都要加到这个列表中
+		//       'chooseWXPay'
+		//     ]
+		// });
 		$(function(){
 			//获取从后台传来的订单号
-			var dangdanID = sessionStorage.getItem('order_id');	
-			// console.log(dangdanID);
+			var dangdanID;	
+			if(sessionStorage.getItem('order_id')){
+				dangdanID = sessionStorage.getItem('order_id');	
+				// console.log(dangdanID);
+			}
 
 			// 获取后台传来的默认地址
-			var addressInfo
+			var addressInfo;
 			if($("#addressInfo").val()){ 
 				addressInfo = JSON.parse($("#addressInfo").val());
 				console.log(addressInfo);
@@ -802,8 +805,13 @@
 									if(res == -1){
 										console.log('支付错误！');
 									}else{
-										// 调用微信支付方法
-										weixinPay(res);
+										if($("#addressInfo").val()){
+											// 调用微信支付方法
+											weixinPay(res);
+										}else{
+											//无地址
+											alert('请添加一个地址！')
+										}
 									}
 								},
 								error: function(res){
