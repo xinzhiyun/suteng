@@ -776,25 +776,30 @@
 						break;
 					case '3':
 						console.log('微信支付');
-						//请求微信支付方法
-						$.ajax({
-							url: "{{:U('Home/PaymentSystem/orderPay')}}",
-							type: 'post',
-							data: {order: dangdanID},
-							success: function(res){
-								console.log(res);
-								if(res == -1){
-									console.log('支付错误！');
-								}else{
-									// 调用微信支付方法
-									weixinPay(res);
+						//如果有默认地址
+						if($("#addressInfo").val()){
+							//请求微信支付方法
+							$.ajax({
+								url: "{{:U('Home/PaymentSystem/orderPay')}}",
+								type: 'post',
+								data: {order: dangdanID},
+								success: function(res){
+									console.log(res);
+									if(res == -1){
+										console.log('支付错误！');
+									}else{
+										// 调用微信支付方法
+										weixinPay(res);
+									}
+								},
+								error: function(res){
+									console.log('失败！ ',res);
 								}
-							},
-							error: function(res){
-								console.log('失败！ ',res);
-							}
 
-						});
+							});
+						}else{
+							alert('请添加一个收获地址！');
+						}
 						break;
 					case '4':
 						console.log('支付宝支付');
