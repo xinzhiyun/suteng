@@ -11,6 +11,10 @@
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<style>
+		body{
+			font-size: 0.72rem;
+			color:#373737;
+		}
 		._chooseMeal{
 			width: 100%;
 		}
@@ -41,6 +45,9 @@
 			border-radius: 0.2rem;
 			font-weight: 600;
 		}
+		.chooseContain ul li b{
+			padding: 0 0.1rem;
+		}
 		.chooseContain ul li:first-child{
 			background: #74BCFA;
 		}
@@ -52,10 +59,12 @@
 		}
 		.chooseFoot input{
 			width: 100%;
-			height: 2.6rem;
+			height: 1.8rem;
 			background:#2EB6AA;
 			color: #fff; 
 			border:none;
+			font-size: 0.82rem;
+			letter-spacing: 0.1rem;
 		}
 		/*隐藏付款块*/
 		.devicepay{
@@ -157,7 +166,7 @@
 		.payContain{
 			position: absolute;
 			bottom: 0;
-			height: 90vh;
+			height: 100vh;
 			width: 100vw;
 			/*opacity: 0.5;*/
 			z-index: 999;
@@ -235,11 +244,13 @@
 		}
 		.payBott>input{
 			border:none;
-			padding:1vh  0;
+			padding:1.5vh  0;
 			width: 86vw;
 			background: #2EB6AA;
 			border-radius:0.2rem;
 			color: #FFF;
+			font-size: 0.82rem;
+			letter-spacing: 0.1rem;
 		}
 		/*模态框样式*/
 	 .modelAll{width:100vw;height:100%;font-family: "mircoft yahei";font-size:14px;font-size: 0.7rem;line-height: 1; display: none;overflow: hidden;}
@@ -265,6 +276,12 @@
       .modal-content>p:nth-child(4){
       	border:none;
       }
+      /*兼容解决*/
+		@media screen and (max-height:520px) {
+			.paymidd>ul>li {
+		    	padding: 0.4rem 0.5rem;
+			}
+		}
 
 	</style>
 </head>
@@ -274,26 +291,18 @@
 			<div class="chooseContain">
 				<h3>选择套餐</h3>
 				<ul>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
-					<li>100元套餐含1000L流量</li>
+					<li>100元套餐含<b>1000L</b>流量</li>
+					<li>100元套餐含<b>1000L</b>流量</li>
+					<li>100元套餐含<b>1000L</b>流量</li>
+					<li>100元套餐含<b>1000L</b>流量</li>
+					<li>100元套餐含<b>1000L</b>流量</li>
+					<li>100元套餐含<b>1000L</b>流量</li>
+					<li>100元套餐含<b>1000L</b>流量</li>
+					<li>100元套餐含<b>1000L</b>流量</li>
+					<li>100元套餐含<b>1000L</b>流量</li>
+					<li>100元套餐含<b>1000L</b>流量</li>
+					<li>100元套餐含<b>1000L</b>流量</li>
+
 				</ul>
 			</div>
 		
