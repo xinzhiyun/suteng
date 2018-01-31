@@ -4,7 +4,6 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
-	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/iconfont/iconfont.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
@@ -17,7 +16,7 @@
 			box-sizing: border-box;
 		}
 		body {
-			font-size: .7rem;
+			font-size: 0.7rem;
 		}
 		#header {
 			width: 100vw;
@@ -99,7 +98,7 @@
 		}
 		#indent>div>span>a>i{
 			color:#56aaf1;
-			font-size: 1rem;
+			font-size: 1.2rem;
 		}
 		/*收益明细*/
 		#income>div {
@@ -123,9 +122,13 @@
 			margin: 8px;
 			color: #E55C1F;
 		}
-		.icon-erweima,
-		.icon-1 {
+		.icon-erweima{
+			font-size: 1rem;
+		}
+
+		.icon-zhixiang {
 			font-size: .8rem;
+			margin-left: 0.5rem;
 		}
 		.icon-jinbi {
 			color: #ffc800;
@@ -148,19 +151,121 @@
 			font-size: 1.2rem;
 		}
 		.icon-chongzhi1,
-		.icon-shouhuodizhi,
-		.icon-daipinglun2 {
+		.icon-dizhi,
+		.icon-pinglun {
 			font-size: 1.2rem;
 			margin-right: 2%;
 		}
 		.icon-chongzhi1 {
 			color: #2EB6AA;
 		}
-		.icon-shouhuodizhi {
+		.icon-dizhi {
 			color: #23A0E8;
 		}
-		.icon-daipinglun2 {
+		.icon-pinglun {
 			color: #E55C1F;
+		}
+		/*分享*/
+		#sharePanel {
+			width: 100vw;
+			height: 100vh;
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			font-size: .6rem;
+			background: rgba(0,0,0, .5);
+		}
+		#maskbg {
+			width: 100vw;
+			height: 56vh;
+		}
+		#sharePart {
+			width: 100vw;
+			height: 44vh;
+			position: absolute;
+			bottom: -44vh;
+			background: #eee;
+		}
+		/*金银币的图标颜色*/
+		.icon-jinbi{
+			color:#E8C509;
+			font-size: 1.2rem;
+			padding-right:0.2rem;
+		}
+		.icon-yingbi{
+			color:#98C5C5;
+			font-size: 1.2rem;
+			padding-right:0.2rem;
+		}
+
+		#sharePart>div {
+			width: 96%;
+			display: flex;
+			flex-wrap: wrap;
+			margin: 0 auto;
+		}
+		.shareIcon {
+			width: 24vmin;
+			height: 24vmin;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-flow: column;
+			margin: 5% 0;
+		}
+		.shareIcon>.img {
+			width: 80%;
+			height: 80%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background: #fff;
+			background-size: 80%;
+			background-position: center;
+		}
+		.shareIcon>.img:active {
+			background: #e1e1e1;
+		}
+		.shareIcon>.img>img {
+			width: 40%;
+			margin: 10px 0;
+		}
+		.shareIcon>p {
+			margin-top: 3%;
+			text-align: center;
+			white-space: nowrap;
+		}
+		/*点击右上角二维码*/
+		#myCode {
+			width: 100vw;
+			height: 100vh;
+			display: none;
+			position: fixed;
+    		top: 0;
+    		left: 0;
+			justify-content: center;
+			align-items: center;
+			flex-flow: column;
+			background: #fff;
+		}
+		#qrcode {
+			width: 50vmin;
+			height: 50vmin;
+			margin: 20vmin;
+			background: url(__PUBLIC__/Home/images/erweima.png) no-repeat;
+			background-size: 100% 100%;
+
+		}
+		#saveCode {
+			width: 86%;
+			margin: 0 auto;
+			text-align: center;
+			padding: 3%;
+    		font-size: .8rem;
+			color: #fff;
+			border-radius: 4px;
+			background: #2EB6AA;
 		}
 	</style>
 </head>
@@ -172,7 +277,7 @@
 		<div id="hRight">
 			<div id="qrCode_share">
 				<i class="iconfont icon-erweima"></i>
-				<i class="iconfont icon-1"></i>
+				<i class="iconfont icon-zhixiang share"></i>
 			</div>
 			<p>Yoo</p>
 			<div id="package">
@@ -191,7 +296,7 @@
 				<span>
 					<a href="{{:U('Home/Order/index')}}">
 						<span>查看全部订单</span>
-						<i class="iconfont icon-mjiantou"></i>
+						<i class="iconfont icon-dayuhao-copy-copy"></i>
 					</a>
 				</span>
 			</p>
@@ -232,7 +337,7 @@
 			<p>
 				<a href="{{:U('Home/VipCenter/reward')}}">
 					收益明细</a>
-					<i class="iconfont icon-mjiantou"></i>
+					<i class="iconfont icon-dayuhao-copy-copy"></i>
 				
 			</p>
 			<div>
@@ -259,23 +364,90 @@
 					<i class="iconfont icon-chongzhi1"></i>
 					<a href="{{:U('Home/Mall/chongzhi')}}">会员充值</a>
 				</span>
-				<i class="iconfont icon-mjiantou"></i>
+				<i class="iconfont icon-dayuhao-copy-copy"></i>
 			</div>
 			<div id="addressManage">
 				<span>
-					<i class="iconfont icon-shouhuodizhi"></i>
+					<i class="iconfont icon-dizhi"></i>
 					<a href="{{:U('Home/Address/index')}}">收货地址管理</a>
 				</span>
-				<i class="iconfont icon-mjiantou"></i>
+				<i class="iconfont icon-dayuhao-copy-copy"></i>
 			</div>
 			<div id="comment">
 				<span>
-					<i class="iconfont icon-hua icon-daipinglun2"></i>
+					<i class="iconfont icon-pinglun"></i>
 					<a href="{{:U('Home/VipCenter/mycomment')}}">我的评论</a>
 				</span>
-				<i class="iconfont icon-mjiantou"></i>
+				<i class="iconfont icon-dayuhao-copy-copy"></i>
 			</div>
 		</div>
 	</div>
+	<div id="sharePanel">
+		<div id="maskbg"></div>
+		<div id="sharePart">
+			<div>
+				<span class="shareIcon">
+					<span class="img">
+						<img src="__PUBLIC__/Home/images/weixin.png" alt="">
+					</span>
+					<p>发送给朋友</p>
+				</span>
+				<span class="shareIcon">
+					<span class="img">
+						<img src="__PUBLIC__/Home/images/pengyouquan.png" alt="">
+					</span>
+					<p>分享到朋友圈</p>
+				</span>
+				<span class="shareIcon">
+					<span class="img">
+						<img src="__PUBLIC__/Home/images/qq.png" alt="">
+					</span>
+					<p>QQ</p>
+				</span>
+				<span class="shareIcon">
+					<span class="img">
+						<img src="__PUBLIC__/Home/images/qqcom.png" alt="">
+					</span>
+					<p>QQ空间</p>
+				</span>
+				<span class="shareIcon">
+					<span class="img">
+						<img src="__PUBLIC__/Home/images/weibo.png" alt="">
+					</span>
+					<p>微博</p>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div id="myCode">
+		<div id="qrcode"></div>
+		<div id="saveCode">保存到相册</div>
+	</div>
+	<script>
+		// 点击右上角二维码
+		$(".icon-erweima").on("click", function(){
+			$("#myCode").css({display: 'flex'})
+		})
+
+		//二维码的保存时消失
+		$('#saveCode').click(function(){
+			$('#myCode').css('display','none')
+		})
+
+		// 点击右上角分享
+		$(".share").on("click", function(){
+
+			$("#sharePanel").css({display: 'block'});
+			$("#sharePart").animate({bottom: '0'})
+		})
+
+		// 分享界面点击上部分退出分享
+		$("#maskbg").on("click", function(){
+
+			$("#sharePanel").css({display: 'none'});
+			$("#sharePart").css({bottom: '-44vh'})
+		})
+
+	</script>
 </body>
 </html>

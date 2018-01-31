@@ -9,6 +9,23 @@ class VipCenterController extends CommonController
 	 */
     public function index()
     {
+        // 准备查询条件
+        $showUser['open_id'] = $_SESSION['open_id'];
+        // 执行查询
+        $user = M('users')->where($showUser)->find();
+
+        // 查询会员收益合计
+        $showCommission['user_code'] = $user['code'];
+        $commission = M('users_commission')->where($showCommission)->select();
+        
+        // $comData = 
+        // foreach ($commission as $key => $value) {
+        //     $value
+        // }
+        // 分配数据
+        $this->assign('user',$user);
+        // dump($user);
+        // 显示模板
  		$this->display();
     }
 
@@ -18,6 +35,13 @@ class VipCenterController extends CommonController
      */
     public function vipCenter()
     {
+        // 准备查询条件
+        $showUser['open_id'] = $_SESSION['open_id'];
+        // 执行查询
+        $user = M('users')->where($showUser)->find();
+        // 分配数据
+        $this->assign('user',$user);
+        // dump($user);
  		$this->display();
     }
 
