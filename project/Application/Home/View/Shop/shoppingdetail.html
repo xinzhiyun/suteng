@@ -340,7 +340,7 @@
 				res.goodsDetail[0].attr == null ? '' : res.goodsDetail[0].attr;
 				// 输出商品详情
 				goodsDetail_html = '<div class="detailpic">'+
-						'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
+						'<img src="/Uploads/'+ res.goodsDetail[0].path +'" alt="">'+
 					'</div>'+
 					'<!-- /*商品说明*/ -->'+
 					'<div class="detailTxt">'+
@@ -487,7 +487,7 @@
 		$("#buyNow").click(function(){
 			//清除其他页面的sessionStorage
 			sessionStorage.setItem("lvxinData", '');
-			sessionStorage.setItem("shopCar_data", '');
+			// sessionStorage.setItem("shopCar_data", '');
 			var num = $(".number").val();	//选择的数量
 			var expressMoney = $(".expressMoney>span").text();	//快递费
 			/*
@@ -496,15 +496,18 @@
 				uid: 用户id
 			 */
 			var goods_data = JSON.stringify({'goodsDetail': goodsDetail,'num': num,'expressMoney':expressMoney});
-			sessionStorage.setItem("goods_data",goods_data)
-			// 跳到订单确认界面
-			location.href = '{{:U("PaymentSystem/payConfirm")}}';
-			
+			sessionStorage.setItem("goods_data",goods_data);
+			//发送给后台生成订单编号的数据
+			var goods_dataArr = [];
+			goods_dataArr.push({'num':num,'gid': goodsDetail.gid});
+
+			sessionStorage.setItem("goods_dataArr",JSON.stringify(goods_dataArr));
+
 			// 发送ajax请求让后台生成订单号
 			$.ajax({
 				url: '{{:U("PaymentSystem/information")}}',
 				type: 'post',
-				data: {'data': goods_data},
+				data: {'data': JSON.stringify(goods_dataArr)},
 				success: function(res){
 					console.log('成功！', res);
 					sessionStorage.setItem('order_id',res);
