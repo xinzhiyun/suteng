@@ -297,7 +297,6 @@
 					CategoryHTML += '<span class="tab" index='+i+'>'+ _cate[i].name +'</span>';
 					categoryArr.push(_cate[i].name);
 				}
-
 				/*
 					遍历模板
 				 */
@@ -316,6 +315,10 @@
 						'</div>';
 				}
 
+				// 横线
+				var _lineHTML = '<div id="line">'+
+						'<span></span>'+
+					'</div>';
 				$("#header").html(CategoryHTML+ _lineHTML);
 				$("#content").append(goodblockHTML);
 
@@ -323,7 +326,9 @@
 				$("#header").html('暂无分类');
 				console.log('暂无分类');
 			}
-			// 获取商品信息
+			/*
+				遍历商品
+			 */
 			var _goods;
 			if($("#_goods").val() != 'null'){
 				//有数据
@@ -332,9 +337,6 @@
 				if(_cate){
 					for(var i=0;i<_cate.length; i++){
 						_htmlArr[[i]] = '';		//使用前先初始化
-						/*
-							遍历商品
-						 */
 						for(var j=0; j<_goods.length; j++){
 							if(_goods[j].cid == _cate[i].id){	//对应分类下有商品
 								// console.log(_goods[j].cid, _cate[i].id);
@@ -358,11 +360,6 @@
 				$(".allgoods>ul").html('<h3 style="text-align:center;padding:5% 0;">暂无内容，敬请期待！</h3>');
 				console.log('暂无商品');
 			}
-
-			// 横线
-			var _lineHTML = '<div id="line">'+
-					'<span></span>'+
-				'</div>';
 			
 			// 遍历偏移量
 			for(var i=0; i<categoryArr.length; i++){
