@@ -171,37 +171,57 @@
 <body>
 	<div id="content">
 		<div class="taocan">
-			<p class="clearfix"><b></b><span>分销商名</span></p>
-			<div class="taocanSelectNow" index="0" >
-				A级分销商
-			</div>
-			<div index="1" >
-				B级分销商
-			</div>
-			<div index="2" >
-				C级分销商
-			</div>
-			<div index="3" >
-				D级分销商
-			</div>
+			<p class="clearfix"><b></b><span>{{$vendor.name}}</span></p>
+			<h1 style="margin-top: -40px;margin-left: 20px;position: absolute;text-align: center;width: 100%;">收益：<strong style="color:red;font-size:20px;">{{$vendor.abonus}}</strong>元</h1>
+
+		
+
+			<if condition="$vendor.leavel eq 2"> 
+				<div class="taocanSelectNow" index="0" >
+					A级分销商
+				</div>
+				<div index="1" >
+					B级分销商
+				</div>
+				<div index="2" >
+					C级分销商
+				</div>
+				<div index="3" >
+					会员邀请码
+				</div>
+			<elseif condition="$vendor.leavel eq 3"/>
+				<div index="1" >
+					B级分销商
+				</div>
+				<div index="2" >
+					C级分销商
+				</div>
+				<div index="3" >
+					会员邀请码
+				</div>
+			<else />
+				<div index="2" >
+					C级分销商
+				</div>
+				<div index="3" >
+					会员邀请码
+				</div>
+			</if>
+
 		</div>
 		<div class="money clearfix">
 			
 			<div class="moneySon">
-				<p>A级邀请码：</p>
 				<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_a}}" alt=""><br/>
 			</div>
 			<!-- 银币 -->
 			<div class="moneySon">
-				<p>B级邀请码：</p>
 				<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_b}}" alt=""><br/>
 			</div>
 			<div class="moneySon">
-				<p>C会员邀请码：</p>
 			<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_user}}" alt=""><br/>
 			</div>
 			<div class="moneySon">
-				<p>D会员邀请码：</p>
 				<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_user}}" alt=""><br/>
 			</div>
 		</div>
