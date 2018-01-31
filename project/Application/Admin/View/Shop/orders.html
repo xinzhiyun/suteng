@@ -152,16 +152,14 @@
                 dataType:'json',
                 data:{'order_id':orderId},
                 success:function(res){
-                    if(res.code == 200 ){
-                        parent.layer.open({
-                            type: 1,
-                            title: '订单详情',
-                            shadeClose: true,
-                            shade: 0.8,
-                            area: ['60%', '40%'],
-                            content: 'http://layer.layui.com/mobile/' 
-                        });
-                    }
+                    parent.layer.open({
+                        type: 2,
+                        title: '订单详情',
+                        shadeClose: true,
+                        shade: 0.3,
+                        area: ['60%', '40%'],
+                        content: '' 
+                    });
                 }
             });
             

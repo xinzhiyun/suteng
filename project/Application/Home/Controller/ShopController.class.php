@@ -13,6 +13,7 @@ class ShopController extends Controller
     public function index()
     {
         $goods = D('Goods');
+        $cartInfo = M('Cart')->where('uid='.session('user.id'))->count();
         $cate = M('Category')->select();
         $goodsList = $goods->getGoodsList(['gd.status'=>0]);
         foreach($goodsList as $val){
@@ -27,6 +28,7 @@ class ShopController extends Controller
     	$goodsList = array_values($arr);
         $assign = [
             'cate' => json_encode($cate),
+            'cartInfo' => json_encode($cartInfo),
             'goods' => json_encode($goodsList),
         ];
         $this->assign($assign);
