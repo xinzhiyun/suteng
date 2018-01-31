@@ -55,6 +55,12 @@ class VipCenterController extends CommonController
 	 */
     public function minepack()
     {
+        // 准备查询条件
+        $showUser['open_id'] = $_SESSION['open_id'];
+        // // 执行查询
+        $user = M('users')->where($showUser)->find();
+        // 分配数据
+        $this->assign('user',$user);
  		$this->display();
     }
 

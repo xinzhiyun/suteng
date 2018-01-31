@@ -129,13 +129,13 @@
     <div class="MineContainer">
         <div class="MineTop"> 
             <div class="mineLeft">
-              <span><img src="__PUBLIC__/Home/images/yoo_01.png" alt=""></span>
+              <span><img src="{{$user['head']}}" alt=""></span>
             </div>                   
             <div class="mineRight">
                <ul>
-                 <li><p>Yoo</p></li>
-                 <li><b>我的钱包:</b><i class="iconfont icon-jinbi m-left"></i><span>金币<em>300</em>个</span></li>
-                  <li class="yingIcon"><i class="iconfont icon-yingbi m-left"></i><span>金币<em>300</em>个</span></li>
+                 <li><p>{{$user['nickname']}}</p></li>
+                 <li><b>我的钱包:</b><i class="iconfont icon-jinbi m-left"></i><span>金币<em>{{$user['gold_num']}}</em>个</span></li>
+                  <li class="yingIcon"><i class="iconfont icon-yingbi m-left"></i><span>金币<em>{{$user['silver']}}</em>个</span></li>
                </ul> 
             </div>                                
         </div>
