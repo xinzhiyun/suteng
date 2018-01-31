@@ -168,6 +168,10 @@ body{
 .chbuBotom ul li a i{
 	font-size: 1.2rem;
 }
+.chbuBotom ul li a i.icon-chongzhi{
+	font-size: 1.1rem;
+}
+
 .chbuBotom ul li a i.colorChange{
 	color:#4EB9BB; 
 }
@@ -329,7 +333,8 @@ body{
 		margin:0 auto;
 		background: url(../images/queshuiding_03.png) no-repeat;
 		background-size: 100% 100%;
-		position: absolute;font-size: 
+		position: absolute;
+		font-size: 0.7rem;
 		top:0;
 		left: 0;
 		z-index: 200;
@@ -405,6 +410,12 @@ body{
 	   .statusList > div{
 		   display:none; 
 	   } 
+	   /*兼容*/
+	   @media screen and (max-height:520px){ 
+		.btmTxt {
+		    margin-top: 0.6vh
+			}
+		}
 
 
 
