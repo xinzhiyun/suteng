@@ -32,7 +32,7 @@ class CommonController extends Controller
         // 查询微信信息表
         $wechat = M('wechat')->where($showData)->find();
 
-
+        // dump($wechat);die;
         // 接收类型
         $type   = $wechat["type"];
         // 接收操作
