@@ -330,16 +330,25 @@ window.onload = function(){
         });
     });
     $('.heat').click(function(){
-        layui.use('layer', function(){
-            var layer = layui.layer;
-            layer.confirm('亲，确定要加热吗?', {icon: 3, title:'温馨提示'}, function(index){
-                layer.close(index);
-                layui.use('layer', function(){
-                    var layer = layui.layer;
-                    layer.msg('已经给您加热了，天气冷小心烫着！');
+        var statusTxt=$(".btmTxt").html();
+        if(statusTxt=="设备已关机"||statusTxt=="设备已离线"||statusTxt=="欠费"||statusTxt=="检修"){
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                layer.msg('当前设备状态不能加热');
+            });
+            return false;
+        }else{
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                layer.confirm('亲，确定要加热吗?', {icon: 3, title:'温馨提示'}, function(index){
+                    layer.close(index);
+                    layui.use('layer', function(){
+                        var layer = layui.layer;
+                        layer.msg('已经给您加热了，天气冷小心烫着！');
+                    });
                 });
             });
-        });
+        }
     });
     //页面关闭后关闭websoket;
     window.onunload=function(){
