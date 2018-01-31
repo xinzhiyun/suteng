@@ -120,7 +120,7 @@ class PaymentSystemController extends CommonController
                 $order_id = $orderData['order_id'];
                 // 订单描述
                 $content = '速腾商城商品购买';
-                $this->uniformOrder($money,$order_id,$content);
+                $this->uniformOrderTow($money,$order_id,$content);
             }else{
                 // 订单不存在
                 echo -1;
@@ -199,7 +199,7 @@ class PaymentSystemController extends CommonController
         // 傳用戶ID
         //$input->SetDetail($uid);
         // 产品内容
-        $input->SetBody('点球科技商品购买');
+        $input->SetBody($content);
         // 唯一订单ID
         $input->SetAttach($order_id);
         // 设置商户系统内部的订单号,32个字符内、可包含字母, 其他说明见商户订单号
@@ -237,7 +237,7 @@ class PaymentSystemController extends CommonController
      * @param  [type] $order_id [订单号码]
      * @param  [type] $content  [订单详情]
      */
-    public function uniformOrder($money,$order_id,$content)
+    public function uniformOrderTow($money,$order_id,$content)
     {
         //dump($_SESSION);die;
         // $content = substr($content,0,80);
@@ -260,7 +260,7 @@ class PaymentSystemController extends CommonController
         // 傳用戶ID
         //$input->SetDetail($uid);
         // 产品内容
-        $input->SetBody('点球科技商品购买');
+        $input->SetBody($content);
         // 唯一订单ID
         $input->SetAttach($order_id);
         // 设置商户系统内部的订单号,32个字符内、可包含字母, 其他说明见商户订单号
