@@ -384,7 +384,7 @@
 		</div>
 		<!-- 滤芯购买 -->
 		<div id="lvxinBuy">
-			<div class="goods">
+			<!-- <div class="goods">
 					<div class="img"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt="正在加载..."></div>
 				<div class="desc">
 					<h5>RO膜</h5>
@@ -398,78 +398,14 @@
 						</span>
 					</div>
 				</div>
-			</div>
-			<!-- <div class="goods">
-				<div class="img"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt="正在加载..."></div>
-				<div class="desc">
-					<h5>RO膜</h5>
-					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
-					<div>
-						<span class="price">￥<span>120.00</span></span>
-						<span class="num">
-							<input type="button" value="-" class="minus">
-							<input class="number" type="number" value="0" min="0" max="9">
-							<input type="button" value="+" class="plus">
-						</span>
-					</div>
-					
-				</div>
-			</div>
-			<div class="goods">
-				<div class="img"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt="正在加载..."></div>
-				<div class="desc">
-					<h5>RO膜</h5>
-					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
-					<div>
-						<span class="price">￥ <span>120.00</span></span>
-						<span class="num">
-							<input type="button" value="-" class="minus">
-							<input class="number" type="number" value="0" min="0" max="9">
-							<input type="button" value="+" class="plus">
-						</span>
-					</div>
-					
-				</div>
-			</div>
-			<div class="goods">
-				<div class="img"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt="正在加载..."></div>
-				<div class="desc">
-					<h5>RO膜</h5>
-					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
-					<div>
-						<span class="price">￥<span>120.00</span></span>
-						<span class="num">
-							<input type="button" value="-" class="minus">
-							<input class="number" type="number" value="0" min="0" max="9">
-							<input type="button" value="+" class="plus">
-						</span>
-					</div>
-					
-				</div>
-			</div>
-			<div class="goods">
-				<div class="img"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt="正在加载..."></div>
-				<div class="desc">
-					<h5>RO膜</h5>
-					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
-					<div>
-						<span class="price">￥<span>120.00</span></span>
-						<span class="num">
-							<input type="button" value="-" class="minus">
-							<input class="number" type="number" value="0" min="0" max="9">
-							<input type="button" value="+" class="plus">
-						</span>
-					</div>
-					
-				</div>
 			</div> -->
-
-			<footer id="footer" class="footer">
-				<div>合计：<span>￥0</span></div>
-				<span id="pay">去结算</span>
-				<button class="_btn" type="button">确定复位</button>
-			</footer>
+			
 		</div>
+		<footer id="footer" class="footer">
+			<div>合计：<span>￥0</span></div>
+			<span id="pay">去结算</span>
+			<button class="_btn" type="button">确定复位</button>
+		</footer>
 	</div>
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<script src="__PUBLIC__/Home/js/filterpage.js"></script>
@@ -578,6 +514,31 @@
 		}
 		
 	})
+	//加载滤芯项
+	var lvxinBuy = [ 
+		{"filtername":"RO膜","filterbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","filterprice":"120"}, 
+		{"filtername":"滤芯膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120"}, 
+		{"filtername":"净水膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120"}, 
+	]; 
+    var lvxinList='';
+    for(var i = 0;i<lvxinBuy.length;i++){
+    	lvxinList+='<div class="goods">'+
+					'<div class="img"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt="正在加载..."></div>'+
+				'<div class="desc">'+
+					'<h5>RO膜</h5>'+
+					'<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>'+
+					'<div>'+
+						'<span class="price">￥<span>120.00</span></span>'+
+						'<span class="num">'+
+							'<input type="button" value="-" class="minus">'+
+							'<input class="number" type="number" value="0">'+
+							'<input type="button" value="+" class="plus">'+
+						'</span>'+
+					'</div>'+
+				'</div>'+
+			'</div>';
+    }
+    $("#lvxinBuy").html(lvxinList);
 	</script>
 </body>
 </html>
