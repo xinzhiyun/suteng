@@ -221,6 +221,17 @@
             $("textarea").val('');
             $('#st-add').modal('show');
         }
+        // 添加滤芯
+        function edit() {
+            $("input[name='filtername']").val('');
+            $("input[name='alias']").val('');
+            $("input[name='price']").val('');
+            $("input[name='timelife']").val('');
+            $("input[name='flowlife']").val('');
+            $("input[name='url']").val('');
+            $("textarea").val('');
+            $('#st-add').modal('show');
+        }
         $('.st-add').click(function(e){
             var filtername = $("input[name='filtername']").val();
             var alias = $("input[name='alias']").val();

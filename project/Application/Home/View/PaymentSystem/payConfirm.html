@@ -698,10 +698,14 @@
 			/*
 				发票信息
 			 */
-			var voiceArr = JSON.parse(sessionStorage.getItem("voiceArr"));
-			console.log(voiceArr[0].type, voiceArr[0].info)
-			if(voiceArr[0].type && voiceArr[0].info && voiceArr[0].voicehead && voiceArr[0].phone){
-				$(".ynticket>a>span").text(voiceArr[0].type+' / '+ voiceArr[0].info)
+			var voiceArr
+			if(sessionStorage.getItem("voiceArr")){
+				voiceArr = JSON.parse(sessionStorage.getItem("voiceArr"));
+				console.log(voiceArr[0].type, voiceArr[0].info)
+
+				if(voiceArr[0].type && voiceArr[0].info && voiceArr[0].voicehead && voiceArr[0].phone){
+					$(".ynticket>a>span").text(voiceArr[0].type+' / '+ voiceArr[0].info)
+				}
 			}
 			/******** 订单遍历--结束--	**********/
 			/*
@@ -738,19 +742,19 @@
 				$('.paystyle').slideUp("slow");
 			})
 			// 模态框的js
-			$(function(){
-		      	$(".start").on("click",function(){
-		       	   $(".modal").addClass("in");
-		       	   $(".modal").css('z-index','1001');
-		       	   $(".modelAll").css('display','block');
-		       	   $(".modal-backup").css('display','block');
-		       });
-		      	$(".close").on("click",function(){
-		       	   $(".modal").removeClass('in');
-		       	   $(".modal").css('z-index','-1');
-		       	   $(".modal-backup").fadeOut('slow');
-		       });
-	      	})
+			// $(function(){
+		 //      	$(".start").on("click",function(){
+		 //       	   $(".modal").addClass("in");
+		 //       	   $(".modal").css('z-index','1001');
+		 //       	   $(".modelAll").css('display','block');
+		 //       	   $(".modal-backup").css('display','block');
+		 //       });
+		 //      	$(".close").on("click",function(){
+		 //       	   $(".modal").removeClass('in');
+		 //       	   $(".modal").css('z-index','-1');
+		 //       	   $(".modal-backup").fadeOut('slow');
+		 //       });
+	  //     	})
 	      	/*
 	      		点击立即支付
 	      	 */ 
@@ -766,15 +770,34 @@
 						console.log('银币');
 						break;
 					case '3':
-						console.log('金币');
+						console.log('微信支付');
+						//请求微信支付方法
+						$.ajax({
+							url: "{{:U('Home/PaymentSystem/orderPay')}}",
+							type: 'post',
+							data: {order: dangdanID},
+							success: function(res){
+								console.log(res);
+								if(res == -1){
+									console.log('支付错误！');
+								}else{
+									// 调用微信支付方法
+									weixinPay(res);
+								}
+							},
+							error: function(res){
+								console.log('失败！ ',res);
+							}
+
+						});
 						break;
 					case '4':
-						console.log('微信支付');
-						weixinPay()
-						break;
-					case '5':
 						console.log('支付宝支付');
 						break;
+					case '5':
+						console.log('银联支付');
+						break;
+					
 					default:
 						console.log('无');
 						break;

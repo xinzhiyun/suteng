@@ -16,6 +16,7 @@ class VendorsController extends Controller
 	 */
     public function index()
     {
+        // dump($_SESSION['vendorInfo']);die;
         // 获取用户open_id
         if(empty($_SESSION['vendorInfo']['open_id'])){
         	// 请先登录

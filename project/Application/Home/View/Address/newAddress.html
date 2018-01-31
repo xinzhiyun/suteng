@@ -53,6 +53,14 @@
 			justify-content: flex-end;
 			align-items: center;
 		}
+		#info>div>span:nth-of-type(2)>input:nth-of-type(2) {
+			width: 6%;
+			padding: 1%;
+			margin: 0 6px;
+			border: none;
+			outline: none;
+			background: #fff;
+		}
 		#info>div>span:nth-of-type(2)>label {
 			color: #8b8787;
 		}
@@ -198,27 +206,29 @@
 	<div id="info">
 		<div>
 			<span>收&nbsp;&nbsp;货&nbsp;人:</span>
-			<input type="text" placeholder="收货人">
+			<input type="text" class="name" placeholder="收货人">
 		</div>
 		<div>
 			<span>联系电话:</span>
-			<input type="text" placeholder="电话">
+			<input type="text" class="phone" placeholder="电话">
 		</div>
 		<div>
 			<span>所在地区:</span>
 			<span>
-				<input type="button" id="areaID" class="area" value="请选择  >">
+				<input type="button" id="areaID" class="area" value="请选择">
+				<input type="button" readonly value=">">
 			</span>
 			
 		</div>
 		<div>
 			<span>街&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道:</span>
 			<span>
-				<input type="button" id="townID" class="town" value="请选择  >">
+				<input type="button" id="townID" class="town" value="请选择">
+				<input type="button" readonly value=">">
 			</span>
 			
 		</div>
-		<textarea name="" id="" cols="30" rows="10" placeholder="请谨慎填写详细地址"></textarea>
+		<textarea name="" id="addressDetial" cols="30" rows="10" placeholder="请谨慎填写详细地址"></textarea>
 	</div>
 	<div id="areaChoose" class="citys">
 		<div class="areaChoosebg"></div>
@@ -265,14 +275,14 @@
 		// 关闭地区选择，并显示到对应区域
 		$("#confirmAreaChoose").on("click", function(){
 			
-			$("#areaID").val( (!city && !area) ? '请选择  >' : city +' '+ area + '  >');
+			$("#areaID").val( (!city && !area) ? '请选择' : city + area);
 
 			// 获取 街道 选中的值
 			$("#townID")
 			.val(
 				!($('#areaChoose select[name="town"]').find("option:selected").text())
-				? '请选择  >'
-				: $('#areaChoose select[name="town"]').find("option:selected").text() + '  >'
+				? '请选择'
+				: $('#areaChoose select[name="town"]').find("option:selected").text()
 			);
 
 			$("#areaChoose").css({display: "none"});
@@ -292,7 +302,7 @@
 		    			$town.show();
 
 		    			for(i in town){
-		    				$town.append('<option value="'+i+'">'+town[i]+'</option>');
+		    				$town.append('<option value="'+i+town[i]+'</option>');
 		    			};
 	    				// console.log(town);
 
@@ -315,8 +325,59 @@
 	    },function(api){
 	        var info = api.getInfo();
 	        townFormat(info);
-
 	    });
+
+	    /*
+	    	name: 收货人
+	    	phone: 电话
+	    	areaID: 市县
+	    	town: 街道
+	     */
+	    // 验证姓名，电话，地区的正则表达式
+	    var nameReg, phoneReg, areaReg;
+	    nameReg = /^[\w\-\u4e00-\u9fa5]{2,255}$/u;
+	    phoneReg = /^1((((3[0-35-9])|([5|8][0-9])|(4[5|7|9])|66|(7[3|5-8])|(9[8|9]))\d)|(34[0-8]))\d{7}$/;
+	    areaReg = /^[\w\-\u4e00-\u9fa5]{2,255}$/u;
+
+	    // 点击’存储‘
+	    $("#saveAddress").click(function(){
+	    	// 存储新建地址的个人信息
+	    	var nameRes = nameReg.test($(".name").val());
+	    	var phoneRes = phoneReg.test($(".phone").val());
+	    	var areaIDRes = nameReg.test($("#areaID").val());
+	    	var townRes = nameReg.test($(".town").val());
+	    	var addressDetialRes = nameReg.test($("#addressDetial").val());
+
+	    	var newAddressObj = {};
+	    	if(nameRes && phoneRes && areaIDRes && townRes && addressDetialRes && $(".town").val() != '请选择'){
+	    		console.log('通过！')
+
+		    	newAddressObj['name'] = $(".name").val();
+		    	newAddressObj['phone'] = $(".phone").val();
+		    	newAddressObj['areaID'] = $("#areaID").val();
+		    	newAddressObj['town'] = $(".town").val();
+		    	newAddressObj['addressDetial'] = $("#addressDetial").val();
+
+	    	}else if(!nameRes){
+	    		// 验证姓名
+	    		console.log('请输入符合规范的姓名！');
+
+	    	}else if(!phoneRes){
+	    		console.log('请输入正确的电话号码！');
+
+	    	}else if(!areaIDRes){
+	    		console.log('请选择地区！');
+	    		
+	    	}else if(!townRes || $(".town").val() == '请选择'){
+	    		console.log('请选择街道！');
+	    		
+	    	}else if(!addressDetialRes){
+	    		console.log('请输入详细地址！');
+	    		
+	    	}
+
+	    	console.log(newAddressObj)
+	    })
 
 	</script>
 </body>

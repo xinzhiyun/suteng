@@ -21,7 +21,7 @@ class LoginController extends Controller
                     // 万事大吉
                     $_SESSION['vendorInfo'] = $info;
                     // 分销商主页
-                    $this->redirect('vendors/index');
+                    $this->redirect('Vendors/index');
                 }else{
                     $this->error('您的密码输入错误！');
                 }
@@ -31,13 +31,12 @@ class LoginController extends Controller
 
         }else{
             // 如果用户已经登录
-            if($_SESSION['vendorInfo']){
+            if(!empty($_SESSION['vendorInfo'])){
                 // 分销商主页
-                $this->redirect('vendors/index');    
+                $this->redirect('Vendors/index');    
             }else{
                 $this->display(); 
             }
-            
         }
     }
 

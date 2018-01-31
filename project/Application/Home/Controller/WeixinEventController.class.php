@@ -252,8 +252,8 @@ class WeixinEventController extends Controller
         // $fromUser = $fromUser;
         $title = '会员登录'; 
         $description = '欢迎加入速腾集团，成为速腾集团全球合伙人。'; 
-        $src = 'http://'.$_SERVER['SERVER_NAME'].'/Public/Vendors/user.jpg';
-        $url = 'http://'.$_SERVER['SERVER_NAME'].U('Home/Index/index');
+        $src = 'http://test.dianqiukj.com/Public/Vendors/user.jpg';
+        $url = 'http://test.dianqiukj.com/index.php/Home/Index/index';
         $template = "<xml>
                         <ToUserName><![CDATA[%s]]></ToUserName>
                         <FromUserName><![CDATA[%s]]></FromUserName>
@@ -279,8 +279,8 @@ class WeixinEventController extends Controller
         $fromUser = $fromUser;
         $title = '分销商注册'; 
         $description = '欢迎加入速腾集团，成为速腾集团全球合伙人。'; 
-        $src = 'http://'.$_SERVER['SERVER_NAME'].'/Public/Vendors/partner.jpg';
-        $url = 'http://'.$_SERVER['SERVER_NAME'].U('Home/RegisteredVendor/index');
+        $src = 'http://test.dianqiukj.com/Public/Vendors/partner.jpg';
+        $url = 'http://test.dianqiukj.com/index.php/Home/RegisteredVendor/index.html';
         $template = "<xml>
                         <ToUserName><![CDATA[%s]]></ToUserName>
                         <FromUserName><![CDATA[%s]]></FromUserName>
