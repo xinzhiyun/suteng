@@ -575,6 +575,7 @@
 	</div>
 	</div>
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
+	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script>
 		//微信接口
 		// wx.config({
@@ -598,8 +599,10 @@
 
 			// 获取后台传来的默认地址
 			var addressInfo;
-			if($("#addressInfo").val()){ 
-				addressInfo = JSON.parse($("#addressInfo").val());
+			// console.log($("#addressInfo").val())
+			if(($("#addressInfo").val())!='null'){ 
+				// alert(1)
+			addressInfo = JSON.parse($("#addressInfo").val());
 				console.log(addressInfo);
 				if(addressInfo){ 
 					var addresssHTML = 
@@ -614,7 +617,7 @@
 					$("#hLeft").html(addresssHTML);
 				}
 			} else{
-				$("#hLeft").html('添加新地址');
+				$("#hLeft").html('<p style="text-align:center;">添加新地址</p>');
 			}
 			$("#main").append('<h3 class="dingdanID">订单编号：'+dangdanID+'</h3>')
 			/*
@@ -752,6 +755,10 @@
 			// })
 			//支付方式
 			$('#footerContain').click(function(){
+				if($("#hLeft>p").text() == "添加新地址"){
+					parent.layer.msg('请添加一个地址！');
+					return false;
+				}
 				$('.paystyle').slideDown("slow");
 			})
 			// 付款方式的单选框

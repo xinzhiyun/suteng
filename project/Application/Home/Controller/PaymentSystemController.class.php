@@ -22,7 +22,8 @@ class PaymentSystemController extends CommonController
         $weixin = new WeixinJssdk;
         $signPackage = $weixin->getSignPackage();
         // 查询用户微信中的openid
-        $openId = $weixin->GetOpenid();
+        // $openId = $weixin->GetOpenid();
+        $openId = 'oQktJwL8ioR4DoxSQmikdzekbUyU';
         //分配数据        
         $this->assign('info',$signPackage);
         $this->assign('openId',$openId);
@@ -64,8 +65,8 @@ class PaymentSystemController extends CommonController
                 if(!$detail_statut) E('请重新结算',603);
             }
             $res = $orders->add($order);
-            $$cart_status = M('Cart')->where('uid='.session('user.id'))->delete();
-            if($res && $cart_status){
+            if($res){
+                M('Cart')->where('uid='.session('user.id'))->delete();
                 $orders->commit();
                 $this->ajaxReturn($order['order_id']);
             } else {
