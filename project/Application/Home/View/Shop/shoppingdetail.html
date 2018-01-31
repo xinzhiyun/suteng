@@ -336,8 +336,8 @@
 				console.log('成功！ ',res);
 				goodsDetail = res.goodsDetail[0];
 				var goodsDetail_html = '', commentInfo_html = '';
-				res.goodsDetail[0].desc = null ? '商品暂无描述' : res.goodsDetail[0].desc;
-				res.goodsDetail[0].attr = null ? '' : res.goodsDetail[0].attr;
+				res.goodsDetail[0].desc == null ? '商品暂无描述' : res.goodsDetail[0].desc;
+				res.goodsDetail[0].attr == null ? '' : res.goodsDetail[0].attr;
 				// 输出商品详情
 				goodsDetail_html = '<div class="detailpic">'+
 						'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
@@ -363,14 +363,25 @@
 				console.log(res.commentInfo[0])
 				// 如果有评价则遍历出来		
 				if(res.commentInfo){
-
-					for(var i=0; i<res.commentInfo.length; i++){
-						res.commentInfo[i].content = null ? '' : res.commentInfo[i].content;
-						res.commentInfo[i].path = null ? '' : res.commentInfo[i].path;
+					if(res.commentInfo.length > 1){
+						for(var i=0; i<res.commentInfo.length; i++){
+							res.commentInfo[i].nickname = res.commentInfo[i].nickname == null ? '不知道是谁' : res.commentInfo[i].nickname;
+							res.commentInfo[i].content = res.commentInfo[i].content == null ? '该用户暂未评论' : res.commentInfo[i].content;
+							res.commentInfo[i].path = res.commentInfo[i].path == null ? '' : res.commentInfo[i].path;
+							commentInfo_html += '<div class="detailItem">'+
+								'<p><em><img src="'+ res.commentInfo[i].head +'" alt=""></em><b>'+ res.commentInfo[i].nickname +'</b></p>'+
+								'<p>'+ res.commentInfo[i].content +'</p>'+
+								'<span><img src="'+ res.commentInfo[i].path +'" alt=""></span>'+
+							'</div>';
+						}
+					}else{
+						res.commentInfo.nickname = res.commentInfo.nickname == null ? '不知道是谁' : res.commentInfo.nickname;
+						res.commentInfo.content = res.commentInfo.content == null ? '该用户暂未评论' : res.commentInfo.content;
+						res.commentInfo.path = res.commentInfo.path == null ? '' : res.commentInfo.path;
 						commentInfo_html += '<div class="detailItem">'+
-							'<p><em><img src="'+ res.commentInfo[i].head +'" alt=""></em><b>'+ res.commentInfo[i].nickname +'</b></p>'+
-							'<p>'+ res.commentInfo[i].content +'</p>'+
-							'<span><img src="'+ res.commentInfo[i].path +'" alt=""></span>'+
+							'<p><em><img src="'+ res.commentInfo.head +'" alt=""></em><b>'+ res.commentInfo.nickname +'</b></p>'+
+							'<p>'+ res.commentInfo.content +'</p>'+
+							'<span><img src="'+ res.commentInfo.path +'" alt=""></span>'+
 						'</div>';
 					}
 				}else{
