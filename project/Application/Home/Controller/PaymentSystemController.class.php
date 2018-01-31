@@ -10,6 +10,14 @@ class PaymentSystemController extends CommonController
      */
     public function payConfirm()
     {
+        $address = D('Address');
+        $where['uid'] = session('user.id');
+        $where['status'] = 0;
+        $data = $address->where($where)->find();
+        $assign = [
+            'data' => json_encode($data),
+        ];
+        $this->assign($assign);
         $this->display();
     }
 
