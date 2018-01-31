@@ -124,7 +124,7 @@ $(function(){
 	                +'%</span></p>'+
 	                '<p class="_text_align">'+
 	                    '<div class="progress _progress _width">'+
-	                       '<div class="iconfont icon-kuang1"><span class="icon-zhengque" name='+ 'filter'+i +'></span></div>'+
+	                       '<div class="iconfont icon-kuang1"><span name='+ 'filter'+i +'></span></div>'+
 	                      '<div class="progress-bar progress-bar-striped" role="progressbar" style="width:'+
 	                     (redaypercent?redaypercent:0)+
 	                      '%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>'+
@@ -161,7 +161,7 @@ $(function(){
 	                +'%</span></p>'+
 	                '<p class="_text_align">'+
 	                    '<div class="progress _progress _width">'+
-	                       '<div class="iconfont icon-kuang1"><span class="icon-zhengque" name='+ 'filter'+i +'></span></div>'+
+	                       '<div class="iconfont icon-kuang1"><span name='+ 'filter'+i +'></span></div>'+
 	                      '<div class="progress-bar progress-bar-striped" role="progressbar" style="width:'+
 	                     (reflowpercent?reflowpercent:0) +
 	                      '%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>'+
@@ -198,7 +198,7 @@ $(function(){
 	                    '%</span></p>'+
 	                    '<p class="_text_align">'+
 	                        '<div class="progress _progress _width">'+
-	                           '<div class="iconfont icon-kuang1"><span class="icon-zhengque" name='+ 'filter'+i +'></span></div>'+
+	                           '<div class="iconfont icon-kuang1"><span name='+ 'filter'+i +'></span></div>'+
 	                          '<div class="progress-bar progress-bar-striped" role="progressbar" style="width:'+
 	                         (redaypercent?redaypercent:0) +
 	                          '%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>'+
@@ -232,7 +232,7 @@ $(function(){
 	                    '%</span></p>'+
 	                    '<p class="_text_align">'+
 	                        '<div class="progress _progress _width">'+
-	                           '<div class="iconfont icon-kuang1"><span class="icon-zhengque" name='+ 'filter'+i +'></span></div>'+
+	                           '<div class="iconfont icon-kuang1"><span name='+ 'filter'+i +'></span></div>'+
 	                          '<div class="progress-bar progress-bar-striped" role="progressbar" style="width:'+
 	                         (reflowpercent?reflowpercent:0) +
 	                          '%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>'+
@@ -314,7 +314,7 @@ $(function(){
 										'%</span></p>'+
 										'<p class="_text_align">'+
 											'<div class="progress _progress _width">'+
-											   '<div class="iconfont icon-kuang1"><span class="icon-zhengque" name='+ 'filter'+i +'></span></div>'+
+											   '<div class="iconfont icon-kuang1"><span name='+ 'filter'+i +'></span></div>'+
 											  '<div class="progress-bar progress-bar-striped" role="progressbar" style="width:'+
 												redaypercent +
 											  '%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>'+
@@ -353,7 +353,7 @@ $(function(){
 							'%</span></p>'+
 							'<p class="_text_align">'+
 								'<div class="progress _progress _width">'+
-								   '<div class="iconfont icon-kuang1"><span class="icon-zhengque" name='+ 'filter'+i +'></span></div>'+
+								   '<div class="iconfont icon-kuang1"><span name='+ 'filter'+i +'></span></div>'+
 								  '<div class="progress-bar progress-bar-striped" role="progressbar" style="width:'+
 								 reflowpercent +
 								  '%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>'+
@@ -387,7 +387,7 @@ $(function(){
 								'%</span></p>'+
 								'<p class="_text_align">'+
 									'<div class="progress _progress _width">'+
-									   '<div class="iconfont icon-kuang1"><span class="icon-zhengque" name='+ 'filter'+i +'></span></div>'+
+									   '<div class="iconfont icon-kuang1"><span name='+ 'filter'+i +'></span></div>'+
 									  '<div class="progress-bar progress-bar-striped" role="progressbar" style="width:'+
 									 redaypercent +
 									  '%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>'+
@@ -422,7 +422,7 @@ $(function(){
 								'%</span></p>'+
 								'<p class="_text_align">'+
 									'<div class="progress _progress _width">'+
-									   '<div class="iconfont icon-kuang1"><span class="icon-zhengque" name='+ 'filter'+i +'></span></div>'+
+									   '<div class="iconfont icon-kuang1"><span name='+ 'filter'+i +'></span></div>'+
 									  '<div class="progress-bar progress-bar-striped" role="progressbar" style="width:'+
 									 reflowpercent +
 									  '%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>'+
