@@ -33,7 +33,7 @@ class GoodsModel extends BaseModel
             ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
             ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
             ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
-            ->field('p.*,g.*,c.name cname,av.val,a.attr,gd.*')
+            ->field('p.*,g.*,c.name cname,av.val,a.attr,gd.*,p.path')
             ->order(' addtime desc')
             ->select();
         return $goodsData;

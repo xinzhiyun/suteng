@@ -219,6 +219,37 @@ class ShopController extends CommonController
         }
     }
 
+    // 添加商品图片
+    public function goodsAddPic()
+    {
+        try {
+            $pic = D('Pic');
+            $data['gid'] = I('get.id');
+            $upload = new \Think\Upload();// 实例化上传类
+            $upload->maxSize   =     3145728 ;// 设置附件上传大小
+            $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
+            $upload->rootPath  =     './Uploads/'; // 设置附件上传根目录
+            $upload->savePath  =     ''; // 设置附件上传（子）目录
+            // 上传文件 
+            $info   =   $upload->upload();
+            if(!$info) E($upload->getError(),603);
+            $data['picname'] = $info['pic']['savename'];
+            $data['path'] = $info['pic']['savepath'].$info['pic']['savename'];
+            $res = $pic->add($data);
+            if($res){
+                E('添加成功',200);
+            } else {
+                E('添加失败',604);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
     // 根据pid获取分类
     public function getCate()
     {
