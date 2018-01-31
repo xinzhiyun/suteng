@@ -105,25 +105,27 @@ class PaymentSystemController extends CommonController
     public function orderPay()
     {
         if(IS_POST){
+            // echo 1;
             // // 准备订单查询数据
-            // $showWhere['order'] = I('post.order');
+            $showWhere['order_id'] = I('post.order');
+                
             // // 查询订单表
-            // $orderData = M('shop_order')->where($showWhere)->find();
-
-            // // 判断订单是否存在
-            // if($orderData){
-            //     // 订单金额
-            //     $money = $orderData['g_price'];
-            //     // 订单号码
-            //     $order_id = $orderData['order_id'];
-            //     // 订单描述
-            //     $content = '速腾商城商品购买';
-            //     $this->uniformOrder($money,$order_id,$content);
-            // }else{
-            //     // 订单不存在
-            //     echo -1;
-            // }
-            $this->uniformOrder(100,123456,'content');
+            $orderData = M('shop_order')->where($showWhere)->find();
+            // print_r($orderData);
+            // 判断订单是否存在
+            if($orderData){
+                // 订单金额
+                $money = $orderData['g_price'];
+                // 订单号码
+                $order_id = $orderData['order_id'];
+                // 订单描述
+                $content = '速腾商城商品购买';
+                $this->uniformOrder($money,$order_id,$content);
+            }else{
+                // 订单不存在
+                echo -1;
+            }
+            // $this->uniformOrder(100,123456,'content');
         }
     }
 
@@ -168,7 +170,7 @@ class PaymentSystemController extends CommonController
     }
 
     /**
-     * 统一下单并返回数据
+     * 统一下单充值并返回数据
      * @return string json格式的数据，可以直接用于js支付接口的调用
      * @param  [type] $money    [订单金额]
      * @param  [type] $order_id [订单号码]
@@ -214,6 +216,67 @@ class PaymentSystemController extends CommonController
         // 支付成功的回调地址
         // 微信充值回调地址
         $input->SetNotify_url('http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/congzhiNotify'));
+        // 支付方式 JS-SDK 类型是：JSAPI
+        $input->SetTrade_type("JSAPI");
+        // 用户在公众号的唯一标识
+        $input->SetOpenid($openId);
+        // 统一下单
+        $order = \WxPayApi::unifiedOrder($input);
+
+        // 返回支付需要的对象JSON格式数据
+        $jsApiParameters = $tools->GetJsApiParameters($order);
+
+        echo $jsApiParameters;
+        exit;
+    }
+
+    /**
+     * 统一下单订单支付并返回数据
+     * @return string json格式的数据，可以直接用于js支付接口的调用
+     * @param  [type] $money    [订单金额]
+     * @param  [type] $order_id [订单号码]
+     * @param  [type] $content  [订单详情]
+     */
+    public function uniformOrder($money,$order_id,$content)
+    {
+        //dump($_SESSION);die;
+        // $content = substr($content,0,80);
+        // 将金额强转换整数
+        $money = $money * 100;
+        // 冲值测试额1分钱
+        $money = 1;
+        // 用户在公众号的唯一ID
+        $openId = $_SESSION['user']['open_id'];
+
+
+        //微信examle的WxPay.JsApiPay.php
+        vendor('WxPay.jsapi.WxPay#JsApiPay');
+
+        $tools = new \JsApiPay();
+
+        //②、统一下单
+        vendor('WxPay.jsapi.WxPay#JsApiPay');
+        $input = new \WxPayUnifiedOrder();
+        // 傳用戶ID
+        //$input->SetDetail($uid);
+        // 产品内容
+        $input->SetBody('点球科技商品购买');
+        // 唯一订单ID
+        $input->SetAttach($order_id);
+        // 设置商户系统内部的订单号,32个字符内、可包含字母, 其他说明见商户订单号
+        $input->SetOut_trade_no(gerOrderId());
+        // 产品金额单位为分
+        // $input->SetTotal_fee($money);
+        // 调试用1分钱
+        $input->SetTotal_fee($money);
+        // 设置订单生成时间
+        // $input->SetTime_start(date("YmdHis"));
+        // 设置订单失效时间
+        // $input->SetTime_expire(date("YmdHis", time() + 300));
+        //$input->SetGoods_tag($uid);
+        // 支付成功的回调地址
+        // 微信充值回调地址
+        $input->SetNotify_url('http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/notify'));
         // 支付方式 JS-SDK 类型是：JSAPI
         $input->SetTrade_type("JSAPI");
         // 用户在公众号的唯一标识
