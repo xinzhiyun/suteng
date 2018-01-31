@@ -12,7 +12,53 @@ class PaymentSystemController extends CommonController
     {
         $this->display();
     }
-    
+
+    // 信息确认并生成订单
+    public function information()
+    {
+        try {
+            $goods = D('Goods');
+            $orders = D('ShopOrder');
+            $order_detail = D('OrderDetail');
+            $data = json_decode($_POST['data'],'true');
+            $orders->startTrans();
+            $order['uid'] = session('user.id');
+            $order['order_id'] = gerOrderId();
+            $order['time'] = time();
+            $order['cost'] = "";
+            $detail = [];
+            foreach($data as $key => $value){
+                $where['gid'] = $value['gid'];
+                $order['g_price'] += $value['money'];
+                $order['num'] += $value['num'];
+                $arr = $goods->alias('g')->where($where)->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')->field('gd.price,gd.cost')->find();
+                $order['cost'] += $value['num']*$arr['cost'];
+                $detail['order_id'] = $order['order_id'];
+                $detail['gid'] = $value['gid'];
+                $detail['num'] = $value['num'];
+                $detail['cost'] = $arr['cost'];
+                $detail['price'] = $arr['price'];
+                $detail['addtime'] = time();
+                $detail_statut = $order_detail->add($detail);
+                if(!$detail_statut) E('请重新结算',603);
+            }
+            $res = $orders->add($order);
+            // dump($order['order']);die;
+            if($res){
+                $orders->commit();
+                $this->ajaxReturn($order['order_id']);
+            } else {
+                $orders->rollback();
+                E('请重新购买',603);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+        }
+    }
+
     /**
      * [paytosuccess 支付成功]
      * @return [type] [description]
@@ -63,7 +109,7 @@ class PaymentSystemController extends CommonController
                     '500元1200个银币',
                 ];
         $je = $jeArr[$id];
-        // 
+        //
         //$openId = $_SESSION['user']['open_id'];
 
         //dump($openId);die;
@@ -122,9 +168,9 @@ class PaymentSystemController extends CommonController
         $input->SetTrade_type("JSAPI");
         // 用户在公众号的唯一标识
         $input->SetOpenid($openId);
-        // 统一下单 
+        // 统一下单
         $order = \WxPayApi::unifiedOrder($input);
-        
+
         // 返回支付需要的对象JSON格式数据
         $jsApiParameters = $tools->GetJsApiParameters($order);
 
@@ -133,5 +179,3 @@ class PaymentSystemController extends CommonController
     }
 
 }
-
-

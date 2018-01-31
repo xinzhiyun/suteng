@@ -10,6 +10,9 @@ class AddressController extends CommonController
      */
     public function index()
     {
+        $address = D('Address');
+        $uid = session('user.id');
+        $address ->where('uid='.$uid)->select();
         $this->display();
     }
 

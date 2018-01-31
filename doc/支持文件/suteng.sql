@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50548
 File Encoding         : 65001
 
-Date: 2018-01-30 16:25:21
+Date: 2018-01-30 22:22:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -151,7 +151,6 @@ CREATE TABLE `st_auth_group` (
 INSERT INTO `st_auth_group` VALUES ('1', '超级管理员', '1', '1,2,28,5,6,7,8,10,11,9,14,15,32,33,34,16,17,18,19,20,21,22,23,24,25,26,30,31');
 INSERT INTO `st_auth_group` VALUES ('2', '一级经销商', '1', '1,2,4,3');
 INSERT INTO `st_auth_group` VALUES ('3', '二级经销商', '1', '1,2,4,3');
-INSERT INTO `st_auth_group` VALUES ('4', '三级经销商', '1', '1,2,3');
 
 -- ----------------------------
 -- Table structure for st_auth_group_access
@@ -169,7 +168,6 @@ CREATE TABLE `st_auth_group_access` (
 -- Records of st_auth_group_access
 -- ----------------------------
 INSERT INTO `st_auth_group_access` VALUES ('1', '1');
-INSERT INTO `st_auth_group_access` VALUES ('1', '4');
 
 -- ----------------------------
 -- Table structure for st_auth_rule
@@ -268,12 +266,13 @@ CREATE TABLE `st_cart` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '购物车状态0未结算，1已结算',
   `addtime` varchar(12) NOT NULL COMMENT '添加购物时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_cart
 -- ----------------------------
 INSERT INTO `st_cart` VALUES ('1', '22', '3', '2', '0', '');
+INSERT INTO `st_cart` VALUES ('2', '1', '10', '2', '0', '13586423561');
 
 -- ----------------------------
 -- Table structure for st_category
@@ -590,17 +589,19 @@ INSERT INTO `st_filters` VALUES ('14', '土木工程', '123', '', '3.22', '320',
 DROP TABLE IF EXISTS `st_flow`;
 CREATE TABLE `st_flow` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '充值流水ID',
-  `uid` int(11) unsigned NOT NULL COMMENT '用户ID',
+  `user_id` int(11) unsigned NOT NULL COMMENT '用户ID',
   `order_id` varchar(32) NOT NULL COMMENT '订单编号',
   `money` decimal(25,0) unsigned DEFAULT NULL COMMENT '充值金额',
-  `mode` tinyint(1) unsigned DEFAULT NULL COMMENT '充值方式(0：系统赠送 1：微信 2：支付宝)',
-  `flow` int(11) unsigned NOT NULL COMMENT '流量',
-  `num` int(11) unsigned NOT NULL COMMENT '套餐数量',
-  `describe` varchar(255) DEFAULT NULL COMMENT '套餐描述',
-  `currentflow` int(11) unsigned DEFAULT NULL COMMENT '当前流量',
+  `mode` tinyint(1) unsigned DEFAULT NULL COMMENT '充值方式(0：金币 1：银币  2：微信 3：支付宝 4：银联)',
+  `gold_num` int(11) unsigned NOT NULL COMMENT '金币',
+  `silver` int(11) unsigned NOT NULL COMMENT '银币',
+  `describe` varchar(255) DEFAULT NULL COMMENT '充值描述',
+  `current_gold_num` varchar(255) DEFAULT NULL COMMENT '当前金币',
+  `current_silver` int(11) unsigned DEFAULT NULL COMMENT '当前银币',
   `addtime` int(11) NOT NULL COMMENT '充值时间',
+  `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_flow
@@ -617,8 +618,8 @@ CREATE TABLE `st_goods` (
   `name` varchar(64) NOT NULL COMMENT '商品名称',
   `pic` varchar(255) DEFAULT NULL,
   `desc` text COMMENT '商品描述',
-  `cost` double(6,2) DEFAULT NULL COMMENT '商品成本',
-  `price` double(6,2) DEFAULT NULL COMMENT '商品单价',
+  `cost` double(12,2) DEFAULT NULL COMMENT '商品成本',
+  `price` double(12,2) DEFAULT NULL COMMENT '商品单价',
   `stock` int(11) DEFAULT '0' COMMENT '商品库存',
   `status` tinyint(1) DEFAULT '0' COMMENT '商品状态，默认0上架，1为下架',
   `addtime` int(12) NOT NULL COMMENT '商品添加时间',
@@ -630,11 +631,11 @@ CREATE TABLE `st_goods` (
 -- ----------------------------
 -- Records of st_goods
 -- ----------------------------
-INSERT INTO `st_goods` VALUES ('1', '8', null, '小米', null, null, null, null, '0', '0', '1516970804', '1516970804');
-INSERT INTO `st_goods` VALUES ('4', '8', null, '三星', null, null, null, null, '0', '0', '1516970804', '1516971060');
-INSERT INTO `st_goods` VALUES ('5', '21', null, '三星', null, null, null, null, '0', '0', '1516970804', '1516971093');
-INSERT INTO `st_goods` VALUES ('6', '22', null, '苹果', null, null, null, null, '0', '0', '1516970804', '1516971093');
-INSERT INTO `st_goods` VALUES ('22', '10', null, '手机', null, null, null, null, '0', '0', '1517190942', '1517190942');
+INSERT INTO `st_goods` VALUES ('1', '8', null, '小米', null, null, null, null, '300', '0', '1516970804', '1516970804');
+INSERT INTO `st_goods` VALUES ('4', '8', null, '三星', null, null, null, null, '300', '0', '1516970804', '1516971060');
+INSERT INTO `st_goods` VALUES ('5', '21', null, '三星', null, null, null, null, '300', '0', '1516970804', '1516971093');
+INSERT INTO `st_goods` VALUES ('6', '22', null, '苹果', null, null, null, null, '300', '0', '1516970804', '1516971093');
+INSERT INTO `st_goods` VALUES ('22', '10', null, '手机', null, null, null, null, '300', '0', '1517190942', '1517190942');
 
 -- ----------------------------
 -- Table structure for st_goods_detail
@@ -643,8 +644,8 @@ DROP TABLE IF EXISTS `st_goods_detail`;
 CREATE TABLE `st_goods_detail` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `gid` int(11) NOT NULL COMMENT '关联商品ID',
-  `price` double(6,2) NOT NULL COMMENT '商品单价',
-  `cost` double(6,2) NOT NULL COMMENT '商品成本',
+  `price` double(12,2) NOT NULL COMMENT '商品单价',
+  `cost` double(12,2) NOT NULL COMMENT '商品成本',
   `stock` int(11) NOT NULL COMMENT '库存',
   `desc` text CHARACTER SET utf8 COMMENT '商品描述',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '商品状态，0下架，默认1为上架',
@@ -655,25 +656,55 @@ CREATE TABLE `st_goods_detail` (
 -- ----------------------------
 -- Records of st_goods_detail
 -- ----------------------------
-INSERT INTO `st_goods_detail` VALUES ('1', '1', '1988.00', '1500.00', '325', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('3', '4', '3.00', '2.00', '12', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('4', '5', '30.25', '20.00', '215', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('5', '6', '300.00', '20.00', '302', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('6', '7', '2.00', '2.00', '10', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('7', '8', '3.02', '2.00', '362', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('8', '9', '3.02', '2.00', '362', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('9', '10', '3.00', '2.00', '265', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('10', '11', '3.00', '2.00', '265', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('11', '12', '3.20', '2.00', '12', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('12', '13', '3.20', '15.01', '1562', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('13', '14', '3.20', '15.01', '1562', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('14', '15', '3.20', '2.00', '123', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('15', '16', '3.20', '2.00', '123', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('16', '17', '2.02', '23.02', '123', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('17', '18', '2.02', '23.02', '123', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('18', '19', '2.02', '23.02', '123', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('19', '20', '2.02', '23.02', '123', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('20', '22', '306.00', '201.00', '165', null, '1');
+INSERT INTO `st_goods_detail` VALUES ('1', '1', '1988.00', '10.00', '325', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('3', '4', '3.00', '2.00', '12', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('4', '5', '30.25', '20.00', '215', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('5', '6', '300.00', '20.00', '302', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('6', '7', '2.00', '2.00', '10', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('7', '8', '3.02', '2.00', '362', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('8', '9', '3.02', '2.00', '362', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('9', '10', '3.00', '2.00', '265', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('10', '11', '3.00', '2.00', '265', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('11', '12', '3.20', '2.00', '12', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('12', '13', '3.20', '15.01', '1562', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('13', '14', '3.20', '15.01', '1562', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('14', '15', '3.20', '2.00', '123', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('15', '16', '3.20', '2.00', '123', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('16', '17', '2.02', '23.02', '123', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('17', '18', '2.02', '23.02', '123', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('18', '19', '2.02', '23.02', '123', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('19', '20', '2.02', '23.02', '123', '123456123456123', '1');
+INSERT INTO `st_goods_detail` VALUES ('20', '22', '306.00', '20.00', '165', '123456123456123', '1');
+
+-- ----------------------------
+-- Table structure for st_order_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `st_order_detail`;
+CREATE TABLE `st_order_detail` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` varchar(16) CHARACTER SET utf8 NOT NULL COMMENT '订单号码',
+  `gid` int(11) NOT NULL COMMENT '商品ID',
+  `num` int(11) NOT NULL COMMENT '商品数量',
+  `cost` double(12,2) NOT NULL,
+  `price` double(12,2) NOT NULL COMMENT '商品单价',
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `addtime` int(11) NOT NULL COMMENT '订单生成时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of st_order_detail
+-- ----------------------------
+INSERT INTO `st_order_detail` VALUES ('7', '119954568251015', '22', '3', '20.00', '306.00', '0', '1517321363');
+INSERT INTO `st_order_detail` VALUES ('8', '119954568251015', '1', '4', '10.00', '1988.00', '0', '1517321363');
+INSERT INTO `st_order_detail` VALUES ('13', '263573882426098', '22', '3', '20.00', '306.00', '0', '1517321440');
+INSERT INTO `st_order_detail` VALUES ('14', '263573882426098', '1', '4', '10.00', '1988.00', '0', '1517321440');
+INSERT INTO `st_order_detail` VALUES ('15', '644871529179373', '22', '3', '20.00', '306.00', '0', '1517321472');
+INSERT INTO `st_order_detail` VALUES ('16', '644871529179373', '1', '2', '10.00', '1988.00', '0', '1517321472');
+INSERT INTO `st_order_detail` VALUES ('17', '436106100658239', '22', '1', '20.00', '306.00', '0', '1517321521');
+INSERT INTO `st_order_detail` VALUES ('18', '436106100658239', '1', '2', '10.00', '1988.00', '0', '1517321521');
+INSERT INTO `st_order_detail` VALUES ('19', '538464792029082', '22', '10', '20.00', '306.00', '0', '1517321550');
+INSERT INTO `st_order_detail` VALUES ('20', '538464792029082', '1', '8', '10.00', '1988.00', '0', '1517321550');
 
 -- ----------------------------
 -- Table structure for st_orders
@@ -714,11 +745,12 @@ CREATE TABLE `st_pic` (
   `path` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '图片地址',
   PRIMARY KEY (`id`),
   KEY `id` (`id`,`gid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of st_pic
 -- ----------------------------
+INSERT INTO `st_pic` VALUES ('1', '22', '123', '132');
 
 -- ----------------------------
 -- Table structure for st_repair
@@ -746,23 +778,30 @@ CREATE TABLE `st_repair` (
 DROP TABLE IF EXISTS `st_shop_order`;
 CREATE TABLE `st_shop_order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` varchar(12) NOT NULL COMMENT '订单号码',
+  `order_id` varchar(20) NOT NULL COMMENT '订单号码',
   `uid` int(11) NOT NULL COMMENT '关联用户ID',
-  `gid` int(11) NOT NULL COMMENT '商品ID',
-  `g_cost` double(6,2) NOT NULL,
-  `g_price` double(6,2) NOT NULL COMMENT '商品单价',
-  `g_num` int(11) NOT NULL COMMENT '商品数量',
+  `address_id` int(11) DEFAULT NULL COMMENT '地址ID',
+  `gid` int(11) DEFAULT NULL COMMENT '商品ID',
+  `g_cost` double(12,2) NOT NULL COMMENT '商品总成本',
+  `g_price` double(12,2) NOT NULL COMMENT '商品总金额',
+  `g_num` int(11) NOT NULL COMMENT '商品总数量',
   `addtime` varchar(12) NOT NULL COMMENT '订单添加时间',
-  `status` tinyint(1) NOT NULL COMMENT '0已下单，1处理中，2已发货，3已收货，4退货处理中，5已退货，6申诉中，7订单完成，8未支付',
-  `mode` tinyint(1) NOT NULL COMMENT '支付方式(0-微信、1-支付宝、2-银联)',
+  `status` tinyint(1) NOT NULL DEFAULT '8' COMMENT '0已下单，1处理中，2已发货，3已收货，4退货处理中，5已退货，6申诉中，7订单完成，8未支付',
+  `mode` tinyint(1) DEFAULT NULL COMMENT '支付方式(0-微信、1-支付宝、2-银联、3-金币、4-银币)',
   `express` varchar(32) DEFAULT NULL COMMENT '快递单号',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_shop_order
 -- ----------------------------
-INSERT INTO `st_shop_order` VALUES ('1', '1352641253', '2', '22', '200.00', '300.00', '3', '1516970804', '0', '0', null);
+INSERT INTO `st_shop_order` VALUES ('1', '1352641253', '2', null, null, '200.00', '300.00', '3', '1516970804', '0', '0', null);
+INSERT INTO `st_shop_order` VALUES ('2', '675367051980743', '2', null, null, '0.00', '6882.00', '0', '', '8', null, null);
+INSERT INTO `st_shop_order` VALUES ('3', '119954568251015', '2', null, null, '0.00', '8870.00', '0', '', '8', null, null);
+INSERT INTO `st_shop_order` VALUES ('5', '263573882426098', '2', null, null, '0.00', '8870.00', '0', '', '8', null, null);
+INSERT INTO `st_shop_order` VALUES ('6', '644871529179373', '2', null, null, '0.00', '4894.00', '0', '', '8', null, null);
+INSERT INTO `st_shop_order` VALUES ('7', '436106100658239', '2', null, null, '0.00', '4282.00', '0', '', '8', null, null);
+INSERT INTO `st_shop_order` VALUES ('8', '538464792029082', '2', null, null, '0.00', '9999.99', '0', '', '8', null, null);
 
 -- ----------------------------
 -- Table structure for st_type
@@ -816,7 +855,7 @@ CREATE TABLE `st_users` (
   `address` varchar(255) DEFAULT NULL COMMENT '地址',
   `gold_num` int(11) NOT NULL COMMENT '金币数量 默认为0',
   `silver` int(11) NOT NULL COMMENT '金币数量 默认为0',
-  `balance` double(6,2) NOT NULL DEFAULT '0.00' COMMENT '用户余额，默认0.00',
+  `balance` double(12,2) NOT NULL DEFAULT '0.00' COMMENT '用户余额，默认0.00',
   `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -882,7 +921,7 @@ CREATE TABLE `st_vendors` (
   `vendor_user` varchar(255) DEFAULT NULL COMMENT '分销商邀请会员',
   `invitation_code` varchar(255) DEFAULT NULL COMMENT '分销商推荐人',
   `office_code` varchar(6) DEFAULT NULL COMMENT '分公司唯一ID',
-  `abonus` double(6,2) unsigned NOT NULL DEFAULT '0.00',
+  `abonus` double(12,2) unsigned NOT NULL DEFAULT '0.00',
   `auditing` varchar(30) DEFAULT NULL COMMENT '审核-责任人',
   `add_liable` varchar(30) DEFAULT NULL COMMENT '添加-责任人',
   `reviewed_describe` varchar(255) DEFAULT NULL COMMENT '审核描述',
@@ -908,8 +947,8 @@ CREATE TABLE `st_vendors_commission` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增',
   `vendor_id` int(11) unsigned NOT NULL COMMENT '关联分销商表ID',
   `order_id` varchar(12) DEFAULT NULL COMMENT '订单号码',
-  `abonus` double(6,2) unsigned DEFAULT '0.00' COMMENT '分红 默认为0.00',
-  `current_abonus` double(6,2) unsigned DEFAULT '0.00' COMMENT '当前分红 默认为0.00',
+  `abonus` double(12,2) unsigned DEFAULT '0.00' COMMENT '分红 默认为0.00',
+  `current_abonus` double(12,2) unsigned DEFAULT '0.00' COMMENT '当前分红 默认为0.00',
   `describe` varchar(255) DEFAULT NULL COMMENT '佣金获得描述',
   `type` tinyint(1) unsigned DEFAULT '0' COMMENT '分配类型{0：按比例分配，1：固定金额分配}',
   `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
