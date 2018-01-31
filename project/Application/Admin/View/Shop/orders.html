@@ -102,8 +102,7 @@
                                         </td>
                                         <td>
                                             <div class="btn-group">
-                                                <a class="btn btn-outline btn-success" href="javascript:;" goodsId="{{$v['id']}}" ruleName="{{$v['name']}}" ruleTitle="{{$v['pid']}}"
-                                                onclick="edit(this)">
+                                                <a class="btn btn-outline btn-success" href="javascript:;" orderId="{{$v['order_id']}}" onclick="edit(this)">
                                                     查看
                                                 </a>
                                             </div>
@@ -145,5 +144,27 @@
             });
         })
 
+        function edit(obj){
+            var orderId = $(obj).attr('orderId')
+            $.ajax({
+                url:'selectOrder',
+                type:'post',
+                dataType:'json',
+                data:{'order_id':orderId},
+                success:function(res){
+                    if(res.code == 200 ){
+                        parent.layer.open({
+                            type: 1,
+                            title: '订单详情',
+                            shadeClose: true,
+                            shade: 0.8,
+                            area: ['60%', '40%'],
+                            content: 'http://layer.layui.com/mobile/' 
+                        });
+                    }
+                }
+            });
+            
+        }
     </script>
 </block>

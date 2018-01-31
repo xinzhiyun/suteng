@@ -339,10 +339,27 @@ class ShopController extends CommonController
     {
         $order = D('ShopOrder');
         $data = $order->getOrders();
+        // dump($data);
         $assign = [
             'data' => $data,
         ];
         $this->assign($assign);
         $this->display();
+    }
+
+    // 查看订单详情
+    public function selectOrder()
+    {
+        try {
+            $orderDetail = D('OrderDetail');
+            $where = I('post.');
+            $data = $orderDetail->getInfo($where);
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
     }
 }
