@@ -94,9 +94,9 @@ $(function(){
 	];
 
 	var lvxinBuy = [ 
-		{"imgurl":"image/65454.jpg", "filtername":"RO膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120"}, 
-		{"imgurl":"image/65454.jpg", "filtername":"RO膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120"}, 
-		{"imgurl":"image/65454.jpg", "filtername":"RO膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120"}, 
+		{"filtername":"RO膜","filterbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","filterprice":"120"}, 
+		{"filtername":"滤芯膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120"}, 
+		{"filtername":"净水膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120"}, 
 	]; 
 	console.log(data);
 	var filtermode = data.filtermode;
@@ -547,6 +547,26 @@ $(function(){
     window.onunload=function(){
         websoket.close();
     };
+    //加载滤芯项
+    var lvxinList='';
+    for(var i = 0;i<lvxinBuy.length;i++){
+    	lvxinList+='<div class="goods">' +
+					'<div class="img"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt="正在加载..."></div>'+
+				'<div class="desc">'+
+					'<h5>'+ lvxinBuy[i]['filtername'] +'</h5>'+
+					'<p>'+ lvxinBuy[i]['filterbrief'] +'</p>'+
+					'<div>'+
+						'<span class="price">￥<span>' + lvxinBuy[i]['filterprice'] + '</span></span>'+
+						'<span class="num">'+
+							'<input type="button" value="-" class="minus">'+
+							'<input class="number" type="number" value="0">'+
+							'<input type="button" value="+" class="plus">'+
+						'</span>'+
+					'</div>'+
+				'</div>'+
+			'</div>'
+    }
+    $("#lvxinBuy").html(lvxinList);
 
 
 

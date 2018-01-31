@@ -47,6 +47,7 @@
             top: 0;
             left: 0;
             border-bottom: 1vh solid #ddd;
+            height: 9vh;
         }
         ._float_right{
         	float: right;
@@ -136,7 +137,7 @@
             background: #039CE9;
         }
 		._padding{
-		    padding: 10px 10px 0 10px;
+		    padding:10px 25px 0 10px;
 		    position: relative;
 		}
 		._padding>p {
@@ -161,7 +162,6 @@
 		    background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
 		}
 		#lvxinIntroduce {
-	        padding: 0;
 	        margin: 2vh 0;
 	    }
 	    #lvxinIntroduce>div {
@@ -171,7 +171,7 @@
 	    #lvxinIntroduce>div:nth-of-type(1) {
 	        border-top: 1px solid #ccc;
 	    }
-	    #lvxinDetailUL .checkbox {
+	    #lvxinDetailUL .iconfont {
 	        display: none;
 	    }
 		#lvxinReset p{
@@ -198,7 +198,7 @@
 		    color: #ccc;
 		}
 		.progress>.icon-xuanze {
-		    color: #4280EC;
+		    color:#039CE9
 		}
 	    .progress>.checkbox>input[type="checkbox"]:checked {
 	        background: #7D7FCE;
@@ -222,13 +222,11 @@
         .goods>.img {
             width: 36%;
             margin: 2% 2% 2% 0;
-            border: 1px solid #ddd;
-            border-radius: 10px;
         }   
         .goods>.img>img {
             width: 100%;
-            height: ;
-            display: inline-block;
+            height:100%;
+            border-radius: 10px;
         }
         /*商品描述*/
         .goods>.desc {
@@ -376,7 +374,7 @@
 		<!-- 滤芯购买 -->
 		<div id="lvxinBuy">
 			<div class="goods">
-				<div class="img"><img src="1.jpg" alt="正在加载..."></div>
+					<div class="img"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt="正在加载..."></div>
 				<div class="desc">
 					<h5>RO膜</h5>
 					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
@@ -388,11 +386,10 @@
 							<input type="button" value="+" class="plus">
 						</span>
 					</div>
-					
 				</div>
 			</div>
-			<div class="goods">
-				<div class="img"><img src="2.jpg" alt="正在加载..."></div>
+			<!-- <div class="goods">
+				<div class="img"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt="正在加载..."></div>
 				<div class="desc">
 					<h5>RO膜</h5>
 					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
@@ -408,7 +405,7 @@
 				</div>
 			</div>
 			<div class="goods">
-				<div class="img"><img src="3.jpg" alt="正在加载..."></div>
+				<div class="img"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt="正在加载..."></div>
 				<div class="desc">
 					<h5>RO膜</h5>
 					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
@@ -424,7 +421,7 @@
 				</div>
 			</div>
 			<div class="goods">
-				<div class="img"><img src="1.jpg" alt="正在加载..."></div>
+				<div class="img"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt="正在加载..."></div>
 				<div class="desc">
 					<h5>RO膜</h5>
 					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
@@ -440,7 +437,7 @@
 				</div>
 			</div>
 			<div class="goods">
-				<div class="img"><img src="1.jpg" alt="正在加载..."></div>
+				<div class="img"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt="正在加载..."></div>
 				<div class="desc">
 					<h5>RO膜</h5>
 					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
@@ -454,7 +451,7 @@
 					</div>
 					
 				</div>
-			</div>
+			</div> -->
 
 			<footer id="footer" class="footer">
 				<div>合计：<span>￥0</span></div>
@@ -469,41 +466,8 @@
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
 	<script type="text/javascript">
-		var lvxinArr = ['#lvxinDetail', '#lvxinReset' ,'#lvxinBuy'];
+	
 	var priceAll = 0;	//合计价格
-	// 点击顶部tab切换内容
-	$(".tabTitle").click(function(){
-		// 判断内容是否超出
-		if($("#content>div").length != 0){
-			$("#content")
-			.css({height: lvxinArr[$(this).attr("index")]
-				.height, 
-				overflowY: $(lvxinArr[$(this).attr("index")])[0].offsetHeight > $("#content")[0].offsetHeight 
-				? 'visible'
-				: 'hidden'
-			});
-		}
-		if($(this).html()=="滤芯购买"){
-			$("button").hide().siblings().show();
-		}else{
-			$("button").show().siblings().hide();
-			$("#footer").css("border-top","none");
-		}
-		// 横线移动
-		$("#line").css({marginLeft: $(this).attr("index")*33.33 + '%'});
-
-		// 内容切换
-		$("#content").animate({left: '-'+$(this).attr("index") + '00vw'});
-		
-		//滤芯选中状态样式
-		$("#lvxinReset").on("click","li",function(){
-			$(this).children(".progress").children(".iconfont").removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
-			$(this).siblings().children(".progress").children(".iconfont").removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-			filterName=$(this).children("p").children().eq(0).text();
-			filterNumber=$(this).index();
-		})
-		
-	})
 	// 按加'+'号
 	$("#lvxinBuy").on("touchend",".plus",function(){
 		priceAll = 0;	//合计归零，后面重新计算
