@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50548
 File Encoding         : 65001
 
-Date: 2018-01-30 22:22:20
+Date: 2018-01-31 11:42:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -618,8 +618,8 @@ CREATE TABLE `st_goods` (
   `name` varchar(64) NOT NULL COMMENT '商品名称',
   `pic` varchar(255) DEFAULT NULL,
   `desc` text COMMENT '商品描述',
-  `cost` double(12,2) DEFAULT NULL COMMENT '商品成本',
-  `price` double(12,2) DEFAULT NULL COMMENT '商品单价',
+  `cost` double(6,2) DEFAULT NULL COMMENT '商品成本',
+  `price` double(6,2) DEFAULT NULL COMMENT '商品单价',
   `stock` int(11) DEFAULT '0' COMMENT '商品库存',
   `status` tinyint(1) DEFAULT '0' COMMENT '商品状态，默认0上架，1为下架',
   `addtime` int(12) NOT NULL COMMENT '商品添加时间',
@@ -644,8 +644,8 @@ DROP TABLE IF EXISTS `st_goods_detail`;
 CREATE TABLE `st_goods_detail` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `gid` int(11) NOT NULL COMMENT '关联商品ID',
-  `price` double(12,2) NOT NULL COMMENT '商品单价',
-  `cost` double(12,2) NOT NULL COMMENT '商品成本',
+  `price` double(6,2) NOT NULL COMMENT '商品单价',
+  `cost` double(6,2) NOT NULL COMMENT '商品成本',
   `stock` int(11) NOT NULL COMMENT '库存',
   `desc` text CHARACTER SET utf8 COMMENT '商品描述',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '商品状态，0下架，默认1为上架',
@@ -685,8 +685,8 @@ CREATE TABLE `st_order_detail` (
   `order_id` varchar(16) CHARACTER SET utf8 NOT NULL COMMENT '订单号码',
   `gid` int(11) NOT NULL COMMENT '商品ID',
   `num` int(11) NOT NULL COMMENT '商品数量',
-  `cost` double(12,2) NOT NULL,
-  `price` double(12,2) NOT NULL COMMENT '商品单价',
+  `cost` double(6,2) NOT NULL,
+  `price` double(6,2) NOT NULL COMMENT '商品单价',
   `status` tinyint(1) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL COMMENT '订单生成时间',
   PRIMARY KEY (`id`)
@@ -855,7 +855,7 @@ CREATE TABLE `st_users` (
   `address` varchar(255) DEFAULT NULL COMMENT '地址',
   `gold_num` int(11) NOT NULL COMMENT '金币数量 默认为0',
   `silver` int(11) NOT NULL COMMENT '金币数量 默认为0',
-  `balance` double(12,2) NOT NULL DEFAULT '0.00' COMMENT '用户余额，默认0.00',
+  `balance` double(6,2) NOT NULL DEFAULT '0.00' COMMENT '用户余额，默认0.00',
   `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -921,7 +921,7 @@ CREATE TABLE `st_vendors` (
   `vendor_user` varchar(255) DEFAULT NULL COMMENT '分销商邀请会员',
   `invitation_code` varchar(255) DEFAULT NULL COMMENT '分销商推荐人',
   `office_code` varchar(6) DEFAULT NULL COMMENT '分公司唯一ID',
-  `abonus` double(12,2) unsigned NOT NULL DEFAULT '0.00',
+  `abonus` double(6,2) unsigned NOT NULL DEFAULT '0.00',
   `auditing` varchar(30) DEFAULT NULL COMMENT '审核-责任人',
   `add_liable` varchar(30) DEFAULT NULL COMMENT '添加-责任人',
   `reviewed_describe` varchar(255) DEFAULT NULL COMMENT '审核描述',
@@ -947,8 +947,8 @@ CREATE TABLE `st_vendors_commission` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增',
   `vendor_id` int(11) unsigned NOT NULL COMMENT '关联分销商表ID',
   `order_id` varchar(12) DEFAULT NULL COMMENT '订单号码',
-  `abonus` double(12,2) unsigned DEFAULT '0.00' COMMENT '分红 默认为0.00',
-  `current_abonus` double(12,2) unsigned DEFAULT '0.00' COMMENT '当前分红 默认为0.00',
+  `abonus` double(6,2) unsigned DEFAULT '0.00' COMMENT '分红 默认为0.00',
+  `current_abonus` double(6,2) unsigned DEFAULT '0.00' COMMENT '当前分红 默认为0.00',
   `describe` varchar(255) DEFAULT NULL COMMENT '佣金获得描述',
   `type` tinyint(1) unsigned DEFAULT '0' COMMENT '分配类型{0：按比例分配，1：固定金额分配}',
   `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
