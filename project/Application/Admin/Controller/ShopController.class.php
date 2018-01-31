@@ -109,6 +109,7 @@ class ShopController extends CommonController
             }
         }
         $goodsList = array_values($arr);
+        // dump($goodsList);
         $assign = [
             'data' => $goodsList,
             'cateInfo'=>$cateInfo,
@@ -170,8 +171,8 @@ class ShopController extends CommonController
             $cate = D('Category');
             $data = I('post.');
             $goods['cid'] = $cate->sureCate();
+            if(!$goods['cid']) E('请选择分类', 605);
             $goods['name'] = $data['name'];
-            // dump($data);die;
             // $goods_check = $goods_add->create($goods);
             // dump($goods);die;
             // 事务开启
@@ -246,6 +247,29 @@ class ShopController extends CommonController
                 'code' => $e->getCode(),
                 'msg' => $e->getMessage(),
             ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    // 商品上下架状态修改
+    public function edidStatus(){
+        try {
+            $goods = D('GoodsDetail');
+            $where['gid'] = I('post.id');
+            $data['status'] = I('post.status');
+            $res = $goods->where($where)->save($data);
+            // echo $goods->_sql();
+            // dump($res);die;
+            if($res){
+                E('状态已发生改变',200);
+            } else {
+                E('状态修改失败',603);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                    'code' => $e->getCode(),
+                    'msg' => $e->getMessage(),
+                ];
             $this->ajaxReturn($err);
         }
     }

@@ -8,7 +8,7 @@ use Think\Model;
 class GoodsModel extends Model
 {
     // 获取商品信息
-    public function getGoodsList($map=null)
+    public function getGoodsList($map=array())
     {
         $goods = $this
             ->alias('g')
@@ -18,7 +18,7 @@ class GoodsModel extends Model
             ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
             ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
             ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
-            ->field('g.name,g.addtime,g.updatetime,av.*,g.cid,c.name cname,a.attr,gd.*')
+            ->field('g.name,g.addtime,g.updatetime,av.*,g.cid,c.name cname,a.attr,gd.*,p.path')
             ->select();
         return $goods;
     }

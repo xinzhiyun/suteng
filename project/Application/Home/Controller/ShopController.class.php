@@ -14,7 +14,7 @@ class ShopController extends Controller
     {
         $goods = D('Goods');
         $cate = M('Category')->select();
-        $goodsList = $goods->getGoodsList();
+        $goodsList = $goods->getGoodsList(['gd.status'=>0]);
         foreach($goodsList as $val){
     		$key = $val['gid'];
     		if(isset($arr[$key])) {

@@ -23,7 +23,7 @@ class GoodsModel extends BaseModel
         array('updatetime', 'time', 3, 'function'),
     );
 
-    public function getGoodsList($where=array('g.status'=>0))
+    public function getGoodsList($where=array())
     {
         $goodsData = $this
             ->where($where)

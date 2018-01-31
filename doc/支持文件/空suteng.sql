@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50636
 File Encoding         : 65001
 
-Date: 2018-01-31 17:50:15
+Date: 2018-01-31 17:56:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -30,11 +30,6 @@ CREATE TABLE `st_address` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of st_address
--- ----------------------------
-INSERT INTO `st_address` VALUES ('1', '2', ' aa', '13800138000', ' 广州', '0');
-
--- ----------------------------
 -- Table structure for st_admin_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `st_admin_menu`;
@@ -49,38 +44,6 @@ CREATE TABLE `st_admin_menu` (
 ) ENGINE=MyISAM AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of st_admin_menu
--- ----------------------------
-INSERT INTO `st_admin_menu` VALUES ('1', '0', '经销商管理', 'Admin/Vendors/', 'fa-hand-o-right', null);
-INSERT INTO `st_admin_menu` VALUES ('2', '1', '经销商列表', 'Admin/Vendors/vendor_list', '', null);
-INSERT INTO `st_admin_menu` VALUES ('3', '1', '经销商审核', 'Admin/Vendors/vendor_reviewed', '', null);
-INSERT INTO `st_admin_menu` VALUES ('4', '0', '权限管理', 'Admin/Rule/', 'fa-hand-o-right', null);
-INSERT INTO `st_admin_menu` VALUES ('5', '4', '权限组', 'Admin/Rule/group', null, null);
-INSERT INTO `st_admin_menu` VALUES ('6', '5', '权限分配', 'Admin/Rule/rule_group', null, null);
-INSERT INTO `st_admin_menu` VALUES ('7', '5', '成员列表', 'Admin/Rule/group_list', null, null);
-INSERT INTO `st_admin_menu` VALUES ('8', '4', '权限列表', 'Admin/Rule/index', null, null);
-INSERT INTO `st_admin_menu` VALUES ('9', '0', '菜单管理', 'Admin/Menu/', 'fa-hand-o-right', null);
-INSERT INTO `st_admin_menu` VALUES ('10', '9', '菜单编辑', 'Admin/Menu/index', '', null);
-INSERT INTO `st_admin_menu` VALUES ('13', '0', '设备管理', 'Admin/Devices/', 'fa-hand-o-right', null);
-INSERT INTO `st_admin_menu` VALUES ('14', '13', '设备列表', 'Admin/Devices/index', null, null);
-INSERT INTO `st_admin_menu` VALUES ('16', '15', '工单列表', 'Admin/Work/index', '', null);
-INSERT INTO `st_admin_menu` VALUES ('17', '0', '净水器管理', 'Admin/Water', 'fa-hand-o-right', null);
-INSERT INTO `st_admin_menu` VALUES ('18', '17', '水机列表', 'Admin/Water/index', '', null);
-INSERT INTO `st_admin_menu` VALUES ('19', '0', '商城管理', 'Admin/Shop/', 'fa-hand-o-right', null);
-INSERT INTO `st_admin_menu` VALUES ('20', '19', '分类管理', 'Admin/Shop/category', '', null);
-INSERT INTO `st_admin_menu` VALUES ('21', '19', '商品管理', 'Admin/Shop/goods', '', null);
-INSERT INTO `st_admin_menu` VALUES ('22', '19', '订单管理', 'Admin/Shop/orders', '', null);
-INSERT INTO `st_admin_menu` VALUES ('23', '0', '分公司管理', 'Admin/Vendor', '', null);
-INSERT INTO `st_admin_menu` VALUES ('24', '23', '添加分公司', 'Admin/Vendors/company_add', '', null);
-INSERT INTO `st_admin_menu` VALUES ('25', '23', '分公司列表', 'Admin/Vendors/company_list', '', null);
-INSERT INTO `st_admin_menu` VALUES ('28', '0', '佣金管理', 'Admin/Commission', '', null);
-INSERT INTO `st_admin_menu` VALUES ('29', '28', '佣金设置', 'Admin/Commission/commission_set', '', null);
-INSERT INTO `st_admin_menu` VALUES ('30', '13', '设备绑定', 'Admin/Devices/bind', '', null);
-INSERT INTO `st_admin_menu` VALUES ('31', '13', '滤芯列表', 'Admin/Devices/filterList', '', null);
-INSERT INTO `st_admin_menu` VALUES ('32', '13', '产品类型', 'Admin/Devices/product', '', null);
-INSERT INTO `st_admin_menu` VALUES ('33', '0', '首页', 'Admin/Test/welcome', '', '1');
-
--- ----------------------------
 -- Table structure for st_attr
 -- ----------------------------
 DROP TABLE IF EXISTS `st_attr`;
@@ -91,14 +54,6 @@ CREATE TABLE `st_attr` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of st_attr
--- ----------------------------
-INSERT INTO `st_attr` VALUES ('1', '内存');
-INSERT INTO `st_attr` VALUES ('2', '运行内存');
-INSERT INTO `st_attr` VALUES ('3', '颜色');
-INSERT INTO `st_attr` VALUES ('4', '储存');
-
--- ----------------------------
 -- Table structure for st_attr_val
 -- ----------------------------
 DROP TABLE IF EXISTS `st_attr_val`;
@@ -107,38 +62,6 @@ CREATE TABLE `st_attr_val` (
   `aid` int(11) NOT NULL COMMENT '属性ID',
   `val` varchar(20) NOT NULL COMMENT '属性值'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of st_attr_val
--- ----------------------------
-INSERT INTO `st_attr_val` VALUES ('1', '1', '4G');
-INSERT INTO `st_attr_val` VALUES ('1', '2', '4G');
-INSERT INTO `st_attr_val` VALUES ('4', '1', '64G');
-INSERT INTO `st_attr_val` VALUES ('5', '2', '3G');
-INSERT INTO `st_attr_val` VALUES ('6', '1', '64G');
-INSERT INTO `st_attr_val` VALUES ('7', '2', '20');
-INSERT INTO `st_attr_val` VALUES ('8', '1', '20');
-INSERT INTO `st_attr_val` VALUES ('9', '1', '20');
-INSERT INTO `st_attr_val` VALUES ('10', '1', '2');
-INSERT INTO `st_attr_val` VALUES ('11', '1', '2');
-INSERT INTO `st_attr_val` VALUES ('12', '2', '2.3');
-INSERT INTO `st_attr_val` VALUES ('13', '2', '230');
-INSERT INTO `st_attr_val` VALUES ('14', '2', '230');
-INSERT INTO `st_attr_val` VALUES ('15', '1', '23');
-INSERT INTO `st_attr_val` VALUES ('16', '1', '23');
-INSERT INTO `st_attr_val` VALUES ('17', '1', '320');
-INSERT INTO `st_attr_val` VALUES ('18', '1', '320');
-INSERT INTO `st_attr_val` VALUES ('19', '1', '320');
-INSERT INTO `st_attr_val` VALUES ('20', '1', '320');
-INSERT INTO `st_attr_val` VALUES ('22', '1', '64G');
-INSERT INTO `st_attr_val` VALUES ('22', '2', '4G');
-INSERT INTO `st_attr_val` VALUES ('22', '3', '红色');
-INSERT INTO `st_attr_val` VALUES ('23', '0', '4');
-INSERT INTO `st_attr_val` VALUES ('24', '4', '1852122013得分都是');
-INSERT INTO `st_attr_val` VALUES ('25', '4', '214156122452');
-INSERT INTO `st_attr_val` VALUES ('38', '2', '速度发生发生');
-INSERT INTO `st_attr_val` VALUES ('39', '4', '是放松放松');
-INSERT INTO `st_attr_val` VALUES ('41', '2', 'sd#$$$  $%$%%');
 
 -- ----------------------------
 -- Table structure for st_auth_group
@@ -153,23 +76,6 @@ CREATE TABLE `st_auth_group` (
 ) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='用户组表';
 
 -- ----------------------------
--- Records of st_auth_group
--- ----------------------------
-INSERT INTO `st_auth_group` VALUES ('1', '超级管理员', '1', '1,2,28,5,6,7,8,10,11,9,14,15,32,33,34,16,17,18,19,20,21,22,23,24,25,26,30,31,{$v[\'id\']}');
-INSERT INTO `st_auth_group` VALUES ('3', '二级经销商', '1', '1,2,4,3');
-INSERT INTO `st_auth_group` VALUES ('4', '三级经销商', '1', '1,2,3');
-INSERT INTO `st_auth_group` VALUES ('14', '超级管理员', '1', '1,2,28,5,6,7,8,10,11,9,14,15,16,17,18,19,20,21,22,23,24,25,26,30,31');
-INSERT INTO `st_auth_group` VALUES ('7', '合作商（PC后台管理）', '1', '20,21,22,23,{$v[\'id\']}');
-INSERT INTO `st_auth_group` VALUES ('6', '会员（手机商城会员水机）', '1', '14,15,32,33,34,16,17,20,21,22,23');
-INSERT INTO `st_auth_group` VALUES ('5', '服务站（PC后台管理）', '1', '14,15,32,33,34,16,17,20,21,22,23,30,31');
-INSERT INTO `st_auth_group` VALUES ('8', '经销商（PC后台管理）', '1', null);
-INSERT INTO `st_auth_group` VALUES ('9', '售后管理（PC后台管理）', '1', '');
-INSERT INTO `st_auth_group` VALUES ('10', '管理人员（PC后台管理）', '1', null);
-INSERT INTO `st_auth_group` VALUES ('11', '生产和采购（PC后台管理）', '1', null);
-INSERT INTO `st_auth_group` VALUES ('12', '仓储（PC后台管理）', '1', '1,2,28,14,15,32,33,34,18,19,20,21,22,23,{$v[\'id\']}');
-INSERT INTO `st_auth_group` VALUES ('16', '一级经销商', '1', null);
-
--- ----------------------------
 -- Table structure for st_auth_group_access
 -- ----------------------------
 DROP TABLE IF EXISTS `st_auth_group_access`;
@@ -180,17 +86,6 @@ CREATE TABLE `st_auth_group_access` (
   KEY `uid` (`uid`),
   KEY `group_id` (`group_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户组明细表';
-
--- ----------------------------
--- Records of st_auth_group_access
--- ----------------------------
-INSERT INTO `st_auth_group_access` VALUES ('1', '1');
-INSERT INTO `st_auth_group_access` VALUES ('1', '4');
-INSERT INTO `st_auth_group_access` VALUES ('22', '1');
-INSERT INTO `st_auth_group_access` VALUES ('22', '5');
-INSERT INTO `st_auth_group_access` VALUES ('23', '14');
-INSERT INTO `st_auth_group_access` VALUES ('24', '12');
-INSERT INTO `st_auth_group_access` VALUES ('28', '1');
 
 -- ----------------------------
 -- Table structure for st_auth_rule
@@ -209,38 +104,6 @@ CREATE TABLE `st_auth_rule` (
 ) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COMMENT='规则表';
 
 -- ----------------------------
--- Records of st_auth_rule
--- ----------------------------
-INSERT INTO `st_auth_rule` VALUES ('1', '0', 'Admin/Vendors/', '经销商管理', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('2', '1', 'Admin/Vendors/vendor_list', '经销商列表', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('5', '0', 'Admin/Menu/', '菜单管理', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('6', '5', 'Admin/Menu/index', '菜单编辑', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('7', '0', 'Admin/Rule/', '权限管理', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('8', '7', 'Admin/Rule/group', '权限组', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('9', '7', 'Admin/Rule/index', '权限列表', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('10', '8', 'Admin/Rule/rule_group', '权限分配', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('11', '8', 'Admin/Rule/group_list', '成员列表', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('14', '0', 'Admin/Devices/', '设备管理', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('15', '14', 'Admin/Devices/index', '设备列表', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('16', '0', 'Admin/Work', '工单管理', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('17', '16', 'Admin/Work/index', '工单列表', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('18', '0', 'Admin/Water', '净水器管理', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('19', '18', 'Admin/Water/index', '水机列表', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('20', '0', 'Admin/Shop/', '商城系统', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('21', '20', 'Admin/Shop/category', '分类管理', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('22', '20', 'Admin/Shop/goods', '商品管理', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('23', '20', 'Admin/Shop/orders', '订单管理', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('24', '0', 'Admin/Vendor', '分公司管理', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('25', '24', 'Admin/Vendors/company_add', '添加分公司', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('26', '24', 'Admin/Vendors/company_list', '分公司列表', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('28', '1', 'Admin/Vendors/vendor_reviewed', '分销商审核', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('30', '0', 'Admin/Commission', '佣金管理', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('31', '30', 'Admin/Commission/commission_set', '佣金设置', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('32', '14', 'Admin/Devices/bind', '设备绑定', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('33', '14', 'Admin/Devices/filterList', '滤芯列表', '1', '1', '');
-INSERT INTO `st_auth_rule` VALUES ('34', '14', 'Admin/Devices/product', '产品类型', '1', '1', '');
-
--- ----------------------------
 -- Table structure for st_binding
 -- ----------------------------
 DROP TABLE IF EXISTS `st_binding`;
@@ -252,10 +115,6 @@ CREATE TABLE `st_binding` (
   `addtime` int(11) NOT NULL COMMENT '操作时间',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of st_binding
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for st_blank
@@ -274,10 +133,6 @@ CREATE TABLE `st_blank` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of st_blank
--- ----------------------------
-
--- ----------------------------
 -- Table structure for st_cart
 -- ----------------------------
 DROP TABLE IF EXISTS `st_cart`;
@@ -292,10 +147,6 @@ CREATE TABLE `st_cart` (
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of st_cart
--- ----------------------------
-
--- ----------------------------
 -- Table structure for st_category
 -- ----------------------------
 DROP TABLE IF EXISTS `st_category`;
@@ -308,20 +159,6 @@ CREATE TABLE `st_category` (
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of st_category
--- ----------------------------
-INSERT INTO `st_category` VALUES ('1', '0', '滤芯', '1');
-INSERT INTO `st_category` VALUES ('2', '0', '食品区', '1');
-INSERT INTO `st_category` VALUES ('3', '0', '生活用品', '1');
-INSERT INTO `st_category` VALUES ('4', '2', '坚果', '2');
-INSERT INTO `st_category` VALUES ('5', '0', '生活区', '1');
-INSERT INTO `st_category` VALUES ('6', '2', '干果', '2');
-INSERT INTO `st_category` VALUES ('7', '3', '洗头水', '2');
-INSERT INTO `st_category` VALUES ('8', '3', '沐浴露', '2');
-INSERT INTO `st_category` VALUES ('16', '6', '饼干', '3');
-INSERT INTO `st_category` VALUES ('17', '6', '面包', '3');
-
--- ----------------------------
 -- Table structure for st_com_pic
 -- ----------------------------
 DROP TABLE IF EXISTS `st_com_pic`;
@@ -331,17 +168,6 @@ CREATE TABLE `st_com_pic` (
   `path` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '图片地址',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of st_com_pic
--- ----------------------------
-INSERT INTO `st_com_pic` VALUES ('1', '3', '2018-01-29/5a6f0ac6c12d9.jpg');
-INSERT INTO `st_com_pic` VALUES ('2', '4', '');
-INSERT INTO `st_com_pic` VALUES ('3', '10', '2018-01-30/5a700923bda78.jpg|2018-01-30/5a700923bde07.jpg|');
-INSERT INTO `st_com_pic` VALUES ('4', '11', '2018-01-30/5a7009436b4e5.jpg|2018-01-30/5a7009436b7f9.jpg|');
-INSERT INTO `st_com_pic` VALUES ('5', '12', '2018-01-30/5a700a6749ba0.jpg|2018-01-30/5a700a6749e1a.jpg|');
-INSERT INTO `st_com_pic` VALUES ('6', '13', '2018-01-30/5a700a7821745.jpg|2018-01-30/5a700a78219e8.jpg|');
-INSERT INTO `st_com_pic` VALUES ('7', '14', '2018-01-30/5a700a8d8f539.jpg|2018-01-30/5a700a8d8f9e7.jpg|2018-01-30/5a700a8d8fdc3.jpg|');
 
 -- ----------------------------
 -- Table structure for st_comment
@@ -359,18 +185,6 @@ CREATE TABLE `st_comment` (
   `status` tinyint(1) NOT NULL COMMENT '1好评2中评3差评',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of st_comment
--- ----------------------------
-INSERT INTO `st_comment` VALUES ('1', '2', '22', '132', null, null, null, '', '0');
-INSERT INTO `st_comment` VALUES ('3', '2', '22', 'fdsafsa', null, null, null, '', '0');
-INSERT INTO `st_comment` VALUES ('4', '2', '22', '', null, null, null, '1517291267', '1');
-INSERT INTO `st_comment` VALUES ('10', '2', '22', '', null, null, null, '1517291811', '1');
-INSERT INTO `st_comment` VALUES ('11', '2', '22', '', null, null, null, '1517291843', '1');
-INSERT INTO `st_comment` VALUES ('12', '2', '22', '', null, null, null, '1517292135', '1');
-INSERT INTO `st_comment` VALUES ('13', '2', '22', '', null, null, null, '1517292152', '1');
-INSERT INTO `st_comment` VALUES ('14', '2', '22', '', null, null, null, '1517292173', '1');
 
 -- ----------------------------
 -- Table structure for st_commission
@@ -392,11 +206,6 @@ CREATE TABLE `st_commission` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of st_commission
--- ----------------------------
-INSERT INTO `st_commission` VALUES ('1', '30', '40', '70', '60', '40', '30', '20', '10', '0', '0');
-
--- ----------------------------
 -- Table structure for st_convert
 -- ----------------------------
 DROP TABLE IF EXISTS `st_convert`;
@@ -410,10 +219,6 @@ CREATE TABLE `st_convert` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of st_convert
--- ----------------------------
-
--- ----------------------------
 -- Table structure for st_current_devices
 -- ----------------------------
 DROP TABLE IF EXISTS `st_current_devices`;
@@ -423,10 +228,6 @@ CREATE TABLE `st_current_devices` (
   `did` int(11) unsigned NOT NULL COMMENT '当前设备',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=gbk;
-
--- ----------------------------
--- Records of st_current_devices
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for st_devices
@@ -443,11 +244,6 @@ CREATE TABLE `st_devices` (
   PRIMARY KEY (`id`),
   KEY `id` (`id`,`device_code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of st_devices
--- ----------------------------
-INSERT INTO `st_devices` VALUES ('1', '123456123456123', '1', '1', '9', '1517230209', '0');
 
 -- ----------------------------
 -- Table structure for st_devices_statu
@@ -494,10 +290,6 @@ CREATE TABLE `st_devices_statu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of st_devices_statu
--- ----------------------------
-
--- ----------------------------
 -- Table structure for st_dimension
 -- ----------------------------
 DROP TABLE IF EXISTS `st_dimension`;
@@ -510,11 +302,7 @@ CREATE TABLE `st_dimension` (
   `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=195 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of st_dimension
--- ----------------------------
+) ENGINE=InnoDB AUTO_INCREMENT=212 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_dimension_num
@@ -528,11 +316,6 @@ CREATE TABLE `st_dimension_num` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of st_dimension_num
--- ----------------------------
-INSERT INTO `st_dimension_num` VALUES ('1', '1', '1');
-
--- ----------------------------
 -- Table structure for st_feeds
 -- ----------------------------
 DROP TABLE IF EXISTS `st_feeds`;
@@ -543,10 +326,6 @@ CREATE TABLE `st_feeds` (
   `addtime` int(11) NOT NULL COMMENT '反馈时间',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of st_feeds
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for st_filters
@@ -571,12 +350,6 @@ CREATE TABLE `st_filters` (
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of st_filters
--- ----------------------------
-INSERT INTO `st_filters` VALUES ('13', 'fdsa', 'fsa', '', '2.33', '300', '3000', null, null, '', '0', '', '1517279226');
-INSERT INTO `st_filters` VALUES ('14', '土木工程', '123', '', '3.22', '320', '32510', null, null, '', '0', '', '1517281868');
-
--- ----------------------------
 -- Table structure for st_flow
 -- ----------------------------
 DROP TABLE IF EXISTS `st_flow`;
@@ -595,12 +368,6 @@ CREATE TABLE `st_flow` (
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of st_flow
--- ----------------------------
-INSERT INTO `st_flow` VALUES ('39', '15', '733959877288654', '400', '2', '0', '1000', '400元1000个银币', '200', '1000', '1517391973', '1517391973');
-INSERT INTO `st_flow` VALUES ('38', '15', '458872302164080', '200', '2', '200', '0', '200元200个金币', '200', '0', '1517391894', '1517391894');
 
 -- ----------------------------
 -- Table structure for st_goods
@@ -624,21 +391,6 @@ CREATE TABLE `st_goods` (
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of st_goods
--- ----------------------------
-INSERT INTO `st_goods` VALUES ('1', '8', null, '小米', null, null, null, null, '0', '0', '1516970804', '1516970804');
-INSERT INTO `st_goods` VALUES ('4', '8', null, '三星', null, null, null, null, '0', '0', '1516970804', '1516971060');
-INSERT INTO `st_goods` VALUES ('5', '21', null, '三星', null, null, null, null, '0', '0', '1516970804', '1516971093');
-INSERT INTO `st_goods` VALUES ('6', '22', null, '苹果', null, null, null, null, '0', '2', '1516970804', '1516971093');
-INSERT INTO `st_goods` VALUES ('22', '10', null, '手机', null, null, null, null, '0', '0', '1517190942', '1517190942');
-INSERT INTO `st_goods` VALUES ('23', '10', null, '食品', null, null, null, null, '0', '0', '1517298526', '1517298526');
-INSERT INTO `st_goods` VALUES ('24', '7', null, '111', null, null, null, null, '0', '2', '1517306607', '1517306607');
-INSERT INTO `st_goods` VALUES ('25', '1', null, 'RO膜', null, null, null, null, '0', '0', '1517311414', '1517311414');
-INSERT INTO `st_goods` VALUES ('38', '21', null, '$%%    2334', null, null, null, null, '0', '2', '1517316178', '1517316178');
-INSERT INTO `st_goods` VALUES ('39', '21', null, '是否单身的', null, null, null, null, '0', '2', '1517316214', '1517316214');
-INSERT INTO `st_goods` VALUES ('41', '7', null, '$%    ^^^', null, null, null, null, '0', '2', '1517316557', '1517316557');
-
--- ----------------------------
 -- Table structure for st_goods_detail
 -- ----------------------------
 DROP TABLE IF EXISTS `st_goods_detail`;
@@ -655,36 +407,6 @@ CREATE TABLE `st_goods_detail` (
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
--- Records of st_goods_detail
--- ----------------------------
-INSERT INTO `st_goods_detail` VALUES ('1', '1', '1988.00', '1500.00', '325', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('3', '4', '3.00', '2.00', '12', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('4', '5', '30.25', '20.00', '215', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('5', '6', '300.00', '20.00', '302', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('6', '7', '2.00', '2.00', '10', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('7', '8', '3.02', '2.00', '362', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('8', '9', '3.02', '2.00', '362', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('9', '10', '3.00', '2.00', '265', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('10', '11', '3.00', '2.00', '265', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('11', '12', '3.20', '2.00', '12', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('12', '13', '3.20', '15.01', '1562', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('13', '14', '3.20', '15.01', '1562', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('14', '15', '3.20', '2.00', '123', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('15', '16', '3.20', '2.00', '123', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('16', '17', '2.02', '23.02', '123', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('17', '18', '2.02', '23.02', '123', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('18', '19', '2.02', '23.02', '123', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('19', '20', '2.02', '23.02', '123', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('20', '22', '306.00', '201.00', '165', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('21', '26', '500.00', '300.00', '123', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('22', '23', '15.00', '10.00', '60', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('23', '24', '52.00', '25.00', '50', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('24', '25', '25.00', '15.00', '20', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('28', '38', '1.08', '1.08', '8', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('29', '39', '1.80', '1.80', '85', null, '1');
-INSERT INTO `st_goods_detail` VALUES ('30', '41', '100.00', '100.00', '80', null, '1');
-
--- ----------------------------
 -- Table structure for st_order_detail
 -- ----------------------------
 DROP TABLE IF EXISTS `st_order_detail`;
@@ -699,20 +421,6 @@ CREATE TABLE `st_order_detail` (
   `addtime` int(11) NOT NULL COMMENT '订单生成时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of st_order_detail
--- ----------------------------
-INSERT INTO `st_order_detail` VALUES ('7', '119954568251015', '22', '3', '20.00', '306.00', '0', '1517321363');
-INSERT INTO `st_order_detail` VALUES ('8', '119954568251015', '1', '4', '10.00', '1988.00', '0', '1517321363');
-INSERT INTO `st_order_detail` VALUES ('13', '263573882426098', '22', '3', '20.00', '306.00', '0', '1517321440');
-INSERT INTO `st_order_detail` VALUES ('14', '263573882426098', '1', '4', '10.00', '1988.00', '0', '1517321440');
-INSERT INTO `st_order_detail` VALUES ('15', '644871529179373', '22', '3', '20.00', '306.00', '0', '1517321472');
-INSERT INTO `st_order_detail` VALUES ('16', '644871529179373', '1', '2', '10.00', '1988.00', '0', '1517321472');
-INSERT INTO `st_order_detail` VALUES ('17', '436106100658239', '22', '1', '20.00', '306.00', '0', '1517321521');
-INSERT INTO `st_order_detail` VALUES ('18', '436106100658239', '1', '2', '10.00', '1988.00', '0', '1517321521');
-INSERT INTO `st_order_detail` VALUES ('19', '538464792029082', '22', '10', '20.00', '306.00', '0', '1517321550');
-INSERT INTO `st_order_detail` VALUES ('20', '538464792029082', '1', '8', '10.00', '1988.00', '0', '1517321550');
 
 -- ----------------------------
 -- Table structure for st_orders
@@ -739,10 +447,6 @@ CREATE TABLE `st_orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of st_orders
--- ----------------------------
-
--- ----------------------------
 -- Table structure for st_pic
 -- ----------------------------
 DROP TABLE IF EXISTS `st_pic`;
@@ -754,10 +458,6 @@ CREATE TABLE `st_pic` (
   PRIMARY KEY (`id`),
   KEY `id` (`id`,`gid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of st_pic
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for st_repair
@@ -774,10 +474,6 @@ CREATE TABLE `st_repair` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态0：未处理 1：已处理',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of st_repair
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for st_shop_order
@@ -800,10 +496,6 @@ CREATE TABLE `st_shop_order` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of st_shop_order
--- ----------------------------
-
--- ----------------------------
 -- Table structure for st_type
 -- ----------------------------
 DROP TABLE IF EXISTS `st_type`;
@@ -822,15 +514,6 @@ CREATE TABLE `st_type` (
   `addtime` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of st_type
--- ----------------------------
-INSERT INTO `st_type` VALUES ('32', '魂牵梦萦', '13', null, null, null, null, null, null, null, '0', null);
-INSERT INTO `st_type` VALUES ('33', '圾', '13', '14', null, null, null, null, null, null, '0', '1517284707');
-INSERT INTO `st_type` VALUES ('34', '脸扔', '13', '14', null, null, null, null, null, null, '0', '1517284766');
-INSERT INTO `st_type` VALUES ('35', 'dfsf', null, null, null, null, null, null, null, null, '0', '1517312612');
-INSERT INTO `st_type` VALUES ('36', 'LVR', '13', '14', null, null, null, null, null, null, '0', '1517312646');
 
 -- ----------------------------
 -- Table structure for st_users
@@ -861,11 +544,7 @@ CREATE TABLE `st_users` (
   `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of st_users
--- ----------------------------
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_users_commission
@@ -884,10 +563,6 @@ CREATE TABLE `st_users_commission` (
   `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=gbk;
-
--- ----------------------------
--- Records of st_users_commission
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for st_vendors
@@ -928,13 +603,7 @@ CREATE TABLE `st_vendors` (
   `addtime` int(11) unsigned NOT NULL COMMENT '添加时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of st_vendors
--- ----------------------------
-INSERT INTO `st_vendors` VALUES ('1', null, 'admin', '202cb962ac59075b964b07152d234b70', '13425492760', '超级管理员', null, null, null, null, null, null, null, null, null, '0', null, null, null, null, null, null, null, '', null, '0.00', null, null, null, '0', '7', '1513872000', '1513872000');
-INSERT INTO `st_vendors` VALUES ('18', null, 'diyijia', 'e10adc3949ba59abbe56e057f20f883e', '13580029652', '第一分公司', '425132199802054256', '/Vendors/2018-01-31/5a7191758ea12.png', '/Vendors/2018-01-31/5a7191758ef3b.png', '/Vendors/2018-01-31/5a7191758f069.jpg', '冈茉优有限公司', '020-56239856', '广州市海珠区海珠广场', '/Vendors/2018-01-31/5a7191758f31c.jpg', '/Vendors/2018-01-31/5a7191758fa9b.jpg', '1', 'BD4BE2', null, null, 'gQE38DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTlBFd2tHMmJkOTAxMDAwMGcwM00AAgRVdlhaAwQAAAAA', 'gQHx8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQThuOWszMmJkOTAxMDAwMHcwM3AAAgS2dlhaAwQAAAAA', 'gQEm8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyOEZwamx3MmJkOTAxMDAwMGcwM2kAAgTmp1xaAwQAAAAA', 'gQE_8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyem5MZGw0MmJkOTAxMDAwME0wM2wAAgTop1xaAwQAAAAA', null, null, '0.00', null, 'admin', null, '3', '7', '1517392245', '1517392245');
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_vendors_commission
@@ -953,10 +622,6 @@ CREATE TABLE `st_vendors_commission` (
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=gbk;
 
 -- ----------------------------
--- Records of st_vendors_commission
--- ----------------------------
-
--- ----------------------------
 -- Table structure for st_wechat
 -- ----------------------------
 DROP TABLE IF EXISTS `st_wechat`;
@@ -971,11 +636,7 @@ CREATE TABLE `st_wechat` (
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   `recommend` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员 4:分公司邀请分销商 5:分销商邀请分销商}',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=373 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of st_wechat
--- ----------------------------
+) ENGINE=InnoDB AUTO_INCREMENT=376 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_work
@@ -1000,19 +661,3 @@ CREATE TABLE `st_work` (
   KEY `uid` (`uid`),
   KEY `dw_uid` (`dw_uid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=24124 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of st_work
--- ----------------------------
-INSERT INTO `st_work` VALUES ('24112', '1', null, '陈', 'hgR20180120114596815', null, '', '0', '显示器在城工珠援助佣兵 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城 显示器在城工珠援助佣兵物城物城', '北京市北京市市辖区东城区', '2', '', '1516419920', '');
-INSERT INTO `st_work` VALUES ('24113', '1', '1', '01安装', 'TEG20180129202585427', '*&amp;&amp;*', '13526530256', '0', '安装', '黑龙江省鹤岗市兴山区', '2', '1517231593', '1517228723', '');
-INSERT INTO `st_work` VALUES ('24114', '1', '1', 'aaaaaa', 'oet20180129202523662', '*&amp;*&amp;*gldgkgs', '14785203698', '1', '维修', '辽宁省抚顺市新宾满族自治县', '2', '1517231635', '1517228759', '');
-INSERT INTO `st_work` VALUES ('24115', '1', '1', 'weixiu', 'xya20180130103239526', '010', '18402036523', '1', '维修', '浙江省金华市兰溪市', '2', '1517279726', '1517279566', '');
-INSERT INTO `st_work` VALUES ('24116', '1', '1', '01', 'bly20180130165773824', '01', '14702589632', '0', '01', '0', '2', '1517302749', '1517302637', '');
-INSERT INTO `st_work` VALUES ('24117', '1', '1', '01', 'wNv20180130165781345', '01', '17402588520', '0', '01', '辽宁省沈阳市和平区', '2', '1517307251', '1517302673', '');
-INSERT INTO `st_work` VALUES ('24118', '1', '1', '广州番禺区', 'mdC20180130193353285', '小小', '14014714714', '0', '广州番禺区钟村安装净水器', '广东省广州市番禺区', '2', '1517312089', '1517312028', '');
-INSERT INTO `st_work` VALUES ('24119', '1', '1', '番禺广场', 'Rwn20180130193926813', 'ihLHK   **', '13452525252', '1', '维修', '广东省广州市番禺区', '2', '1517314510', '1517312351', '');
-INSERT INTO `st_work` VALUES ('24120', '1', '1', 'KK*  ^ **', 'vso20180130201502494', '34$%    %^^', '14925893265', '0', 'weixiu', '内蒙古自治区通辽市科尔沁区', '1', '1517315785', '1517314555', '');
-INSERT INTO `st_work` VALUES ('24121', '1', '1', 'fh  $%^ %', 'jyP20180130201564953', '34535$%^^%#$', '17000235623', '0', '安装', '北京市北京市市辖区东城区', '1', '1517314791', '1517314556', '');
-INSERT INTO `st_work` VALUES ('24122', '1', '1', '飞', 'rCk20180130201806971', 'dgdfg drtte$%%^T^', '17702589632', '0', '沙发上￥%%%￥v     $$ %', '北京市北京市市辖区东城区', '2', '1517365977', '1517314690', '');
-INSERT INTO `st_work` VALUES ('24123', '1', null, '￥%……    %#……    %&amp;……￥', 'MQe20180131113333774', null, '', '1', '￥%……%￥   ￥#￥#    ￥%%', '北京市北京市市辖区东城区', '0', '', '1517369592', '');

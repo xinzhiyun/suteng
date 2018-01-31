@@ -53,60 +53,64 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <volist name="data" id="v">
-                                <tr>
-                                    <td>
-                                        {{$v['order_id']}}
-                                    </td>
-                                    <td>
-                                        {{$v['name']}}
-                                    </td>
-                                    <td>
-                                        {{$v['phone']}}
-                                    </td>
-                                    <td>
-                                        {{$v['address']}}
-                                    </td>
-                                    <td>
-                                        {{$v['g_num']}}
-                                    </td>
-                                    <td>
-                                        {{$v['g_price']}}
-                                    </td>
-                                    <td>
-                                        {{$v['addtime']|date='Y-m-d H:i:s',###}}
-                                    </td>
-                                    <td>
-                                        <switch name="v.mode">
-                                            <case value="0">微信</case>
-                                            <case value="1">支付宝</case>
-                                            <case value="2">银联</case>
-                                        </switch>
-                                    </td>
-                                    <td>
-                                        <!-- 0已下单，1处理中，2已发货，3已收货，4退货处理中，5已退货，6申诉中，7订单完成，8未支付 -->
-                                        <switch name="v.status">
-                                            <case value="0">已下单</case>
-                                            <case value="1">处理中</case>
-                                            <case value="2">已发货</case>
-                                            <case value="3">已收货</case>
-                                            <case value="4">退货处理中</case>
-                                            <case value="5">已退货</case>
-                                            <case value="6">申诉中</case>
-                                            <case value="7">订单完成</case>
-                                            <case value="8">未支付</case>
-                                        </switch>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <a class="btn btn-outline btn-success" href="javascript:;" goodsId="{{$v['id']}}" ruleName="{{$v['name']}}" ruleTitle="{{$v['pid']}}"
-                                            onclick="edit(this)">
-                                                查看
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </volist>
+                            <empty name="data">
+                                <tr><td colspan="12">暂无商品数据</td></tr>
+                            <else />
+                                <volist name="data" id="v">
+                                    <tr>
+                                        <td>
+                                            {{$v['order_id']}}
+                                        </td>
+                                        <td>
+                                            {{$v['name']}}
+                                        </td>
+                                        <td>
+                                            {{$v['phone']}}
+                                        </td>
+                                        <td>
+                                            {{$v['address']}}
+                                        </td>
+                                        <td>
+                                            {{$v['g_num']}}
+                                        </td>
+                                        <td>
+                                            {{$v['g_price']}}
+                                        </td>
+                                        <td>
+                                            {{$v['addtime']|date='Y-m-d H:i:s',###}}
+                                        </td>
+                                        <td>
+                                            <switch name="v.mode">
+                                                <case value="0">微信</case>
+                                                <case value="1">支付宝</case>
+                                                <case value="2">银联</case>
+                                            </switch>
+                                        </td>
+                                        <td>
+                                            <!-- 0已下单，1处理中，2已发货，3已收货，4退货处理中，5已退货，6申诉中，7订单完成，8未支付 -->
+                                            <switch name="v.status">
+                                                <case value="0">已下单</case>
+                                                <case value="1">处理中</case>
+                                                <case value="2">已发货</case>
+                                                <case value="3">已收货</case>
+                                                <case value="4">退货处理中</case>
+                                                <case value="5">已退货</case>
+                                                <case value="6">申诉中</case>
+                                                <case value="7">订单完成</case>
+                                                <case value="8">未支付</case>
+                                            </switch>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a class="btn btn-outline btn-success" href="javascript:;" goodsId="{{$v['id']}}" ruleName="{{$v['name']}}" ruleTitle="{{$v['pid']}}"
+                                                onclick="edit(this)">
+                                                    查看
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </volist>
+                            </empty>
                         </tbody>
                     </table>
                 </div>

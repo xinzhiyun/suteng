@@ -34,37 +34,41 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <foreach name="data" item="v">
-                                <tr>
-                                    <td>
-                                        {{$v['id']}}
-                                    </td>
-                                    <td>
-                                        {{$v['_name']}}
-                                    </td>
-                                    <td>
-                                        {{$v['pid']}}
-                                    </td>
-                                    <td>
-                                        {{$v['leavel']}}
-                                    </td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <a class="btn btn-outline btn-success" href="javascript:;" ruleId="{{$v['id']}}" onclick="add_child(this)">
-                                                添加子分类
-                                            </a>
-                                            <a class="btn btn-outline btn-success" href="javascript:;" ruleId="{{$v['id']}}" ruleName="{{$v['name']}}" ruleTitle="{{$v['pid']}}"
-                                            onclick="edit(this)">
-                                                修改
-                                            </a>
-                                            <a class="btn btn-outline btn-success deletBnt" ruleId="{{$v['id']}}">
-                                                删除
+                            <empty name="data">
+                                <tr><td colspan="12">暂无商品数据</td></tr>
+                            <else />
+                                <foreach name="data" item="v">
+                                    <tr>
+                                        <td>
+                                            {{$v['id']}}
+                                        </td>
+                                        <td>
+                                            {{$v['_name']}}
+                                        </td>
+                                        <td>
+                                            {{$v['pid']}}
+                                        </td>
+                                        <td>
+                                            {{$v['leavel']}}
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <!-- <a class="btn btn-outline btn-success" href="javascript:;" ruleId="{{$v['id']}}" onclick="add_child(this)">
+                                                    添加子分类
+                                                </a> -->
+                                                <a class="btn btn-outline btn-success" href="javascript:;" ruleId="{{$v['id']}}" ruleName="{{$v['name']}}" ruleTitle="{{$v['pid']}}"
+                                                onclick="edit(this)">
+                                                    修改
+                                                </a>
+                                                <a class="btn btn-outline btn-success deletBnt" ruleId="{{$v['id']}}">
+                                                    删除
 
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </foreach>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </foreach>
+                            </empty>
                         </tbody>
                     </table>
                 </div>
