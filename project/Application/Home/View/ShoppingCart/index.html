@@ -17,6 +17,34 @@
 	.shpingcarAll{
 		padding-bottom: 5.6rem;
 	}
+	/*购物车无商品*/
+	.noItem {
+		width: 100%;
+		height: 80vh;
+		display: none;
+		flex-flow: column;
+		justify-content: center;
+		align-items: center;
+		padding: 2%;
+	}
+	.noItem>div {
+		width: 4vmin;
+		height: 4vmin;
+		position: relative;
+		border: 1vmin solid #aaa;
+		border-radius: 50%;
+		animation: nono 5s ease infinite;
+	}
+	@keyframes nono {
+		from {
+			opacity: 1;
+			transform: scale(.2) translateY(0);
+		}
+		to {
+			opacity: 0;
+			transform: scale(1) translateY(-10vh);
+		}
+	}
 	/*一个商品的样式*/
 	.itemCar{
 		padding: 1rem 3%;
@@ -115,6 +143,8 @@
 	 }
 	.shoppingcarBott>p>i{
 		padding-right: 0.2rem;
+		color: #ccc;
+    	font-size: .9rem;
 	}
 	.shoppingcarBott>p>i.icon-xuanze{
 		 color: #56AAF1;
@@ -177,6 +207,11 @@
 </style>
 <body>
 	<div class="shpingcarAll">
+		<!-- 购物车没有商品时候显示 -->
+		<div class="noItem">
+			<h3>购物车空空如也</h3>
+			<div></div>
+		</div>
 		<!-- <div class="itemCar clearfix" gid="1" > -->
 			<!-- /*选中及图片*/ -->
 			<!-- <div class="itemcarLeft clearfix ">
@@ -216,30 +251,35 @@
 			type: 'post',
 			success: function(res){
 				console.log("成功！", res);
-				for(var i=0; i<res.length; i++){
-					itemCarHTML += '<div class="itemCar clearfix" gid="'+ res[i].gid +'" >'+
-						'<!-- 选中及图片 -->'+
-						'<div class="itemcarLeft clearfix ">'+
-							'<div class="xuanzhong "><i class="iconfont icon-kuang1"></i></div>'+
-							'<div class="carpic "><img src="__PUBLIC__/Uploads/'+ res[i].path +'" alt=""></div>'+
-						'</div>'+
-						'<!-- 文字说明及价格 -->'+
-						'<div class="itemcarRight">'+
-							'<h3>'+ res[i].name +'</h3>'+
-							'<p class="roTxt">'+ res[i].desc +'</p>'+
-							'<p class="roPrice clearfix">'+
-								'<b class="price">￥<span>'+ res[i].price +'</span></b>'+
-								'<span class="num">'+
-									'<input type="button" value="-" class="minus">'+
-									'<input class="number" type="number" value="1" min="1" max="19">'+
-									'<input type="button" value="+" class="plus">'+
-								'</span>'+
-							'</p>'+
-						'</div>'+
-					'</div>';
+				if(res){
+					for(var i=0; i<res.length; i++){
+						itemCarHTML += '<div class="itemCar clearfix" gid="'+ res[i].gid +'"  index_id="'+ res[i].id +'">'+
+							'<!-- 选中及图片 -->'+
+							'<div class="itemcarLeft clearfix ">'+
+								'<div class="xuanzhong "><i class="iconfont icon-kuang1"></i></div>'+
+								'<div class="carpic "><img src="__PUBLIC__/Uploads/'+ res[i].path +'" alt=""></div>'+
+							'</div>'+
+							'<!-- 文字说明及价格 -->'+
+							'<div class="itemcarRight">'+
+								'<h3>'+ res[i].name +'</h3>'+
+								'<p class="roTxt">'+ res[i].desc +'</p>'+
+								'<p class="roPrice clearfix">'+
+									'<b class="price">￥<span>'+ res[i].price +'</span></b>'+
+									'<span class="num">'+
+										'<input type="button" value="-" class="minus">'+
+										'<input class="number" type="number" value="'+ res[i].num +'" min="1" max="19">'+
+										'<input type="button" value="+" class="plus">'+
+									'</span>'+
+								'</p>'+
+							'</div>'+
+						'</div>';
+					}
+					// 添加到购物车页面
+					$(".shpingcarAll").html(itemCarHTML);
+				}else{
+					// 购物车没有商品
+					$(".noItem").css({display: 'flex'})
 				}
-				// 添加到购物车页面
-				$(".shpingcarAll").html(itemCarHTML);
 			},
 			error: function(res){
 				console.log("失败！", res)
@@ -341,20 +381,25 @@
 			$(".priceAll>span").text(priceAll);
 
 		});
-		// 删除商品
+		// 商品左滑，出现删除按钮
        slipDel('.shpingcarAll','.itemCar','goodsnumbe');
 
        // 购物车删除
        $(".shpingcarAll").on("click",'.del', function(e){
+       		var _this = $(this);
 	       	console.log(e);
-	       	var gid = $(this).parents(".itemCar").attr("gid");
-	       	console.log(gid)
+	       	var index_id = $(this).parents(".itemCar").attr("index_id");
+	       	console.log(index_id)
+	       	
+	       	// 发送请求删除商品在数据库的数据
 	       	$.ajax({
 				url: '{{:U("ShoppingCart/cartDel")}}',
 				type: 'post',
-				data: {'id': gid},
+				data: {'id': index_id},
 				success: function(res){
 					console.log('成功！ ',res);
+					// 移除当前删除商品的元素
+	       			_this.parents('.itemCar').remove();
 				},
 				error: function(res){
 					console.log('失败！ ',res);
