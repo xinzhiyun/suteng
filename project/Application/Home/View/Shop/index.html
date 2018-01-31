@@ -229,6 +229,7 @@
 <body>
 	<input type="hidden" value='{{$cate}}' id="_cate">
 	<input type='hidden' value='{{$goods}}' id='_goods'>
+	<input type="hidden" value='{{$cartInfo}}' id="cartInfo">
 	<header id="header">
 		<!-- <span class="tab" index='0'>净水器</span>
 		<span class="tab" index='1'>净化器</span>
@@ -287,6 +288,14 @@
 	
 	<script>
 		$(function(){
+			//首页显示购物车数量
+			// console.log($("#cartInfo").val())
+			if(JSON.parse($("#cartInfo").val())){
+				$(".icon-gouwuche>span").text(JSON.parse($("#cartInfo").val()));
+			}else {
+				// 如果购物车没有商品
+				$(".icon-gouwuche>span").hide();
+			}
 			//存放分栏的商品信息
 			var CategoryHTML = '', categoryArr = [];
 			var goodblockHTML = '';		//分栏商品模板
