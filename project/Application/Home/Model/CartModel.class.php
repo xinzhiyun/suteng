@@ -6,7 +6,7 @@ class CartModel extends Model
     // 自动验证
     protected $_validate = array(
         array('uid','require','请先登陆！'),
-        array('num', '/^[1-9][\d]{1,10}$/', '请确认购买数量', '2', 'regex'),
+        array('num', '/^\d$/', '请确认购买数量', '3', 'regex'),
         array('gid','require','请先刷新页面！'),
     );
     // 自动完成

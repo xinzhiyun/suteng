@@ -49,9 +49,10 @@ class ShoppingCartController extends CommonController
             $data['num'] = I('post.num');
             $data['gid'] = I('post.gid');
             $data['uid'] = session('user.id');
+            $data['addtime'] = time();
             $res = $cart->create();
             if(!$res) E($cart->getError(),603);
-            $res = $cart->add();
+            $res = $cart->add($data);
             if($res){
                 E('加入购物车', 200);
             } else {
