@@ -456,6 +456,32 @@
 		priceAll = priceAll < 0 ? 0 : priceAll;
 		$("#footer>div>span").text('￥'+priceAll)
 	});
+	//加载滤芯项
+	var lvxinBuy = [ 
+		{"filtername":"RO膜","filterbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","filterprice":"120"}, 
+		{"filtername":"滤芯膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120"}, 
+		{"filtername":"净水膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120"}, 
+	]; 
+    var lvxinList='';
+    for(var i = 0;i<lvxinBuy.length;i++){
+    	lvxinList+='<div class="goods">'+
+					'<div class="img"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt="正在加载..."></div>'+
+				'<div class="desc">'+
+					'<h5>RO膜</h5>'+
+					'<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>'+
+					'<div>'+
+						'<span class="price">￥<span>120.00</span></span>'+
+						'<span class="num">'+
+							'<input type="button" value="-" class="minus">'+
+							'<input class="number" type="number" value="0">'+
+							'<input type="button" value="+" class="plus">'+
+						'</span>'+
+					'</div>'+
+				'</div>'+
+			'</div>';
+    }
+    $("#lvxinBuy").html(lvxinList);
+
 	/*
 		filtername: 滤芯名称
 		picturepath：图片路径
@@ -514,31 +540,6 @@
 		}
 		
 	})
-	//加载滤芯项
-	var lvxinBuy = [ 
-		{"filtername":"RO膜","filterbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","filterprice":"120"}, 
-		{"filtername":"滤芯膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120"}, 
-		{"filtername":"净水膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120"}, 
-	]; 
-    var lvxinList='';
-    for(var i = 0;i<lvxinBuy.length;i++){
-    	lvxinList+='<div class="goods">'+
-					'<div class="img"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt="正在加载..."></div>'+
-				'<div class="desc">'+
-					'<h5>RO膜</h5>'+
-					'<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>'+
-					'<div>'+
-						'<span class="price">￥<span>120.00</span></span>'+
-						'<span class="num">'+
-							'<input type="button" value="-" class="minus">'+
-							'<input class="number" type="number" value="0">'+
-							'<input type="button" value="+" class="plus">'+
-						'</span>'+
-					'</div>'+
-				'</div>'+
-			'</div>';
-    }
-    $("#lvxinBuy").html(lvxinList);
 	</script>
 </body>
 </html>
