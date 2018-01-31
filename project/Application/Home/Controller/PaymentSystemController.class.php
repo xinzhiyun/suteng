@@ -141,7 +141,7 @@ class PaymentSystemController extends CommonController
         // 冲值测试额1分钱
         $money = 1;
         // 用户在公众号的唯一ID
-        $openId = $_SESSION['user']['open_id'];
+        $openId = $_SESSION['open_id'];
 
 
         //微信examle的WxPay.JsApiPay.php
