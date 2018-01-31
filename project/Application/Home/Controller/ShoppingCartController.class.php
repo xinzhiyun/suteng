@@ -53,11 +53,13 @@ class ShoppingCartController extends CommonController
             $res = $cart->create();
             if(!$res) E($cart->getError(),603);
             // 查询购物车中是否存在这个商品
-            $num = $cart->whhere('gid='.$data['gid'])->field('num')->find();
+            $num = $cart->where('gid='.$data['gid'])->field('id,num')->find();
             if($num){
-                $data['num'] += $num;
+                $data['num'] = $data['num']+$num['num'];
+                $res = $cart->where('id='.$num['id'])->save($data);
+            } else {
+                $res = $cart->add($data);
             }
-            $res = $cart->add($data);
             if($res){
                 E('加入购物车', 200);
             } else {
