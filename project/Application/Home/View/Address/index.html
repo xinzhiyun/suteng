@@ -20,6 +20,16 @@
 			font-size: .7rem;
 			overflow-x: hidden;
 		}
+		.noaddress {
+			width: 100%;
+			height: 60vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: relative;
+			top: 20%;
+			text-align: center;
+		}
 		.address {
 		    background: #fff;
 			border-bottom: 8px solid #eee;
@@ -213,39 +223,43 @@
 </head>
 <body>
 	<div id="content">
-	<volist name="data" id="v">
-		<div class="address">
-			<div class="aTop">
-				<p>
-					<span class="uName">{{$v.name}}</span>
-					<span class="uPhone">{{$v.phone}}</span>
-				</p>
-				<p class="uAddress">{{$v.address}}</p>
-			</div>
-			<div class="aBottom">
-				<div>
-					<switch name="v.status">
-						<case value="0">
-							<input id="setAddress-{{$v.id}}" class="setAddress" type="radio" name="radio" index="{{$v.id}}" checked />
-							<label for="setAddress-{{$v.id}}" index='{{$v.id}}'>默认地址</label>
-							<p>
-								<span class="edit" index="{{$v.id}}">编辑</span>
-								<span class="del">删除</span>
-							</p>
-						</case>
-						<case value="1">
-							<input id="setAddress-{{$v.id}}" class="setAddress" type="radio" name="radio" index="{{$v.id}}" />
-							<label for="setAddress-{{$v.id}}" index='{{$v.id}}'>默认地址</label>
-							<p>
-								<span class="edit" index="{{$v.id}}">编辑</span>
-								<span class="del">删除</span>
-							</p>
-						</case>
-					</switch>
+	<empty name="data">
+		<h3 class="noaddress">还没有一条地址</h3>
+	<else />
+		<volist name="data" id="v">
+			<div class="address">
+				<div class="aTop">
+					<p>
+						<span class="uName">{{$v.name}}</span>
+						<span class="uPhone">{{$v.phone}}</span>
+					</p>
+					<p class="uAddress">{{$v.address}}</p>
+				</div>
+				<div class="aBottom">
+					<div>
+						<switch name="v.status">
+							<case value="0">
+								<input id="setAddress-{{$v.id}}" class="setAddress" type="radio" name="radio" index="{{$v.id}}" checked />
+								<label for="setAddress-{{$v.id}}" index='{{$v.id}}'>默认地址</label>
+								<p>
+									<span class="edit" index="{{$v.id}}">编辑</span>
+									<span class="del">删除</span>
+								</p>
+							</case>
+							<case value="1">
+								<input id="setAddress-{{$v.id}}" class="setAddress" type="radio" name="radio" index="{{$v.id}}" />
+								<label for="setAddress-{{$v.id}}" index='{{$v.id}}'>默认地址</label>
+								<p>
+									<span class="edit" index="{{$v.id}}">编辑</span>
+									<span class="del">删除</span>
+								</p>
+							</case>
+						</switch>
+					</div>
 				</div>
 			</div>
-		</div>
-	</volist>
+		</volist>
+	</empty>
 		<!-- <div class="address">
 			<div class="aTop">
 				<p>
