@@ -84,6 +84,105 @@
 			border-radius: 6px;
 			border: 1px solid #dfdfdf;
 		}
+
+        /*点击添加地址弹出的页面*/
+        #editAddressPanel {
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(0,0,0,.7);
+            z-index: 999;
+        }
+        #editAddressPanel>p {
+            width: 100vw;
+            height: 50vh;
+            /*background: rgba(0,0,0,.5);*/
+        }
+        #editAddressPanel>div {
+            width: 100vw;
+            height: 50vh;
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+            -webkit-box-align: stretch;
+                -ms-flex-align: stretch;
+                    align-items: stretch;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+                -ms-flex-flow: column;
+                    flex-flow: column;
+            margin-top: 50vh;
+            background: #fff;
+        }
+        /*关闭按钮*/
+        .closePannel {
+            width: 8vw;
+            height: 8vw;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
+            position: absolute;
+            top: 8px;
+            left: 6px;
+            padding: 3%;
+            border-radius: 8vw;
+            border: 1px solid #aaa;
+        }
+        /*填写姓名，电话等的区域*/
+        #editAddressPanel>div>div {
+            width: 70%;
+            position: relative;
+            left: 50%;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: justify;
+                -ms-flex-pack: justify;
+                    justify-content: space-between;
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
+            margin: 2vh 0 2vh -35%;
+        }
+
+        #editAddressPanel>div>div>label {
+            -ms-flex-item-align: start;
+                align-self: flex-start;
+        }
+        /*编辑的姓名，电话，地址*/
+        .editName, .editPhone, .editAddress {
+            margin: 0 1vw;
+            padding: 1% 2%;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+        }
+        .editAddress {
+            width: 80%;
+        }
+        .saveAddress {
+            width: 70%;
+            position: relative;
+            padding: 1vh 0;
+            left: 50%;
+            margin: 5% 5% 5% -35%;
+            text-align: center;
+            color: #fff;
+            border-radius: 4px;
+            background: #2EB6AA;
+        }
 		#footer {
 			width: 100vw;
 			display: flex;
@@ -94,7 +193,11 @@
 			border-top: 1px solid #ddd;
 		    background: #fff;
 		}
-		#footer>input {
+		#footer>a {
+			width: 100%;
+			display: block;
+		}
+		#footer>a>input {
 			width: 6vmin;
 			height: 6vmin;
 			margin: 0 20px;
@@ -109,54 +212,62 @@
 	</style>
 </head>
 <body>
-	<div class="address">
-		<div class="aTop">
-			<p>
-				<span>Yoo</span>
-				<span>13612345678</span>
-			</p>
-			<p>广州市番禺区大石街道五巷7号</p>
-		</div>
-		<div class="aBottom">
-			<div>
-				<input id="setAddress-1" class="setAddress" type="radio" name="radio" index="address-1" checked />
-				<label for="setAddress-1">默认地址</label>
+	<div id="content">
+		<div class="address">
+			<div class="aTop">
 				<p>
-					<span class="edit">编辑</span>
-					<span class="del">删除</span>
+					<span class="uName">Yoo</span>
+					<span class="uPhone">13612345678</span>
 				</p>
+				<p class="uAddress">广州市番禺区大石街道五巷7号</p>
+			</div>
+			<div class="aBottom">
+				<div>
+					<input id="setAddress-1" class="setAddress" type="radio" name="radio" index="address-1" checked />
+					<label for="setAddress-1">默认地址</label>
+					<p>
+						<span class="edit" index="0">编辑</span>
+						<span class="del">删除</span>
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="address">
+			<div class="aTop">
+				<p>
+					<span class="uName">Yoofds</span>
+					<span class="uPhone">13612345678</span>
+				</p>
+				<p class="uAddress">广州市番禺区反倒是街道五巷7号</p>
+			</div>
+			<div class="aBottom">
+				<div>
+					<input id="setAddress-2" class="setAddress" type="radio" name="radio" index="address-2" />
+					<label for="setAddress-2">默认地址</label>
+					<p>
+						<span class="edit" index="1">编辑</span>
+						<span class="del">删除</span>
+					</p>
+				</div>
 			</div>
 		</div>
 	</div>
-
-	<div class="address">
-		<div class="aTop">
-			<p>
-				<span>Yoo</span>
-				<span>13612345678</span>
-			</p>
-			<p>广州市番禺区大石街道五巷7号</p>
-		</div>
-		<div class="aBottom">
-			<div>
-				<input id="setAddress-2" class="setAddress" type="radio" name="radio" index="address-2" />
-				<label for="setAddress-2">默认地址</label>
-				<p>
-					<span class="edit">编辑</span>
-					<span class="del">删除</span>
-				</p>
-			</div>
-		</div>
+	<!-- 添加地址弹出面板 -->
+	<div id="editAddressPanel">
+		<p index="这个空标签不能删"></p>
+		<div></div>
 	</div>
-
 	<footer id="footer">
-		<input type="button" id="newAddress" value="+">
-		<label for="newAddress"><a href="{{:U('Home/Address/newAddress')}}">添加新地址</a></label>
+		<a href="{{:U('Home/Address/newAddress')}}">
+			<input type="button" id="newAddress" value="+">
+			<label for="newAddress">添加新地址</label>
+		</a>
 	</footer>
 	<script>
     $(function(){
-        // 存放打开的地址的序号，新地址
-        var addressIndex, newAddressIndex;
+        // 存放打开的地址的序号
+        var addressIndex;
 
 		// 存放姓名，电话，地址
 		var uName, uPhone, uAddress;
@@ -168,12 +279,28 @@
 				// console.log(index, key);
 			})
 			$(this).siblings(".setAddress").attr("checked", true);
-			// console.log($(this).siblings(".setAddress"));
-			uName = $(this).parent().parent().siblings(".aTop").find(".uName").text();
-			uPhone = $(this).parent().parent().siblings(".aTop").find(".uPhone").text();
-			uAddress = $(this).parent().parent().siblings(".aTop").find(".uAddress").text();
+			console.log($(this).siblings(".setAddress"));
+			uName = $(this).parents(".address").find(".uName").text();
+			uPhone = $(this).parents(".address").find(".uPhone").text();
+			uAddress = $(this).parents(".address").find(".uAddress").text();
 
 			console.log('姓名：'+uName, '\n电话：'+uPhone, '\n地址：'+uAddress);
+			var address_id;		//地址id
+			// 发送ajax请求告诉后台，哪个是默认地址
+			$.ajax({
+				url: '{{:U("")}}',
+				type: 'post',
+				data: {'address_id': address_id},
+				success: function(res){
+					console.log('成功！ ', res)
+				},
+				error: function(res){
+					console.log('失败！ ', res)
+				}
+			});
+			// 选择默认地址后，返回上一页
+			location.href = '{{:U("PaymentSystem/payConfirm")}}'
+
 		})
         // 点击按钮设置默认地址
         $("#content").on('click','.setAddress',function(){
@@ -183,29 +310,29 @@
             })
             $(this).attr("checked", true);
             // console.log($(this).siblings(".setAddress"));
-            uName = $(this).parent().parent().siblings(".aTop").find(".uName").text();
-            uPhone = $(this).parent().parent().siblings(".aTop").find(".uPhone").text();
-            uAddress = $(this).parent().parent().siblings(".aTop").find(".uAddress").text();
+            uName = $(this).parents(".address").find(".uName").text();
+            uPhone = $(this).parents(".address").find(".uPhone").text();
+            uAddress = $(this).parents(".address").find(".uAddress").text();
 
             console.log('姓名：'+uName, '\n电话：'+uPhone, '\n地址：'+uAddress);
+			
+			// 选择默认地址后，返回上一页
+			location.href = '{{:U("PaymentSystem/payConfirm")}}'
         })
 
-		// 点击“新地址”
-		$("#footer").click(
-			function(){
-                // 显示编辑面板
-                $("#editAddressPanel").show();
-                $("#editAddressPanel>div").animate({marginTop: '0'});
-                $("#editAddressPanel>div").html(editPanel());
+		// // 点击“新地址”
+		// $("#footer").click(
+		// 	function(){
+  //               // 显示编辑面板
+  //               $("#editAddressPanel").show();
+  //               $("#editAddressPanel>div").animate({marginTop: '0'});
+  //               $("#editAddressPanel>div").html(editPanel());
 
-                // 设定保存时的判断依据,来自新建,不是编辑
-                newAddressIndex = true;
-			}
-		);
+		// 	}
+		// );
 		// 点击‘X’关闭添加地址面板
 		$("#editAddressPanel").on("click",".closePannel", function(){
-            // 设定保存时的判断依据,来自编辑,不是新建
-            newAddressIndex = false;
+            
 			$("#editAddressPanel>div").animate({marginTop: '50vh'});
 			var int = setInterval(function(){
 				parseInt($("#editAddressPanel>div").css("marginTop")) >= $(window).height()/2-20
@@ -230,35 +357,26 @@
 				: ''
 			},100);
             // 获取当前面板的姓名，电话，地址
-            var editName = $(this).siblings("div").find(".editName").val();
-            var editPhone = $(this).siblings("div").find(".editPhone").val();
-            var editAddress = $(this).siblings("div").find(".editAddress").val();
+            var editName = $(this).parents("#editAddressPanel").find(".editName").val();
+            var editPhone = $(this).parents("#editAddressPanel").find(".editPhone").val();
+            var editAddress = $(this).parents("#editAddressPanel").find(".editAddress").val();
 
-            // console.log(editName, uPhone, uAddress)
+            console.log(editName, editPhone, editAddress)
             // 显示编辑面板
             $("#editAddressPanel").show();
             $("#editAddressPanel>div").animate({marginTop: '0'});
             $("#editAddressPanel>div").html(editPanel(editName, editPhone, editAddress))
 
             //addressIndex：判断打开的是哪个地址, 点击'编辑'的时候获取
-            // console.log(addressIndex, $("#address").eq(addressIndex))
+            console.log(addressIndex, $(".address").eq(addressIndex))
             // 将修改更新到页面相应位置
-            if(newAddressIndex || !editName || !editPhone || !editAddress){
-                // 点击新建按钮
-                console.log('gQwjiouoi')
-                
-                $("#content").append(addressHTML(editName, editPhone, editAddress));
-            }else{
+            if(editName && editPhone && editAddress){
                 // 点击编辑进来的
-                $(".address").eq(addressIndex).find(".uName").text(editName)
-                $(".address").eq(addressIndex).find(".uPhone").text(editPhone)
-                $(".address").eq(addressIndex).find(".uAddress").text(editAddress)
+                $("#content").find(".address").eq(addressIndex).find(".uName").text(editName)
+                $("#content").find(".address").eq(addressIndex).find(".uPhone").text(editPhone)
+                $("#content").find(".address").eq(addressIndex).find(".uAddress").text(editAddress)
+                console.log($("#content").find(".address").eq(addressIndex))
             }
-
-            setTimeout(function(){
-                // 设定保存时的判断依据,来自编辑,不是新建
-                newAddressIndex = false;
-            },1000)
 			
 		})
 
@@ -309,25 +427,29 @@
         }
 		// 点击编辑按钮
 		$("#content").on("click",'.edit',function(){
-            // 设定保存时的判断依据,来自编辑,不是新建
-            newAddressIndex = false;
+			
             //判断打开的是哪个地址
-            addressIndex = parseInt($(this).attr("addressIndex"));
+            addressIndex = parseInt($(this).attr("index"));
             // 将编辑所在条目的姓名，电话，地址填写到面板相应位置
-			var uName = $(this).parent().parent().parent().siblings(".aTop").find(".uName").text();
-			var uPhone = $(this).parent().parent().parent().siblings(".aTop").find(".uPhone").text();
-			var uAddress = $(this).parent().parent().parent().siblings(".aTop").find(".uAddress").text();
-			// console.log(uName, uPhone, uAddress)
+			var uName = $(this).parents(".address").find(".uName").text();
+			var uPhone = $(this).parents(".address").find(".uPhone").text();
+			var uAddress = $(this).parents(".address").find(".uAddress").text();
+			console.log(uName, uPhone, uAddress)
             // 显示编辑面板
             $("#editAddressPanel").show();
             $("#editAddressPanel>div").animate({marginTop: '0'});
 			$("#editAddressPanel>div").html(editPanel(uName, uPhone, uAddress))
+
+			// 发送给后台
+			$.post('{{:U("")}}',{},function(res){
+				console.log(res);
+			})
 		})
 
         //点击删除按钮
         $("#content").on('click','.del',function(){
-            console.log($(this).parents(".address"))
-            $(this).parents(".address").remove()
+            console.log($(this).parents(".address"));
+            $(this).parents(".address").remove();
         })
 
         // 将数据输出为JSON对象数组格式

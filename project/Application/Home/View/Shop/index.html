@@ -292,6 +292,7 @@
 			var _cate = JSON.parse($("#_cate").val());
 			// console.log(_cate);
 
+			// 遍历分类
 			for(var i=0;i<_cate.length; i++){
 				CategoryHTML += '<span class="tab" index='+i+'>'+ _cate[i].name +'</span>';
 				categoryArr.push(_cate[i].name);
@@ -326,7 +327,7 @@
 				遍历商品
 			 */
 			for(var i=0;i<_cate.length; i++){
-				_htmlArr[[i]] = '';		//使用前先定义
+				_htmlArr[[i]] = '';		//使用前先初始化
 				for(var j=0; j<_goods.length; j++){
 					if(_goods[j].cid == _cate[i].id){	//对应分类下有商品
 						// console.log(_goods[j].cid, _cate[i].id);
@@ -357,11 +358,11 @@
 				$(".allgoods>ul").eq(0).html(_htmlArr[0]);
 				// console.log($("#content>div").eq(0).attr("index"))
 			}else{
-				$(".allgoods>ul").eq(0).html('暂无内容！')
+				$(".allgoods>ul").eq(0).html('<h3 style="text-align:center;padding:5% 0;">暂无内容！</h3>');
 			}
 
 			/*
-				点击的时候记录当前点击的商品，传给商品详情页面
+				点击的时候记录当前点击的商品gid，传给商品详情页面
 			 */
 			$(".goodsBlock").on('click','.pic',function(){
 				// console.log($(this).attr("goods_gid"))
@@ -377,7 +378,7 @@
 					$(".allgoods>ul").eq($(this).attr("index")).html(_htmlArr[$(this).attr("index")]);
 					// console.log($("#content>div").eq($(this).attr("index")).attr("index"))
 				}else{
-					$(".allgoods>ul").eq($(this).attr("index")).html('暂无内容！')
+					$(".allgoods>ul").eq($(this).attr("index")).html('<h3 style="text-align: center;padding:5% 0;">暂无内容！</h3>')
 				}
 				// if($('#content>div').length != 0){
 					 $('#header>span').css('color','#5A5A5A').css('font-weight','400');
