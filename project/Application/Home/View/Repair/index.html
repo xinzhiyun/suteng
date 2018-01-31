@@ -11,6 +11,7 @@
   <style>
     body{
       font-size: 0.7rem;
+      color:#373737;
       }
       ._repair{
         width: 100%;
@@ -30,22 +31,25 @@
       .repairTop ul li span{
         display: inline-block;
         width: 30%;
-        font-size: 0.426667rem;
+        font-size: 0.68rem;
+        float: left;
       }
       .repairTop ul li span:nth-child(4){
         margin-top: 0.1rem;
       }
       .repairTop ul li p{
         display: inline-block;
-        font-size: 0.4rem;
+        font-size: 0.7rem;
         width: 65%;
       }
       .repairTop ul li p input,.repairTop ul li p select{
         float: right;
         width: 100%;
         border-radius: 0.133333rem;
-        border:1px solid #ccc;
+        border:1px solid #d4d4d4;
         text-align: center;
+        height: 1.3rem;
+        background: #fff;
       }
       .repairTop ul li p select{
         padding:0.12rem;
@@ -72,7 +76,7 @@
       .repairMidd>p {
         margin:0.933333rem 0 0.4rem;
         color: #767676;
-        font-size: 0.533333rem;
+        font-size: 0.72rem;
       }
       .repairPic {
         position: relative;
@@ -80,11 +84,12 @@
       .repairPic i{
         font-size: 5.0rem;
         color: #68B1F1;
+        margin-left: -0.2rem;
       }
       .repairPic>span{
-        font-size: 0.533333rem;
+        font-size: 0.68rem;
           position: absolute;
-          left: 0.5rem;
+          left: 1.2rem;
           bottom: 0.65rem;
           color: #FFF;
       }
@@ -96,8 +101,9 @@
           height: 4.2rem;
           position: absolute;
           top: 0.6rem;
-          left: 0.4rem;
+          left: 0.0rem;
           z-index: 99;
+          font-size: 0.6rem;
       }
       .repairFoot{
         padding:0.533333rem 5% 0.933333rem 5%;
@@ -121,19 +127,20 @@
         display: inline-block;
         width: 24%;
         text-align: right;
-        font-size: 0.453333rem;
+        font-size: 0.7rem;
+        padding:0.15rem;
       }
       .repairFoot li label input{
         width: 70%;
-        height: 0.933333rem;
+        height: 1.8rem;
         line-height: 0.933333rem;
         border:none;
-        font-size: 0.453333rem;
+        font-size: 0.7rem;
       }
       .repairFoot li p{
-        width: 24%;
+        width: 27%;
         text-align: right;
-        font-size: 0.453333rem;
+        font-size: 0.68rem;
         letter-spacing: 0.053333rem;
       }
       .repairFoot li textarea{
@@ -145,11 +152,11 @@
         border: none;
         margin-top: 0;
         padding: 0.3rem;
-          box-sizing: border-box;
+        box-sizing: border-box;
       }
       .repairBtn{
-        margin: 3.0rem auto 1.0rem;
-        width: 80%;
+        margin: 2.0rem auto 1.0rem;
+        width: 86%;
       }
       .repairBtn input{
         width: 100%;
@@ -158,6 +165,9 @@
         padding: 0.133333rem;
         border-radius: 0.2rem;
         color: #fff;
+        font-size: 0.82rem;
+        height: 1.8rem;
+        letter-spacing: 0.1rem;
       }
 
   </style>
@@ -168,8 +178,8 @@
       <div class="repairTop">
         <ul>
           
-          <li><span>设备型号：</span><p>0120563</p></li>
-          <li><span>设备型号：</span><p><input type="date"></p></li>
+          <li><span>设备编号：</span><p>0120563</p></li>
+          <li><span>日期：</span><p><input type="date"></p></li>
           <li><span>设备型号：</span><p><input type="time"></p></li>
            <li>
             <span>设备型号：</span><p>
@@ -188,7 +198,7 @@
           <p>上传截图</p>
           <div class="repairPic">
             <i class="iconfont icon-tianjia"></i>
-            <span>最多可上传3张</span>
+            <span>限3张内</span>
             <input class="" type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
             </div>
       </div>
