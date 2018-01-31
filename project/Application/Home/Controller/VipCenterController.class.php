@@ -10,20 +10,24 @@ class VipCenterController extends CommonController
     public function index()
     {
         // 准备查询条件
-        // $showUser['open_id'] = $_SESSION['open_id'];
+        $showUser['open_id'] = $_SESSION['open_id'];
         // // 执行查询
-        // $user = M('users')->where($showUser)->find();
+        $user = M('users')->where($showUser)->find();
 
-        // // 查询会员收益合计
-        // $showCommission['user_code'] = $user['code'];
-        // $commission = M('users_commission')->where($showCommission)->select();
-        
-        // // $comData = 
-        // // foreach ($commission as $key => $value) {
-        // //     $value
-        // // }
-        // // 分配数据
-        // $this->assign('user',$user);
+        // 查询会员收益合计
+        $showCommission['user_code'] = $user['code'];
+        $commission = M('users_commission')->where($showCommission)->select();
+        // dump($commission);die;
+
+        $comData['gold_num'] = 0;
+        $comData['silver'] = 0;
+        foreach ($commission as $key => $value) {
+            $comData['gold_num'] += $value['gold_num'];
+            $comData['silver'] += $value['silver'];
+        }
+        // 分配数据
+        $this->assign('user',$user);
+        $this->assign('comData',$comData);
         // dump($user);
         // 显示模板
  		$this->display();
