@@ -60,11 +60,12 @@
 	}
 	.detailTxt>p{
 		padding: 0.2rem 5%;
+		font-size: 0.68rem;
 
 	}
 	.detailTxt>em{
 		padding: 0.2rem 5%;
-		font-size: 0.5rem;
+		font-size: 0.6rem;
 		color: #F04B7E;
 	}
 	/*商品数量，邮费*/
@@ -72,11 +73,11 @@
 		padding: 0.5rem 5% 0;
 	}
 	.detailist>p{
-		padding:0.4rem 0;
+		padding:0.6rem 0;
 		border-bottom:1px solid #E5E5E5;
 	}
 	.detailist>p>span{
-		font-size: 0.6rem;
+		font-size: 0.68rem;
 	}
 	.detailist>p>span:last-child{
 		float: right;
@@ -95,6 +96,7 @@
 	.detailtitle{
 		position: relative;
 		text-align: center;
+		font-size: 0.72rem;
 	}
 	.detailtitle>p>b{
 		padding:0 0.5rem;
@@ -142,7 +144,7 @@
     }
 	.detailContain>p{
 		padding: 2.5rem 5% 0.4rem;
-		font-size: 0.4rem;
+		font-size: 0.68rem;
 
 	}
 	.detailContain>p>i{
@@ -151,7 +153,7 @@
 		color:#FBC91D;
 	}
 	.detailItem>p>span{
-		font-size: 0.6rem;
+		font-size: 0.68rem;
 	}
 	/*个人评论内容*/
 	.detailItem{
@@ -160,33 +162,40 @@
 	}
 	.detailItem>p{
 		padding: 0.2rem 5% 0.2rem 0;
-	    font-size: 0.4rem;
+	    font-size: 0.68rem;
 	    line-height: 1.0rem;
+	    margin:0.5rem;
 
 	}
 	.detailItem>p>em{
 		display: inline-block;
-		height: 1.5rem;
-		width: 1.5rem;
+		height: 2rem;
+		width: 2rem;
 		border-radius: 1.5rem;
 		border:1px solid #ccc;
 		margin-right: 0.3rem;
+		float: left;
 	}
 	.detailItem>p>em>img{
 		width: 100%;
 	}
 	.detailItem>p>b{
-		font-size: 0.6rem;
+		display: inline-block;
+	    height: 2rem;
+	    line-height: 2rem;
 	}
 	.detailItem>span{
 		margin-right: 0.8rem;
 		display: inline-block;
 		width: 20%;
+		height: 3rem;
+		border:1px solid #f3f3f3;
+		border-radius: 0.2rem;
+		overflow: hidden;
 	}
 	.detailItem>span>img{
 		width: 100%;
 		padding: 0.2rem 0.15rem;
-		border:1px solid #ccc;
 		border-radius: 0.2rem;
 	}
 	/*查看更多*/
@@ -202,7 +211,7 @@
 		display: block;
 	    height: 2rem;
 	    width: 25%;
-	    font-size: 0.3rem;
+	    font-size: 0.7rem;
 	    float: right;
 	}
 	.pinglunshow>p>span{
@@ -214,7 +223,7 @@
 		position: fixed;
 		display: flex;
 		bottom: 0 ;
-		margin-top:0.6rem;
+		margin-top:0.68rem;
 		background: #FFF;
 		overflow: hidden;
 		border-top:1px solid #E5E5E5;
@@ -414,6 +423,7 @@
 			var _class=$(this).find("span").attr('class');
 
 			if(_class=='iconfont icon-shuangxiajiantou'){
+				// $('.detailItem:nth-of-type(1)').css('display','block');
 				$('.detailItem').slideDown('slow');
 
 				$(this).find("span").removeClass('iconfont icon-shuangxiajiantou').addClass('iconfont icon-xiangshangjiantou');
@@ -423,8 +433,10 @@
 
 				$('.detailItem').slideUp('fast');
 
-				$('.detailItem').eq(0).slideDown('slow');
-				$('.detailItem').eq(1).slideDown('slow');
+				// $('.detailItem').eq(0).slideDown('slow');
+				// $('.detailItem').eq(1).slideDown('slow');
+				$('.detailItem').eq(0).css('display','block');
+				$('.detailItem').eq(1).css('display','block');
 			
 			}
 		})
