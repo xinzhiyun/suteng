@@ -82,7 +82,6 @@
 		}
 		/*商品块*/
 		.goodsBlock {
-			
 			width: 100vw;
 			position: absolute;
 			padding: 1vh 0;
@@ -224,33 +223,6 @@
 		.allgoods>ul>li>a>img{
 			width: 130%;
 		}
-		.allgoods h3>div{
-			width: 5vh;
-			height: 5vh;
-			position: absolute;
-			left: 50%;
-			margin-left: -4vh;
-			border: .7vh solid #eee;
-			border-radius: 40%;
-			animation: shape 5s ease infinite;
-		}
-		@keyframes shape {
-			0%,20% {
-				transform: translate(10%, -20%) scale(.5) rotate(1turn);
-			}
-			20%,40% {
-				transform: translate(30%, 0%) scale(.9) rotate(.1turn);
-			}
-			40%,60% {
-				transform: translate(60%, 20%) scale(.5) rotate(1turn);
-			}
-			60%,80% {
-				transform: translate(60%, 20%) scale(.5) rotate(1turn);
-			}
-			80%,100% {
-				transform: translate(60%, 20%) scale(.5) rotate(1turn);
-			}
-		}
 		
 	</style>
 </head>
@@ -366,7 +338,7 @@
 			if($("#_goods").val() != 'null'){
 				//有数据
 				_goods = JSON.parse($("#_goods").val());
-				// console.log($("#_goods").val() == 'null');
+				console.log(_goods);
 				if(_cate){
 					for(var i=0;i<_cate.length; i++){
 						_htmlArr[[i]] = '';		//使用前先初始化
@@ -376,7 +348,7 @@
 								_htmlArr[i] += 
 									'<li>'+
 										'<a class="pic" goods_gid="'+_goods[j].gid+'" href="{{:U('Shop/shoppingdetail')}}">'+
-											'<img src="__PUBLIC__/Home/images/goods1.png" alt="">'+
+											'<img src="/Uploads/'+_goods[j].path+'" alt="">'+
 											'<p class="name">'+ _goods[j].name +'</p>'+
 											'<b class="price">¥'+ _goods[j].price +'</b><span class="iconfont "></span>'+
 										'</a>'+
@@ -447,10 +419,10 @@
 					$("#content")
 					.animate({left: '-'+ $(this).attr("index") +'00vw'});
 
-					$("#line").css({left: $(this).attr("index")*2 + '0%'});
+					$("#line").css({left: $(this)[0].offsetLeft + 'px'});
 
 					// console.log($(this)[0].offsetLeft)
-					// console.log($(this).attr("index"))
+					console.log($(this),$(".tab").width())
 			});
 
 			/*
@@ -483,7 +455,8 @@
 			height:172,
 			// width:600,
 		});
-		$('.pic>ul>li>a>img').css('width','94vw')
+		$('.pic>ul>li>a>img').css('width','94vw');
+		$("#line").width = $(".tab").width;
 
 	</script>
 </body>
