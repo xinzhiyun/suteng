@@ -113,26 +113,26 @@ class WechatController extends Controller
         $wxJSSDK = new \Org\Util\WeixinJssdk;
         // 调用获取公众号的全局唯一接口调用凭据
         $access_token = $wxJSSDK->getAccessToken();
-
+    
 
         $jsonmenu = '{
             "button":[{
                 "name":"我的水机",
                 "type":"view",
                 
-                "url":"http://suteng.dianqiukj.com/suteng/project/index.php"
+                "url":"http://test.dianqiukj.com/index.php"
             },
             {
                 "name":"商城",
                 "type":"view",
                 
-                "url":"http://suteng.dianqiukj.com/suteng/project/index.php/Home/Shop/index"
+                "url":"http://test.dianqiukj.com/index.php/Home/Shop/index"
             },
             {
                 "name":"会员中心",
                 "type":"view",
                 
-                "url":"http://suteng.dianqiukj.com/suteng/project/index.php/Home/VipCenter/index"
+                "url":"http://test.dianqiukj.com/index.php/Home/VipCenter/index"
             }
             ]
         }';

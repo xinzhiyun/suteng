@@ -22,15 +22,17 @@ class CommonController extends Controller
         // 获取用户open_id
         if(empty($_SESSION['open_id'])){
             // 如果不存在则，跳转获取open_id,并缓存
-            // $_SESSION['open_id'] = $weixin->GetOpenid();
+            $_SESSION['open_id'] = $weixin->GetOpenid();
             // 前端调试通道
-            $_SESSION['open_id'] = 'oQktJwL8ioR4DoxSQmikdzekbUyU';
+            // $_SESSION['open_id'] = 'oQktJwL8ioR4DoxSQmikdzekbUyU';
 
         }
         // 获取用户open_id
         $showData['open_id'] = $_SESSION['open_id'];
         // 查询微信信息表
         $wechat = M('wechat')->where($showData)->find();
+
+
         // 接收类型
         $type   = $wechat["type"];
         // 接收操作
@@ -43,7 +45,6 @@ class CommonController extends Controller
                     case '0':
                         // 会员资料填写注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员}
                         // 邀请人类型:{0：分公司，1：A级分销，2：B级分销，3：C级分销，4：会员 5：普通二维码}
-
                         switch ($wechat['recommend']) {
                             case '0':
                                 // 会员扫不带参数二维码注册（公众号普通二维码）
@@ -62,10 +63,11 @@ class CommonController extends Controller
                                 $dimensionClass         = new DimensionController;
                                 // 获取分销商二维码
                                 $ticket                 = $dimensionClass->user();
+                                // dump($ticket);die;
                                 // 将微信用户信息和二维码票据合并人新数组
                                 $newData    = array_merge($newData,$weixinData,$ticket);
 
-                                //dump($newData);die;
+                                
                                 // 创建微信用户信息
                                 $userRes = M('users')->add($newData);
 
