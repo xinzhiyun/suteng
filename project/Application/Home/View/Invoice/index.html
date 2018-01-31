@@ -194,7 +194,7 @@
 						<label for="secperTel"><p><b>手机号</b><span><input id="secperTel" class="phone" type="text" placeholder="请输入手机号"></span></p></label>
 						<div class="secondFoot">
 							<div class="secondBtn">
-								<input type="submit" value="确定">
+								<input type="button" value="确定" class="submit" index="1">
 							</div>
 							<div class="secondTxt">
 								<span>电子发票与纸质发票具备同等法律效力，可作为用户维权、 保修的有效凭据：</span>
@@ -208,7 +208,7 @@
 						<label for="seccomTel"><p><b>手机号</b><span><input id="seccomTel" class="phone" type="text" placeholder="请输入手机号"></span></p></label>
 						<div class="secondFoot">
 							<div class="secondBtn">
-								<input type="submit" value="确定">
+								<input type="button" value="确定" class="submit" index="1">
 							</div>
 							<div class="secondTxt">
 								<p>1.电子发票与纸质发票具备同等法律效力，可作为用户维权、 保修的有效凭据：</p><br>
@@ -234,7 +234,7 @@
 						<label for="zhisecpTel"><p><b>手机号</b><span><input id="zhisecpTel" class="phone" type="text" placeholder="请输入手机号"></span></p></label>
 						<div class="secondFoot">
 							<div class="secondBtn">
-								<input type="submit" value="确定">
+								<input type="button" value="确定" class="submit" index="1">
 							</div>
 							<div class="secondTxt">
 								<span>电子发票与纸质发票具备同等法律效力，可作为用户维权、 保修的有效凭据：</span>
@@ -247,7 +247,7 @@
 						<label for="zhiseccTel"><p><b>手机号</b><span><input id="zhiseccTel" class="phone" type="text" placeholder="请输入手机号"></span></p></label>
 						<div class="secondFoot">
 							<div class="secondBtn">
-								<input type="submit" value="确定">
+								<input type="button" value="确定" class="submit" index="1">
 							</div>
 							<div class="secondTxt">
 								<p>1.电子发票与纸质发票具备同等法律效力，可作为用户维权、 保修的有效凭据：</p><br>
@@ -263,7 +263,7 @@
 
 				<div class="secondFoot">
 					<div class="secondBtn">
-						<input type="submit" value="确定">
+						<input type="button" value="确定" class="submit" index="0">
 					</div>
 					
 				</div>
@@ -319,11 +319,90 @@
 			  		console.dir('验证通过');
 			  	}else{
 			  		console.dir('请输入正确的手机号码！');
-			  	}	
+			  	}
 		  	}else{
 		  		console.dir('请输入正确的手机号码！');
 		  	}
 		});
+
+		/*
+			进入页面获取刚刚填写的发票信息，如果有的话
+		 */
+		var voiceArr = sessionStorage.getItem("voiceArr");
+		/*
+			点击’确定‘按钮
+		 */
+		$(".submit").click(function(){
+			/*
+				'type': 发票类型
+				'info': 发票信息
+				'voicehead': 发票抬头
+				'phone': 手机号码
+			 */
+			console.log($(this).attr("index"))
+			//不开发票
+			if($(this).attr("index") == 0){
+				console.log('不开发票啊！');
+
+			}else {		//开发票
+				var voiceArr = [];		//发票信息
+				//发票类型
+				var type = $("#tab").find(".icon-xuanze").parent().text();
+				
+				if(type == '电子发票'){
+					var _voice = $(".secondParent").find(".icon-xuanze").parent().text().slice(0,2);
+					// console.log('电子发票: ',_voice);
+					if(_voice == '个人'){
+						voiceArr.push({
+							'type': type,
+							'info': _voice,
+							'voicehead': $(".invoiceHead").eq(0).val(),
+							'phone': $(".phone").eq(0).val()
+						});
+					}else{
+						voiceArr.push({
+							'type': type,
+							'info': _voice,
+							'voicehead': $(".invoiceHead").eq(1).val(),
+							'phone': $(".phone").eq(1).val()
+						});
+					}
+				}else{
+					var _voice = $(".secondParent").find(".icon-xuanze").parent().text().slice(2);
+					// console.log('纸质发票: ',_voice);
+					if(_voice == '个人'){
+						voiceArr.push({
+							'type': type,
+							'info': _voice,
+							'voicehead': $(".invoiceHead").eq(2).val(),
+							'phone': $(".phone").eq(2).val()
+						});
+					}else{
+						voiceArr.push({
+							'type': type,
+							'info': _voice,
+							'voicehead': $(".invoiceHead").eq(3).val(),
+							'phone': $(".phone").eq(3).val()
+						});
+					}
+				}
+				console.log(JSON.stringify(voiceArr))
+				sessionStorage.setItem("voiceArr",JSON.stringify(voiceArr));
+				// 发送ajax请求告诉后台，选择了发票信息
+				$.ajax({
+					url: '{{:U("")}}',
+					type: 'post',
+					data: JSON.stringify(voiceArr),
+					success: function(res){
+						console.log("成功！ ",res);
+						location.href = '{{:U("PaymentSystem/payConfirm")}}'
+					},
+					error: function(res){
+						console.log("失败！ ",res);
+					}
+				})
+			}
+		})
 
 	</script>
 </body>
