@@ -457,19 +457,19 @@
 	});
 	//加载滤芯项
 	var lvxinBuy = [ 
-		{"filtername":"RO膜","filterbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","filterprice":"120"}, 
-		{"filtername":"滤芯膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120"}, 
-		{"filtername":"净水膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120"}, 
+		{"filtername":"RO膜","filterbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","filterprice":"120",'gid': 0}, 
+		{"filtername":"滤芯膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120",'gid': 1}, 
+		{"filtername":"净水膜","filterbrief":"滤芯是一个很好的饮水过滤原件。。。","filterprice":"120",'gid': 2}, 
 	]; 
     var lvxinList='';
     for(var i = 0;i<lvxinBuy.length;i++){
-    	lvxinList+='<div class="goods">'+
+    	lvxinList+='<div class="goods" gid="'+ lvxinBuy[i].gid +'">'+
 					'<div class="img"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt="正在加载..."></div>'+
 				'<div class="desc">'+
-					'<h5>RO膜</h5>'+
-					'<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>'+
+					'<h5>'+ lvxinBuy[i].filtername +'</h5>'+
+					'<p>'+ lvxinBuy[i].filterbrief +'</p>'+
 					'<div>'+
-						'<span class="price">￥<span>120.00</span></span>'+
+						'<span class="price">￥<span>'+ lvxinBuy[i].filterprice +'</span></span>'+
 						'<span class="num">'+
 							'<input type="button" value="-" class="minus">'+
 							'<input class="number" type="number" value="0">'+
@@ -487,10 +487,12 @@
 		desc：滤芯描述
 		price：滤芯价格
 		num：选择的数量
-		priceAll：合计价格
+		priceAll：单一商品合计价格
+        money: 单一商品总价钱，传给后台生成订单编号用
+        gid: 商品id
 	 */
 	// 存储数量超过1的滤芯产品
-	var goodsArr = [];
+	var lvxinData = [];
 	var goods = $(".goods");
 	// 点击‘去结算’
 	$("#pay").click(function(){
@@ -498,13 +500,15 @@
 			if(goods.eq(i).find(".number").val() != 0){
 				//这个priceAll是单一商品的价格合计
 				var priceAll = parseInt(goods.eq(i).find(".price span").text())*parseInt(goods.eq(i).find(".number").val())
-				goodsArr.push(
+				lvxinData.push(
 					{'filtername': goods.eq(i).find("h5").text(),
 					'picturepath': goods.eq(i).find(".img img").attr("src"),
 					'desc': goods.eq(i).find(".desc>p").text(),
 					'price': parseInt(goods.eq(i).find(".price span").text()),
 					'num': parseInt(goods.eq(i).find(".number").val()),
-					'priceAll': priceAll
+					'priceAll': priceAll,
+                    'money': priceAll,
+                    'gid': goods.eq(i).attr("gid")
 					}
 				)
 			}
@@ -514,16 +518,15 @@
 		sessionStorage.setItem("goods_data", '');
 		sessionStorage.setItem("shopCar_data", '');
 
-		var lvxinData = JSON.stringify(goodsArr);
-			sessionStorage.setItem('lvxinData',lvxinData);
-		// console.log(lvxinData);
+		sessionStorage.setItem('lvxinData',JSON.stringify(lvxinData));
+		console.log(lvxinData);
 		// 选择滤芯后跳转
-		if(goodsArr.length){
+		if(lvxinData.length){
 			// 发送ajax请求让后台生成订单号
 			$.ajax({
 				url: '{{:U("PaymentSystem/information")}}',
 				type: 'post',
-				data: {'data':JSON.stringify(goodsArr)},
+				data: {'data':JSON.stringify(lvxinData)},
 				success: function(res){
 					console.log('成功！', res);
 					sessionStorage.setItem('order_id',res);
