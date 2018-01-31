@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/iconfont/iconfont.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
     <script src="__PUBLIC__/Home/js/public.js"></script>
@@ -37,7 +38,6 @@
 			height: 18vmin;
 			display: block;
 			border-radius: 18vmin;
-			border: 1px solid #eee;
 			background: #eee;
 		}
 		#header>#hRight {
@@ -97,6 +97,10 @@
 			text-align: center;
 			font-size: .6rem;
 		}
+		#indent>div>span>a>i{
+			color:#56aaf1;
+			font-size: 1rem;
+		}
 		/*收益明细*/
 		#income>div {
 			display: flex;
@@ -123,13 +127,15 @@
 		.icon-1 {
 			font-size: .8rem;
 		}
-		.icon-jinbi2 {
+		.icon-jinbi {
 			color: #ffc800;
 			font-size: 1rem;
 			text-shadow: 0 1px 10px #c0c0c0;
 		}
-		.icon-yinbi2 {
+		.icon-yingbi {
 			color: #c4f1c4;
+			font-size: 1rem;
+			text-shadow: 0 1px 10px #c0c0c0;
 		}
 		.icon-qianbao,
 		.icon-daifahuo2,
@@ -172,8 +178,8 @@
 			<div id="package">
 				<span>我的钱包：</span>
 				<div>
-					<p><i class="iconfont icon-jinbi2"></i>金币300个</p>
-					<p><i class="iconfont icon-jinbi2 icon-yinbi2"></i>银币806个</p>
+					<p><i class="iconfont icon-jinbi"></i>金币300个</p>
+					<p><i class="iconfont icon-yingbi"></i>银币806个</p>
 				</div>
 			</div>
 		</div>
@@ -192,31 +198,31 @@
 			<div>
 				<span>
 					<a href="{{:U('Home/Order/index')}}">
-						<i class="iconfont icon-qianbao"></i>
+						<i class="iconfont icon-daifukuan"></i>
 						<p>待付款</p>
 					</a>
 				</span>
 				<span>
 					<a href="{{:U('Home/Order/index')}}">
-						<i class="iconfont icon-daifahuo2"></i>
+						<i class="iconfont icon-daifahuo"></i>
 						<p>待发货</p>
 					</a>
 				</span>
 				<span>
 					<a href="{{:U('Home/Order/index')}}">
-						<i class="iconfont icon-daifahuo1"></i>
+						<i class="iconfont icon-daishouhuo"></i>
 						<p>待收货</p>
 					</a>
 				</span>
 				<span>
 					<a href="{{:U('Home/Order/index')}}">
-						<i class="iconfont icon-hua"></i>
+						<i class="iconfont icon-pinglun"></i>
 						<p>待评论</p>
 					</a>
 				</span>
 				<span>
 					<a href="{{:U('Home/Order/index')}}">
-						<i class="iconfont icon-shouhou"></i>
+						<i class="iconfont icon-shouhoutuikuan"></i>
 						<p>退款/售后</p>
 					</a>
 				</span>
