@@ -419,7 +419,7 @@
 					$("#content")
 					.animate({left: '-'+ $(this).attr("index") +'00vw'});
 
-					$("#line").css({left: $(this)[0].offsetLeft + 'px'});
+					$("#line").css({left: $(this).attr("index")*2 + '0%'});
 
 					// console.log($(this)[0].offsetLeft)
 					console.log($(this),$(".tab").width())
