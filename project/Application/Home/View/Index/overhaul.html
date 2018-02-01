@@ -9,27 +9,27 @@
   <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
   <script src="__PUBLIC__/Home/js/public.js"></script>
   <script>
-      // $(document).ready(function(){
+      $(document).ready(function(){
 
-      //   window.setInterval(xuanZhuan,4000);
+        window.setInterval(xuanZhuan,4000);
 
-      //   // $('.overxuanhuan').css({
-      //   //   '-webkit-animation':'aImg 10s linear .1s infinite',
-      //   //   'animation':'aImg 2s linear .1s infinite'
-      //   // });
+        $('.overxuanhuan').css({
+          '-webkit-animation':'aImg 20s linear .1s infinite',
+          'animation':'aImg 20s linear .1s infinite'
+        });
 
-      //   var i =0;
-      //   var img = ['bg111.png','bg222.png','bg333.png','bg444.png','bg555.png'];
+        var i =0;
+        var img = ['bg111.png','bg222.png','bg333.png','bg444.png','bg555.png'];
 
-      //   function xuanZhuan(){
-      //     console.dir(i++);
-      //     if(i>img.length-1){
-      //       i=0;
-      //     }
-      //     $('.overxuanhuan').css({"background-image": "url(__PUBLIC__/Home/images/"+img[i]+")"  });
-      //   }
+        function xuanZhuan(){
+          console.dir(i++);
+          if(i>img.length-1){
+            i=0;
+          }
+          $('.overxuanhuan').css({"background-image": "url(__PUBLIC__/Home/images/"+img[i]+")"  });
+        }
 
-      // });
+      });
   
   </script>
 </head>
