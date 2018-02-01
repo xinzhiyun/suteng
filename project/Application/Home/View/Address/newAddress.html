@@ -121,6 +121,8 @@
 			width: 80%;
 			padding: 1% 2%;
 			margin: 10px auto;
+			border-radius: 4px;
+    		background: #fff;
 		}
 		/*详细地址*/
 		textarea {
@@ -223,7 +225,7 @@
 		<div>
 			<span>街&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道:</span>
 			<span>
-				<input type="text" id="townID" class="town" placeholder="请输入街道">
+				<input type="button" id="townID" class="town" placeholder="请输入街道">
 			</span>
 			
 		</div>
@@ -242,9 +244,9 @@
                 <select name="area">
                 	<option value="440103" data-code="440103">番禺区</option>
                 </select>
-	           <!--  <select name="town">
+	            <select name="town">
 	            	<option value="440113015">钟村街道</option>
-	            </select> -->
+	            </select>
 			</p>
     	</div>
     	<div id="confirmAreaChoose">
@@ -264,68 +266,73 @@
 	<script>
 		// 解决移动端虚拟键盘开启时底部内容被顶上来的问题
 		solveCompatible($("#footer"));
+		var script = $("<script/>");
+		var scriptCode = `
+			// 选择地区
+			$(".area").on("click", function(){
+				$("#areaChoose").css({display: "block"});
+			});
 
-		// 选择地区
-		$(".area").on("click", function(){
-			$("#areaChoose").css({display: "block"});
-		});
+			var province,city,area,town;
 
-		var province,city,area,town;
+			// 关闭地区选择，并显示到对应区域
+			$("#confirmAreaChoose").on("click", function(){
+				
+				$("#areaID").val( (!city && !area) ? '请选择' : city + area);
 
-		// 关闭地区选择，并显示到对应区域
-		$("#confirmAreaChoose").on("click", function(){
-			
-			$("#areaID").val( (!city && !area) ? '请选择' : city + area);
+				// 获取 街道 选中的值
+				$("#townID")
+				.val(
+					!($('#areaChoose select[name="town"]').find("option:selected").text())
+					? '请选择'
+					: $('#areaChoose select[name="town"]').find("option:selected").text()
+				);
 
-			// 获取 街道 选中的值
-			// $("#townID")
-			// .val(
-			// 	!($('#areaChoose select[name="town"]').find("option:selected").text())
-			// 	? '请选择'
-			// 	: $('#areaChoose select[name="town"]').find("option:selected").text()
-			// );
+				$("#areaChoose").css({display: "none"});
+				// console.log($('#areaChoose select[name="town"]').find("option:selected"));
 
-			$("#areaChoose").css({display: "none"});
-			// console.log($('#areaChoose select[name="town"]').find("option:selected"));
+			});
 
-		});
+			// 生成选择地区~省市县街道四级联动
+			var $town = $('#areaChoose').find('select[name="town"]');
+		    var townFormat = function(info){
+			    $town.hide().empty();
+			    if(info['code']%1e4&&info['code']<7e6){	//是否为“区”且不是港澳台地区
+			    	$.ajax({
+			    		url:'http://passer-by.com/data_location/town/'+info['code']+'.json',
+			    		dataType:'json',
+			    		success:function(town){
+			    			$town.show();
+		    				// console.log(town);
+		    				var townHTML = '';
+			    			for(i in town){
+			    				townHTML += '<option value="'+i+'">'+town[i]+'</option>';
+			    			};
+			    			$town.append(townHTML);
+			    			// console.log($town)
 
-		// 生成选择地区~省市县街道四级联动
-		var $town = $('#areaChoose select[name="town"]');
-	    var townFormat = function(info){
-		    $town.hide().empty();
-		    if(info['code']%1e4&&info['code']<7e6){	//是否为“区”且不是港澳台地区
-		    	$.ajax({
-		    		url:'http://passer-by.com/data_location/town/'+info['code']+'.json',
-		    		dataType:'json',
-		    		success:function(town){
-		    			// $town.show();
-
-		    			// for(i in town){
-		    			// 	$town.append('<option value="'+i+town[i]+'</option>');
-		    			// };
-	    				// console.log(town);
-
-				    	province = info.province;	//省、市、区在这里生成
-						city = info.city;
-						area = info.area;
-		    		},
-		    		err: function(data){
-		    			console.log(data);
-		    		}
-		    	});
-		    }
-	    };
-	    $('#areaChoose').citys({
-	    	required: false,
-	    	nodata: 'disabled',
-	        onChange:function(info){
-	        	townFormat(info);
-	        }
-	    },function(api){
-	        var info = api.getInfo();
-	        // townFormat(info);
-	    });
+					    	province = info.province;	//省、市、区在这里生成
+							city = info.city;
+							area = info.area;
+			    		},
+			    		err: function(res){
+			    			console.log(res);
+			    		}
+			    	});
+			    }
+		    };
+		    $('#areaChoose').citys({
+		    	required: false,
+		    	nodata: 'disabled',
+		        onChange:function(info){
+		        	townFormat(info);
+		        }
+		    },function(api){
+		        var info = api.getInfo();
+		        townFormat(info);
+		    });`
+		script.html(scriptCode);
+		$("body").append(script);
 
 	    /*
 	    	name: 收货人
