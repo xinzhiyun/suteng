@@ -369,6 +369,7 @@
 		    	newAddressObj['city'] = city;
 		    	newAddressObj['area'] = area;
 		    	newAddressObj['town'] = $("#townID").val();
+		    	newAddressObj['addressDetial'] = $("#addressDetial").val();
 		    	if($("#normalAddrdess").attr("checked")){
 		    		//设为默认地址
 		    		newAddressObj['status'] = 0;
@@ -384,10 +385,13 @@
 		    		success: function(res){
 		    			console.log('成功！ ', res);
 		    			layHint('添加成功！');
-		    			//自动跳回去订单提交那里
-		    			if(goods_data || lvxinData || shopCar_data){
-		    				location.href = "{{:U('PaymentSystem/payConfirm')}}"
-		    			}
+		    			//后台返回信息添加成功后的操作
+		    			if(res){
+			    			//自动跳回去订单提交那里
+			    			if(goods_data || lvxinData || shopCar_data){
+			    				// location.href = "{{:U('PaymentSystem/payConfirm')}}"
+			    			}
+			    		}
 		    		},
 		    		error: function(res){
 		    			console.log('失败！ ', res);
@@ -408,7 +412,7 @@
 	    		layHint('请选择地区！')
 	    		
 	    	}else if(!townRes || !$(".town").val()){
-	    		console.log('请输入街道！');
+	    		console.log('请选择街道！');
 	    		layHint('请选择街道！')
 	    		
 	    	}else if(!addressDetialRes){
