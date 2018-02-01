@@ -37,7 +37,7 @@ class PaymentSystemController extends CommonController
     // 信息确认并生成订单
     public function information()
     {
-        // print_r($_POST);die;
+       
         try {
             $goods = D('Goods');
             $orders = D('ShopOrder');
@@ -64,9 +64,12 @@ class PaymentSystemController extends CommonController
                 $detail_statut = $order_detail->add($detail);
                 if(!$detail_statut) E('请重新结算',603);
             }
+
             $res = $orders->add($order);
+
             if($res){
-                M('Cart')->where('uid='.session('user.id'))->delete();
+                $msg = M('Cart')->where('uid='.session('user.id'))->delete();
+                
                 $orders->commit();
                 $this->ajaxReturn($order['order_id']);
             } else {
