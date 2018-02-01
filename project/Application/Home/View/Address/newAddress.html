@@ -223,8 +223,7 @@
 		<div>
 			<span>街&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道:</span>
 			<span>
-				<input type="button" id="townID" class="town" value="请选择">
-				<input type="button" readonly value=">">
+				<input type="text" id="townID" class="town" placeholder="请输入街道">
 			</span>
 			
 		</div>
@@ -243,9 +242,9 @@
                 <select name="area">
                 	<option value="440103" data-code="440103">番禺区</option>
                 </select>
-	            <select name="town">
+	           <!--  <select name="town">
 	            	<option value="440113015">钟村街道</option>
-	            </select>
+	            </select> -->
 			</p>
     	</div>
     	<div id="confirmAreaChoose">
@@ -261,6 +260,7 @@
 	<footer id="footer">
 		<input type="button" id="saveAddress" value="存储">
 	</footer>
+	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script>
 		// 解决移动端虚拟键盘开启时底部内容被顶上来的问题
 		solveCompatible($("#footer"));
@@ -278,12 +278,12 @@
 			$("#areaID").val( (!city && !area) ? '请选择' : city + area);
 
 			// 获取 街道 选中的值
-			$("#townID")
-			.val(
-				!($('#areaChoose select[name="town"]').find("option:selected").text())
-				? '请选择'
-				: $('#areaChoose select[name="town"]').find("option:selected").text()
-			);
+			// $("#townID")
+			// .val(
+			// 	!($('#areaChoose select[name="town"]').find("option:selected").text())
+			// 	? '请选择'
+			// 	: $('#areaChoose select[name="town"]').find("option:selected").text()
+			// );
 
 			$("#areaChoose").css({display: "none"});
 			// console.log($('#areaChoose select[name="town"]').find("option:selected"));
@@ -299,11 +299,11 @@
 		    		url:'http://passer-by.com/data_location/town/'+info['code']+'.json',
 		    		dataType:'json',
 		    		success:function(town){
-		    			$town.show();
+		    			// $town.show();
 
-		    			for(i in town){
-		    				$town.append('<option value="'+i+town[i]+'</option>');
-		    			};
+		    			// for(i in town){
+		    			// 	$town.append('<option value="'+i+town[i]+'</option>');
+		    			// };
 	    				// console.log(town);
 
 				    	province = info.province;	//省、市、区在这里生成
@@ -324,7 +324,7 @@
 	        }
 	    },function(api){
 	        var info = api.getInfo();
-	        townFormat(info);
+	        // townFormat(info);
 	    });
 
 	    /*
@@ -348,6 +348,7 @@
 	    	var townRes = nameReg.test($(".town").val());
 	    	var addressDetialRes = nameReg.test($("#addressDetial").val());
 
+		    // console.log($("#normalAddrdess")[0].checked)
 	    	var newAddressObj = {};
 	    	if(nameRes && phoneRes && areaIDRes && townRes && addressDetialRes && $(".town").val() != '请选择'){
 	    		console.log('通过！')
@@ -357,27 +358,52 @@
 		    	newAddressObj['areaID'] = $("#areaID").val();
 		    	newAddressObj['town'] = $(".town").val();
 		    	newAddressObj['addressDetial'] = $("#addressDetial").val();
+		    	newAddressObj['status'] = 0;
+
+		    	console.log(newAddressObj);
+		    	// 全部判断通过则发送请求让后台添加到数据库
+		    	$.ajax({
+		    		url: "{{:U('Address/newAddress')}}",
+		    		type: 'post',
+		    		data: {'data':JSON.stringify(newAddressObj)},
+		    		success: function(res){
+		    			console.log('成功！ ', res);
+		    		},
+		    		error: function(res){
+		    			console.log('失败！ ', res);
+		    		}
+		    	})
 
 	    	}else if(!nameRes){
 	    		// 验证姓名
 	    		console.log('请输入符合规范的姓名！');
+	    		layHint('请输入合法的姓名！')
 
 	    	}else if(!phoneRes){
 	    		console.log('请输入正确的电话号码！');
+	    		layHint('请输入正确的电话号码！')
 
 	    	}else if(!areaIDRes){
 	    		console.log('请选择地区！');
+	    		layHint('请选择地区！')
 	    		
-	    	}else if(!townRes || $(".town").val() == '请选择'){
-	    		console.log('请选择街道！');
+	    	}else if(!townRes || !$(".town").val()){
+	    		console.log('请输入街道！');
+	    		layHint('请选择街道！')
 	    		
 	    	}else if(!addressDetialRes){
 	    		console.log('请输入详细地址！');
+	    		layHint('请输入详细地址！')
 	    		
 	    	}
-
-	    	console.log(newAddressObj)
 	    })
+
+	    function layHint(text){
+    		layui.use('layer', function(){
+                var layer = layui.layer;
+                layer.msg(text);
+            });
+	    }
 
 	</script>
 </body>
