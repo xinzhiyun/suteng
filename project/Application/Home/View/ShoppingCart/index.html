@@ -239,6 +239,7 @@
 		<p><i class="iconfont icon-kuang1"></i>全选<span>合计：<b class="priceAll">￥<span>0</span></b></span></p>
 		<input id="toPay" type="button" value="结算">
 	</div>
+	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 
 	<script>
 	$(function(){
@@ -330,7 +331,7 @@
 					}
 				})
 			}else{
-				alert('你还没选择购买的商品！')
+	       		parent.layer.msg('你还没选择购买的商品！');
 			}
 		})
 
@@ -401,9 +402,11 @@
 					console.log('成功！ ',res);
 					// 移除当前删除商品的元素
 	       			_this.parents('.itemCar').remove();
+	       			parent.layer.msg('删除成功！');
 				},
 				error: function(res){
 					console.log('失败！ ',res);
+	       			parent.layer.msg('删除失败！');
 				}
 			})
        })

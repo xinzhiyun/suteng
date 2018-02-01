@@ -811,13 +811,14 @@
 									console.log(res);
 									if(res == -1){
 										console.log('支付错误！');
+	       								parent.layer.msg('支付错误！');
 									}else{
 										if($("#addressInfo").val()){
 											// 调用微信支付方法
 											weixinPay(res);
 										}else{
 											//无地址
-											alert('请添加一个地址！')
+	       									parent.layer.msg('请添加一个地址');
 										}
 									}
 								},
@@ -827,7 +828,7 @@
 
 							});
 						}else{
-							alert('请添加一个收获地址！');
+	       					parent.layer.msg('请添加一个地址');
 						}
 						break;
 					case '4':
@@ -851,12 +852,15 @@
 	      			JSON.parse(res),
 	      			function(res){
 	      				if(res.err_msg.substr(-2) == 'ok'){
+
+	       					parent.layer.msg('付款成功！');
 	      					//付款成功后的操作
 	      					location.href = '{{:U("PaymentSystem/paytosuccess")}}';
 
 	      				}else if(res.err_msg.substr(-6) == 'cancel'){
 	      					//取消订单操作
 	      				}else{
+	       					parent.layer.msg('付款失败！');
 	      					//付款失败操作
 	      					location.href = '{{:U("PaymentSystem/paytofailed")}}';
 	      				}
