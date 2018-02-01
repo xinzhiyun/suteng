@@ -316,6 +316,7 @@
 			</div>
 		</div>
 	</div>
+	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script>
 	$(function(){
 
@@ -359,7 +360,7 @@
 							'</span>'+
 						'</p>'+
 						'<p><span>邮费</span><span><b class="expressMoney">￥<span>8.88</span></b></span></p>'+
-					'</div>';
+					'</div>'; 
 				console.log(res.commentInfo[0])
 				// 如果有评价则遍历出来		
 				if(res.commentInfo){
@@ -513,8 +514,16 @@
 				success: function(res){
 					console.log('成功！', res);
 					sessionStorage.setItem('order_id',res);
-					// 跳转到订单确认页面
-					location.href = '{{:U("PaymentSystem/payConfirm")}}';
+					//解绑事件
+					$("#buyNow").off('click');
+					if(typeof JSON.parse(res) == 'number'){
+
+						// 跳转到订单确认页面
+						location.href = '{{:U("PaymentSystem/payConfirm")}}';
+					}else{
+						//支付发生错误，无法生成订单号
+						parent.layer.msg('系统发生错误，请稍后再试，还望谅解！');
+					}
 				},
 				error: function(res){
 					console.log('失败！', res);

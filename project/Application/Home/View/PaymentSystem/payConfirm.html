@@ -578,17 +578,17 @@
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script>
 		//微信接口
-		// wx.config({
-		//     debug: false,
-		//     appId: '{{$info["appId"]}}',
-		//     timestamp: '{{$info["timestamp"]}}',
-		//     nonceStr: '{{$info["nonceStr"]}}',
-		//     signature: '{{$info["signature"]}}',
-		//     jsApiList: [
-		//       // 所有要调用的 API 都要加到这个列表中
-		//       'chooseWXPay'
-		//     ]
-		// });
+		wx.config({
+		    debug: false,
+		    appId: '{{$info["appId"]}}',
+		    timestamp: '{{$info["timestamp"]}}',
+		    nonceStr: '{{$info["nonceStr"]}}',
+		    signature: '{{$info["signature"]}}',
+		    jsApiList: [
+		      // 所有要调用的 API 都要加到这个列表中
+		      'chooseWXPay'
+		    ]
+		});
 		$(function(){
 			//获取从后台传来的订单号
 			var dangdanID;	
@@ -840,8 +840,8 @@
 					default:
 						console.log('无');
 						break;
-				}
-			})
+				} 
+			}) 
 	      	/*
 	      		微信支付方法
 	      	 */ 
