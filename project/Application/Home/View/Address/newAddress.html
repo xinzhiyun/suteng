@@ -386,11 +386,15 @@
 		    			console.log('成功！ ', res);
 		    			layHint('添加成功！');
 		    			//后台返回信息添加成功后的操作
-		    			if(res){
+		    			if(JSON.parse(res) == 1){
 			    			//自动跳回去订单提交那里
 			    			if(goods_data || lvxinData || shopCar_data){
-			    				// location.href = "{{:U('PaymentSystem/payConfirm')}}"
+			    				location.href = "{{:U('PaymentSystem/payConfirm')}}";
 			    			}
+			    		}else if(JSON.parse(res)){
+	    					layHint('添加失败，请稍后再试！');
+			    		}else{
+			    			layHint('很抱歉，系统遇到未知问题！');
 			    		}
 		    		},
 		    		error: function(res){
@@ -421,7 +425,7 @@
 	    		
 	    	}
 	    })
-
+	    //提示框函数
 	    function layHint(text){
     		layui.use('layer', function(){
                 var layer = layui.layer;
