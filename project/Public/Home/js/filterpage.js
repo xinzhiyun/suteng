@@ -85,16 +85,17 @@ $(function(){
         "updatetime":"1513299086"
     };
     var res = [
-		{filtername:'啊1',timelife: 20,flowlife:30,introduce: '是否合适肯定会诉求'},
-		{filtername:'啊2',timelife: 10,flowlife:60,introduce: '是否合适肯定会诉求'},
-		{filtername:'啊3',timelife: 40,flowlife:70,introduce: '是否合适肯定会诉求'},
-		{filtername:'啊4',timelife: 80,flowlife:50,introduce: '是否合适肯定会诉求'},
-		{filtername:'啊5',timelife: 50,flowlife:50,introduce: '是否合适肯定会诉求'},
-		{filtername:'啊6',timelife: 60,flowlife:90,introduce: '是否合适肯定会诉求'}
+		{filtername:'M15UCC',timelife:1000,flowlife:30,introduce: '原装正品净水器滤芯M15UCC 0.5微米高密道4级过滤'},
+		{filtername:'HU603-5a',timelife:1000,flowlife:60,introduce: '正品净水器家用直饮机HU603-5a全套原装滤芯'},
+		{filtername:'RO滤芯',timelife:1000,flowlife:70,introduce: '原装JR1550T-RO RO/C+UF/PP+C五级过滤'},
+		{filtername:'BH2',timelife:1000,flowlife:50,introduce: '净水器滤芯主滤芯耗材家用直饮净水器主滤芯BH2'},
+		{filtername:'RO-185I',timelife:1000,flowlife:50,introduce: '沁园净水器滤芯RO-185I/DT/F PP棉QG-U-1003/1004 套装 10寸 通用'},
+		{filtername:'AO史密斯',timelife:1000,flowlife:90,introduce: 'AO史密斯50D1 厨房过滤家用净水器 专利反渗透滤芯直饮净水机'}
 	];
 
 	
 	console.log(data);
+	console.log();
 	var filtermode = data.filtermode;
 	var moHTML = '',lvxinIntroduceHTML='';//html box
 	var timelife;//滤芯总时间
