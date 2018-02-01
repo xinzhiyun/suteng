@@ -9,9 +9,9 @@ class LoginController extends Controller
     {
         if (IS_POST) {
             // 验证验证码是否OK
-            $Verify = new \Think\Verify();
-            $res = $Verify->check($_POST['code']);
-            if(!$res) $this->error('验证码不对');
+            // $Verify = new \Think\Verify();
+            // $res = $Verify->check($_POST['code']);
+            // if(!$res) $this->error('验证码不对');
 
             $password = md5($_POST['password']);
             $info = M('vendors')->where("user='{$_POST['name']}'")->find();

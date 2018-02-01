@@ -5,7 +5,7 @@ use Think\Controller;
 /**
  * 商城
  */
-class ShopController extends Controller
+class ShopController extends CommonController
 {
     /**
      * 商城首页

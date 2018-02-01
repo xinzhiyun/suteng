@@ -14,37 +14,38 @@ class WeiXinPayController extends Controller
         // 获取微信服务器返回的xml文档
         $xml=file_get_contents('php://input', 'r');       
 //         $xml = '<xml><appid><![CDATA[wx0bab2f4b5b7ec3b5]]></appid>
-// <attach><![CDATA[461303856627974]]></attach>
+// <attach><![CDATA[561131965313806]]></attach>
 // <bank_type><![CDATA[CFT]]></bank_type>
 // <cash_fee><![CDATA[1]]></cash_fee>
 // <fee_type><![CDATA[CNY]]></fee_type>
-// <is_subscribe><![CDATA[Y]]></is_subscribe>供热费哥特
+// <is_subscribe><![CDATA[Y]]></is_subscribe>
 // <mch_id><![CDATA[1490274062]]></mch_id>
-// <nonce_str><![CDATA[pbu71qpbt12z6y54um9e4vdffszey0mi]]></nonce_str>
+// <nonce_str><![CDATA[2332uho7x16aiz10cg13ffkz5fwdrayg]]></nonce_str>
 // <openid><![CDATA[oQktJwL8ioR4DoxSQmikdzekbUyU]]></openid>
-// <out_trade_no><![CDATA[201692953655040]]></out_trade_no>
+// <out_trade_no><![CDATA[478056852556374]]></out_trade_no>
 // <result_code><![CDATA[SUCCESS]]></result_code>
 // <return_code><![CDATA[SUCCESS]]></return_code>
-// <sign><![CDATA[98C3666FF66CC54DEE41B4E00FDE4146]]></sign>
-// <time_end><![CDATA[20180131215030]]></time_end>
+// <sign><![CDATA[A684A3F06136116FDD304A338A606E58]]></sign>
+// <time_end><![CDATA[20180201023601]]></time_end>
 // <total_fee>1</total_fee>
 // <trade_type><![CDATA[JSAPI]]></trade_type>
-// <transaction_id><![CDATA[4200000060201801314409519005]]></transaction_id>
+// <transaction_id><![CDATA[4200000071201802014605968829]]></transaction_id>
 // </xml>';
 // 
 // 
 // UR体会与人体热敷的供热的高
-        // file_put_contents('./wx_ddpay.txt',$xml."\r\n", FILE_APPEND);die;
+        // file_put_contents('./wx_dddpay.txt',$xml."\r\n", FILE_APPEND);die;
         if($xml){
             //解析微信返回数据数组格式
             $result = $this->notifyData($xml);
+            // dump($result);die;
             // 实例化订单模型
             $order = M('shop_order');
             // 准备查询订单的条件
             $showOrder['order_id'] = $result['attach'];
             // 查询订单表
             $orderData = $order->where($showOrder)->find();
-            // dump($orderData);die;
+            
             // 如果订单未支付
             if($orderData['status']==8){
                 // 开启事务
@@ -55,7 +56,7 @@ class WeiXinPayController extends Controller
                 // 准备更新数据
                 $saveOrderDara['status'] = 9;
                 // 执行更新操作
-                $order->where($saveOrder)->save($saveOrderDara);
+                //$order->where($saveOrder)->save($saveOrderDara);
                 // 准备佣金数据
                 // 微信用户标识
                 $open_id = $result['openid'];
@@ -69,11 +70,11 @@ class WeiXinPayController extends Controller
                 // 总利润
                 $profit = $price - $cost;
                 // 佣金比例
-                $yjbl = 3;
+                $yjbl = 0.3;
                 // 金币比例
-                $jbbl = 1;
+                $jbbl = 0.1;
                 // 银币比例
-                $ybbl = 1;
+                $ybbl = 0.2;
 
                 // 佣金
                 $yj = ($profit*$yjbl)>0?($profit*$yjbl):0;
@@ -82,6 +83,7 @@ class WeiXinPayController extends Controller
                 // 银币
                 $yb = ($profit*$ybbl)>0?($profit*$ybbl):0;
 
+                // echo $open_id.'-'.$yj.'-'.$jb.'-'.$yb;die;
                 // 分配佣金
                 $this->branch_commission($open_id,$order_id,$yj,$jb,$yb);
             }
