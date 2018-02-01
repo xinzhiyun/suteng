@@ -264,6 +264,9 @@
 	</footer>
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script>
+		var lvxinData = sessionStorage.getItem("lvxinData"),
+			shopCar_data = sessionStorage.getItem("shopCar_data"),
+			goods_data = sessionStorage.getItem("goods_data");
 		// 解决移动端虚拟键盘开启时底部内容被顶上来的问题
 		solveCompatible($("#footer"));
 		var script = $("<script/>");
@@ -362,11 +365,16 @@
 
 		    	newAddressObj['name'] = $(".name").val();
 		    	newAddressObj['phone'] = $(".phone").val();
-		    	newAddressObj['areaID'] = $("#areaID").val();
-		    	newAddressObj['town'] = $(".town").val();
-		    	newAddressObj['addressDetial'] = $("#addressDetial").val();
-		    	newAddressObj['status'] = 0;
-
+		    	newAddressObj['province'] = province;
+		    	newAddressObj['city'] = city;
+		    	newAddressObj['area'] = area;
+		    	newAddressObj['town'] = $("#townID").val();
+		    	if($("#normalAddrdess").attr("checked")){
+		    		//设为默认地址
+		    		newAddressObj['status'] = 0;
+		    	}else{
+		    		newAddressObj['status'] = 1;
+		    	}
 		    	console.log(newAddressObj);
 		    	// 全部判断通过则发送请求让后台添加到数据库
 		    	$.ajax({
@@ -375,6 +383,11 @@
 		    		data: newAddressObj,
 		    		success: function(res){
 		    			console.log('成功！ ', res);
+		    			layHint('添加成功！');
+		    			//自动跳回去订单提交那里
+		    			if(goods_data || lvxinData || shopCar_data){
+		    				location.href = "{{:U('PaymentSystem/payConfirm')}}"
+		    			}
 		    		},
 		    		error: function(res){
 		    			console.log('失败！ ', res);
