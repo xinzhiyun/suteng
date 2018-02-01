@@ -365,7 +365,7 @@
 		    	$.ajax({
 		    		url: "{{:U('Address/newAddress')}}",
 		    		type: 'post',
-		    		data: {'data':JSON.stringify(newAddressObj)},
+		    		data: newAddressObj,
 		    		success: function(res){
 		    			console.log('成功！ ', res);
 		    		},
