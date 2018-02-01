@@ -29,10 +29,14 @@ class AddressController extends CommonController
         if(IS_POST){
             try {
                 $address = D('Address');
-                $data = I('post.');
+                $postData = I('post.');
+                $data['address'] = $postData['province'].$postData['city'].$postData['area'].$postData['town'].$postData['addressDetial'];
+                $data['uid'] = session('user.id');
                 $res = $address->create();
+                $newData = array_merge($data,$res);
+                //dump($newData);die;
                 if(!$res) E($address->getError(),603);
-                $res = $address->add();
+                $res = $address->add($newData);
                 if($res){
                     E('地址已添加',200);
                 } else {
