@@ -354,7 +354,7 @@ class ShopController extends CommonController
             $orderDetail = D('OrderDetail');
             $where['od.order_id'] = I('post.order_id');
             $data = $orderDetail->getInfo($where);
-            // dump($data);die;
+            dump($data);die;
             $this->ajaxReturn($data);
         } catch (\Exception $e) {
             $err = [
@@ -365,10 +365,4 @@ class ShopController extends CommonController
         }
     }
 
-    // 显示订单详情
-    public function orderDetailIndex()
-    {
-        $this->assign(['data'=>I('get.data')]);
-        $this->display();
-    }
 }
