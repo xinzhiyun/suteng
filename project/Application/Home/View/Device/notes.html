@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>净水记录</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		html, body {
+			width: 100% !important;
+			height: 100%;
+		}
+		#dateSelect{
+			width: 60%;
+			height: 6vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: relative;
+			margin: 10px 0;
+			left: 50%;
+			margin-left: -30%;
+			background: #9E9E9F;
+			color: #fff;
+			z-index: 999;
+			border-radius: 10px;
+			overflow: hidden;
+		}
+		#dateSelect>div {
+			width: 100%;
+			height: 6vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 10px 0;
+		}
+		#dateSelect>div>input:focus {
+			background: red;
+		}
+		#dateSelect>div>input:first-child {
+			height: 5vh;
+			border-right: 1px solid #303164 !important;
+			border-radius: 10px 0 0 10px;
+		}
+		#dateSelect>div>input:last-child {
+			height: 5vh;
+			border-radius: 0 10px 10px 0;
+			padding-right: 6px;
+		}
+		.dateDiv {
+			z-index: 20;
+		}
+		.date {
+			width: 100% !important;
+			display: inline-block;
+			position: relative;
+			margin: 0 !important;
+			border: none !important;
+			text-align: center;
+			background: #9E9E9F;
+		}
+		.dateText {
+			width: 49% !important;
+			display: inline-block;
+			position: relative;
+			margin: 0 !important;
+			border: none !important;
+			color: #fff;
+			text-align: center;
+			background: #9E9E9F;
+		}
+		#dateSelect:before {
+			content: '';
+			width: 0;
+			height: 0;
+			display: block;
+			position: absolute;
+			left: 38%;
+			bottom: 16%;
+			border: 10px solid;
+			border-color: #fff transparent transparent transparent;
+			z-index: 11;
+		}
+		#dateSelect:after {
+			content: '';
+			width: 0;
+			height: 0;
+			display: block;
+			position: absolute;
+			left: 84%;
+			bottom: 16%;
+			border: 10px solid;
+			border-color: #fff transparent transparent transparent;
+			z-index: 11;
+		}
+		.dateDiv{
+			opacity: 0;
+			z-index: 20;
+		}
+		.textDiv{
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+		.date:first-child {
+			border-right: 1px solid #333 !important;
+		}
+		.chart {
+			width: 100%;
+			height: 36vh;
+			position: relative;
+			margin: 0px;
+			padding: 0px;
+			left: 0;
+		}
+		.chart>div{
+			width: 100% !important;
+			height: 200px;
+			position: relative; 
+			left: 0;
+			overflow: hidden; 
+		}
+		.chart>div>canvas {
+			width: 100% !important;
+		}
+		.eChartTitle {
+			display: block;
+		    position: relative;
+		    left: 0;
+		    padding: 2% 0%;
+		    margin-top: 2vh;
+		    text-align: center;
+			font-weight: 400;
+		}
+		.eChartTitle:nth-of-type(2) {
+			border-top: 1px solid #bfbfbf;
+		}
+		.eChartTitle>span {
+			font-size: 16px;
+		}
+		#barChart1 {
+			border-bottom: 1px solid #eee;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="dateSelect">
+		<div class="dateDiv">
+			<input class="date" type="date" />
+			<input class="date" type="date" />
+		</div>
+		<div class="textDiv">
+			<input class="dateText" type="text" value="2017">
+			<input class="dateText" type="text" value="11">
+		</div>
+	</div>
+	<div>
+		<h3 class="eChartTitle">纯水 <span>(平均值：82.66ppm)</span></h3>
+		<div class="chart" id="barChart1" _echarts_instance_="1513755345537" >
+			<div>
+				<div data-zr-dom-id="bg" ></div>
+				<canvas data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas>
+			</div>
+		</div>
+	</div>
+	<div>
+		<h3 class="eChartTitle">原水 <span>(平均值：1386.08ppm)</span></h3>
+		<div class="chart" id="barChart2" _echarts_instance_="1513755345537" >
+			<div>
+				<div data-zr-dom-id="bg" ></div>
+				<canvas data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas>
+			</div>
+		</div>
+	</div>
+	<script src="__PUBLIC__/Home/js/echarts.simple.min.js"></script>
+	<script>
+	window.onload = function(){
+
+		var date = document.getElementsByClassName('date'),
+			dateYearText = document.getElementsByClassName('dateText')[0],
+			dateMonthText = document.getElementsByClassName('dateText')[1];
+
+			date[0].onchange = function(){	//日期选择
+				dateYearText.value = date[0].value.split('-')[0];
+				dateMonthText.value = date[0].value.split('-')[1];
+
+				date[1].value = date[0].value;		//日期同步
+			};
+
+			date[1].onchange = function(){	//日期选择
+				dateYearText.value = date[1].value.split('-')[0];
+				dateMonthText.value = date[1].value.split('-')[1];
+
+				date[0].value = date[1].value;
+			};
+
+	}
+	var getOption = function(_yAxisData, _minInterval, _seriesData, _lineColor) {
+		var chartOption = {
+		    color: [_lineColor],
+		    tooltip : {
+		        trigger: 'axis',
+		        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+		            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+		        }
+		    },
+		    grid: {
+		        left: '3%',
+		        right: '4%',
+		        bottom: '3%',
+		        containLabel: true
+		    },
+		    xAxis : [{
+		    	name: '(天)',
+		    	nameLocation: 'end',
+	            type : 'category',
+	            splitNumber: 29,
+	            minInterval : 0,
+	            axisLabel: {
+	            	interval: 0
+	            },
+	            axisTick: {
+	            	alignWithLabel: true,
+	            	show: false
+	            },
+	            data: ['1','','','','','','','','','','','','','','','15','','','','','','','','','','','','30','','(天)','']
+	        }],
+		    yAxis : [{
+		    	name: '(ppm)',
+	            type : 'value',
+	            splitLine: false,
+	            axisTick: {
+	            	inside: true
+	            },
+	            minInterval: _minInterval,
+	            data: _yAxisData
+	        }],
+		    series : [{
+	            name:'直接访问',
+	            type:'bar',
+	            barWidth: '60%',
+	            data: _seriesData,
+	            itemStyle: {
+	            	normal: {
+	            		barBorderRadius: 10
+	            	}
+	            }
+	        }]
+		};
+		return chartOption;
+	};
+	var byId = function(id) {
+		return document.getElementById(id);
+	};
+
+	var yAxisData = [[200],[2000]];
+
+	var seriesData = [[20,70,40,70,100,70,40,70,120,110,120,90,80,90,70,90,100,130,115,120,100,160,140,130,120,130,110,80,80,90],
+		[200,300,400,700,900,700,800,700,1000,1100,1200,900,800,800,700,900,1000,1100,1150,1200,1500,1600,1400,1300,1200,1000,1100,900,800,700]];
+
+	var lineChart1 = echarts.init(byId('barChart1'));
+	lineChart1.setOption(getOption(yAxisData[0], 100, seriesData[0], '#2EB6AA'));
+	
+	var lineChart2 = echarts.init(byId('barChart2'));
+	lineChart2.setOption(getOption(yAxisData[1], 500, seriesData[1], '#FD3959'));
+
+	</script>
+</body>
+</html>

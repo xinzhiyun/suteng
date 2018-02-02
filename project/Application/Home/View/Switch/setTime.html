@@ -45,14 +45,12 @@
 		padding-left: 0.4rem;
 		margin-left: 3rem;
 		background: #fff;
-		/*background: red;*/
-		text-align: center;
 	}
 	.switchFoot{
 		height: 4.0rem;
 		margin: 0 auto;
 		position: relative;
-		width: 90%;
+		width: 86vw;
 	}	
 	.switchFoot input{
 		width:100%;
@@ -78,24 +76,22 @@
 	</style>
 </head>
 <body>
-	<div class="_switch-contain">
-		<div class="switchAll">
-			<div class="switchTop">
-				<div class="swContain">
-					<p>开机时间：(时/分)</p>
-					<div class="inputTime"><input type="time"></div>
-				</div>
+	<div class="switchAll">
+		<div class="switchTop">
+			<div class="swContain">
+				<p>开机时间：(时/分)</p>
+				<div class="inputTime"><input type="time" value="00:00" class="setdata"></div>
 			</div>
-			<div class="switchTop">
-				<div class="swContain">
-					<p>关机时间：(时/分)</p>
-					<div class="inputTime"><input type="time"></div>
-				</div>
+		</div>
+		<div class="switchTop">
+			<div class="swContain">
+				<p>关机时间：(时/分)</p>
+				<div class="inputTime"><input type="time" value="00:00" class="setdata"></div>
 			</div>
-			
-			<div class="switchFoot">
-				<input type="submit">
-			</div>
+		</div>
+		
+		<div class="switchFoot">
+			<input type="submit">
 		</div>
 	</div>
 </body>

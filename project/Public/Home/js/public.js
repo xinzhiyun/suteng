@@ -70,3 +70,17 @@ function slipDel(parent,obj,i){
 	    }
 	});
 }
+
+// 
+// 基于layui 弹框提示封装 王诗平
+function layuiHint(text){
+    layui.use('layer', function(){
+        var layer = layui.layer;
+        layer.msg(text);
+    });  
+}
+
+// 验证姓名，手机号，地址的正则变量定义 王诗平
+var	nameReg = /^([a-zA-Z0-9_\u4e00-\u9fa5]){2,30}$/,
+	phoneReg = /^(1[3|4|5|7|8])\d{9}$/,
+	addressReg = /^(?=.*?[\u4E00-\u9FA5])[\dA-Za-z\u4E00-\u9FA5]{8,}/;

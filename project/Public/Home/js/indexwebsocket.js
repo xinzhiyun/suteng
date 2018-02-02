@@ -20,7 +20,7 @@ window.onload = function(){
         $(".btmTxt").html("水满");
     }
     function service (){// 修检状态 5
-        $(".xuanhuan").show().siblings().hide();
+        $(".service").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
         $(".btmTxt").html("检修");
     }
@@ -63,7 +63,7 @@ window.onload = function(){
     var getdataList={
         "id":"1",
         "deviceid":"228733445596778",
-        "devicestause":"0",
+        "devicestause":"2",
         "reflow":"34000",
         "reday":"85",
         "rawtds":"75",
@@ -141,6 +141,7 @@ window.onload = function(){
     // var identify=0;
     var numAdd=0;
     var deviceId=getdataList.deviceid;
+    // 获取设备id
     // var deviceId=228733445596778;
     websoket.onopen=function(){
         //包数据
@@ -166,6 +167,7 @@ window.onload = function(){
         _status=dataList.DeviceStause;
         machineStatus();//执行水机状态方法
         console.log(dataList);
+        
         if(dataList.PackType=="Select")//返回查询数据类型数据
         {	console.log(dataList);
             numAdd=0;

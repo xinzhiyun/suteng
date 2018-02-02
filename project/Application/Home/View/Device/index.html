@@ -8,8 +8,7 @@
 	<!-- <link rel="stylesheet" href="__PUBLIC__/Home/css/deviceAll.css"> -->
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_p8cbsn51ch2utyb9.css">
-	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
-	<script src="__PUBLIC__/Home/js/public.js"></script>
+	
 	<script>
 		
 	</script>
@@ -321,7 +320,6 @@
 			<div class="haveDevice">
 				<div class="deviceTop">
 					<h3>所有设备</h3>
-					
 					<div class="deviceItem clearfix">
 						<div class="deviceitemLeft"><img src="__PUBLIC__/Home/images/yoo_01.png" alt=""></div>
 						<div class="deviceitemRight ">
@@ -410,32 +408,28 @@
 		</div>
 		
 	</div>
-	
-
-
+	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script>
 		// 选中当前的设备
 		$('.deviceitemRight>i').click(function(){
 			$('.deviceitemRight>i').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 			$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
-			$('.devicepay').css('display','none');
+			$('.devicepay').hide();
+			location.href = '{{:U("VipCenter/minepack")}}';
 		})
 		
 		// 查看当前设备的所属情况
 		$('.deviceitemRight>p').click(function(){
-			$('.devicepay').css('display','none');
+			$('.devicepay').hide();
 			var bb=$(this).next().attr('class');
-			// console.dir(bb);
-			// $(this).next().attr('class');
 			 if(bb=='iconfont icon-xuanze'){
 			 	console.dir($(this).nextAll().fadeIn("slow"))
 			 	$(this).nextAll().fadeIn("slow");
 			 		$('.devicepay>i').click(function(){
 			 			// console.dir(0);
 			 			$('.paystyle').slideDown("slow");
-			 			$('.deviceFoot').css('display','none');
-			 			
-
+			 			$('.deviceFoot').hide();
 			 		})
 			 }
 			

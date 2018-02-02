@@ -11,6 +11,10 @@ class DeviceController extends CommonController
     {
     	$this->display();
     }
+    public function notes()
+    {
+    	$this->display();
+    }
 
 
 }

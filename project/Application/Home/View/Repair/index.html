@@ -6,8 +6,7 @@
   <title>报修主页</title>
   <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
-  <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
-  <script src="__PUBLIC__/Home/js/public.js"></script>
+  
   <style>
     body{
       font-size: 0.7rem;
@@ -68,7 +67,8 @@
       .repairMidd textarea {
         margin-top: 0.133333rem;
         height:5.333333rem;
-        width: 100%;
+        width: calc(100% - 20px);
+        padding:0 10px;
         display: inline-block;
         resize: none;
         overflow: hidden;
@@ -170,32 +170,38 @@
         height: 1.8rem;
         letter-spacing: 0.1rem;
       }
+      .repairTop ul li p input.devicetype{
+        width: calc(100% - 10px);;
+        padding-left: 10px;
+        text-align: left;
+      }
 
   </style>
 </head>
 <body>
   <div class="_repair">
     <div class="repairContainer">
+    <form action="" method="post">
       <div class="repairTop">
         <ul>
           
-          <li><span>设备编号：</span><p>0120563</p></li>
-          <li><span>日       期：</span><p><input type="date"></p></li>
-          <li><span>设备型号：</span><p><input type="time"></p></li>
+          <li><span>设备编号：</span><p class="deviceid">0120563</p></li>
+          <li><span>日       期：</span><p><input type="date" class="currentdate" value="" placeholder="输入日期"></p></li>
+          <li><span>设备型号：</span><p><input type="text" class="devicetype"></p></li>
            <li>
-            <span>设备型号：</span><p>
+            <span>报修原因：</span><p>
             <select>
                 <option value ="volvo">请输入</option>
-                <option value ="saab">Saab</option>
-                <option value="opel">Opel</option>
-                <option value="audi">Audi</option>
+                <option value ="saab">更换滤芯</option>
+                <option value="opel">微信端无法控制水机</option>
+                <option value="audi">其他</option>
             </select></p>
             </li>
         </ul>
       </div>
       <div class="repairMidd">
           <h3>请写下您对设备的宝贵建议<span>*</span></h3>
-          <textarea name="" id="" cols="30" rows="10"></textarea>
+          <textarea name="" id="suggestTxt" cols="30" rows="10"></textarea>
           <p>上传截图</p>
           <div class="repairPic">
             <i class="iconfont icon-tianjia"></i>
@@ -219,30 +225,36 @@
           <li>
             <label for="Laddr">
               <p>维修地址：</p>
-              <textarea name="" id="Laddr" cols="30" rows="10" placeholder=""></textarea>
+              <textarea name="" id="Laddr" cols="30" rows="10" placeholder="" ></textarea>
             </label>
           </li>
         </ul>
       </div>
       <div class="repairBtn">
-        <input type="submit" value="提交">
+        <input type="submit" value="提交" class="btn">
       </div>
+    </form>
 
         
        
     </div>
   </div>
+  <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+  <script src="__PUBLIC__/Home/js/public.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
   <script type="text/javascript">
+    //姓名验证 
     $('#Lname').change( function() {
         // 这里可以写些验证代码
         var name = $(this).val();
         if(name==name.match(/^[a-zA-Z\u4e00-\u9fa5]{2,30}$/u)){// 纯中文姓名支持支持 /^[\u4e00-\u9fa5]{2,30}$/u
           console.dir('验证通过');
         }else{
-          console.dir('请输入真实的姓名！');
+          layuiHint('请输入真实的姓名！');
         }
     });
-
+    //手机号码验证
     $('#Ltel').change( function() {
         // 这里可以写些验证代码
         var phone = $(this).val();
@@ -258,7 +270,7 @@
         }
 
     });
-
+    // 地址验证
     $('#Laddr').change( function() {
         // 这里可以写些验证代码
         var addr = $(this).val();
@@ -268,6 +280,31 @@
           console.dir('地址格式不正确！');
         }
     });
+    $(".btn").click(function(){
+      if($(".currentdate").val()==""){
+        layuiHint("请输入日期");
+        return false;
+      }else if($(".devicetype").val()==""){
+        layuiHint("请输入设备型号");
+        return false;
+      }else if($("select").val()==""){
+        layuiHint("请选中保修原因");
+        return false;
+      }else if($(".suggestTxt").val()==""){
+        layuiHint("请输入报修详情");
+        return false;
+      }else if(!(/^([a-zA-Z0-9_\u4e00-\u9fa5]){2,30}$/).test($("#Lname").val())){
+         layuiHint("请输入真实姓名");
+        return false;
+      }else if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test($('#Ltel').val()))){ 
+        layuiHint("请输入正确的手机号码");
+        return false;
+      }else if(!(/^(?=.*?[\u4E00-\u9FA5])[\dA-Za-z\u4E00-\u9FA5]{6,}/).test($("#Laddr").val())){
+        layuiHint("请输入详细的报修地址");
+        return false;
+      }
+    });
+
   </script>
 </body>
 </html>                                                                                                                                                                                                                                                                      
