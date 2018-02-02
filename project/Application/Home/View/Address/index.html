@@ -294,15 +294,15 @@
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script>
     $(function(){
-    	// 获取后台传来的地址列表
-    	
         // 存放打开的地址的序号
         var addressIndex;
 
 		// 存放姓名，电话，地址
 		var uName, uPhone, uAddress;
 
-		// 点击文字默认地址
+		/*
+			点击文字默认地址
+		 */
 		$("#content").on('click','.normalAddress',function(){
 			$(".normalAddress").each(function(index,key){
 				$(".normalAddress").eq(index).siblings(".setAddress").attr("checked", false);
@@ -331,9 +331,10 @@
 				}
 			});
 			console.log(address_id)
-
 		})
-        // 点击按钮设置默认地址
+        /*
+        	点击按钮设置默认地址
+         */
         $("#content").on('click','.setAddress',function(){
             $(".normalAddress").each(function(index,key){
                 $(".setAddress").eq(index).attr("checked", false);
@@ -349,6 +350,7 @@
 			
 			var address_id = parseInt($(this).attr("index"));		//地址id
 			// 发送ajax请求告诉后台，哪个是默认地址
+			// console.log('address_id: ',address_id);
 			$.ajax({
 				url: '{{:U("Address/edit_address")}}',
 				type: 'post',
@@ -363,14 +365,14 @@
             			},500);
 							
 					}else{
-            			layHint('设置失败！');
+            			layHint('设置失败,请稍后再试！');
 					}
 				},
 				error: function(res){
 					console.log('失败！ ', res)
+            		layHint('遇到未知问题，设置失败！');
 				}
 			});
-			console.log(address_id)
         })
 
 		// 点击‘X’关闭添加地址面板
@@ -386,7 +388,9 @@
 				: ''
 			},100);
 		})
-		// 点击‘保存’关闭添加地址面板
+		/*
+			点击‘保存’关闭添加地址面板
+		 */
 		$("#editAddressPanel").on("click",".saveAddress",function(){
             
 			$("#editAddressPanel>div").animate({marginTop: '50vh'});
@@ -437,6 +441,7 @@
             	},
             	error: function(res){
             		console.log('失败！', res)
+            		layHint('保存失败！');
             	}
             })
 			
@@ -487,7 +492,9 @@
         //         '</div>'+
         //     '</div>';
         // }
-		// 点击编辑按钮
+		/*
+			点击编辑按钮
+		 */ 
 		$("#content").on("click",'.edit',function(){
 			
             //判断打开的是哪个地址
@@ -503,8 +510,11 @@
 			$("#editAddressPanel>div").html(editPanel(uName, uPhone, uAddress))
 		})
 
-        //点击删除按钮
+        /*
+        	点击删除按钮
+         */
         $("#content").on('click','.del',function(){
+        	var _this = $(this);
         	var address_id = $(this).siblings(".edit").attr("index");
             console.log('address_id: ',address_id);
             // 发送ajax让后台删除这条地址在数据库的数据
@@ -516,7 +526,7 @@
             		console.log('成功！', res)
             		//后台返回参数确认删除成功
             		if(res.code == 200){
-            			$(this).parents(".address").remove();
+            			_this.parents(".address").remove();
             			layHint('删除成功！');
             		}else{
             			layHint('删除失败！');
@@ -524,6 +534,7 @@
             	},
             	error: function(res){
             		console.log('失败！', res)
+            		layHint('删除失败！');
             	}
             })
         })
