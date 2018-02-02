@@ -156,13 +156,13 @@ body{
 	width: 90vw;
 	padding:4vw 5vw;
 }
-.chbuTop ul li{
+.chbuTop>ul>li{
 	width: 50%;
-	height: 6vh;
+	height: 8vh;
 	display: inline-block;
 	font-size: 0.7rem;
 	line-height: 6vh;
-	margin-top: 2vh;
+	margin-top: 1.5vh;
 }
 .chbuTop ul li i{
 	margin-right: 0.2rem;
@@ -177,6 +177,7 @@ body{
 	margin:0 0.2rem;
 }
 .chbuBotom{
+	margin-top: 2.5vh;
 	width:100%;
 	height: 10vh;
 	background: url(../images/dibu_01.png) no-repeat;
@@ -184,22 +185,25 @@ body{
 }
 .chbuBotom ul li {
 	display: inline-block;
-	padding-top:6vh;
+	padding-top:3vh;
 	width: 20%;
 	text-align: center;
 }
 .chbuBotom ul li a i{
-	font-size: 1.2rem;
+	font-size: 1.3rem;
 }
 .chbuBotom ul li a i.icon-chongzhi{
-	font-size: 1.1rem;
+	font-size: 1.25rem;
 }
-
+.chbuBotom ul li a i.icon-wode{
+	font-weight: 600;
+}
 .chbuBotom ul li a i.colorChange{
 	color:#4EB9BB; 
 }
 .chbuBotom ul li a p{
 	font-size: 0.7rem;
+	padding-top:0.8vh;
 }
 /*净水机开机状态*/
 .kaiji{
@@ -270,7 +274,7 @@ body{
         background-size: cover;
         opacity: 1;
         position: relative;
-/*        -webkit-animation:aImg5 4s linear  infinite;
+        /*-webkit-animation:aImg5 4s linear  infinite;
         animation:aImg5 4s linear  infinite;*/
       }
       /*.xuanhuan{
@@ -442,7 +446,14 @@ body{
 	    font-size: 3rem;
 	    
 			}
-
+		.chbuTop>ul>li{
+			height: 7vh;
+			margin-top: 1vh;
+		}
+		.chbuTop {
+		   
+		    padding: 2vw 4vw;
+		}
 		}
 
 
