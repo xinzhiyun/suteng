@@ -117,6 +117,7 @@
         #editAddressPanel>div {
             width: 100vw;
             height: 62vh;
+            min-height: 400px;
             position: relative;
             display: -webkit-box;
             display: -ms-flexbox;
@@ -202,13 +203,23 @@
         #areaDiv>select {
         	width: 80%;
         	display: block;
+        	position: relative;
+		    left: 50%;
+		    margin-left: -40%;
         	padding: 0 3%;
-        	margin: 10px 0;
+		    margin-top: 10px;
+		    margin-bottom: 10px;
             border-radius: 4px;
         }
         .pDetail {
         	width: 100%;
         	position: relative;
+        }
+        .pDetail>p{
+        	width: 70%;
+		    position: relative;
+		    left: 50%;
+		    margin-left: -35%;
         }
         .pDetail>textarea {
         	width: 70%;
@@ -338,7 +349,10 @@
 		            </select>
 		    	</div>
 			</div>
-			<p class="pDetail"><textarea name="" id="" cols="30" rows="5" placeholder="请输入详细地址"></textarea></p>
+			<span class="pDetail">
+				<p>详细地址：</p>
+				<textarea name="" id="" cols="30" rows="5" placeholder="请输入详细地址"></textarea>
+			</span>
 			<span class="saveAddress">保存</span>
 		</div>
 	</div>
@@ -382,8 +396,14 @@
 				data: {'address_id': address_id,'status': 0},
 				success: function(res){
 					console.log('成功！ ', res)
-					// 选择默认地址后，返回上一页
-					location.href = '{{:U("PaymentSystem/payConfirm")}}';
+					if(sessionStorage.getItem("order_id")){
+						//如果有订单号
+						// 选择默认地址后，返回订单确认界面
+						setTimeout(function(){
+            				// 默认地址设置成功，返回上一页
+							location.href = '{{:U("PaymentSystem/payConfirm")}}'; 
+            			},500);
+					}
 				},
 				error: function(res){
 					console.log('失败！ ', res)
@@ -418,11 +438,14 @@
 					console.log('成功！ ', res)
 					if(res.code == 200){
             			layHint('设置成功！');
-            			setTimeout(function(){
-            				// 默认地址设置成功，返回上一页
-							location.href = '{{:U("PaymentSystem/payConfirm")}}'; 
-            			},500);
-							
+						if(sessionStorage.getItem("order_id")){
+							//如果有订单号
+							// 选择默认地址后，返回订单确认界面
+							setTimeout(function(){
+	            				// 默认地址设置成功，返回上一页
+								location.href = '{{:U("PaymentSystem/payConfirm")}}'; 
+	            			},500);
+						}
 					}else{
             			layHint('设置失败,请稍后再试！');
 					}

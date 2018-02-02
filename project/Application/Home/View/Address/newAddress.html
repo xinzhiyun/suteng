@@ -387,10 +387,16 @@
 		    			layHint('添加成功！');
 		    			//后台返回信息添加成功后的操作
 		    			if(res.code == 200){
-			    			//自动跳回去订单提交那里
-			    			if(goods_data || lvxinData || shopCar_data){
-			    				location.href = "{{:U('PaymentSystem/payConfirm')}}";
-			    			}
+			    			// 如果有订单号,自动跳回去订单提交那里
+			    			if(sessionStorage.getItem("order_id")){
+			    				// 如果有商品数据
+			    				if(goods_data || lvxinData || shopCar_data){
+			    					location.href = "{{:U('PaymentSystem/payConfirm')}}";
+			    				}
+			    			}else{
+			    				//调回地址列表界面
+		    					location.href = "{{:U('Address/index')}}";
+		    				}
 			    		}else if(res.code == 605){
 	    					layHint('添加失败，请稍后再试！');
 			    		}else{
