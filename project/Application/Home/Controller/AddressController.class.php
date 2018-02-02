@@ -123,17 +123,77 @@ class AddressController extends CommonController
         }
     }
 
+    // 修改地址
+    public function save_address()
+    {
+        try {
+            // 实例化地址模型
+            $address = D('Address');
+            // 接收要修改的地址ID
+            $where['id'] = I('post.id');
+            // 接收表单数据
+            $postData = I('post.');
+            // 删除掉地址ID
+            unset($postData['id']);            
+            // 开启事务
+            $address->startTrans();
+            // 修改地址信息
+            $res = $address->where($where)->save($postData);
+            // 设置默认地址修改状态为：真
+            $status = true;
+            // 如果新增地址并设置默认地址
+            if($postData['status']==0){
+                // 准备查询条件
+                $showData['uid'] = session('user.id');
+                $showData['status'] = 0;
+                // 查询是否有默认地址
+                $defaultAddress = $address->where($showData)->find();
+                
+                // 如果有默认地址
+                if($defaultAddress){
+                    // 准备修改数据
+                    $saveData['status'] = 1;
+                    // 将原先默认地址修改为普通地址
+                    $defaultRes = $address->where($showData)->save($saveData);
+                    // 如果修改不成功
+                    if(!$defaultRes){
+                        // 将默认地址修改状态改为：假
+                        E('默认地址设置失败',605);
+                        $status = false;
+                    }
+                }
+            }
+
+            if($res && $status){
+                $address->commit();
+                E('地址修改成功！',200);
+            } else {
+                $address->rollback();
+                E('地址修改失败！',605);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
     // 删除地址
     public function del_address(){
         if(IS_POST){
             try {
+                $address = D('Address');
                 $delData['id'] = I('post.id');
-
-                $res = D('Address')->where($delData)->delete();
+                $address->startTrans();
+                $res = $address->where($delData)->delete();
                 // print_r($res);die;
                 if($res){
+                    $address->commit();
                     E('地址删除成功了！',200);
                 } else {
+                    $address->rollback();
                     E('地址删除失败了！',603);
                 }
             } catch (\Exception $e) {
