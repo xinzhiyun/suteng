@@ -392,23 +392,34 @@
 	       	console.log(e);
 	       	var index_id = $(this).parents(".itemCar").attr("index_id");
 	       	console.log(index_id)
-	       	
-	       	// 发送请求删除商品在数据库的数据
-	       	$.ajax({
-				url: '{{:U("ShoppingCart/cartDel")}}',
-				type: 'post',
-				data: {'id': index_id},
-				success: function(res){
-					console.log('成功！ ',res);
-					// 移除当前删除商品的元素
-	       			_this.parents('.itemCar').remove();
-	       			parent.layer.msg('删除成功！');
-				},
-				error: function(res){
-					console.log('失败！ ',res);
-	       			parent.layer.msg('删除失败！');
-				}
-			})
+	       	layer.confirm('确认删除？删除后无法恢复！', 
+	            {
+	              btn: ['确定','取消'] //按钮
+	            }, 
+	            function(){
+			       	// 发送请求删除商品在数据库的数据
+			       	$.ajax({
+						url: '{{:U("ShoppingCart/cartDel")}}',
+						type: 'post',
+						data: {'id': index_id},
+						success: function(res){
+							console.log('成功！ ',res);
+							// 移除当前删除商品的元素
+			       			_this.parents('.itemCar').remove();
+			       			parent.layer.msg('删除成功！');
+						},
+						error: function(res){
+							console.log('失败！ ',res);
+			       			parent.layer.msg('删除失败！');
+						}
+					})
+		            return true;
+	            },
+	            function(){
+	                layer.msg('已取消！', {icon: 1});
+	                return false;
+	            }
+	        );
        })
 
 		// 选中框
