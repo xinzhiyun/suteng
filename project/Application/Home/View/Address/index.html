@@ -496,7 +496,7 @@
             	editAddressObj['city'] = editCity;
             	editAddressObj['area'] = editArea;
             	editAddressObj['town'] = editTown;
-	    		editAddressObj['addressDetial'] = editProvince+editCity+editArea+editTown+editAddress;
+	    		editAddressObj['address'] = editProvince+editCity+editArea+editTown+editAddress;
             }
 
 	    	console.log(editAddressObj,Object.getOwnPropertyNames(editAddressObj).length);
@@ -515,7 +515,7 @@
 			                $("#content").find(".address[index="+addressIndex+"]").find(".uName").text(editName)
 			                $("#content").find(".address[index="+addressIndex+"]").find(".uPhone").text(editPhone)
 			                if(addressChange){	//如果有修改地址
-			                	 $("#content").find(".address[index="+addressIndex+"]").find(".uAddress").text(editAddressObj.addressDetial);
+			                	 $("#content").find(".address[index="+addressIndex+"]").find(".uAddress").text(editAddressObj.address);
 			                }
 			                console.log($("#content").find(".address[index="+addressIndex+"]").attr("index"))
 				           
@@ -534,71 +534,6 @@
 	        }
 			
 		})
-
-		// 编辑面板字符串模板函数
-		function editPanel(name,phone,province,city,area,town,address){
-			name = name || ''; 
-			phone = phone || ''; 
-			province = province || '';
-			city = city || '';
-			area = area || '';
-			town = town || '';
-			address = address || '';
-			
-			// 生成编辑内容
-			return '<p class="closePannel">X</p>'+
-				'<div>'+
-					'<label for="">姓名:</label>'+
-					'<input type="text" placeholder="请输入姓名" autofocus class="editName" value='+ name +'>'+
-				'</div>'+
-				'<div>'+
-					'<label for="">电话:</label>'+
-					'<input type="text" placeholder="请输入电话" class="editPhone" value='+ phone +'>'+
-				'</div>'+
-				'<div id="areaChoose" class="citys">'+
-					'<div class="areaChoosebg"></div>'+
-			        '<div class="areaDiv">'+
-						'<p>'+
-							'<select name="province">'+
-			                	'<option value="440000" data-code="440000">'+ province +'</option>'+
-			                '</select>'+
-			                '<select name="city">'+
-			                	'<option value="440100" data-code="440100">'+ city +'</option>'+
-			                '</select>'+
-			                '<select name="area">'+
-			                	'<option value="440103" data-code="440103">'+ area +'</option>'+
-			                '</select>'+
-				            '<select name="town">'+
-				            	'<option value="440113015">'+ town +'</option>'+
-				            '</select>'+
-						'</p>'+
-			    	'</div>'+
-				'</div>'+
-				'<span class="saveAddress">保存</span>';
-		}
-        // 新建地址保存生成HTML字符串模板函数
-        // function addressHTML(editName, editPhone, editAddress){ 
-
-        //     return '<div class="address">'+
-        //         '<div class="aTop">'+
-        //             '<p>'+
-        //                 '<span class="uName">'+ editName +'</span>'+
-        //                 '<span class="uPhone">'+ editPhone +'</span>'+
-        //             '</p>'+
-        //             '<p class="uAddress">'+ editAddress +'</p>'+
-        //         '</div>'+
-        //         '<div class="aBottom">'+
-        //             '<div>'+
-        //                 '<input class="setAddress" type="checkbox" />'+
-        //                 '<span class="normalAddress">默认地址</span>'+
-        //                 '<p>'+
-        //                     '<span class="edit" addressIndex="'+ $(".address").length +'">编辑</span>'+
-        //                     '<span class="del">删除</span>'+
-        //                 '</p>'+
-        //             '</div>'+
-        //         '</div>'+
-        //     '</div>';
-        // }
 		/*
 			点击编辑按钮
 		 */ 
