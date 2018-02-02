@@ -126,15 +126,27 @@ class AddressController extends CommonController
     // 删除地址
     public function del_address(){
         if(IS_POST){
-            $delData['id'] = I('post.id');
-            $res = M('Address')->where($delData)->delete();
-            if($res){
-                E('地址删除成功了！',200);
-            } else {
-                E('地址删除失败了！',603);
+            try {
+                $delData['id'] = I('post.id');
+
+                $res = D('Address')->where($delData)->delete();
+                // print_r($res);die;
+                if($res){
+                    E('地址删除成功了！',200);
+                } else {
+                    E('地址删除失败了！',603);
+                }
+            } catch (\Exception $e) {
+                $err = [
+                    'code' => $e->getCode(),
+                    'msg' => $e->getMessage(),
+                ];
+                $this->ajaxReturn($err);
             }
         }
     }
+
+    // 获取对于ID好
 }
 
 
