@@ -131,7 +131,7 @@ body{
 }
 .xuantext h3{
 	font-size:2.3rem;
-	line-height: 3.066667rem;
+	line-height: 3.6rem;
 }
 .xuantext p{
 	font-size:6vw;
@@ -157,16 +157,19 @@ body{
 	padding:4vw 5vw;
 }
 .chbuTop>ul>li{
-	width: 50%;
+	/*width: 50%;*/
 	height: 8vh;
 	display: inline-block;
-	font-size: 0.7rem;
+	font-size: 0.80rem;
 	line-height: 6vh;
 	margin-top: 1.5vh;
 }
+.chbuTop>ul>li:nth-of-type(even){
+	float: right;
+}
 .chbuTop ul li i{
 	margin-right: 0.2rem;
-	font-size:0.933333rem;
+	font-size:1.1rem;
 	color: #4CA3EA;
 }
 
@@ -193,7 +196,7 @@ body{
 	font-size: 1.3rem;
 }
 .chbuBotom ul li a i.icon-chongzhi{
-	font-size: 1.25rem;
+	font-size: 1.2rem;
 }
 .chbuBotom ul li a i.icon-wode{
 	font-weight: 600;
@@ -452,7 +455,7 @@ body{
 		}
 		.chbuTop {
 		   
-		    padding: 2vw 4vw;
+		    padding: 1vw 5vw;
 		}
 		}
 
