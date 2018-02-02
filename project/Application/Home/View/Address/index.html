@@ -111,12 +111,12 @@
         }
         #editAddressPanel>p {
             width: 100vw;
-            height: 50vh;
+            height: 38vh;
             /*background: rgba(0,0,0,.5);*/
         }
         #editAddressPanel>div {
             width: 100vw;
-            height: 50vh;
+            height: 62vh;
             position: relative;
             display: -webkit-box;
             display: -ms-flexbox;
@@ -168,7 +168,7 @@
             -webkit-box-align: center;
                 -ms-flex-align: center;
                     align-items: center;
-            margin: 2vh 0 2vh -35%;
+            margin: 1vh 0 1vh -35%;
         }
 
         #editAddressPanel>div>div>label {
@@ -202,7 +202,20 @@
         #areaDiv>select {
         	width: 80%;
         	display: block;
+        	padding: 0 3%;
         	margin: 10px 0;
+            border-radius: 4px;
+        }
+        .pDetail {
+        	width: 100%;
+        	position: relative;
+        }
+        .pDetail>textarea {
+        	width: 70%;
+		    position: relative;
+		    left: 50%;
+		    margin-left: -35%;
+            border-radius: 4px;
         }
 		#footer {
 			width: 100vw;
@@ -302,29 +315,30 @@
 			<p class="closePannel">X</p>
 			<div>
 				<label for="">姓名:</label>
-				<input type="text" placeholder="请输入姓名" autofocus class="editName" value='+ name +'>
+				<input type="text" placeholder="请输入姓名" autofocus class="editName" value=''>
 			</div>
 			<div>
 				<label for="">电话:</label>
-				<input type="text" placeholder="请输入电话" class="editPhone" value='+ phone +'>
+				<input type="text" placeholder="请输入电话" class="editPhone" value=''>
 			</div>
 			<div id="areaChoose" class="citys">
-				<div class="areaChoosebg"></div>
+				<div class="areaChoosebg">地区：</div>
 		        <div id="areaDiv">
-					<select name="province">
-	                	<option value="440000" data-code="440000">'+ province +'</option>
+					<select name="province" class="editProvince">
+	                	<option value="440000" data-code="440000"></option>
 	                </select>
-	                <select name="city">
-	                	<option value="440100" data-code="440100">'+ city +'</option>
+	                <select name="city" class="editCity">
+	                	<option value="440100" data-code="440100"></option>
 	                </select>
-	                <select name="area">
-	                	<option value="440103" data-code="440103">'+ area +'</option>
+	                <select name="area" class="editArea">
+	                	<option value="440103" data-code="440103"></option>
 	                </select>
-		            <select name="town">
-		            	<option value="440113015">'+ town +'</option>
+		            <select name="town" class="editTown">
+		            	<option value="440113015"></option>
 		            </select>
 		    	</div>
 			</div>
+			<p class="pDetail"><textarea name="" id="" cols="30" rows="5" placeholder="请输入详细地址"></textarea></p>
 			<span class="saveAddress">保存</span>
 		</div>
 	</div>
@@ -433,13 +447,18 @@
 				: ''
 			},100);
 		})
+		//编辑地址改变
+		var addressChange = false;
+		$(".editProvince").click(function(){
+			addressChange = true;
+		})
 		/*
 			点击‘保存’关闭编辑地址面板
 		 */
 		$("#editAddressPanel").on("click",".saveAddress",function(){
+            var editAddressObj = {};	//编辑地址需要发到后台的数据
             
 			$("#editAddressPanel>div").animate({marginTop: '50vh'});
-            editPanel()
 			var int = setInterval(function(){
 				parseInt($("#editAddressPanel>div").css("marginTop")) >= $(window).height()/2-20
 				? (
@@ -451,69 +470,68 @@
             // 获取当前面板的姓名，电话，地址
             var editName = $(this).parents("#editAddressPanel").find(".editName").val();
             var editPhone = $(this).parents("#editAddressPanel").find(".editPhone").val();
-            var editProvince = $(this).parents("#editAddressPanel").find(".editProvince").val();
-            var editCity = $(this).parents("#editAddressPanel").find(".editCity").val();
-            var editArea = $(this).parents("#editAddressPanel").find(".editArea").val();
-            var editTown = $(this).parents("#editAddressPanel").find(".editTown").val();
-            var editAddress = $(this).parents("#editAddressPanel").find(".editAddress").val();
+            var editProvince = $(this).parents("#editAddressPanel").find(".editProvince").find("option:selected").text();
+            var editCity = $(this).parents("#editAddressPanel").find(".editCity").find("option:selected").text();
+            var editArea = $(this).parents("#editAddressPanel").find(".editArea").find("option:selected").text();
+            var editTown = $(this).parents("#editAddressPanel").find(".editTown").find("option:selected").text();
+            var editAddress = $('.pDetail>textarea').val();
 
-            console.log(editName, editPhone, editAddress)
+            console.log(editName, editPhone,editProvince, editCity,editArea,editTown,editAddress)
             // 显示编辑面板
             $("#editAddressPanel").show();
             $("#editAddressPanel>div").animate({marginTop: '0'});
-            // $("#editAddressPanel>div").html(editPanel(editName, editPhone, editAddress))
 
             //addressIndex：判断打开的是哪个地址, 点击'编辑'的时候获取
-            console.log(addressIndex, $(".address").eq(addressIndex))
-            var editAddressObj = {};	//编辑地址需要发到后台的数据
-            if(editName == uName){
-	    		editAddressObj['name'] = editName;
-
-            }else if(editPhone == uPhone){
-	    		editAddressObj['phone'] = editPhone;
-
-            }else if(editProvince == uProvince){
-            	editAddressObj['province'] = editProvince;
-
-            }else if(editCity == uCity){
-            	editAddressObj['city'] = editCity;
-
-            }else if(editArea == uArea){
-            	editAddressObj['area'] = editArea;
-
-            }else if(editTown == uTown){
-            	editAddressObj['town'] = editTown;
-
+            console.log(addressIndex)
+            editAddressObj['id'] = addressIndex;		//地址id
+            if(editName != uName){	//如果修改了姓名
+            	editAddressObj['name'] = editName;
             }
-	    	editAddressObj['addressDetial'] = editAddress;
-	    	console.log(editAddressObj);
-            // 发送ajax让后台修改这条地址在数据库的数据
-            // $.ajax({
-            // 	url: '{{:U("Home/Address/save_address")}}',
-            // 	type: 'post',
-            // 	data: editAddressObj,
-            // 	success: function(res){
-            // 		console.log('成功！', res)
-            // 		//后台返回参数确认修改成功
-            // 		if(res == 200){
-            // 			layHint('保存成功！');
-			         //    // 将修改更新到页面相应位置
-			         //    if(editName && editPhone && editAddress){
-			         //        // 点击编辑进来的
-			         //        $("#content").find(".address").eq(addressIndex).find(".uName").text(editName)
-			         //        $("#content").find(".address").eq(addressIndex).find(".uPhone").text(editPhone)
-			         //        $("#content").find(".address").eq(addressIndex).find(".uAddress").text(editAddress)
-			         //        console.log($("#content").find(".address").eq(addressIndex))
-			         //    }
-            // 		}else{
-            // 			layHint('保存失败！');
-            // 		}
-            // 	},
-            // 	error: function(res){
-            // 		console.log('失败！', res)
-            // 		layHint('保存失败！');
-            // 	}
-            // })
+            if(editPhone != uPhone){		//如果修改了手机号
+	    		editAddressObj['phone'] = editPhone;
+            }
+            if(addressChange){	//如果有修改地址
+
+            	editAddressObj['province'] = editProvince;
+            	editAddressObj['city'] = editCity;
+            	editAddressObj['area'] = editArea;
+            	editAddressObj['town'] = editTown;
+	    		editAddressObj['addressDetial'] = editProvince+editCity+editArea+editTown+editAddress;
+            }
+
+	    	console.log(editAddressObj,Object.getOwnPropertyNames(editAddressObj).length);
+	    	if(Object.getOwnPropertyNames(editAddressObj).length > 1){		//如果有修改数据
+	            // 发送ajax让后台修改这条地址在数据库的数据
+	            $.ajax({
+	            	url: '{{:U("Home/Address/save_address")}}',
+	            	type: 'post',
+	            	data: editAddressObj,
+	            	success: function(res){
+	            		console.log('成功！', res)
+	            		//后台返回参数确认修改成功
+	            		if(res.code == 200){
+	            			layHint('保存成功！');
+				         	// 将修改更新到页面相应位置
+			                $("#content").find(".address[index="+addressIndex+"]").find(".uName").text(editName)
+			                $("#content").find(".address[index="+addressIndex+"]").find(".uPhone").text(editPhone)
+			                if(addressChange){	//如果有修改地址
+			                	 $("#content").find(".address[index="+addressIndex+"]").find(".uAddress").text(editAddressObj.addressDetial);
+			                }
+			                console.log($("#content").find(".address[index="+addressIndex+"]").attr("index"))
+				           
+	            		}else{
+	            			layHint('保存失败！');
+	            		}
+	            	},
+	            	error: function(res){
+	            		console.log('失败！', res)
+	            		layHint('保存失败！');
+	            	}
+	            })
+	        }else{
+	        	console.log('没有修改数据');
+	        	layHint('你没有修改任何数据');
+	        }
 			
 		})
 
@@ -596,11 +614,17 @@
 			uArea = $(this).parents(".address").find(".area").val();
 			uTown = $(this).parents(".address").find(".town").val();
 			uAddress = $(this).parents(".address").find(".uAddress").text();
-			console.log(uName, uPhone,uProvince,uCity,uArea, uTown,uAddress);
+			console.log(addressIndex,uName, uPhone,uProvince,uCity,uArea, uTown,uAddress);
             // 显示编辑面板
             $("#editAddressPanel").show();
             $("#editAddressPanel>div").animate({marginTop: '0'});
 			// $("#editAddressPanel>div").html(editPanel(uName,uPhone,uProvince,uCity,uArea,uTown,uAddress))
+			$(".editName").val(uName);
+			$(".editPhone").val(uPhone);
+			$(".editProvince").prepend('<option selected>'+ uProvince +'</option>');
+			$(".editCity").prepend('<option selected>'+ uCity +'</option>');
+			$(".editArea").prepend('<option selected>'+ uArea +'</option>');
+			$(".editTown").prepend('<option selected>'+ uTown +'</option>');
 		})
 
         /*
