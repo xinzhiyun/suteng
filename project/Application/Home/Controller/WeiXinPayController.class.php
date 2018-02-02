@@ -56,7 +56,7 @@ class WeiXinPayController extends Controller
                 // 准备更新数据
                 $saveOrderDara['status'] = 9;
                 // 执行更新操作
-                //$order->where($saveOrder)->save($saveOrderDara);
+                $order->where($saveOrder)->save($saveOrderDara);
                 // 准备佣金数据
                 // 微信用户标识
                 $open_id = $result['openid'];

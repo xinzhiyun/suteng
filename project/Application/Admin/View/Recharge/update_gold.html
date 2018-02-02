@@ -1,0 +1,122 @@
+<extend name="Public/base" />
+
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                    <h5>分公司管理 <small>分公司添加</small></h5>
+                </div>
+
+
+                    <div class="ibox-content">
+                        <form action="company_add" method="post" class="form-horizontal" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">姓名</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="name" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">移动电话</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="phone" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">身份证号</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="identity" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">身份证正面</label>
+                                <div class="col-md-3">
+                                    <input type="file" name="positive" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">身份证反面</label>
+                                <div class="col-md-3">
+                                    <input type="file" name="opposite" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">手持身份证</label>
+                                <div class="col-md-3">
+                                    <input type="file" name="handheld" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">公司名称</label>
+
+                                <div class="col-md-3">
+                                    <input type="text" name="company" class="form-control">
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">固定电话</label>
+
+                                <div class="col-md-3">
+                                    <input type="text" name="telephone" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">公司地址</label>
+
+                                <div class="col-md-3">
+                                    <input type="text" name="address" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">营业执照</label>
+                                <div class="col-md-3">
+                                    <input type="file" name="licence" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">协议文件</label>
+                                <div class="col-md-3">
+                                    <input type="file" name="protocol" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">用户名</label>
+
+                                <div class="col-md-3">
+                                    <input type="text" name='user' class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">密码</label>
+
+                                <div class="col-md-3">
+                                    <input type="password" name="password" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">密码确认</label>
+
+                                <div class="col-md-3">
+                                    <input type="password" name="repassword" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit">申请</button>
+                                    <button class="btn btn-white" type="reset">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
