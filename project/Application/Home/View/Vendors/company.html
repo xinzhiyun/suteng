@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
     <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
     <script src="__PUBLIC__/Home/js/public.js"></script>
-    <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_eele8rs3vvwh4cxr.css">
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_ar7t6p75v84r6bt9.css">
    <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
     <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 </head>
@@ -25,20 +25,24 @@
         width: 100vw;
     }
      header{
+       display: flex;
         padding-top: 0.6rem;
-        height: 6rem;
-        margin-bottom: 2vh;
-        background: -webkit-radial-gradient(top left, #99FCEF 35%, #5B97EF);
+        height: 8rem;
+        background: -webkit-radial-gradient(top left , #99FCEF, #5291EE);
+        flex-direction: column;
+        align-items: center;
+    }
 
-     }
     header>p {
+           flex-direction:column;
+            justify-content:center;
             padding: 2% 4% 3%;
             text-align: left;
             color: #5a5a5a;
             font-size: 0.72rem;
         }
         header>p>b{
-            display: inline-block;
+           display: block;
             width: 4rem;
             height: 4rem;
             border-radius: 4rem; 
@@ -51,7 +55,8 @@
          header>p>b>img{
             width: 100%;
         }
-         header>p>span{
+         header>span{
+            display: block;
             line-height: 3rem;
             margin-left: 1rem;
             color: #5a5a5a;
@@ -155,11 +160,12 @@
 <body>
     <div class="ibox-content">
         <header>
-            <p><b></b><span>分销商名称</span></p>
+            <p><b></b></p>
+            <p><span>分销商名称</span></p>
         </header>
         <form action="{{:U('Home/Vendors/company')}}" method="post" class="form-horizontal clearfix" enctype="multipart/form-data">    
             <div class="form-group">
-                <i class="iconfont icon-gongsimingcheng"></i>
+                <i class="iconfont icon-gongsimingcheng1"></i>
                 <label class="col-sm-2 control-label" for="comName">公司名称： </label>
 
                 <div class="col-md-3">
@@ -167,7 +173,7 @@
                 </div>
             </div> 
            <div class="form-group">
-                <i class="iconfont icon-shouji"></i>
+                <i class="iconfont icon-dianhua"></i>
                 <label class="col-sm-2 control-label" for="comTel">固定电话： </label>
 
                 <div class="col-md-3">
