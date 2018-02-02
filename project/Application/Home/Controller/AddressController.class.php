@@ -144,9 +144,8 @@ class AddressController extends CommonController
             $whereData['id'] = I('post.id');
             // 接收表单数据
             // 数据验证
-            $postData = $address->create();
-            // 数据验证不通过返回错误
-            if(!$postData) E($address->getError(),603);
+            $postData = I('post.');
+
             // 删除掉地址ID
             unset($postData['id']);          
             // 开启事务
@@ -188,7 +187,10 @@ class AddressController extends CommonController
                     $postData['status'] = 0;
                 }
             }
+            // echo '<pre>';
+            // print_r($whereData);
 
+            // print_r($postData);die;
             // 修改地址信息
             $res = $address->where($whereData)->save($postData);
 
