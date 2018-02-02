@@ -227,7 +227,7 @@
 		<h3 class="noaddress">还没有一条地址</h3>
 	<else />
 		<volist name="data" id="v">
-			<div class="address">
+			<div class="address" index="{{$v.id}}">
 				<div class="aTop">
 					<p>
 						<span class="uName">{{$v.name}}</span>
@@ -291,6 +291,7 @@
 			<label for="newAddress">添加新地址</label>
 		</a>
 	</footer>
+	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script>
     $(function(){
     	// 获取后台传来的地址列表
@@ -353,9 +354,17 @@
 				type: 'post',
 				data: {'id': address_id,'status': 0},
 				success: function(res){
-					// console.log('成功！ ', res)
-					// 选择默认地址后，返回上一页
-					location.href = '{{:U("PaymentSystem/payConfirm")}}';
+					console.log('成功！ ', res)
+					if(res.code == 200){
+            			layHint('设置成功！');
+            			setTimeout(function(){
+            				// 默认地址设置成功，返回上一页
+							location.href = '{{:U("PaymentSystem/payConfirm")}}'; 
+            			},500);
+							
+					}else{
+            			layHint('设置失败！');
+					}
 				},
 				error: function(res){
 					console.log('失败！ ', res)
@@ -403,14 +412,33 @@
 
             //addressIndex：判断打开的是哪个地址, 点击'编辑'的时候获取
             console.log(addressIndex, $(".address").eq(addressIndex))
-            // 将修改更新到页面相应位置
-            if(editName && editPhone && editAddress){
-                // 点击编辑进来的
-                $("#content").find(".address").eq(addressIndex).find(".uName").text(editName)
-                $("#content").find(".address").eq(addressIndex).find(".uPhone").text(editPhone)
-                $("#content").find(".address").eq(addressIndex).find(".uAddress").text(editAddress)
-                console.log($("#content").find(".address").eq(addressIndex))
-            }
+
+            // 发送ajax让后台修改这条地址在数据库的数据
+            $.ajax({
+            	url: '{{:U("Address/edit_address")}}',
+            	type: 'post',
+            	data: {},
+            	success: function(res){
+            		console.log('成功！', res)
+            		//后台返回参数确认修改成功
+            		if(res == 1){
+            			layHint('保存成功！');
+			            // 将修改更新到页面相应位置
+			            if(editName && editPhone && editAddress){
+			                // 点击编辑进来的
+			                $("#content").find(".address").eq(addressIndex).find(".uName").text(editName)
+			                $("#content").find(".address").eq(addressIndex).find(".uPhone").text(editPhone)
+			                $("#content").find(".address").eq(addressIndex).find(".uAddress").text(editAddress)
+			                console.log($("#content").find(".address").eq(addressIndex))
+			            }
+            		}else{
+            			layHint('保存失败！');
+            		}
+            	},
+            	error: function(res){
+            		console.log('失败！', res)
+            	}
+            })
 			
 		})
 
@@ -437,28 +465,28 @@
 				'<span class="saveAddress">保存</span>';
 		}
         // 新建地址保存生成HTML字符串模板函数
-        function addressHTML(editName, editPhone, editAddress){ 
+        // function addressHTML(editName, editPhone, editAddress){ 
 
-            return '<div class="address">'+
-                '<div class="aTop">'+
-                    '<p>'+
-                        '<span class="uName">'+ editName +'</span>'+
-                        '<span class="uPhone">'+ editPhone +'</span>'+
-                    '</p>'+
-                    '<p class="uAddress">'+ editAddress +'</p>'+
-                '</div>'+
-                '<div class="aBottom">'+
-                    '<div>'+
-                        '<input class="setAddress" type="checkbox" />'+
-                        '<span class="normalAddress">默认地址</span>'+
-                        '<p>'+
-                            '<span class="edit" addressIndex="'+ $(".address").length +'">编辑</span>'+
-                            '<span class="del">删除</span>'+
-                        '</p>'+
-                    '</div>'+
-                '</div>'+
-            '</div>';
-        }
+        //     return '<div class="address">'+
+        //         '<div class="aTop">'+
+        //             '<p>'+
+        //                 '<span class="uName">'+ editName +'</span>'+
+        //                 '<span class="uPhone">'+ editPhone +'</span>'+
+        //             '</p>'+
+        //             '<p class="uAddress">'+ editAddress +'</p>'+
+        //         '</div>'+
+        //         '<div class="aBottom">'+
+        //             '<div>'+
+        //                 '<input class="setAddress" type="checkbox" />'+
+        //                 '<span class="normalAddress">默认地址</span>'+
+        //                 '<p>'+
+        //                     '<span class="edit" addressIndex="'+ $(".address").length +'">编辑</span>'+
+        //                     '<span class="del">删除</span>'+
+        //                 '</p>'+
+        //             '</div>'+
+        //         '</div>'+
+        //     '</div>';
+        // }
 		// 点击编辑按钮
 		$("#content").on("click",'.edit',function(){
 			
@@ -473,17 +501,31 @@
             $("#editAddressPanel").show();
             $("#editAddressPanel>div").animate({marginTop: '0'});
 			$("#editAddressPanel>div").html(editPanel(uName, uPhone, uAddress))
-
-			// 发送给后台
-			$.post('{{:U("Address/edit_address")}}',{},function(res){
-				console.log(res);
-			})
 		})
 
         //点击删除按钮
         $("#content").on('click','.del',function(){
-            console.log($(this).parents(".address"));
-            $(this).parents(".address").remove();
+        	var address_id = $(this).siblings(".edit").attr("index");
+            console.log('address_id: ',address_id);
+            // 发送ajax让后台删除这条地址在数据库的数据
+            $.ajax({
+            	url: '{{:U("Address/del_address")}}',
+            	type: 'post',
+            	data: {'id': address_id},
+            	success: function(res){
+            		console.log('成功！', res)
+            		//后台返回参数确认删除成功
+            		if(res.code == 200){
+            			$(this).parents(".address").remove();
+            			layHint('删除成功！');
+            		}else{
+            			layHint('删除失败！');
+            		}
+            	},
+            	error: function(res){
+            		console.log('失败！', res)
+            	}
+            })
         })
 
         // 将数据输出为JSON对象数组格式
@@ -496,6 +538,14 @@
             })
         }
         console.log(arr);
+
+	    //提示框函数
+	    function layHint(text){
+    		layui.use('layer', function(){
+                var layer = layui.layer;
+                layer.msg(text);
+            });
+	    }
        
     })
 	</script>
