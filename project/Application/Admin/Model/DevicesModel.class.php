@@ -26,7 +26,7 @@ class DevicesModel extends Model
     // 获取产品类型
     public function getCate()
     {
-        $data = M('DeviceType')->field('id')->select();
+        $data = M('Type')->field('id')->select();
         $res = array_column( $data, 'id' );
         return $res;
     }

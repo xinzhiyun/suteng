@@ -2,9 +2,11 @@
 <block name="mylink">
     <link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/layui/css/layui.css">
     <style>
-        textarea{
-            resize:none;
+        img{
+            width: 60px;
+            height: 60px;
         }
+
     </style>
 </block>
 <block name="content">
@@ -51,7 +53,7 @@
                                         购买网址
                                     </th>
                                     <th>
-                                        最新添加时间
+                                        最后更新时间
                                     </th>
                                     <th>
                                         操作
@@ -92,12 +94,11 @@
                                                 {{$vo.url}}
                                             </td>
                                             <td>
-                                                {{$vo['addtime']|date='Y-m-d H:i:s',###}}
+                                                {{$vo['updatetime']|date='Y-m-d H:i:s',###}}
                                             </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <a class="btn btn-outline btn-success" href="javascript:;" ruleId="{{$vo['id']}}" ruleName="{{$v['name']}}" ruleTitle="{{$v['pid']}}"
-                                                    onclick="edit(this)">
+                                                    <a class="btn btn-outline btn-success" href="javascript:;" FilterAlias={{$vo.alias}} FilterId="{{$vo['id']}}" FilterName="{{$vo['filtername']}}" FilterPrice="{{$vo['price']}}" FilterTimelift="{{$vo.timelife}}" FilterFlowlifet="{{$vo.flowlife}}" FilterIntroducet="{{$vo.introduce}}" FilterUrl="{{$vo.url}}" onclick="edit(this)">
                                                         修改
                                                     </a>
                                                     <a class="btn btn-outline btn-success deletBnt" filterId="{{$vo['id']}}">
@@ -128,81 +129,82 @@
                 </div>
                 <div class="modal-body">
                     <form id="formdata" method="post" enctype="multipart/form-data">
-                    <table class="table table-striped table-bordered table-hover table-condensed">
-                        <tr>
-                            <th width="25%">
-                                滤芯名称：
-                            </th>
-                            <td>
-                                <div class="form-group">
-                                    <input class="input-medium form-control" placeholder="请输入滤芯名称..." type="text" name="filtername">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                滤芯别名：
-                            </th>
-                            <td>
-                                <input class="input-medium form-control" placeholder="请输入滤芯别名..." type="text" name="alias">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                滤芯图片：
-                            </th>
-                            <td>
-                                <input class="input-medium form-control" type="file" name="picpath">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                时间寿命(小时)：
-                            </th>
-                            <td>
-                                <input class="input-medium form-control" placeholder="请输入数字..." type="text" name="timelife">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                流量寿命(升)：
-                            </th>
-                            <td>
-                                <input class="input-medium form-control" placeholder="请输入数字..." type="text" name="flowlife">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                滤芯价格：
-                            </th>
-                            <td>
-                                <input class="input-medium form-control" placeholder="请输入滤芯价格..." type="text" name="price">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                滤芯简介：
-                            </th>
-                            <td>
-                                <textarea class="input-medium form-control" placeholder="在这里输入滤芯简介" type="url" name="introduce"></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                购买网址：
-                            </th>
-                            <td>
-                                <input class="input-medium form-control" placeholder="http:://" type="text" name="url">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                            </th>
-                            <td>
-                                <input class="btn btn-success st-add" type="button" onclick="addFilter()" value="确认">
-                            </td>
-                        </tr>
-                    </table>
+                        <input type="hidden" name="id">
+                        <table class="table table-striped table-bordered table-hover table-condensed">
+                            <tr>
+                                <th width="25%">
+                                    滤芯名称：
+                                </th>
+                                <td>
+                                    <div class="form-group">
+                                        <input class="input-medium form-control" placeholder="请输入滤芯名称..." type="text" name="filtername">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    滤芯别名：
+                                </th>
+                                <td>
+                                    <input class="input-medium form-control" placeholder="请输入滤芯别名..." type="text" name="alias">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    滤芯图片：
+                                </th>
+                                <td>
+                                    <input class="input-medium form-control" type="file" name="picpath">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    时间寿命(小时)：
+                                </th>
+                                <td>
+                                    <input class="input-medium form-control" placeholder="请输入数字..." type="text" name="timelife">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    流量寿命(升)：
+                                </th>
+                                <td>
+                                    <input class="input-medium form-control" placeholder="请输入数字..." type="text" name="flowlife">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    滤芯价格：
+                                </th>
+                                <td>
+                                    <input class="input-medium form-control" placeholder="请输入滤芯价格..." type="text" name="price">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    滤芯简介：
+                                </th>
+                                <td>
+                                    <textarea class="input-medium form-control" placeholder="在这里输入滤芯简介" type="url" name="introduce"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    购买网址：
+                                </th>
+                                <td>
+                                    <input class="input-medium form-control" placeholder="http:://" type="text" name="url">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                </th>
+                                <td>
+                                    <input class="btn btn-success st-add" type="button" onclick="addFilter()" value="确认">
+                                </td>
+                            </tr>
+                        </table>
                     </form>
                 </div>
             </div>
@@ -223,24 +225,35 @@
             $("textarea").val('');
             $('#st-add').modal('show');
         }
-        // 添加滤芯
-        function edit() {
-            $("input[name='filtername']").val('');
-            $("input[name='alias']").val('');
-            $("input[name='price']").val('');
-            $("input[name='timelife']").val('');
-            $("input[name='flowlife']").val('');
-            $("input[name='url']").val('');
-            $("textarea").val('');
+        // 修改滤芯
+        function edit(obj) {
+            var filterName = $(obj).attr('filtername');
+            var filterId = $(obj).attr('FilterId');
+            var filterAlias = $(obj).attr('FilterAlias');
+            var filterPrice = $(obj).attr('FilterPrice');
+            var filterTimelift = $(obj).attr('FilterTimelift');
+            var filterFlowlifet = $(obj).attr('FilterFlowlifet');
+            var filterUrl = $(obj).attr('FilterUrl');
+            var filterIntroducet = $(obj).attr('FilterIntroducet');
+            $(".modal-title").html("修改滤芯");
+            $("input[name='filtername']").val(filterName);
+            $("input[name='id']").val(filterId);
+            $("input[name='alias']").val(filterAlias);
+            $("input[name='price']").val(filterPrice);
+            $("input[name='timelife']").val(filterTimelift);
+            $("input[name='flowlife']").val(filterFlowlifet);
+            $("input[name='url']").val(filterUrl);
+            $("textarea").val(filterIntroducet);
+            $(".st-add").attr('onclick','editFilter()');
             $('#st-add').modal('show');
         }
 
+        // 添加功能执行
         function addFilter()
         {
             var data = document.getElementById('formdata');
             var pic = $('input[name="picpath"]')[0].files[0];
             var fd = new FormData(data)
-            console.log(fd);
             fd.append('picpath', pic);
             parent.layer.confirm('确认添加该滤芯吗？', {
                 btn: ['确认','取消'], //按钮
@@ -268,55 +281,6 @@
                 parent.layer.msg('已取消', {shift: 6});
             });
         }
-        // $('.st-add').click(function(e){
-        //     var filtername = $("input[name='filtername']").val();
-        //     var alias = $("input[name='alias']").val();
-        //     var price = $("input[name='price']").val();
-        //     var timelife = $("input[name='timelife']").val();
-        //     var flowlife = $("input[name='flowlife']").val();
-        //     var url = $("input[name='url']").val();
-        //     // [0].files[0]
-        //     var picpath = $("input[name='picpath']")[0].files[0];
-        //     var introduce = $("textarea").val();
-        //     // console.log(picpath);
-        //     // var goodsName = $(this).attr('goodsName');
-        //     parent.layer.confirm('请确认添加的信息<br>'+
-        //     '<p>滤芯名称：'+filtername+'</p>'+
-        //     '<p>滤芯别名：'+alias+'</p>'+
-        //     '<p>时间寿命(小时):'+timelife+'</p>'+
-        //     '<p>流量寿命(升)：'+flowlife+'</p>'+
-        //     '<p>滤芯简介：'+introduce+'</p>'+
-        //     '<p>购买地址：'+url+'</p>', {
-        //         btn: ['确认','取消'], //按钮
-        //         shade: false //不显示遮罩
-        //     }, function(){
-        //         $.ajax({
-        //             url:'filterAction',
-        //             type:'post',
-        //             dataType:'json',
-        //             data:{
-        //                 'filtername':filtername,
-        //                 'alias':alias,
-        //                 'price':price,
-        //                 'timelife':timelife,
-        //                 'flowlife':flowlife,
-        //                 'url':url,
-        //                 'introduce':introduce,
-        //             },
-        //             success:function(res){
-        //                 if(res.code == 200){
-        //                     location.reload();
-        //                     parent.layer.msg(res.msg);
-        //                 } else {
-        //                     parent.layer.close;
-        //                     parent.layer.msg(res.msg);
-        //                 }
-        //             }
-        //         });
-        //     }, function(){
-        //         parent.layer.msg('已取消', {shift: 6});
-        //     });
-        // })
         $('.deletBnt').click(function(e){
             var id = $(this).attr('filterId');
             console.log(id);
@@ -343,5 +307,39 @@
                 parent.layer.msg('已取消', {shift: 6});
             });
         })
+
+        // 修改功能
+        function editFilter()
+        {
+            var data = document.getElementById('formdata');
+            var pic = $('input[name="picpath"]')[0].files[0];
+            var fd = new FormData(data)
+            fd.append('picpath', pic);
+            parent.layer.confirm('确认修改该滤芯吗？', {
+                btn: ['确认','取消'], //按钮
+                shade: false //不显示遮罩
+            }, function(){
+                $.ajax({
+                    url:'filterEdit',
+                    type:'post',
+                    dataType:'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data:fd,
+                    success:function(res){
+                        if(res.code == 200){
+                            location.reload();
+                            parent.layer.msg(res.msg);
+                        } else {
+                            parent.layer.close;
+                            parent.layer.msg(res.msg);
+                        }
+                    }
+                });
+            }, function(){
+                parent.layer.msg('已取消', {shift: 6});
+            });
+        }
     </script>
 </block>

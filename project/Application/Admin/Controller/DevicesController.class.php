@@ -15,21 +15,32 @@ class DevicesController extends CommonController
      */
     public function devicesList()
     {
+        $device = D('Devices');
         // 查询条件
         $map = '';
         if(!empty($_GET['code'])) $map['device_code'] = array('like',"%{$_GET['code']}%");
-        $devices = D('Devices')
+        $count = $device                                                            
             ->where($map)
             ->alias('d')
             ->join('__TYPE__ t ON d.type_id=t.id', 'LEFT')
             ->join('__DEVICES_STATU__ ds ON d.device_code=ds.DeviceID', 'LEFT')
+            ->count();
+        $Page       = new \Think\Page($count,20);
+        page_config($Page);
+        $show       = $Page->show();
+        $devices = $device
+            ->where($map)
+            ->alias('d')
+            ->join('__TYPE__ t ON d.type_id=t.id', 'LEFT')
+            ->join('__DEVICES_STATU__ ds ON d.device_code=ds.DeviceID', 'LEFT')
+            ->limit($Page->firstRow.','.$Page->listRows)
             ->select();
         $filterType = M('type')->where(['status'=>0])->select();
         $assign = [
             'deviceInfo' => $devices,
             'deviceType' => $filterType,
+            'page'=> $show,
         ];
-        // dump($devices);die;
         $this->assign($assign);
         $this->display('devicesList');
     }
@@ -124,7 +135,6 @@ class DevicesController extends CommonController
                 'xlsx'
             ); // 设置附件上传类
             $upload->savePath = '/'; // 设置附件上传目录
-            // 上传文件
             $info = $upload->uploadOne($_FILES['batch']);
             $filename = './Uploads' . $info['savepath'] . $info['savename'];
             $exts = $info['ext'];
@@ -150,6 +160,7 @@ class DevicesController extends CommonController
         $i = 0;
         foreach ($data as $key => $val) {
             $_POST['device_code'] = $val['A'];
+            $_POST['type_id'] = $val['B'];
             $Devices = D('Devices');
             $res = D('Devices')->getCate();
             $info = $Devices->create();
@@ -157,15 +168,12 @@ class DevicesController extends CommonController
                 $res = $Devices->add();
                 if (!$res) {
                     E('导入失败啦！', 202);
-                    // $this->error('导入失败啦！');
                 }
             } else {
-                // $this->error('已导入' . $i . '条数据<br>' . $_POST['device_code'] . '不正确');
                 E('第'.($i+1).'条数据开始不正确或是已经添加', 203);
             }
             $i ++;
         }
-        // $this->success($i . '条数据导入成功');
         E('共'.$i.'条数据导入成功', 200);
     }
 
@@ -247,6 +255,7 @@ class DevicesController extends CommonController
         $this->save_import($data);
     }
 
+    // 设备删除 
     public function del()
     {
         $code = I('get.');
@@ -281,6 +290,7 @@ class DevicesController extends CommonController
         $this->display();
     }
 
+    // 设备绑定经销商
     public function bindAction()
     {
         try {
@@ -321,20 +331,21 @@ class DevicesController extends CommonController
     {
         try {
             $filters = D('Filters');
-            $data = I('post.');
+            $data    = I('post.');
             if(!$filters->create()) E($filters->getError(),'606');
-            $upload = new \Think\Upload();// 实例化上传类
-            $upload->maxSize   =     3145728 ;// 设置附件上传大小
-            $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
-            $upload->rootPath  =     './Uploads/'; // 设置附件上传根目录
-            $upload->savePath  =     ''; // 设置附件上传（子）目录
-            
+            $upload           = new \Think\Upload();// 实例化上传类
+            $upload->maxSize  =     3145728 ;// 设置附件上传大小
+            $upload->exts     =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
+            $upload->rootPath =     './Uploads/'; // 设置附件上传根目录
+            $upload->savePath =     ''; // 设置附件上传（子）目录
             // 上传文件
             $info   =   $upload->upload();
-            if(!$info) {// 上传错误提示错误信息
+            if(!$info) {
                 E($upload->getError(),'606');
             }
             $data['picpath'] = $info['picpath']['savepath'].$info['picpath']['savename'];
+            $data['addtime'] = time();
+            $data['updatetime'] = time();
             // dump($data);
             $res = $filters->add($data);
             if($res){
@@ -345,7 +356,46 @@ class DevicesController extends CommonController
         } catch (\Exception $e) {
             $err = [
                 'code' => $e->getCode(),
-                'msg' => $e->getMessage(),
+                'msg'  => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    // 修改滤芯
+    public function filterEdit()
+    {
+        try {
+            $filter           = D('Filters');
+            $data             = I('post.');
+            $where['id']      = $data['id'];
+            $upload           = new \Think\Upload();// 实例化上传类
+            $upload->maxSize  =     3145728 ;// 设置附件上传大小
+            $upload->exts     =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
+            $upload->rootPath =     './Uploads/'; // 设置附件上传根目录
+            $upload->savePath =     ''; // 设置附件上传（子）目录
+            // 上传文件
+            $info             =   $upload->upload();
+            if($info) {
+                $data['picpath'] = $info['picpath']['savepath'].$info['picpath']['savename'];
+            }
+            foreach ($data as $key => $value) {
+                if(empty($value) || $value == 'undefined'){
+                    unset($data[$key]);
+                }
+            }
+            unset($data['id']);
+            $data['updatetime'] = time();
+            $res = $filter->where($where)->save($data);
+            if($res){
+                E('修改完成',200);
+            } else {
+                E('数据有误',603);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg'  => $e->getMessage(),
             ];
             $this->ajaxReturn($err);
         }
@@ -375,10 +425,14 @@ class DevicesController extends CommonController
     // 产品类型
     public function product()
     {
-        $filters = D('Type');
-        $data = $filters->where('status=0')->select();
+        $type = D('Type');
+        $filters = D('Filters');
+        $data = $type->where('status=0')->select();
+        $filter = $filters->where(['status'=>0])->select();
+        // dump($filter);die;
         $assign = [
             'data' => $data,
+            'filter' => $filter,
         ];
         $this->assign($assign);
         $this->display();
@@ -389,9 +443,10 @@ class DevicesController extends CommonController
     {
         try {
             $type = D('Type');
-            $filter = I('post.filter');
+            $filter = I('post.arr');
             $data['typename'] = I('post.typename');
             $data['addtime'] = time();
+            $data['updatetime'] = time();
             $i = 1;
             foreach ($filter as $key => $value) {
                 $res = M('filters')->where('id='.$value)->field('filtername,alias')->find();
@@ -404,6 +459,37 @@ class DevicesController extends CommonController
                 E('设置成功', 200);
             } else {
                 E('设置失败', 603);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    // 修改类型
+    public function productEdit()
+    {
+        try {
+            $type = D('Type');
+            $arr = I('post.');
+            $where['id'] = I('post.id');
+            $data['typename'] = $arr['typename'];
+            $i = 1;
+            foreach ($arr['arr'] as $key => $value) {
+                $data['filter'.$i] = $value;
+                $i++;
+            }
+            $data['updatetime'] = time();
+            $res = $type->create($data);
+            if(!$res) E($type->getErrot(),'605');
+            $res = $type->where($where)->save($data);
+            if($res){
+                E('更新成功',200);
+            } else {
+                E('请重新更新',603);
             }
         } catch (\Exception $e) {
             $err = [

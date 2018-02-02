@@ -24,8 +24,11 @@
                                     <th>
                                         类型名称
                                     </th>
-                                    <th>
+                                    <th colspan="8">
                                         滤芯详情
+                                    </th>
+                                    <th>
+                                        更新时间
                                     </th>
                                     <th>
                                         操作
@@ -38,29 +41,49 @@
                                 <else />
                                     <volist name="data" id="vo">
                                         <tr>
-                                            <td>{{$vo.id}}</td>
-                                            <td>{{$vo.typename}}</td>
                                             <td>
-                                                <if condition="$vo.filter1 neq null">
-                                                    {{$vo.filter1}}
-                                                <elseif condition="$vo.filter2 neq null">
-                                                     {{$vo.filter2}}
-                                                <elseif condition="$vo.filter3 neq null">
-                                                    {{$vo.filter3}}
-                                                <elseif condition="$vo.filter4 neq null">
-                                                    {{$vo.filter4}}
-                                                <elseif condition="$vo.filter5 neq null">
-                                                    {{$vo.filter5}}
-                                                <elseif condition="$vo.filter6 neq null">
-                                                    {{$vo.filter6}}
-                                                <elseif condition="$vo.filter7 neq null">
-                                                    {{$vo.filter7}}
-                                                <elseif condition="$vo.filter8 neq null">
-                                                    {{$vo.filter8}}
-                                                <else>
-                                                </if>
+                                                {{$vo.id}}
                                             </td>
-                                            <td>编辑|删除</td>
+                                            <td>
+                                                {{$vo.typename}}
+                                            </td>
+                                            <td>
+                                                {{$vo.filter1}}
+                                            </td>
+                                            <td>
+                                                {{$vo.filter2}}
+                                            </td>
+                                            <td>
+                                                {{$vo.filter3}}
+                                            </td>
+                                            <td>
+                                                {{$vo.filter4}}
+                                            </td>
+                                            <td>
+                                                {{$vo.filter5}}
+                                            </td>
+                                            <td>
+                                                {{$vo.filter6}}
+                                            </td>
+                                            <td>
+                                                {{$vo.filter7}}
+                                            </td>
+                                            <td>
+                                                {{$vo.filter8}}
+                                            </td>
+                                            <td>
+                                                {{$vo.updatetime|date="Y-m-d H:i:s",###}}
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a data-toggle="modal" class="btn btn-outline btn-success" data-target="#myModal" typename="{{$vo.typename}}" typeid="{{$vo.id}}" filter1="{{$vo.filter1}}" filter2="{{$vo.filter2}}" filter3="{{$vo.filter3}}" filter4="{{$vo.filter4}}" filter5="{{$vo.filter5}}" filter6="{{$vo.filter6}}" filter7="{{$vo.filter7}}" filter8="{{$vo.filter8}}" onclick="edit(this)">
+                                                        编辑
+                                                    </a>
+                                                    <a class="btn btn-outline btn-success deletBnt" productId="{{$vo['id']}}">
+                                                        删除
+                                                    </a>
+                                                </div>
+                                            </td>
                                         </tr>
                                     </volist>
                                 </empty>
@@ -85,6 +108,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="form" onsubmit="false" class="form-horizontal">
+                        <input type="hidden" name="id">
                         <div class="form-group">
                             <label class="col-sm-4 control-label">类型名称：</label>
                             <div class="col-sm-5">
@@ -94,19 +118,25 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">
                                 请选择滤芯：<br />
-                                <h3>按CTRL+鼠标左键多选</h3>
                             </label>
-                            <div class="col-sm-5">
-                                <select class="form-control m-b" multiple="true" name="filter[]">
-                                    <volist name="data" id="vo">
-                                        <option value="{{$vo.id}}">{{$vo.filtername}}-{{$vo.alias}}</option>
-                                    </volist>
-                                </select>
+                            <div class="col-sm-6 choose">
+                                <volist name="filter" id="vo">
+                                    <span class="btn btn-primary btn-white type" filterId="{{$vo.id}}">
+                                        {{$vo.filtername}}-{{$vo.alias}}
+                                    </span>
+                                </volist>
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-4 col-sm-offset-5">
-                                <button type="button" class="btn btn-primary product">提交</button>
+                            <label class="col-sm-4 control-label">
+                                已选择滤芯：<br />
+                            </label>
+                            <div class="col-sm-6 choosed">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-5 sure">
+                                <button type="button" class="btn btn-primary product-add">提交</button>
                             </div>
                         </div>
                     </form>
@@ -120,17 +150,103 @@
     <script>
         function add()
         {
+            $("#myModalLabel").html('类型设置');
+            $('.product-edit').addClass('product-add');
+            $('.product-edit').removeClass('product-edit');
+            $('input[name="typename"]').val('');
+            $('.choosed').html('');
+            $('.choosed').css('border','none');
             $('#st-add').modal('show');
         }
-        $('.product').click(function(e){
+        $('.sure').on('click','.product-add',function(e){
             var form = $("#form").serializeArray();
-            console.log(form);
             parent.layer.confirm('确认设置该滤芯吗？', {
                 btn: ['确认','取消'], //按钮
                 shade: false //不显示遮罩
             }, function(){
                 $.ajax({
                     url:'productAction',
+                    type:'post',
+                    dataType:'json',
+                    data:form,
+                    success:function(res){
+                        if(res.code == 200){
+                            location.reload();
+                            parent.layer.msg(res.msg);
+                        } else {
+                            parent.layer.close;
+                            parent.layer.msg(res.msg);
+                        }
+                    }
+                });
+            }, function(){
+                parent.layer.msg('已取消', {shift: 6});
+            });
+        })
+
+        $('.choose').on('click','.type', function(e){
+            var filterId = $(this).attr('filterId');
+            var filterName = $(this).text();
+            var html = "<span class='btn btn-primary btn-white deltype'>"+filterName+"<input type='hidden' name=arr[] value='"+filterId+"'></span>";
+            var num = $('.choosed span').length;
+            console.log(num);
+            if( num >= 8 ){
+                parent.layer.msg('滤芯达到上限，不可添加');
+                return false;
+            }
+            $('.choosed').append(html);
+            $('.choosed').css('border','1px solid red');
+        })
+
+        $('.choosed').on('click', '.deltype', function(e){
+            $(this).remove();
+            if($('.choosed span').length == 0){
+                $('.choosed').css('border','none');
+            }
+        })
+
+        // 修改类型
+        function edit(obj)
+        {
+            $("#myModalLabel").html('类型编辑');
+            $(".choosed").text("");
+            var typename = $(obj).attr('typename');
+            var id = $(obj).attr('typeid');
+            var arr = new Array();
+            var filter1 = $(obj).attr('filter1');
+            var filter2 = $(obj).attr('filter2');
+            var filter3 = $(obj).attr('filter3');
+            var filter4 = $(obj).attr('filter4');
+            var filter5 = $(obj).attr('filter5');
+            var filter6 = $(obj).attr('filter6');
+            var filter7 = $(obj).attr('filter7');
+            var filter8 = $(obj).attr('filter8');
+            arr.push(filter1,filter2,filter3,filter4,filter5,filter6,filter7,filter8);
+            html = "";
+            for (var i = 0; i < arr.length; i++) {
+                console.log(arr[i])
+                if(arr[i]!= ''){
+                    html += "<span class='btn btn-primary btn-white deltype'>"+arr[i]+"<input type='hidden' name=arr[] value='"+arr[i]+"'></span>";
+                }
+            }
+            $('input[name="id"]').val(id);
+            $("input[name='typename']").val(typename);
+            $('.choosed').css('border','1px solid red');
+            $('.product-add').addClass('product-edit');
+            $('.product-add').removeClass('product-add');
+            $('.choosed').append(html);
+            $("#st-add").modal('show');
+        }
+
+        // 修改
+        $('.sure').on('click','.product-edit',function(e){
+            var form = $("#form").serializeArray();
+            parent.layer.confirm('确认设置该滤芯吗？', {
+                btn: ['确认','取消'], //按钮
+                shade: false //不显示遮罩
+            }, function(){
+                $.ajax({
+                    url:'productEdit',
                     type:'post',
                     dataType:'json',
                     data:form,
