@@ -286,6 +286,7 @@
 		</div> -->
 	</div>
 	
+	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script>
 		$(function(){
 			//首页显示购物车数量
@@ -447,10 +448,11 @@
 					data: {'gid': gid,'num': 1},
 					success: function(res){
 						console.log('成功！ ',res);
-						alert('已加入购物车！')
+	       				parent.layer.msg('已加入购物车！');
 					},
 					error: function(res){
 						console.log('失败！ ',res);
+	       				parent.layer.msg('加入购物车失败，请稍后再试！');
 					}
 				})
 			})

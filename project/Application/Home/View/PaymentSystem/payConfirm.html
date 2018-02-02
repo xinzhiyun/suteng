@@ -757,6 +757,9 @@
 			$('#footerContain').click(function(){
 				if($("#hLeft>p").text() == "添加新地址"){
 					parent.layer.msg('请添加一个地址！');
+					setTimeout(function(){
+						location.href = '{{:U("Address/newAddress")}}';
+					},500);
 					return false;
 				}
 				$('.paystyle').slideDown("slow");
@@ -811,23 +814,30 @@
 									console.log(res);
 									if(res == -1){
 										console.log('支付错误！');
+	       								parent.layer.msg('支付错误！');
 									}else{
 										if($("#addressInfo").val()){
 											// 调用微信支付方法
 											weixinPay(res);
 										}else{
 											//无地址
-											alert('请添加一个地址！')
+	       									parent.layer.msg('请添加一个地址');
+											setTimeout(function(){
+												location.href = '{{:U("Address/newAddress")}}';
+											},500);
 										}
 									}
 								},
 								error: function(res){
 									console.log('失败！ ',res);
+	       							parent.layer.msg('系统出了一点小问题，请稍后再试！');
 								}
-
 							});
 						}else{
-							alert('请添加一个收获地址！');
+	       					parent.layer.msg('请添加一个地址');
+							setTimeout(function(){
+								location.href = '{{:U("Address/newAddress")}}';
+							},500);
 						}
 						break;
 					case '4':
@@ -851,14 +861,22 @@
 	      			JSON.parse(res),
 	      			function(res){
 	      				if(res.err_msg.substr(-2) == 'ok'){
-	      					//付款成功后的操作
-	      					location.href = '{{:U("PaymentSystem/paytosuccess")}}';
 
+	       					parent.layer.msg('付款成功！');
+	      					//付款成功后的操作
+	      					setTimeout(function(){
+	      						location.href = '{{:U("PaymentSystem/paytosuccess")}}';
+	      					},500);
+	      					
 	      				}else if(res.err_msg.substr(-6) == 'cancel'){
 	      					//取消订单操作
 	      				}else{
+	       					parent.layer.msg('付款失败！');
 	      					//付款失败操作
-	      					location.href = '{{:U("PaymentSystem/paytofailed")}}';
+	      					setTimeout(function(){
+	      						location.href = '{{:U("PaymentSystem/paytofailed")}}';
+	      					},500);
+	      					
 	      				}
 	      			}
 	      		)

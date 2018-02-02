@@ -288,7 +288,7 @@ class CommonController extends Controller
                 break;
             case '1':
                 // 分销通道
-                $this->redirect('RegisteredVendor/index');
+                // $this->redirect('RegisteredVendor/index');
                 break;
             default:
                 // 未关注

@@ -264,6 +264,9 @@
 	</footer>
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script>
+		var lvxinData = sessionStorage.getItem("lvxinData"),
+			shopCar_data = sessionStorage.getItem("shopCar_data"),
+			goods_data = sessionStorage.getItem("goods_data");
 		// 解决移动端虚拟键盘开启时底部内容被顶上来的问题
 		solveCompatible($("#footer"));
 		var script = $("<script/>");
@@ -362,11 +365,17 @@
 
 		    	newAddressObj['name'] = $(".name").val();
 		    	newAddressObj['phone'] = $(".phone").val();
-		    	newAddressObj['areaID'] = $("#areaID").val();
-		    	newAddressObj['town'] = $(".town").val();
+		    	newAddressObj['province'] = province;
+		    	newAddressObj['city'] = city;
+		    	newAddressObj['area'] = area;
+		    	newAddressObj['town'] = $("#townID").val();
 		    	newAddressObj['addressDetial'] = $("#addressDetial").val();
-		    	newAddressObj['status'] = 0;
-
+		    	if($("#normalAddrdess").attr("checked")){
+		    		//设为默认地址
+		    		newAddressObj['status'] = 0;
+		    	}else{
+		    		newAddressObj['status'] = 1;
+		    	}
 		    	console.log(newAddressObj);
 		    	// 全部判断通过则发送请求让后台添加到数据库
 		    	$.ajax({
@@ -375,6 +384,18 @@
 		    		data: newAddressObj,
 		    		success: function(res){
 		    			console.log('成功！ ', res);
+		    			layHint('添加成功！');
+		    			//后台返回信息添加成功后的操作
+		    			if(res.code == 200){
+			    			//自动跳回去订单提交那里
+			    			if(goods_data || lvxinData || shopCar_data){
+			    				location.href = "{{:U('PaymentSystem/payConfirm')}}";
+			    			}
+			    		}else if(res.code == 605){
+	    					layHint('添加失败，请稍后再试！');
+			    		}else{
+			    			layHint('很抱歉，系统遇到未知问题！');
+			    		}
 		    		},
 		    		error: function(res){
 		    			console.log('失败！ ', res);
@@ -395,7 +416,7 @@
 	    		layHint('请选择地区！')
 	    		
 	    	}else if(!townRes || !$(".town").val()){
-	    		console.log('请输入街道！');
+	    		console.log('请选择街道！');
 	    		layHint('请选择街道！')
 	    		
 	    	}else if(!addressDetialRes){
@@ -404,7 +425,7 @@
 	    		
 	    	}
 	    })
-
+	    //提示框函数
 	    function layHint(text){
     		layui.use('layer', function(){
                 var layer = layui.layer;
