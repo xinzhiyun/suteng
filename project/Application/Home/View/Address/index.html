@@ -8,11 +8,8 @@
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<title>地址</title>
 	<style>
-		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
+		
+		body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td,span { margin:0; padding:0; box-sizing: border-box;}
 		body {
 			width: 100vw;
 		    height: 100vh;
@@ -163,9 +160,9 @@
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
-            -webkit-box-pack: justify;
-                -ms-flex-pack: justify;
-                    justify-content: space-between;
+            -webkit-box-pack: flex-start;
+                -ms-flex-pack: flex-start;
+                    justify-content: flex-start;
             -webkit-box-align: center;
                 -ms-flex-align: center;
                     align-items: center;
@@ -176,9 +173,10 @@
             -ms-flex-item-align: start;
                 align-self: flex-start;
         }
-        /*编辑的姓名，电话，地址*/
-        .editName, .editPhone, .editAddress {
-            margin: 0 1vw;
+        /*编辑的姓名，电话*/
+        .editName, .editPhone {
+        	width: 80%;
+            margin: 0 2vw;
             padding: 1% 2%;
             border: 1px solid #aaa;
             border-radius: 4px;
@@ -199,13 +197,14 @@
         }
         #areaDiv {
         	width: 80%;
+            margin: 0 2vw;
         }
         #areaDiv>select {
-        	width: 80%;
+        	width: 100%;
         	display: block;
         	position: relative;
 		    left: 50%;
-		    margin-left: -40%;
+		    margin-left: -50%;
         	padding: 0 3%;
 		    margin-top: 10px;
 		    margin-bottom: 10px;
@@ -224,6 +223,7 @@
         .pDetail>textarea {
         	width: 70%;
 		    position: relative;
+		    padding-left: 5px;
 		    left: 50%;
 		    margin-left: -35%;
             border-radius: 4px;
@@ -333,7 +333,7 @@
 				<input type="text" placeholder="请输入电话" class="editPhone" value=''>
 			</div>
 			<div id="areaChoose" class="citys">
-				<div class="areaChoosebg">地区：</div>
+				<div class="areaChoosebg">地区:</div>
 		        <div id="areaDiv">
 					<select name="province" class="editProvince">
 	                	<option value="440000" data-code="440000"></option>
@@ -370,8 +370,8 @@
         // 存放打开的地址的序号
         var addressIndex;
 
-		// 存放姓名，电话，地址
-		var uName, uPhone, uAddress, uProvicne, uCity, uArea, uTown, uAddress;
+		// 存放姓名，电话，地址，省份，城市，区/县，街道
+		var uName, uPhone, uAddress, uProvince, uCity, uArea, uTown;
 
 		/*
 			点击文字默认地址
@@ -608,22 +608,21 @@
 			uTown = $(this).parents(".address").find(".town").val();
 			uAddress = $(this).parents(".address").find(".uAddress").text();
 			console.log(addressIndex,uName, uPhone,uProvince,uCity,uArea, uTown,uAddress);
-
-			var _4address = uProvince+uCity+uArea+uTown;
-			uAddress = uAddress.slice(_4address.length)
-			console.log(uAddress, _4address.length);
+			//分割得到详细地址
+			var _4address = uProvince+uCity+uArea+uTown;	
+			uAddress = uAddress.slice(_4address.length);
+			// console.log(uAddress, _4address.length);
 
             // 显示编辑面板
             $("#editAddressPanel").show();
             $("#editAddressPanel>div").animate({marginTop: '0'});
-			// $("#editAddressPanel>div").html(editPanel(uName,uPhone,uProvince,uCity,uArea,uTown,uAddress))
 			$(".editName").val(uName);
 			$(".editPhone").val(uPhone);
 			$(".editProvince").prepend('<option selected>'+ uProvince +'</option>');
 			$(".editCity").prepend('<option selected>'+ uCity +'</option>');
 			$(".editArea").prepend('<option selected>'+ uArea +'</option>');
 			$(".editTown").prepend('<option selected>'+ uTown +'</option>');
-			$('.pDetail>textarea').val(uAddress);
+			$('.pDetail>textarea').val(uAddress);	//详细地址
 		})
 
         /*
