@@ -33,6 +33,32 @@ class AddressController extends CommonController
                 $address->startTrans();
                 // 接收表单数据
                 $postData = I('post.');
+
+                // 设置默认地址修改状态为：真
+                $status = true;
+                // 如果新增地址并设置默认地址
+                if($postData['status']==0){
+                    // 准备查询条件
+                    $showData['uid'] = session('user.id');
+                    $showData['status'] = 0;
+                    // 查询是否有默认地址
+                    $defaultAddress = $address->where($showData)->find();
+                    
+                    // 如果有默认地址
+                    if($defaultAddress){
+                        // 准备修改数据
+                        $saveData['status'] = 1;
+                        // 将原先默认地址修改为普通地址
+                        $defaultRes = $address->where($showData)->save($saveData);
+                        // 如果修改不成功
+                        if(!$defaultRes){
+                            // 将默认地址修改状态改为：假
+                            E('默认地址设置失败',605);
+                            $status = false;
+                        }
+                    }
+                }
+
                 // 拼接详细地址
                 $data['address'] = $postData['province'].$postData['city'].$postData['area'].$postData['town'].$postData['addressDetial'];
                 // 获取用户ID
@@ -45,28 +71,7 @@ class AddressController extends CommonController
                 $newData = array_merge($data,$res);
                 // 添加新地址
                 $res = $address->add($newData);
-                // 设置默认地址修改状态为：真
-                $status = true;
-                // 如果新增地址并设置默认地址
-                if($postData['status']==0){
-                    // 准备查询条件
-                    $showData['id'] = session('user.id');
-                    $showData['status'] = 0;
-                    // 查询是否有默认地址
-                    $defaultAddress = $address->where($showData)->find();
-                    // 如果有默认地址
-                    if($defaultAddress){
-                        // 准备修改数据
-                        $saveData['status'] = 1;
-                        // 将原先默认地址修改为普通地址
-                        $defaultRes = $address->where($showData)->save($saveData);
-                        // 如果修改不成功
-                        if(!$defaultRes){
-                            // 将默认地址修改状态改为：假
-                            $status = false;
-                        }
-                    }
-                }
+
                 // 新增地址和默认地址设置成功
                 if($res && $status){
                     // 提交事务
@@ -115,6 +120,19 @@ class AddressController extends CommonController
                 'msg' => $e->getMessage(),
             ];
             $this->ajaxReturn($err);
+        }
+    }
+
+    // 删除地址
+    public function del_address(){
+        if(IS_POST){
+            $delData['id'] = I('post.id');
+            $res = M('Address')->where($delData)->delete();
+            if($res){
+                E('地址删除成功了！',200);
+            } else {
+                E('地址删除失败了！',603);
+            }
         }
     }
 }
