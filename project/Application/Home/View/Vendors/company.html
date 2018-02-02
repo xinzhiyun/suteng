@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>提交公司信息页面</title>
+	<title>加盟合伙人</title>
 	<!-- <link href="/Public/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet"> -->
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
     <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
     <script src="__PUBLIC__/Home/js/public.js"></script>
-    <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_ar7t6p75v84r6bt9.css">
+     <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_359ekha73vt8d7vi.css">
    <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
     <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 </head>
@@ -91,16 +91,18 @@
         }
         form>div.form-group:nth-of-type(4)>.col-md-3>input{
             position: relative;
-            left: -3.3rem; 
+            left: -3.3rem;
             top: 2.3rem;
-            height: 3rem;
-            width: 3rem;
-            opacity: 0;
+            height: 4rem;
+            width: 4.5rem;
+            opacity: .2;
             z-index: 999;
+            background: red;
         }
         form>.form-group>i{
             float: left;
             font-size: 1.2rem;
+            padding-right:0.4rem;
         }
      
         form>.form-group>label{
@@ -110,20 +112,23 @@
             font-size: 0.72rem;
         }
          form>.form-group>.col-md-3>input{
-            width: 56vw;
+            width: 52vw;
             height: 1.2rem;
             border:none;
          }
+
+        
+
          /*添加*/
-         form>.form-group>.col-md-3>i{
+       /*  form>.form-group>.col-md-3>i{
            position: absolute;
            top: 1.5rem;
            left: -0.27rem;
            font-size: 4rem;
            color: #56aaf1;
-         }
+         }*/
          /*重置样式和申请*/
-          form>.form-group{
+         /* form>.form-group{
             border-bottom: none;
             width: 100vw !important;
           }
@@ -145,12 +150,78 @@
          }
          form>.form-group>.col-sm-offset-2>input.btn-white{
             float: right;
-         }
+         }*/
 
-         .icon-gongsimingcheng{
-            color: #2EB6AA;
+          form>div.form-group:nth-of-type(4)>.col-md-3{
+            position: relative;
+
         }
-        .icon-shouji {
+        /*添加*/
+         form>.form-group>.col-md-3>i{
+          position: absolute;
+          top: 2.1rem;
+          left: 0rem;
+          font-size: 3.8rem;
+          color: #DCF8FF;
+          border: 1px dashed #76DED3;
+          padding: 0 0.4rem;
+          border-radius: 0.6rem;
+         }
+      
+        form>div.form-group:nth-of-type(4)>.col-md-3>input{
+            position: relative;
+            left: -4.8rem;
+            top: 2.3rem;
+            height: 4rem;
+            width: 4rem;
+            opacity: 0;
+            z-index: 999;
+            /*background: red;*/
+        }
+        form>div.form-group:nth-of-type(4)>.col-md-3>.xiePic{
+            width: 4.6rem;
+            line-height: 4.6rem;
+            text-align: center;
+            height: 4.6rem;
+            position: absolute;
+            background: #DCF8FF;
+            border-radius: 0.5rem;
+            left: 5rem;
+            top: 2.15rem;
+            color: #5a5a5a;
+            border: 1px dashed #76DED3;
+        }
+        .xiePic>i{
+            position: absolute;
+            top: -0.3rem;
+            right: -0.3rem;
+            display: block;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 0.8rem;
+            background: red;
+            line-height: 1rem;
+            color: #fff;
+            font-weight: 600;
+        }
+          /*申请按钮*/
+          .xieBtn>input{
+            position: absolute;
+            bottom: 0;
+            background: #2EB6AA;
+            width: 100vw;
+            border:none;
+            color: #fff;
+            height: 2rem;
+            letter-spacing: 0.1rem;
+            font-size: 0.8rem;
+          }
+
+
+         .icon-gongsimingcheng1{
+            color: #48AF98;
+        }
+        .icon-dianhua {
             color: #23A0E8;
         }
         .icon-dizhi {
@@ -192,16 +263,12 @@
                 <label class="col-sm-2 control-label" for="comLicen">营业执照</label>
                 <div class="col-md-3">
                     <input type="file" id="comLicen" name="licence" class="form-control">
-                    <i class="iconfont icon-tianjia tianjiatubiao"></i>
+                     <i class="iconfont icon-tianjiajingdian"></i>
+                     <div class="xiePic">图片<i class="iconfont icon-cuohao"></i></div>
                 </div>
             </div> 
-            <!-- <div class="hr-line-dashed"></div> -->
-            <div class="form-group">
-                <div class="col-sm-4 col-sm-offset-2">
-                    <input class="btn btn-primary" type="submit" value="申请"></input>
-                    <input class="btn btn-white" type="reset" value="重置"></input>
-                   
-                </div>
+            <div class="xieBtn">
+                <input class="btn btn-primary" type="submit" value="下一步"></input>
             </div>
         </form>
     </div>
