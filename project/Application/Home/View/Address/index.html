@@ -481,10 +481,10 @@
             $("#editAddressPanel").show();
             $("#editAddressPanel>div").animate({marginTop: '0'});
 
-            //addressIndex：判断打开的是哪个地址, 点击'编辑'的时候获取
+            //addressIndex：地址id, 点击'编辑'的时候获取
             console.log(addressIndex)
             editAddressObj['id'] = addressIndex;		//地址id
-            if(editName != uName){	//如果修改了姓名
+            if(editName != uName){		//如果修改了姓名
             	editAddressObj['name'] = editName;
             }
             if(editPhone != uPhone){		//如果修改了手机号
