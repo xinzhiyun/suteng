@@ -1,122 +1,84 @@
 <extend name="Public/base" />
-
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+</block>
 <block name="content">
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                    <h5>分公司管理 <small>分公司添加</small></h5>
+                    <h5>套餐管理 <small>添加银币兑换套餐</small></h5>
                 </div>
-
-
                     <div class="ibox-content">
-                        <form action="company_add" method="post" class="form-horizontal" enctype="multipart/form-data">
+                        <form action="javascript:false;" method="post" class="form-horizontal" enctype="multipart/form-data">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">姓名</label>
+                                <label class="col-sm-2 control-label">套餐价格</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="name" class="form-control">
+                                    <input type="text" name="gold" class="form-control" placeholder="标准价钱格式，例如：2">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">移动电话</label>
+                                <label class="col-sm-2 control-label">银币数量</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="phone" class="form-control">
+                                    <input type="text"  name="silver_num" class="form-control" placeholder="标准数量格式，例如：4">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">身份证号</label>
+                                <label class="col-sm-2 control-label">套餐描述</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="identity" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">身份证正面</label>
-                                <div class="col-md-3">
-                                    <input type="file" name="positive" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">身份证反面</label>
-                                <div class="col-md-3">
-                                    <input type="file" name="opposite" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">手持身份证</label>
-                                <div class="col-md-3">
-                                    <input type="file" name="handheld" class="form-control">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">公司名称</label>
-
-                                <div class="col-md-3">
-                                    <input type="text" name="company" class="form-control">
-                                </div>
-                            </div> 
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">固定电话</label>
-
-                                <div class="col-md-3">
-                                    <input type="text" name="telephone" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">公司地址</label>
-
-                                <div class="col-md-3">
-                                    <input type="text" name="address" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">营业执照</label>
-                                <div class="col-md-3">
-                                    <input type="file" name="licence" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">协议文件</label>
-                                <div class="col-md-3">
-                                    <input type="file" name="protocol" class="form-control">
-                                </div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">用户名</label>
-
-                                <div class="col-md-3">
-                                    <input type="text" name='user' class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">密码</label>
-
-                                <div class="col-md-3">
-                                    <input type="password" name="password" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">密码确认</label>
-
-                                <div class="col-md-3">
-                                    <input type="password" name="repassword" class="form-control">
+                                    <input type="text" name="content" class="form-control"  placeholder="套餐简要描述50个字以内">
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-primary" type="submit">申请</button>
+                                    <button class="btn btn-primary" type="submit">添加</button>
                                     <button class="btn btn-white" type="reset">重置</button>
                                 </div>
                             </div>
                         </form>
-                    </div>
-
-                    
+                    </div>             
                 </div>
             </div>
         </div>
     </div>
+</block>
+<block name="myjs">
+<script src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+<script>
+    /**
+     * [获取表单数据]
+     * @param  {[type]} )
+     * @return {[type]}     [description]
+     */
+    $('.btn-primary').click(function(){
+        // 获取金币
+        var gold = $('input[name="gold"]').val();
+        // 获取数量
+        var silver_num = $('input[name="silver_num"]').val();
+        // 获取描述
+        var content = $('input[name="content"]').val();
+        //  异不请求
+        $.ajax({
+            url:"{{:U('Admin/Recharge/add_gold_silver')}}",
+            data:{"money":money,'silver_num':silver_num,"content":content},
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                console.dir(res);
+                if(res.code == 200){
+                    // 添加成功
+                    swal(res.msg,res.msg, "success");
+                    // window.location.reload();
+                }else{
+                    // 添加失败
+                    swal(res.msg, "请重新提交！", "success");
+                }
+            }
+        });
+    });
+
+</script>
 </block>
