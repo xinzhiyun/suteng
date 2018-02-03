@@ -458,10 +458,10 @@
     var lvxin_data = JSON.parse($("#lvxin_data").val()).filterInfo;
     console.log(lvxin_data);
 	//加载滤芯项
-    var lvxinList='';
+    var lvxinList=''; 
     for(var i = 0;i<lvxin_data.length;i++){
         lvxin_data[i].introduce = !lvxin_data[i].introduce ? '暂无描述' : lvxin_data[i].introduce;
-        
+
     	lvxinList+='<div class="goods" gid="'+ lvxin_data[i].id +'">'+
 					'<div class="img"><img src="/Uploads/'+ lvxin_data[i].picpath +'" alt="正在加载..."></div>'+
 				'<div class="desc">'+
