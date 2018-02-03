@@ -51,7 +51,7 @@ class MallController extends CommonController
     {
        
         try {
-            $fliter = D('Fliters');
+            $fliter = D('Filters');
             $orders = D('ShopOrder');
             $order_detail = D('OrderDetail');
             $data = json_decode($_POST['data'],'true');
