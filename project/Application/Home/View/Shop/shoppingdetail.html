@@ -61,9 +61,9 @@
 	.detailTxt>p{
 		padding: 0.2rem 5%;
 		font-size: 0.68rem;
-
 	}
 	.detailTxt>em{
+		display: block;
 		padding: 0.2rem 5%;
 		font-size: 0.6rem;
 		color: #F04B7E;
@@ -506,8 +506,8 @@
 			goods_dataArr.push({'num':num,'gid': goodsDetail.gid,'money': money});
 			
 			sessionStorage.setItem("goods_dataArr",JSON.stringify(goods_dataArr));
-
 			console.dir(goods_dataArr);
+			
 			// 发送ajax请求让后台生成订单号
 			$.ajax({
 				url: '{{:U("PaymentSystem/information")}}',
