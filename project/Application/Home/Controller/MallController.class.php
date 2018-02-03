@@ -41,7 +41,7 @@ class MallController extends CommonController
         $res = $filter->getFilters($devices);
         // dump($res);die;
         $assign = [
-            'data' => $res,
+            'data' => json_encode($res),
         ];
         $this->assign($assign);
         $this->display();
