@@ -418,13 +418,13 @@
 
 		    		console.log('通过！');
 		    		layHint('保存成功！');
-			    	newAddressObj['name'] = $(".name").val();
-			    	newAddressObj['phone'] = $(".phone").val();
-			    	newAddressObj['province'] = editAddressOld.province;
-			    	newAddressObj['city'] = editAddressOld.city;
-			    	newAddressObj['area'] = editAddressOld.area;
-			    	newAddressObj['town'] = editAddressOld.town;
-			    	newAddressObj['addressDetial'] = editAddressOld.address;
+			    	// newAddressObj['name'] = $(".name").val();
+			    	// newAddressObj['phone'] = $(".phone").val();
+			    	// newAddressObj['province'] = editAddressOld.province;
+			    	// newAddressObj['city'] = editAddressOld.city;
+			    	// newAddressObj['area'] = editAddressOld.area;
+			    	// newAddressObj['town'] = editAddressOld.town;
+			    	// newAddressObj['addressDetial'] = editAddressOld.address;
 			    	if($("#normalAddrdess").attr("checked")){
 			    		//设为默认地址
 			    		newAddressObj['status'] = 0;
@@ -432,6 +432,22 @@
 			    		newAddressObj['status'] = 1;
 			    	}
 			    	console.log(newAddressObj);
+			    	$.ajax({
+			    		url: '{{:U("Home/Address/save_address")}}',
+			    		type: 'post',
+			    		data: editAddressObj,
+			    		success: function(res){
+			    			console.log('成功！',res);
+			    			if(res.code == 200){
+			    				layHint('保存成功！');
+			    			}else{
+			    				console.log('失败！',res);
+			    			}
+			    		},
+			    		error: function(res){
+			    			console.log('失败！',res);
+			    		}
+			    	})
 				}else if(!nameRes){
 		    		// 验证姓名
 		    		console.log('请输入符合规范的姓名！');
