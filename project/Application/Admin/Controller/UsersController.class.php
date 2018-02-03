@@ -25,9 +25,12 @@ class UsersController extends CommonController
         $page  = new \Think\Page($total,8);
         $pageButton =$page->show();
 
-        $userlist = $user->where($map)->limit($page->firstRow.','.$page->listRows)->getAll();
-        $this->assign('list',$userlist);
-        $this->assign('button',$pageButton);
+        $userlist = $user->where($map)->limit($page->firstRow.','.$page->listRows)->select();
+        $assign = [
+            'data' => $userlist,
+            'button' => $pageButton,
+        ];
+        $this->assign($assign);
         $this->display();
     }
 

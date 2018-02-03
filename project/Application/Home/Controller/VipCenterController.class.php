@@ -103,6 +103,26 @@ class VipCenterController extends CommonController
     {
         $this->display();
     }
+
+    public function infomationAction()
+    {
+        try {
+            $user_device = D('UserDevice');
+            $data = I('post.');
+            $res = $user_device->add();
+            if($res){
+                E('OK',200);
+            } else {
+                E('false',603);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
     
 
 }

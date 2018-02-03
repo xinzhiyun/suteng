@@ -374,7 +374,7 @@
 					</div>
 					
 				</div>
-				<div class="deviceFoot">
+				<div class="deviceFoot" id="devices-add">
 					<p><i class="iconfont icon-tianjia"></i><span>添加新设备</span></p>
 				</div>
 			</div>
@@ -469,10 +469,55 @@
 	       });
       	})
 
-		
-		
+	</script>
+	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>	
+	<script>
+		//微信接口
+		wx.config({
+		    debug: false,
+		    appId: '{{$info["appId"]}}',
+		    timestamp: '{{$info["timestamp"]}}',
+		    nonceStr: '{{$info["nonceStr"]}}',
+		    signature: '{{$info["signature"]}}',
+		    jsApiList: [
+		      // 所有要调用的 API 都要加到这个列表中
+		      'configWXDeviceWiFi', 
+		      'scanQRCode'
+		    ]
+		});	
+		// 扫码绑定设备
+		$("#devices-add").on('click','p',function(){
+			wx.scanQRCode({
+			    needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+			    scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+			    success: function (res) {
+			    	// alert(res.resultStr);
+			    	if (res.errMsg === "scanQRCode:ok"){
+				    	// 当needResult 为 1 时，扫码返回的结果
+					    $.ajax({
+					    	url:"bind",
+					    	type:"post",
+					    	data:{device_code:res.resultStr},
+					    	dataType:'json',
+					    	success:function(data){
+								alert(data.msg);
+								location.href("VipCenter/personalInformation");		
+					    	},
+					    	error:function(jqXHR, textStatus, errorThrown){
 
+			    				alert("绑定失败" + jqXHR.status + textStatus + errorThrown);
+					    		//console.log(jqXHR.status);
+					    	}
+					    });
+					    // alert(res.resultStr);
+				    }
+				}
+			});
+		});
 
+		// $("#devices-list>ul>li").click(function(){
+		// 	location.href = "{{:U('Home/Users/mine')}}";
+		// })
 	</script>
 </body>
 </html>                                                                                                                                                                                                                                                   	

@@ -1,0 +1,135 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/layui/css/layui.css">
+</block>
+<block name="content">
+    <div class="content">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>用户管理 <small>用户列表</small></h5>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-bordered table-hover">
+                        <form action="{{:U('Admin/Menu/order')}}" method="post">
+                            <thead>
+                                <tr>
+                                    <th width="5%">
+                                        序号
+                                    </th>
+                                    <th width="15%">
+                                        用户昵称
+                                    </th>
+                                    <th>
+                                        用户头像
+                                    </th>
+                                    <th>
+                                        用户性别
+                                    </th>
+                                    <th>
+                                        金币数量
+                                    </th>
+                                    <th>
+                                        银币数量
+                                    </th>
+                                    <th>
+                                        操作
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <empty name="data">
+                                    <tr><td colspan="6">暂无用户信息</td></tr>
+                                <else />
+                                    <volist name="data" id="vo">
+                                        <tr>
+                                            <td>{{$i}}</td>
+                                            <td><a href="#">{{$vo.nickname}}</a></td>
+                                            <td><img style="width: 80;height: 80px" src="{{$vo.head}}"></td>
+                                            <td>
+                                                <switch name="vo.sex">
+                                                    <case value="1">男</case>
+                                                    <case value="0">女</case>
+                                                    <default>保密
+                                                </switch>
+                                            </td>
+                                            <td>
+                                                {{$vo.gold_num}}
+                                            </td>
+                                            <td>
+                                                {{$vo.silver}}
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-success" href="#">查看</a>
+                                            </td>
+                                        </tr>
+                                    </volist>
+                                </empty>
+                            </tbody>
+                        </form>
+                    </table>
+                    <div>
+                        {{$button}}
+                    </div>
+                </div>
+            </div>
+            <!-- 弹框信息 -->
+            <div class="modal inmodal" id="st-add" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content animated bounceInRight">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                添加设备
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="bjy-form" class="form-inline" action="{{:U('Admin/Devices/add_device')}}"
+                            method="post">
+                                <input type="hidden" name="pid" value="0">
+                                <table class="table table-striped table-bordered table-hover table-condensed">
+                                    <tr>
+                                        <td>
+                                            <label class="col-sm-3 control-label">设备编码：</label>
+                                            <div class="col-sm-6 form-group">
+                                                <input class="input-medium form-control" placeholder="请输入设备编码..." type="text" name="name">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label class="col-sm-3 control-label">设备类型：</label>
+                                            <div class="col-sm-6">
+                                                <select class="form-control m-b" name="type">
+                                                    <option value="--">--请选择--</option>
+                                                    <volist name="deviceType" id="vo">
+                                                        <option value="{{$vo.id}}">{{$vo.typename}}</option>
+                                                    </volist>
+                                                </select>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="col-sm-6 form-group">
+                                                <input class="btn btn-success add_device" value="添加">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script>
+    
+    </script>
+</block>

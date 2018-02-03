@@ -37,9 +37,8 @@ class MallController extends CommonController
     {
 
         $filter = D('Filters');
-        $devices['d.id'] = 1;
+        $devices['d.id'] = session('device.did');
         $res = $filter->getFilters($devices);
-        // dump($res);die;
         $assign = [
             'data' => json_encode($res),
         ];
