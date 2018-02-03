@@ -37,6 +37,9 @@
                                     <th>
                                         滤芯价格(元)
                                     </th>
+                                    <th style="color: red;">
+                                        滤芯成本(元)
+                                    </th>
                                     <th>
                                         滤芯图片
                                     </th>
@@ -78,6 +81,9 @@
                                             <td>
                                                 {{$vo.price}}
                                             </td>
+                                            <td style="color: red;">
+                                                {{$vo.cost}}
+                                            </td>
                                             <td>
                                                 <img src="/Uploads/{{$vo.picpath}}">
                                             </td>
@@ -98,7 +104,7 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <a class="btn btn-outline btn-success" href="javascript:;" FilterAlias={{$vo.alias}} FilterId="{{$vo['id']}}" FilterName="{{$vo['filtername']}}" FilterPrice="{{$vo['price']}}" FilterTimelift="{{$vo.timelife}}" FilterFlowlifet="{{$vo.flowlife}}" FilterIntroducet="{{$vo.introduce}}" FilterUrl="{{$vo.url}}" onclick="edit(this)">
+                                                    <a class="btn btn-outline btn-success" href="javascript:;" FilterAlias={{$vo.alias}} FilterId="{{$vo['id']}}" FilterName="{{$vo['filtername']}}" FilterPrice="{{$vo['price']}}" FilterTimelift="{{$vo.timelife}}" FilterFlowlifet="{{$vo.flowlife}}" FilterIntroducet="{{$vo.introduce}}" FilterUrl="{{$vo.url}}" FilterCost="{{$vo.cost}}" onclick="edit(this)">
                                                         修改
                                                     </a>
                                                     <a class="btn btn-outline btn-success deletBnt" filterId="{{$vo['id']}}">
@@ -175,10 +181,18 @@
                             </tr>
                             <tr>
                                 <th>
-                                    滤芯价格：
+                                    滤芯单价：
                                 </th>
                                 <td>
-                                    <input class="input-medium form-control" placeholder="请输入滤芯价格..." type="text" name="price">
+                                    <input class="input-medium form-control" placeholder="请输入滤芯销售价格..." type="text" name="price">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="color: red;">
+                                    滤芯成本：
+                                </th>
+                                <td>
+                                    <input class="input-medium form-control" placeholder="请输入滤芯成本价格..." type="text" name="cost">
                                 </td>
                             </tr>
                             <tr>
@@ -219,6 +233,7 @@
             $("input[name='filtername']").val('');
             $("input[name='alias']").val('');
             $("input[name='price']").val('');
+            $("input[name='cost']").val('');
             $("input[name='timelife']").val('');
             $("input[name='flowlife']").val('');
             $("input[name='url']").val('');
@@ -231,6 +246,7 @@
             var filterId = $(obj).attr('FilterId');
             var filterAlias = $(obj).attr('FilterAlias');
             var filterPrice = $(obj).attr('FilterPrice');
+            var filterCost = $(obj).attr('FilterCost');
             var filterTimelift = $(obj).attr('FilterTimelift');
             var filterFlowlifet = $(obj).attr('FilterFlowlifet');
             var filterUrl = $(obj).attr('FilterUrl');
@@ -240,6 +256,7 @@
             $("input[name='id']").val(filterId);
             $("input[name='alias']").val(filterAlias);
             $("input[name='price']").val(filterPrice);
+            $("input[name='cost']").val(filterCost);
             $("input[name='timelife']").val(filterTimelift);
             $("input[name='flowlife']").val(filterFlowlifet);
             $("input[name='url']").val(filterUrl);
