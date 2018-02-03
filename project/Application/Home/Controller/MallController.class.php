@@ -40,6 +40,10 @@ class MallController extends CommonController
         $devices['d.id'] = 1;
         $res = $filter->getFilters($devices);
         // dump($res);die;
+        $assign = [
+            'data' => $res,
+        ];
+        $this->assign($assign);
         $this->display();
     }
 }
