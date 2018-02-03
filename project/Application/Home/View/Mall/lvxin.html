@@ -307,7 +307,6 @@
         .footer {
             bottom: 0;
             left: 0;
-            border-top: 1px solid #e0e0e0;
         }
         #footer>div, #footer>span {
             height: 8vh;    
@@ -315,6 +314,7 @@
             line-height: 8vh;
             text-align: center;
             vertical-align: middle;
+            border-top: 1px solid #e0e0e0;
         }
         #footer>div {
             width: 60%;
@@ -458,17 +458,18 @@
     var lvxin_data = JSON.parse($("#lvxin_data").val()).filterInfo;
     console.log(lvxin_data);
 	//加载滤芯项
-    var lvxinList=''; 
+    var lvxinDetail_html='',lvxinReset_html='',lvxinBuy_html=''; 
     for(var i = 0;i<lvxin_data.length;i++){
+        // if()
+        //滤芯购买
         lvxin_data[i].introduce = !lvxin_data[i].introduce ? '暂无描述' : lvxin_data[i].introduce;
-
-    	lvxinList+='<div class="goods" gid="'+ lvxin_data[i].id +'">'+
+    	lvxinBuy_html+='<div class="goods" gid="'+ lvxin_data[i].id +'">'+
 					'<div class="img"><img src="/Uploads/'+ lvxin_data[i].picpath +'" alt="正在加载..."></div>'+
 				'<div class="desc">'+
 					'<h5>'+ lvxin_data[i].filtername +'</h5>'+
 					'<p>'+ lvxin_data[i].introduce +'</p>'+
 					'<div>'+
-						'<span class="price">￥<span>'+ lvxin_data [i].filterprice +'</span></span>'+
+						'<span class="price">￥<span>'+ lvxin_data [i].price +'</span></span>'+
 						'<span class="num">'+
 							'<input type="button" value="-" class="minus">'+
 							'<input class="number" type="number" value="0">'+
@@ -478,11 +479,11 @@
 				'</div>'+
 			'</div>';
     }
-    $("#lvxinBuy").html(lvxinList);
+    $("#lvxinBuy").html(lvxinBuy_html);
 
 	/*
 		filtername: 滤芯名称
-		picturepath：图片路径
+		picpath：图片路径
 		desc：滤芯描述
 		price：滤芯价格
 		num：选择的数量
@@ -501,7 +502,7 @@
 				var priceAll = parseInt(goods.eq(i).find(".price span").text())*parseInt(goods.eq(i).find(".number").val())
 				lvxinData.push(
 					{'filtername': goods.eq(i).find("h5").text(),
-					'picturepath': goods.eq(i).find(".img img").attr("src"),
+					'picpath': goods.eq(i).find(".img img").attr("src"),
 					'desc': goods.eq(i).find(".desc>p").text(),
 					'price': parseInt(goods.eq(i).find(".price span").text()),
 					'num': parseInt(goods.eq(i).find(".number").val()),
@@ -512,7 +513,6 @@
 				)
 			}
 		}
-
 		//清除其他页面的sessionStorage
 		sessionStorage.setItem("goods_data", '');
 		sessionStorage.setItem("shopCar_data", '');
@@ -530,13 +530,15 @@
 					console.log('成功！', res);
                     if(res.code == 200){
     					sessionStorage.setItem('order_id',res);
-    					// 跳转到订单确认页面
-    					location.href = '{{:U("PaymentSystem/payConfirm")}}';
+                        if(typeof JSON.parse(res) == 'number'){
+                            //返回的是订单号，数字型
+        					// 跳转到订单确认页面
+        					location.href = '{{:U("PaymentSystem/payConfirm")}}';
+                        }else{
+                            layHint('发生错误，无法购买！');
+                        }
                     }else{
-                        layui.use('layer', function(){
-                            var layer = layui.layer;
-                            layer.msg('发生错误，无法购买！');
-                        });
+                        layHint('发生错误，无法购买！');
                     }
 				},
 				error: function(res){
@@ -544,11 +546,16 @@
 				}
 			})
 		}else{
-			layui.use('layer', function(){
-                var layer = layui.layer;
-                layer.msg('请先选择需要购买的商品！');
-            });
+            layHint('请先选择需要购买的滤芯！');
 		}
+
+        //提醒框函数
+        function layHint(msg){
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                layer.msg(msg);
+            });
+        }
 		
 	})
 	</script>

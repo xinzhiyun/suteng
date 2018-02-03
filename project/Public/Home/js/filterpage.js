@@ -2,6 +2,13 @@ $(function(){
 	var lvxinArr = ['#lvxinDetail', '#lvxinReset' ,'#lvxinBuy'];
 	var filterName='';
 	var filterNumber=0;
+	// 判断内容是否在购买超出，不超出则溢出隐藏
+	$("#content")
+	.css({height: lvxinArr[2].height, 
+		overflowY: $(lvxinArr[2])[0].offsetHeight > $("#content")[0].offsetHeight 
+		? 'visible'
+		: 'hidden'
+	});
 	// 点击顶部tab切换内容
 	$(".tabTitle").click(function(){
 		// 判断内容是否超出
