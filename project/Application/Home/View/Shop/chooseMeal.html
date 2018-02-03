@@ -3,13 +3,10 @@
 <head>
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
 	<meta charset="UTF-8">
-	<title>Document</title>
+	<title>选择充值方式</title>
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_p8cbsn51ch2utyb9.css">
-
-	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
-	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<style>
 		body{
 			font-size: 0.72rem;
@@ -47,10 +44,6 @@
 		}
 		.chooseContain ul li b{
 			padding: 0 0.1rem;
-		}
-		.chooseContain ul li:first-child{
-			background: #74BCFA;
-		}
 		}
 		.chooseFoot{
 			position: fixed;
@@ -135,6 +128,10 @@
 			/*background: green;*/
 			/*line-height: 2.666667rem;*/
 			text-align: center;
+		}
+		.taocanSelectNow {
+			color: #fff;
+			background: #56AAF1;
 		}
 		.noContainer i{
 			font-size: 4.0rem;
@@ -292,24 +289,23 @@
 			<div class="chooseContain">
 				<h3>选择套餐</h3>
 				<ul>
+					<li class="taocanSelectNow">100元套餐含<b>1000L</b>流量</li>
+					<!-- <li>100元套餐含<b>1000L</b>流量</li> -->
+					<li>100元套餐含<b>1000天</b>流量</li>
+<!-- 					<li>100元套餐含<b>1000L</b>流量</li>
 					<li>100元套餐含<b>1000L</b>流量</li>
 					<li>100元套餐含<b>1000L</b>流量</li>
 					<li>100元套餐含<b>1000L</b>流量</li>
 					<li>100元套餐含<b>1000L</b>流量</li>
 					<li>100元套餐含<b>1000L</b>流量</li>
 					<li>100元套餐含<b>1000L</b>流量</li>
-					<li>100元套餐含<b>1000L</b>流量</li>
-					<li>100元套餐含<b>1000L</b>流量</li>
-					<li>100元套餐含<b>1000L</b>流量</li>
-					<li>100元套餐含<b>1000L</b>流量</li>
-					<li>100元套餐含<b>1000L</b>流量</li>
-
+					<li>100元套餐含<b>1000L</b>流量</li> -->
 				</ul>
 			</div>
 		
 		</div>
 		<div class="chooseFoot">
-				<input type="submit" value="立即购买">
+			<input type="submit" value="立即购买">
 		</div>
 		<!-- 付款页面 -->
 		<div class="paystyle">
@@ -340,11 +336,10 @@
 		<!-- 模态框的内容 -->
 		<div class="modal-backup">
 			<div class="modelAll">
-				<!-- <a class="start" href="javascript:;">点击</a> -->
 				<div class="modal fade">
 					<div class="modal-body">
 						<div class="modal-content">
-							<p>您咱没有绑定银行卡</p>
+							<p>您还没有绑定银行卡</p>
 							<p class="close"><a href="#">去绑定</a></p>
 							<p class="close"><a href="#">其他支付方式</a></p>
 							<p><input class="close" type="submit" value="取消"></p>
@@ -354,16 +349,13 @@
 			
 			</div>
 		</div>
-		
-	
 	</div>
-	
-
+	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script>
 		// 选中背景改变
 		$('.chooseContain>ul>li').click(function(){
-			$('.chooseContain>ul>li').css('background','#FFF');
-			$(this).css('background','#74BCFA');
+			$(this).addClass('taocanSelectNow').siblings().removeClass("taocanSelectNow");
 		})
 
 		//支付方式

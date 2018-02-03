@@ -102,7 +102,7 @@ $(function(){
 
 	
 	console.log(data);
-	console.log();
+	
 	var filtermode = data.filtermode;
 	var moHTML = '',lvxinIntroduceHTML='';//html box
 	var timelife;//滤芯总时间
@@ -111,6 +111,10 @@ $(function(){
 	var reflow;//滤芯剩余流量
 	var redaypercent;//滤芯剩余时间百分比
 	var reflowpercent;//滤芯剩余流量百分比
+	if(data.leasingmode=="0"){
+		// $(".tabTitle").hide();
+		// $("#header span").css("width","50%");
+	}
 	for(var i=0; i<res.length; i++){
 		timelife = (res[i].timelife?res[i].timelife:0);
 		flowlife = (res[i].flowlife?res[i].flowlife:0);
