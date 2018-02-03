@@ -381,11 +381,11 @@
 
 	    	var editAddressObj = {};	//存储需要发送给后台的数据
 	    	var editName = $(".name").val(),
-	    		editPhone = $(".name").val(),
-	    		editProvince = $(".name").val(),
-	    		editCity = $(".name").val(),
-	    		editArea = $(".name").val(),
-	    		editTown = $(".name").val(),
+	    		editPhone = $(".phone").val(),
+	    		editProvince = $(".province").val(),
+	    		editCity = $(".city").val(),
+	    		editArea = $(".area").val(),
+	    		editTown = $(".town").val(),
 	    		editAddress = $("#addressDetial").val();
 	    	if(sessionStorage.getItem("editAddressOld")){
 				/*
@@ -404,7 +404,8 @@
 					editAddressObj['city'] = editCity;
 					editAddressObj['area'] = editArea;
 					editAddressObj['town'] = editTown;
-					editAddressObj['address'] = editProvince+editCity+editArea+editTown+editAddress;
+					editAddressObj['address'] = editAddressOld.province+editAddressOld.city+editAddressOld.area;
+					//这里未完，应该拿页面数据
 				}else{
 					editAddressObj['province'] = editAddressOld.province;
 					editAddressObj['city'] = editAddressOld.city;
