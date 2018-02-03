@@ -50,7 +50,8 @@ class DeviceController extends CommonController
             $user_device->where('uid='.$uid)->save(['status'=>0]);
             $res_save = $user_device->add($data);
             if($res_save){
-                session('device.did',$did);
+                // session('device.did',$did);
+                $_SESSION['device']['did'] = $did;
                 $device->commit();
                 E('设备绑定成功',200);
             } else {

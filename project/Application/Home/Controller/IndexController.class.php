@@ -7,18 +7,21 @@ class IndexController extends CommonController
 {
     public function index()
     {
-    	// // 佣金
-     //   	$yj = 1000;
-     //   	// 金币
-     //   	$jb = 2000;
-     //   	// 银币
-     //   	$yb = 3000;
-     //   	// 单号
-     //   	$order_id = '123456';
-     //   	// 用户open_id
-     //   	$open_id = $_SESSION['user']['open_id'];
-       	
-    	// echo $this->branch_commission($open_id,$order_id,$yj,$jb,$yb);
+        $user_device = D('UserDevice');
+        $device = D('Devices');
+        $where['status'] = session('device.did');
+
+        $where['uid'] = session('user.id');
+        $res = $user_device->where($where)->find();
+        $deviceInfo = $device
+            ->alias('d')
+            ->where('d.id='.$res['did'])
+            ->join('__DEVICES_STATU__ ds ON d.device_code=ds.DeviceID', 'LEFT')
+            ->find();
+        $assign = [
+            'device' => $deviceInfo,
+        ];
+        $this->assign($assign);
     	$this->display();
     }
 
