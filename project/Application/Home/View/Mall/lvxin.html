@@ -415,7 +415,9 @@
 	<script type="text/javascript">
     $(function(){
     	var priceAll = 0;	//合计价格
-    	// 按加'+'号
+    	/*
+            按加'+'号 
+         */ 
     	$("#lvxinBuy").on("touchend",".plus",function(){
     		priceAll = 0;	//合计归零，后面重新计算
     		// 获取数量
@@ -433,7 +435,9 @@
     		$("#footer>div>span").text('￥'+priceAll)
     	});
 
-    	//按减'-'号
+    	/*
+            按减'-'号    
+         */
     	$("#lvxinBuy").on("touchend",".minus",function(){
     		priceAll = 0;	//合计归零，后面重新计算
     		// 获取数量
@@ -495,7 +499,9 @@
     	// 存储数量超过1的滤芯产品
     	var lvxinData = [];
     	var goods = $(".goods");
-    	// 点击‘去结算’
+    	/*
+            点击‘去结算’
+         */ 
     	$("#pay").click(function(){
     		for(var i=0; i<goods.length;i++){
     			if(goods.eq(i).find(".number").val() != 0){
@@ -520,7 +526,7 @@
 
     		sessionStorage.setItem('lvxinData',JSON.stringify(lvxinData));
     		console.log(lvxinData);
-            
+
     		// 选择滤芯后跳转
     		if(lvxinData.length){
     			// 发送ajax请求让后台生成订单号

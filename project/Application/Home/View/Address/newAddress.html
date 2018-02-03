@@ -281,7 +281,7 @@
 			// 关闭地区选择，并显示到对应区域
 			$("#confirmAreaChoose").on("click", function(){
 				
-				$("#areaID").val( (!city && !area) ? '请选择' : city + area);
+				$("#areaID").val( (!province && !city && !area) ? '请选择' : province + city + area);
 
 				// 获取 街道 选中的值
 				$("#townID")
