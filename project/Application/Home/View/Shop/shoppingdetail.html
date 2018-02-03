@@ -337,17 +337,17 @@
 				console.log('成功！ ',res);
 				goodsDetail = res.goodsDetail[0];
 				var goodsDetail_html = '', commentInfo_html = '';
-				res.goodsDetail[0].desc == null ? '商品暂无描述' : res.goodsDetail[0].desc;
-				res.goodsDetail[0].attr == null ? '' : res.goodsDetail[0].attr;
+				goodsDetail.desc = !goodsDetail.desc ? '商品暂无描述' : goodsDetail.desc;
+				goodsDetail.attr = !goodsDetail.attr ? '' : goodsDetail.attr;
 				// 输出商品详情
 				goodsDetail_html = '<div class="detailpic">'+
-						'<img src="/Uploads/'+ res.goodsDetail[0].path +'" alt="">'+
+						'<img src="/Uploads/'+ goodsDetail.path +'" alt="">'+
 					'</div>'+
 					'<!-- /*商品说明*/ -->'+
 					'<div class="detailTxt">'+
-						'<span><b>￥'+ res.goodsDetail[0].price +'</b><em>已售： 210</em></span>'+
-						'<p>'+ res.goodsDetail[0].desc +'</p>'+
-						'<em>'+ res.goodsDetail[0].attr +'</em>'+
+						'<span><b>￥'+ goodsDetail.price +'</b><em>已售： 210</em></span>'+
+						'<p>'+ goodsDetail.desc +'</p>'+
+						'<em>'+ goodsDetail.attr +'</em>'+
 					'</div>'+
 					'<!-- /*商品选择，数量，邮费*/ -->'+
 					'<div class="detailist">'+
