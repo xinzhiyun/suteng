@@ -264,6 +264,28 @@
 	</footer>
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script>
+		var editAddressOld;
+		//获取编辑地址的数据
+		if(sessionStorage.getItem("editAddressOld")){
+			editAddressOld = JSON.parse(sessionStorage.getItem("editAddressOld"));
+			console.log(editAddressOld);
+			document.title = '编辑地址';	//设置当前页面title为编辑地址
+			//将编辑的地址信息显示在编辑框中
+			$(".name").val(editAddressOld.name);
+			$(".phone").val(editAddressOld.phone);
+			$(".area").val(editAddressOld.province+editAddressOld.city+editAddressOld.area);
+			$(".town").val(editAddressOld.town);
+			$("#addressDetial").val(editAddressOld.address);
+		}
+		//编辑地址改变
+		var addressChange = false;
+		$(".area").click(function(){
+			addressChange = true;
+		})
+		$("#addressDetial").on('change',function(){
+			addressChange = true;
+		})
+
 		var lvxinData = sessionStorage.getItem("lvxinData"),
 			shopCar_data = sessionStorage.getItem("shopCar_data"),
 			goods_data = sessionStorage.getItem("goods_data");
@@ -351,85 +373,174 @@
 
 	    // 点击’存储‘
 	    $("#saveAddress").click(function(){
-	    	// 存储新建地址的个人信息
 	    	var nameRes = nameReg.test($(".name").val());
 	    	var phoneRes = phoneReg.test($(".phone").val());
 	    	var areaIDRes = nameReg.test($("#areaID").val());
 	    	var townRes = nameReg.test($(".town").val());
 	    	var addressDetialRes = nameReg.test($("#addressDetial").val());
 
-		    // console.log($("#normalAddrdess")[0].checked)
-	    	var newAddressObj = {};
-	    	if(nameRes && phoneRes && areaIDRes && townRes && addressDetialRes && $(".town").val() != '请选择'){
-	    		console.log('通过！')
+	    	var editAddressObj = {};	//存储需要发送给后台的数据
+	    	var editName = $(".name").val(),
+	    		editPhone = $(".name").val(),
+	    		editProvince = $(".name").val(),
+	    		editCity = $(".name").val(),
+	    		editArea = $(".name").val(),
+	    		editTown = $(".name").val(),
+	    		editAddress = $("#addressDetial").val();
+	    	if(sessionStorage.getItem("editAddressOld")){
+				/*
+					编辑地址
+				 */
+				editAddressObj['id'] = editAddressOld.id;		//地址id
+				if(editName != editAddressOld.name){		//如果修改了姓名
+					editAddressObj['name'] = editName;
+				}
+				if(editPhone != editAddressOld.phone){		//如果修改了手机号
+					editAddressObj['phone'] = editPhone;
+				}
+				if(addressChange){	//如果有修改地址
 
-		    	newAddressObj['name'] = $(".name").val();
-		    	newAddressObj['phone'] = $(".phone").val();
-		    	newAddressObj['province'] = province;
-		    	newAddressObj['city'] = city;
-		    	newAddressObj['area'] = area;
-		    	newAddressObj['town'] = $("#townID").val();
-		    	newAddressObj['addressDetial'] = $("#addressDetial").val();
-		    	if($("#normalAddrdess").attr("checked")){
-		    		//设为默认地址
-		    		newAddressObj['status'] = 0;
-		    	}else{
-		    		newAddressObj['status'] = 1;
+					editAddressObj['province'] = editProvince;
+					editAddressObj['city'] = editCity;
+					editAddressObj['area'] = editArea;
+					editAddressObj['town'] = editTown;
+					editAddressObj['address'] = editProvince+editCity+editArea+editTown+editAddress;
+				}else{
+					editAddressObj['province'] = editAddressOld.province;
+					editAddressObj['city'] = editAddressOld.city;
+					editAddressObj['area'] = editAddressOld.area;
+					editAddressObj['town'] = editAddressOld.town;
+					editAddressObj['address'] = editAddressOld.address;
+				}
+				console.log(addressChange,editAddressOld)
+				var newAddressObj = {};
+				if(nameRes && phoneRes && areaIDRes && townRes && addressDetialRes && $(".town").val() != '请选择'){
+
+		    		console.log('通过！');
+		    		layHint('保存成功！');
+			    	newAddressObj['name'] = $(".name").val();
+			    	newAddressObj['phone'] = $(".phone").val();
+			    	newAddressObj['province'] = editAddressOld.province;
+			    	newAddressObj['city'] = editAddressOld.city;
+			    	newAddressObj['area'] = editAddressOld.area;
+			    	newAddressObj['town'] = editAddressOld.town;
+			    	newAddressObj['addressDetial'] = editAddressOld.address;
+			    	if($("#normalAddrdess").attr("checked")){
+			    		//设为默认地址
+			    		newAddressObj['status'] = 0;
+			    	}else{
+			    		newAddressObj['status'] = 1;
+			    	}
+			    	console.log(newAddressObj);
+				}else if(!nameRes){
+		    		// 验证姓名
+		    		console.log('请输入符合规范的姓名！');
+		    		layHint('请输入合法的姓名！')
+
+		    	}else if(!phoneRes){
+		    		console.log('请输入正确的电话号码！');
+		    		layHint('请输入正确的电话号码！')
+
+		    	}else if(!areaIDRes){
+		    		console.log('请选择地区！');
+		    		layHint('请选择地区！')
+		    		
+		    	}else if(!townRes || !$(".town").val()){
+		    		console.log('请选择街道！');
+		    		layHint('请选择街道！')
+		    		
+		    	}else if(!addressDetialRes){
+		    		console.log('请输入详细地址！');
+		    		layHint('请输入详细地址！')
+		    		
 		    	}
-		    	console.log(newAddressObj);
-		    	// 全部判断通过则发送请求让后台添加到数据库
-		    	$.ajax({
-		    		url: "{{:U('Address/newAddress')}}",
-		    		type: 'post',
-		    		data: newAddressObj,
-		    		success: function(res){
-		    			console.log('成功！ ', res);
-		    			layHint('添加成功！');
-		    			//后台返回信息添加成功后的操作
-		    			if(res.code == 200){
-			    			// 如果有订单号,自动跳回去订单提交那里
-			    			if(sessionStorage.getItem("order_id")){
-			    				// 如果有商品数据
-			    				if(goods_data || lvxinData || shopCar_data){
-			    					location.href = "{{:U('PaymentSystem/payConfirm')}}";
+
+	    	// console.log(editAddressObj,Object.getOwnPropertyNames(editAddressObj).length);
+	        // console.log(nameRes, phoneRes, addressDetialRes);
+	    	}else{
+				/*
+					新建地址
+				 */
+		    	// 存储新建地址的个人信息
+		    	var nameRes = nameReg.test($(".name").val());
+		    	var phoneRes = phoneReg.test($(".phone").val());
+		    	var areaIDRes = nameReg.test($("#areaID").val());
+		    	var townRes = nameReg.test($(".town").val());
+		    	var addressDetialRes = nameReg.test($("#addressDetial").val());
+
+			    // console.log($("#normalAddrdess")[0].checked)
+		    	var newAddressObj = {};
+		    	if(nameRes && phoneRes && areaIDRes && townRes && addressDetialRes && $(".town").val() != '请选择'){
+		    		console.log('通过！')
+
+			    	newAddressObj['name'] = $(".name").val();
+			    	newAddressObj['phone'] = $(".phone").val();
+			    	newAddressObj['province'] = province;
+			    	newAddressObj['city'] = city;
+			    	newAddressObj['area'] = area;
+			    	newAddressObj['town'] = $("#townID").val();
+			    	newAddressObj['addressDetial'] = $("#addressDetial").val();
+			    	if($("#normalAddrdess").attr("checked")){
+			    		//设为默认地址
+			    		newAddressObj['status'] = 0;
+			    	}else{
+			    		newAddressObj['status'] = 1;
+			    	}
+			    	console.log(newAddressObj);
+			    	// 全部判断通过则发送请求让后台添加到数据库
+			    	$.ajax({
+			    		url: "{{:U('Address/newAddress')}}",
+			    		type: 'post',
+			    		data: newAddressObj,
+			    		success: function(res){
+			    			console.log('成功！ ', res);
+			    			layHint('添加成功！');
+			    			//后台返回信息添加成功后的操作
+			    			if(res.code == 200){
+				    			// 如果有订单号,自动跳回去订单提交那里
+				    			if(sessionStorage.getItem("order_id")){
+				    				// 如果有商品数据
+				    				if(goods_data || lvxinData || shopCar_data){
+				    					location.href = "{{:U('PaymentSystem/payConfirm')}}";
+				    				}
+				    			}else{
+				    				//调回地址列表界面
+			    					location.href = "{{:U('Address/index')}}";
 			    				}
-			    			}else{
-			    				//调回地址列表界面
-		    					location.href = "{{:U('Address/index')}}";
-		    				}
-			    		}else if(res.code == 605){
-	    					layHint('添加失败，请稍后再试！');
-			    		}else{
-			    			layHint('很抱歉，系统遇到未知问题！');
+				    		}else if(res.code == 605){
+		    					layHint('添加失败，请稍后再试！');
+				    		}else{
+				    			layHint('很抱歉，系统遇到未知问题！');
+				    		}
+			    		},
+			    		error: function(res){
+			    			console.log('失败！ ', res);
 			    		}
-		    		},
-		    		error: function(res){
-		    			console.log('失败！ ', res);
-		    		}
-		    	})
+			    	})
 
-	    	}else if(!nameRes){
-	    		// 验证姓名
-	    		console.log('请输入符合规范的姓名！');
-	    		layHint('请输入合法的姓名！')
+		    	}else if(!nameRes){
+		    		// 验证姓名
+		    		console.log('请输入符合规范的姓名！');
+		    		layHint('请输入合法的姓名！')
 
-	    	}else if(!phoneRes){
-	    		console.log('请输入正确的电话号码！');
-	    		layHint('请输入正确的电话号码！')
+		    	}else if(!phoneRes){
+		    		console.log('请输入正确的电话号码！');
+		    		layHint('请输入正确的电话号码！')
 
-	    	}else if(!areaIDRes){
-	    		console.log('请选择地区！');
-	    		layHint('请选择地区！')
-	    		
-	    	}else if(!townRes || !$(".town").val()){
-	    		console.log('请选择街道！');
-	    		layHint('请选择街道！')
-	    		
-	    	}else if(!addressDetialRes){
-	    		console.log('请输入详细地址！');
-	    		layHint('请输入详细地址！')
-	    		
-	    	}
+		    	}else if(!areaIDRes){
+		    		console.log('请选择地区！');
+		    		layHint('请选择地区！')
+		    		
+		    	}else if(!townRes || !$(".town").val()){
+		    		console.log('请选择街道！');
+		    		layHint('请选择街道！')
+		    		
+		    	}else if(!addressDetialRes){
+		    		console.log('请输入详细地址！');
+		    		layHint('请输入详细地址！')
+		    		
+		    	}
+		   	}
 	    })
 	    //提示框函数
 	    function layHint(text){
