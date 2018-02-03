@@ -23,14 +23,14 @@
                                     <th width="5%">
                                         序号
                                     </th>
-                                    <th>
+                                    <th width="15%">
                                         设备编码
                                     </th>
                                     <th>
                                         设备类型
                                     </th>
                                     <th>
-                                        是否绑定
+                                        绑定分销商
                                     </th>
                                     <th>
                                         激活状态
@@ -47,13 +47,14 @@
                                     <volist name="deviceInfo" id="vo">
                                         <tr>
                                             <td>{{$i}}</td>
-                                            <td>{{$vo.device_code}}</td>
+                                            <td><a href="#">{{$vo.device_code}}</a></td>
                                             <td>{{$vo.typename}}</td>
                                             <td>
-                                                <switch name="vo.bind_status">
-                                                    <case value="0">未绑定</case>
-                                                    <case value="1">已绑定</case>
-                                                </switch>
+                                                <empty name="vo.user">
+                                                    <span style="color:blue">未绑定</span>
+                                                <else />
+                                                    <span style="color:red">{{$vo.user}}</span>
+                                                </empty>
                                             </td>
                                             <td>
                                                 <switch name="vo.AliveStause">
@@ -62,7 +63,7 @@
                                                     <default />未激活
                                                 </switch>
                                             </td>
-                                            <td>编辑|删除</td>
+                                            <td><a href="#">启用中</a></td>
                                         </tr>
                                     </volist>
                                 </empty>

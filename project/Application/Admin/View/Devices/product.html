@@ -79,7 +79,7 @@
                                                     <a data-toggle="modal" class="btn btn-outline btn-success" data-target="#myModal" typename="{{$vo.typename}}" typeid="{{$vo.id}}" filter1="{{$vo.filter1}}" filter2="{{$vo.filter2}}" filter3="{{$vo.filter3}}" filter4="{{$vo.filter4}}" filter5="{{$vo.filter5}}" filter6="{{$vo.filter6}}" filter7="{{$vo.filter7}}" filter8="{{$vo.filter8}}" onclick="edit(this)">
                                                         编辑
                                                     </a>
-                                                    <a class="btn btn-outline btn-success deletBnt" productId="{{$vo['id']}}">
+                                                    <a class="btn btn-outline btn-success deletBnt" productId="{{$vo['id']}}" onclick="del(this)">
                                                         删除
                                                     </a>
                                                 </div>
@@ -119,11 +119,9 @@
                             <label class="col-sm-4 control-label">
                                 请选择滤芯：<br />
                             </label>
-                            <div class="col-sm-6 choose">
+                            <div class="col-sm-8 choose">
                                 <volist name="filter" id="vo">
-                                    <span class="btn btn-primary btn-white type" filterId="{{$vo.id}}">
-                                        {{$vo.filtername}}-{{$vo.alias}}
-                                    </span>
+                                    <span class="btn btn-primary btn-white type" filterId="{{$vo.id}}">{{$vo.filtername}}-{{$vo.alias}}</span>
                                 </volist>
                             </div>
                         </div>
@@ -131,7 +129,7 @@
                             <label class="col-sm-4 control-label">
                                 已选择滤芯：<br />
                             </label>
-                            <div class="col-sm-6 choosed">
+                            <div class="col-sm-8 choosed">
                             </div>
                         </div>
                         <div class="form-group">
@@ -160,7 +158,7 @@
         }
         $('.sure').on('click','.product-add',function(e){
             var form = $("#form").serializeArray();
-            parent.layer.confirm('确认设置该滤芯吗？', {
+            parent.layer.confirm('确认设置该类型吗？', {
                 btn: ['确认','取消'], //按钮
                 shade: false //不显示遮罩
             }, function(){
@@ -187,7 +185,7 @@
         $('.choose').on('click','.type', function(e){
             var filterId = $(this).attr('filterId');
             var filterName = $(this).text();
-            var html = "<span class='btn btn-primary btn-white deltype'>"+filterName+"<input type='hidden' name=arr[] value='"+filterId+"'></span>";
+            var html = "<span class='btn btn-primary btn-white deltype'>"+filterName+"<input type='hidden' name=arr[] value='"+filterName+"'></span>";
             var num = $('.choosed span').length;
             console.log(num);
             if( num >= 8 ){
@@ -210,6 +208,7 @@
         {
             $("#myModalLabel").html('类型编辑');
             $(".choosed").text("");
+            $('.choosed').css('border','none');
             var typename = $(obj).attr('typename');
             var id = $(obj).attr('typeid');
             var arr = new Array();
@@ -224,7 +223,7 @@
             arr.push(filter1,filter2,filter3,filter4,filter5,filter6,filter7,filter8);
             html = "";
             for (var i = 0; i < arr.length; i++) {
-                console.log(arr[i])
+                // console.log(arr[i])
                 if(arr[i]!= ''){
                     html += "<span class='btn btn-primary btn-white deltype'>"+arr[i]+"<input type='hidden' name=arr[] value='"+arr[i]+"'></span>";
                 }
@@ -241,9 +240,9 @@
         // 修改
         $('.sure').on('click','.product-edit',function(e){
             var form = $("#form").serializeArray();
-            parent.layer.confirm('确认设置该滤芯吗？', {
+            parent.layer.confirm('确认修改该类型吗？', {
                 btn: ['确认','取消'], //按钮
-                shade: false //不显示遮罩
+                shade: true //不显示遮罩
             }, function(){
                 $.ajax({
                     url:'productEdit',
@@ -264,5 +263,34 @@
                 parent.layer.msg('已取消', {shift: 6});
             });
         })
+
+        // 删除
+        function del(obj)
+        {
+            var id = $(obj).attr('productId');
+            // console.log(id);
+            parent.layer.confirm('确认删除该类型吗？', {
+                btn: ['确认','取消'], //按钮
+                shade: false //不显示遮罩
+            }, function(){
+                $.ajax({
+                    url:"productDel",
+                    data:{'id':id},
+                    type:"post",
+                    dataType:'json',
+                    success:function(res){
+                        if(res.code == 200){
+                            location.reload();
+                            parent.layer.msg(res.msg);
+                        } else {
+                            parent.layer.close;
+                            parent.layer.msg(res.msg);
+                        }
+                    }
+                });
+            }, function(){
+                parent.layer.msg('已取消', {shift: 6});
+            });
+        }
     </script>
 </block>

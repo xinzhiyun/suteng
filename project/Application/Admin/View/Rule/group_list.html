@@ -29,23 +29,31 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <volist  name="data" id="v" empty="$empty">
-                                <tr>
-                                    <th>
-                                        {{$v['id']}}
-                                    </th>
-                                    <td>
-                                        {{$v['user']}}
-                                    </td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <a class="btn btn-outline btn-success" href="javascript:if(confirm('确定删除？'))location='{{:U('Admin/Rule/delete_user_from_group',array('uid'=>$v['id']))}}'">
-                                                删除
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </volist >
+                            <empty name="data">
+                                <tr><td>还未添加分组成员</td></tr>
+                            <else />
+                                <volist  name="data" id="v" empty="$empty">
+                                    <tr>
+                                        <th>
+                                            {{$v['id']}}
+                                        </th>
+                                        <td>
+                                            {{$v['user']}}
+                                        </td>
+                                        <td>
+                                            <if condition="$vo['id'] eq 1 && $vo['user'] eq 'admin'">
+                                                <span>超级管理员</span>
+                                            <esle />
+                                                <div class="btn-group">
+                                                    <a ruleId="{{$v['id']}}" class="btn btn-outline btn-success deleteBtn" href="javascript:;">
+                                                    删除
+                                                    </a>
+                                                </div>
+                                            </if>
+                                        </td>
+                                    </tr>
+                                </volist >
+                            </empty>
                         </tbody>
                     </table>
                 </div>
@@ -55,7 +63,17 @@
     </div>
 </block>
 <block name="myjs">
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
     <script>
+        $(".deleteBtn").click(function(){
+            var id=$(this).attr('ruleId');
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                layer.confirm('确定删除?', {icon: 3, title:'温馨提示'}, function(index){
+                    window.location.href='delete_user_from_group?id='+id;                
+                });
+            });
+        });
         $('.pagination ul a').unwrap('div').wrap('<li></li>');
         $('.pagination ul span').wrap('<li class="active"></li>')
     </script>

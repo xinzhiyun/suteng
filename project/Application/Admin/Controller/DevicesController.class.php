@@ -24,6 +24,9 @@ class DevicesController extends CommonController
             ->alias('d')
             ->join('__TYPE__ t ON d.type_id=t.id', 'LEFT')
             ->join('__DEVICES_STATU__ ds ON d.device_code=ds.DeviceID', 'LEFT')
+            ->join('__VENDORS__ v ON d.vid=v.id', 'LEFT')
+            ->limit($Page->firstRow.','.$Page->listRows)
+            ->field('d.device_code,d.type_id,d.addtime,v.user,d.device_statu,t.typename,ds.AliveStause')
             ->count();
         $Page       = new \Think\Page($count,20);
         page_config($Page);
@@ -33,9 +36,12 @@ class DevicesController extends CommonController
             ->alias('d')
             ->join('__TYPE__ t ON d.type_id=t.id', 'LEFT')
             ->join('__DEVICES_STATU__ ds ON d.device_code=ds.DeviceID', 'LEFT')
+            ->join('__VENDORS__ v ON d.vid=v.id', 'LEFT')
             ->limit($Page->firstRow.','.$Page->listRows)
+            ->field('d.device_code,d.type_id,d.addtime,v.user,d.device_statu,t.typename,ds.AliveStause')
             ->select();
         $filterType = M('type')->where(['status'=>0])->select();
+        // dump($devices);
         $assign = [
             'deviceInfo' => $devices,
             'deviceType' => $filterType,
@@ -429,7 +435,6 @@ class DevicesController extends CommonController
         $filters = D('Filters');
         $data = $type->where('status=0')->select();
         $filter = $filters->where(['status'=>0])->select();
-        // dump($filter);die;
         $assign = [
             'data' => $data,
             'filter' => $filter,
@@ -449,8 +454,8 @@ class DevicesController extends CommonController
             $data['updatetime'] = time();
             $i = 1;
             foreach ($filter as $key => $value) {
-                $res = M('filters')->where('id='.$value)->field('filtername,alias')->find();
-                $data['filter'.$i] = $res['filtername'].'-'.$res['alias'];
+                // $res = M('filters')->where('id='.$value)->field('filtername,alias')->find();
+                $data['filter'.$i] = $value;
                 $i++;
             }
             if(!$type->create($data)) E($type->getError());
@@ -477,19 +482,46 @@ class DevicesController extends CommonController
             $arr = I('post.');
             $where['id'] = I('post.id');
             $data['typename'] = $arr['typename'];
-            $i = 1;
-            foreach ($arr['arr'] as $key => $value) {
-                $data['filter'.$i] = $value;
-                $i++;
+            // $i = 1;
+            // foreach ($arr['arr'] as $key => $value) {
+            //     $data['filter'.$i] = $value;
+            //     $i++;
+            // }
+            // dump($arr['arr']);
+            for ($i=1; $i <= 8; $i++) { 
+                $data['filter'.$i] = $arr['arr'][$i-1];
             }
             $data['updatetime'] = time();
-            $res = $type->create($data);
-            if(!$res) E($type->getErrot(),'605');
+            // dump($data);die;
             $res = $type->where($where)->save($data);
             if($res){
                 E('更新成功',200);
             } else {
                 E('请重新更新',603);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    // 类型删除
+    public function productDel()
+    {
+        try {
+            $type = D('Type');
+            $where = I('post.');
+            $type->startTrans();
+            $res = $type->where($where)->delete();
+            if($res){
+                $type->commit();
+                E('删除成功',200);
+            } else {
+                $type->rollback();
+                E('无法删除', 603);
             }
         } catch (\Exception $e) {
             $err = [
