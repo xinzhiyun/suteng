@@ -752,7 +752,7 @@
 			// })
 			//支付方式
 			$('#footerContain').click(function(){
-				if($("#hLeft>p").text() == "添加新地址"){
+				if($("#hLeft>p").text() == "请选择地址或添加新地址"){
 					parent.layer.msg('请添加一个地址！');
 					setTimeout(function(){
 						location.href = '{{:U("Address/newAddress")}}';

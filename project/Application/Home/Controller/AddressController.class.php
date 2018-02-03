@@ -114,10 +114,8 @@ class AddressController extends CommonController
             $where['uid'] = session('user.id');
             $status = 1;
             $address->startTrans();
-            $res_status = $address->where($where)->save(['status'=>$status]);
-            if(!$res_status) E('请刷新页面',603);
+            $address->where($where)->save(['status'=>$status]);
             $res = $address->where($data)->save(['status'=>0]);
-            // dump($res);die;
             if($res){
                 $address->commit();
                 E('已修改默认地址',200);
