@@ -2,54 +2,8 @@ $(function(){
 	var lvxinArr = ['#lvxinDetail', '#lvxinReset' ,'#lvxinBuy'];
 	var filterName='';
 	var filterNumber=0;
-	// 判断内容是否在购买超出，不超出则溢出隐藏
-	$("#content")
-	.css({height: lvxinArr[2].height, 
-		overflowY: $(lvxinArr[2])[0].offsetHeight > $("#content")[0].offsetHeight 
-		? 'visible'
-		: 'hidden'
-	});
-	// 点击顶部tab切换内容
-	$(".tabTitle").click(function(){
-		// 判断内容是否超出
-		if($("#content>div").length != 0){
-			$("#content")
-			.css({height: lvxinArr[$(this).attr("index")]
-				.height, 
-				overflowY: $(lvxinArr[$(this).attr("index")])[0].offsetHeight > $("#content")[0].offsetHeight 
-				? 'visible'
-				: 'hidden'
-			});
-		}
-		if($(this).html()=="滤芯购买"){
-			$("#footer").show();
-			$("button").hide().siblings().show();
-		}else{
-			
-			$("#footer").css("border-top","none");
-			if($(this).html()=="滤芯详情"){
-				$("#footer").hide();
-			}else{
-				$("#footer").show();
-				$("button").show().siblings().hide();
-			}
-		}
-		// 横线移动
-		$("#line").css({marginLeft: $(this).attr("index")*33.33 + '%'});
-
-		// 内容切换
-		$("#content").animate({left: '-'+$(this).attr("index") + '00vw'});
-		
-		//滤芯选中状态样式
-		$("#lvxinReset").on("click","li",function(){
-			$(this).children(".progress").children(".iconfont").removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
-			$(this).siblings().children(".progress").children(".iconfont").removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-			filterName=$(this).children("p").children().eq(0).text();
-			filterNumber=$(this).index();
-		})
-		
-	})
 	//页面加载时获取滤芯数据
+	// var lvxin_data = JSON.parse($("#lvxin_data").val());
     var data={
         "id":"1",
         "deviceid":"228733445596778",
@@ -99,6 +53,71 @@ $(function(){
 		{filtername:'RO-185I',timelife:1000,flowlife:50,introduce: '沁园净水器滤芯RO-185I/DT/F PP棉QG-U-1003/1004 套装 10寸 通用'},
 		{filtername:'AO史密斯',timelife:1000,flowlife:90,introduce: 'AO史密斯50D1 厨房过滤家用净水器 专利反渗透滤芯直饮净水机'}
 	];
+	// 判断内容是否在购买超出，不超出则溢出隐藏
+	$("#content")
+	.css({height: lvxinArr[2].height, 
+		overflowY: $(lvxinArr[2])[0].offsetHeight > $("#content")[0].offsetHeight 
+		? 'visible'
+		: 'hidden'
+	});
+	// 当当前设备为零售模式时候，不显示滤芯购买页面
+	if(data.leasingmode=="0"){
+		$("#filterBuy").hide();
+		$("#line").css({"width":"50%","marginLeft":"50%"});
+		$("#header span").css("width","33.33%");
+		$("#content").css("left","-100vw");
+		$("#footer div").hide();
+		$("#footer span").hide();
+		$("#footer button").show();
+	}else{
+		$("#footer div").show();
+		$("#footer span").show();
+		$("#footer button").hide();
+		$("#line").css({marginLeft: "66.66%"});
+	}
+	// 点击顶部tab切换内容
+	$(".tabTitle").click(function(){
+		// 判断内容是否超出
+		if($("#content>div").length != 0){
+			$("#content")
+			.css({height: lvxinArr[$(this).attr("index")]
+				.height, 
+				overflowY: $(lvxinArr[$(this).attr("index")])[0].offsetHeight > $("#content")[0].offsetHeight 
+				? 'visible'
+				: 'hidden'
+			});
+		}
+		if($(this).html()=="滤芯购买"){
+			$("#footer").show();
+			$("button").hide().siblings().show();
+		}else{
+			$("#footer").css("border-top","none");
+			if($(this).html()=="滤芯详情"){
+				$("#footer").hide();
+			}else{
+				$("#footer").show();
+				$("button").show().siblings().hide();
+			}
+		}
+		// 横线移动
+		if(data.leasingmode=="0"){
+			$("#line").css({marginLeft: $(this).attr("index")*50 + '%'});
+		}else{
+			$("#line").css({marginLeft: $(this).attr("index")*33.33 + '%'});
+		}
+		// 内容切换
+		$("#content").animate({left: '-'+$(this).attr("index") + '00vw'});
+		
+		//滤芯选中状态样式
+		$("#lvxinReset").on("click","li",function(){
+			$(this).children(".progress").children(".iconfont").removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+			$(this).siblings().children(".progress").children(".iconfont").removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+			filterName=$(this).children("p").children().eq(0).text();
+			filterNumber=$(this).index();
+		})
+		
+	})
+	
 
 	
 	console.log(data);
@@ -111,10 +130,7 @@ $(function(){
 	var reflow;//滤芯剩余流量
 	var redaypercent;//滤芯剩余时间百分比
 	var reflowpercent;//滤芯剩余流量百分比
-	if(data.leasingmode=="0"){
-		// $(".tabTitle").hide();
-		// $("#header span").css("width","50%");
-	}
+	
 	for(var i=0; i<res.length; i++){
 		timelife = (res[i].timelife?res[i].timelife:0);
 		flowlife = (res[i].flowlife?res[i].flowlife:0);
