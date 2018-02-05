@@ -276,13 +276,17 @@
 			$(".area").val(editAddressOld.province+editAddressOld.city+editAddressOld.area);
 			$(".town").val(editAddressOld.town);
 			$("#addressDetial").val(editAddressOld.address);
+			if(editAddressOld.status == 0){
+				//选的是默认地址
+				$("#normalAddrdess")[0].checked = true;
+			}else{
+				$("#normalAddrdess")[0].checked = false;
+			}
+			// console.log($("#normalAddrdess")[0].checked)
 		}
 		//编辑地址改变
 		var addressChange = false;
 		$(".area").click(function(){
-			addressChange = true;
-		})
-		$("#addressDetial").on('change',function(){
 			addressChange = true;
 		})
 
@@ -291,74 +295,6 @@
 			goods_data = sessionStorage.getItem("goods_data");
 		// 解决移动端虚拟键盘开启时底部内容被顶上来的问题
 		solveCompatible($("#footer"));
-		var script = $("<script/>");
-		var scriptCode = `
-			// 选择地区
-			$(".area").on("click", function(){
-				$("#areaChoose").css({display: "block"});
-			});
-
-			var province,city,area,town;
-
-			// 关闭地区选择，并显示到对应区域
-			$("#confirmAreaChoose").on("click", function(){
-				
-				$("#areaID").val( (!province && !city && !area) ? '请选择' : province + city + area);
-
-				// 获取 街道 选中的值
-				$("#townID")
-				.val(
-					!($('#areaChoose select[name="town"]').find("option:selected").text())
-					? '请选择'
-					: $('#areaChoose select[name="town"]').find("option:selected").text()
-				);
-
-				$("#areaChoose").css({display: "none"});
-				// console.log($('#areaChoose select[name="town"]').find("option:selected"));
-
-			});
-
-			// 生成选择地区~省市县街道四级联动
-			var $town = $('#areaChoose').find('select[name="town"]');
-		    var townFormat = function(info){
-			    $town.hide().empty();
-			    if(info['code']%1e4&&info['code']<7e6){	//是否为“区”且不是港澳台地区
-			    	$.ajax({
-			    		url:'http://passer-by.com/data_location/town/'+info['code']+'.json',
-			    		dataType:'json',
-			    		success:function(town){
-			    			$town.show();
-		    				// console.log(town);
-		    				var townHTML = '';
-			    			for(i in town){
-			    				townHTML += '<option value="'+i+'">'+town[i]+'</option>';
-			    			};
-			    			$town.append(townHTML);
-			    			// console.log($town)
-
-					    	province = info.province;	//省、市、区在这里生成
-							city = info.city;
-							area = info.area;
-			    		},
-			    		err: function(res){
-			    			console.log(res);
-			    		}
-			    	});
-			    }
-		    };
-		    $('#areaChoose').citys({
-		    	required: false,
-		    	nodata: 'disabled',
-		        onChange:function(info){
-		        	townFormat(info);
-		        }
-		    },function(api){
-		        var info = api.getInfo();
-		        townFormat(info);
-		    });`
-		script.html(scriptCode);
-		$("body").append(script);
-
 	    /*
 	    	name: 收货人
 	    	phone: 电话
@@ -381,17 +317,11 @@
 
 	    	var editAddressObj = {};	//存储需要发送给后台的数据
 	    	var editName = $(".name").val(),
-	    		editPhone = $(".phone").val(),
-	    		editProvince = $(".province").val(),
-	    		editCity = $(".city").val(),
-	    		editArea = $(".area").val(),
-	    		editTown = $(".town").val(),
-	    		editAddress = $("#addressDetial").val();
+	    		editPhone = $(".phone").val();
 	    	if(sessionStorage.getItem("editAddressOld")){
 				/*
 					编辑地址
 				 */
-				editAddressObj['id'] = editAddressOld.id;		//地址id
 				if(editName != editAddressOld.name){		//如果修改了姓名
 					editAddressObj['name'] = editName;
 				}
@@ -400,55 +330,66 @@
 				}
 				if(addressChange){	//如果有修改地址
 
-					editAddressObj['province'] = editProvince;
-					editAddressObj['city'] = editCity;
-					editAddressObj['area'] = editArea;
-					editAddressObj['town'] = editTown;
-					editAddressObj['address'] = editAddressOld.province+editAddressOld.city+editAddressOld.area;
-					//这里未完，应该拿页面数据
+					editAddressObj['province'] = $("select[name='province']").find("option:selected").text();
+					editAddressObj['city'] = $("select[name='city']").find("option:selected").text();
+					editAddressObj['area'] = $("select[name='area']").find("option:selected").text();
+					editAddressObj['town'] = $("select[name='town']").find("option:selected").text();
+					editAddressObj['address'] = editAddressObj['province']+editAddressObj['city']+editAddressObj['area']+editAddressObj['town']+$("#addressDetial").val();
+					
 				}else{
-					editAddressObj['province'] = editAddressOld.province;
-					editAddressObj['city'] = editAddressOld.city;
-					editAddressObj['area'] = editAddressOld.area;
-					editAddressObj['town'] = editAddressOld.town;
-					editAddressObj['address'] = editAddressOld.address;
+					editAddressObj['address'] = editAddressOld['province']+editAddressOld['city']+editAddressOld['area']+editAddressOld['town']+$("#addressDetial").val();
 				}
-				console.log(addressChange,editAddressOld)
-				var newAddressObj = {};
-				if(nameRes && phoneRes && areaIDRes && townRes && addressDetialRes && $(".town").val() != '请选择'){
+				// console.log(addressChange)
+				// console.log('editAddressOld: ',editAddressOld)
+				console.log('editAddressObj: ', editAddressObj)
+				editAddressObj['id'] = editAddressOld.id;		//地址id
+				if(nameRes && phoneRes && areaIDRes && townRes && addressDetialRes && $(".town").val() != ''){
 
 		    		console.log('通过！');
-		    		layHint('保存成功！');
-			    	// newAddressObj['name'] = $(".name").val();
-			    	// newAddressObj['phone'] = $(".phone").val();
-			    	// newAddressObj['province'] = editAddressOld.province;
-			    	// newAddressObj['city'] = editAddressOld.city;
-			    	// newAddressObj['area'] = editAddressOld.area;
-			    	// newAddressObj['town'] = editAddressOld.town;
-			    	// newAddressObj['addressDetial'] = editAddressOld.address;
 			    	if($("#normalAddrdess").attr("checked")){
 			    		//设为默认地址
-			    		newAddressObj['status'] = 0;
+			    		editAddressObj['status'] = 0;
 			    	}else{
-			    		newAddressObj['status'] = 1;
+			    		editAddressObj['status'] = 1;
 			    	}
-			    	console.log(newAddressObj);
-			    	$.ajax({
-			    		url: '{{:U("Home/Address/save_address")}}',
-			    		type: 'post',
-			    		data: editAddressObj,
-			    		success: function(res){
-			    			console.log('成功！',res);
-			    			if(res.code == 200){
-			    				layHint('保存成功！');
-			    			}else{
-			    				console.log('失败！',res);
-			    			}
-			    		},
-			    		error: function(res){
-			    			console.log('失败！',res);
-			    		}
-			    	})
+			    	console.log(editAddressObj);
+			    	// console.log($("#addressDetial").val() == editAddressOld['address'],$(".name").val() == editAddressOld['name'], $(".phone").val() == editAddressOld['phone'])
+			    	// console.log($("#addressDetial").val(),editAddressOld['address'])
+			    	// console.log($(".name").val(),editAddressOld['name']) 
+			    	// console.log($(".phone").val(),editAddressOld['phone'])
+
+			    	if(!addressChange && $("#addressDetial").val()==editAddressOld['address'] && $(".name").val()==editAddressOld['name'] && $(".phone").val()==editAddressOld['phone'] && editAddressObj['status']==editAddressOld['status']){
+	    				layHint('你什么都没修改！');
+	    				//返回地址管理
+	    				setTimeout(function(){
+	    					location.href = '{{:U("Home/Address/index")}}';
+	    				},1000);
+			    		return;
+			    	}else{
+				    	$.ajax({
+				    		url: '{{:U("Home/Address/save_address")}}',
+				    		type: 'post',
+				    		data: editAddressObj,
+				    		success: function(res){
+				    			console.log('成功！',res);
+				    			if(res.code == 200){
+				    				layHint('保存成功！');
+				    				// sessionStorage.setItem("editAddressObj", JSON.stringify(editAddressObj));
+				    				//返回地址管理
+				    				setTimeout(function(){
+				    					location.href = '{{:U("Home/Address/index")}}';
+				    				},500);
+				    			}else{
+				    				console.log('失败！',res);
+				    				layHint('保存失败！');
+				    			}
+				    		},
+				    		error: function(res){
+				    			console.log('失败！',res);
+				    			layHint('发生未知问题，请稍后再试！');
+				    		}
+				    	})
+			    	}
 				}else if(!nameRes){
 		    		// 验证姓名
 		    		console.log('请输入符合规范的姓名！');
@@ -472,8 +413,8 @@
 		    		
 		    	}
 
-	    	// console.log(editAddressObj,Object.getOwnPropertyNames(editAddressObj).length);
-	        // console.log(nameRes, phoneRes, addressDetialRes);
+		    	// console.log(editAddressObj,Object.getOwnPropertyNames(editAddressObj).length);
+		        // console.log(nameRes, phoneRes, addressDetialRes);
 	    	}else{
 				/*
 					新建地址
@@ -566,6 +507,76 @@
                 layer.msg(text);
             });
 	    }
+
+
+		var script = $("<script/>");
+		var scriptCode = `
+			// 选择地区
+			$(".area").on("click", function(){
+				$("#areaChoose").css({display: "block"});
+			});
+
+			var province,city,area,town;
+
+			// 关闭地区选择，并显示到对应区域
+			$("#confirmAreaChoose").on("click", function(){
+				
+				$("#areaID").val( (!province && !city && !area) ? '请选择' : province + city + area);
+
+				// 获取 街道 选中的值
+				$("#townID")
+				.val(
+					!($('#areaChoose select[name="town"]').find("option:selected").text())
+					? '请选择'
+					: $('#areaChoose select[name="town"]').find("option:selected").text()
+				);
+
+				$("#areaChoose").css({display: "none"});
+				// console.log($('#areaChoose select[name="town"]').find("option:selected"));
+
+			});
+
+			// 生成选择地区~省市县街道四级联动
+			var $town = $('#areaChoose').find('select[name="town"]');
+		    var townFormat = function(info){
+			    $town.hide().empty();
+			    if(info['code']%1e4&&info['code']<7e6){	//是否为“区”且不是港澳台地区
+			    	$.ajax({
+			    		url:'http://passer-by.com/data_location/town/'+info['code']+'.json',
+			    		dataType:'json',
+			    		success:function(town){
+			    			$town.show();
+		    				// console.log(town);
+		    				var townHTML = '';
+			    			for(i in town){
+			    				townHTML += '<option value="'+i+'">'+town[i]+'</option>';
+			    			};
+			    			$town.append(townHTML);
+			    			// console.log($town)
+
+					    	province = info.province;	//省、市、区在这里生成
+							city = info.city;
+							area = info.area;
+			    		},
+			    		err: function(res){
+			    			console.log(res);
+			    		}
+			    	});
+			    }
+		    };
+		    $('#areaChoose').citys({
+		    	required: false,
+		    	nodata: 'disabled',
+		        onChange:function(info){
+		        	townFormat(info);
+		        }
+		    },function(api){
+		        var info = api.getInfo();
+		        townFormat(info);
+		    });`
+		script.html(scriptCode);
+		$("body").append(script);
+
 
 	</script>
 </body>

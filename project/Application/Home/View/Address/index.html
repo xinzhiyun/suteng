@@ -89,10 +89,10 @@
 		.edit, .del {
 			display: inline-block;
 			margin-left: 8vw;
-			padding: 1% 4%;
-			font-size: .6rem;
+			padding: 0 6%;
+			font-size: .7rem;
 			border-radius: 6px;
-			border: 1px solid #dfdfdf;
+			border: 1px solid #d0d0d0;
 		}
 
         /*点击添加地址弹出的页面*/
@@ -233,25 +233,29 @@
 			display: flex;
 			align-items: center;
 			position: fixed;
-			padding: 3% 0%;
+			padding: 4% 0%;
 			bottom: 0;
+			font-size: .8rem;
 			border-top: 1px solid #ddd;
 		    background: #fff;
 		}
 		#footer>a {
 			width: 100%;
 			display: block;
+		    color: #373737;
 		}
 		#footer>a>input {
-			width: 6vmin;
-			height: 6vmin;
+			width: 7vmin;
+			height: 7vmin;
 			margin: 0 20px;
+			left: 0;
 			border-radius: 4px;
 		    border: none;
 		    color: #fff;
-		    line-height: 6vmin;
+		    line-height: 7.5vmin;
 		    vertical-align: middle;
-		    font-size: 1.6rem;
+		    font-size: 1.5rem;
+		    text-align: center;
 		    background: #2EB6AA;
 		}
 	</style>
@@ -357,8 +361,8 @@
 		</div>
 	</div>
 	<footer id="footer">
-		<a href="{{:U('Home/Address/newAddress')}}">
-			<input type="button" id="newAddress" value="+">
+		<a href="#">
+			<input type="button" id="newAddress" value="+" align="center">
 			<label for="newAddress">添加新地址</label>
 		</a>
 	</footer>
@@ -471,126 +475,14 @@
 			},100);
 		})
 		/*
-			点击‘保存’关闭编辑地址面板
-		 */
-		// $("#editAddressPanel").on("click",".saveAddress",function(){
-
-		//     // 验证姓名，电话，地区的正则表达式
-		//     var nameReg, phoneReg, areaReg;
-		//     nameReg = /^[\w\-\u4e00-\u9fa5]{2,255}$/u;
-		//     phoneReg = /^1((((3[0-35-9])|([5|8][0-9])|(4[5|7|9])|66|(7[3|5-8])|(9[8|9]))\d)|(34[0-8]))\d{7}$/;
-		//     areaReg = /^[\w\-\u4e00-\u9fa5]{2,255}$/u;
-
-	 //    	var nameRes = nameReg.test($(".editName").val());
-	 //    	var phoneRes = phoneReg.test($(".editPhone").val());
-	 //    	var addressDetialRes = nameReg.test($(".pDetail>textarea").val());
-
-  //           var editAddressObj = {};	//编辑地址需要发到后台的数据
-            
-  //           // 获取当前编辑面板的姓名，电话，地址
-  //           var editName = $(this).parents("#editAddressPanel").find(".editName").val();
-  //           var editPhone = $(this).parents("#editAddressPanel").find(".editPhone").val();
-  //           var editProvince = $(this).parents("#editAddressPanel").find(".editProvince").find("option:selected").text();
-  //           var editCity = $(this).parents("#editAddressPanel").find(".editCity").find("option:selected").text();
-  //           var editArea = $(this).parents("#editAddressPanel").find(".editArea").find("option:selected").text();
-  //           var editTown = $(this).parents("#editAddressPanel").find(".editTown").find("option:selected").text();
-  //           var editAddress = $('.pDetail>textarea').val();
-
-  //           console.log(editName, editPhone,editProvince, editCity,editArea,editTown,editAddress)
-  //           // 显示编辑面板
-  //           $("#editAddressPanel").show();
-  //           $("#editAddressPanel>div").animate({marginTop: '0'});
-
-  //           //addressIndex：地址id, 点击'编辑'的时候获取
-  //           // console.log(addressIndex)
-  //           editAddressObj['id'] = addressIndex;		//地址id
-  //           if(editName != uName){		//如果修改了姓名
-  //           	editAddressObj['name'] = editName;
-  //           }
-  //           if(editPhone != uPhone){		//如果修改了手机号
-	 //    		editAddressObj['phone'] = editPhone;
-  //           }
-  //           if(addressChange){	//如果有修改地址
-
-  //           	editAddressObj['province'] = editProvince;
-  //           	editAddressObj['city'] = editCity;
-  //           	editAddressObj['area'] = editArea;
-  //           	editAddressObj['town'] = editTown;
-	 //    		editAddressObj['address'] = editProvince+editCity+editArea+editTown+editAddress;
-  //           }
-
-	 //    	// console.log(editAddressObj,Object.getOwnPropertyNames(editAddressObj).length);
-	 //        // console.log(nameRes, phoneRes, addressDetialRes);
-	 //    	if(Object.getOwnPropertyNames(editAddressObj).length > 1 && nameRes && phoneRes && addressDetialRes){		//如果有修改数据
-	 //            // 发送ajax让后台修改这条地址在数据库的数据
-	 //            $.ajax({
-	 //            	url: '{{:U("Home/Address/save_address")}}',
-	 //            	type: 'post',
-	 //            	data: editAddressObj,
-	 //            	success: function(res){
-	 //            		console.log('成功！', res)
-	 //            		//后台返回参数确认修改成功
-	 //            		if(res.code == 200){
-	 //            			layHint('保存成功！');
-		// 		         	// 将修改更新到页面相应位置
-		// 	                $("#content").find(".address[index="+addressIndex+"]").find(".uName").text(editName)
-		// 	                $("#content").find(".address[index="+addressIndex+"]").find(".uPhone").text(editPhone)
-		// 	                $("#content").find(".address[index="+addressIndex+"]").find(".province").val(editProvince)
-		// 	                $("#content").find(".address[index="+addressIndex+"]").find(".city").val(editCity)
-		// 	                $("#content").find(".address[index="+addressIndex+"]").find(".area").val(editArea)
-		// 	                $("#content").find(".address[index="+addressIndex+"]").find(".town").val(editTown)
-		// 	                if(addressChange){	//如果有修改地址
-		// 	                	 $("#content").find(".address[index="+addressIndex+"]").find(".uAddress").text(editAddressObj.address);
-		// 	                }
-		// 	                console.log($("#content").find(".address[index="+addressIndex+"]").attr("index"))
-		// 					$("#editAddressPanel>div").animate({marginTop: '50vh'});
-		// 					var int = setInterval(function(){
-		// 						parseInt($("#editAddressPanel>div").css("marginTop")) >= $(window).height()/2-20
-		// 						? (
-		// 							$("#editAddressPanel").hide(),
-		// 							clearInterval(int)
-		// 						)
-		// 						: ''
-		// 					},100);
-				           
-	 //            		}else{
-	 //            			layHint('保存失败！');
-	 //            		}
-	 //            	},
-	 //            	error: function(res){
-	 //            		console.log('失败！', res)
-	 //            		layHint('保存失败！');
-	 //            	}
-	 //            })
-	 //        }else if(!nameRes){
-	 //        	layHint('姓名 只能是中文，英文，数字，下划线组成！');
-	 //        }else if(!phoneRes){
-	 //        	layHint('请输入正确的手机号！');
-	 //        }else if(!addressDetialRes){
-	 //        	layHint('地址 只能是中文，英文，数字，下划线组成！');
-	 //        }else{
-	 //        	console.log('没有修改数据');
-	 //        	layHint('你没有修改任何数据');
-
-		// 		$("#editAddressPanel>div").animate({marginTop: '50vh'});
-		// 		var int = setInterval(function(){
-		// 			parseInt($("#editAddressPanel>div").css("marginTop")) >= $(window).height()/2-20
-		// 			? (
-		// 				$("#editAddressPanel").hide(),
-		// 				clearInterval(int)
-		// 			)
-		// 			: ''
-		// 		},100);
-	 //        }
-			
-		// })
-		/*
 			点击编辑按钮
 		 */ 
 		$("#content").on("click",'.edit',function(){
+			//清除编辑历史数据
+			sessionStorage.setItem("editAddressOld", '');
 			var editAddress = {};	//点击编辑的地址数据
-            //判断打开的是哪个地址
-            addressIndex = parseInt($(this).attr("index"));
+			//0表示是默认地址，1表示非默认地址
+			editAddress['status'] = $(this).parents(".address").find(".setAddress").attr("checked") ? 0 : 1;
             // 将编辑所在条目的姓名，电话，地址填写到面板相应位置
 			editAddress['id'] = $(this).attr("index");
 			editAddress['name'] = $(this).parents(".address").find(".uName").text();
@@ -650,7 +542,15 @@
 	            }
 	        );
         })
-
+        /*
+        	点击'新建'
+         */
+        $("#footer").click(function(){
+        	// 清除历史编辑数据
+        	sessionStorage.setItem('editAddressOld','');
+        	// 跳转到新建地址页面
+        	location.href = "{{:U('Home/Address/newAddress')}}";
+        })
         // 将数据输出为JSON对象数组格式
         // var arr = [];
         // for(var i=0; i<$(".address").length; i++){
@@ -734,7 +634,6 @@
 		    });`
 		script.html(scriptCode);
 		$("body").append(script);
-       
     })
 	</script>
 </body>
