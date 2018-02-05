@@ -60,11 +60,14 @@
     }
       
     form>.form-group{
-        width: 100vw;
-        padding:0.6rem 0.8rem;
+    width: 100vw;
+    padding:0.6rem 0.8rem;
     height: 2.5rem;
     clear:both;
     border-bottom:1px solid #d4d4d4!important;
+    }
+    form>.form-group:nth-of-type(3){
+    height: 2.8rem;
     }
     form>.form-group:nth-of-type(7){
         border-bottom:none!important;
@@ -72,15 +75,17 @@
         margin-top: 1rem;
     }
     form>.form-group1{
-         height: 6rem;
+         height: 7rem;
         border-bottom: none!important;
         position: relative;
-        background: red;
-        margin-top: 1rem;
+        /*background: yellow;*/
+        /*opacity: 0.3;*/
+        /*margin-top: 1rem;*/
+        padding: 0.0rem 0.8rem;
    }
     form>div.form-group:nth-of-type(3){
         border-bottom:10px solid #d4d4d4!important;
-         margin-bottom: 1rem;
+         /*margin-bottom: 1rem;*/
     }
     form>div.form-group:nth-of-type(5){
         border:none!important;
@@ -106,7 +111,6 @@
     }
     .col-md-3{
         display: inline-block;
-        background: red;
     }
     form>.form-group1>label{
         line-height: 2.5rem;
@@ -158,27 +162,64 @@
     }
     form>.form-group>.col-md-5>input{
         position: absolute;
-         margin-left: 1rem;
-         width: 2rem;
-         height: 2.7rem;
-         background: green;
-         opacity: 0;
-         z-index: 999;
+        width: 4.4rem;
+        height: 4.4rem;
+        background: green;
+        opacity: 0;
+        z-index: 999;
+        left: 1rem;
+        top: 2.3rem;
     }
-    .form-group>.col-md-5>i{
+    /*.form-group>.col-md-5>i{
         position: relative;
-        top: -0.4rem;
-        left: 0.8rem;
+        top: 0rem;
+        left: 0.3rem;
         font-size: 3rem;
         color: #56aaf1;
         z-index: 666;
-    }
+    }*/
 
+    /*图片区域*/
+    form>.form-group1>.col-md-5>i {
+    position: absolute;
+    top: 2.1rem;
+    left: 0.8rem;
+    font-size: 3.8rem;
+    color: #DCF8FF;
+    border: 1px dashed #76DED3;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.6rem;
+}
+    .col-md-5>.xiePic{
+        width: 4.6rem;
+        line-height: 4.6rem;
+        text-align: center;
+        height: 4.6rem;
+        position: absolute;
+        background: #DCF8FF;
+        border-radius: 0.5rem;
+        left: 6rem;
+        top: 2.15rem;
+        color: #5a5a5a;
+        border: 1px dashed #76DED3;
+    }
+    .xiePic>i{
+            position: absolute;
+            top: -0.3rem;
+            right: -0.3rem;
+            display: block;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 0.8rem;
+            background: red;
+            line-height: 1rem;
+            color: #fff;
+            font-weight: 600;
+        }
     /*申请按钮*/
-          /*.xieBtn>input{
+          .xieBtn>input{
             margin-top:2rem;
             position: absolute;
-            bottom: 0;
             background: #2EB6AA;
             width: 100vw;
             border:none;
@@ -186,7 +227,8 @@
             height: 2rem;
             letter-spacing: 0.1rem;
             font-size: 0.8rem;
-          }*/
+          }
+
 </style>
 <body>
     <div class="ibox-content">
@@ -220,32 +262,32 @@
                 </div>
             </div>
              <div class="form-group  form-group1">
-                <label class="col-sm-2 control-label" for="comLicen">身份证正面</label>
+                <label class="col-sm-2 control-label" >上传身份证正面</label>
                 <div class="col-md-5">
                     <input type="file" id="comLicen" name="positive" class="form-control">
-                    <i class="iconfont icon-tianjia tianjiatubiao"></i>
-                     <div class="xiePic">图片<i class="iconfont icon-cuohao"></i></div>
+                    <i class="iconfont icon-tianjiajingdian"></i>
+                    <div class="xiePic">图片<i class="iconfont icon-cuohao"></i></div>
                 </div>
             </div> 
             <div class="form-group form-group1">
-                <label class="col-sm-2 control-label" for="comLicen">身份证反面</label>
+                <label class="col-sm-2 control-label">上传身份证反面</label>
                 <div class="col-md-5">
-                    <input type="file" id="comLicen" name="opposite" class="form-control">
-                    <i class="iconfont icon-tianjia tianjiatubiao"></i>
-                    <!-- <div class="xiePic">图片<i class="iconfont icon-cuohao"></i></div> -->
+                    <input type="file" id="comLicen1" name="opposite" class="form-control">
+                    <i class="iconfont icon-tianjiajingdian"></i>
+                    <div class="xiePic">图片<i class="iconfont icon-cuohao"></i></div>
                 </div>
             </div> 
-              <!--<div class="form-group form-group1">
-                <label class="col-sm-2 control-label" for="comLicen">手持身份证</label>
+            <div class="form-group form-group1">
+                <label class="col-sm-2 control-label">上传手持身份证</label>
                 <div class="col-md-5">
-                    <input type="file" id="comLicen" name="handheld" class="form-control">
-                    <i class="iconfont icon-tianjia tianjiatubiao"></i>
+                    <input type="file" id="comLicen2" name="handheld" class="form-control">
+                    <i class="iconfont icon-tianjiajingdian"></i>
+                    <div class="xiePic">图片<i class="iconfont icon-cuohao"></i></div>
                 </div>
-            </div>  -->
-            <!-- <div class="hr-line-dashed"></div> -->
-            <!-- <div class="xieBtn">
+            </div> 
+            <div class="xieBtn">
                 <input class="btn btn-primary" type="submit" value="申请"></input>
-            </div> -->
+            </div>
         </form>
     </div>
 </body>
