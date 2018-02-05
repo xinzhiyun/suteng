@@ -85,22 +85,25 @@
            </div>
         </div>
         <div class="rewardFoot">
-          <ul class="rewardFoot">
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
+          <ul class="rewardFoot flowList">
+            <!-- <li><span class="iconBig">30</span><span>2017-12-252</span></li>
+            <li><span class="iconBig">30</span><span>2017-12-252</span></li> -->
           </ul>
         </div>
     </div>
   </div>
+  <script type="text/javascript">
+    $(function(){
+      var flowList=[
+        {"flowNumber":"50","time":"228733445596778"},
+        {"flowNumber":"85","time":"2287334455967785"}
+      ];
+      var liHtml='';
+      for(var i = 0;i<flowList.length;i++){
+        liHtml += '<li><span class="iconBig">'+ flowList[i].flowNumber +'</span><span>'+ flowList[i].time +'</span></li>';
+      }
+      $(".flowList").html(liHtml);
+    });
+  </script>
 </body>
 </html>                                                                                                                                                                                                                                                                      

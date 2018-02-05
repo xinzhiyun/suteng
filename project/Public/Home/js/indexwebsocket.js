@@ -60,7 +60,49 @@ window.onload = function(){
         }
     }
     //页面加载时获取数据
-    var getdataList = JSON.parse($(".deviceInfo").val());
+    // var getdataList = JSON.parse($(".deviceInfo").val());
+    //页面加载时获取数据
+    var getdataList={
+        "id":"1",
+        "deviceid":"228733445596778",
+        "devicestause":"0",
+        "reflow":"34000",
+        "reday":"85",
+        "rawtds":"75",
+        "puretds":"42",
+        "temperature":"24",
+        "reflowfilter1":null,
+        "redayfilter1":null,
+        "reflowfilter2":null,
+        "redayfilter2":null,
+        "reflowfilter3":null,
+        "redayfilter3":null,
+        "reflowfilter4":null,
+        "redayfilter4":null,
+        "reflowfilter5":null,
+        "redayfilter5":null,
+        "reflowfilter6":null,
+        "redayfilter6":null,
+        "reflowfilter7":null,
+        "redayfilter7":null,
+        "reflowfilter8":null,
+        "redayfilter8":null,
+        "leasingmode":"2",
+        "alivestause":"1",
+        "roomtemperature":"26",
+         "sumflow":"24",
+        "sumday":"65",
+        "phval":"3.8",
+        "coldwater":"20",
+        "hotwater":"95",
+        "filtermode":"1",
+        "device":"GPRS",
+        "iccid":"11223344556677889900",
+        "csq":"90",
+        "loaction":"10020�����",
+        "addtime":"1513238294",
+        "updatetime":"1513299086"
+    }
     var res = JSON.parse($(".res").val());
     console.log(getdataList);
     console.log(res);

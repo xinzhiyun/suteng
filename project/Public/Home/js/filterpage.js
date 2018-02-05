@@ -3,7 +3,49 @@ $(function(){
 	var filterName='';
 	var filterNumber=0;
 	//页面加载时获取滤芯数据
-	var data = JSON.parse($(".filterData").val()); 
+	// var data = JSON.parse($(".filterData").val()); 
+	//页面加载时获取数据
+    var data={
+        "id":"1",
+        "deviceid":"228733445596778",
+        "devicestause":"0",
+        "reflow":"34000",
+        "reday":"85",
+        "rawtds":"75",
+        "puretds":"42",
+        "temperature":"24",
+        "reflowfilter1":null,
+        "redayfilter1":null,
+        "reflowfilter2":null,
+        "redayfilter2":null,
+        "reflowfilter3":null,
+        "redayfilter3":null,
+        "reflowfilter4":null,
+        "redayfilter4":null,
+        "reflowfilter5":null,
+        "redayfilter5":null,
+        "reflowfilter6":null,
+        "redayfilter6":null,
+        "reflowfilter7":null,
+        "redayfilter7":null,
+        "reflowfilter8":null,
+        "redayfilter8":null,
+        "leasingmode":"2",
+        "alivestause":"1",
+        "roomtemperature":"26",
+         "sumflow":"24",
+        "sumday":"65",
+        "phval":"3.8",
+        "coldwater":"20",
+        "hotwater":"95",
+        "filtermode":"1",
+        "device":"GPRS",
+        "iccid":"11223344556677889900",
+        "csq":"90",
+        "loaction":"10020�����",
+        "addtime":"1513238294",
+        "updatetime":"1513299086"
+    }
     var res = [
 		{filtername:'M15UCC',timelife:1000,flowlife:30,introduce: '原装正品净水器滤芯M15UCC 0.5微米高密道4级过滤'},
 		{filtername:'HU603-5a',timelife:1000,flowlife:60,introduce: '正品净水器家用直饮机HU603-5a全套原装滤芯'},
