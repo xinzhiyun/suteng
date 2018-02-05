@@ -352,7 +352,7 @@
 	</style>
 </head>
 <body>
-    <input type="hidden" value={{$data}} id="lvxin_data">
+    <input type="hidden" value={{$data}} class="lvxin_data">
     <input type="hidden" value='{{$filters}}' class="filterData">
 	<header id="header">
 		<span class="tabTitle" index="0">滤芯详情</span>
@@ -462,7 +462,7 @@
     		priceAll = priceAll < 0 ? 0 : priceAll;
     		$("#footer>div>span").text('￥'+priceAll)
     	});
-        var lvxin_data = JSON.parse($("#lvxin_data").val()).filterInfo;
+        var lvxin_data = JSON.parse($(".lvxin_data").val()).filterInfo;
         console.log(lvxin_data);
     	//加载滤芯项
         var lvxinDetail_html='',lvxinReset_html='',lvxinBuy_html=''; 

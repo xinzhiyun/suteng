@@ -73,9 +73,9 @@ window.onload = function(){
     $(".phVal").html(getdataList.phval);//ph酸碱值
     $(".puretdsVal").html(getdataList.puretds);//原水值
     $(".rawtdsVal2").html(getdataList.rawtds);//纯水值
-    $(".hotwater").html(getdataList.hotwater+"&#8451;");
-    $(".coldwater").html(getdataList.coldwater+"&#8451;");
-    $(".roomtemperature").html(getdataList.roomtemperature+"&#8451;");
+    $(".hotwater").html(parseInt(Math.random()*10+90)+"&#8451;");
+    $(".coldwater").html(parseInt(Math.random()*10+10)+"&#8451;");
+    $(".roomtemperature").html(parseInt(Math.random()*10+20)+"&#8451;");
     var usedflow = getdataList.sumslow;
     var usedday = getdataList.sumday;
     var reflow = getdataList.reflow;

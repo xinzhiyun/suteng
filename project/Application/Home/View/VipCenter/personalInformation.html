@@ -98,8 +98,8 @@
 	</style>
 </head>
 <body>
-	<div class="container ">
-		<form action="" method="post">
+	<div class="container">
+		<form action="__URL__/infomationAction" method="post">
 			<div class="Information">
 				<h3>个人信息</h3>
 				<label for="name" class="">
@@ -154,7 +154,7 @@
 		  	if(name==name.match(/^[a-zA-Z\u4e00-\u9fa5]{2,30}$/u)){// 纯中文姓名支持支持 /^[\u4e00-\u9fa5]{2,30}$/u
 		  		console.dir('验证通过');
 		  	}else{
-		  		console.dir('请输入真实的姓名！');
+		  		layuiHint('请输入真实的姓名！');
 		  	}
 		});
 
@@ -166,10 +166,10 @@
 			  	if(phone==rephone[0]){
 			  		console.dir('验证通过');
 			  	}else{
-			  		console.dir('请输入正确的手机号码！');
+			  		layuiHint('请输入正确的手机号码！');
 			  	}	
 		  	}else{
-		  		console.dir('请输入正确的手机号码！');
+		  		layuiHint('请输入正确的手机号码！');
 		  	}
 
 		});
@@ -180,7 +180,7 @@
 		  	if(addr==addr.match(/^[\w\-\u4e00-\u9fa5]{6,255}$/u)){// 公司地址，不为空时验证，数字字母下划线横线中文 6-255位
 		  		console.dir('验证通过');
 		  	}else{
-		  		console.dir('地址格式不正确！');
+		  		layuiHint('地址格式不正确！');
 		  	}
 		});
 		$(".bandBtn").click(function(){

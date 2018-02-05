@@ -23,11 +23,7 @@ class DeviceController extends CommonController
         $this->assign('openId',$openId);
     	$this->display();
     }
-    public function notes()
-    {
-    	$this->display();
-    }
-
+    
     // 设备绑定
     public function bind()
     {

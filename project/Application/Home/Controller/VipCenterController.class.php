@@ -123,6 +123,18 @@ class VipCenterController extends CommonController
             $this->ajaxReturn($err);
         }
     }
+
+    // 净水记录
+    public function purificationNotes()
+    {
+        $this->display();
+    }
+
+    // 用水记录
+    public function usedNotes()
+    {
+        $this->display();
+    }
     
 
 }
