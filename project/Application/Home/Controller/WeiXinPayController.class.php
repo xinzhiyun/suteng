@@ -106,27 +106,37 @@ class WeiXinPayController extends Controller
 
         // 获取微信服务器返回的xml文档
         $xml=file_get_contents('php://input', 'r');
-        // file_put_contents('./wx_pay.txt',$xml."\r\n", FILE_APPEND);die;
+        // file_put_contents('./wx_pay1.txt',$xml."\r\n", FILE_APPEND);die;
         //echo 1;die;
+// 金币模拟数据
 //         $xml = '<xml><appid><![CDATA[wx0bab2f4b5b7ec3b5]]></appid>
-// <attach><![CDATA[2]]></attach>
+// <attach><![CDATA[17,gold]]></attach>
 // <bank_type><![CDATA[CFT]]></bank_type>
 // <cash_fee><![CDATA[1]]></cash_fee>
 // <fee_type><![CDATA[CNY]]></fee_type>
 // <is_subscribe><![CDATA[Y]]></is_subscribe>
 // <mch_id><![CDATA[1490274062]]></mch_id>
-// <nonce_str><![CDATA[usxnuq63f6kepips79estlyual4ikdht]]></nonce_str>
+// <nonce_str><![CDATA[lfrkw9gmvr9lh35r39kserjfq0gk0qvp]]></nonce_str>
 // <openid><![CDATA[oQktJwL8ioR4DoxSQmikdzekbUyU]]></openid>
-// <out_trade_no><![CDATA[668073778377321]]></out_trade_no>
+// <out_trade_no><![CDATA[274960238018351]]></out_trade_no>
 // <result_code><![CDATA[SUCCESS]]></result_code>
 // <return_code><![CDATA[SUCCESS]]></return_code>
-// <sign><![CDATA[01A682464432D90E7829BA09EAFFE83C]]></sign>
-// <time_end><![CDATA[20180131155144]]></time_end>
+// <sign><![CDATA[F5A2A01E2FFD4223E073137AF62E8DA4]]></sign>
+// <time_end><![CDATA[20180205191926]]></time_end>
 // <total_fee>1</total_fee>
 // <trade_type><![CDATA[JSAPI]]></trade_type>
-// <transaction_id><![CDATA[4200000056201801314352585826]]></transaction_id>
+// <transaction_id><![CDATA[4200000071201802057648810477]]></transaction_id>
 // </xml>';
         
+
+//             // [detail] => gold
+//             // [body] => 100元充值100个金币
+//             // [attach] => 16
+//             // [out_trade_no] => 685361645248128
+//             // [total_fee] => 1
+//             // [notify_url] => http://test.dianqiukj.com/index.php/Home/WeiXinPay/congzhiNotify.html
+//             // [trade_type] => JSAPI
+//             // [openid] => oQktJwL8ioR4DoxSQmikdzekbUyU
         if($xml){
             //解析微信返回数据数组格式
             $result = $this->notifyData($xml);
@@ -135,49 +145,54 @@ class WeiXinPayController extends Controller
             $flowData = M('flow')->where($showFlow)->find();
 
             if(empty($flowData)){
-                // 充值套餐ID
-                $id = $result['attach'];
-                // 充值金额
-                $je = [100,200,300,400,500,100,200,300,400,500];
-                $jyb = [100,200,300,500,600,200,400,600,1000,1200];
-                $contentArr =   [
-                        '100元100个金币',
-                        '200元200个金币',
-                        '300元300个金币',
-                        '400元500个金币',
-                        '500元600个金币',
-                       ' 100元200个银币',
-                        '200元400个银币',
-                        '300元600个银币',
-                        '400元1000个银币',
-                        '500元1200个银币',
-                    ];
+                // 匹配充值套餐类型
+                $wxData = explode(",",$result['attach']);
+                // 准备查询条件
+                $showData['id'] = $wxData[0];
+                // 获取查询的表
+                $table = $wxData[1];
+                // 执行查询
+                $flowData = M($table)->where($showData)->find();
+
                 // 查询用户
                 $showUser['open_id'] = $result['openid'];
-
-
+                // 查询用户
                 $user = M('users')->where($showUser)->find();
-
+                // 微信标识
                 $addData['order_id'] = $result['openid'];
+                // 关联用户ID
                 $addData['user_id'] = $user['id'];
+                // 订单编号
                 $addData['order_id'] = $result['out_trade_no'];
-                $addData['money']   = $je[$id];
-                if($id<5){
-                    $addData['gold_num'] = $jyb[$id];
-                }else{
-                    $addData['silver'] = $jyb[$id];
+                // 订单金额
+                $addData['money']   = $flowData['money'];
+
+                switch ($table) {
+                    case 'gold':
+                        // 金币数量 
+                        $addData['gold_num'] = $flowData['gold_num'];
+                        // 当前金币
+                        $addData['current_gold_num'] = $saveData['gold_num'] = $flowData['gold_num'] + $user['gold_num'];
+                        // 当前银币
+                        $addData['current_silver'] = $user['silver'];
+                        break;
+                    case 'silver':
+                        // 银币数量 
+                        $addData['silver_num'] = $flowData['silver_num'];
+                        // 当前银币
+                        $addData['current_silver'] = $saveData['silver'] = $flowData['silver_num'] + $user['silver'];
+                        // 当前金币
+                        $addData['current_gold_num'] = $user['gold_num'];
+                        break;
+                    default:
+                        # code...
+                        break;
                 }
+                // 支付类型
                 $addData['mode']    = 2;
-                $addData['describe'] = $contentArr[$id];
-
-
-                if($id<5){
-                    $addData['current_gold_num'] = $saveData['gold_num'] = $jyb[$id] + $user['gold_num'];
-                    $addData['current_silver'] = $user['silver'];
-                }else{
-                    $addData['current_silver'] = $saveData['silver'] = $jyb[$id] + $user['silver'];
-                    $addData['current_gold_num'] = $user['gold_num'];
-                }
+                // 支付描述
+                $addData['describe'] = $flowData['content'];
+                // 创建时间和更新时间
                 $addData['addtime'] = $addData['updatetime'] =  time();
                 // 写充值流水
                 $addRes = M('flow')->add($addData);

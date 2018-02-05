@@ -342,8 +342,21 @@
 		</div>
 		<div class="modal-backup"></div>
 	</div>
+	<!-- 微信支付支持JS部分代码 -->
+	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>	                                                                                     
 	<script>
-
+		//微信接口
+		wx.config({
+		    debug: false,
+		    appId: '{{$info["appId"]}}',
+		    timestamp: '{{$info["timestamp"]}}',
+		    nonceStr: '{{$info["nonceStr"]}}',
+		    signature: '{{$info["signature"]}}',
+		    jsApiList: [
+		      // 所有要调用的 API 都要加到这个列表中
+		      'chooseWXPay'
+		    ]
+		});
 		$(".taocan div").on("click", function(){
 			$(this).addClass('taocanSelectNow').siblings().removeClass("taocanSelectNow");
 
@@ -400,8 +413,20 @@
 		            break;
 		        case '1':
 		        	// 银币支付
-		        	console.dir('银币充值');
-		        	$('.paystyle').slideDown("slow");
+		        	// 获取充值的产品
+		        	var obj 		= $('.money>div').eq(type).children('.taocanSelectNow');
+		        	
+					if( obj.length != 0 ){
+						// 获取产品价格
+						var money 		= $(obj).attr('money');
+
+						$('.paytopRight p').html('￥'+money+'元');
+						// 显示支付方式
+						$('.paystyle').slideDown("slow");
+					}else{
+						// 未选择产品
+						swal("未选择套餐！","请您先选择一个套餐，再去充值！", "error");
+					}
 		            break;
 		        case '2':
 		        	// 微信支付
@@ -433,18 +458,18 @@
 					var gold_num 	= $(obj).attr('gold_num');
 					// 产品类型
 					var name 		= $(obj).attr('name');
-					console.dir(id+' '+money+' '+gold_num+' '+name);
+					var content 	= $(obj).text();
 					// 获取支付类型
 					var payType = $('.clearfix li span.icon-xuanze').attr('alt');
 					// console.dir(payType);
 					switch(payType){
 						case '0':
 								console.dir('微信支付');
-								$.post('{{:U("Home/PaymentSystem/wxchongzhi")}}',{'id':id,'money':money,'gold_num':gold_num,'name':name}, function(res){
+								$.post('{{:U("Home/PaymentSystem/wxchongzhi")}}',{'id':id,'money':money,'gold_num':gold_num,'name':name,'content':content}, function(res){
 									// 调用微信支付
-									// weixinPay(res);
-									console.dir(res);
-								});	
+									weixinPay(res);
+									// console.dir(res);
+								});
 							break;
 						case '1':
 								console.dir('支付宝支付');
@@ -457,8 +482,39 @@
 		            break;
 		        case '1':
 		        	// 银币支付
-		        	console.dir('银币充值');
-		        	$('.paystyle').slideDown("slow");
+		        	// 获取充值的产品
+		        	var obj 		= $('.money>div').eq(type).children('.taocanSelectNow');
+		        	
+					// 获取选中的套餐
+					var obj = $('.money>div').eq(type).children('.taocanSelectNow');
+					// 获取产品ID
+					var id 			= $(obj).attr('alt');
+					// 获取产品价格
+					var money 		= $(obj).attr('money');
+					// 获取金币数量
+					var silver_num 	= $(obj).attr('silver_num');
+					// 产品类型
+					var name 		= $(obj).attr('name');
+					var content 	= $(obj).text();
+					// 获取支付类型
+					var payType = $('.clearfix li span.icon-xuanze').attr('alt');
+					// console.dir(payType);
+					switch(payType){
+						case '0':
+								console.dir('微信支付');
+								$.post('{{:U("Home/PaymentSystem/wxchongzhi")}}',{'id':id,'money':money,'silver_num':silver_num,'name':name,'content':content}, function(res){
+									// 调用微信支付
+									weixinPay(res);
+									// console.dir(res);
+								});
+							break;
+						case '1':
+								console.dir('支付宝支付');
+							break;
+						case '2':
+								console.dir('银联支付');
+							break;
+					}
 		            break;
 		    }
 
@@ -495,7 +551,27 @@
 	 //       });
   //     	})
 
-
+		// 微信支付方法
+		function weixinPay(res){
+		    WeixinJSBridge.invoke(
+		        'getBrandWCPayRequest',
+		        JSON.parse(res),
+		        function(res){
+		            if (res.err_msg.substr(-2) == 'ok') {
+		                // 付款成功，跳转前台主页
+		                location.href = "{{:U('Home/PaymentSystem/paytosuccess')}}";
+		            } else if (res.err_msg.substr(-6) == 'cancel') {
+		                    // 取消付款
+		                    // 跳转到待付款订单页面
+		                    location.href = "{{:U('Home/PaymentSystem/paytofailed')}}";
+		            }else{
+		                    // 付款失败
+		                    // 跳转到待付款订单页面
+		                    location.href = "{{:U('Home/PaymentSystem/paytofailed')}}";
+		            }
+		        }
+		    );
+		};
 	</script>
 </body>
 </html>

@@ -148,18 +148,28 @@ class PaymentSystemController extends CommonController
             switch ($name) {
                 case 'gold':
                     // 金币充值
-                    print_r(I());
+                    $showData['id'] = I('post.id');
+                    // 查询金币
+                    $gold = M('gold')->where($showData)->find();
+   
+                    // 请求支付
+                    $this->uniformOrder($gold['money'],$gold['id'],$gold['content'],'gold');
 
                     break;
                 case 'silver':
                     // 银币充值
-
+                    $showData['id'] = I('post.id');
+                    // 查询金币
+                    $silver = M('silver')->where($showData)->find();
+   
+                    // 请求支付
+                    $this->uniformOrder($silver['money'],$silver['id'],$silver['content'],'silver');
                     break;
                 default:
                     # code...
                     break;
             }
-            $this->uniformOrder($je,$id,'速腾商城充值'); 
+             
         }
     }
 
@@ -170,7 +180,7 @@ class PaymentSystemController extends CommonController
      * @param  [type] $order_id [订单号码]
      * @param  [type] $content  [订单详情]
      */
-    public function uniformOrder($money,$order_id,$content)
+    public function uniformOrder($money,$flow_id,$content,$type)
     {
         // dump($_SESSION);die;
         // $content = substr($content,0,80);
@@ -190,13 +200,13 @@ class PaymentSystemController extends CommonController
         vendor('WxPay.jsapi.WxPay#JsApiPay');
         $input = new \WxPayUnifiedOrder();
         // 傳用戶ID
-        //$input->SetDetail($uid);
+        // $input->SetDetail($type);
         // 产品内容
         $input->SetBody($content);
         // 唯一订单ID
-        $input->SetAttach($order_id);
+        $input->SetAttach($flow_id.','.$type);
         // 设置商户系统内部的订单号,32个字符内、可包含字母, 其他说明见商户订单号
-        $input->SetOut_trade_no(gerOrderId());
+        $input->SetOut_trade_no(getOrderId());
         // 产品金额单位为分
         // $input->SetTotal_fee($money);
         // 调试用1分钱
@@ -213,7 +223,7 @@ class PaymentSystemController extends CommonController
         $input->SetTrade_type("JSAPI");
         // 用户在公众号的唯一标识
         $input->SetOpenid($openId);
-        
+        // print_r($input);die;
         // 统一下单
         $order = \WxPayApi::unifiedOrder($input);
         // print_r($order);die;
@@ -284,5 +294,7 @@ class PaymentSystemController extends CommonController
         echo $jsApiParameters;
         exit;
     }
+
+
 
 }
