@@ -9,7 +9,10 @@
 
 </head>
 <body>
-<!--<input type="hidden" class="getData" value= >-->
+<input type="hidden" value={{$device|json_encode}} class="deviceInfo">
+<input type="hidden" value={{$data|json_encode}} class="res">
+
+
   <div class="_chongxi">
     <div class="chongContainer">
       <div class="chongTop ">
@@ -61,7 +64,6 @@
             <p><b class="redu roomtemperature">24~16 &#8451;</b></p>
           </div>
       </div>
-
 <!-- ====================净水机底部开始==================== -->
       <div class="chongFoot">
           <div class="chbuTop">
