@@ -47,7 +47,7 @@
                                     <volist name="deviceInfo" id="vo">
                                         <tr>
                                             <td>{{$i}}</td>
-                                            <td><a href="#">{{$vo.device_code}}</a></td>
+                                            <td><a class="deviceDetail" href="#">{{$vo.device_code}}</a></td>
                                             <td>{{$vo.typename}}</td>
                                             <td>
                                                 <empty name="vo.user">
@@ -217,6 +217,11 @@
             }
         });
     })
+
+    $("td").on('click','.deviceDetail',function(e){
+        var code = $(this).html();
+        location.href = "deviceDetail?code="+code;
+    });
 
     $('.pagination ul a').unwrap('div').wrap('<li></li>');
     $('.pagination ul span').wrap('<li class="active"></li>')

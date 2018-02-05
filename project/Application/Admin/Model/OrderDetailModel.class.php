@@ -13,7 +13,7 @@ class OrderDetailModel extends BaseModel
             ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid','LEFT')
             ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
             ->join('__ADDRESS__ a ON o.address_id=a.id', 'LEFT')
-            ->field('g.name gname,od.num,od.price,od.status,a.name,a.phone,a.address,p.path,o.status os')
+            ->field('g.name gname,od.num,od.price,gd.desc,a.name,a.phone,a.address,p.path,o.status os')
             ->select();
         return $data;
     }

@@ -8,7 +8,7 @@ class ActionController extends Controller
 {
     public function __construct()
     {
-        Gateway::$registerAddress = '127.0.0.1:9504';
+        Gateway::$registerAddress = '127.0.0.1:6504';
     }
     // 接收信息
     public function receive()
@@ -16,7 +16,6 @@ class ActionController extends Controller
         $message = I('post.');
         $client_id = $message['client_id'];
         unset($message['client_id']);
-
         // 判断数据传输的对象
         if( $message['soure']=='TCP'){
             $this->gettcp($client_id, $message);
@@ -52,12 +51,12 @@ class ActionController extends Controller
             case 'Select':
                 $this->selectAction($message);
                 break;
-            case 'Requestwater':
-                $message = $this->RequesAction($client_id, $message);
-                break;
-            case 'Stopwater':
-                $this->stopAction($client_id, $message);
-                break;
+            // case 'Requestwater':
+            //     $message = $this->RequesAction($client_id, $message);
+            //     break;
+            // case 'Stopwater':
+            //     $this->stopAction($client_id, $message);
+            //     break;
             default:
                 # code...
                 break;
@@ -96,11 +95,10 @@ class ActionController extends Controller
             'CSQ'          => $message['CSQ'],
             'Loaction'     => $message['Loaction']
         ];
-        Log::write(json_encode($data), '获取设备信息');die;
-        $devices_id = M('devices')->where("device_code={$message['DeviceID']}")->getField('id');
-        Log::write(json_encode($devices_id), '获取SQL输出语句');
-        $status_id  = M('devices_statu')->where("DeviceID={$message['DeviceID']}")->getField('id');
-        Log::write(json_encode($devices_id),'登陆信息处理完成');die;
+        Log::write(json_encode($data), '初始化设备信息');
+        $devices_id = M('Devices')->where("device_code={$message['DeviceID']}")->find()['id'];
+        Log::write(json_encode($devices_id), '获取设备ID');
+        $status_id  = M('devices_statu')->where("DeviceID={$message['DeviceID']}")->find()['id'];
         if( empty($status_id) ){
             $res = $this->saveData($data);
             if($res){

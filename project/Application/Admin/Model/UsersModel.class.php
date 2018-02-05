@@ -30,5 +30,54 @@ class UsersModel extends Model
         
     );
 
+    // 查询用户绑定的信息
+    public function getBindInfo($where=array())
+    {
+        $data = $this
+            ->alias('u')
+            ->where($where)
+            ->join('__USER_DEVICE__ ud ON u.id=ud.uid','LEFT')
+            ->join('__DEVICES__ d ON ud.did=d.id', 'LEFT')
+            ->join('__DEVICES_STATU__ ds ON d.device_code=ds.DeviceID', 'LEFT')
+            ->join('__TYPE__ t ON d.type_id=t.id', 'LEFT')
+            ->field('d.device_code,t.typename,ud.name,ud.phone,ud.address,ud.status,ud.addtime')
+            ->select();
+        if(empty($data)) $data = null;
+        return $data;
+    }
 
+    // 设备解除绑定
+    public function unBind($where=array(),$uid=array())
+    {
+        $use_device = M('UserDevice');
+        $this->startTrans();
+        $id = M('devices')->where($where)->find();
+        if(empty($id)) E("请重试", 10061);
+        $uid['did'] = $id['id'];
+        $data = $use_device->where('uid='.$uid['uid'])->select();
+        if(count($data) == 1){
+            $f_status = $use_device->where($uid)->delete();
+        } else {
+            $arr = [];
+            $f_status = $use_device->where($uid)->delete();
+            foreach ($data as $key => $value) {
+                $arr[$key] = $value['did'];
+                if($value['did'] == $uid['did']){
+                    unset($arr[$key]);
+                }
+            }
+            $res = $use_device->where(['uid='.$uid['uid'],['status'=>1]])->find();
+            if(!$res){
+                $uid['did'] = $arr[array_rand($arr)];
+                $res = $use_device->where($uid)->save(['status'=>1]);
+            }
+        }
+        if($res && $f_status){
+            $this->commit();
+            return true;
+        } else {
+            $this->rollback();
+            return false;
+        }
+    }
 }

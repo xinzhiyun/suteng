@@ -1,0 +1,115 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+    <style>
+        img{
+            width: 60px;
+            height: 60px;
+        }
+    </style>
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>商城管理 <small>订单详情</small></h5>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-bordered table-hover">
+                        <caption style="text-align: center;"><h1>订单号：<span>{{$userInfo['order_id']}}</span></h1></caption>
+                        <thead>
+                            <tr>
+                                <th style="width: 3%">收货人：</th>
+                                <td colspan="5" style="width: 30%">{{$userInfo['name']}}</td>
+                            </tr>
+                            <tr>
+                                <th>联系电话：</th>
+                                <td colspan="5">{{$userInfo['phone']}}</td>
+                            </tr>
+                            <tr>
+                                <th>收货地址：</th>
+                                <td colspan="5">{{$userInfo['address']}}</td>
+                            </tr>
+                        </thead>
+                    </table>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    序号
+                                </th>
+                                <th>
+                                    商品名称
+                                </th>
+                                <th>
+                                    商品图片
+                                </th>
+                                <th>
+                                    商品描述
+                                </th>
+                                <th>
+                                    购买数量
+                                </th>
+                                <th>
+                                    购买单价
+                                </th>
+                                <th>
+                                    商品金额
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <empty name="data">
+                                <tr><td colspan="12">暂无商品数据</td></tr>
+                            <else />
+                                <volist name="data" id="v">
+                                    <tr>
+                                        <td>
+                                            {{$i}}
+                                        </td>
+                                        <td>
+                                            {{$v['gname']}}
+                                        </td>
+                                        <td>
+                                            <img src="/Uploads/{{$v['path']}}">
+                                        </td>
+                                        <td>
+                                            {{$v['desc']}}
+                                        </td>
+                                        <td>
+                                            {{$v['num']}}
+                                        </td>
+                                        <td>
+                                            {{$v['price']|number_format=2}}元
+                                        </td>
+                                        <td>
+                                            {{$v['num']*$v['price']|number_format=2}}元
+                                        </td>
+                                    </tr>
+                                </volist>
+                            </empty>
+                        </tbody>
+                    </table>
+                    <table>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5"></td>
+                                <td>总计：</td>
+                                <td style="color: red;">{{$userInfo['g_price']|number_format=2}}元</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script>
+    </script>
+</block>

@@ -33,22 +33,6 @@ class DevicesModel extends Model
     //
     public function getDevicesInfo($map)
     {
-        // 分页
-        // $count = $this
-        //     ->where($map)
-        //     ->alias('d')
-        //     ->join("__DEVICES_STATU__ statu ON d.device_code=statu.DeviceID", 'LEFT')
-        //     ->join("__BINDING__ bind ON d.id=bind.did", 'LEFT')
-        //     ->join("__VENDORS__ vendors ON bind.vid=vendors.id", 'LEFT')
-        //     // ->join("__DEVICE_TYPE__ type ON d.type_id=type.id", 'LEFT')
-        //     ->order('statu.updatetime')
-        //     ->limit($page->firstRow.','.$page->listRows)
-        //     ->count();
-        // $page = new \Think\Page($count, 15);
-        // $page->rollPage = 10;
-        // getPageConfig($page);
-        // $show = $page->show();
-
         // 查询数据
         $data = $this
             ->where($map)
@@ -66,5 +50,41 @@ class DevicesModel extends Model
             'data' => $data,
         ];
         return $assign;
+    }
+
+    // 获取设备信息
+    public function getDeviceInfo($map=array())
+    {
+        $data = $this
+            ->alias('d')
+            ->where($map)
+            ->join('__DEVICES_STATU__ ds ON d.device_code=ds.DeviceID', 'LEFT')
+            ->find();
+        return $data;
+    }
+
+    // 查询滤芯详情
+    public function getFilterDetail($sum)
+    {
+        unset($sum['id'],$sum['typename'],$sum['addtime']);
+        $sum = array_filter($sum);
+        foreach ($sum as $key => $value) {
+            $str = stripos($value,'-');
+            $map['filtername'] = substr($value, 0,$str);
+            $map['alias'] = substr($value, $str+1);
+            $res[] = M('filters')->where($map)->find();
+        }
+        return $res;
+    }
+
+    // 获取滤芯数据
+    public function getFilterInfo($map=array())
+    {
+        $data = $this
+            ->alias('d')
+            ->where($map)
+            ->join('__TYPE__ t ON d.type_id=t.id', 'LEFT')
+            ->find();
+        return $data;
     }
 }

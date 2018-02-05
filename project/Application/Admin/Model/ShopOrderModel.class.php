@@ -19,4 +19,14 @@ class ShopOrderModel extends BaseModel
             ->select();
         return $data;
     }
+
+    public function getUserInfo($map=array())
+    {
+        $data = $this
+            ->alias('o')
+            ->where($map)
+            ->join('__ADDRESS__ a ON o.uid=a.uid', 'LEFT')
+            ->find();
+        return $data;
+    }
 }

@@ -146,51 +146,7 @@
 
         $('body').on('click','.btn-success',function(){
             var orderId = $(this).attr('orderId')
-            $.ajax({
-                url:'selectOrder',
-                type:'post',
-                dataType:'json',
-                data:{'order_id':orderId},
-                success:function(res){
-                    console.log(res);
-                    var aa = "";
-                    for(var i=0;i<res.length;i++){
-                        aa += '<tr>'+
-                            '<th>'+res[i].order_id+'</th>'+
-                            '<th>'+res[i].name+'</th>'+
-                            '<th>'+res[i].phone+'</th>'+
-                            '<th>'+res[i].address+'</th>'+
-                        '</tr>'
-                    }
-                    // console.log(aa);
-                    parent.layer.open({
-                        type: 1,
-                        title: '订单详情',
-                        shadeClose: true,
-                        shade: 0.3,
-                        area: ['60%', '40%'],
-                        content: '<div class="ibox-content">'+
-
-                                    '<table class="table">'+
-                                        '<thead>'+
-                                            '<tr>'+
-                                                '<th>商品名称</th>'+
-                                                '<th>商品单价</th>'+
-                                                '<th>商品数量</th>'+
-                                                '<th>商品金额</th>'+
-                                            '</tr>'+
-                                        '</thead>'+
-                                        '<tbody>'+
-
-                                            aa+
-                                        '</tbody>'+
-                                    '</table>'+
-
-                                '</div>'
-                    });
-                }
-            });
-            
+            location.href = "selectOrder?id="+orderId;            
         })
 
         

@@ -172,4 +172,46 @@ class UsersController extends CommonController
         $this->assign('button',$pageButton);
         $this->display();        
     }   
+
+    // 用户详情
+    public function user_detail()
+    {
+        $user = D('Users');
+        $map['u.id'] = $where['id'] = I('get.id');
+
+        // 当前用户信息
+        $userInfo = $user->where($where)->find();
+
+        // 用户绑定信息
+        $bindDeviceInfo = $user->getBindInfo($map);
+        $assign = [
+            'uInfo' => $userInfo,
+            'bInfo' => $bindDeviceInfo,
+        ];
+        $this->assign($assign);
+        $this->display('userDetail');
+    }
+
+
+    // 设备解绑
+    public function unBind()
+    {
+        try {
+            $user = D("Users");
+            $where['device_code'] = I('post.device_code');
+            $data['uid'] = I('post.uid');
+            $res = $user->unBind($where,$data);
+            if($res){
+                E('解绑成功',200);
+            } else {
+                E('解绑失败',603);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
 }

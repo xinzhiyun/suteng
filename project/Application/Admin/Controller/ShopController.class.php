@@ -350,19 +350,18 @@ class ShopController extends CommonController
     // 查看订单详情
     public function selectOrder()
     {
-        try {
-            $orderDetail = D('OrderDetail');
-            $where['od.order_id'] = I('post.order_id');
-            $data = $orderDetail->getInfo($where);
-            dump($data);die;
-            $this->ajaxReturn($data);
-        } catch (\Exception $e) {
-            $err = [
-                'code' => $e->getCode(),
-                'msg' => $e->getMessage(),
-            ];
-            $this->ajaxReturn($err);
-        }
+        $orderDetail = D('OrderDetail');
+        $orders = D("ShopOrder");
+        $order['order_id'] = I('get.id');
+        $userInfo = $orders->getUserInfo($order);
+        $map['od.order_id'] = $order['order_id'];
+        $data = $orderDetail->getInfo($map);
+        $assign = [
+            'userInfo' => $userInfo,
+            'data'     => $data,
+        ];
+        $this->assign($assign);
+        $this->display('orderDetail');
     }
 
 }

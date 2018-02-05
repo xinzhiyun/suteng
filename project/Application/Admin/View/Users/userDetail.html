@@ -1,0 +1,141 @@
+<extend name="Public/base" />
+<block name="content">
+    <div class="content">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>用户管理 <small>用户详情</small></h5>
+                </div>
+                <div class="ibox-content">
+                    <table id="t1" class="table table-bordered table-hover">
+                        <caption style="text-align: center;"><h1>当前用户：{{$uInfo['nickname']}}</h1></caption>
+                        <thead>
+                            <tr><th colspan="9">用户基础信息</th></tr>
+                            <tr>
+                                <th width="5%">
+                                    序号
+                                </th>
+                                <th>
+                                    设备编码
+                                </th>
+                                <th>
+                                    设备类型
+                                </th>
+                                <th>
+                                    绑定名字
+                                </th>
+                                <th>
+                                    手机号码
+                                </th>
+                                <th>
+                                    绑定地址
+                                </th>
+                                <th>
+                                    绑定时间
+                                </th>
+                                <th>
+                                    当前设备
+                                </th>
+                                <th>
+                                    操作
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <empty name="bInfo">
+                                <tr><td colspan="9">暂无绑定设备</td></tr>
+                            <else />
+                                <volist name="bInfo" id="vo">
+                                    <tr>
+                                        <td>{{$i}}</td>
+                                        <td>{{$vo.device_code}}</td>
+                                        <td>{{$vo.typename}}</td>
+                                        <td>{{$vo.name}}</td>
+                                        <td>{{$vo.phone}}</td>
+                                        <td>{{$vo.address}}</td>
+                                        <td>{{$vo.addtime|date="Y-m-d H:i:s", ###}}</td>
+                                        <td>
+                                            <switch name="vo.status">
+                                                <case value="0">否</case>
+                                                <case value="1">是</case>
+                                            </switch>
+                                        </td>
+                                        <td><a class="btn btn-success delBind" u="{{$uInfo['id']}}" device={{$vo.device_code}} href="#">解除绑定</a></td>
+                                    </tr>
+                                </volist>
+                            </empty>
+                        </tbody>
+                    </table>
+                    <table id="t2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr><th colspan="9">用户充值信息</th></tr>
+                            <tr>
+                                <th width="5%">
+                                    序号
+                                </th>
+                                <th>
+                                    订单号码
+                                </th>
+                                <th>
+                                    设备编码
+                                </th>
+                                <th>
+                                    充值数额
+                                </th>
+                                <th>
+                                    剩余数额
+                                </th>
+                                <th>
+                                    充值方式
+                                </th>
+                                <th>
+                                    充值时间
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <empty name="bInfo">
+                                <tr><td colspan="9">暂无充值记录</td></tr>
+                            <else />
+                                <volist name="bInfo" id="vo">
+                                    <tr>
+                                        <td>{{$i}}</td>
+                                        <td>{{$vo.device_code}}</td>
+                                        <td>{{$vo.typename}}</td>
+                                        <td>{{$vo.name}}</td>
+                                        <td>{{$vo.phone}}</td>
+                                        <td>{{$vo.address}}</td>
+                                        <td>{{$vo.addtime|date="Y-m-d H:i:s", ###}}</td>
+                                    </tr>
+                                </volist>
+                            </empty>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script>
+        $('td').on('click', '.delBind', function(e){
+            var code = $(this).attr('device');
+            var uid = $(this).attr('u');
+            parent.layer.confirm('确认解除'+code+'设备绑定吗？', {
+                btn: ['确认','取消'], //按钮
+                shade: false //不显示遮罩
+            }, function(){
+                $.ajax({
+                    url:'unBind',
+                    type:'post',
+                    data:{'device_code':code,'uid':uid},
+                    success:function(res){
+                        location.reload('');
+                        parent.layer.msg(res.msg);
+                    }
+                });
+            })
+        });
+    </script>
+</block>
