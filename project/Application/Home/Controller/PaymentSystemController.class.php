@@ -141,38 +141,26 @@ class PaymentSystemController extends CommonController
      */
     public function wxchongzhi()
     {
-        $id = I('post.id')-1;
-        $jeArr =   [
-                    100,
-                    200,
-                    300,
-                    400,
-                    500,
-                    100,
-                    200,
-                    300,
-                    400,
-                    500,
-                ];
-        $contentArr =   [
-                    '100元100个金币',
-                    '200元200个金币',
-                    '300元300个金币',
-                    '400元400个金币',
-                    '500元500个金币',
-                   ' 100元200个银币',
-                    '200元400个银币',
-                    '300元600个银币',
-                    '400元1000个银币',
-                    '500元1200个银币',
-                ];
-        $je = $jeArr[$id];
-        // //
-        // $openId = $_SESSION['open_id'];
+        if(IS_POST){
+            // 接收充值数据
+            $name = I('post.name');
 
-        // dump($openId);die;
-        // echo $je;
-        $this->uniformOrder($je,$id,'速腾商城充值');
+            switch ($name) {
+                case 'gold':
+                    // 金币充值
+                    print_r(I());
+
+                    break;
+                case 'silver':
+                    // 银币充值
+
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+            $this->uniformOrder($je,$id,'速腾商城充值'); 
+        }
     }
 
     /**
@@ -228,7 +216,7 @@ class PaymentSystemController extends CommonController
         
         // 统一下单
         $order = \WxPayApi::unifiedOrder($input);
-        print_r($order);die;
+        // print_r($order);die;
         // 返回支付需要的对象JSON格式数据
         $jsApiParameters = $tools->GetJsApiParameters($order);
 

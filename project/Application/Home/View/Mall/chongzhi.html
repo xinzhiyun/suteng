@@ -6,6 +6,8 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_3mgodvjd6sp833di.css">
+	<link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+	<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<title>会员充值</title>
 	<style>
@@ -17,7 +19,6 @@
 		body {
 			font-size: .7rem;
 			overflow-x: hidden;
-			color:#373737;
 		}
 		#content {
 			width: 100vw;
@@ -25,11 +26,8 @@
 		}
 		/*充值类型*/
 		#content>div>p {
-			padding: 2% 4% 3%;
+			padding: 1% 4%;
 			text-align: left;
-			color: #5a5a5a;
-			font-size: 0.72rem;
-
 		}
 		.taocan {
 			padding: 2% 0;
@@ -92,6 +90,16 @@
 			height: 100vh;
 			display: none;
 		}
+		/*付款页面1*/
+		.paystyle1{
+			position:absolute;
+			top:0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			display: none;
+		}
+
 		.paystyleTop{
 			width: 100vw;
 			height: 10vh;
@@ -101,7 +109,7 @@
 		.payContain{
 			position: absolute;
 			bottom: 0;
-			height: 95vh;
+			height: 90vh;
 			width: 100vw;
 			/*opacity: 0.5;*/
 			z-index: 999;
@@ -157,7 +165,7 @@
 			padding:0.8rem;
 		}
 		.paymidd>ul>li{
-			padding:0.6rem 0.5rem;
+			padding:0.8rem 0.5rem;
 			border-bottom: 1px  solid #E5E5E5;
 		}
 		.paymidd>ul>li:nth-child(2){
@@ -231,31 +239,42 @@
 			</div>
 		</div>
 		<div class="money">
-			<p>选择充值金额</p>
+			<notempty name="data">
+				<p>请选择充值套餐</p>
+			</notempty>
+			
 			<!-- 金币 -->
 			<div class="moneySon">
-				<div alt="1" class="moneyItem taocanSelectNow">100元100个金币</div>
-				<div alt="2" class="moneyItem">200元200个金币</div>
-				<div alt="3" class="moneyItem">300元300个金币</div>
-				<div alt="4" class="moneyItem">400元500个金币</div>
-				<div alt="5" class="moneyItem">500元600个金币</div>
-				
+				<empty name="data.gold">
+					<div>暂无金币充值套餐！</div>
+				<else /> 
+					<foreach name="data.gold" item="vo" >
+					    <div alt="{{$vo.id}}" name="gold" money="{{$vo.money}}" gold_num="{{$vo.gold_num}}" class="moneyItem">{{$vo.content}}</div>
+					</foreach>
+				</empty> 
 			</div>
+
+ 
 			<!-- 银币 -->
 			<div class="moneySon">
-				<div alt="6" class="moneyItem taocanSelectNow">100元200个银币</div>
-				<div alt="7" class="moneyItem">200元400个银币</div>
-				<div alt="8" class="moneyItem">300元600个银币</div>
-				<div alt="9" class="moneyItem">400元1000个银币</div>
-				<div alt="10" class="moneyItem">500元1200个银币</div>
+				<empty name="data.silver">
+					<div>暂无银币充值套餐！</div>
+				<else /> 
+					<foreach name="data.silver" item="vo" >
+					    <div alt="{{$vo.id}}" name="silver"  money="{{$vo.money}}" silver_num="{{$vo.silver_num}}" class="moneyItem">{{$vo.content}}</div>
+					</foreach>
+				</empty>
 			</div>
 			<div class="moneySon">
-				<div alt="11" class="moneyItem taocanSelectNow">100金币兑200银币</div>
-				<div alt="12" class="moneyItem">200金币兑400银币</div>
-				<div alt="13" class="moneyItem">300金币兑600银币</div>
-				<div alt="14" class="moneyItem">400金币兑800银币</div>
-				<div alt="15" class="moneyItem">500金币兑1000银币</div>
+				<empty name="data.gold_silver">
+					<div>暂无银币充值套餐！</div>
+				<else /> 
+					<foreach name="data.gold_silver" item="vo" >
+					    <div alt="{{$vo.id}}" name="gold_silver"  gold="{{$vo.gold}}" silver_num="{{$vo.silver_num}}" class="moneyItem">{{$vo.content}}</div>
+					</foreach>
+				</empty> 
 			</div>
+		</div>
 		</div>
 	</div>
 	<!-- 付款页面 -->
@@ -272,18 +291,36 @@
 			<div class="paymidd">
 				<h3>选择支付方式</h3>
 				<ul class="clearfix">
-				<!-- {{$user|dump}} -->
-					<li><i class="iconfont icon-jinbi"></i>金币<span type="0" class="iconfont icon-kuang1"></span></li>
-					<li><i class="iconfont icon-yingbi"></i>银币<span type="1" class="iconfont icon-kuang1"></span></li>
-					<li><i class="iconfont icon-z-weixin"></i>微信支付<span type="2" class="iconfont icon-xuanze"></span></li>
-					<li><i class="iconfont icon-zhifubao"></i>支付宝支付<span type="3" class="iconfont icon-kuang1"></span></li>
-					<li><i class="iconfont icon-yinhang-yinlian-"></i>银联<span type="4" class="iconfont icon-kuang1"></span></li>
-					<input type="hidden" id="gold" value="{{$user['gold_num']}}">
-					<input type="hidden" id="silver" value="{{$user['silver']}}">
+					<li><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-xuanze" alt="0"></span></li>
+					<li><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1" alt="1"></span></li>
+					<li><i class="iconfont icon-yinhang-yinlian-"></i>银联<span class="iconfont icon-kuang1" alt="2"></span></li>
 				</ul>
 			</div>
 			<div class="payBott">
 				<input class="start" type="submit" value="立即支付">
+			</div>
+		</div>
+	</div>
+
+	<!-- 付款页面1 -->
+	<div class="paystyle1">
+		<div class="paystyleTop"></div>
+		<div class="payContain">
+			<div class="paytop clearfix">
+				<div class="paytopLeft"><i class="iconfont icon-cuohao"></i></div>
+				<div class="paytopRight">
+					<h3>付款</h3>
+					<p>￥3620.00</p>
+				</div>	
+			</div>
+			<div class="paymidd">
+				<h3>选择支付方式</h3>
+				<ul class="clearfix">
+					<li><i class="iconfont icon-jinbi"></i>金币<span class="iconfont icon-xuanze"></span></li>
+				</ul>
+			</div>
+			<div class="payBott">
+				<input class=" start" type="submit" value="立即支付">
 			</div>
 		</div>
 	</div>
@@ -305,37 +342,11 @@
 		</div>
 		<div class="modal-backup"></div>
 	</div>
-	<!-- 微信支付支持JS部分代码 -->
-	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>	                                                                                     
 	<script>
-		//微信接口
-		wx.config({
-		    debug: false,
-		    appId: '{{$info["appId"]}}',
-		    timestamp: '{{$info["timestamp"]}}',
-		    nonceStr: '{{$info["nonceStr"]}}',
-		    signature: '{{$info["signature"]}}',
-		    jsApiList: [
-		      // 所有要调用的 API 都要加到这个列表中
-		      'chooseWXPay'
-		    ]
-		});
+
 		$(".taocan div").on("click", function(){
 			$(this).addClass('taocanSelectNow').siblings().removeClass("taocanSelectNow");
 
-			// $(this).attr("index") == 0 
-			// ? (
-			// 	$(".moneySon").eq(0).animate({left: '0vw'}),
-			// 	$(".moneySon").eq(1).animate({left: '100vw'}),
-			// 	$(".moneySon").eq(2).animate({left: '200vw'})
-
-			// ) 
-			// : (
-			// 	$(".moneySon").eq(0).animate({left: '100vw'}),
-			// 	$(".moneySon").eq(1).animate({left: '0vw'}),
-			// 	$(".moneySon").eq(2).animate({left: '-100vw'})
-
-			// )
 			var _index=$(this).attr("index");
 			if(_index==0){
 				$(".moneySon").eq(0).animate({left: '0vw'}),
@@ -364,247 +375,127 @@
 		})
 		//支付方式
 		$('#footer').click(function(){
-			// 支付类型
-			var type = $('.clearfix li span.icon-xuanze').attr('type');
-			// 显示支付金额
-			showje(type);
-			// 显示模态框
-			$('.paystyle').slideDown("slow");
+			// 获取充值产品类型
+			var type = $('.taocanSelectNow').attr('index');
+
+	       	// 匹配充值产品类型，请求支付接口
+		    switch (type) {
+		        case '0':
+		        	// 金币支付
+		        	// 获取充值的产品
+		        	var obj 		= $('.money>div').eq(type).children('.taocanSelectNow');
+		        	
+					if( obj.length != 0 ){
+						// 获取产品价格
+						var money 		= $(obj).attr('money');
+
+						$('.paytopRight p').html('￥'+money+'元');
+						// 显示支付方式
+						$('.paystyle').slideDown("slow");
+					}else{
+						// 未选择产品
+						swal("未选择套餐！","请您先选择一个套餐，再去充值！", "error");
+					}
+		        	
+		            break;
+		        case '1':
+		        	// 银币支付
+		        	console.dir('银币充值');
+		        	$('.paystyle').slideDown("slow");
+		            break;
+		        case '2':
+		        	// 微信支付
+		        	console.dir('银币兑换');
+		        	$('.paystyle1').slideDown("slow");
+		            break;
+		    }
 		})
+
+		// 发起支付
+		$('.paystyle .start').click(function(){
+			// 获取充值产品类型
+			var type = $('.taocanSelectNow').attr('index');
+
+	       	// 匹配充值产品类型，请求支付接口
+		    switch (type) {
+		        case '0':
+		        	// 金币支付
+		        	// 获取充值的产品
+		        	var obj 		= $('.money>div').eq(type).children('.taocanSelectNow');
+		        	
+					// 获取选中的套餐
+					var obj = $('.money>div').eq(type).children('.taocanSelectNow');
+					// 获取产品ID
+					var id 			= $(obj).attr('alt');
+					// 获取产品价格
+					var money 		= $(obj).attr('money');
+					// 获取金币数量
+					var gold_num 	= $(obj).attr('gold_num');
+					// 产品类型
+					var name 		= $(obj).attr('name');
+					console.dir(id+' '+money+' '+gold_num+' '+name);
+					// 获取支付类型
+					var payType = $('.clearfix li span.icon-xuanze').attr('alt');
+					// console.dir(payType);
+					switch(payType){
+						case '0':
+								console.dir('微信支付');
+								$.post('{{:U("Home/PaymentSystem/wxchongzhi")}}',{'id':id,'money':money,'gold_num':gold_num,'name':name}, function(res){
+									// 调用微信支付
+									// weixinPay(res);
+									console.dir(res);
+								});	
+							break;
+						case '1':
+								console.dir('支付宝支付');
+							break;
+						case '2':
+								console.dir('银联支付');
+							break;
+					}
+		        	
+		            break;
+		        case '1':
+		        	// 银币支付
+		        	console.dir('银币充值');
+		        	$('.paystyle').slideDown("slow");
+		            break;
+		    }
+
+
+
+
+
+		});
+
+
+
 		// 付款方式的单选框
 		$('.paymidd>ul>li>span').click(function(){
 			$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 			$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
-			//console.dir($(this).attr('type'));
-			var type = $(this).attr('type');
-			// 显示支付金额
-			showje(type);
 		})
 		// 付款方式页面隐藏
 		$('.paytop>.paytopLeft>i').click(function(){
 			$('.paystyle').slideUp("slow");
+			$('.paystyle1').slideUp("slow");
 		})
 		// 模态框的js
-		$(function(){
-			// 点击立即支付
-	      	$(".start").on("click",function(){
-	       	   // $(".modal").addClass("in");
-	       	   // $(".modal").css('z-index','1001');
-	       	   // $(".modelAll").css('display','block');
-	       	   // $(".modal-backup").css('display','block');
-	       		// 获取支付类型
-	       	   	var type = $('.clearfix li span.icon-xuanze').attr('type');
-	       	   	// 获取购买产品的ID号
-	       	   	var id = getPayId();
-	       	   	//console.dir(id); 
-	       	   	// 匹配支付类型，请求支付接口
-		        switch (type) {
-		            case '0':
-		            	// 金币支付
-		            	console.dir('金币支付');
-		                break;
-		            case '1':
-		            	// 银币支付
-		            	console.dir('银币支付');
-		                break;
-		            case '2':
-		            	// 微信支付
-		            	console.dir('微信支付');
-						$.post('{{:U("Home/PaymentSystem/wxchongzhi")}}',{ 'id':id }, function(res){
-							// 调用微信支付
-							weixinPay(res);
-							console.dir(res);
-						});	
-		                break;
-		            case '3':
-		            	// 支付宝支付
-		            	console.dir('支付宝支付');
-		                break;
-		            case '4':
-		            	// 银联支付
-		            	console.dir('银联支付');
-		                break;
-		                break;
-		            default:
-		                //# code...
-		                break;
-		        }	
-	       });
-	      	$(".close").on("click",function(){
-	       	   $(".modal").removeClass('in');
-	       	   $(".modal").css('z-index','-1');
-	       	   $(".modal-backup").fadeOut('slow');
-	       });
-      	})
+		// $(function(){
+	 //      	$(".start").on("click",function(){
+	 //       	   $(".modal").addClass("in");
+	 //       	   $(".modal").css('z-index','1001');
+	 //       	   $(".modelAll").css('display','block');
+	 //       	   $(".modal-backup").css('display','block');
+	 //       });
+	 //      	$(".close").on("click",function(){
+	 //       	   $(".modal").removeClass('in');
+	 //       	   $(".modal").css('z-index','-1');
+	 //       	   $(".modal-backup").fadeOut('slow');
+	 //       });
+  //     	})
 
-		// 显示支付金额的方法
-		function showje(type){
-			//var type = $(this).attr('type');
-			// 实例化金额数组
-			var je = [
-						[
-							'100金币',
-							'200金币',
-							'300金币',
-							'400金币',
-							'500金币',
-							'100金币',
-							'200金币',
-							'300金币',
-							'400金币',
-							'500金币',
-							'100金币',
-							'200金币',
-							'300金币',
-							'400金币',
-							'500金币',
-						],
-						[
-							'200银币',
-							'400银币',
-							'600银币',
-							'800银币',
-							'1000银币',
-							'200银币',
-							'400银币',
-							'600银币',
-							'800银币',
-							'1000银币',
-							'200银币',
-							'400银币',
-							'600银币',
-							'800银币',
-							'1000银币',
-						],
-						[
-							'￥100元',
-							'￥200元',
-							'￥300元',
-							'￥400元',
-							'￥500元',
-							'￥100元',
-							'￥200元',
-							'￥300元',
-							'￥400元',
-							'￥500元',
-							'￥100元',
-							'￥200元',
-							'￥300元',
-							'￥400元',
-							'￥500元',
-						],
-						[
-							'￥100元',
-							'￥200元',
-							'￥300元',
-							'￥400元',
-							'￥500元',
-							'￥100元',
-							'￥200元',
-							'￥300元',
-							'￥400元',
-							'￥500元',
-							'￥100元',
-							'￥200元',
-							'￥300元',
-							'￥400元',
-							'￥500元',
-						],
-						[
-							'￥100元',
-							'￥200元',
-							'￥300元',
-							'￥400元',
-							'￥500元',
-							'￥100元',
-							'￥200元',
-							'￥300元',
-							'￥400元',
-							'￥500元',
-							'￥100元',
-							'￥200元',
-							'￥300元',
-							'￥400元',
-							'￥500元',
-						]
-					];
-			// 判断是从哪个页面跳转到立即支付
-			var yemian = $('.moneySon');
-			// 定义默认索引0
-			var index = 0;
-			// 循环遍历页面对象
-			for (var i = yemian.length - 1; i >= 0; i--) {
-				if($(yemian[i]).css('left')=='0px'){
-					index = i;
-				}
-			}
-			var id = $(yemian[index]).children('.taocanSelectNow').attr('alt')-1;
-			// 修改模态框显示金额
-			$('.paytopRight p').html(je[type][id]);
-		}
 
-		// 返回支付的ID好
-		function getPayId(){
-			// 判断是从哪个页面跳转到立即支付
-			var yemian = $('.moneySon');
-			// 定义默认索引0
-			var index = 0;
-			// 循环遍历页面对象
-			for (var i = yemian.length - 1; i >= 0; i--) {
-				if($(yemian[i]).css('left')=='0px'){
-					index = i;
-				}
-			}
-			var id = $(yemian[index]).children('.taocanSelectNow').attr('alt');
-			return id;
-		}
-
-		// 微信支付方法
-		function weixinPay(res){
-		    WeixinJSBridge.invoke(
-		        'getBrandWCPayRequest',
-		        JSON.parse(res),
-		        function(res){
-		            if (res.err_msg.substr(-2) == 'ok') {
-		                // 付款成功，跳转前台主页
-		                location.href = "{{:U('Home/PaymentSystem/paytosuccess')}}";
-		            } else if (res.err_msg.substr(-6) == 'cancel') {
-		                    // 取消付款
-		                    // 跳转到待付款订单页面
-		                    location.href = "{{:U('Home/PaymentSystem/paytofailed')}}";
-		            }else{
-		                    // 付款失败
-		                    // 跳转到待付款订单页面
-		                    location.href = "{{:U('Home/PaymentSystem/paytofailed')}}";
-		            }
-		        }
-		    );
-		};
-// array(23) {
-//   ["id"] => string(1) "6"
-//   ["open_id"] => string(28) "oQktJwL8ioR4DoxSQmikdzekbUyU"
-//   ["office_code"] => NULL
-//   ["vendora_code"] => NULL
-//   ["vendorb_code"] => NULL
-//   ["vendorc_code"] => NULL
-//   ["vendori_code"] => NULL
-//   ["invitation_code"] => NULL
-//   ["code"] => string(11) "72BD5AFF61D"
-//   ["invite"] => string(1) "5"
-//   ["ticket"] => string(96) "gQHx8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyLUJtMWtxMmJkOTAxR1I2bU5xMWYAAgSFAW9aAwQwhScA"
-//   ["parameter"] => string(1) "4"
-//   ["ticket_time"] => string(10) "1519814326"
-//   ["nickname"] => string(21) "吴智彬-13425492760"
-//   ["head"] => string(140) "http://wx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132"
-//   ["sex"] => string(1) "1"
-//   ["area"] => string(6) "广东"
-//   ["address"] => string(20) "中国 广东 广州"
-//   ["gold_num"] => string(1) "0"
-//   ["silver"] => string(1) "0"
-//   ["balance"] => string(4) "0.00"
-//   ["addtime"] => string(10) "1517224326"
-//   ["updatetime"] => string(10) "1517224326"
-// }
 	</script>
 </body>
 </html>

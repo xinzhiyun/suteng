@@ -10,21 +10,30 @@ class MallController extends CommonController
      * @return [type] [description]
      */
     public function chongzhi()
-    {
+    {   
+        // 查询条件
+        $showData['status'] = 1;
+        // 金币套餐
+        $data['gold'] = M('gold')->where($showData)->select();
+        // 银币套餐
+        $data['silver'] = M('silver')->where($showData)->select();
+        // 银币兑换套餐
+        $data['gold_silver'] = M('gold_silver')->where($showData)->select();
         // 获取用户微信唯一标识
-        $showUser['open_id'] = $_SESSION['user']['open_id'];
-        // 查询用户信息
-        $userData = M('users')->where($showUser)->find();
+        // $showUser['open_id'] = $_SESSION['user']['open_id'];
+        // // 查询用户信息
+        // $userData = M('users')->where($showUser)->find();
         //调用微信JS-SDK类获取签名需要用到的数据
         $weixin = new WeixinJssdk;
         $signPackage = $weixin->getSignPackage();
         // 查询用户微信中的openid
-        $openId = $weixin->GetOpenid();
-
+        // $openId = $weixin->GetOpenid();
+        $openId = $_SESSION['open_id'];
+        // dump($data);die;
         //分配数据        
         $this->assign('info',$signPackage);
         $this->assign('openId',$openId);
-        $this->assign('user',$userData);
+        $this->assign('data',$data);
         // dump($userData);die;
         $this->display();
     }
