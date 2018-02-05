@@ -190,15 +190,19 @@
 		    box-sizing: border-box;
 		}
 		.allgoods>ul>li>a{
-			
-			display: block;
+			height: 7rem;
 			width: 5rem;
+			display: block;
+			position: relative;
 		}
 		.allgoods>ul>li>a>p{
+    		width: 130%;
 			display: block;
 			font-size: 0.67rem;
     		line-height: 1rem;
-    		width: 130%;
+    		overflow: hidden;
+    		text-overflow: ellipsis;
+    		white-space: nowrap;
 		}
 		.allgoods>ul>li>i{
 			font-size: 1.2rem;
@@ -209,11 +213,17 @@
 		    z-index: 999;
 		}
 		.allgoods>ul>li>a>b{
+			display: inline-block;
+			margin-top: 6%;
 			font-size: 0.68rem;
 			color: #ff3232;
 		}
 		.allgoods>ul>li>a>img{
 			width: 130%;
+			height: 66%;
+			display: inline-block;
+			border: 1px solid #ddd;
+			border-radius: 4px;
 		}
 		
 	</style>
@@ -346,7 +356,7 @@
 								_htmlArr[i] += 
 									'<li>'+
 										'<a class="pic" goods_gid="'+_goods[j].gid+'" href="{{:U('Shop/shoppingdetail')}}">'+
-											'<img src="/Uploads/'+_goods[j].path+'" alt="">'+
+											'<img src="/Uploads/'+_goods[j].path+'" alt="正在加载中...">'+
 											'<p class="name">'+ _goods[j].name +'</p>'+
 											'<b class="price">¥'+ _goods[j].price +'</b><span class="iconfont "></span>'+
 										'</a>'+
