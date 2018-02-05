@@ -37,6 +37,10 @@ class RechargeController extends CommonController
     			}else{
     				E('套餐描述格式不正确！',603);
     			}
+    			// 是否上架
+    			if($post['status']){
+    				$addData['status'] = 1;
+    			}
     			// 设置添加时间和更新时间
     			$addData['addtime'] = $addData['updatetime'] = time();
             	// 实例化金币套餐模型
@@ -88,6 +92,10 @@ class RechargeController extends CommonController
     				$addData['content'] = $post['content'];
     			}else{
     				E('套餐描述格式不正确！',603);
+    			}
+    			// 是否上架
+    			if($post['status']){
+    				$addData['status'] = 1;
     			}
     			// 设置添加时间和更新时间
     			$addData['addtime'] = $addData['updatetime'] = time();
@@ -141,8 +149,13 @@ class RechargeController extends CommonController
     			}else{
     				E('套餐描述格式不正确！',603);
     			}
+    			// 是否上架
+    			if($post['status']){
+    				$addData['status'] = 1;
+    			}
     			// 设置添加时间和更新时间
     			$addData['addtime'] = $addData['updatetime'] = time();
+    			// print_r($addData);die;
             	// 实例化金币套餐模型
         		$addRes = M('gold_silver')->add($addData);
         		// 执行插入操作
@@ -169,7 +182,86 @@ class RechargeController extends CommonController
 	 */
     public function update_gold()
     {
-        $this->display();
+    	if(IS_POST){
+            try {
+        		// 创建数据
+    			$post = I('post.');
+    			// 准备查询条件
+    			$showData['id'] = $post['saveid'];
+    			// 查询套餐
+    			$data = M('gold')->where($showData)->find();
+	    		// 实例化验证类
+	    		$validate 	= new \Org\Util\Validate;
+	    		// 金额有数据，并和原金额不一样，进行验证
+    			if(!empty($post['money'])  && $post['money'] != $data['money']){
+	    			// 金额正则验证
+	    			if($validate->original('/^[\d]{1,10}[\.][\d]{2}$/',$post['money'])){
+	    				$addData['money'] = $post['money'];
+	    			}else{
+	    				E('套餐金额格式不正确！',603);
+	    			}
+    			}
+    			
+	    		// 金币数量有数据，并和原金币数量不一样，进行验证
+    			if(!empty($post['gold_num'])  && $post['gold_num'] != $data['gold_num']){
+	    			// 正则验证金币数量
+	    			if($validate->original('/^[\d]+$/',$post['gold_num'])){
+	    				$addData['gold_num'] = $post['gold_num'];
+	    			}else{
+	    				E('金币数量格式不正确！',603);
+	    			}
+	    		}
+
+	    		// 金币套餐描述有数据，并和原金币套餐描述不一样，进行验证
+    			if(!empty($post['content'])  && $post['content'] != $data['content']){
+	    			// 正则验证描述
+	    			if($validate->original('/^.{0,50}$/',$post['content'])){
+	    				$addData['content'] = $post['content'];
+	    			}else{
+	    				E('套餐描述格式不正确！',603);
+	    			}
+	    		}
+
+	    		// 是否上架
+	    		if(!empty($post['status'])){
+	    			$post['status'] = 1;
+	    		}else{
+	    			$post['status'] = 0;
+	    		}
+
+	    		// 金币套餐描述有数据，并和原金币套餐描述不一样，进行验证
+    			if($post['status'] != $data['status']){
+    				// 更新状态
+	    			$addData['status'] = $post['status'];
+	    		}
+
+	    		// 更新数据不为空
+	    		if(!empty($addData)){
+	    			// 设置更新时间
+	    			$addData['updatetime'] = time();
+	    			// print_r($addData);die;
+	    			// print_r($data);die;
+	            	// 实例化金币套餐模型
+	        		$addRes = M('gold')->where($showData)->save($addData);
+	        		// 执行插入操作
+	        		if($addRes){
+	        			E('套餐修改成功！',200);
+	        		}else{
+	        			E('套餐修改失败！',605);
+	        		}
+	    		}else{
+	    			// 未修改
+	    			E('您没有修改该套餐！',605);
+	    		}
+
+            } catch (\Exception $e) {
+                $err = [
+                    'code' => $e->getCode(),
+                    'msg' => $e->getMessage(),
+                ];
+                $this->ajaxReturn($err);
+            }
+    	}
     }
 
 	/**
@@ -177,7 +269,86 @@ class RechargeController extends CommonController
 	 */
     public function update_silver()
     {
-        $this->display();
+    	if(IS_POST){
+            try {
+        		// 创建数据
+    			$post = I('post.');
+    			// 准备查询条件
+    			$showData['id'] = $post['saveid'];
+    			// 查询套餐
+    			$data = M('silver')->where($showData)->find();
+	    		// 实例化验证类
+	    		$validate 	= new \Org\Util\Validate;
+	    		// 金额有数据，并和原金额不一样，进行验证
+    			if(!empty($post['money'])  && $post['money'] != $data['money']){
+	    			// 金额正则验证
+	    			if($validate->original('/^[\d]{1,10}[\.][\d]{2}$/',$post['money'])){
+	    				$addData['money'] = $post['money'];
+	    			}else{
+	    				E('套餐金额格式不正确！',603);
+	    			}
+    			}
+    			
+	    		// 金币数量有数据，并和原金币数量不一样，进行验证
+    			if(!empty($post['silver_num'])  && $post['silver_num'] != $data['silver_num']){
+	    			// 正则验证金币数量
+	    			if($validate->original('/^[\d]+$/',$post['silver_num'])){
+	    				$addData['silver_num'] = $post['silver_num'];
+	    			}else{
+	    				E('银币数量格式不正确！',603);
+	    			}
+	    		}
+
+	    		// 金币套餐描述有数据，并和原金币套餐描述不一样，进行验证
+    			if(!empty($post['content'])  && $post['content'] != $data['content']){
+	    			// 正则验证描述
+	    			if($validate->original('/^.{0,50}$/',$post['content'])){
+	    				$addData['content'] = $post['content'];
+	    			}else{
+	    				E('套餐描述格式不正确！',603);
+	    			}
+	    		}
+
+	    		// 是否上架
+	    		if(!empty($post['status'])){
+	    			$post['status'] = 1;
+	    		}else{
+	    			$post['status'] = 0;
+	    		}
+
+	    		// 金币套餐描述有数据，并和原金币套餐描述不一样，进行验证
+    			if($post['status'] != $data['status']){
+    				// 更新状态
+	    			$addData['status'] = $post['status'];
+	    		}
+
+	    		// 更新数据不为空
+	    		if(!empty($addData)){
+	    			// 设置更新时间
+	    			$addData['updatetime'] = time();
+	    			// print_r($addData);die;
+	    			// print_r($data);die;
+	            	// 实例化金币套餐模型
+	        		$addRes = M('silver')->where($showData)->save($addData);
+	        		// 执行插入操作
+	        		if($addRes){
+	        			E('套餐修改成功！',200);
+	        		}else{
+	        			E('套餐修改失败！',605);
+	        		}
+	    		}else{
+	    			// 未修改
+	    			E('您没有修改该套餐！',605);
+	    		}
+
+            } catch (\Exception $e) {
+                $err = [
+                    'code' => $e->getCode(),
+                    'msg' => $e->getMessage(),
+                ];
+                $this->ajaxReturn($err);
+            }
+    	}
     }
 
 	/**
@@ -185,7 +356,84 @@ class RechargeController extends CommonController
 	 */
     public function update_gold_silver()
     {
-        $this->display();
+    	if(IS_POST){
+            try {
+        		// 创建数据
+    			$post = I('post.');
+    			// 准备查询条件
+    			$showData['id'] = $post['saveid'];
+    			// 查询套餐
+    			$data = M('gold_silver')->where($showData)->find();
+	    		// 实例化验证类
+	    		$validate 	= new \Org\Util\Validate;
+	    		// 金币有数据，并和原金币不一样，进行验证
+    			if(!empty($post['gold'])  && $post['gold'] != $data['gold']){
+	    			// 金额正则验证
+	    			if($validate->original('/^[\d]{1,11}$/',$post['gold'])){
+	    				$addData['gold'] = $post['gold'];
+	    			}else{
+	    				E('套餐金币格式不正确！',603);
+	    			}
+    			}
+    			
+	    		// 银币数量有数据，并和原银币数量不一样，进行验证
+    			if(!empty($post['silver_num'])  && $post['silver_num'] != $data['silver_num']){
+	    			// 正则验证金币数量
+	    			if($validate->original('/^[\d]+$/',$post['silver_num'])){
+	    				$addData['silver_num'] = $post['silver_num'];
+	    			}else{
+	    				E('银币数量格式不正确！',603);
+	    			}
+	    		}
+
+	    		// 金币套餐描述有数据，并和原金币套餐描述不一样，进行验证
+    			if(!empty($post['content'])  && $post['content'] != $data['content']){
+	    			// 正则验证描述
+	    			if($validate->original('/^.{0,50}$/',$post['content'])){
+	    				$addData['content'] = $post['content'];
+	    			}else{
+	    				E('套餐描述格式不正确！',603);
+	    			}
+	    		}
+
+	    		// 是否上架
+	    		if(!empty($post['status'])){
+	    			$post['status'] = 1;
+	    		}else{
+	    			$post['status'] = 0;
+	    		}
+
+	    		// 金币套餐描述有数据，并和原金币套餐描述不一样，进行验证
+    			if($post['status'] != $data['status']){
+    				// 更新状态
+	    			$addData['status'] = $post['status'];
+	    		}
+
+	    		// 更新数据不为空
+	    		if(!empty($addData)){
+	    			// 设置更新时间
+	    			$addData['updatetime'] = time();
+	            	// 实例化金币套餐模型
+	        		$addRes = M('gold_silver')->where($showData)->save($addData);
+	        		// 执行插入操作
+	        		if($addRes){
+	        			E('套餐修改成功！',200);
+	        		}else{
+	        			E('套餐修改失败！',605);
+	        		}
+	    		}else{
+	    			// 未修改
+	    			E('您没有修改该套餐！',605);
+	    		}
+
+            } catch (\Exception $e) {
+                $err = [
+                    'code' => $e->getCode(),
+                    'msg' => $e->getMessage(),
+                ];
+                $this->ajaxReturn($err);
+            }
+    	}
     }
 
 	/**
@@ -193,6 +441,11 @@ class RechargeController extends CommonController
 	 */
     public function gold_list()
     {
+        $data = M('gold')->select();
+        $assign = [
+            'data' => $data,
+        ];
+        $this->assign($assign);
         $this->display();
     }
 
@@ -201,6 +454,11 @@ class RechargeController extends CommonController
 	 */
     public function silver_list()
     {
+        $data = M('silver')->select();
+        $assign = [
+            'data' => $data,
+        ];
+        $this->assign($assign);
         $this->display();
     }
 
@@ -209,6 +467,11 @@ class RechargeController extends CommonController
 	 */
     public function gold_silver_list()
     {
+        $data = M('gold_silver')->select();
+        $assign = [
+            'data' => $data,
+        ];
+        $this->assign($assign);
         $this->display();
     }
 
@@ -217,7 +480,9 @@ class RechargeController extends CommonController
 	 */
     public function del_gold()
     {
-        $this->display();
+    	if(IS_POST){
+    		$this->del('gold');
+    	}
     }
 
 	/**
@@ -225,14 +490,154 @@ class RechargeController extends CommonController
 	 */
     public function del_silver()
     {
-        $this->display();
+    	if(IS_POST){
+    		$this->del('silver');
+    	}
     }
 
 	/**
-	 * [删除金币兑换银币套餐]
+	 * [删除银币兑换套餐]
 	 */
     public function del_gold_silver()
     {
-        $this->display();
+    	if(IS_POST){
+    		$this->del('gold_silver');
+    	}
+    }
+
+    // 删除套餐
+    public function del($table)
+    {
+        try {
+	    	// 准备删除条件
+	    	$delData['id'] = I('post.id');
+	    	// 执行删除操作
+	    	$delRes = M($table)->where($delData)->delete();
+        	// 执行更新操作
+        	if($delRes){
+        		E('套餐删除成功',200);
+        	}else{
+        		E('套餐删除失败',605);
+        	}
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+	/**
+	 * [更新上下架]
+	 */
+    public function status($table)
+    {
+        try {
+        	// 创建数据
+    		$post = I('post.');
+    		// 设置更新条件
+    		$whereData['id'] 	= $post['id'];
+    		// 设置更新数据
+    		$saveData['status'] = $post['status'] ^ 1;
+    		// 设置更新时间
+    		$saveData['updatetime'] = time();
+        	// 实例化金币套餐模型
+        	$saveRes = M($table)->where($whereData)->save($saveData);
+        	// 执行更新操作
+        	if($saveRes){
+        		E($post['status']?'套餐下架成功':'套餐上架成功',200);
+        	}else{
+        		E($post['status']?'套餐下架失败':'套餐上架失败',605);
+        	}
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+	/**
+	 * [更新金币套餐上下架]
+	 */
+    public function gold_status()
+    {
+    	if(IS_POST){
+    		$this->status('gold');
+    	}
+    }
+
+	/**
+	 * [更新银币套餐上下架]
+	 */
+    public function silver_status()
+    {
+    	if(IS_POST){
+    		$this->status('silver');
+    	}
+    }
+
+	/**
+	 * [更新银币兑换套餐上下架]
+	 */
+    public function gold_silver_status()
+    {
+    	if(IS_POST){
+    		$this->status('gold_silver');
+    	}
+    }
+
+	/**
+	 * [根据ID获取金币套餐]
+	 */
+    public function get_id_gold()
+    {
+        // 准备查询添加
+    	$this->get_id('gold');
+    }
+
+	/**
+	 * [根据ID获取银币套餐]
+	 */
+    public function get_id_silver()
+    {
+        // 准备查询添加
+    	$this->get_id('silver');
+    }
+
+	/**
+	 * [根据ID获取金币兑换银币套餐]
+	 */
+    public function get_id_gold_silver()
+    {
+        // 准备查询添加
+    	$this->get_id('gold_silver');
+    }
+
+	/**
+	 * [根据ID获取套餐]
+	 */
+    public function get_id($table)
+    {
+        // 准备查询添加
+        $showData['id'] = I('post.id');
+        // 执行查询
+        $arr = M($table)->where($showData)->find();
+
+        // 判断数据是否获取成功
+        if($arr){
+        	$data['data'] = $arr;
+        	$data['code'] = 200;
+        	$data['msg']	= '套餐数据获取成功！';
+        }else{
+        	$data['data'] = null;
+        	$data['code'] = 605;
+        	$data['msg']	= '套餐数据获取失败！';
+        }
+
+        // 返回JSON数据
+        $this->ajaxReturn($data);
     }
 }

@@ -167,10 +167,10 @@ class PaymentSystemController extends CommonController
                     '500元1200个银币',
                 ];
         $je = $jeArr[$id];
-        //
-        //$openId = $_SESSION['user']['open_id'];
+        // //
+        // $openId = $_SESSION['open_id'];
 
-        //dump($openId);die;
+        // dump($openId);die;
         // echo $je;
         $this->uniformOrder($je,$id,'速腾商城充值');
     }
@@ -184,7 +184,7 @@ class PaymentSystemController extends CommonController
      */
     public function uniformOrder($money,$order_id,$content)
     {
-        //dump($_SESSION);die;
+        // dump($_SESSION);die;
         // $content = substr($content,0,80);
         // 将金额强转换整数
         $money = $money * 100;
@@ -192,7 +192,6 @@ class PaymentSystemController extends CommonController
         $money = 1;
         // 用户在公众号的唯一ID
         $openId = $_SESSION['open_id'];
-
 
         //微信examle的WxPay.JsApiPay.php
         vendor('WxPay.jsapi.WxPay#JsApiPay');
@@ -226,9 +225,10 @@ class PaymentSystemController extends CommonController
         $input->SetTrade_type("JSAPI");
         // 用户在公众号的唯一标识
         $input->SetOpenid($openId);
+        
         // 统一下单
         $order = \WxPayApi::unifiedOrder($input);
-
+        print_r($order);die;
         // 返回支付需要的对象JSON格式数据
         $jsApiParameters = $tools->GetJsApiParameters($order);
 
@@ -245,14 +245,14 @@ class PaymentSystemController extends CommonController
      */
     public function uniformOrderTow($money,$order_id,$content)
     {
-        //dump($_SESSION);die;
+        // dump($_SESSION);die;
         // $content = substr($content,0,80);
         // 将金额强转换整数
         $money = $money * 100;
         // 冲值测试额1分钱
         $money = 1;
         // 用户在公众号的唯一ID
-        $openId = $_SESSION['user']['open_id'];
+        $openId = $_SESSION['open_id'];
 
 
         //微信examle的WxPay.JsApiPay.php
