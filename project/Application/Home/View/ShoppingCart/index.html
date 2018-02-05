@@ -142,9 +142,17 @@
 	 	padding: 0.5rem 0rem 0.5rem 3%;
 	 }
 	.shoppingcarBott>p>i{
+		display: inline-flex;
+		align-items: center;
 		padding-right: 0.2rem;
 		color: #ccc;
     	font-size: .9rem;
+	}
+	/*选择*/
+	.shoppingcarBott>p>i>span {
+		margin-left: 6px;
+		color: #373737;
+		font-size: .7rem;
 	}
 	.shoppingcarBott>p>i.icon-xuanze{
 		 color: #56AAF1;
@@ -236,7 +244,7 @@
 	</div>
 	<!-- 底部结算按钮 -->
 	<div class="shoppingcarBott">
-		<p><i class="iconfont icon-kuang1"></i>全选<span>合计：<b class="priceAll">￥<span>0</span></b></span></p>
+		<p><i class="iconfont icon-kuang1"><span>全选</span></i><span>合计：<b class="priceAll">￥<span>0</span></b></span></p>
 		<input id="toPay" type="button" value="结算">
 	</div>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
@@ -478,7 +486,7 @@
 			var _quanclass=$(this).attr('class');
 			
 			// 全选
-			if(_quanclass=='iconfont icon-kuang1'){
+			if(_quanclass.indexOf('icon-kuang1') > -1){
 				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
 				var _class=$('.itemcarLeft>.xuanzhong>i').attr('class');
 				$('.itemcarLeft>.xuanzhong>i').removeClass(_class).addClass('iconfont icon-xuanze');
