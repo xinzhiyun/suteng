@@ -295,19 +295,19 @@
 <body>
 	<header id="header">
 		<div id="hLeft">
-			<img src="__PUBLIC__/Home/images/1.jpg" alt="">
+			<img src="{{$user['head']}}" alt="">
 		</div>
 		<div id="hRight">
 			<div id="qrCode_share">
 				<i class="iconfont icon-erweima"></i>
 				<i class="iconfont icon-zhixiang share"></i>
 			</div>
-			<p>Yoo</p>
+			<p>{{$user['nickname']}}</p>
 			<div id="package">
 				<span>我的钱包：</span>
 				<div>
-					<p><i class="iconfont icon-jinbi"></i>金币300个</p>
-					<p><i class="iconfont icon-yingbi"></i>银币806个</p>
+					<p><i class="iconfont icon-jinbi"></i>金币{{$user['gold_num']}}个</p>
+					<p><i class="iconfont icon-yingbi"></i>银币{{$user['silver']}}个</p>
 				</div>
 			</div>
 		</div>
@@ -354,8 +354,8 @@
 			</p>
 			<div>
 				<div>
-					<span>金币540</span>
-					<span>银币1266</span>
+					<span>金币{{$comData['gold_num']}}</span>
+					<span>银币{{$comData['silver']}}</span>
 					<p><a href="{{:U('Home/VipCenter/reward')}}">我的奖励金</a></p>
 				</div>
 				<div>
