@@ -9,7 +9,7 @@ class IndexController extends CommonController
     {
         $user_device = D('UserDevice');
         $device = D('Devices');
-        $where['status'] = session('device.did');
+        $where['status'] = 1;//session('device.did');
 
         $where['uid'] = session('user.id');
         $res = $user_device->where($where)->find();

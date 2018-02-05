@@ -321,17 +321,18 @@
 			<div class="haveDevice">
 				<div class="deviceTop">
 					<h3>所有设备</h3>
-					<div class="deviceItem clearfix">
-						<div class="deviceitemLeft"><img src="__PUBLIC__/Home/images/yoo_01.png" alt=""></div>
-						<div class="deviceitemRight ">
-							<p><span>设备编码：</span>KD1234567889</p><i class="iconfont icon-xuanze"></i>
-							<div class="devicepay"><span>租赁机转个人<em>￥3620</em></span><i>付款</i></div>
-						</div>
-					</div>
-
+						<volist name="bindInfo" id="vo">
+							<div class="deviceItem clearfix">
+								<div class="deviceitemLeft"><img src="__PUBLIC__/Home/images/yoo_01.png" alt=""></div>
+								<div class="deviceitemRight ">
+									<p><span>设备编码：</span>{{$vo.device_code}}</p><i class="iconfont icon-xuanze"></i>
+									<div class="devicepay"><span>租赁机转个人<em>￥3620</em></span><i>付款</i></div>
+								</div>
+							</div>
+						</volist>
 					<!-- 0 -->
 					
-					<div class="deviceItem clearfix">
+					<!-- <div class="deviceItem clearfix">
 						<div class="deviceitemLeft"><img src="__PUBLIC__/Home/images/yoo_01.png" alt=""></div>
 						<div class="deviceitemRight ">
 							<p><span>设备编码：</span>KD1234567889</p>
@@ -346,7 +347,7 @@
 							<i class="iconfont icon-kuang1"></i>
 							<div class="devicepay"><span>个人设备</span></div>
 						</div>
-					</div>
+					</div> -->
 					<!-- 付款页面 -->
 					<div class="paystyle">
 						<div class="paystyleTop"></div>

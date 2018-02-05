@@ -59,8 +59,10 @@ class VipCenterController extends CommonController
         $showUser['open_id'] = $_SESSION['open_id'];
         // // 执行查询
         $user = M('users')->where($showUser)->find();
+        $device = D('UserDevice')->getBindInof(session('user.id'))[0];
         // 分配数据
         $this->assign('user',$user);
+        $this->assign('device',$device);
  		$this->display();
     }
 

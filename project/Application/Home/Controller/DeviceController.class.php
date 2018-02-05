@@ -18,8 +18,13 @@ class DeviceController extends CommonController
         //$openId = $weixin->GetOpenid();
         // 调试用默认用户
         $openId = $_SESSION['homeuser']['open_id'];
+        // 查询绑定设备
+        $user_device = D('UserDevice');
+        $bind_device = $user_device->getBindInof(session('user.id')); //where('uid='.session('user.id'))->select();
+        // dump($bind_device);die;
         //分配数据        
         $this->assign('info',$signPackage);
+        $this->assign('bindInfo',$bind_device);
         $this->assign('openId',$openId);
     	$this->display();
     }
