@@ -125,7 +125,7 @@
                                                 onclick="edit(this)">
                                                     更新
                                                 </a> -->
-                                                <a id="del" class="btn btn-outline btn-success deletBnt" goodsName="{{$v['name']}}" goodsId="{{$v['id']}}">
+                                                <a id="del" class="btn btn-outline btn-success deletBnt" goodsName="{{$v['name']}}" goodsId="{{$v['gid']}}">
                                                     删除
                                                 </a>
                                             </div>
@@ -230,10 +230,8 @@
                     dataType:'json',
                     data:{'id':goodsId},
                     success:function(res){
-                        if(res.code == 200){
-                            location.reload();
-                            parent.layer.msg(res.msg);
-                        }
+                        location.reload();
+                        parent.layer.msg(res.msg);
                     }
                 });
             }, function(){

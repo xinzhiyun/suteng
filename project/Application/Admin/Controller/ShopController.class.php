@@ -98,7 +98,9 @@ class ShopController extends CommonController
         $cate = D('Category');
         $cateInfo = $cate->getAllCate();
         $goods = D('Goods');
-        $goodsList = $goods->getGoodsList();
+        $map['g.status'] = array('neq',2);
+        $goodsList = $goods->getGoodsList($map);
+        // echo $goods->_sql();die;
         foreach($goodsList as $val){
             $key = $val['gid'];
             if(isset($arr[$key])) {
@@ -141,11 +143,11 @@ class ShopController extends CommonController
         try {
             $goods = D('Goods');
             $id = I('post.id');
-            $where = [
-                'id' => $id,
-            ];
+            $where = ['id' => $id];
             $data = ['status'=>2];
             $del = $goods->where($where)->save($data);
+            // echo $goods->_sql();
+            // dump($del);die;
             if($del){
                 E('删除成功', 200);
             } else {
