@@ -148,7 +148,7 @@
         </div>
         <div class="MineFoot">
           <ul>
-            <li><a href="{{:U('Home/Device/index')}}"><i class="iconfont icon-shebeiguanli Mf-left"></i><span>设备管理</span><i class="iconfont icon-dayuhao Mf-right"></i><b>当前设备：{{$device['device_code']}}</b></a></li>
+            <li><a href="{{:U('Home/Device/index')}}"><i class="iconfont icon-shebeiguanli Mf-left"></i><span>设备管理</span><i class="iconfont icon-dayuhao Mf-right"></i><b id="device_now">当前设备：{{$device['device_code']}}</b></a></li>
             <li><a href="{{:U('Home/Switch/index')}}"><i class="iconfont icon-naozhong Mf-left"></i><span>定时设置</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
             <li><a href="{{:U('Home/Switch/setTime')}}"><i class="iconfont icon-jiare Mf-left"></i><span>加热设置</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
             <li><a href="{{:U('Home/VipCenter/usedNotes')}}"><i class="iconfont icon-yongshuijilu Mf-left"></i><span>用水记录</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
@@ -162,5 +162,10 @@
   </div>
   <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
   <script src="__PUBLIC__/Home/js/public.js"></script>
+  <script>
+    //传设备编码到报修界面
+    // console.log($("#device_now").text().slice(5));
+    sessionStorage.setItem("device_now",$("#device_now").text().slice(5));
+  </script>
 </body>
 </html>                                                                                                                                                                                                                                                                      

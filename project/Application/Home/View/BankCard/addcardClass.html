@@ -96,15 +96,17 @@
 			<label for="cardNum">
 				<span>预留手机号 :</span> <input id="phoneNum" type="text">
 			</label>
-			<p><i class="iconfont  icon-kuang1"></i>同意<span>《用户协议》</span></p>
-			<a href="{{:U('Home/BankCard/identifyingCode')}}">
+			<p><i id="" class="iconfont  icon-kuang1"></i>同意<span>《用户协议》</span></p>
+			<a href="javascript:;">
 				<div class="addcardclassBtn">
 					<input type="submit" value="下一步">
 				</div>
 			</a>
 		</div>
 	</div>
+	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script>
+	
 		$('#phoneNum').change( function() {
 		  	// 这里可以写些验证代码
 		  	var phone = $(this).val();
@@ -114,12 +116,34 @@
 			  		console.dir('验证通过');
 			  	}else{
 			  		console.dir('请输入正确的手机号码！');
+	       			parent.layer.msg('请输入正确的手机号码！');
 			  	}	
 		  	}else{
 		  		console.dir('请输入正确的手机号码！');
+	       		parent.layer.msg('请输入正确的手机号码！');
 		  	}
 		});
-
+		/*
+			下一步
+		 */
+		$(".addcardclassBtn").click(function(){
+			var phone = $('#phoneNum').val();
+		  	var rephone = phone.match(/^1((((3[0-35-9])|([5|8][0-9])|(4[5|7|9])|66|(7[3|5-8])|(9[8|9]))\d)|(34[0-8]))\d{7}$/);
+		  	if(rephone){
+			  	if(phone==rephone[0] && $("#holdCard").val()){
+			  		console.dir('验证通过');
+			  		location.href = "{{:U('Home/BankCard/identifyingCode')}}"
+			  	}else if(phone!=rephone[0]){
+			  		console.dir('请输入正确的手机号码！');
+	       			parent.layer.msg('请输入正确的手机号码！');
+			  	}
+		  	}else if(!$("#holdCard").val()){
+		  		parent.layer.msg('请输入银行卡类型！');
+		  	}else{
+		  		console.dir('请输入正确的手机号码！');
+	       		parent.layer.msg('请输入正确的手机号码！');
+		  	}
+		})
 		// 是否同意协议
 		// .addcardClass-all>p>i
 		$('.addcardClass-all>p>i').click(function(){

@@ -66,23 +66,24 @@
 			<label for="cardNum">
 				<span>卡&nbsp;&nbsp;&nbsp;号 :</span> <input id="cardNum" type="text">
 			</label>
-			<a href="{{:U('Home/BankCard/addcardClass')}}">
+			<a href="javascript:;">
 				<div class="addcardBtn">
 					<input type="submit" value="下一步">
 				</div>
 			</a>
 		</div>
 	</div>
+	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script>
-		$('#holdCard').change( function() {
-		  	// 这里可以写些验证代码
-		  	var name = $(this).val();
-		  	if(name==name.match(/^[\u4e00-\u9fa5]{2,30}$/u)){// 中英文姓名支持支持 /^[a-zA-Z\u4e00-\u9fa5]{2,30}$/u
-		  		console.dir('验证通过');
-		  	}else{
-		  		console.dir('请输入真实的姓名！');
-		  	}
-		});
+		// $('#holdCard').change( function() {
+		//   	// 这里可以写些验证代码
+		//   	var name = $(this).val();
+		//   	if(name==name.match(/^[\u4e00-\u9fa5]{2,30}$/u)){// 中英文姓名支持支持 /^[a-zA-Z\u4e00-\u9fa5]{2,30}$/u
+		//   		console.dir('验证通过');
+		//   	}else{
+		//   		console.dir('请输入真实的姓名！');
+		//   	}
+		// });
 
 	    var num = 0;
 	    var strCard = '';
@@ -142,11 +143,46 @@
 		  	function fncard(){
 			  	if(card==card.match(/^[\d]{4}\s[\d]{4}\s[\d]{4}\s[\d]{4}\s{0,1}[\d]{0,3}$/)){
 			  		console.dir('验证通过');
+			  		cardRes = true;
 			  	}else{
 			  		console.dir('请输入真实的卡号！');
 			  	}
 		  	}
 		});
+		var cardRes = false;
+		//点击下一步
+		$(".addcardBtn").click(function(){
+			//验证姓名
+			var name = $('#holdCard').val();
+		  	//验证银行卡
+			var card = $('#cardNum').val();
+		  	var len = card.length;
+		  	// console.dir(typeof(len));
+		  	// 银行卡号 16 或 19位数字
+		  	if(name==name.match(/^[\u4e00-\u9fa5]{2,30}$/u) && cardRes){// 中英文姓名支持支持 /^[a-zA-Z\u4e00-\u9fa5]{2,30}$/u
+		  		console.dir('验证通过');
+			  	location.href = "{{:U('Home/BankCard/addcardClass')}}";
+		  	}else if(name!=name.match(/^[\u4e00-\u9fa5]{2,30}$/u)){
+		  		console.dir('请输入真实的姓名！');
+	       		parent.layer.msg('请输入真实的姓名！');
+		  	}else if(len==19){
+		  		fncard();
+		  	}else if(len==23){
+		  		fncard();
+		  	}else if(len != 19 && len != 23){
+		  		console.dir('银行卡号长度不正确！');
+	       		parent.layer.msg('银行卡号长度不正确！');
+		  	}
+
+		  	function fncard(){
+			  	if(card==card.match(/^[\d]{4}\s[\d]{4}\s[\d]{4}\s[\d]{4}\s{0,1}[\d]{0,3}$/)){
+			  		console.dir('验证通过');
+			  	}else{
+			  		console.dir('请输入真实的卡号！');
+	       			parent.layer.msg('请输入真实的卡号！');
+			  	}
+		  	}
+		})
 
 
 	</script>
