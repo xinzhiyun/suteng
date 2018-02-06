@@ -659,6 +659,9 @@
 					numAll += parseInt(lvxinData[i].num);
 					priceAll += parseInt(lvxinData[i].priceAll);
 				}
+				priceAll += 8;	//加上快递费价格
+				//快递费
+				// $("#calc>p>span").text(lvxinData.expressMoney);
 				$("#main").append(goodsHTML);	//滤芯订单的信息
 				$(".numAll").text(numAll);		//滤芯订单的总数量
 				$(".priceAll").text('￥'+priceAll);	//滤芯订单的总价格
@@ -685,9 +688,9 @@
 				$("#calc>p>span").text(goods_data.expressMoney);
 				$("#main").append(goodsHTML);	//订单的信息
 				$(".numAll").text(numAll);		//订单的总数量
-				$(".priceAll").text('￥'+ numAll*priceAll);	//订单的总价格
-				$("#footerContain>div>span").text('￥'+numAll*priceAll);	//订单的总价格
-				$(".paytopRight>p").text('￥'+numAll*priceAll);	//订单的总价格
+				$(".priceAll").text('￥'+ numAll*priceAll + goods_data.expressMoney);	//订单的总价格
+				$("#footerContain>div>span").text('￥'+numAll*priceAll + goods_data.expressMoney);	//订单的总价格
+				$(".paytopRight>p").text('￥'+numAll*priceAll + goods_data.expressMoney);	//订单的总价格
 
 			}else if(shopCar_data){	// 如果有商品购买，从购物车’结算‘过来
 				for(var i=0; i<shopCar_data.length; i++){
@@ -709,8 +712,9 @@
 					numAll += parseInt(shopCar_data[i].num);
 					priceAll += parseInt(shopCar_data[i].money);
 				}
+				priceAll += 8;	//加上快递费
 				//快递费
-				// $("#calc>p>span").text(goods_data.expressMoney);
+				// $("#calc>p>span").text(shopCar_data.expressMoney);
 				$("#main").append(goodsHTML);	//订单的信息
 				$(".numAll").text(numAll);		//订单的总数量
 				$(".priceAll").text('￥'+ priceAll);	//订单的总价格
