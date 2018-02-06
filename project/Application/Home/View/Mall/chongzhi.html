@@ -310,7 +310,7 @@
 				<div class="paytopLeft"><i class="iconfont icon-cuohao"></i></div>
 				<div class="paytopRight">
 					<h3>付款</h3>
-					<p>￥3620.00</p>
+					<p id="money">￥0</p>
 				</div>	
 			</div>
 			<div class="paymidd">
@@ -430,8 +430,22 @@
 		            break;
 		        case '2':
 		        	// 微信支付
+		        	// 获取充值的产品
+		        	var obj = $('.money>div').eq(type).children('.taocanSelectNow');
 		        	console.dir('银币兑换');
-		        	$('.paystyle1').slideDown("slow");
+		        	if( obj.length != 0 ){
+						// 获取产品价格
+						var money 		= $(obj).attr('money');
+
+						$('.paytopRight p').html('￥'+money+'元');
+						// 显示支付方式
+						$("#money").text("￥"+obj.attr('gold') +'金币')
+						$('.paystyle1').slideDown("slow");
+					}else{
+						// 未选择产品
+						swal("未选择套餐！","请您先选择一个套餐，再去充值！", "error");
+					}
+		        	// $('.paystyle1').slideDown("slow");
 		            break;
 		    }
 		})
