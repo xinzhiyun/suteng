@@ -86,6 +86,44 @@
 			background: #2EB6AA;
 
 		}
+      .layui-laydate, .layui-laydate-main{
+        width: 98vw !important;
+        left: 50%;
+        /*transform: translateX(-49vw);*/
+      }
+      .laydate-footer-btns {
+        width: 50%;
+        display: flex;
+        position: relative !important;
+        right: 9vw !important;
+        top: 0 !important;
+        align-items: center;
+      }
+      .laydate-btns-clear,
+      .laydate-btns-now,
+      .laydate-btns-confirm {
+        width: 33.33%;
+        display: inline-block;
+        padding: 10% !important;
+      }
+      .layui-laydate-content table {
+        width: 90%;
+        position: relative;
+        left: 50%;
+        margin-left: -45%;
+      }
+      .layui-laydate-footer {
+        display: flex !important;
+        justify-content: flex-end;
+        height: auto;
+      }
+      .laydate-footer-btns span {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        margin: 0 10px !important;
+      }
+
 		/*兼容解决*/
 		@media screen and (max-height:520px) {
 			.bandBtn {
@@ -105,36 +143,36 @@
 				<label for="name" class="">
 					<i class="iconfont icon-wode1"></i>
 					<div >
-						<span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input id="name" type="text">
+						<span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input name="name" id="name" type="text">
 					</div>
 				</label>
 				<label for="sex">
 					<i class="iconfont icon-weibiaoti-"></i>
 					<div >
-						<span>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span><select name="select" >
-	    				<option value="选择品牌">男</option>
-						<option value="选择品牌1">女</option>
+						<span>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span><select name="sex" >
+	    				<option value="男">男</option>
+						<option value="女">女</option>
 	   					</select><!--下拉选择-->
 					</div>
 				</label>
 				<label for="birth">
 					<i class="iconfont icon-shengridangao2-copy"></i>
 					<div >
-						<span>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</span><input id="birth" type="date"><!--日期插件-->
+						<span>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</span><input name="birth" class="dateSelect" id="birth" placeholder="请选择生日年月" type="text"><!--日期插件-->
 					</div>
 				</label>
 				
 				<label for="tel">
 					<i class="iconfont icon-shouji2-copy"></i>
 					<div >
-						<span>手机号码：</span><input id="tel" type="text">
+						<span>手机号码：</span><input id="tel" name="phone" type="text">
 					</div>
 				</label>
 				
 				<label for="addr">
 					<i class="iconfont icon-dizhi"></i>
 					<div >
-						<span>住&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：</span><input id="addr" type="text">
+						<span>住&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：</span><input name="address" id="addr" type="text">
 					</div>
 				</label>
 			</div>
@@ -143,11 +181,20 @@
 			</div>
 		</form>
 	</div>
+  	<script src="__PUBLIC__/Home/js/laydate.js"></script>
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script type="text/javascript">
+		$(".dateSelect").click(function(){
+			//年月范围选择
+			laydate.render({ 
+			  elem: '.dateSelect',
+			  show: true,
+			  max: new Date().getTime()
+			});
+		})
 		$('#name').change( function() {
 		  	// 这里可以写些验证代码
 		  	var name = $(this).val();
