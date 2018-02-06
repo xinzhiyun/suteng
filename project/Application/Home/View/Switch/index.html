@@ -60,7 +60,7 @@
 		}
 
 		/*开关*/
-		#divone,#divclose{
+		/*#divone,#divclose{
 		     width: 2.266667rem;
 		     height: 1.333333rem;
 		     border-radius: 0.666667rem;
@@ -69,6 +69,21 @@
 		    }
 		#divtwo,#divclosetwo{
 		    width: 1.22rem;
+		    height:1.22rem;
+		    border-radius: 0.64rem;
+		    position: absolute;
+		    background: white;
+		    box-shadow: 0px 2px 4px rgba(0,0,0,0.4);
+		}*/
+		.setRight div[name="one"] {
+			width: 2.266667rem;
+		     height: 1.333333rem;
+		     border-radius: 0.666667rem;
+		     position: relative;
+		     margin:0.666667rem auto;
+		}
+		.setRight div[name="two"] {
+			width: 1.22rem;
 		    height:1.22rem;
 		    border-radius: 0.64rem;
 		    position: absolute;
@@ -139,10 +154,10 @@
 				<div class="hgContain .clearfix" i='1'>
 					<div class="setLeft .clearfix">
 						<p><span  class="sLeft">关机时间</span><span class="sRight"><b>21</b>时：<b>00</b>分</span>	</p>
-						<p><span>关机时间</span><span class="sRight"><b>21</b>时：<b>00</b>分</span></p>
+						<p><span>开机时间</span><span class="sRight"><b>21</b>时：<b>00</b>分</span></p>
 					</div><div class="setRight">
-						<div id="divone" class="open1">
-       				 		<div id="divtwo" class="open2"></div>
+						<div class="open1" name='one'><!-- id="divone" -->
+       				 		<div class="open2" name='two'></div><!-- id="divtwo" -->
     					</div>
 					</div>
 					<div class="delBtn">
@@ -152,13 +167,13 @@
 				</div>
 			</hgroup>
 			<hgroup>
-				<div class="hgContain .clearfix" i='2'>
+				<div class="hgContain .clearfix" i='1'>
 					<div class="setLeft .clearfix">
 						<p><span  class="sLeft">关机时间</span><span class="sRight"><b>21</b>时：<b>00</b>分</span>	</p>
-						<p><span>关机时间</span><span class="sRight"><b>21</b>时：<b>00</b>分</span></p>
+						<p><span>开机时间</span><span class="sRight"><b>21</b>时：<b>00</b>分</span></p>
 					</div><div class="setRight">
-						<div id="divclose" class="open1">
-       				 		<div id="divclosetwo" class="open2"></div>
+						<div class="open1" name='one'><!-- id="divone" -->
+       				 		<div class="open2" name='two'></div><!-- id="divtwo" -->
     					</div>
 					</div>
 					<div class="delBtn">
@@ -166,8 +181,6 @@
 					</div>
 					
 				</div>
-
-				
 			</hgroup>
 		</div>
 		<a href="{{:U('Home/Switch/setTime')}}">
@@ -177,23 +190,33 @@
 		</a>
 	</div>
 	<script>
+	  // 开关效果
     	window.onload=function(){
-     	 	var divtwo=document.getElementById("divtwo");
-     	 	var divone=document.getElementById("divone");
-     	 	divtwo.onclick=function(){
-     	 	  divone.className=(divone.className=="close1")?"open1":"close1";
-     	 	  divtwo.className=(divtwo.className=="close2")?"open2":"close2";
-     	 	}
-	
-     	 	var divclosetwo=document.getElementById("divclosetwo");
-     	 	var divclose=document.getElementById("divclose");
-     	 	divclosetwo.onclick=function(){
-     	 	  divclose.className=(divclose.className=="close1")?"open1":"close1";
-     	 	  divclosetwo.className=(divclosetwo.className=="close2")?"open2":"close2";
-     	 	}
+     	 	$("div[name='two']").click(function(){
+     	 		var divone=$(this).parent().attr('class');
+     	        var divtwo=$(this).attr('class');
+     	        // console.dir(divone);
+     	 		if(divtwo=='close2'){
+     	 			$(this).removeClass('close2').addClass('open2');
+     	 			$(this).parent().removeClass('close1').addClass('open1');
+     	 		}else if(divtwo=='open2'){
+     	 			$(this).removeClass('open2').addClass('close2');
+     	 			$(this).parent().removeClass('open1').addClass('close1');
+     	 		}
+     	 	});
     	}
     	// 删除的样式
     	slipDel('hgroup','i')
+
+
+    	// 遍历数据
+    	// $(document).ready(function() {
+    	 
+		   //   $("hgroup>.hgContain>div>div").each(function(index, element) {
+		   //       if(this)
+		   //   })
+    	// });
+
     </script>
 </body>
 </html>                                                                                                                                                                                                                                                                      

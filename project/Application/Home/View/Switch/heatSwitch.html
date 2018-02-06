@@ -151,22 +151,7 @@
 					
 				</div>
 			</hgroup>
-			<hgroup>
-				<div class="hgContain .clearfix" i='2'>
-					<div class="setLeft .clearfix">
-						<p><span  class="sLeft">关机时间</span><span class="sRight"><b>21</b>时：<b>00</b>分</span>	</p>
-						<p><span>关机时间</span><span class="sRight"><b>21</b>时：<b>00</b>分</span></p>
-					</div><div class="setRight">
-						<div id="divclose" class="open1">
-       				 		<div id="divclosetwo" class="open2"></div>
-    					</div>
-					</div>
-					<div class="delBtn">
-					<input type="submit" value="删除">
-					</div>
-					
-				</div>				
-			</hgroup>
+			
 		</div>
 		<a href="{{:U('Home/Switch/addHeatSet')}}">
 			<div class="settimeFoot">
@@ -186,12 +171,42 @@
      	 	var divclosetwo=document.getElementById("divclosetwo");
      	 	var divclose=document.getElementById("divclose");
      	 	divclosetwo.onclick=function(){
-     	 	  divclose.className=(divclose.className=="close1")?"open1":"close1";
-     	 	  divclosetwo.className=(divclosetwo.className=="close2")?"open2":"close2";
+     	 	divclose.className=(divclose.className=="close1")?"open1":"close1";
+     	 	divclosetwo.className=(divclosetwo.className=="close2")?"open2":"close2";
      	 	}
     	}
     	// 删除的样式
     	slipDel('hgroup','i')
+
+ 		// 数据遍历
+		// var str = "";
+		// $(document).ready(function() {
+		         
+		//     $.ajax({
+		//         url: "{{}}",
+		//         type: "post",
+		//         dataType:{""}
+		//         success: function(str) {
+		//             alert(str);//此处可以打印出来结果。
+		//             ...       
+		//         }
+		//     });
+		     
+		//     alert(str);//为什么str在此处为空？怎么将以上的str数据带过来呢？
+		//         //下列代码要遍历这个str。
+		         
+		// });
+		
+		 // $("button:last").click(function() {
+   //       //把html结构'<p>新的p元素</p>'
+   //       //加入到li的合集中，为了能够在页面上显示
+   //       //需要再重新appendTo到指定的节点处
+   //       //值得注意：整个结构位置都改变了
+   //       $('li').add('<p>新的p元素</p>').appendTo($('.right'))
+   //  })
+		 
+     
+
     </script>
 </body>
 </html>

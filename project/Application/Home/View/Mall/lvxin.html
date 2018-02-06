@@ -73,7 +73,9 @@
             left: 100vw;
          }
         #lvxinBuy{
+            height: 84vh;
             left: 200vw;
+            overflow-y: scroll;
         }
         /*顶栏下划线，移动位置改这里*/
         #line {
@@ -224,7 +226,7 @@
         }   
         .goods>.img>img {
             width: 100%;
-            height:100%;
+            height: auto;
             border-radius: 10px;
         }
         /*商品描述*/
@@ -386,21 +388,21 @@
 		</div>
 		<!-- 滤芯购买 -->
 		<div id="lvxinBuy">
-			<!-- <div class="goods">
-					<div class="img"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt="正在加载..."></div>
-				<div class="desc">
-					<h5>RO膜</h5>
-					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
-					<div>
-						<span class="price">￥<span>120.00</span></span>
-						<span class="num">
-							<input type="button" value="-" class="minus">
-							<input class="number" type="number" value="0">
-							<input type="button" value="+" class="plus">
-						</span>
-					</div>
-				</div>
-			</div> -->
+    			<!-- <div class="goods">
+    					<div class="img"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt="正在加载..."></div>
+    				<div class="desc">
+    					<h5>RO膜</h5>
+    					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+    					<div>
+    						<span class="price">￥<span>120.00</span></span>
+    						<span class="num">
+    							<input type="button" value="-" class="minus">
+    							<input class="number" type="number" value="0">
+    							<input type="button" value="+" class="plus">
+    						</span>
+    					</div>
+    				</div>
+    			</div> -->
 			
 		</div>
 		<footer id="footer" class="footer">
@@ -410,7 +412,7 @@
 		</footer>
 	</div>
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
-	<!-- <script src="__PUBLIC__/Home/js/filterpage.js"></script> -->
+	<script src="__PUBLIC__/Home/js/filterpage.js"></script>
     <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
     <link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
 	<script src="__PUBLIC__/Home/js/public.js"></script>
@@ -466,27 +468,30 @@
         console.log(lvxin_data);
     	//加载滤芯项
         var lvxinDetail_html='',lvxinReset_html='',lvxinBuy_html=''; 
-        for(var i = 0;i<lvxin_data.length;i++){
-            // if()
-            //滤芯购买
-            lvxin_data[i].introduce = !lvxin_data[i].introduce ? '暂无描述' : lvxin_data[i].introduce;
-        	lvxinBuy_html+='<div class="goods" gid="'+ lvxin_data[i].id +'">'+
-    					'<div class="img"><img src="/Uploads/'+ lvxin_data[i].picpath +'" alt="正在加载..."></div>'+
-    				'<div class="desc">'+
-    					'<h5>'+ lvxin_data[i].filtername +'</h5>'+
-    					'<p>'+ lvxin_data[i].introduce +'</p>'+
-    					'<div>'+
-    						'<span class="price">￥<span>'+ lvxin_data [i].price +'</span></span>'+
-    						'<span class="num">'+
-    							'<input type="button" value="-" class="minus">'+
-    							'<input class="number" type="number" value="0">'+
-    							'<input type="button" value="+" class="plus">'+
-    						'</span>'+
-    					'</div>'+
-    				'</div>'+
-    			'</div>';
+        if(lvxin_data){
+            for(var i = 0;i<lvxin_data.length;i++){
+                if(lvxin_data[i]){
+                    //滤芯购买
+                    lvxin_data[i].introduce = !lvxin_data[i].introduce ? '暂无描述' : lvxin_data[i].introduce;
+                	lvxinBuy_html+='<div class="goods" gid="'+ lvxin_data[i].id +'">'+
+        					'<div class="img"><img src="/Uploads/'+ lvxin_data[i].picpath +'" alt="正在加载..."></div>'+
+        				'<div class="desc">'+
+        					'<h5>'+ lvxin_data[i].filtername +'</h5>'+
+        					'<p>'+ lvxin_data[i].introduce +'</p>'+
+        					'<div>'+
+        						'<span class="price">￥<span>'+ lvxin_data [i].price +'</span></span>'+
+        						'<span class="num">'+
+        							'<input type="button" value="-" class="minus">'+
+        							'<input class="number" type="number" value="0">'+
+        							'<input type="button" value="+" class="plus">'+
+        						'</span>'+
+        					'</div>'+
+        				'</div>'+
+        			'</div>';
+                }
+            }
+            $("#lvxinBuy").html(lvxinBuy_html);
         }
-        $("#lvxinBuy").html(lvxinBuy_html);
 
     	/*
     		filtername: 滤芯名称

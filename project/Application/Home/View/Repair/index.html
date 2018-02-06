@@ -74,6 +74,7 @@
         resize: none;
         overflow: hidden;
         border: 1px dashed #CCC;
+        font-size: .6rem;
       }
       .repairMidd>p {
         margin:0.933333rem 0 0.4rem;
@@ -196,6 +197,7 @@
         border: none;
         margin-top: 0;
         padding: 0.3rem;
+        font-size: 0.6rem;
         box-sizing: border-box;
       }
       .repairBtn{
@@ -398,26 +400,6 @@
         }
       })
 
-    // $(".btn").click(function(){
-    //   $.ajax({
-    //     url: '{{:U("Repair/index")}}',
-    //     ttype: 'post',
-    //     data: formdata,
-    //     processData: false,
-    //     contentType: false,
-    //     dataType: 'formdata',
-    //     success: function(res){
-    //       console.log('已连接！',res)
-    //       if(res.code == 200){
-    //         layuiHint('您的报修已收到，维修师傅正飞速准备中！');
-    //       }
-    //     },
-    //     error: function(res){
-    //       console.log('失败！',res)
-    //     }
-    //   })
-    // })
-
     //姓名验证 
     $('#Lname').change( function() {
         // 这里可以写些验证代码
@@ -462,7 +444,7 @@
         layuiHint("请输入设备型号");
         return false;
       }else if($("select").val()==""){
-        layuiHint("请选中保修原因");
+        layuiHint("请选择保修原因");
         return false;
       }else if($(".suggestTxt").val()==""){
         layuiHint("请输入报修详情");
