@@ -15,7 +15,7 @@
 			height: 100%;
 		}
 		#dateSelect{
-			width: 60%;
+			width: 50%;
 			height: 6vh;
 			display: flex;
 			justify-content: center;
@@ -23,7 +23,7 @@
 			position: relative;
 			margin: 10px 0;
 			left: 50%;
-			margin-left: -30%;
+			margin-left: -25%;
 			background: #9E9E9F;
 			color: #fff;
 			z-index: 999;
@@ -63,7 +63,7 @@
 			text-align: center;
 			background: #9E9E9F;
 		}
-		.dateText {
+		.year, .month {
 			width: 49% !important;
 			display: inline-block;
 			position: relative;
@@ -73,7 +73,7 @@
 			text-align: center;
 			background: #9E9E9F;
 		}
-		#dateSelect:before {
+		/*#dateSelect:before {
 			content: '';
 			width: 0;
 			height: 0;
@@ -84,7 +84,7 @@
 			border: 10px solid;
 			border-color: #fff transparent transparent transparent;
 			z-index: 11;
-		}
+		}*/
 		#dateSelect:after {
 			content: '';
 			width: 0;
@@ -146,18 +146,49 @@
 			border-bottom: 1px solid #eee;
 		}
 
+      .layui-laydate, .layui-laydate-main{
+        width: 98vw !important;
+        left: 50%;
+        /*transform: translateX(-49vw);*/
+      }
+      .laydate-footer-btns {
+        width: 50%;
+        display: flex;
+        position: relative !important;
+        right: 9vw !important;
+        top: 0 !important;
+        align-items: center;
+      }
+      .laydate-btns-clear,
+      .laydate-btns-now,
+      .laydate-btns-confirm {
+        width: 33.33%;
+        display: inline-block;
+        padding: 10% !important;
+      }
+      .layui-laydate-content table {
+        width: 90%;
+        position: relative;
+        left: 50%;
+        margin-left: -45%;
+      }
+      .layui-laydate-footer {
+        display: flex !important;
+        justify-content: flex-end;
+        height: auto;
+      }
+      .laydate-footer-btns span {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        margin: 0 10px !important;
+      }
+
 	</style>
 </head>
 <body>
 	<div id="dateSelect">
-		<div class="dateDiv">
-			<input class="date" type="date" />
-			<input class="date" type="date" />
-		</div>
-		<div class="textDiv">
-			<input class="dateText" type="text" value="2017">
-			<input class="dateText" type="text" value="11">
-		</div>
+		<input name="date" type="hidden" class="in-first layui-input" id="chooseMonth" value="">
 	</div>
 	<div>
 		<h3 class="eChartTitle">纯水 <span>(平均值：82.66ppm)</span></h3>
@@ -177,29 +208,32 @@
 			</div>
 		</div>
 	</div>
+  	<script src="__PUBLIC__/Home/js/laydate.js"></script>
+  	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/echarts.simple.min.js"></script>
 	<script>
-	window.onload = function(){
+	$(function(){
+		var year = new Date().getFullYear(),
+			month = new Date().getMonth();
+		$("#dateSelect").text(year+'-'+month);
+		$("#dateSelect").click(function(){
+			//年月范围选择
+			laydate.render({ 
+			  elem: '#dateSelect',
+			  show: true,
+			  type: 'month',
+			  max: new Date().getTime()
+			});
+		})
 
-		var date = document.getElementsByClassName('date'),
-			dateYearText = document.getElementsByClassName('dateText')[0],
-			dateMonthText = document.getElementsByClassName('dateText')[1];
+		$("body").on("click",'.laydate-btns-confirm',function(){	//日期选择
+			var date = $(".dateDiv").text();
+			console.log(date)
+			$(".year").val(date.value.split('-')[0]);
+			$(".month").val(date.value.split('-')[1]);
+		})
 
-			date[0].onchange = function(){	//日期选择
-				dateYearText.value = date[0].value.split('-')[0];
-				dateMonthText.value = date[0].value.split('-')[1];
-
-				date[1].value = date[0].value;		//日期同步
-			};
-
-			date[1].onchange = function(){	//日期选择
-				dateYearText.value = date[1].value.split('-')[0];
-				dateMonthText.value = date[1].value.split('-')[1];
-
-				date[0].value = date[1].value;
-			};
-
-	}
+	})
 	var getOption = function(_yAxisData, _minInterval, _seriesData, _lineColor) {
 		var chartOption = {
 		    color: [_lineColor],
