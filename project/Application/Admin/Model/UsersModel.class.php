@@ -36,10 +36,10 @@ class UsersModel extends Model
         $data = $this
             ->alias('u')
             ->where($where)
-            ->join('__USER_DEVICE__ ud ON u.id=ud.uid','LEFT')
-            ->join('__DEVICES__ d ON ud.did=d.id', 'LEFT')
-            ->join('__DEVICES_STATU__ ds ON d.device_code=ds.DeviceID', 'LEFT')
-            ->join('__TYPE__ t ON d.type_id=t.id', 'LEFT')
+            ->join('__USER_DEVICE__ ud ON u.id=ud.uid')
+            ->join('__DEVICES__ d ON ud.did=d.id')
+            ->join('__DEVICES_STATU__ ds ON d.device_code=ds.DeviceID')
+            ->join('__TYPE__ t ON d.type_id=t.id')
             ->field('d.device_code,t.typename,ud.name,ud.phone,ud.address,ud.status,ud.addtime')
             ->select();
         if(empty($data)) $data = null;

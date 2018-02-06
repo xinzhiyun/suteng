@@ -79,7 +79,7 @@
     <script>
         $("td").on('click', '.cx', function(e){
             var id = $(this).attr('userId');
-            location.href = 'user_detail?id='+id;
+            location.href = "{{:U('user_detail','','')}}?id="+id;
         });
     </script>    
 </block>

@@ -103,7 +103,7 @@ class ShopController extends CommonController
         $assign = [
             'data' => $goodsList['goodsData'],
             'cateInfo'=>$cateInfo,
-            'show' => $goodsList['show'],
+            // 'show' => $goodsList['show'],
         ];
         $this->assign($assign);
         $this->display();
@@ -326,7 +326,6 @@ class ShopController extends CommonController
     {
         $order = D('ShopOrder');
         $data = $order->getOrders();
-        dump($data);die;
         $assign = [
             'data' => $data['data'],
             'show' => $data['show'],

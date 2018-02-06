@@ -111,10 +111,21 @@ class VipCenterController extends CommonController
         try {
             $user_device = D('UserDevice');
             $data = I('post.');
-            $res = $user_device->add();
+            $map['uid'] = session('user.id');
+            $map['status'] = 1;
+            $res = $user_device->where($map)->find();
             if($res){
+                $user_device->startTrans();
+                $save_status = $user_device->where($map)->save(['status'=>0]);
+                if(!$save_status) E('存储失败',604);
+            }
+            $data['uid'] = session('user.id');
+            $res = $user_device->add($data);
+            if($res){
+                $user_device->commit();
                 E('OK',200);
             } else {
+                $user_device->rollback();
                 E('false',603);
             }
         } catch (\Exception $e) {
