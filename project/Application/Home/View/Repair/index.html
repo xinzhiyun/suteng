@@ -261,16 +261,16 @@
 <body>
   <div class="_repair">
     <div class="repairContainer">
-    <form action="" method="post" enctype="multipart/form-data" id="form">
+    <form action="add" method="post" enctype="multipart/form-data" id="form">
       <div class="repairTop">
         <ul>
           
           <li><span>设备编号：</span><p class="deviceid">0120563</p></li>
-          <li><span>日       期：</span><p><input type="text" class="currentdate" id="currentdate" value="" placeholder="请选择日期"></p></li>
+          <li><span>日       期：</span><p><input type="text" class="currentdate" id="currentdate" name="date" value="" placeholder="请选择日期"></p></li>
           <li><span>设备型号：</span><p><input type="text" class="devicetype"></p></li>
            <li>
             <span>报修原因：</span><p>
-            <select>
+            <select name="reason">
                 <option value ="volvo">-请输入-</option>
                 <option value ="saab">更换滤芯</option>
                 <option value="opel">微信端无法控制水机</option>
@@ -281,7 +281,7 @@
       </div>
       <div class="repairMidd">
           <h3>请写下您对设备的宝贵建议<span>*</span></h3>
-          <textarea name="" id="suggestTxt" cols="30" rows="10"></textarea>
+          <textarea name="content" id="suggestTxt" cols="30" rows="10"></textarea>
           <p>上传截图</p>
           <div class="repairPic">
             <i class="iconfont icon-tianjia"></i>
@@ -295,24 +295,24 @@
           <h3>联系方式</h3>
           <li>
             <label for="Lname">
-              <span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input id="Lname" type="text" value="" placeholder="请输入姓名">
+              <span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input id="Lname" type="text" name="truename" value="" placeholder="请输入姓名">
             </label>
           </li>
            <li>
             <label for="Ltel">
-              <span>电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：</span><input id="Ltel" type="text" value="" placeholder="请输入电话">
+              <span>电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：</span><input id="Ltel" type="text" name="phone" value="" placeholder="请输入电话">
             </label>
           </li>
           <li>
             <label for="Laddr">
               <p>维修地址：</p>
-              <textarea name="" id="Laddr" cols="30" rows="10" placeholder="" ></textarea>
+              <textarea name="address" id="Laddr" cols="30" rows="10" placeholder="" ></textarea>
             </label>
           </li>
         </ul>
       </div>
       <div class="repairBtn">
-        <input type="button" value="提交" class="btn">
+        <input type="submit" value="提交" class="btn">
       </div>
     </form>
 
@@ -398,25 +398,25 @@
         }
       })
 
-    $(".btn").click(function(){
-      $.ajax({
-        url: '{{:U("Repair/index")}}',
-        ttype: 'post',
-        data: formdata,
-        processData: false,
-        contentType: false,
-        dataType: 'formdata',
-        success: function(res){
-          console.log('已连接！',res)
-          if(res.code == 200){
-            layuiHint('您的报修已收到，维修师傅正飞速准备中！');
-          }
-        },
-        error: function(res){
-          console.log('失败！',res)
-        }
-      })
-    })
+    // $(".btn").click(function(){
+    //   $.ajax({
+    //     url: '{{:U("Repair/index")}}',
+    //     ttype: 'post',
+    //     data: formdata,
+    //     processData: false,
+    //     contentType: false,
+    //     dataType: 'formdata',
+    //     success: function(res){
+    //       console.log('已连接！',res)
+    //       if(res.code == 200){
+    //         layuiHint('您的报修已收到，维修师傅正飞速准备中！');
+    //       }
+    //     },
+    //     error: function(res){
+    //       console.log('失败！',res)
+    //     }
+    //   })
+    // })
 
     //姓名验证 
     $('#Lname').change( function() {
