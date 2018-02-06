@@ -517,6 +517,37 @@
 			});
 		});
 
+		//无设备时候的扫码添加设备
+		$(".noContainer").click(function(){
+			console.log(1111)
+			wx.scanQRCode({
+			    needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+			    scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+			    success: function (res) {
+			    	// alert(res.resultStr);
+			    	if (res.errMsg === "scanQRCode:ok"){
+				    	// 当needResult 为 1 时，扫码返回的结果
+					    $.ajax({
+					    	url:"{{:U('Device/bind')}}",
+					    	type:"post",
+					    	data:{device_code:res.resultStr},
+					    	dataType:'json',
+					    	success:function(data){
+								alert(data.msg);
+								location.href("VipCenter/personalInformation");		
+					    	},
+					    	error:function(jqXHR, textStatus, errorThrown){
+
+			    				alert("绑定失败" + jqXHR.status + textStatus + errorThrown);
+					    		//console.log(jqXHR.status);
+					    	}
+					    });
+					    // alert(res.resultStr);
+				    }
+				}
+			});
+		})
+
 		// $("#devices-list>ul>li").click(function(){
 		// 	location.href = "{{:U('Home/Users/mine')}}";
 		// })
