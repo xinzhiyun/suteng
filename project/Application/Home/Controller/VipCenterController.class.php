@@ -109,24 +109,28 @@ class VipCenterController extends CommonController
     public function infomationAction()
     {
         try {
-            $user_device = D('UserDevice');
-            $data = I('post.');
-            $map['uid'] = session('user.id');
-            $map['status'] = 1;
-            $res = $user_device->where($map)->find();
+            // $user_device = D('UserDevice');
+            // $data = I('post.');
+            // $map['uid'] = session('user.id');
+            // // $map['status'] = 1;
+            // $res = $user_device->where($map)->find();
+            // dump($res);die;
+            // if($res){
+            //     $user_device->startTrans();
+            //     $save_status = $user_device->where($map)->save(['status'=>0]);
+            //     if(!$save_status) E('存储失败',604);
+            // }
+            // $data['did'] = $res['did'];
+            // $data['addtime'] = time();
+            // $data['updatetime'] = time();
+            // $data['uid'] = session('user.id');
+            // $res = $user_device->add($data);
             if($res){
-                $user_device->startTrans();
-                $save_status = $user_device->where($map)->save(['status'=>0]);
-                if(!$save_status) E('存储失败',604);
-            }
-            $data['uid'] = session('user.id');
-            $res = $user_device->add($data);
-            if($res){
-                $user_device->commit();
+                // $user_device->commit();
                 E('OK',200);
             } else {
-                $user_device->rollback();
-                E('false',603);
+                // $user_device->rollback();
+                E('添加失败',603);
             }
         } catch (\Exception $e) {
             $err = [

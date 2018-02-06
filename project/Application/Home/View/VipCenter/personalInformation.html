@@ -137,7 +137,7 @@
 </head>
 <body>
 	<div class="container">
-		<form action="" method="post">
+		<form id="form" action="" method="post">
 			<div class="Information">
 				<h3>个人信息</h3>
 				<label for="name" class="">
@@ -230,18 +230,25 @@
 		  		layuiHint('地址格式不正确！');
 		  	}
 		});
-		$(".bandBtn").click(function(){
+		$("#save").click(function(){
 			if((nameReg.test($('#name').val())) && $("#birth").val() && (phoneReg.test($('#tel').val())) && (addressReg.test($('#addr').val()))){
 				var obj = {};
-				obj['name'] = $('#name').val();
+				// obj['name'] = $('#name').val();
+				
+				var data = new FormData(document.getElementById("form"))
 				$.ajax({
-					url: '{{:U("VipCenter/infomationAction")}}',
+					url: 'infomationAction',
 					type: 'post',
-					data: JSON.stringify(obj),
+					async: false,
+			        cache: false,
+			        contentType: false,
+			        processData: false,
+					data: data,//JSON.stringify(obj),
 					success: function(res){
-						if(res.code == 200){
-							location.href = '{{:U("VipCenter/minepack")}}'
-						}
+						// if(res.code == 200){
+						// 	// location.href = '{{:U("VipCenter/minepack")}}'
+						// }
+						layuiHint(res.msg);
 					},
 					error: function(res){
 						console.log('失败!', res)
