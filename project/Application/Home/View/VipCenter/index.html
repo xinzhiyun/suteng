@@ -101,7 +101,7 @@
 			display: flex;
    		 	align-items: center;
 		}
-		#more>div>span {
+		#more>div>a {
 			width: 95%;
 			display: flex;
    		 	align-items: center;
@@ -112,7 +112,7 @@
 		#more>div>i {
 			float: right;
 		}
-		#more>div>span>i{
+		#more>div>a>i{
 			display: inline-block;
 		    width: 11%;
 		    font-size: 1.4rem;
@@ -122,11 +122,11 @@
 			display: flex;
 			justify-content: space-between;
 		}
-		#indent>div>span {
+		#indent>div>a {
 			text-align: center;
 			font-size: .72rem;
 		}
-		#indent>div>span>i{
+		#indent>div>a>i{
 			
     		font-size: 1.8rem;
 		}
@@ -161,21 +161,22 @@
 		#income>div {
 			display: flex;
 		}
-		#income>div>div {
+		#income>div>a {
+			display: inline-block;
 			padding: 1% 2%;
 			text-align: center;
 			border-radius: 5px;
 			box-shadow: 0 0 6px #d8d8d8;
 			font-size: 0.72rem;
 		}
-		#income>div>div:nth-of-type(1) {
+		#income>div>a:nth-of-type(1) {
 			width: 60%;
 			margin-right: 10px;
 		}
-		#income>div>div:nth-of-type(2) {
+		#income>div>a:nth-of-type(2) {
 			width: 40%;
 		}
-		#income>div>div>span {
+		#income>div>a>span {
 			display: inline-block;
 			margin: 8px;
 			color: #E55C1F;
@@ -324,24 +325,24 @@
 				</a>
 			</p>
 			<div>
-				<span>
+				<a href="{{:U('Home/Order/index')}}">
 					<i class="iconfont icon-zulin-"></i>
-					<p><a href="{{:U('Home/Order/index')}}">租赁订单</a></p>
-				</span>
+					<p>租赁订单</p>
+				</a>
 				
-				<span>
+				<a href="{{:U('Home/Order/index')}}">
 					<i class="iconfont icon-shangpin-"></i>
-					<p><a href="{{:U('Home/Order/index')}}">商品订单</a></p>
-				</span>
+					<p>商品订单</p>
+				</a>
 
-				<span>
+				<a href="{{:U('Home/Order/index')}}">
 					<i class="iconfont icon-haocai-"></i>
-					<p><a href="{{:U('Home/Order/index')}}">耗材订单</a></p>
-				</span>
-				<span>
+					<p>耗材订单</p>
+				</a>
+				<a href="{{:U('Home/Order/index')}}">
 					<i class="iconfont icon-duihuan-"></i>
-					<p><a href="{{:U('Home/Order/index')}}">兑换订单</a></p>
-				</span>
+					<p>兑换订单</p>
+				</a>
 				
 			</div>
 		</div>
@@ -353,44 +354,44 @@
 
 			</p>
 			<div>
-				<div>
+				<a href="{{:U('Home/VipCenter/reward')}}">
 					<span>金币{{$comData['gold_num']}}</span>
 					<span>银币{{$comData['silver']}}</span>
-					<p><a href="{{:U('Home/VipCenter/reward')}}">我的奖励金</a></p>
-				</div>
-				<div>
+					<p>我的奖励金</p>
+				</a>
+				<a href="{{:U('Home/Order/memberOrder')}}">
 					<span>26</span>
-					<p><a href="{{:U('Home/Order/memberOrder')}}">会员订单</a></p>
-				</div>
+					<p>会员订单</p>
+				</a>
 			</div>
 		</div>
 		<div id="more">
 			<div id="pay">
-				<span>
+				<a href="{{:U('Home/Mall/chongzhi')}}">
 					<i class="iconfont icon-chongzhi1"></i>
-					<a href="{{:U('Home/Mall/chongzhi')}}">会员充值</a>
-				</span>
+					<p>会员充值</p>
+				</a>
 				<i class="iconfont icon-dayuhao-copy-copy"></i>
 			</div>
 			<div id="addressManage">
-				<span>
+				<a href="{{:U('Home/Address/index')}}">
 					<i class="iconfont icon-dizhi"></i>
-					<a href="{{:U('Home/Address/index')}}">收货地址管理</a>
-				</span>
+					<p>收货地址管理</p>
+				</a>
 				<i class="iconfont icon-dayuhao-copy-copy"></i>
 			</div>
 			<div id="yinhanka">
-				<span>
+				<a href="{{:U('Home/BankCard/index')}}">
 					<i class="iconfont icon-yinhangqia"></i>
-					<a href="{{:U('Home/BankCard/index')}}">银行卡</a>
-				</span>
+					<p>银行卡</p>
+				</a>
 				<i class="iconfont icon-dayuhao-copy-copy"></i>
 			</div>
 			<div id="comment">
-				<span>
+				<a href="{{:U('Home/VipCenter/mycomment')}}">
 					<i class="iconfont  icon-pinglun"></i>
-					<a href="{{:U('Home/VipCenter/mycomment')}}">我的评论</a>
-				</span>
+					<p>我的评论</p>
+				</a>
 				<i class="iconfont icon-dayuhao-copy-copy"></i>
 			</div>
 		</div>
