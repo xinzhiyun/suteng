@@ -201,8 +201,8 @@
     			timeHTML += '<hgroup>'+
 					'<div class="hgContain .clearfix" i="1">'+
 						'<div class="setLeft .clearfix">'+
-							'<p><span  class="sLeft">关机时间</span><span class="sRight"><b>'+ timeObj[i].shutdown.slice(0,2) +'</b>时：<b>'+ timeObj[i].poweroff.slice(-2) +'</b>分</span>	</p>'+
-							'<p><span>开机时间</span><span class="sRight"><b>21</b>时：<b>00</b>分</span></p>'+
+							'<p><span  class="sLeft">关机时间</span><span class="sRight"><b>'+ timeObj[i].shutdown.slice(0,2) +'</b>时：<b>'+ timeObj[i].shutdown.slice(-2) +'</b>分</span>	</p>'+
+							'<p><span>开机时间</span><span class="sRight"><b>'+ timeObj[i].poweroff.slice(0,2) +'</b>时：<b>'+ timeObj[i].poweroff.slice(-2) +'</b>分</span></p>'+
 						'</div><div class="setRight">'+
 							'<div class="open1" name="one"><!-- id="divone" -->'+
 	       				 		'<div class="open2" name="two"></div><!-- id="divtwo" -->'+
@@ -215,6 +215,9 @@
 				'</hgroup>';
     		}
     		console.log(timeHTML)
+    		$("._setTimecontain").html(timeHTML)
+    	}else{
+    		timeHTML = '<div style="width: 100vw;height:50vh;display:flex;align-items:center;justify-content:center">暂无数据</div>';
     		$("._setTimecontain").html(timeHTML)
     	}
     	// 遍历数据
