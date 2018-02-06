@@ -1,6 +1,8 @@
 <extend name="Public/base" />
 <block name="mylink">
     <link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/layui/css/layui.css">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/switchery.min.css" rel="stylesheet">
 </block>
 <block name="content">
     <div class="content">
@@ -163,6 +165,8 @@
 </block>
 <block name="myjs">
     <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/switchery.min.js"></script>
     <script>
     // 添加设备
     function add() {
@@ -194,7 +198,7 @@
         $("#st-adds").modal('hide');
         var formData = new FormData(document.getElementById("form"));
         $.ajax({
-            url: 'upload' ,
+            url: 'deviceAdds' ,
             type: 'post',
             data: formData,
             async: false,
@@ -203,16 +207,22 @@
             processData: false,
             success: function (res) {
                 if(res.code == 200){
-                    parent.layer.msg(res.msg);
-                } else {
-                    parent.layer.msg(res.msg);
+                    // 添加成功
+                    swal(res.msg,'确认后请刷新页面', "success");
+                    // window.location.reload();
+                }else{
+                    // 添加失败
+                    swal(res.msg, '', "success");
                 }
             },
             error: function (res) {
                 if(res.code == 200){
-                    parent.layer.msg(res.msg);
-                } else {
-                    parent.layer.msg(res.msg);
+                    // 添加成功
+                    swal(res.msg,'', "success");
+                    // window.location.reload();
+                }else{
+                    // 添加失败
+                    swal(res.msg, '', "success");
                 }
             }
         });

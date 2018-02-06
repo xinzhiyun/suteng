@@ -100,21 +100,10 @@ class ShopController extends CommonController
         $goods = D('Goods');
         $map['g.status'] = array('neq',2);
         $goodsList = $goods->getGoodsList($map);
-        // echo $goods->_sql();die;
-        foreach($goodsList as $val){
-            $key = $val['gid'];
-            if(isset($arr[$key])) {
-                $arr[$key]['attr'] .= $val['attr'].':'.$val['val'].'|';
-            } else {
-                $arr[$key] = $val;
-                $arr[$key]['attr'] = $val['attr'].':'.$val['val'].'|';
-            }
-        }
-        $goodsList = array_values($arr);
-        // dump($goodsList);
         $assign = [
-            'data' => $goodsList,
+            'data' => $goodsList['goodsData'],
             'cateInfo'=>$cateInfo,
+            'show' => $goodsList['show'],
         ];
         $this->assign($assign);
         $this->display();
@@ -146,8 +135,6 @@ class ShopController extends CommonController
             $where = ['id' => $id];
             $data = ['status'=>2];
             $del = $goods->where($where)->save($data);
-            // echo $goods->_sql();
-            // dump($del);die;
             if($del){
                 E('删除成功', 200);
             } else {
@@ -175,8 +162,6 @@ class ShopController extends CommonController
             $goods['cid'] = $cate->sureCate();
             if(!$goods['cid']) E('请选择分类', 605);
             $goods['name'] = $data['name'];
-            // $goods_check = $goods_add->create($goods);
-            // dump($goods);die;
             // 事务开启
             $goods_add->startTrans();
             if(!$goods_add->create($goods)) {
@@ -341,9 +326,10 @@ class ShopController extends CommonController
     {
         $order = D('ShopOrder');
         $data = $order->getOrders();
-        // dump($data);
+        dump($data);die;
         $assign = [
-            'data' => $data,
+            'data' => $data['data'],
+            'show' => $data['show'],
         ];
         $this->assign($assign);
         $this->display();
