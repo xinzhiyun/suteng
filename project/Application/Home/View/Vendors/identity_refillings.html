@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
     <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
     <script src="__PUBLIC__/Home/js/public.js"></script>
-    <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_eele8rs3vvwh4cxr.css">
+   <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_359ekha73vt8d7vi.css">
    <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
     <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 </head>
@@ -25,165 +25,229 @@
         width: 100vw;
     }
      header{
+        display: flex;
         padding-top: 0.6rem;
-        height: 6rem;
-        margin-bottom: 2vh;
-        background: -webkit-radial-gradient(top left, #99FCEF 35%, #5B97EF);
-
+        height: 8rem;
+        background: -webkit-radial-gradient(top left , #99FCEF, #5291EE);
+        flex-direction: column;
+        align-items: center;
      }
     header>p {
-            padding: 2% 4% 3%;
-            text-align: left;
-            color: #5a5a5a;
-            font-size: 0.72rem;
+        flex-direction:column;
+        justify-content:center;
+        padding: 2% 4% 3%;
+        text-align: left;
+        color: #5a5a5a;
+        font-size: 0.72rem;
         }
-        header>p>b{
-            display: inline-block;
-            width: 4rem;
-            height: 4rem;
-            border-radius: 4rem; 
-            background: #ccc;
-            float: left;
-            overflow: hidden;
-            padding-right: 0.5rem;
-
-        }
-         header>p>b>img{
-            width: 100%;
-        }
-         header>p>span{
-            line-height: 3rem;
-            margin-left: 1rem;
-            color: #5a5a5a;
-        }
+    header>p>b{
+       display: block;
+       width: 4rem;
+       height: 4rem;
+       border-radius: 4rem; 
+       background: #ccc;
+       float: left;
+       overflow: hidden;
+       padding-right: 0.5rem;
+    }
+    header>p>b>img{
+        width: 100%;
+    }
+    header>span{
+       line-height: 3rem;
+       margin-left: 1rem;
+       color: #5a5a5a;
+    }
       
-        form>.form-group{
-            width: 100vw;
-            padding:0.6rem 0.8rem;
-            height: 2.5rem;
-            clear:both;
-            border-bottom:1px solid #d4d4d4!important;
-        }
-        form>.form-group:nth-of-type(7){
-            border-bottom:none!important;
-            border-top: 10px solid #d4d4d4;
-            margin-top: 1rem;
-        }
+    form>.form-group{
+    width: 100vw;
+    padding:0.6rem 0.8rem;
+    height: 2.5rem;
+    clear:both;
+    border-bottom:1px solid #d4d4d4!important;
+    }
+    form>.form-group:nth-of-type(3){
+    height: 2.8rem;
+    }
+    form>.form-group:nth-of-type(7){
+        border-bottom:none!important;
+        border-top: 10px solid #d4d4d4;
+        margin-top: 1rem;
+    }
+    form>.form-group1{
+         height: 7rem;
+        border-bottom: none!important;
+        position: relative;
+        /*background: yellow;*/
+        /*opacity: 0.3;*/
+        /*margin-top: 1rem;*/
+        padding: 0.0rem 0.8rem;
+   }
+    form>div.form-group:nth-of-type(3){
+        border-bottom:10px solid #d4d4d4!important;
+         /*margin-bottom: 1rem;*/
+    }
+    form>div.form-group:nth-of-type(5){
+        border:none!important;
+        
+    }
+   /* form>div.form-group:nth-of-type(4)>label{
+        display: block;
+    }*/
+    form>div.form-group:nth-of-type(4)>.col-md-3{
+        position: relative;
+    }
+    form>.form-group>i{
+        float: left;
+        font-size: 1.2rem;
+        padding-right: 0.3rem;
+    }
+    
+    form>.form-group>label{
+        /*float: left;*/
+        letter-spacing: 0.12rem;
+        line-height: 1.2rem;
+        font-size: 0.72rem;
+    }
+    .col-md-3{
+        display: inline-block;
+    }
+    form>.form-group1>label{
+        line-height: 2.5rem;
+        display: block;
+    }
+     form>.form-group>.col-md-3>input{
+        width: 37vw;
+        height: 1.2rem;
+        border:none;
+        padding-left: 1vw;
+     }
+     /*重置样式和申请*/
+      form>.form-group{
+        border-bottom: none;
+        width: 100vw !important;
+      }
+     form>.form-group>.col-sm-4{
+        position: relative;
+        margin-top: 1rem;
+        bottom: 1rem;
+     }
+     form>.form-group>.col-sm-offset-2>input{
+        letter-spacing: 0.1rem;
+        font-size: 0.72rem;
+        background: #fff;
+        border-radius: 0.4rem;
+        padding:0.2rem 2rem;
+        border:1px solid #737373;
+     }
+     form>.form-group>.col-sm-offset-2>input.btn-primary{
+        margin-right: 2.7rem;
+     }
+     form>.form-group>.col-sm-offset-2>input.btn-white{
+        float: right;
+    }
 
-        form>.form-group1{
-             height: 4rem;
-             border-bottom: none!important;
-             position: relative;        }
-        form>div.form-group:nth-of-type(3){
-            border-bottom:10px solid #d4d4d4!important;
-             margin-bottom: 1rem;
-        }
-        form>div.form-group:nth-of-type(5){
-            border:none!important;
-            
-        }
-        form>div.form-group:nth-of-type(4)>label{
+    .icon-gongsimingcheng{
+        color: #2EB6AA;
+    }
+    .icon-dianhua {
+        color: #23A0E8;
+    }
+    .icon-dizhi {
+        color: #E55C1F;
+    }
+    .form-group>.col-md-5{
+        display: inline-block;
+        width: 20vw;
+    }
+    form>.form-group>.col-md-5>input{
+        position: absolute;
+        width: 4.4rem;
+        height: 4.4rem;
+        background: green;
+        opacity: 0;
+        z-index: 999;
+        left: 1rem;
+        top: -0.7rem;
+    }
+    /*.form-group>.col-md-5>i{
+        position: relative;
+        top: 0rem;
+        left: 0.3rem;
+        font-size: 3rem;
+        color: #56aaf1;
+        z-index: 666;
+    }*/
+
+    /*图片区域*/
+    form>.form-group1>.col-md-5>i {
+    position: absolute;
+    top: -1.3rem;
+    left: 0.8rem;
+    font-size: 3.8rem;
+    color: #DCF8FF;
+    border: 1px dashed #76DED3;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.6rem;
+}
+    .col-md-5>.xiePic{
+        width: 4.6rem;
+        line-height: 4.6rem;
+        text-align: center;
+        height: 4.6rem;
+        position: absolute;
+        background: #DCF8FF;
+        border-radius: 0.5rem;
+        left: 6rem;
+        top: -0.6rem;
+        color: #5a5a5a;
+        border: 1px dashed #76DED3;
+    }
+    .xiePic>i{
+            position: absolute;
+            top: -0.3rem;
+            right: -0.3rem;
             display: block;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 0.8rem;
+            background: red;
+            line-height: 1rem;
+            color: #fff;
+            font-weight: 600;
         }
-        form>div.form-group:nth-of-type(4)>.col-md-3{
-            position: relative;
-
-        }
-        form>.form-group>i{
-            float: left;
-            font-size: 1.2rem;
-        }
-     
-        form>.form-group>label{
-            float: left;
-            letter-spacing: 0.12rem;
-            line-height: 1.2rem;
-            font-size: 0.72rem;
-        }
-        form>.form-group1>label{
-            line-height: 2.5rem;
-        }
-         form>.form-group>.col-md-3>input{
-            width: 42vw;
-            height: 1.2rem;
+    /*申请按钮*/
+          .xieBtn>input{
+            margin-top:2rem;
+            position: absolute;
+            background: #2EB6AA;
+            width: 100vw;
             border:none;
-         }
-         /*重置样式和申请*/
-          form>.form-group{
-            border-bottom: none;
-            width: 100vw !important;
-          }
-         form>.form-group>.col-sm-4{
-            position: relative;
-            margin-top: 1rem;
-            bottom: 1rem;
-         }
-         form>.form-group>.col-sm-offset-2>input{
+            color: #fff;
+            height: 2rem;
             letter-spacing: 0.1rem;
-            font-size: 0.72rem;
-            background: #fff;
-            border-radius: 0.4rem;
-            padding:0.2rem 2rem;
-            border:1px solid #737373;
-         }
-         form>.form-group>.col-sm-offset-2>input.btn-primary{
-            margin-right: 2.7rem;
-         }
-         form>.form-group>.col-sm-offset-2>input.btn-white{
-            float: right;
-         }
+            font-size: 0.8rem;
+          }
 
-         .icon-gongsimingcheng{
-            color: #2EB6AA;
-        }
-        .icon-shouji {
-            color: #23A0E8;
-        }
-        .icon-dizhi {
-            color: #E55C1F;
-        }
-
-        .form-group>.col-md-5{
-            display: inline-block;
-            width: 20vw;
-        }
-       form>.form-group>.col-md-5>input{
-           position: absolute;
-            margin-left: 1rem;
-            width: 2rem;
-            height: 2.7rem;
-            background: green;
-            opacity: 0;
-            z-index: 999;
-            
-        }
-        .form-group>.col-md-5>i{
-            position: relative;
-            top: -0.4rem;
-            left: 0.8rem;
-            font-size: 3rem;
-            color: #56aaf1;
-            z-index: 666;
-            
-        }
 </style>
 <body>
     <div class="ibox-content">
         <header>
-            <p><b></b><span>注册经销商</span></p>
+            <p><b></b></p>
+            <p><span>注册经销商</span></p>
         </header>
         <form action="{{:U('Home/Vendors/identity_refillings')}}" method="post" class="form-horizontal clearfix" enctype="multipart/form-data">    
             <div class="form-group">
                 <i class="iconfont icon-gongsimingcheng"></i>
-                <label class="col-sm-2 control-label" for="comName">姓 &nbsp; &nbsp;名&nbsp;： </label>
+                <label class="col-sm-2 control-label" for="comName">姓 &nbsp; &nbsp;名&nbsp;:</label>
 
                 <div class="col-md-3">
                     <input id="comName" type="text" name="name" class="form-control">
                 </div>
             </div> 
            <div class="form-group">
-                <i class="iconfont icon-shouji"></i>
-                <label class="col-sm-2 control-label" for="comTel">移动电话： </label>
+                <i class="iconfont icon-dianhua"></i>
+                <label class="col-sm-2 control-label" for="comTel">移动电话:</label>
 
                 <div class="col-md-3">
                     <input id="comTel" type="text" name="phone" class="form-control">
@@ -191,45 +255,75 @@
             </div>
              <div class="form-group">
                 <i class="iconfont icon-dizhi"></i>
-                <label class="col-sm-2 control-label" for="comAddr">身份证号：</label>
+                <label class="col-sm-2 control-label" for="comAddr">身份证号:</label>
 
                 <div class="col-md-3">
                     <input id="comAddr" type="text" name="identity" class="form-control">
                 </div>
             </div>
-            <div class="form-group  form-group1">
-                <label class="col-sm-2 control-label" for="comLicen">身份证正面</label>
+             <div class="form-group  form-group1">
+                <label class="col-sm-2 control-label" >上传身份证正面</label>
                 <div class="col-md-5">
-                    <input type="file" id="comLicen" name="positive" class="form-control">
-                    <i class="iconfont icon-tianjia tianjiatubiao"></i>
+                    <input type="file" id="comLicen" name="positive" class="form-control" onchange="positiveImage(this);">
+                    <i class="iconfont icon-tianjiajingdian"></i>
+                    <div class="xiePic"><img src="" id="positive" style="width: 100%;"><i class="iconfont icon-cuohao"></i></div>
                 </div>
             </div> 
-             <div class="form-group form-group1">
-                <label class="col-sm-2 control-label" for="comLicen">身份证反面</label>
+            <div class="form-group form-group1">
+                <label class="col-sm-2 control-label">上传身份证反面</label>
                 <div class="col-md-5">
-                    <input type="file" id="comLicen" name="opposite" class="form-control">
-                    <i class="iconfont icon-tianjia tianjiatubiao"></i>
+                    <input type="file" id="comLicen1" name="opposite" class="form-control" onchange="oppositeImage(this);">
+                    <i class="iconfont icon-tianjiajingdian"></i>
+                    <div class="xiePic"><img src="" id="opposite" style="width: 100%;"><i class="iconfont icon-cuohao"></i></div>
                 </div>
             </div> 
-             <div class="form-group form-group1">
-                <label class="col-sm-2 control-label" for="comLicen">手持身份证</label>
+            <div class="form-group form-group1">
+                <label class="col-sm-2 control-label">上传手持身份证</label>
                 <div class="col-md-5">
-                    <input type="file" id="comLicen" name="handheld" class="form-control">
-                    <i class="iconfont icon-tianjia tianjiatubiao"></i>
+                    <input type="file" id="comLicen2" name="handheld" class="form-control" onchange="handheldImage(this);">
+                    <i class="iconfont icon-tianjiajingdian"></i>
+                    <div class="xiePic"><img src="" id="handheld" style="width: 100%;"><i class="iconfont icon-cuohao"></i></div>
                 </div>
             </div> 
-            <!-- <div class="hr-line-dashed"></div> -->
-            <div class="form-group">
-                <div class="col-sm-4 col-sm-offset-2">
-                    <input class="btn btn-primary" type="submit" value="申请"></input>
-                    <input class="btn btn-white" type="reset" value="重置"></input>
-                   
-                </div>
+            <div class="xieBtn">
+                <input class="btn btn-primary" type="submit" value="申请"></input>
             </div>
         </form>
     </div>
+    <script>
+        function positiveImage(file) {
+            if (!file.files || !file.files[0]) {
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                document.getElementById('positive').src = evt.target.result;
+            }
+            reader.readAsDataURL(file.files[0]);
+        }
+
+        function oppositeImage(file) {
+            if (!file.files || !file.files[0]) {
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                document.getElementById('opposite').src = evt.target.result;
+            }
+            reader.readAsDataURL(file.files[0]);
+        }
+
+        function handheldImage(file) {
+            if (!file.files || !file.files[0]) {
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                document.getElementById('handheld').src = evt.target.result;
+            }
+            reader.readAsDataURL(file.files[0]);
+        }
+    </script>
 </body>
 </html>
-
-
 

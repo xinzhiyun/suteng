@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+  <meta charset="UTF-8">
+  <title>收益明细</title>
+  <link rel="stylesheet" href="./css/resetstyle.css">
+  <link rel="stylesheet" href="./fonts/iconfont.css">
+  <script src="./js/jquery-1.10.1.js"></script>
+  <script src="./js/public.js"></script>
+  <style>
+      body{
+        font-size: .7rem;
+        color: #373737;
+      }
+      .rewardTop{
+         width: 90%;
+         height: 2rem;
+         line-height: 2.25rem;
+         padding:4% 5% 6%;
+        font-size: 0.75rem;
+        color: #fff;
+         background: linear-gradient(to right, #317EF5, #76F5E4); 
+      }
+      .myReward{
+        width: 100%;
+        height: 100%;
+      }
+      /*订单项目*/
+    .goodsItem {
+      display: flex;
+      padding: 2%;
+      border-bottom: 1px solid #f1f1f1;
+    }
+    
+    .goods>div.goodsItem:nth-of-type(2n) {
+      border-top: 4px solid #fff;
+    }
+    
+    /*订单图片*/
+    .giPicture {
+      flex: 1;
+      padding: 3%;
+    }
+    .giPicture>img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: #fff;
+    }
+    /*商品描述*/
+    .giDescription {
+      flex: 2;
+      padding: 2%;
+    }
+    .giDescription>b{
+      font-weight: 300;
+    }
+    .giDescription>p {
+      margin: 6px 0;
+      color: #666;
+      font-size: .6rem;
+      overflow:hidden; 
+      text-overflow:ellipsis;
+      display:-webkit-box; 
+      -webkit-box-orient:vertical;
+      -webkit-line-clamp:4;
+    }
+    /*价格*/
+    .giDescription>div>b {
+      color: #FC2C2D;
+      letter-spacing: 2px;
+    }
+    /*数量*/
+    .giDescription>div>span {
+      float: right;
+    }
+    .giDescription>div>span:after {
+      content: '';
+      clear: both;
+    }
+    /*套餐*/
+    .taocan {
+      padding: 4%;
+      border-top: 4px solid #fff;
+      background: #F8F8F8;
+    }
+    .taocan>span {
+      float: right;
+    }
+    .taocan>span:after {
+      content: '';
+      clear: both;
+    }
+    /*价格*/
+    .taocan>span>b {
+      color: #FC2C2D;
+      letter-spacing: 2px;
+    }
+    /*交易分成*/
+    .timenews{
+      padding:6% 4%;
+      color:orange;
+    }
+    .timenews>p{
+      line-height: 1.2rem;
+    }
+   
+     
+  </style>
+</head>
+<body>
+  
+    <div class="rewardContainer">
+        <div class="rewardTop">
+          消费的会员名称
+        </div>
+        <!-- 所有商品订单详情 -->
+        <div id="goodsAll">
+            <div class="goods">
+                <div class="goodsItem">
+                    <div class="giPicture">
+                      <img src="./images/1.jpg" alt="">
+                    </div>
+                    <div class="giDescription">
+                      <b>RO膜</b>
+                      <p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+                      <div>
+                        <b>￥120.00</b>
+                        <span>X1</span>
+                      </div>
+                    </div>
+                </div>
+            </div>
+             <div class="goods">
+                <div class="goodsItem">
+                    <div class="giPicture">
+                      <img src="./images/1.jpg" alt="">
+                    </div>
+                    <div class="giDescription">
+                      <b>RO膜</b>
+                      <p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+                      <div>
+                        <b>￥120.00</b>
+                        <span>X1</span>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="timenews">
+          <p>分成：63</p>
+          <p>交易时间：2017-12-26</p>
+        </div>
+    </div>
+    <script>
+      
+    </script>
+
+
+</body>
+</html>                                                                                                                                                                                                                                                                      

@@ -639,6 +639,42 @@ class VendorsController extends Controller
     	$this->ajaxReturn($message); 
     }
 
+    /**
+     * [protocol 签协议]
+     * @return [type] [description]
+     */
+    public function protocol_re()
+    {   
+        // 获取微信用户唯一标识
+        $open_id = $_SESSION['vendorInfo']['open_id'];
+
+        // 上传合同文件
+        $info = $this->upload();
+
+        if($info){
+            $info['status'] = 3;
+            // 更新条件
+            $saveData['open_id'] = $open_id;
+            // 更新分销商信息
+            $vandorRes = M('vendors')->where($saveData)->save($info);
+            if($vandorRes){
+                // $this->success('合同信息提交成功', U('Home/Vendors/index'));
+                $message['code'] = 200;
+                $message['res']  = '合同信息提交成功';
+            }else{
+                // $this->error('合同信息提交失败，请重新上传！');
+                $message['code'] = 605;
+                $message['res']  = '合同信息提交失败，请重新上传！';
+            }
+        }else{
+            $message['code'] = 605;
+            $message['res']  = '合同信息提交失败，请重新上传！';
+        }
+
+        $this->ajaxReturn($message); 
+    }
+    
+
     // 收加盟费
     public function protocol_fee()
     {
@@ -683,8 +719,23 @@ class VendorsController extends Controller
         $this->display('protocol_fee');
     }
 
+    // 收益明细
+    public function profit_details()
+    {
+        $this->display();
+    }
 
+    // 分销商团队
+    public function vendor_team()
+    {
+        $this->display();
+    }
 
+    // 收入详情
+    public function income_detailed()
+    {
+        $this->display();
+    }
 
     /**
      * [upload 图片上传]
