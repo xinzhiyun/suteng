@@ -196,6 +196,7 @@
         border: none;
         margin-top: 0;
         padding: 0.3rem;
+        font-size: 0.5rem;
         box-sizing: border-box;
       }
       .repairBtn{
@@ -265,9 +266,9 @@
       <div class="repairTop">
         <ul>
           
-          <li><span>设备编号：</span><p class="deviceid">0120563</p></li>
-          <li><span>日       期：</span><p><input type="text" class="currentdate" id="currentdate" value="" placeholder="请选择日期"></p></li>
-          <li><span>设备型号：</span><p><input type="text" class="devicetype"></p></li>
+          <li><span>设备编号：</span><p class="deviceid" name="deviceId">0120563</p></li>
+          <li><span>日       期：</span><p><input name="date" type="text" class="currentdate" id="currentdate" value="" placeholder="请选择日期"></p></li>
+          <li><span>设备型号：</span><p><input name="deviceType" type="text" class="devicetype"></p></li>
            <li>
             <span>报修原因：</span><p>
             <select>
@@ -295,24 +296,24 @@
           <h3>联系方式</h3>
           <li>
             <label for="Lname">
-              <span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input id="Lname" type="text" value="" placeholder="请输入姓名">
+              <span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input name="uName" id="Lname" type="text" value="" placeholder="请输入姓名">
             </label>
           </li>
            <li>
             <label for="Ltel">
-              <span>电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：</span><input id="Ltel" type="text" value="" placeholder="请输入电话">
+              <span>电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：</span><input name="uPhone" id="Ltel" type="text" value="" placeholder="请输入电话">
             </label>
           </li>
           <li>
             <label for="Laddr">
               <p>维修地址：</p>
-              <textarea name="" id="Laddr" cols="30" rows="10" placeholder="" ></textarea>
+              <textarea name="uAddress" id="Laddr" cols="30" rows="10" placeholder="" ></textarea>
             </label>
           </li>
         </ul>
       </div>
       <div class="repairBtn">
-        <input type="button" value="提交" class="btn">
+        <input type="submit" value="提交" class="btn">
       </div>
     </form>
 
@@ -462,7 +463,7 @@
         layuiHint("请输入设备型号");
         return false;
       }else if($("select").val()==""){
-        layuiHint("请选中保修原因");
+        layuiHint("请选择保修原因");
         return false;
       }else if($(".suggestTxt").val()==""){
         layuiHint("请输入报修详情");
