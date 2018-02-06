@@ -106,15 +106,18 @@
       $.ajax({
           type : 'POST',
           url : "{{:U('Home/Suggest/add')}}",
-          data : 'content='+$("textarea").val(),
+          data : {'content':$("textarea").val()},
           success : function(ret){
+            console.log('成功！',ret)
               if (ret.state) {
                 layui.use('layer', function(){
                   var layer = layui.layer;
                   layer.msg('感谢您的宝贵建议！');
-                  $("textarea").val('');
                 });
-                  // window.location.href="{{:U('Home/Suggest/index')}}";
+                setTimeout(function(){
+                    window.location.href="{{:U('Home/VipCenter/minepack')}}";
+                    $("textarea").val('');
+                },1500)
               } else {
                 layui.use('layer', function(){
                   var layer = layui.layer;
@@ -122,6 +125,9 @@
                   $("textarea").val('');
                 });
               }              
+          },
+          error: function(ret){
+            console.log('失败！',ret)
           }
       });
     }
