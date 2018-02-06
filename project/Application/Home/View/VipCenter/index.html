@@ -311,7 +311,6 @@
 		<div id="hRight">
 			<div id="qrCode_share">
 				<i class="iconfont icon-erweima"></i>
-				<i class="iconfont icon-zhixiang share"></i>
 			</div>
 			<p>{{$user['nickname']}}</p>
 			<div id="package">
@@ -401,43 +400,6 @@
 			</div>
 		</div>
 	</div>
-	<div id="sharePanel">
-		<div id="maskbg"></div>
-		<div id="sharePart">
-			<div>
-				<span class="shareIcon" id="shareFriend">
-					<span class="img">
-						<img src="__PUBLIC__/Home/images/weixin.png" alt="">
-					</span>
-					<p>发送给朋友</p>
-				</span>
-				<span class="shareIcon" id="shareTimeline">
-					<span class="img">
-						<img src="__PUBLIC__/Home/images/pengyouquan.png" alt="">
-					</span>
-					<p>分享到朋友圈</p>
-				</span>
-				<span class="shareIcon" id="shareQQ">
-					<span class="img">
-						<img src="__PUBLIC__/Home/images/qq.png" alt="">
-					</span>
-					<p>QQ</p>
-				</span>
-				<span class="shareIcon" id="shareQZone">
-					<span class="img">
-						<img src="__PUBLIC__/Home/images/qqcom.png" alt="">
-					</span>
-					<p>QQ空间</p>
-				</span>
-				<span class="shareIcon" id="shareWeibo">
-					<span class="img">
-						<img src="__PUBLIC__/Home/images/weibo.png" alt="">
-					</span>
-					<p>微博</p>
-				</span>
-			</div>
-		</div>
-	</div>
 	<div id="myCode">
 		<img id="qrcode" src="__PUBLIC__/Home/images/erweima.png"></img>
 		<a id="saveCode" href="javascript:;" >长按二维码保存到相册</a>
@@ -515,23 +477,6 @@
 	        //我想用当前秒是可以解决重名的问题了 不行你就换成毫秒
 	        savaFile(imgdata,filename);
         };
-
-		/*
-			点击右上角分享
-		 */ 
-		$(".share").on("click", function(){
-
-			$("#sharePanel").css({display: 'block'});
-			$("#sharePart").animate({bottom: '0'})
-		})
-		/*
-			分享界面点击上部分退出分享
-		 */
-		$("#maskbg").on("click", function(){
-
-			$("#sharePanel").css({display: 'none'});
-			$("#sharePart").css({bottom: '-44vh'})
-		})
 
 	</script>
 </body>
