@@ -6,6 +6,7 @@
   <title>我的钱包</title>
   <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_4507enjnffo2mx6r.css">
   <style>
         body{
           font-size: 0.7rem;
@@ -64,16 +65,22 @@
         .mineRight .m-left{
           margin:0 0.2rem;
         }
-        .mineRight>ul>li>i.icon-jinbi{
-          color:#DEBA10; 
-          font-size: 1.4rem;
+        .mineRight>ul>li>i{
+          position: relative;
+          top:0.15rem;
         }
-        .mineRight>ul>li>i.icon-yingbi{
-          color: #8ABCBD;
-          font-size: 1.4rem;
+        .mineRight>ul>li>i.icon-tubiao207{
+          color:#f9df04; 
+          font-size: 1.2rem;
+          font-weight: 800;
+        }
+        .mineRight>ul>li>i.icon-tubiao207-copy{
+          color: #dadad5;
+           font-size: 1.2rem;
+          font-weight: 800;
         }
         .mineRight .yingIcon{
-          width: 70%;
+          width: 73.5%;
           float: right;
         }
         .MineFoot ul li{
@@ -134,14 +141,14 @@
             <div class="mineRight">
                <ul>
                  <li><p>{{$user['nickname']}}</p></li>
-                 <li><b>我的钱包:</b><i class="iconfont icon-jinbi m-left"></i><span>金币<em>{{$user['gold_num']}}</em>个</span></li>
-                  <li class="yingIcon"><i class="iconfont icon-yingbi m-left"></i><span>金币<em>{{$user['silver']}}</em>个</span></li>
+                 <li><b>我的钱包:</b><i class="iconfont icon-tubiao207 m-left"></i><span>金币<em>{{$user['gold_num']}}</em>个</span></li>
+                  <li class="yingIcon"><i class="iconfont icon-tubiao207-copy m-left"></i><span>银币<em>{{$user['silver']}}</em>个</span></li>
                </ul>
             </div>                                
         </div>
         <div class="MineFoot">
           <ul>
-            <li><a href="{{:U('Home/Device/index')}}"><i class="iconfont icon-shebeiguanli Mf-left"></i><span>设备管理</span><i class="iconfont icon-dayuhao Mf-right"></i><b class="device_now">当前设备：{{$device['device_code']}}</b></a></li>
+            <li><a href="{{:U('Home/Device/index')}}"><i class="iconfont icon-shebeiguanli Mf-left"></i><span>设备管理</span><i class="iconfont icon-dayuhao Mf-right"></i><b>当前设备：{{$device['device_code']}}</b></a></li>
             <li><a href="{{:U('Home/Switch/index')}}"><i class="iconfont icon-naozhong Mf-left"></i><span>定时设置</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
             <li><a href="{{:U('Home/Switch/setTime')}}"><i class="iconfont icon-jiare Mf-left"></i><span>加热设置</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
             <li><a href="{{:U('Home/VipCenter/usedNotes')}}"><i class="iconfont icon-yongshuijilu Mf-left"></i><span>用水记录</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
@@ -155,9 +162,5 @@
   </div>
   <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
   <script src="__PUBLIC__/Home/js/public.js"></script>
-  <script>
-    console.log($(".device_now").text().slice(5))
-    sessionStorage.setItem("device_now",$(".device_now").text().slice(5))
-  </script>
 </body>
 </html>                                                                                                                                                                                                                                                                      
