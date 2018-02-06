@@ -226,6 +226,12 @@ window.onload = function(){
                     else if(CmdList[i].cmd.type=="冲洗中")
                     {
                         wash();
+                    }else  if(CmdList[i].cmd.type=="加热中"){
+                        layui.use('layer', function(){
+                            var layer = layui.layer;
+                            layer.msg('已经给您加热了，天气冷小心烫着！');
+                            $('.heat').show().fadeOut(6000);
+                        })
                     }
 
                     CmdList.splice(i,1);
@@ -235,8 +241,6 @@ window.onload = function(){
         }
         //显示当前设备状态
         machineStatus();
-
-
     }
     //90秒后判断设备是否离线
     setInterval(function(){
@@ -350,10 +354,20 @@ window.onload = function(){
                 var layer = layui.layer;
                 layer.confirm('亲，确定要加热吗?', {icon: 3, title:'温馨提示'}, function(index){
                     layer.close(index);
-                    layui.use('layer', function(){
-                        var layer = layui.layer;
-                        layer.msg('已经给您加热了，天气冷小心烫着！');
-                        $('.heat').show().fadeOut(6000);;
+                    
+                    ajson={
+                        "DeviceID":deviceId,
+                        "PackType":"SetData",
+                        "Vison":0,
+                        "PackNum":PackNum,
+                    };
+                    //根据当前设备状态设置按钮文本
+                    ajson['type']='加热中';
+                    //发送数据
+                    websoket.send(JSON.stringify(ajson));
+                    CmdList.push({
+                        cmd:ajson,
+                        type:"加热中"
                     });
                 });
             });
