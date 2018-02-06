@@ -22,18 +22,17 @@ class FeedsController extends CommonController
 
         $user = M('feeds');
         $total = $user->where($map)
-                        ->join('pub_users ON pub_feeds.uid = pub_users.id')
-                        ->field('pub_feeds.*,pub_users.name,pub_users.phone')
+                        ->join('st_users ON st_feeds.uid = st_users.id')
+                        ->field('st_feeds.*,st_users.nickname')
                         ->count();
         $page  = new \Think\Page($total,8);
         $pageButton =$page->show();
 
         $userlist = $user->where($map)
-                        ->join('pub_users ON pub_feeds.uid = pub_users.id')
-                        ->field('pub_feeds.*,pub_users.name,pub_users.phone')
+                        ->join('st_users ON st_feeds.uid = st_users.id')
+                        ->field('st_feeds.*,st_users.nickname')
                         ->limit($page->firstRow.','.$page->listRows)
                         ->select();
-
         $this->assign('list',$userlist);
         $this->assign('button',$pageButton);
         $this->display();
@@ -48,9 +47,9 @@ class FeedsController extends CommonController
         
         $res = M('feeds')->delete($id);
         if($res){
-            $this->success('删除成功',U('Feeds/feedslist'));
+            return $this->ajaxReturn(['state'=>true,'msg'=>'删除成功']);
         }else{
-            $this->error('删除失败');
+            return $this->ajaxReturn(['state'=>false,'msg'=>'删除失败']);
         }
     
     }
@@ -63,22 +62,22 @@ class FeedsController extends CommonController
     {
         // 根据用户昵称进行搜索
         $map = '';
-        if(!empty($_GET['name'])) $map['name'] = array('like',"%{$_GET['name']}%");
+        if(!empty($_GET['name'])) $map['name'] = array('like',"%{$_GET['nickname']}%");
 
         $user = M('repair');
         $total = $user->where($map)
-                        ->join('pub_users ON pub_repair.uid = pub_users.id')
-                        ->field('pub_repair.*,pub_users.name,pub_users.phone')
+                        ->join('st_users ON st_repair.uid = st_users.id')
+                        ->field('st_repair.*,st_users.nickname')
                         ->count();
         $page  = new \Think\Page($total,8);
         $pageButton =$page->show();
 
         $userlist = $user->where($map)
-                        ->join('pub_users ON pub_repair.uid = pub_users.id')
-                        ->field('pub_repair.*,pub_users.name,pub_users.phone')
+                        ->join('st_users ON st_repair.uid = st_users.id')
+                        ->field('st_repair.*,st_users.nickname')
                         ->limit($page->firstRow.','.$page->listRows)
                         ->select();
-
+        // dump($userlist);
         $this->assign('list',$userlist);
         $this->assign('button',$pageButton);
         $this->display(); 
@@ -91,12 +90,11 @@ class FeedsController extends CommonController
     public function edit($id,$status)
     {
         $work = M("repair");
-        $data['status'] = $_GET['status'];
-        $res = $work->where('id='.$id)->save($data); 
-        if ($res) {
-            $this->success('修改成功',U('Feeds/repairlist'));
-        } else {
-            $this->error('修改失败啦！');
+        $res = $work->where('id='.$id)->setField('status',$status); 
+        if($res){
+            return $this->ajaxReturn(['state'=>true,'msg'=>'修改成功']);
+        }else{
+            return $this->ajaxReturn(['state'=>false,'msg'=>'修改失败']);
         }
     }
     

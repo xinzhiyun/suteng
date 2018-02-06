@@ -77,16 +77,16 @@
 <body>
   <div class="_advice">
     <div class="adviceContainer">
-        <form action="" method="post">
+        <!-- <form action="" method="post"> -->
           <div class="adviceTop">
             <h3>请写下您对设备的宝贵建议<span>*</span></h3>
             <textarea name="" id="contentTxt" cols="30" rows="10"></textarea>
             <p>收到建议后，我们会对设备不断进行调试，力求为 您提供更好的体验，谢谢~</p>
           </div>
            <div class="adviceFoot">
-            <input type="submit" value="提交" class="submitBtn">
+            <input type="button" value="提交" class="submitBtn">
           </div>
-        </form>
+        <!-- </form> -->
        
     </div>
   </div>
@@ -102,6 +102,28 @@
           layer.msg('请输入您的宝贵建议！');
       });
       return false;
+    }else{
+      $.ajax({
+          type : 'POST',
+          url : "{{:U('Home/Suggest/add')}}",
+          data : 'content='+$("textarea").val(),
+          success : function(ret){
+              if (ret.state) {
+                layui.use('layer', function(){
+                  var layer = layui.layer;
+                  layer.msg('感谢您的宝贵建议！');
+                  $("textarea").val('');
+                });
+                  // window.location.href="{{:U('Home/Suggest/index')}}";
+              } else {
+                layui.use('layer', function(){
+                  var layer = layui.layer;
+                  layer.msg('系统错误！');
+                  $("textarea").val('');
+                });
+              }              
+          }
+      });
     }
   });
   </script>

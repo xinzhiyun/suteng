@@ -1,0 +1,97 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <style type="text/css">
+       .ibox-content table{
+           
+            table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
+        }
+       .ibox-content td{
+            width:100%;
+            word-break:keep-all;/* 不换行 */
+            white-space:nowrap;/* 不换行 */
+            overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+            text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+        }
+    </style>
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>建议及保修 <small>建议列表</small></h5>
+                        <div class="ibox-tools">
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>建议ID</th>
+                                    <th>用户昵称</th>
+                                    <th>反馈内容</th>
+                                    <th>反馈时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <empty name="list">
+                                    <tr><td><h3>暂无建议.....</h3></td></tr>
+                                <else />
+                                    <volist name="list" id="val">
+                                        <tr>
+                                            <td>{{$val.id}}</td>
+                                            <td>{{$val.nickname}}</td>
+                                            <td>{{$val.content}}</td>
+                                            <td>{{$val.addtime|date='Y-m-d H:i:s',###}}</td>
+                                            <td><a class="btn btn-outline btn-success" href="javascript:;" onclick="del({{$val.id}})">删除</a></td>
+                                        </tr>
+                                    </volist>
+                                </empty>
+                            </tbody>
+                        </table>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                {{$button|bootstrap_page_style}}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="myjs">
+    <script type="text/javascript">
+    // 分页处理
+    $(".page").html();
+    pageHtml = $(".page").html();
+    $('.page').remove();
+    $('ul.pagination').html(pageHtml);
+
+    function del(id)
+    {
+        var r=confirm("数据无价，谨慎删除！");
+        if (r==true)
+        {
+            $.ajax({
+                type : 'GET',
+                url : "{{:U('Admin/Feeds/feedsdel')}}",
+                data : 'id='+id,
+                success : function(ret){
+                    if (ret.state) {
+                        alert(ret.msg)
+                        window.location.href="{{:U('Admin/Feeds/feedslist')}}";
+                    } else {
+                        alert(ret.msg)
+                    }              
+                }
+            });
+        }     
+    }
+
+    </script>
+</block>
+
