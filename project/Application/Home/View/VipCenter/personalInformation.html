@@ -137,7 +137,7 @@
 </head>
 <body>
 	<div class="container">
-		<form action="__URL__/infomationAction" method="post">
+		<form action="" method="post">
 			<div class="Information">
 				<h3>个人信息</h3>
 				<label for="name" class="">
@@ -177,7 +177,7 @@
 				</label>
 			</div>
 			<div class="bandBtn">
-				<input type="submit" value="保存" readonly="readonly">
+				<input id="save" type="button" value="保存" readonly="readonly">
 			</div>
 		</form>
 	</div>
@@ -231,7 +231,23 @@
 		  	}
 		});
 		$(".bandBtn").click(function(){
-			if(!(nameReg.test($('#name').val()))){
+			if((nameReg.test($('#name').val())) && $("#birth").val() && (phoneReg.test($('#tel').val())) && (addressReg.test($('#addr').val()))){
+				var obj = {};
+				obj['name'] = $('#name').val();
+				$.ajax({
+					url: '{{:U("VipCenter/infomationAction")}}',
+					type: 'post',
+					data: JSON.stringify(obj),
+					success: function(res){
+						if(res.code == 200){
+							location.href = '{{:U("VipCenter/minepack")}}'
+						}
+					},
+					error: function(res){
+						console.log('失败!', res)
+					}
+				})
+			}else if(!(nameReg.test($('#name').val()))){
 				layuiHint("请输入真实的姓名");
 				return false;
 			}else if(!$("#birth").val()){
