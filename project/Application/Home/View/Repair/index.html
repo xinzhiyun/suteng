@@ -8,9 +8,10 @@
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
   
   <style>
-    body{
-      font-size: 0.7rem;
-      color:#373737;
+      body{
+        min-height: 700px;
+        font-size: 0.7rem;
+        color:#373737;
       }
       ._repair{
         width: 100%;
@@ -52,7 +53,7 @@
         background: #fff;
       }
       .repairTop ul li p select{
-        padding:0.12rem;
+        padding-left: 5%;
       }
       .repairMidd{
         padding:0.533333rem 5% 0.933333rem 5%;
@@ -87,14 +88,56 @@
         color: #68B1F1;
         margin-left: -0.2rem;
       }
-      .repairPic>span{
+      .repairPic>span:nth-of-type(1){
         font-size: 0.68rem;
           position: absolute;
           left: 1.2rem;
           bottom: 0.65rem;
           color: #FFF;
       }
+      .repairPic>span:nth-of-type(2){
+          width: 20%;
+          position: relative;
+      }
+      .repairPic>span:nth-of-type(2)>img {
+        width: 100%;
+        display: block;
+      }
 
+      #picShow {
+        width: 100%;
+        display: inline;    
+        position: absolute;
+        top: 15%;
+      }
+      #picShow>span {
+        width: 18vmin;
+        height: 18vmin;
+        display: inline-block;
+        position: relative;
+        margin: 2vmin 1vmin;
+      }
+      #picShow>span>img {
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+        position: relative;
+      }
+      .delPic {
+        width: 5vmin;
+        height: 5vmin;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin-top: -2vmin;
+        margin-right: -2vmin;
+        border-radius: 5vmin;
+        color: #fff;
+        background: red;
+      }
       .repairPic>input {
           opacity: 0;
           display: block;
@@ -175,23 +218,60 @@
         padding-left: 10px;
         text-align: left;
       }
+      .layui-laydate, .layui-laydate-main{
+        width: 98vw !important;
+        left: 50%;
+        /*transform: translateX(-49vw);*/
+      }
+      .laydate-footer-btns {
+        width: 50%;
+        display: flex;
+        position: relative !important;
+        right: 0 !important;
+        top: 0 !important;
+        align-items: center;
+      }
+      .laydate-btns-clear,
+      .laydate-btns-now,
+      .laydate-btns-confirm {
+        width: 33.33%;
+        display: inline-block;
+        padding: 10% !important;
+      }
+      .layui-laydate-content table {
+        width: 90%;
+        position: relative;
+        left: 50%;
+        margin-left: -45%;
+      }
+      .layui-laydate-footer {
+        display: flex !important;
+        justify-content: flex-end;
+        height: auto;
+      }
+      .laydate-footer-btns span {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        margin: 0 10px !important;
+      }
 
   </style>
 </head>
 <body>
   <div class="_repair">
     <div class="repairContainer">
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data" id="form">
       <div class="repairTop">
         <ul>
           
           <li><span>设备编号：</span><p class="deviceid">0120563</p></li>
-          <li><span>日       期：</span><p><input type="date" class="currentdate" value="" placeholder="输入日期"></p></li>
+          <li><span>日       期：</span><p><input type="text" class="currentdate" id="currentdate" value="" placeholder="请选择日期"></p></li>
           <li><span>设备型号：</span><p><input type="text" class="devicetype"></p></li>
            <li>
             <span>报修原因：</span><p>
             <select>
-                <option value ="volvo">请输入</option>
+                <option value ="volvo">-请输入-</option>
                 <option value ="saab">更换滤芯</option>
                 <option value="opel">微信端无法控制水机</option>
                 <option value="audi">其他</option>
@@ -206,20 +286,21 @@
           <div class="repairPic">
             <i class="iconfont icon-tianjia"></i>
             <span>限3张内</span>
-            <input class="" type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
-            </div>
+            <input name="pic" class="repair-sendpic" multiple="true" type="file" accept="image/png, image/jpeg, image/gif, image/jpg" >
+            <div id="picShow"></div>
+          </div>
       </div>
       <div class="repairFoot">
         <ul>
           <h3>联系方式</h3>
           <li>
             <label for="Lname">
-              <span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input id="Lname" type="text" value="Hello">
+              <span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input id="Lname" type="text" value="" placeholder="请输入姓名">
             </label>
           </li>
            <li>
             <label for="Ltel">
-              <span>电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：</span><input id="Ltel" type="text" value="12345678911">
+              <span>电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：</span><input id="Ltel" type="text" value="" placeholder="请输入电话">
             </label>
           </li>
           <li>
@@ -231,7 +312,7 @@
         </ul>
       </div>
       <div class="repairBtn">
-        <input type="submit" value="提交" class="btn">
+        <input type="button" value="提交" class="btn">
       </div>
     </form>
 
@@ -239,11 +320,104 @@
        
     </div>
   </div>
+  <script src="__PUBLIC__/Home/js/laydate.js"></script>
   <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
   <script src="__PUBLIC__/Home/js/public.js"></script>
   <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 <link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
   <script type="text/javascript">
+  $(function(){
+    var device_now = sessionStorage.getItem("device_now");
+    $(".deviceid").text(device_now);
+    $("#currentdate").click(function(){
+
+        //选择服务日期，
+      laydate.render({
+        elem: '#currentdate', //指定元素
+        show: true,
+        format: 'yyyy年MM月dd日',
+        btns: ['clear', 'confirm'],
+        min: 1
+      });
+    })
+    var formdata = new FormData();
+    var file = $(".repair-sendpic").files;
+    var picArr = [];    //存储选择的待上传图片的base64编码格式
+    var i=0;  //formdata存储序号
+      // 上传的图片
+      $(".repair-sendpic").on("change",function(e){
+        var files = this.files;
+        var span = $("<span></span>"),
+          span1 = $("<span>X</span>"),
+          img = $('<img src="" alt="" />');
+        var reader =new FileReader();
+
+        reader.readAsDataURL(files[0]);
+        reader.onload = function(e){
+          i++;
+          picArr.push(this.result);
+          var mb = (e.total/1024)/1024;
+          if(mb>= 4){
+            alert('文件大小大于4M');
+            return;
+          }
+          img[0].src = this.result;
+          img[0].width = "100%";
+          img[0].height = "90%";
+          
+          // console.log(span, span[0]);
+          span1.addClass("delPic");
+          span1.css({zIndex: '999'});
+          span.append(span1);
+          span.append(img[0]);
+          $('#picShow').append(span);
+          // console.log(picArr)
+          //formdata
+          if(picArr.length > 2){
+            for(var i=0; i<picArr.length; i++){
+              formdata.append("picture"+i,picArr[i])
+              // console.group('picture'+i+': ',formdata.get("picture"+i),i)
+            }
+          }
+        }
+
+        //最多选择三张图片
+        if($("#picShow>span").length >= 2){
+          $(".repair-sendpic").attr("disabled", "disabled");
+        }
+
+      });
+
+      // 点击上传的图片右上角的" x "，删除这张图片
+      $("#picShow").on("click", ".delPic", function(){
+        $(this).parent().remove();
+        //最多选择三张图片
+        if($("#picShow>span").length <= 2){
+          i--;
+          $(".repair-sendpic").removeAttr("disabled");
+        }
+      })
+
+    $(".btn").click(function(){
+      $.ajax({
+        url: '{{:U("Repair/index")}}',
+        ttype: 'post',
+        data: formdata,
+        processData: false,
+        contentType: false,
+        dataType: 'formdata',
+        success: function(res){
+          console.log('已连接！',res)
+          if(res.code == 200){
+            layuiHint('您的报修已收到，维修师傅正飞速准备中！');
+          }
+        },
+        error: function(res){
+          console.log('失败！',res)
+        }
+      })
+    })
+
     //姓名验证 
     $('#Lname').change( function() {
         // 这里可以写些验证代码
@@ -282,7 +456,7 @@
     });
     $(".btn").click(function(){
       if($(".currentdate").val()==""){
-        layuiHint("请输入日期");
+        layuiHint("请选择日期");
         return false;
       }else if($(".devicetype").val()==""){
         layuiHint("请输入设备型号");
@@ -304,6 +478,7 @@
         return false;
       }
     });
+  })
 
   </script>
 </body>
