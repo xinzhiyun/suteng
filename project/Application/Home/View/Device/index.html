@@ -497,7 +497,7 @@
 			    	if (res.errMsg === "scanQRCode:ok"){
 				    	// 当needResult 为 1 时，扫码返回的结果
 					    $.ajax({
-					    	url:"bind",
+					    	url:"{{:U('Device/bind')}}",
 					    	type:"post",
 					    	data:{device_code:res.resultStr},
 					    	dataType:'json',
@@ -522,4 +522,7 @@
 		// })
 	</script>
 </body>
+<script>
+	
+</script>
 </html>                                                                                                                                                                                                                                                   	
