@@ -48,24 +48,26 @@ class VendorsController extends Controller
 	        		break;
 	        	case '3':
 	        		// 待审批
-	        		echo '等待审批';
+	        		// echo '等待审批';
+                    $this->display('vendor_wait');
 	        		break;
 	        	case '4':
 	        		// 身份证审批失败
-	        		echo '身份证审批失败';
-	        		// 身份证信息填写
                 	$this->identity_refillings();
 	        		break;
 	        	case '5':
 	        		// 公司信息审批失败
-	        		echo '公司信息审批失败';
 	        		$this->company_refillings();
 	        		break;
 	        	case '6':
 	        		// 协议审批失败
-	        		echo '重新上传协议';
 	        		$this->display('protocol_refillings');
 	        		break;
+                case '9':
+                    // 交加盟费，传入分销商级别
+                    // $this->protocol_fee();
+                    $this->redirect('Home/vendors/protocol_fee');
+                    break;
 	        	case '7':
                     $leavel = $vendor['vendor'];
                     switch ($leavel) {
@@ -615,7 +617,7 @@ class VendorsController extends Controller
     	$info = $this->upload();
 
     	if($info){
-    		$info['status'] = 3;
+    		$info['status'] = 9;
             // 更新条件
             $saveData['open_id'] = $open_id;
             // 更新分销商信息
@@ -635,6 +637,50 @@ class VendorsController extends Controller
     	}
 
     	$this->ajaxReturn($message); 
+    }
+
+    // 收加盟费
+    public function protocol_fee()
+    {
+        // 获取微信用户唯一标识
+        $open_id = $_SESSION['vendorInfo']['open_id'];
+
+        // 准备查询条件
+        $showData['id'] = 1;
+        // 查询分销商加盟费
+        $vendor_fee = M('vendor_fee')->where($showData)->field('vendor_a,vendor_b,vendor_c')->find();
+
+        // 匹配分销商级别
+        switch ($_SESSION['vendorInfo']['leavel']) {
+            case '2':
+                // A级分销商
+                $money = $vendor_fee['vendor_a'];
+                break;
+            case '3':
+                // B级分销商
+                $money = $vendor_fee['vendor_b'];
+            case '4':
+                // C级分销商
+                $money = $vendor_fee['vendor_c'];
+                break;
+            default:
+                # code...
+                break;
+        }
+
+        // 微信支付配置
+        $weixin = new WeixinJssdk;
+        $signPackage = $weixin->getSignPackage();
+        // 查询用户微信中的openid
+        // $openId = $weixin->GetOpenid();
+        $openId = $_SESSION['vendorInfo']['open_id'];
+
+        //分配数据        
+        $this->assign('info',$signPackage);
+        $this->assign('openId',$openId);
+        $this->assign('money',$money);
+        // 显示模板
+        $this->display('protocol_fee');
     }
 
 

@@ -5,6 +5,103 @@ use Think\Controller;
 
 class WeiXinPayController extends Controller
 {
+
+    /**
+     * 分销商交加盟费接口
+     */
+    public function vendor_fee(){
+        // 准备查询条件
+        $showData['id'] = 1;
+        // 查询分销商加盟费
+        $vendor_fee = M('vendor_fee')->where($showData)->field('vendor_a,vendor_b,vendor_c')->find();
+
+        // 匹配分销商级别
+        switch ($_SESSION['vendorInfo']['leavel']) {
+            case '2':
+                // A级分销商
+                $money = $vendor_fee['vendor_a'];
+                break;
+            case '3':
+                // B级分销商
+                $money = $vendor_fee['vendor_b'];
+            case '4':
+                // C级分销商
+                $money = $vendor_fee['vendor_c'];
+                break;
+            default:
+                # code...
+                break;
+        }
+
+        // 描述
+        $content = '速腾分销商加盟费支付';
+        // 分销商标识
+        $code = $money;
+        // 下单
+        $this->uniformOrderVendor($money,$code,$content);
+    }
+    
+    /**
+     * 统一收分销商加盟费并返回数据
+     * @return string json格式的数据，可以直接用于js支付接口的调用
+     * @param  [type] $money    [订单金额]
+     * @param  [type] $order_id [订单号码]
+     * @param  [type] $content  [订单详情]
+     */
+    public function uniformOrderVendor($money,$code,$content)
+    {
+        // dump($_SESSION);die;
+        // $content = substr($content,0,80);
+        // 将金额强转换整数
+        $money = $money * 100;
+        // 冲值测试额1分钱
+        $money = 1;
+        // 用户在公众号的唯一ID
+        $openId = $_SESSION['vendorInfo']['open_id'];
+
+
+        //微信examle的WxPay.JsApiPay.php
+        vendor('WxPay.jsapi.WxPay#JsApiPay');
+
+        $tools = new \JsApiPay();
+
+        //②、统一下单
+        vendor('WxPay.jsapi.WxPay#JsApiPay');
+        $input = new \WxPayUnifiedOrder();
+        // 傳用戶ID
+        //$input->SetDetail($uid);
+        // 产品内容
+        $input->SetBody($content);
+        // 唯一订单ID
+        $input->SetAttach($code);
+        // 设置商户系统内部的订单号,32个字符内、可包含字母, 其他说明见商户订单号
+        $input->SetOut_trade_no(gerOrderId());
+        // 产品金额单位为分
+        // $input->SetTotal_fee($money);
+        // 调试用1分钱
+        $input->SetTotal_fee($money);
+        // 设置订单生成时间
+        // $input->SetTime_start(date("YmdHis"));
+        // 设置订单失效时间
+        // $input->SetTime_expire(date("YmdHis", time() + 300));
+        //$input->SetGoods_tag($uid);
+        // 支付成功的回调地址
+        // 微信充值回调地址
+        $input->SetNotify_url('http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/vendorNotify'));
+        // 支付方式 JS-SDK 类型是：JSAPI
+        $input->SetTrade_type("JSAPI");
+        // 用户在公众号的唯一标识
+        $input->SetOpenid($openId);
+        // 统一下单
+        $order = \WxPayApi::unifiedOrder($input);
+
+        // 返回支付需要的对象JSON格式数据
+        $jsApiParameters = $tools->GetJsApiParameters($order);
+
+        echo $jsApiParameters;
+        exit;
+    }
+
     /**
      * 处理订单写入数据
      * @return array 返回数组格式的notify数据
@@ -89,6 +186,60 @@ class WeiXinPayController extends Controller
             }
         }
     }
+
+    /**
+     * [vendorNotify 分销商加盟费回调]
+     * @return [type] [description]
+     */
+    public function vendorNotify(){
+        // 接收微信支付回调
+        $xml=file_get_contents('php://input', 'r');
+        // 写文件测试
+        // file_put_contents('./wx_payFee.txt',$xml."\r\n", FILE_APPEND);die;
+
+//         $xml = '<xml><appid><![CDATA[wx0bab2f4b5b7ec3b5]]></appid>
+// <attach><![CDATA[10000.00]]></attach>
+// <bank_type><![CDATA[CFT]]></bank_type>
+// <cash_fee><![CDATA[1]]></cash_fee>
+// <fee_type><![CDATA[CNY]]></fee_type>
+// <is_subscribe><![CDATA[Y]]></is_subscribe>
+// <mch_id><![CDATA[1490274062]]></mch_id>
+// <nonce_str><![CDATA[7zdvpsqu62x2t0gdf4u5g6mvcjpa651l]]></nonce_str>
+// <openid><![CDATA[oQktJwL8ioR4DoxSQmikdzekbUyU]]></openid>
+// <out_trade_no><![CDATA[389282621064792]]></out_trade_no>
+// <result_code><![CDATA[SUCCESS]]></result_code>
+// <return_code><![CDATA[SUCCESS]]></return_code>
+// <sign><![CDATA[5A964113D173D6C037E4685ABA9E53C8]]></sign>
+// <time_end><![CDATA[20180206142758]]></time_end>
+// <total_fee>1</total_fee>
+// <trade_type><![CDATA[JSAPI]]></trade_type>
+// <transaction_id><![CDATA[4200000073201802068049959066]]></transaction_id>
+// </xml>';
+
+        if($xml){
+            //解析微信返回数据数组格式
+            $result = $this->notifyData($xml);
+            // 分销商openid
+            $showData['open_id']      = $result['openid'];
+            // 加盟费
+            $saveData['fee']          = $result['attach'];
+            // 状态
+            $saveData['status']       = 3;
+            // 更新时间
+            $saveData['updatetime  '] = time();
+            // 执行更新操作
+            $saveRes = M('vendors')->where($showData)->save($saveData);
+
+            if($saveRes){
+                // 分红
+                // dump($result);die;
+            }
+ 
+  
+        }
+    }
+
+
 
     /**
      * 处理充值写入数据
