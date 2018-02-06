@@ -29,7 +29,7 @@
                                     <th>状态</th>
                                     <th>加入时间</th>
                                     <th>更新时间</th>
-                                    <th>详情</th>
+                                    <!-- <th>详情</th> -->
 
                                 </tr>
                             </thead>
@@ -56,12 +56,12 @@
                                             <td>{{$val.status}}</td>
                                             <td>{{$val.addtime|date="Y-m-d H:i:s",###}}</td>
                                             <td>{{$val.updatetime|date="Y-m-d H:i:s",###}}</td>
-                                            <td>
+                                            <!-- <td>
                                                 <a href="#">查看</a>
                                             </td>
                                             <td>
                                                 <a href="javascript:del({{$val.id}})">删除</a>
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     </volist>
                                 </empty>
