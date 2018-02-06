@@ -327,12 +327,6 @@
 		<div id="indent">
 			<p>
 				<span>我的订单</span>
-				<a class="chakan" href="{{:U('Home/Order/index')}}">
-					<span>
-						<span>查看全部订单</span>
-						<i class="iconfont icon-dayuhao-copy-copy"></i>
-					</span>
-				</a>
 			</p>
 			<div>
 				<a href="{{:U('Home/Order/index')}}">
@@ -411,31 +405,31 @@
 		<div id="maskbg"></div>
 		<div id="sharePart">
 			<div>
-				<span class="shareIcon">
+				<span class="shareIcon" id="shareFriend">
 					<span class="img">
 						<img src="__PUBLIC__/Home/images/weixin.png" alt="">
 					</span>
 					<p>发送给朋友</p>
 				</span>
-				<span class="shareIcon">
+				<span class="shareIcon" id="shareTimeline">
 					<span class="img">
 						<img src="__PUBLIC__/Home/images/pengyouquan.png" alt="">
 					</span>
 					<p>分享到朋友圈</p>
 				</span>
-				<span class="shareIcon">
+				<span class="shareIcon" id="shareQQ">
 					<span class="img">
 						<img src="__PUBLIC__/Home/images/qq.png" alt="">
 					</span>
 					<p>QQ</p>
 				</span>
-				<span class="shareIcon">
+				<span class="shareIcon" id="shareQZone">
 					<span class="img">
 						<img src="__PUBLIC__/Home/images/qqcom.png" alt="">
 					</span>
 					<p>QQ空间</p>
 				</span>
-				<span class="shareIcon">
+				<span class="shareIcon" id="shareWeibo">
 					<span class="img">
 						<img src="__PUBLIC__/Home/images/weibo.png" alt="">
 					</span>
@@ -449,8 +443,24 @@
 		<a id="saveCode" href="javascript:;" >长按二维码保存到相册</a>
 	</div>
 	<canvas id="canvas" style="display: none"></canvas>
+	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script>
-		// 点击右上角二维码
+
+		//微信接口
+		wx.config({
+		    debug: false,
+		    appId: '{{$info["appId"]}}',
+		    timestamp: '{{$info["timestamp"]}}',
+		    nonceStr: '{{$info["nonceStr"]}}',
+		    signature: '{{$info["signature"]}}',
+		    jsApiList: [
+		      // 所有要调用的 API 都要加到这个列表中
+		      'chooseWXPay'
+		    ]
+		});
+		/*
+			点击右上角二维码
+		 */
 		$(".icon-erweima").on("click", function(){
 			$("#myCode").css({display: 'flex'})
 		})
@@ -474,7 +484,9 @@
 			console.log(canvas)
 			return canvas;
 		}
-		//将二维码存至手机相册
+		/*
+			将二维码存至手机相册
+		 */
 		function Download(){
 	        //cavas 保存图片到本地  js 实现
 	        //------------------------------------------------------------------------
@@ -504,14 +516,17 @@
 	        savaFile(imgdata,filename);
         };
 
-		// 点击右上角分享
+		/*
+			点击右上角分享
+		 */ 
 		$(".share").on("click", function(){
 
 			$("#sharePanel").css({display: 'block'});
 			$("#sharePart").animate({bottom: '0'})
 		})
-
-		// 分享界面点击上部分退出分享
+		/*
+			分享界面点击上部分退出分享
+		 */
 		$("#maskbg").on("click", function(){
 
 			$("#sharePanel").css({display: 'none'});
