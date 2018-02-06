@@ -54,7 +54,7 @@ class MallController extends CommonController
             ->where($devices)
             ->join('__DEVICES_STATU__ ds ON d.device_code=ds.DeviceID', 'LEFT')
             ->find();
-        dump($data);
+        // dump($data);
         $assign = [
             'data' => json_encode($res),
         ];

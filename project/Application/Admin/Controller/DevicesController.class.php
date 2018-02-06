@@ -92,17 +92,18 @@ class DevicesController extends CommonController
     public function deviceDetail()
     {
         $map['device_code'] = I('get.code');
-        $device = D('Devices');
+        $device     = D('Devices');
         // 状态信息
-        $statu = $device->getDeviceInfo($map);
-
+        $statu      = $device->getDeviceInfo($map);
+        $vendors = $device->getVendors($map);
         // 滤芯信息
-        $filter = $device->getFilterInfo($map);
+        $filter     = $device->getFilterInfo($map);
         $filterInfo = $device->getFilterDetail($filter);
         $assign = [
             'statu' => $statu,
             'filterInfo' => $filterInfo,
             'filter' => $filter,
+            'vendor' => $vendor,
         ];
         $this->assign($assign);
         $this->display('devices_detail');

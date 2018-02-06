@@ -87,4 +87,16 @@ class DevicesModel extends Model
             ->find();
         return $data;
     }
+
+    // 获取经销商信息
+    public function getVendors($map=array())
+    {
+        $data = $this
+            ->alias('d')
+            ->where($map)
+            ->join('__VENDORS__ v ON d.vid=v.id', 'LEFT')
+            ->field('v.*')
+            ->find();
+        return $data;
+    }
 }
