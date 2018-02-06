@@ -28,7 +28,7 @@ class VendorsController extends Controller
         $showData['open_id'] = $_SESSION['vendorInfo']['open_id'];
         // 查询分销商状态
         $vendor = M('vendors')->where($showData)->find();
-
+        $this->assign('vendor',$vendor);
         if($vendor){
         	// 获取分销商状态码
 	        $status = $vendor['status'];
@@ -117,7 +117,7 @@ class VendorsController extends Controller
                             break;
                     }
                     $this->assign('data',$data);
-                    $this->assign('vendor',$vendor);
+                    
 	        		// 审批成功
 	        		$this->display('index');
 	        		break;
@@ -137,13 +137,13 @@ class VendorsController extends Controller
 
     }
 
-
     // 身份证信息填写
     public function identity()
     {
     	if(IS_POST){
     		// 获取缓存用户微信标识
     		$open_id = $_SESSION['vendorInfo']['open_id'];
+
     		// 接收表单信息
     		$name 		= I('post.name');
   			$phone 		= I('post.phone');
@@ -710,6 +710,11 @@ class VendorsController extends Controller
         // 查询用户微信中的openid
         // $openId = $weixin->GetOpenid();
         $openId = $_SESSION['vendorInfo']['open_id'];
+        // 获取用户open_id
+        $showDataa['open_id'] = $openId;
+        // 查询分销商状态
+        $vendor = M('vendors')->where($showDataa)->find();
+        $this->assign('vendor',$vendor);
 
         //分配数据        
         $this->assign('info',$signPackage);
