@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<style>
 		body{
@@ -91,8 +92,26 @@
 		</div>
 		
 		<div class="switchFoot">
-			<input type="submit">
+			<input type="button" value="保存" id="save">
 		</div>
 	</div>
+	<script>
+		/*
+			点击保存
+		 */
+		$("#save").click(function(){
+			var timeObj = [];
+			timeObj.push({
+				'shutdown': $(".setdata").eq(0).val(),
+				'poweroff': $(".setdata").eq(1).val()
+			})
+			// console.log(timeObj)
+			sessionStorage.setItem("timeObj",JSON.stringify(timeObj));
+			parent.layer.msg('保存成功！');
+			setTimeout(function(){
+				location.href = '{{:U("Switch/index")}}'
+			},500)
+		})
+	</script>
 </body>
 </html>                                                                                                                                                                                                                                                                      	
