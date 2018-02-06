@@ -112,7 +112,7 @@
            <div class="myReward">
              <h3>我的总收益</h3>
              <div class="iconReward">
-                <span><p>累计：</p><b>15666元</b></span>
+                <span><p>累计：</p><b>￥ {{$total}} 元</b></span>
                 
              </div>
            </div>
@@ -124,15 +124,13 @@
         </div>
         <div class="rewardFoot">
           <ul>
-            <li><span class="iconBig">丹丹购买PP膜滤芯丹丹购买PP膜滤芯</span><span class="countto">30</span><span>2017-12-252</span></li>
-            <li><span class="iconBig">丹丹购买PP膜滤芯</span><span class="countto">30</span><span>2017-12-252</span></li>
-            <li><span class="iconBig">丹丹购买PP膜滤芯</span><span class="countto">30</span><span>2017-12-252</span></li>
-            <li><span class="iconBig">丹丹购买PP膜滤芯</span><span class="countto">30</span><span>2017-12-252</span></li>
-            <li><span class="iconBig">丹丹购买PP膜滤芯</span><span class="countto">30</span><span>2017-12-252</span></li>
-            <li><span class="iconBig">丹丹购买PP膜滤芯</span><span class="countto">30</span><span>2017-12-252</span></li>
-            <li><span class="iconBig">丹丹购买PP膜滤芯</span><span class="countto">30</span><span>2017-12-252</span></li>
-            <li><span class="iconBig">丹丹购买PP膜滤芯</span><span class="countto">30</span><span>2017-12-252</span></li>
-            <li><span class="iconBig">丹丹购买PP膜滤芯</span><span class="countto">30</span><span>2017-12-252</span></li>
+            <empty name="data">
+              <li>暂无收益...</li>
+            <else /> 
+              <foreach name="data" item="vo" >
+                  <li><span class="iconBig">{{$vo.describe}}</span><span class="countto">{{$vo.abonus}}</span><span>{{:date("Y-m-d",$vo['addtime'])}}</span></li>
+              </foreach>
+            </empty> 
           </ul>
         </div>
        

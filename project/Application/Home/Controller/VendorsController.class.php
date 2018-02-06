@@ -722,6 +722,22 @@ class VendorsController extends Controller
     // 收益明细
     public function profit_details()
     {
+        // 获取分销商标识
+        $showData['vendor_code'] = $_SESSION['vendorInfo']['code'];
+        // 查询分销商收益明细
+        $data = M('vendors_commission')->where($showData)->select();
+        $total = 0;
+        foreach ($data as $key => $value) {
+            // 避免小数运算
+            $total += $value['abonus']*100;
+        }
+        // 单位换算
+        $total = $total/100;
+
+        // 分配数据
+        $this->assign('data',$data);
+        $this->assign('total',$total);
+        // 显示模板
         $this->display();
     }
 
