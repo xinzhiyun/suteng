@@ -22,9 +22,9 @@ class CommonController extends Controller
         // 获取用户open_id
         if(empty($_SESSION['open_id'])){
             // 如果不存在则，跳转获取open_id,并缓存
-            // $_SESSION['open_id'] = $weixin->GetOpenid();
+            $_SESSION['open_id'] = $weixin->GetOpenid();
             // 前端调试通道
-            $_SESSION['open_id'] = 'oQktJwL8ioR4DoxSQmikdzekbUyU';
+            // $_SESSION['open_id'] = 'oQktJwL8ioR4DoxSQmikdzekbUyU';
 
         }
         // 获取用户open_id
@@ -293,6 +293,62 @@ class CommonController extends Controller
             case '1':
                 // 分销通道
                 // $this->redirect('RegisteredVendor/index');
+                if(empty($_SESSION['user'])){
+                    // 更新条件
+                    $userWhere['open_id'] = $_SESSION['open_id'];
+                    // 查询用户表
+                    $user = M('users')->where($userWhere)->find();
+
+                    if($user){
+                        $_SESSION['user'] = $user;
+                    }else{
+                        // 查询用户信息,并缓存
+                        $vendor = M('vendors')->where($userWhere)->find();
+                        // 创建分销商前台用户
+                        $addData['open_id'] = $_SESSION['open_id'];
+                        // 分公司
+                        $addData['office_code']     = $vendor['office_code'];
+                        // A级分销商
+                        $addData['vendora_code']    = 0;
+                        // B级分销商
+                        $addData['vendora_code']    = 0;
+                        // C级分销商
+                        $addData['vendora_code']    = 0;
+                        // 分销商邀请人
+                        $addData['vendori_code']    = 0;
+                        // 分销商唯一标识
+                        $addData['code']            = $vendor['code'];
+                        // 邀请人类型
+                        $addData['invite']          = 0;
+                        // 分销商会员邀请码
+                        $addData['ticket']          = 0;
+                        // 请求二维码的参数
+                        $addData['parameter']       = 0;
+                        // 二维码有效时间
+                        $addData['ticket_time']     = 0;
+                        // 分销商名称
+                        $addData['nickname']        = $vendor['name'];
+                        // 分销商头像
+                        $addData['head']            = $vendor['head'];
+                        // 更新时间
+                        $addData['addtime'] = $addData['updatetime'] = time();
+
+                        // 创建用户
+                        $addRes = M('users')->add($addData);
+
+                        // 如果添加成功
+                        if($addRes){
+                            // 去主页
+                            $this->redirect("Home/Index/index");
+                        }
+                    }
+
+
+
+                    if(empty(session('device.id'))){
+                        $this->redirect("Device/index");
+                    }
+                }
                 break;
             default:
                 // 未关注
