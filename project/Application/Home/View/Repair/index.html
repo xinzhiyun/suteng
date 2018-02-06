@@ -124,6 +124,14 @@
         display: inline-block;
         position: relative;
       }
+      .hide {
+        width: 4.5rem;
+        height: 4.5rem;
+        display: none;
+        position: absolute;
+        top: .4rem;
+        z-index: 999;
+      }
       .delPic {
         width: 5vmin;
         height: 5vmin;
@@ -273,7 +281,7 @@
            <li>
             <span>报修原因：</span><p>
             <select name="reason">
-                <option value ="volvo">-请输入-</option>
+                <option value ="volvo">-请选择-</option>
                 <option value ="saab">更换滤芯</option>
                 <option value="opel">微信端无法控制水机</option>
                 <option value="audi">其他</option>
@@ -290,6 +298,7 @@
             <span>限3张内</span>
             <input name="pic" class="repair-sendpic" multiple="true" type="file" accept="image/png, image/jpeg, image/gif, image/jpg" >
             <div id="picShow"></div>
+            <div class="hide"></div>
           </div>
       </div>
       <div class="repairFoot">
@@ -385,7 +394,7 @@
 
         //最多选择三张图片
         if($("#picShow>span").length >= 2){
-          $(".repair-sendpic").attr("disabled", "disabled");
+          $(".hide").show();
         }
 
       });
@@ -396,7 +405,7 @@
         //最多选择三张图片
         if($("#picShow>span").length <= 2){
           i--;
-          $(".repair-sendpic").removeAttr("disabled");
+          $(".hide").hide();
         }
       })
 
