@@ -587,6 +587,9 @@
 		    ]
 		});
 		$(function(){
+			$("#hLeft").click(function(){
+				location.href = "{{:U('Address/index')}}";
+			})
 			//获取从后台传来的订单号
 			var dangdanID;	
 			if(sessionStorage.getItem('order_id')){
