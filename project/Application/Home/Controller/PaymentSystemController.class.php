@@ -94,6 +94,15 @@ class PaymentSystemController extends CommonController
     	$this->display();
     }
 
+    /**
+     * [paytosuccess 支付成功]
+     * @return [type] [description]
+     */
+    public function paytosuccess_cz()
+    {
+        $this->display();
+    }
+
 
     /**
      * [paytofailed 支付失败]
