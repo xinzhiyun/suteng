@@ -42,8 +42,7 @@
         ._text{color:#ffffff;}
         ._h1{
             width: 100%;
-            height: 60px;
-            line-height: 60px;
+            line-height: 40px;
         }
         ._dive{ overflow: hidden;}
         ._device{
@@ -106,6 +105,7 @@
         <input type="hidden" value={{$statu|json_encode}} class="statu" >
         <input type="hidden" value={{$filterInfo|json_encode}} class="filterInfo" >
         <input type="hidden" value={{$filter|json_encode}} class="filter" >
+        <input type="hidden" value={{$vendor|json_encode}} class="vendor" >
         <div class="row-fluid fl" id="main">
             <div class="ibox-title"><h5>设备管理 <small>设备详情</small></h5></div>
             <h1 class="text-center _dev">当前设备：</h1>
@@ -159,18 +159,15 @@
             </div>
             <div class="_tb">
                 <h2>经销商信息列表</h2>
-                <table class="table">
+                <table class="table vendorList">
                     <thead>
                         <tr>
-                            <td>经销商ID</td>
                             <td>经销商ID</td>
                             <td>经销商姓名</td>
                             <td>手机号码</td>
                             <td>地址</td>
                             <td>管理级别</td>
-                            <td>管理级别</td>
                             <td>邮箱</td>
-                            <td>备注</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -198,16 +195,34 @@
             <script>
                 
                 var statu = JSON.parse($(".statu").val());
-                // var filterInfo = JSON.parse($(".filterInfo").val());
-                var filterInfo = [
-                    {filtername:'M15UCC',timelife:1000,flowlife:30,introduce: '原装正品净水器滤芯M15UCC 0.5微米高密道4级过滤'},
-                    {filtername:'HU603-5a',timelife:1000,flowlife:60,introduce: '正品净水器家用直饮机HU603-5a全套原装滤芯'},
-                    {filtername:'RO滤芯',timelife:1000,flowlife:70,introduce: '原装JR1550T-RO RO/C+UF/PP+C五级过滤'},
-                    {filtername:'BH2',timelife:1000,flowlife:50,introduce: '净水器滤芯主滤芯耗材家用直饮净水器主滤芯BH2'},
-                    {filtername:'RO-185I',timelife:1000,flowlife:50,introduce: '沁园净水器滤芯RO-185I/DT/F PP棉QG-U-1003/1004 套装 10寸 通用'},
-                    {filtername:'AO史密斯',timelife:1000,flowlife:90,introduce: 'AO史密斯50D1 厨房过滤家用净水器 专利反渗透滤芯直饮净水机'}
-                ];
+                var filterInfo = JSON.parse($(".filterInfo").val());
+                // var filterInfo = [
+                //     {filtername:'M15UCC',timelife:1000,flowlife:30,introduce: '原装正品净水器滤芯M15UCC 0.5微米高密道4级过滤'},
+                //     {filtername:'HU603-5a',timelife:1000,flowlife:60,introduce: '正品净水器家用直饮机HU603-5a全套原装滤芯'},
+                //     {filtername:'RO滤芯',timelife:1000,flowlife:70,introduce: '原装JR1550T-RO RO/C+UF/PP+C五级过滤'},
+                //     {filtername:'BH2',timelife:1000,flowlife:50,introduce: '净水器滤芯主滤芯耗材家用直饮净水器主滤芯BH2'},
+                //     {filtername:'RO-185I',timelife:1000,flowlife:50,introduce: '沁园净水器滤芯RO-185I/DT/F PP棉QG-U-1003/1004 套装 10寸 通用'},
+                //     {filtername:'AO史密斯',timelife:1000,flowlife:90,introduce: 'AO史密斯50D1 厨房过滤家用净水器 专利反渗透滤芯直饮净水机'}
+                // ];
                 var filter = JSON.parse($(".filter").val());
+                // 经销商数据
+                var vendor = [
+                    {"vendorId":"45321244","vendorName":"张三","phone":"18475698745","address":"广东省广州市番禺区","manageClass":"最高","Email":"1986574558@qq.com"},
+                    {"vendorId":"45321244","vendorName":"张三","phone":"18475698745","address":"广东省广州市番禺区","manageClass":"最高","Email":"1986574558@qq.com"},
+                    {"vendorId":"45321244","vendorName":"张三","phone":"18475698745","address":"广东省广州市番禺区","manageClass":"最高","Email":"1986574558@qq.com"},
+                ];
+                var vendorHtml='';
+            for(var i=0;i<vendor.length;i++){
+                vendorHtml+='<tr>'+
+                                '<td>'+ vendor[i].vendorId +'</td>'+
+                                '<td>'+vendor[i].vendorName+'</td>'+
+                                '<td>'+vendor[i].phone+'</td>'+
+                                '<td>'+vendor[i].address+'</td>'+
+                                '<td>'+vendor[i].manageClass+'</td>'+
+                                '<td>'+vendor[i].Email+'</td>'+
+                            '</tr>';
+            }
+            $(".vendorList").children("tbody").html(vendorHtml);
                 console.log(statu);
                 console.log(filterInfo);
                 console.log(filter);
@@ -371,7 +386,8 @@
                 var websoket=new WebSocket("ws://120.27.12.1:6001");
                 var PackNum=0;//包数据
                 var CmdList=[];//命令队列
-                var deviceId=228733445596778;
+                // var deviceId=228733445596778;
+                var deviceId = statu.deviceid;
                 websoket.onopen=function(){
                     //包数据
                     ajson={
@@ -620,7 +636,7 @@
                     });
                 });
             });
-
+            
             </script>
         </div>
     </div>
