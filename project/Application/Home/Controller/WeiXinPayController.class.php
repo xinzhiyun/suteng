@@ -174,11 +174,11 @@ class WeiXinPayController extends Controller
                 // 总利润
                 $profit = $price - $cost;
                 // 佣金比例
-                $yjbl = 0.3;
+                $yjbl = 0.03;
                 // 金币比例
-                $jbbl = 0.1;
+                $jbbl = 0.01;
                 // 银币比例
-                $ybbl = 0.2;
+                $ybbl = 0.02;
 
                 // 佣金
                 $yj = ($profit*$yjbl)>0?($profit*$yjbl):0;
