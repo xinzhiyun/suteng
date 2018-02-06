@@ -1,213 +1,627 @@
-<include file="Public/header" />
-<div class="content" style="background-color: #ECF0F5">
-    <include file="Public/nav" />
+
+<extend name="Public/base" />
+<block name="mylink">
+    <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
+    <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+</block>
+<block name="content">
+    <style type="text/css">
+        .fr{float:right;}
+        .fl{float: left;}
+        @media screen and (min-width: 1399px) {
+            ._float_left {
+                width:48%;
+                float:left;
+            }
+            ._float_right{
+                width: 48%;
+                float: right;
+            }
+        }
+        /*devices_detail css*/
+        ._four{
+            width:20%;
+            height:100px;
+            border-radius: 10px;
+            float: left
+        }
+        ._DD4B39{
+            background-color:#DD4B39;
+        }
+        ._337AB7{
+            background-color:#337AB7;
+        }
+        ._05CE3E{
+            background-color:#05CE3E;
+        }
+        ._77E1FB{
+            background-color:#77E1FB;
+        }
+        ._margin-right{ margin-right:6%;}
+        ._text{color:#ffffff;}
+        ._h1{
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+        }
+        ._dive{ overflow: hidden;}
+        ._device{
+            background-color: #ffffff;
+            margin-top: 15px;
+            border-radius: 5px;
+            padding: 5px 10px;
+            border-top: 2px #D2D6DE solid;
+            border-bottom:  2px #D2D6DE solid
+        }
+        ._user{
+            border-top: 4px #5ED0F4 solid;
+            border-bottom:  1px #CCCCCC solid;
+            margin-bottom: 0
+        }
+        ._tb{
+            background-color: #ffffff;
+            margin-top: 15px;
+            border-radius: 5px;
+            padding: 5px 10px;
+            border-top: 2px #5ED0F4 solid;
+            border-bottom:  2px #5ED0F4 solid
+        }
+        ._progress{
+            height: 10px;
+            background-color: #F5F5F5;
+            border-radius: 5px
+        }
+        ._progress_{
+            height: 10px;
+            background-color: #005384;
+            border-radius: 5px
+        }
+        /*content part css*/
+        .content{
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+        }
+        /*form part css*/
+        .content #main{width: 100%; }
+        .content .tableBox{
+            width: 95%;
+            margin:0 auto;
+        }
+        .btn{
+            border: 0px;
+            border-radius: 5px;
+        }
+        .clearfix{overflow: hidden;}
+        .content #main {
+            width: 95%;
+            margin-left: 2.5%;
+        }
+        h1{
+            margin: 10px 0;
+        }
+    </style>
+    <div class="content">
+        <input type="hidden" value={{$statu|json_encode}} class="statu" >
+        <input type="hidden" value={{$filterInfo|json_encode}} class="filterInfo" >
+        <input type="hidden" value={{$filter|json_encode}} class="filter" >
         <div class="row-fluid fl" id="main">
-            <div style="padding: 0 15px;">
-                 <div class="titleBar">设备管理/<span>设备列表/设备详情</span>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:history.go(-1)" class="btn btn-info">&lt;&lt;返回</a></div>
-                <h1 class="text-center _dev">当前设备：</h1>
-                <div class="clearfix" style="background-color: #ECF0F5;margin-left: 1%">
-                    <div style="margin: 15px 0;" class="_dive">
-                        <div class="_four _margin-right _DD4B39 text-center">
-                            <h1 class="_h1 _text">--</h1>
-                            <span class="_text">设备当前状态</span>
-                        </div>
-                        <div class="_four _margin-right _337AB7 text-center">
-                            <h1 class="_h1 _text">--</h1>
-                            <span class="_text">设备当前原水值(ppm)</span>
-                        </div>
-                        <div class="_four _margin-right _05CE3E text-center">
-                            <h1 class="_h1 _text">--</h1>
-                            <span class="_text">设备当前净水值(ppm)</span>
-                        </div>
-                        <div class="_four _77E1FB text-center">
-                            <h1 class="_h1 _text">--</h1>
-                            <span class="_text">设备当前租赁模式</span>
-                        </div>
-                    </div> 
-                </div>
-                <div class="clearfix">
-                    <div class="_float_left">
-                        <div class="_device">
-                            <div>
-                                <h3>滤芯信息(剩余值)</h3>
-                            </div>
-                            <table class="table _table" style="margin-bottom: 0">
-
-                            </table>
-                        </div>
-
-                        <div class="_device">
-                            <div>
-                                <h3>设备操作</h3>
-                                <div style="padding: 0 100px"><button class="btn btn-primary" style="padding:15px 25px">关机</button></div>
-                            </div>
-                        </div>
+            <div class="ibox-title"><h5>设备管理 <small>设备详情</small></h5></div>
+            <h1 class="text-center _dev">当前设备：</h1>
+            <div class="clearfix" style="margin-left: 1%">
+                <div style="margin: 15px 0;" class="_dive">
+                    <div class="_four _margin-right _DD4B39 text-center">
+                        <h1 class="_h1 _text">--</h1>
+                        <span class="_text">设备当前状态</span>
                     </div>
-                    <div class="_float_right">
-                        <div style="padding: 5px 10px;" class="_device">
-                            <div>
-                                <h3>设备信息</h3>
-                            </div>
-                            <table class="table _table2">
-
-                            </table>
-                        </div>
+                    <div class="_four _margin-right _337AB7 text-center">
+                        <h1 class="_h1 _text">--</h1>
+                        <span class="_text">设备当前原水值(ppm)</span>
                     </div>
-                </div>
-                <div class="_tb">
-                    <h2>经销商信息列表</h2>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <td>经销商ID</td>
-                                <td>经销商ID</td>
-                                <td>经销商姓名</td>
-                                <td>手机号码</td>
-                                <td>地址</td>
-                                <td>管理级别</td>
-                                <td>管理级别</td>
-                                <td>邮箱</td>
-                                <td>备注</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
-                </div>
-                <div class="_tb" style="margin-bottom: 50px;">
-                    <h2>使用记录</h2>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <td>序号</td>
-                                <td>IC卡编号</td>
-                                <td>用户姓名</td>
-                                <td>手机号码</td>
-                                <td>使用时间</td>
-                                <td>使用流量/mL</td>
-                                <td>使用地址</td>
-                                <td>备注</td>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-                <script>
-                    var devicestause = {
-                        '0':'制水',
-                        '1':'冲洗',
-                        '2':'水满',
-                        '3':'缺水',
-                        '4':'漏水',
-                        '5':'检修',
-                        '6':'欠费停机',
-                        '7':'关机',
-                        '8':'开机(仅命令)'
-                    }
-                    var leasingmode = {
-                        '0':'零售型',
-                        '1':'按流量计费',
-                        '2':'按时间计费',
-                        '3':'时长和流量套餐',
-                        '4':'商务型'
-                    }
-                    var filtermode = {
-                        '0':'按时长',
-                        '1':'按流量',
-                        '2':'时长和流量'
-                    }
-                    $.ajax({
-                        url:'__URL__/deviceDetail?code=' + location.hash.slice(1),
-                        type:'get',
-                        success:function(data){
-                            $('._dev').append(location.hash.slice(1)+'设备详情')
-                            var $status = $('._dive div h1')
-                            var $_table = $('._table')
-                            var $_table2 = $('._table2')
-                            $status.eq(0).html(devicestause[data.statu.devicestause]?devicestause[data.statu.devicestause]:'--')
-                            $status.eq(1).html(data.statu.puretds?data.statu.puretds:'--')
-                            $status.eq(2).html(data.statu.rawtds?data.statu.rawtds:'--')
-                            $status.eq(3).html(data.statu.leasingmode?leasingmode[data.statu.leasingmode]:'--')
-                            
-                            var _color = ['#05CE3E','#005384','#DD4B39','#337AB7','#5CB85C','#77E1FB']
-                            data.filterInfo.forEach(function(el,i,data){
-                                var redayfilter = []
-                                var persent = Number(el.timelife)/Number(el.flowlife)*100
-                                var width = Math.min(persent,100)
-                                var html = '<tr>'+
-                                            '<td>'+el.filtername+'&nbsp;(&nbsp;'+el.alias+'&nbsp;)&nbsp;'+'</td>'+
-                                            '<td style="width:50%">'+
-                                                '<div class="text-center">'+
-                                                    '<div class="_progress">'+
-                                                        '<div class="_progress_" style="width: '+width+'%;background-color:'+_color[i%_color.length]+'">'+
-                                                        '</div>'+
-                                                    '</div>'+
-                                                    '<span>还剩'+persent.toFixed(2)+'%</span>'+
-                                                '</div>'+
-                                            '</td>'+
-                                            '<td>'+el.timelife+'/'+el.flowlife+'</td>'+
-                                            '<td>'+'<tutton class="btn btn-info">复位</button>'+'</td>'+
-                                            '</tr>'
-                                $_table.append(html)
-                            })
-                            var html2 = '<tr>'+
-                                            '<td>'+'设备编号'+'</td>'+
-                                            '<td>'+data.statu.deviceid+'</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<td>'+'设备状态'+'</td>'+
-                                            '<td>'+devicestause[data.statu.devicestause]+'</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<td>'+'安装时间'+'</td>'+
-                                            '<td>'+(data.statu.addtime?new Date(data.statu.addtime*1000).toLocaleString():'--')+'</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<td>'+'安装地址'+'</td>'+
-                                            '<td>'+data.statu.address+'</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<td>'+'原水值(ppm)'+'</td>'+
-                                            '<td>'+data.statu.puretds+'</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<td>'+'纯水值(ppm)'+'</td>'+
-                                            '<td>'+data.statu.rawtds+'</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<td>'+'剩余流量 (L)'+'</td>'+
-                                            '<td>'+data.statu.reflow+'</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<td>'+'剩余天数 (D)'+'</td>'+
-                                            '<td>'+data.statu.reday+'</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<td>'+'租赁模式'+'</td>'+
-                                            '<td>'+(data.statu.leasingmode?leasingmode[data.statu.leasingmode]:'--')+'</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<td>'+'激活状态'+'</td>'+
-                                            '<td>'+(Number(data.statu.alivestause)?'已激活':'未激活')+'</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<td>'+'滤芯模式'+'</td>'+
-                                            '<td>'+(data.statu.filtermode?filtermode[data.statu.filtermode]:'--')+'</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<td>'+'温度'+'</td>'+
-                                            '<td>'+(data.statu.temperature?data.statu.temperature:'--')+'</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<td>'+'更新时间'+'</td>'+
-                                            '<td>'+(data.statu.updatetime?new Date(data.statu.updatetime*1000).toLocaleString():'--')+'</td>'+
-                                        '</tr>'
-                            $_table2.append(html2)
-                        }
-                    })
-                </script>
+                    <div class="_four _margin-right _05CE3E text-center">
+                        <h1 class="_h1 _text">--</h1>
+                        <span class="_text">设备当前净水值(ppm)</span>
+                    </div>
+                    <div class="_four _77E1FB text-center">
+                        <h1 class="_h1 _text">--</h1>
+                        <span class="_text">设备当前租赁模式</span>
+                    </div>
+                </div> 
             </div>
-           
+            <div class="clearfix">
+                <div class="_float_left">
+                    <div class="_device">
+                        <div>
+                            <h3>滤芯信息(剩余值)</h3>
+                        </div>
+                        <table class="table _table btnBox">
+                        </table>
+                    </div>
+
+                    <div class="_device">
+                        <div>
+                            <h3>设备操作</h3>
+                            <div class="btnBox" style="padding: 0 100px"><button class="btn btn-primary clickBtn switchText" style="padding:15px 25px">关机</button></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="_float_right">
+                    <div style="padding: 5px 10px;" class="_device">
+                        <div>
+                            <h3>设备信息</h3>
+                        </div>
+                        <table class="table _table2">
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="_tb">
+                <h2>经销商信息列表</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>经销商ID</td>
+                            <td>经销商ID</td>
+                            <td>经销商姓名</td>
+                            <td>手机号码</td>
+                            <td>地址</td>
+                            <td>管理级别</td>
+                            <td>管理级别</td>
+                            <td>邮箱</td>
+                            <td>备注</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+            <!-- <div class="_tb" style="margin-bottom: 50px;">
+                <h2>使用记录</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>序号</td>
+                            <td>IC卡编号</td>
+                            <td>用户姓名</td>
+                            <td>手机号码</td>
+                            <td>使用时间</td>
+                            <td>使用流量/mL</td>
+                            <td>使用地址</td>
+                            <td>备注</td>
+                        </tr>
+                    </thead>
+                </table>
+            </div> -->
+            <script>
+                
+                var statu = JSON.parse($(".statu").val());
+                // var filterInfo = JSON.parse($(".filterInfo").val());
+                var filterInfo = [
+                    {filtername:'M15UCC',timelife:1000,flowlife:30,introduce: '原装正品净水器滤芯M15UCC 0.5微米高密道4级过滤'},
+                    {filtername:'HU603-5a',timelife:1000,flowlife:60,introduce: '正品净水器家用直饮机HU603-5a全套原装滤芯'},
+                    {filtername:'RO滤芯',timelife:1000,flowlife:70,introduce: '原装JR1550T-RO RO/C+UF/PP+C五级过滤'},
+                    {filtername:'BH2',timelife:1000,flowlife:50,introduce: '净水器滤芯主滤芯耗材家用直饮净水器主滤芯BH2'},
+                    {filtername:'RO-185I',timelife:1000,flowlife:50,introduce: '沁园净水器滤芯RO-185I/DT/F PP棉QG-U-1003/1004 套装 10寸 通用'},
+                    {filtername:'AO史密斯',timelife:1000,flowlife:90,introduce: 'AO史密斯50D1 厨房过滤家用净水器 专利反渗透滤芯直饮净水机'}
+                ];
+                var filter = JSON.parse($(".filter").val());
+                console.log(statu);
+                console.log(filterInfo);
+                console.log(filter);
+                var devicestause = {
+                    '0':'制水',
+                    '1':'冲洗',
+                    '2':'水满',
+                    '3':'缺水',
+                    '4':'漏水',
+                    '5':'检修',
+                    '6':'欠费停机',
+                    '7':'关机',
+                    '8':'开机(仅命令)'
+                };
+                var leasingmode = {
+                    '0':'零售型',
+                    '1':'按流量计费',
+                    '2':'按时间计费',
+                    '3':'时长和流量套餐',
+                    '4':'商务型'
+                };
+                var filtermode = {
+                    '0':'按时长',
+                    '1':'按流量',
+                    '2':'时长和流量'
+                };
+                var _color = ['#05CE3E','#005384','#DD4B39','#337AB7','#5CB85C','#77E1FB'];
+                $('._dev').append(statu.deviceid)
+                $('._dive div h1').eq(0).html(devicestause[statu.devicestause]?devicestause[statu.devicestause]:'--');
+                $('._dive div h1').eq(1).html(statu.puretds?statu.puretds:'--');
+                $('._dive div h1').eq(2).html(statu.rawtds?statu.rawtds:'--');
+                $('._dive div h1').eq(3).html(statu.leasingmode?leasingmode[statu.leasingmode]:'--');
+
+                var html='';//滤芯剩余显示
+                if(filterInfo){
+                    for(var i = 0;i<filterInfo.length;i++){
+                        //按流量计算百分比值
+                        var persent1 = Number(statu[('reflowfilter'+(i+1))])/Number(filterInfo[i].flowlife?filterInfo[i].flowlife:0)*100;
+                        //按时间计算百分比值
+                        var persent2 = Number(statu[('redayfilter'+(i+1))])/Number(filterInfo[i].timelife?filterInfo[i].timelife:0)*100;
+                        if(persent1>100){
+                            persent1=100; 
+                        }else{
+                            persent1=persent1;
+                        };
+                        if(persent2>100){
+                            persent2=100;
+                        }else{
+                            persent2=persent2;
+                        }
+                        var persent = Math.min(persent1,persent2);
+                        //比较大小
+                        var _bool = persent == persent1?true:false;
+                        var width = Math.min(persent,100);
+                        
+                        if(statu.filtermode=="0"){//按时间
+                            html+='<tr>'+
+                                '<td>'+filterInfo[i].filtername+'</td>'+
+                                '<td style="width:50%">'+
+                                    '<div class="text-center">'+
+                                        '<div class="_progress">'+
+                                            '<div class="_progress_" style="width: '+persent2.toFixed(2)+'%;background-color:'+_color[i%_color.length]+'">'+
+                                            '</div>'+
+                                        '</div>'+
+                                        '<span>还剩'+persent2.toFixed(2)+'%</span>'+
+                                    '</div>'+
+                                '</td>'+
+                                '<td>'+Number(statu[('redayfilter'+(i+1))])+'/'+filterInfo[i].timelife+'</td>'+
+                                '<td>'+'<tutton class="btn btn-info clickBtn resetBtn" name="'+ filterInfo[i].filtername+'">复位</button>'+'</td>'+
+                                '</tr>';
+                        }else if(statu.filtermode=="1"){//按流量
+                            html+= '<tr>'+
+                                '<td style="width:10%;">'+filterInfo[i].filtername+'</td>'+
+                                '<td style="width:70%">'+
+                                '<div class="_progress">'+
+                                '<div class="_progress_" style="width: '+persent1.toFixed(2)+'%;background-color:'+_color[i%_color.length]+'">'+
+                                '</div>'+
+                                '</div>'+
+                                '<span style="display:block;text-align:center">还剩'+persent1.toFixed(2)+'%</span>'+
+                                '</td>'+
+                                '<td>'+Number(statu[('reflowfilter'+(i+1))])+'/'+filterInfo[i].flowlife+'</td>'+
+                                '<td>'+'<button class="btn btn-info clickBtn resetBtn" name="'+ filterInfo[i].filtername+'">复位</button><input type="hidden" value='+i+'></td>'+
+                                '</tr>';
+                        }else if(statu.filtermode=="2"){
+                            //按流量&流量
+                            html+= '<tr>'+
+                                '<td style="width:10%;">'+filterInfo[i].filtername+'</td>'+
+                                '<td style="width:70%">'+
+                                '<div class="_progress">'+
+                                '<div class="_progress_" style="width: '+width+'%;background-color:'+_color[i%_color.length]+'">'+
+                                '</div>'+
+                                '</div>'+
+                                '<span style="display:block;text-align:center">还剩'+width.toFixed(2)+'%</span>'+
+                                '</td>'+
+                                '<td>'+(_bool?Number(statu[('reflowfilter'+(i+1))]):Number(statu[('redayfilter'+(i+1))]))+'/'+(_bool?filterInfo[i].flowlife:filterInfo[i].timelife)+'</td>'+
+                                '<td>'+'<button class="btn btn-info clickBtn resetBtn" name="'+ filterInfo[i].filtername+'">复位</button><input type="hidden" value='+i+'></td>'+
+                                '</tr>';
+                        }
+                    }
+                    $('._table').append(html);
+                }    
+
+                var html2 = '<tr>'+
+                                '<td>'+'设备编号'+'</td>'+
+                                '<td class="tdDeviceId">'+statu.deviceid+'</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td>'+'设备状态'+'</td>'+
+                                '<td class="tdDeviceStause">'+devicestause[statu.devicestause]+'</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td>'+'安装时间'+'</td>'+
+                                '<td>'+(statu.addtime?new Date(statu.addtime*1000).toLocaleString():'--')+'</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td>'+'安装地址'+'</td>'+
+                                '<td>'+statu.address+'</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td  class="tdOriginalWater">'+'原水值(ppm)'+'</td>'+
+                                '<td>'+statu.puretds+'</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td  class="tdCleanWater">'+'纯水值(ppm)'+'</td>'+
+                                '<td>'+statu.rawtds+'</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td class="reflow">'+'剩余流量 (L)'+'</td>'+
+                                '<td>'+statu.reflow+'</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td>'+'剩余天数 (D)'+'</td>'+
+                                '<td class="reday">'+statu.reday+'</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td>'+'租赁模式'+'</td>'+
+                                '<td class="tdLeaseMode">'+(statu.leasingmode?leasingmode[statu.leasingmode]:'--')+'</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td>'+'激活状态'+'</td>'+
+                                '<td>'+(Number(statu.alivestause)?'已激活':'未激活')+'</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td>'+'滤芯模式'+'</td>'+
+                                '<td class="tdFilterMode">'+(statu.filtermode?filtermode[statu.filtermode]:'--')+'</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td>'+'温度'+'</td>'+
+                                '<td class="temperature">'+(statu.temperature?statu.temperature:'--')+'</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td>'+'更新时间'+'</td>'+
+                                '<td>'+(statu.updatetime?new Date(statu.updatetime*1000).toLocaleString():'--')+'</td>'+
+                            '</tr>'
+                $('._table2').append(html2);
+
+                //1.建立连接
+                var timer=null;
+                var numAdd=0;
+                var identify=0;
+                var websoket=new WebSocket("ws://120.27.12.1:6001");
+                var PackNum=0;//包数据
+                var CmdList=[];//命令队列
+                var deviceId=228733445596778;
+                websoket.onopen=function(){
+                    //包数据
+                    ajson={
+                        "DeviceID":deviceId,
+                        "PackType":"login",
+                        "Vison":0,
+                    };
+                    websoket.send(JSON.stringify(ajson));
+                    setTimeout(function(){
+                        ajson.PackType="Select";
+                        websoket.send(JSON.stringify(ajson));
+                        setInterval(function(){
+                            websoket.send(JSON.stringify(ajson));
+                        },10000);
+                    },1000);
+                }
+                //实时接收数据
+                websoket.onmessage=function(res){
+                    numAdd=0;
+                    var dataList=JSON.parse(res.data);
+
+                    if(dataList.PackType=="Select")
+                    {
+                        numAdd=0;
+                        $('._table').html("");
+                        var filterMode='';
+                        console.log(dataList);
+                        for(var i = 0;i<filterInfo.length;i++){
+                            //console.log(data.filterInfo.length);
+                            //按流量计算百分比值
+                            var ReFlowFilter=0;//剩余
+                            var ReDayFilter=0;
+                            if(parseInt(dataList['ReFlowFilter'+(i+1)])){
+                                ReFlowFilter=parseInt(dataList['ReFlowFilter'+(i+1)]);
+                            }else{
+                                ReFlowFilter=0;
+                            }
+                            if(parseInt(dataList['ReDayFilter'+(i+1)])){
+                                ReDayFilter=parseInt(dataList['ReDayFilter'+(i+1)]);
+                            }else{
+                                ReDayFilter=0;
+                            }
+                            var persent1 = ReFlowFilter/parseInt(filterInfo[i].flowlife)*100;
+                            //按时间计算百分比值
+                            var persent2 = ReDayFilter/parseInt(filterInfo[i].timelife)*100;
+                            if(persent1>100){
+                                persent1=100;
+                            }else{
+                                persent1=persent1;
+                            };
+                            if(persent2>100){
+                                persent2=100;
+                            }else{
+                                persent2=persent2;
+                            }
+                            var persent = Math.min(persent1,persent2);
+                            //比较大小
+                            var _bool = persent == persent1?true:false;
+                            var width = Math.min(persent,100);
+                            var html='';
+
+                            if(parseInt(dataList['ReDayFilter1']) > 0 && parseInt(dataList['ReFlowFilter1']) <= 0 ){
+                                //按时间
+                                filterMode='按时长';
+                                html+= '<tr>'+
+                                    '<td style="width:10%;">'+filterInfo[i].filtername+'</td>'+
+                                    '<td style="width:70%">'+
+                                    '<div class="_progress">'+
+                                    '<div class="_progress_" style="width: '+persent2.toFixed(2)+'%;background-color:'+_color[i%_color.length]+'">'+
+                                    '</div>'+
+                                    '</div>'+
+                                    '<span style="display:block;text-align:center">还剩'+persent2.toFixed(2)+'%</span>'+
+                                    '</td>'+
+                                    '<td>'+ReDayFilter+'/'+filterInfo[i].timelife+'</td>'+
+                                    '<td>'+'<button class="btn btn-info clickBtn resetBtn" name="'+ filterInfo[i].filtername+'">复位</button><input type="hidden" value='+i+'></td>'+
+                                    '</tr>';
+
+                            }else if(parseInt(dataList['ReFlowFilter1'])>0 && parseInt(dataList['ReDayFilter1'])<=0){
+                                //流量模式
+                                //alert(124);
+                                filterMode='按流量';
+                                html+= '<tr>'+
+                                    '<td style="width:10%;">'+filterInfo[i].filtername+'</td>'+
+                                    '<td style="width:70%">'+
+                                    '<div class="_progress">'+
+                                    '<div class="_progress_" style="width: '+persent1.toFixed(2)+'%;background-color:'+_color[i%_color.length]+'">'+
+                                    '</div>'+
+                                    '</div>'+
+                                    '<span style="display:block;text-align:center">还剩'+persent1.toFixed(2)+'%</span>'+
+                                    '</td>'+
+                                    '<td>'+ReFlowFilter+'/'+filterInfo[i].timelife+'</td>'+
+                                    '<td>'+'<button class="btn btn-info clickBtn resetBtn" name="'+ filterInfo[i].filtername+'">复位</button><input type="hidden" value='+i+'></td>'+
+                                    '</tr>';
+
+                            }else if(parseInt(dataList['ReFlowFilter1'])>0 && parseInt(dataList['ReDayFilter1'])>0){
+                                //按流量/流量
+                                filterMode='按流量/时长';
+                                html+= '<tr>'+
+                                    '<td style="width:10%;">'+filterInfo[i].filtername+'</td>'+
+                                    '<td style="width:70%">'+
+                                    '<div class="_progress">'+
+                                    '<div class="_progress_" style="width: '+width+'%;background-color:'+_color[i%_color.length]+'">'+
+                                    '</div>'+
+                                    '</div>'+
+                                    '<span style="display:block;text-align:center">还剩'+width.toFixed(2)+'%</span>'+
+                                    '</td>'+
+                                    '<td>'+(_bool?ReFlowFilter:ReDayFilter)+'/'+(_bool?filterInfo[i].flowlife:filterInfo[i].timelife)+'</td>'+
+                                    '<td>'+'<button class="btn btn-info clickBtn resetBtn" name="'+ filterInfo[i].filtername+'">复位</button><input type="hidden" value='+i+'></td>'+
+                                    '</tr>';
+
+                            }else{
+                                // 没有数据时的显示状态
+                                html+='暂无数据';
+                            }
+                            // ;
+                            $('._table').append(html);
+                        }
+
+
+
+
+
+
+
+
+                        $(".H1devicestause").text(devicestause[dataList.DeviceStause]?devicestause[dataList.DeviceStause]:'--');//设置设备状态
+                        $(".tdDeviceStause").text(devicestause[dataList.DeviceStause]?devicestause[dataList.DeviceStause]:'--');//设置设备状态
+                        $(".originalWater").text(dataList.PureTDS);//设置当前设备原水值
+                        $(".tdOriginalWater").text(dataList.PureTDS);
+                        $(".cleanWater").text(dataList.RawTDS);//设置当前设备纯水值
+                        $(".tdCleanWater").text(dataList.RawTDS);//设置当前设备纯水值
+                        $(".leaseMode").text(leasingmode[dataList.LeasingMode]?leasingmode[dataList.LeasingMode]:'--');//设置当前设备租赁模式
+                        $(".tdLeaseMode").text(leasingmode[dataList.LeasingMode]?leasingmode[dataList.LeasingMode]:'--');//设置当前设备租赁模式
+                        $(".tdFilterMode").text(filterMode);//设置当前设备滤芯模式
+                        $(".reflow").text((dataList.ReFlow=='-1')?0:dataList.ReFlow);//设置当前设备剩余流量
+                        $(".reday").text(dataList.Reday=='-1'?0:dataList.ReFlow);//设置当前设备剩余天数
+                        $(".filtermode").text(dataList.filtermode);//设置当前设备滤芯模式
+                        $(".temperature").text(dataList.Temperature);//设置当前设备温度
+                        //$(".updatetime").text(dataList.updatetime);//设置当前设备更新时间
+                    }else if(dataList.PackType=="SetData")//设置数据类型数据
+                    {
+                        identify=0;
+                        console.log(123);
+                        for(var i=0;i<CmdList.length;i++){
+                            console.log(CmdList[i]);
+                            if(CmdList[i].cmd.PackNum==dataList.PackNum)
+                            {
+                                if(CmdList[i].type=="关机中")
+                                {
+                                    $(".switchText").html("开机");
+                                }
+                                else if(CmdList[i].type=="开机中")
+                                {
+                                    $(".switchText").html("关机");
+                                }
+                                else if(CmdList[i].cmd.type=="复位中")
+                                {
+                                    $(".resetBtn").html("复位");
+                                }
+
+                                CmdList.splice(i,1);
+                                break;
+                            }
+                        }
+                    }
+
+                }
+                //按钮操作
+            $(".btnBox").on("click",".clickBtn",function(){
+                var thisT=$(this);
+                var _this=$(this).html();//获取按钮文本
+                
+                var thisIndex=parseInt($(this).siblings("input").val());
+                var filterN = $(this).attr('name');
+                var ajson;//数据对象
+                var ajsonSelect;
+                //判断操作类型
+                if(_this!="复位"){
+                    var tipsText = "确定要"+ _this + deviceId +"吗？";
+                } else {
+                    var tipsText = "确定要"+ _this + "<a>滤芯" + filterN +"</a>吗";
+                }
+                //弹框提示
+                layui.use('layer', function(){
+                    var layer = layui.layer;
+                    layer.confirm(tipsText, {icon: 3, title:'温馨提示'}, function(index){
+                        layer.close(index);
+                        ajson={
+                            "DeviceID":deviceId,
+                            "PackType":"SetData",
+                            "Vison":0,
+                            "PackNum":PackNum,
+                            "curTime":0,
+                        };
+                        //根据当前设备状态设置按钮文本
+                        var type=0;
+                        if(_this=="开机"){
+                            ajson['DeviceStause']=8;
+                            thisT.html("开机中");
+                            type="开机中";
+
+                        }else if(_this=="关机"){
+                            ajson['DeviceStause']=7;
+                            thisT.html("关机中");
+                            type="关机中";
+
+                        }else if(_this=="复位"){
+                            ajson['ReFlowFilter'+(thisIndex+1)]=filterInfo[thisIndex].flowlife;
+                            ajson['ReDayFilter'+(thisIndex+1)]=filterInfo[thisIndex].timelife;
+                            ajson['FlowLifeFilter'+(thisIndex+1)]=filterInfo[thisIndex].flowlife;
+                            ajson['DayLifeFiter'+(thisIndex+1)]=filterInfo[thisIndex].timelife;
+                            ajson['type']='复位中';
+                            thisT.html("复位中");
+                            type=filterN;
+                        }
+                        //发送数据
+                        ajsonSelect={
+                            "DeviceID":deviceId,
+                            "PackType":"Select",
+                            "Vison":0,
+                        };
+                        websoket.send(JSON.stringify(ajson));
+                        websoket.send(JSON.stringify(ajsonSelect));
+                        CmdList.push({
+                            cmd:ajson,
+                            type:type
+                        });
+                        identify=1;
+                        timer=setTimeout(function(){
+                            if(identify==1){
+                                layui.use('layer', function(){
+                                    var layer = layui.layer;
+
+                                    // layer.msg('操作超时！');
+                                    if(thisT.html()=='开机中'){
+                                        thisT.html('开机')
+                                    }else if(thisT.html()=='关机中'){
+                                        thisT.html('关机')
+                                    }else if(thisT.html('复位中')){
+                                        thisT.html('复位')
+                                    }
+                                });
+                                identify=0;
+                            }
+                        },5000)
+                    });
+                });
+            });
+
+            </script>
         </div>
-        <include file="Public/footer" />
-</div>
+    </div>
+</block>

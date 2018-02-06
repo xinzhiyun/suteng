@@ -184,7 +184,7 @@ window.onload = function(){
             var coldwater = dataList.coldwater;
             var roomtemperature = dataList.roomtemperature;
             var rawtds = dataList.RawTDS;
-            var phval = dataList.phval;
+            var phval = dataList.phval; 
             var puretds = dataList.PureTDS;
             //1.设备状态页面数据显示
             $(".rawtdsVal").html((rawtds?rawtds:54));//纯水值
