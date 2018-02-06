@@ -74,6 +74,7 @@
         resize: none;
         overflow: hidden;
         border: 1px dashed #CCC;
+        font-size: .6rem;
       }
       .repairMidd>p {
         margin:0.933333rem 0 0.4rem;
@@ -196,7 +197,7 @@
         border: none;
         margin-top: 0;
         padding: 0.3rem;
-        font-size: 0.5rem;
+        font-size: 0.6rem;
         box-sizing: border-box;
       }
       .repairBtn{
@@ -272,7 +273,7 @@
            <li>
             <span>报修原因：</span><p>
             <select>
-                <option value ="volvo">-请输入-</option>
+                <option value ="volvo">-请选择-</option>
                 <option value ="saab">更换滤芯</option>
                 <option value="opel">微信端无法控制水机</option>
                 <option value="audi">其他</option>
@@ -313,7 +314,7 @@
         </ul>
       </div>
       <div class="repairBtn">
-        <input type="submit" value="提交" class="btn">
+        <input type="button" value="提交" class="btn">
       </div>
     </form>
 
@@ -399,25 +400,6 @@
         }
       })
 
-    $(".btn").click(function(){
-      $.ajax({
-        url: '{{:U("Repair/index")}}',
-        ttype: 'post',
-        data: formdata,
-        processData: false,
-        contentType: false,
-        dataType: 'formdata',
-        success: function(res){
-          console.log('已连接！',res)
-          if(res.code == 200){
-            layuiHint('您的报修已收到，维修师傅正飞速准备中！');
-          }
-        },
-        error: function(res){
-          console.log('失败！',res)
-        }
-      })
-    })
 
     //姓名验证 
     $('#Lname').change( function() {
