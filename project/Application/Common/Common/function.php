@@ -1227,3 +1227,20 @@ function onlyOrderId(){
   $yCode = mb_substr($str, 0, 15);
   return $yCode;
 }
+
+/**
+ * 生产唯一的充值订单ID
+ */
+function getOrderId()
+{
+  do {
+    // 生成唯一订单号
+    $orderId = onlyOrderId();
+    //查询订单号是否存在
+    $oid = M('flow')->where("`order_id`='{$orderId}'")->field('id')->find();
+    // 如果订单号已存在再重新获取一次
+  } while ($oid);
+
+  // 绝对唯一的32位订单ID号
+  return $orderId;
+}

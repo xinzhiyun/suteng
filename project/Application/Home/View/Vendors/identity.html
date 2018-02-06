@@ -117,7 +117,7 @@
         display: block;
     }
      form>.form-group>.col-md-3>input{
-        width: 52vw;
+        width: 37vw;
         height: 1.2rem;
         border:none;
         padding-left: 1vw;
@@ -168,7 +168,7 @@
         opacity: 0;
         z-index: 999;
         left: 1rem;
-        top: 2.3rem;
+        top: -0.7rem;
     }
     /*.form-group>.col-md-5>i{
         position: relative;
@@ -182,7 +182,7 @@
     /*图片区域*/
     form>.form-group1>.col-md-5>i {
     position: absolute;
-    top: 2.1rem;
+    top: -1.3rem;
     left: 0.8rem;
     font-size: 3.8rem;
     color: #DCF8FF;
@@ -199,7 +199,7 @@
         background: #DCF8FF;
         border-radius: 0.5rem;
         left: 6rem;
-        top: 2.15rem;
+        top: -0.6rem;
         color: #5a5a5a;
         border: 1px dashed #76DED3;
     }
@@ -264,25 +264,25 @@
              <div class="form-group  form-group1">
                 <label class="col-sm-2 control-label" >上传身份证正面</label>
                 <div class="col-md-5">
-                    <input type="file" id="comLicen" name="positive" class="form-control">
+                    <input type="file" id="comLicen" name="positive" class="form-control" onchange="positiveImage(this);">
                     <i class="iconfont icon-tianjiajingdian"></i>
-                    <div class="xiePic">图片<i class="iconfont icon-cuohao"></i></div>
+                    <div class="xiePic"><img src="" id="positive" style="width: 100%;"><i class="iconfont icon-cuohao"></i></div>
                 </div>
             </div> 
             <div class="form-group form-group1">
                 <label class="col-sm-2 control-label">上传身份证反面</label>
                 <div class="col-md-5">
-                    <input type="file" id="comLicen1" name="opposite" class="form-control">
+                    <input type="file" id="comLicen1" name="opposite" class="form-control" onchange="oppositeImage(this);">
                     <i class="iconfont icon-tianjiajingdian"></i>
-                    <div class="xiePic">图片<i class="iconfont icon-cuohao"></i></div>
+                    <div class="xiePic"><img src="" id="opposite" style="width: 100%;"><i class="iconfont icon-cuohao"></i></div>
                 </div>
             </div> 
             <div class="form-group form-group1">
                 <label class="col-sm-2 control-label">上传手持身份证</label>
                 <div class="col-md-5">
-                    <input type="file" id="comLicen2" name="handheld" class="form-control">
+                    <input type="file" id="comLicen2" name="handheld" class="form-control" onchange="handheldImage(this);">
                     <i class="iconfont icon-tianjiajingdian"></i>
-                    <div class="xiePic">图片<i class="iconfont icon-cuohao"></i></div>
+                    <div class="xiePic"><img src="" id="handheld" style="width: 100%;"><i class="iconfont icon-cuohao"></i></div>
                 </div>
             </div> 
             <div class="xieBtn">
@@ -290,6 +290,40 @@
             </div>
         </form>
     </div>
+    <script>
+        function positiveImage(file) {
+            if (!file.files || !file.files[0]) {
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                document.getElementById('positive').src = evt.target.result;
+            }
+            reader.readAsDataURL(file.files[0]);
+        }
+
+        function oppositeImage(file) {
+            if (!file.files || !file.files[0]) {
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                document.getElementById('opposite').src = evt.target.result;
+            }
+            reader.readAsDataURL(file.files[0]);
+        }
+
+        function handheldImage(file) {
+            if (!file.files || !file.files[0]) {
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                document.getElementById('handheld').src = evt.target.result;
+            }
+            reader.readAsDataURL(file.files[0]);
+        }
+    </script>
 </body>
 </html>
 

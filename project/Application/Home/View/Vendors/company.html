@@ -226,9 +226,9 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label" for="comLicen">营业执照</label>
                 <div class="col-md-3">
-                    <input type="file" id="comLicen" name="licence" class="form-control">
+                    <input type="file" id="comLicen" name="licence" class="form-control" onchange="licenceImage(this);">
                      <i class="iconfont icon-tianjiajingdian"></i>
-                     <div class="xiePic">图片<i class="iconfont icon-cuohao"></i></div>
+                     <div class="xiePic"><img src="" id="licence" style="width: 100%;"><i class="iconfont icon-cuohao"></i></div>
                 </div>
             </div> 
             <div class="xieBtn">
@@ -236,6 +236,18 @@
             </div>
         </form>
     </div>
+    <script>
+        function licenceImage(file) {
+            if (!file.files || !file.files[0]) {
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                document.getElementById('licence').src = evt.target.result;
+            }
+            reader.readAsDataURL(file.files[0]);
+        }
+    </script>
 </body>
 </html>
 

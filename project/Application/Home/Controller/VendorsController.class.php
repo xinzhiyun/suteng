@@ -621,15 +621,20 @@ class VendorsController extends Controller
             // 更新分销商信息
             $vandorRes = M('vendors')->where($saveData)->save($info);
             if($vandorRes){
-            	$this->success('合同信息提交成功', U('Home/Vendors/index'));
+            	// $this->success('合同信息提交成功', U('Home/Vendors/index'));
+                $message['code'] = 200;
+                $message['res']  = '合同信息提交成功';
             }else{
-            	$this->error('合同信息提交失败，请重新上传！');
+            	// $this->error('合同信息提交失败，请重新上传！');
+                $message['code'] = 605;
+                $message['res']  = '合同信息提交失败，请重新上传！';
             }
     	}else{
-    		$this->error('合同上传失败，请重新上传！');
+            $message['code'] = 605;
+            $message['res']  = '合同信息提交失败，请重新上传！';
     	}
 
-    	// dump($info);
+    	$this->ajaxReturn($message); 
     }
 
 

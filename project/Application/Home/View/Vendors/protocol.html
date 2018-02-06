@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
     <script src="__PUBLIC__/Home/js/public.js"></script>
     <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_359ekha73vt8d7vi.css">
-   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
     <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
 </head>
 <style>
     * {
@@ -337,17 +339,17 @@
             <p><b></b></p>
             <p><span>分销商名称</span></p>
         </header>
-        <form action="javascript:false;" method="post" class="form-horizontal clearfix" enctype="multipart/form-data">    
+        <form action="javascript:false;" method="post" id="pic" class="form-horizontal clearfix" enctype="multipart/form-data">    
             <div class="form-group">
-               <a href="__PUBLIC__/Vendors/hetong.docx"> <i class="iconfont icon-yonghuxieyi"></i><span>合同样本</span></a> 
+               <a href="__PUBLIC__/Vendors/hetong.docx" download="hetong.docx"> <i class="iconfont icon-yonghuxieyi"></i><span>合同样本</span></a> 
                <i class="iconfont icon-dayuhao-copy-copy"></i>
             </div> 
             <div class="form-group">
                 <label class="col-sm-2 control-label" for="comLicen">上传协议文件</label>
                 <div class="col-md-3">
-                    <input type="file" id="comLicen" name="licence" class="form-control">
+                    <input type="file" id="comLicen" name="protocol" class="form-control" onchange="protocolImage(this);">
                     <i class="iconfont icon-tianjiajingdian"></i>
-                    <div class="xiePic">图片<i class="iconfont icon-cuohao"></i></div>
+                    <div class="xiePic"><img src="" id="protocol" style="width: 100%;"><i class="iconfont icon-cuohao"></i></div>
                 </div>
             </div> 
             <div class="xieBtn">
@@ -398,11 +400,48 @@
             </div>
         </div>
     </div>
-    <script>
+<!-- 微信支付支持JS部分代码 -->
+<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>                                                                                      
+<script>
+        //微信接口
+        wx.config({
+            debug: false,
+            appId: '{{$info["appId"]}}',
+            timestamp: '{{$info["timestamp"]}}',
+            nonceStr: '{{$info["nonceStr"]}}',
+            signature: '{{$info["signature"]}}',
+            jsApiList: [
+              // 所有要调用的 API 都要加到这个列表中
+              'chooseWXPay'
+            ]
+        });
 
         //支付方式
         $('.xieBtn').click(function(){
-            $('.paystyle').slideDown("slow");
+            // 获取表单数据
+            var formData = new FormData(document.getElementById("pic"));
+
+            $.ajax({
+                url: "{{:U('Home/Vendors/protocol')}}",
+                type: 'post',
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    if(res.code == 200){
+                        // location.reload();
+                        $('.paystyle').slideDown("slow");
+                    } else {
+                        swal('提交失败',res.msg, "error");
+                    }
+                },
+                error: function (res) {
+                    swal('提交失败',res.msg, "error");
+                }
+            });
+
         })
 
         // 付款方式的单选框
@@ -428,6 +467,18 @@
                $(".modal-backup").fadeOut('slow');
            });
         })
+
+
+        function protocolImage(file) {
+            if (!file.files || !file.files[0]) {
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                document.getElementById('protocol').src = evt.target.result;
+            }
+            reader.readAsDataURL(file.files[0]);
+        }
     </script>
 </body>
 </html>
