@@ -60,13 +60,16 @@
 		/*我的钱包*/
 		#package {
 			display: flex;
-			margin: 10px 0;
+			margin: 0.3rem 0;
+			position: relative;
+            top: 0.3rem;
 		}
 		#package >span{
 			font-size: 0.8rem;
 		}
 		#package>div {
 			margin-left: 2%;
+			margin-top: -0.25rem;
 			font-size: 0.72rem;
 		}
 		#content {
@@ -77,9 +80,12 @@
 			padding: 1% 2%;
 			border-bottom: 8px solid #eee;
 			font-size: 0.78rem;
-
+			position: relative;
 		}
-
+		#package>div>p>i{
+			position: relative;
+			top:0.15rem;
+		}
 		#content>#more>div{
 			border-bottom:1px solid #E5E5E5;
 		}
@@ -222,14 +228,16 @@
 			background: #eee;
 		}
 		/*金银币的图标颜色*/
-		.icon-jinbi{
-			color:#E8C509;
-			font-size: 1.2rem;
+		.icon-tubiao207{
+			color:#f9df04; 
+            font-size: 1.2rem;
+            font-weight: 800;
 			padding-right:0.2rem;
 		}
-		.icon-yingbi{
-			color:#98C5C5;
-			font-size: 1.2rem;
+		.icon-tubiao207-copy{
+			color: #dadad5;
+            font-size: 1.2rem;
+            font-weight: 800;
 			padding-right:0.2rem;
 		}
 
@@ -316,8 +324,8 @@
 			<div id="package">
 				<span>我的钱包：</span>
 				<div>
-					<p><i class="iconfont icon-jinbi"></i>金币{{$user['gold_num']}}个</p>
-					<p><i class="iconfont icon-yingbi"></i>银币{{$user['silver']}}个</p>
+					<p><i class="iconfont icon-tubiao207"></i>金币{{$user['gold_num']}}个</p>
+					<p><i class="iconfont icon-tubiao207-copy"></i>银币{{$user['silver']}}个</p>
 				</div>
 			</div>
 		</div>
@@ -344,7 +352,7 @@
 				</a>
 				<a href="{{:U('')}}">
 					<i class="iconfont icon-duihuan-"></i>
-					<p>兑换订单</p>
+					<p>兑换记录</p>
 				</a>
 				
 			</div>
