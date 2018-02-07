@@ -366,14 +366,22 @@
 		/*退款/售后*/
 		.tuikuangall{
 			width: 100vw;
-			border-bottom:10px solid #E5E5E5;
+			/*border-bottom:10px solid #E5E5E5;*/
 
 		}
 		.tuikuangall>p{
 			padding: 3% 3% 0.5rem 3%;
+			/*border:none!important;*/
 		}
+		
 		.shangpingnei{
 			padding:0rem 3%;
+		}
+		.shangpingnei+p{
+			border-bottom: 10px solid #f1f1f1;
+		}
+		.shangpingnei+p.noborder{
+			border:none;
 		}
 		.shangpingnei>.tuikuangLeft,.shangpingnei>.tuikuangRight{
 			float: left;
@@ -479,8 +487,10 @@
 		}
 		/*报装中的评论按钮*/
 		.pinglunBtn{
-			width: 90%;
-			padding:0.5rem 3%;
+			box-sizing: border-box;
+		    width: 100%;
+		    padding: 0.5rem 9%;
+		    border-bottom: 10px solid #f1f1f1;
 			
 		}
 		.pinglunBtn>input{
@@ -758,7 +768,7 @@
 					</div>
 					<p><b>商家同意退款，请尽早退货</b><span>点击张开<i class="iconfont icon-shuangxiajiantou"></i></span></p>
 					<!-- 隐藏的评论内容 -->
-					<!-- <div class="commentHidden">
+					<!-- <div class="comment0Hidden">
 						<div class="hidTop">
 							<p><span>收货人： 马晓东</span>13612345678</p>
 							<p>广东省广州市番禺区大石镇大石街 道五巷7号 </p>
@@ -1156,7 +1166,7 @@
 							'<p><b>￥'+returneddata2[i]['price']+'</b><span>x'+returneddata2[i]['productnumber']+'</span></p>'+
 						'</div>'+
 					'</div>'+
-					'<p><b>商家同意退款，请尽早退货</b><span>点击张开<i class="iconfont icon-shuangxiajiantou"></i></span></p>'+
+					'<p><b>商家同意退款，请尽早退货</b><span>点击展开<i class="iconfont icon-shuangxiajiantou"></i></span></p>'+
 					'<!-- 隐藏的评论内容 -->'+
 					'<div class="commentHidden">'+
 						'<div class="hidTop">'+
@@ -1213,7 +1223,7 @@
 							'<p><b>￥'+returneddata5[i]['price'] +'</b><span>x '+ returneddata5[i]['productnumber'] +'</span></p>'+
 						'</div>'+
 					'</div>'+
-					'<p><b>报装中，客服电话：020-84765556</b></p>'+
+					'<p class="noborder"><b>报装中，客服电话：020-84765556</b></p>'+
 					'<div class="pinglunBtn">'+
 					'<input type="submit" value="评论">'+
 					'</div>';
@@ -1246,13 +1256,16 @@
 		// console.dir(iClass);
 		$('.tuikuangall>p>span').click(function(){
 			if(iClass=='iconfont icon-shuangxiajiantou'){
-				$('.tuikuangall>p>span>i').removeClass('icon-shuangxiajiantou').addClass('icon-xiangshangjiantou');
-				$('.commentHidden').slideDown();
+				$(this).children('i').removeClass('icon-shuangxiajiantou').addClass('icon-xiangshangjiantou');
+				// console.dir($(this).parent().next());
+				var _commentHidden=$(this).parent().next();
+				$(_commentHidden).slideDown();
 				iClass='iconfont icon-xiangshangjiantou';
 			}
-			else{		
-				$('.tuikuangall>p>span>i').removeClass('icon-xiangshangjiantou').addClass('icon-shuangxiajiantou');
-				$('.commentHidden').slideUp();		
+			else{	
+				var _commentHidden=$(this).parent().next();	
+				$(this).children('i').removeClass('icon-xiangshangjiantou').addClass('icon-shuangxiajiantou');
+				$(_commentHidden).slideUp();		
 				iClass='iconfont icon-shuangxiajiantou';
 			}
 		})
