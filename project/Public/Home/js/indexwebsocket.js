@@ -230,7 +230,10 @@ window.onload = function(){
                         layui.use('layer', function(){
                             var layer = layui.layer;
                             layer.msg('已经给您加热了，天气冷小心烫着！');
-                            $('.heat').show().fadeOut(6000);
+                            // $('.heat').show().fadeOut(6000).fadeIn(3);
+                            // setTimeout(function(){
+                            //         $('.heat').hide();
+                            // },6000);
                         })
                     }
 

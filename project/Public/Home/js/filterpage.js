@@ -14,22 +14,22 @@ $(function(){
         "rawtds":"75",
         "puretds":"42",
         "temperature":"24",
-        "reflowfilter1":null,
-        "redayfilter1":null,
-        "reflowfilter2":null,
-        "redayfilter2":null,
-        "reflowfilter3":null,
-        "redayfilter3":null,
-        "reflowfilter4":null,
-        "redayfilter4":null,
-        "reflowfilter5":null,
-        "redayfilter5":null,
-        "reflowfilter6":null,
-        "redayfilter6":null,
-        "reflowfilter7":null,
-        "redayfilter7":null,
-        "reflowfilter8":null,
-        "redayfilter8":null,
+        "reflowfilter1":"10000",
+        "redayfilter1":"1000",
+        "reflowfilter2":"50",
+        "redayfilter2":"1000",
+        "reflowfilter3":"60",
+        "redayfilter3":"1000",
+        "reflowfilter4":"10000",
+        "redayfilter4":"1000",
+        "reflowfilter5":"40",
+        "redayfilter5":"1000",
+        "reflowfilter6":"80",
+        "redayfilter6":"1000",
+        "reflowfilter7":"45",
+        "redayfilter7":"1000",
+        "reflowfilter8":"76",
+        "redayfilter8":"42",
         "leasingmode":"2",
         "alivestause":"1",
         "roomtemperature":"26",
@@ -38,14 +38,14 @@ $(function(){
         "phval":"3.8",
         "coldwater":"20",
         "hotwater":"95",
-        "filtermode":"1",
+        "filtermode":"0",
         "device":"GPRS",
         "iccid":"11223344556677889900",
         "csq":"90",
         "loaction":"10020�����",
         "addtime":"1513238294",
         "updatetime":"1513299086"
-    }
+    };
     var res = [
 		{filtername:'M15UCC',timelife:1000,flowlife:30,introduce: '原装正品净水器滤芯M15UCC 0.5微米高密道4级过滤'},
 		{filtername:'HU603-5a',timelife:1000,flowlife:60,introduce: '正品净水器家用直饮机HU603-5a全套原装滤芯'},
@@ -61,6 +61,8 @@ $(function(){
 		? 'visible'
 		: 'hidden'
 	});
+	var lvxin_data = JSON.parse($(".lvxin_data").val()).filterInfo;
+        // console.log(data);
 	// 当当前设备为零售模式时候，不显示滤芯购买页面
 	if(data!=null){
 		if(data.leasingmode=="0"){
@@ -128,7 +130,7 @@ $(function(){
 	
 
 	
-	console.log(data);
+	// console.log(data);
 	
 	var filtermode = data.filtermode;
 	var moHTML = '',lvxinIntroduceHTML='';//html box
@@ -324,7 +326,7 @@ $(function(){
 		var dataList=JSON.parse(data.data);//读取websoket数据，转换为json对象
 		var leasingmode = dataList.LeasingMode;
 		var moHTML = '',lvxinHTML = '',lvxinIntroduceHTML = '';// 存放膜、滤芯、滤芯简介的遍历的标签
-		console.log(dataList);
+		// console.log(dataList);
 		if(dataList.PackType=="Select")//返回查询数据类型数据
 		{			
 			for(var i=0; i< parseInt(dataList.FilerNum); i++){
@@ -502,7 +504,7 @@ $(function(){
 		}
 		else if(dataList.PackType=="SetData")//设置数据类型数据
 		{
-		    console.log(dataList);
+		    // console.log(dataList);
             identify=0;
 			for(var i=0;i<CmdList.length;i++){
 				if(CmdList[i].cmd.PackNum==dataList.PackNum)

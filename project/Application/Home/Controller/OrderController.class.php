@@ -41,7 +41,7 @@ class OrderController extends CommonController
             // 订单详情
             $waitpaylist[$i]['productList'] = M('order_detail')
                                                 ->where("st_order_detail.order_id='{$value['order_id']}'")
-                                                ->join('st_goods ON st_order_detail.gid = st_goods.id')
+                                                ->join('LEFT JOIN st_goods ON st_order_detail.gid = st_goods.id')
                                                 ->join('st_goods_detail ON st_goods_detail.gid = st_goods.id')
                                                 ->select();
             $i++;

@@ -382,40 +382,72 @@
             <p><span>{{$vendor.name}}</span></p>
         </header>
         <div class="taocan">
-            <div class="taocanSelectNow" index="0" >
-                A级分销商
-            </div>
-            <div index="1" >
-                B级分销商
-            </div>
-            <div index="2" >
-                C级分销商
-            </div>
-            <div index="3" >
-                会员邀请码
-            </div>
+            <notempty name="vendor.vendor_a">
+                <div class="taocanSelectNow" index="0">
+                    A级分销商
+                </div>
+                <div index="1" >
+                    B级分销商
+                </div>
+                <div index="2" >
+                    C级分销商
+                </div>
+                <div index="3" >
+                    会员邀请码
+                </div>
+            </notempty>
+
+            <empty name="vendor.vendor_a">
+                <notempty name="vendor.vendor_b">
+                    <div index="0" class="taocanSelectNow">
+                        B级分销商
+                    </div>
+                    <div index="1" >
+                        C级分销商
+                    </div>
+                    <div index="2" >
+                        会员邀请码
+                    </div>
+                </notempty>
+            </empty>
+
+            <empty name="vendor.vendor_b">
+                <notempty name="vendor.vendor_c">
+                    <div index="0" class="taocanSelectNow">
+                        C级分销商
+                    </div>
+                    <div index="1" >
+                        会员邀请码
+                    </div>
+                </notempty>
+            </empty>
         </div>
         <div class="money clearfix">
-            
-            <div class="moneySon">
-                <p>A级邀请码：</p>
-                <img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_a}}" alt=""><br/>
-            </div>
-            <!-- 银币 -->
-            <div class="moneySon">
-                <p>B级邀请码：</p>
-                <img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_b}}" alt=""><br/>
-            </div>
-            <div class="moneySon">
-                <p>C会员邀请码：</p>
-            <img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_user}}" alt=""><br/>
-            </div>
-            <div class="moneySon">
-                <p>D会员邀请码：</p>
-                <img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_user}}" alt=""><br/>
-            </div>
+            <notempty name="vendor.vendor_a">
+                <div class="moneySon">
+                    <p>A级邀请码：</p>
+                    <img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_a}}" alt=""><br/>
+                </div>
+            </notempty>
+            <notempty name="vendor.vendor_b">
+                <div class="moneySon">
+                    <p>B级邀请码：</p>
+                    <img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_b}}" alt=""><br/>
+                </div>
+            </notempty>
+            <notempty name="vendor.vendor_c">
+                <div class="moneySon">
+                    <p>C级邀请码:</p>
+                    <img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_c}}" alt=""><br/>
+                </div>
+            </notempty>
+            <notempty name="vendor.vendor_user">
+                <div class="moneySon">
+                    <p>会员邀请码：</p>
+                    <img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_user}}" alt=""><br/>
+                </div>
+            </notempty>
         </div>
-        
     </div>
     </div>
     <script>
