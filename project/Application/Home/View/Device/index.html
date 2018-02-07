@@ -45,7 +45,7 @@
 			padding:0;
 			height: 2rem;
 			overflow: hidden;
-			border-radius: 0.2rem;
+			border-radius: 1rem;
 			float: left;
 		}
 		.deviceitemLeft>img{
@@ -448,11 +448,16 @@
 			 	$(this).nextAll().fadeIn("slow");
 			 		$('.devicepay>i').click(function(){
 			 			// console.dir(0);
+			 			
 			 			$('.paystyle').slideDown("slow");
 			 			$('.deviceFoot').hide();
 			 		})
 			 }
 			
+		})
+		
+		$('.devicepay>span').click(function(){
+			$('.devicepay').hide();
 		})
 		// 付款方式的单选框
 		$('.paymidd>ul>li>span').click(function(){
