@@ -316,7 +316,11 @@
 							<div class="deviceItem clearfix">
 								<div class="deviceitemLeft"><img src="__PUBLIC__/Home/images/yoo_01.png" alt=""></div>
 								<div class="deviceitemRight ">
-									<p><span>设备编码：</span><span class="device_code">{{$vo.device_code}}</span></p><i class="iconfont icon-xuanze"></i>
+									<p><span>设备编码：</span><span class="device_code">{{$vo.device_code}}</span></p>
+									<switch name="vo.status">
+										<case value="0"><i class="iconfont icon-kuang1"></i></case>
+										<case value="1"><i class="iconfont icon-xuanze"></i></case>
+									</switch>
 									<div class="devicepay"><span>租赁机转个人<em>￥3620</em></span><i>付款</i></div>
 								</div>
 							</div>
@@ -405,8 +409,6 @@
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script>
-		$('.deviceitemRight>i').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-		$('.deviceitemRight>i').eq(0).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
 		// 选中当前的设备
 		$('.deviceitemRight>i').click(function(){
 			var code = $(this).parents(".deviceitemRight ").find(".device_code").text()

@@ -318,14 +318,15 @@
 						allincome += parseInt(res.flows[i].money)/100
 					}
 				}
-				// // 总收入
-				// $("#allincome").text(allincome);
-				// // 订单数量
-				// $("#orderNum").text(res.order_filters.total);
-				// // 报修数量
-				// $("#repaire").text(res.repairs.total);
-				// // 建议数量
-				// $("#feeds").text(res.feeds.total);
+				allincome = 1000;
+				// 总收入
+				$("#allincome").text(allincome);
+				// 订单数量
+				$("#orderNum").text(10);
+				// 报修数量
+				$("#repaire").text(2);
+				// 建议数量
+				$("#feeds").text(3);
 			}
 		})
 		// 请求后台数据
@@ -357,6 +358,10 @@
 				console.log('错误 ',res)
 			}
 		})
+		//这里是假数据
+		yAxis_data = [[11,23,50,36,2,6,45,11,9,17,22,52,31,48,87],[9,17,22,52,31,48,37,11,23,50,86,2,6,45]];
+		series_data = [[11,23,50,36,2,6,45,11,23,50,86,2,6,45,88],[9,17,22,52,31,48,37,11,23,50,86,2,6,45]];
+		
 		if(series_data[0].length){
 
 			//收入 折线图显示
