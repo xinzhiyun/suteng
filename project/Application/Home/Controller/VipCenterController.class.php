@@ -57,9 +57,11 @@ class VipCenterController extends CommonController
     {
         // 准备查询条件
         $showUser['open_id'] = $_SESSION['open_id'];
+        $map['ud.uid'] = session('user.id');
+        $map['ud.status'] = 1;
         // // 执行查询
         $user = M('users')->where($showUser)->find();
-        $device = D('UserDevice')->getBindInof(session('user.id'))[0];
+        $device = D('UserDevice')->getBindInof($map)[0];
         // 分配数据
         $this->assign('user',$user);
         $this->assign('device',$device);
@@ -93,6 +95,24 @@ class VipCenterController extends CommonController
     public function mycomment()
     {
         $this->display();
+    }
+
+    // AJAX请求评论数据
+    public function ajaxMy()
+    {
+        try {
+            $com = D('Comment');
+            $map['c.uid'] = session('user.id');
+            $map['so.status'] = 3;
+            $data = $com->getInfo($map);
+            $this->ajaxReturn($data);
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn();
+        }
     }
 
 
