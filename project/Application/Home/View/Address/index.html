@@ -573,7 +573,7 @@
 			地址四级联动
 		 */
 		var script = $("<script/>");
-		var scriptCode = `
+		var scriptCode = '';
 			var province,city,area,town;
 
 			// 关闭地区选择，并显示到对应区域
@@ -631,7 +631,7 @@
 		    },function(api){
 		        var info = api.getInfo();
 		        townFormat(info);
-		    });`
+		    });
 		script.html(scriptCode);
 		$("body").append(script);
     })
