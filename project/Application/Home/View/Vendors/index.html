@@ -286,12 +286,7 @@
     }
     .money>div:nth-of-type(4) {
         left: 300vw;
-    }
-      
-
-
-      
-   
+    }      
 </style>
 <body>
     <div class="ibox-content">
@@ -306,18 +301,18 @@
         <div class="contain">
             <ul>
                 <li>
-                    <span><p>13</p><p>昨天订单</p></span>
-                    <span><p>12</p><p>昨天订单额</p></span>
-                    <span><p>12</p><p>昨天新增用户</p></span>
+                    <span><p>{{$YesterdayData.order_num}}</p><p>昨天订单</p></span>
+                    <span><p>{{$YesterdayData.order_price}}</p><p>昨天订单额</p></span>
+                    <span><p>{{$YesterdayData.user_num}}</p><p>昨天新增用户</p></span>
                 </li>
                 <li>
-                    <span><p>12</p><p>本月订单</p></span>
-                    <span><p>12</p><p>本月订单额</p></span>
-                    <span><p>12</p><p>本月新增用户</p></span>
+                    <span><p>{{$monthData.order_num}}</p><p>本月订单</p></span>
+                    <span><p>{{$monthData.order_price}}</p><p>本月订单额</p></span>
+                    <span><p>{{$monthData.user_num}}</p><p>本月新增用户</p></span>
                 </li>
                  <li>
-                    <span><p>12</p><p>用户总数</p></span>
-                    <span><p>12</p><p>下属经销商数</p></span>
+                    <span><p>{{$userNum}}</p><p>用户总数</p></span>
+                    <span><p>{{$verdorNum}}</p><p>下属经销商数</p></span>
                 </li>
                 <li>
                     <p><i class="iconfont icon-shouyimingxi"></i><span><a href="{{:U('Home/Vendors/profit_details')}}">收益明细</a></span></p>

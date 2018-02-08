@@ -904,6 +904,7 @@
 				"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
 			"totalnumber":"5","totalprice":"450.00","postage":"5.00"},
 		];
+
 		var waitsendlist=[//待发货页面加载显示数据
 			{"orderid":"111111112","ordertime":"2018-01-31",
 				"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
@@ -1349,6 +1350,29 @@
 		// console.dir(item);
 
 
+    /**
+     * [unpaid_order 查询订单]
+     * @param  {[type]} status 	[8：未支付，9：待发货，2：待收货，7：待评论 4：退款处理中 5：已退货]
+     * @return {[type]}    		[description]
+     */
+    (function unpaid_order(){
+            $.ajax({
+                url:"{{:U('Home/Order/order_list')}}",
+                data:{"status":8},
+                dataType:"json",
+                type: 'post',
+                success:function(res){
+                    // console.dir(res);
+                    if(res.code == 200){
+                    	// 查询有数据
+                    	console.dir(res.data)
+                    }else{
+                        // 查询无数据提示
+                        alert(res.message);
+                    }
+                }
+            });
+        })();
 
 	</script>
 </body>
