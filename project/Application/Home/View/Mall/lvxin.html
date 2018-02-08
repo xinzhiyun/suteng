@@ -354,8 +354,9 @@
 	</style>
 </head>
 <body>
-    <input type="hidden" value={{$data}} class="lvxin_data">
-    <input type="hidden" value='{{$filters}}' class="filterData">
+<!-- {{$data|dump}} -->
+    <input type="hidden" value={{$data['res']}} class="lvxin_data"><!--滤芯寿命-->
+    <input type="hidden" value={{$data['data']}} class="filterData"><!--滤芯当前数据-->
 	<header id="header">
 		<span class="tabTitle" index="0">滤芯详情</span>
 		<span class="tabTitle" index="1">滤芯复位</span>
@@ -369,7 +370,7 @@
 	            <!-- progress -->
 	            <div>
 	                <ul id="lvxinDetailUL"></ul>
-	            </div>            
+	            </div>
 	            <!-- RO膜 -->
 	            <div class="_padding" id="lvxinIntroduce">
 	            </div>
@@ -465,7 +466,7 @@
     		$("#footer>div>span").text('￥'+priceAll)
     	});
         var lvxin_data = JSON.parse($(".lvxin_data").val()).filterInfo;
-        console.log(lvxin_data);
+        // console.log(lvxin_data);
     	//加载滤芯项
         var lvxinDetail_html='',lvxinReset_html='',lvxinBuy_html=''; 
         if(lvxin_data){
