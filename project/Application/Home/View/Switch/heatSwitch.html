@@ -135,8 +135,8 @@
 <body>
 	<div class="_setTime">
 		<div class="_setTimecontain">
-		<hgroup>
-				<div class="hgContain .clearfix" i='1'>
+<!-- 		<hgroup>
+				<div class="hgContain .clearfix">
 					<div class="setLeft .clearfix">
 						<p><span  class="sLeft">加热时间</span><span class="sRight"><b>21</b>时：<b>00</b>分</span>	</p>
 					</div><div class="setRight">
@@ -149,7 +149,7 @@
 					</div>
 					
 				</div>
-			</hgroup>
+			</hgroup> -->
 			
 		</div>
 		<a href="{{:U('Home/Switch/addHeatSet')}}">
@@ -161,18 +161,66 @@
 	<script>
     	// 开关效果
     	window.onload=function(){
-     	 	$("div[name='two']").click(function(){
-     	 		var divone=$(this).parent().attr('class');
-     	        var divtwo=$(this).attr('class');
-     	        // console.dir(divone);
-     	 		if(divtwo=='close2'){
-     	 			$(this).removeClass('close2').addClass('open2');
-     	 			$(this).parent().removeClass('close1').addClass('open1');
-     	 		}else if(divtwo=='open2'){
-     	 			$(this).removeClass('open2').addClass('close2');
-     	 			$(this).parent().removeClass('open1').addClass('close1');
-     	 		}
-     	 	});
+
+
+     	 	// 数据遍历
+		   // var attr={ "time":"12:04"  }
+		 //    var json = [{dd:'SB',AA:'东东',re1:123},{cccc:'dd',lk:'1qw'}];
+			//     for(var i=0,l=json.length;i<l;i++){
+			//        for(var key in json[i]){
+			//          alert(key+':'+json[i][key]);
+			//     }
+			// }
+			$(function(){
+				var timeList=[
+					{"hours":"12","minus":"00"},
+					{"hours":"13","minus":"00"},
+					{"hours":"14","minus":"00"},
+					{"hours":"15","minus":"00"},
+					{"hours":"12","minus":"00"},
+					{"hours":"12","minus":"00"},
+					{"hours":"12","minus":"00"},
+		
+				];
+				console.dir(timeList[0].hours);
+				console.dir(timeList.length);
+
+				var hgroupHtml='';
+				for(var i=0;i<timeList.length;i++){
+					hgroupHtml +='<hgroup><div class="hgContain .clearfix"><div class="setLeft .clearfix"><p><span  class="sLeft">加热时间</span><span class="sRight"><b>';
+					hgroupHtml += timeList[i].hours+'</b>时：<b>'+timeList[i].minus;
+					hgroupHtml +='</b>分</span></p></div><div class="setRight"><div class="open1" name="one"><div class="open2" name="two"></div></div></div><div class="delBtn"><input type="submit" value="删除"></div></div></hgroup>';
+				}
+
+				$("._setTimecontain").html(hgroupHtml);
+
+	     	 	$("div[name='two']").click(function(){.
+	     	 		var divone=$(this).parent().attr('class');
+	     	        var divtwo=$(this).attr('class');
+	     	        // console.dir(divone);
+	     	 		if(divtwo=='close2'){
+	     	 			$(this).removeClass('close2').addClass('open2');
+	     	 			$(this).parent().removeClass('close1').addClass('open1');
+	     	 		}else if(divtwo=='open2'){
+	     	 			$(this).removeClass('open2').addClass('close2');
+	     	 			$(this).parent().removeClass('open1').addClass('close1');
+	     	 		}
+	     	 	});
+			});
+		 
+
+
+
+
+
+
+
+
+
+
+
+
+
     	}
     	// 删除的样式
     	slipDel('hgroup','i')
@@ -203,7 +251,7 @@
    //       //值得注意：整个结构位置都改变了
    //       $('li').add('<p>新的p元素</p>').appendTo($('.right'))
    //  })
-		 
+   
      
 
     </script>

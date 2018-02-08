@@ -81,13 +81,13 @@
 		<div class="switchTop">
 			<div class="swContain">
 				<p>开机时间：(时/分)</p>
-				<div class="inputTime"><input type="time" value="00:00" class="setdata"></div>
+				<div class="inputTime open"><input type="time" value="00:00" class="setdata"></div>
 			</div>
 		</div>
 		<div class="switchTop">
 			<div class="swContain">
 				<p>关机时间：(时/分)</p>
-				<div class="inputTime"><input type="time" value="00:00" class="setdata"></div>
+				<div class="inputTime close"><input type="time" value="00:00" class="setdata"></div>
 			</div>
 		</div>
 		
@@ -112,6 +112,30 @@
 				location.href = '{{:U("Switch/index")}}'
 			},500)
 		})
+
+		// ajax请求
+		window.onload=function(){
+			$('.switchFoot>input').click(function(){
+			   	$.ajax({
+
+		             type: "POST",
+
+		             url: "url.html",
+
+		             data: {
+		             	"open":$('.open>input').val(),
+		             	"close":$('.close>input').val()
+		             },
+
+		             success: function(data){},
+
+		             error : function(){}
+
+		        });
+		   })
+		}
+	  
+		
 	</script>
 </body>
 </html>                                                                                                                                                                                                                                                                      	
