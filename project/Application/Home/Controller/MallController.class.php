@@ -64,7 +64,7 @@ class MallController extends CommonController
         // dump($assign);die;
         $this->assign('data',$assign);
         $this->display();
-    }
+    } 
 
     // 信息确认并生成订单
     public function information()
