@@ -45,6 +45,7 @@ class CommonController extends Controller
                     case '0':
                         // 会员资料填写注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员}
                         // 邀请人类型:{0：分公司，1：A级分销，2：B级分销，3：C级分销，4：会员 5：普通二维码}
+                        // 会员等级{0：非企业会员，1：普通会员，2：VIP会员，3：标准会员，4：钻石会员}
                         switch ($wechat['recommend']) {
                             case '0':
                                 // 会员扫不带参数二维码注册（公众号普通二维码）
@@ -66,8 +67,8 @@ class CommonController extends Controller
                                 // dump($ticket);die;
                                 // 将微信用户信息和二维码票据合并人新数组
                                 $newData    = array_merge($newData,$weixinData,$ticket);
-
-                                
+                                // 添加会员级别
+                                $newData['grade'] = 0;
                                 // 创建微信用户信息
                                 $userRes = M('users')->add($newData);
 
@@ -115,6 +116,8 @@ class CommonController extends Controller
                                 $ticket                 = $dimensionClass->user();
                                 // 将微信用户信息和二维码票据合并人新数组
                                 $newData    = array_merge($newData,$weixinData,$ticket);
+                                // 添加会员级别
+                                $newData['grade'] = 1;
                                 //dump($newData);die;
                                 // 创建微信用户信息
                                 $userRes = M('users')->add($newData);
@@ -211,7 +214,8 @@ class CommonController extends Controller
                                 $ticket                 = $dimensionClass->user();
                                 // 将微信用户信息和二维码票据合并人新数组
                                 $newData    = array_merge($newData,$weixinData,$ticket);
-
+                                // 添加会员级别
+                                $newData['grade'] = 1;
                                 //dump($newData);die;
                                 // 创建微信用户信息
                                 $userRes = M('users')->add($newData);
@@ -253,7 +257,8 @@ class CommonController extends Controller
                                 $ticket                 = $dimensionClass->user();
                                 // 将微信用户信息和二维码票据合并人新数组
                                 $newData    = array_merge($newData,$weixinData,$ticket);
-
+                                // 添加会员级别
+                                $newData['grade'] = 0;
                                 // 创建微信用户信息
                                 $userRes = M('users')->add($newData);
 
@@ -326,15 +331,17 @@ class CommonController extends Controller
                         $addData['parameter']       = 0;
                         // 二维码有效时间
                         $addData['ticket_time']     = 0;
-                        // 分销商名称
-                        $addData['nickname']        = $vendor['name'];
-                        // 分销商头像
-                        $addData['head']            = $vendor['head'];
+                        // 获取微信用户基本信息
+                        $weixinData = $this->getWeiXinUserInfo($_SESSION['open_id']);
                         // 更新时间
                         $addData['addtime'] = $addData['updatetime'] = time();
+                        // 将微信信合并
+                        $newData    = array_merge($addData,$weixinData);
+                        // 添加会员级别
+                        $newData['grade'] = 4;
 
                         // 创建用户
-                        $addRes = M('users')->add($addData);
+                        $addRes = M('users')->add($newData);
 
                         // 如果添加成功
                         if($addRes){
@@ -343,8 +350,7 @@ class CommonController extends Controller
                         }
                     }
 
-
-
+                    // 如果没有绑定设备，跳转到设备绑定页面
                     if(empty(session('device.id'))){
                         $this->redirect("Device/index");
                     }
@@ -352,7 +358,6 @@ class CommonController extends Controller
                 break;
             default:
                 // 未关注
-                // $this->follow();
                 $this->redirect('Home/Wechat/follow');
                 break;
         }

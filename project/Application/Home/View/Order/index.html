@@ -890,35 +890,35 @@
 		$(".waitharvest").html();//待收货条数
 		$(".waitassess").html();//待评论条数
 		$(".waitdrawback").html();//待退款售后条数
-		var waitpaylist=[//待付款页面加载显示数据
-			{"orderid":"111111112","ordertime":"2018-01-31",
-				"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
-			 "totalnumber":"5","totalprice":"450.00","postage":"5.00"},
-			{"orderid":"111111113","ordertime":"2018-01-31",
-				"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
-			"totalnumber":"5","totalprice":"450.00","postage":"5.00"},
-			{"orderid":"111111114","ordertime":"2018-01-31",
-				"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
-			"totalnumber":"5","totalprice":"450.00","postage":"5.00"},
-			{"orderid":"111111115","ordertime":"2018-01-31",
-				"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
-			"totalnumber":"5","totalprice":"450.00","postage":"5.00"},
-		];
+		// var waitpaylist=[//待付款页面加载显示数据
+		// 	{"orderid":"111111112","ordertime":"2018-01-31",
+		// 		"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
+		// 	 "totalnumber":"5","totalprice":"450.00","postage":"5.00"},
+		// 	{"orderid":"111111113","ordertime":"2018-01-31",
+		// 		"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
+		// 	"totalnumber":"5","totalprice":"450.00","postage":"5.00"},
+		// 	{"orderid":"111111114","ordertime":"2018-01-31",
+		// 		"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
+		// 	"totalnumber":"5","totalprice":"450.00","postage":"5.00"},
+		// 	{"orderid":"111111115","ordertime":"2018-01-31",
+		// 		"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
+		// 	"totalnumber":"5","totalprice":"450.00","postage":"5.00"},
+		// ];
 
-		var waitsendlist=[//待发货页面加载显示数据
-			{"orderid":"111111112","ordertime":"2018-01-31",
-				"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
-			 "totalnumber":"5","totalprice":"450.00","postage":"5.00"},
-			{"orderid":"111111113","ordertime":"2018-01-31",
-				"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
-			"totalnumber":"5","totalprice":"450.00","postage":"5.00"},
-			{"orderid":"111111114","ordertime":"2018-01-31",
-				"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
-			"totalnumber":"5","totalprice":"450.00","postage":"5.00"},
-			{"orderid":"111111115","ordertime":"2018-01-31",
-				"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
-			"totalnumber":"5","totalprice":"450.00","postage":"5.00"},
-		];
+		// var waitsendlist=[//待发货页面加载显示数据
+		// 	{"orderid":"111111112","ordertime":"2018-01-31",
+		// 		"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
+		// 	 "totalnumber":"5","totalprice":"450.00","postage":"5.00"},
+		// 	{"orderid":"111111113","ordertime":"2018-01-31",
+		// 		"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
+		// 	"totalnumber":"5","totalprice":"450.00","postage":"5.00"},
+		// 	{"orderid":"111111114","ordertime":"2018-01-31",
+		// 		"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
+		// 	"totalnumber":"5","totalprice":"450.00","postage":"5.00"},
+		// 	{"orderid":"111111115","ordertime":"2018-01-31",
+		// 		"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
+		// 	"totalnumber":"5","totalprice":"450.00","postage":"5.00"},
+		// ];
 		var waitgainlist=[//待收货页面加载显示数据
 			{"orderid":"111111112","ordertime":"2018-01-31",
 				"productList":[{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"},{"orderimg":"54646545465","productname":"ro膜","productbrief":"RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等","price":"120","productnumber":"8"}],
@@ -981,88 +981,88 @@
 		var returned4='';
 		var returned5='';
 
-		for(var i=0;i<waitpaylist.length;i++){//待付款数据遍历
-			dingdanDaifukuan1+='<div class="goods">'+
-				'<p>订单编号：'+waitpaylist[i]['orderid']+'</p>'+
-				'<p>下单时间：'+waitpaylist[i]['ordertime'] +
-					'<span>等待买家付款</span>'+
-				'</p>';
-			for(var k=0;k<waitpaylist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
-				dingdanDaifukuan2+='<div class="goodsItem">'+
-					'<div class="giPicture">'+
-						'<img src="__PUBLIC__/Home/images/ro_01_03.png" alt="">'+
-					'</div>'+
-					'<div class="giDescription">'+
-						'<b>'+waitpaylist[i]['productList'][k]['productname']+'</b>'+
-						'<p>'+waitpaylist[i]['productList'][k]['productbrief']+'</p>'+
-						'<div>'+
-							'<b>￥'+ waitpaylist[i]['productList'][k]['price'] +'</b>'+
-							'<span>X&nbsp;'+waitpaylist[i]['productList'][k]['productnumber']+'</span>'+
-						'</div>'+
-					'</div>'+
-				'</div>';
-			}
-			dingdanDaifukuan1+=dingdanDaifukuan2+'<div class="calc">'+
-					'<div>'+
-						'共'+ waitpaylist[i]['totalnumber'] +'件商品&emsp;'+
-						'合计：<b>￥'+waitpaylist[i]['totalprice']+'</b>'+
-						'<span>&nbsp;(含邮费￥'+waitpaylist[i]['postage']+')</span>'+
-					'</div>'+
-					'<div>'+
-						'<div class="cancel start1" name='+waitpaylist[i]['orderid']+'>'+
-							'<span>取消订单</span>'+
-						'</div>'+
-						'<div class="pay">'+
-							'<span>&nbsp;付&nbsp;&nbsp;款&nbsp;</span>'+
-						'</div>'+
-					'</div>'+
-				'</div>'+
-			'</div>';
-		 	dingdanDaifukuan2='';
-		}
-		$("#dingdanDaifukuan").html(dingdanDaifukuan1);
+		// for(var i=0;i<waitpaylist.length;i++){//待付款数据遍历
+		// 	dingdanDaifukuan1+='<div class="goods">'+
+		// 		'<p>订单编号：'+waitpaylist[i]['orderid']+'</p>'+
+		// 		'<p>下单时间：'+waitpaylist[i]['ordertime'] +
+		// 			'<span>等待买家付款</span>'+
+		// 		'</p>';
+		// 	for(var k=0;k<waitpaylist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
+		// 		dingdanDaifukuan2+='<div class="goodsItem">'+
+		// 			'<div class="giPicture">'+
+		// 				'<img src="__PUBLIC__/Home/images/ro_01_03.png" alt="">'+
+		// 			'</div>'+
+		// 			'<div class="giDescription">'+
+		// 				'<b>'+waitpaylist[i]['productList'][k]['productname']+'</b>'+
+		// 				'<p>'+waitpaylist[i]['productList'][k]['productbrief']+'</p>'+
+		// 				'<div>'+
+		// 					'<b>￥'+ waitpaylist[i]['productList'][k]['price'] +'</b>'+
+		// 					'<span>X&nbsp;'+waitpaylist[i]['productList'][k]['productnumber']+'</span>'+
+		// 				'</div>'+
+		// 			'</div>'+
+		// 		'</div>';
+		// 	}
+		// 	dingdanDaifukuan1+=dingdanDaifukuan2+'<div class="calc">'+
+		// 			'<div>'+
+		// 				'共'+ waitpaylist[i]['totalnumber'] +'件商品&emsp;'+
+		// 				'合计：<b>￥'+waitpaylist[i]['totalprice']+'</b>'+
+		// 				'<span>&nbsp;(含邮费￥'+waitpaylist[i]['postage']+')</span>'+
+		// 			'</div>'+
+		// 			'<div>'+
+		// 				'<div class="cancel start1" name='+waitpaylist[i]['orderid']+'>'+
+		// 					'<span>取消订单</span>'+
+		// 				'</div>'+
+		// 				'<div class="pay">'+
+		// 					'<span>&nbsp;付&nbsp;&nbsp;款&nbsp;</span>'+
+		// 				'</div>'+
+		// 			'</div>'+
+		// 		'</div>'+
+		// 	'</div>';
+		//  	dingdanDaifukuan2='';
+		// }
+		// $("#dingdanDaifukuan").html(dingdanDaifukuan1);
 
-		for(var i=0;i<waitsendlist.length;i++){//待发货数据遍历
-			dingdanDaifahuo1+='<div class="goods">'+
-				'<p>订单编号：'+waitsendlist[i]['orderid']+'</p>'+
-				'<p>下单时间：'+waitsendlist[i]['ordertime'] +
-					'<span>等待卖家发货</span>'+
-				'</p>';
-			for(var k=0;k<waitsendlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
-				// alert(orderList[i]['productList'].length);
-				dingdanDaifahuo2+='<div class="goodsItem">'+
-					'<div class="giPicture">'+
-						'<img src="__PUBLIC__/Home/images/ro_01_03.png" alt="">'+
-					'</div>'+
-					'<div class="giDescription">'+
-						'<b>'+waitsendlist[i]['productList'][k]['productname']+'</b>'+
-						'<p>'+waitsendlist[i]['productList'][k]['productbrief']+'</p>'+
-						'<div>'+
-							'<b>￥'+ waitsendlist[i]['productList'][k]['price'] +'</b>'+
-							'<span>X&nbsp;'+waitsendlist[i]['productList'][k]['productnumber']+'</span>'+
-						'</div>'+
-					'</div>'+
-				'</div>';
-			}
-			dingdanDaifahuo1+=dingdanDaifahuo2+'<div class="calc">'+
-					'<div>'+
-						'共'+ waitsendlist[i]['totalnumber'] +'件商品&emsp;'+
-						'合计：<b>￥'+waitsendlist[i]['totalprice']+'</b>'+
-						'<span>&nbsp;(含邮费￥'+waitsendlist[i]['postage']+')</span>'+
-					'</div>'+
-					'<div>'+
-						'<div class="cancel">'+
-							'<span>已付款</span>'+
-						'</div>'+
-						'<div class="pay start2">'+
-							'<span>提醒发货</span>'+
-						'</div>'+
-					'</div>'+
-				'</div>'+
-			'</div>';
-		 	dingdanDaifahuo2='';
-		}
-		$("#dingdanDaifahuo").html(dingdanDaifahuo1);
+		// for(var i=0;i<waitsendlist.length;i++){//待发货数据遍历
+		// 	dingdanDaifahuo1+='<div class="goods">'+
+		// 		'<p>订单编号：'+waitsendlist[i]['orderid']+'</p>'+
+		// 		'<p>下单时间：'+waitsendlist[i]['ordertime'] +
+		// 			'<span>等待卖家发货</span>'+
+		// 		'</p>';
+		// 	for(var k=0;k<waitsendlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
+		// 		// alert(orderList[i]['productList'].length);
+		// 		dingdanDaifahuo2+='<div class="goodsItem">'+
+		// 			'<div class="giPicture">'+
+		// 				'<img src="__PUBLIC__/Home/images/ro_01_03.png" alt="">'+
+		// 			'</div>'+
+		// 			'<div class="giDescription">'+
+		// 				'<b>'+waitsendlist[i]['productList'][k]['productname']+'</b>'+
+		// 				'<p>'+waitsendlist[i]['productList'][k]['productbrief']+'</p>'+
+		// 				'<div>'+
+		// 					'<b>￥'+ waitsendlist[i]['productList'][k]['price'] +'</b>'+
+		// 					'<span>X&nbsp;'+waitsendlist[i]['productList'][k]['productnumber']+'</span>'+
+		// 				'</div>'+
+		// 			'</div>'+
+		// 		'</div>';
+		// 	}
+		// 	dingdanDaifahuo1+=dingdanDaifahuo2+'<div class="calc">'+
+		// 			'<div>'+
+		// 				'共'+ waitsendlist[i]['totalnumber'] +'件商品&emsp;'+
+		// 				'合计：<b>￥'+waitsendlist[i]['totalprice']+'</b>'+
+		// 				'<span>&nbsp;(含邮费￥'+waitsendlist[i]['postage']+')</span>'+
+		// 			'</div>'+
+		// 			'<div>'+
+		// 				'<div class="cancel">'+
+		// 					'<span>已付款</span>'+
+		// 				'</div>'+
+		// 				'<div class="pay start2">'+
+		// 					'<span>提醒发货</span>'+
+		// 				'</div>'+
+		// 			'</div>'+
+		// 		'</div>'+
+		// 	'</div>';
+		//  	dingdanDaifahuo2='';
+		// }
+		// $("#dingdanDaifahuo").html(dingdanDaifahuo1);
 		for(var i=0;i<waitgainlist.length;i++){//待收货数据遍历
 			dingdanDaishouhuo1+='<div class="goods">'+
 				'<p>订单编号：'+waitgainlist[i]['orderid']+'</p>'+
@@ -1226,7 +1226,7 @@
 					'</div>'+
 					'<p class="noborder"><b>报装中，客服电话：020-84765556</b></p>'+
 					'<div class="pinglunBtn">'+
-					'<input type="submit" value="评论">'+
+					'<input class="commentAfter" type="submit" value="评论">'+
 					'</div>';
 		}
 		$(".returned5").html(returned5);
@@ -1308,31 +1308,7 @@
        	   		});
        	   	});
       	});
-      	// 取消订单弹框
-      	$(".start1").on("click",function(){
-      		var _thisname=$(this).attr("name");
-      		$(".modelAll").show();
-       	    $(".modal").addClass("in").css('z-index','1001');
-       	   	$(".modal-backup3").show();
-       	    // 取消订单ajax请求
-	      	$(".cancelOrder").bind("click").click(function(){
-	      		$.ajax({
-	      			url:"",
-	      			type:"post",
-	      			datatype:"json",
-	      			data:{
-	      				orderID:_thisname
-	      			},
-	      			success:function(res){
-	      				alert("操作成功");
-	      				// window.location.reload();
-	      			}
-	      			// error:function(res){
-	      			// 	alert("取消失败");
-	      			// }
-	      		});
-	      	});
-      	});
+      	
       	//取消按钮操作效果
       	$(".close").on("click",function(){
        	   $(".modal").removeClass('in');
@@ -1356,23 +1332,204 @@
      * @return {[type]}    		[description]
      */
     (function unpaid_order(){
-            $.ajax({
+            $.ajax({//待付款数据遍历
                 url:"{{:U('Home/Order/order_list')}}",
                 data:{"status":8},
+                dataType:"json",
+                type: 'post',
+                success:function(res){
+                    if(res.code == 200){
+                    	// 查询有数据
+                    	console.dir(res.data)
+                    	var waitpaylist=res.data;
+                    	for(var i=0;i<waitpaylist.length;i++){//待付款数据遍历
+							dingdanDaifukuan1+='<div class="goods">'+
+								'<p>订单编号：'+waitpaylist[i]['orderid']+'</p>'+
+								'<p>下单时间：'+waitpaylist[i]['ordertime'] +
+									'<span>等待买家付款</span>'+
+								'</p>';
+							for(var k=0;k<waitpaylist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
+								dingdanDaifukuan2+='<div class="goodsItem">'+
+									'<div class="giPicture">'+
+										'<img src="__PUBLIC__/Home/images/ro_01_03.png" alt="">'+
+									'</div>'+
+									'<div class="giDescription">'+
+										'<b>'+waitpaylist[i]['productList'][k]['productname']+'</b>'+
+										'<p>'+waitpaylist[i]['productList'][k]['productbrief']+'</p>'+
+										'<div>'+
+											'<b>￥'+ waitpaylist[i]['productList'][k]['price'] +'</b>'+
+											'<span>X&nbsp;'+waitpaylist[i]['productList'][k]['productnumber']+'</span>'+
+										'</div>'+
+									'</div>'+
+								'</div>';
+							}
+							dingdanDaifukuan1+=dingdanDaifukuan2+'<div class="calc">'+
+									'<div>'+
+										'共'+ waitpaylist[i]['totalnumber'] +'件商品&emsp;'+
+										'合计：<b>￥'+waitpaylist[i]['totalprice']+'</b>'+
+										'<span>&nbsp;(含邮费￥'+waitpaylist[i]['postage']+')</span>'+
+									'</div>'+
+									'<div>'+
+										'<div class="cancel start1" name='+waitpaylist[i]['orderid']+'>'+
+											'<span>取消订单</span>'+
+										'</div>'+
+										'<div class="pay">'+
+											'<span>&nbsp;付&nbsp;&nbsp;款&nbsp;</span>'+
+										'</div>'+
+									'</div>'+
+								'</div>'+
+							'</div>';
+						 	dingdanDaifukuan2='';
+						}
+						$("#dingdanDaifukuan").html(dingdanDaifukuan1);
+
+                    }else{
+                        // 查询无数据提示
+                        alert(res.message);
+                    }
+                    // 取消订单弹框
+			      	$(".start1").on("click",function(){
+			      		var _thisname=$(this).attr("name");
+			      		$(".modelAll").show();
+			       	    $(".modal").addClass("in").css('z-index','1001');
+			       	   	$(".modal-backup3").show();
+			       	    // 取消订单ajax请求
+				      	$(".cancelOrder").bind("click").click(function(){
+				      		$.ajax({
+				      			url:"",
+				      			type:"post",
+				      			datatype:"json",
+				      			data:{
+				      				orderID:_thisname
+				      			},
+				      			success:function(res){
+				      				alert("操作成功");
+				      				window.location.reload();
+				      			}
+				      			// error:function(res){
+				      			// 	alert("取消失败");
+				      			// }
+				      		});
+				      	});
+			      	});
+                }
+            });
+
+ 			$.ajax({//9：待发货
+                url:"{{:U('Home/Order/order_list')}}",
+                data:{"status":9},
                 dataType:"json",
                 type: 'post',
                 success:function(res){
                     // console.dir(res);
                     if(res.code == 200){
                     	// 查询有数据
-                    	console.dir(res.data)
+                    	console.log(res.data);
+                    	var waitsendlist=res.data;
+                    	for(var i=0;i<waitsendlist.length;i++){//待发货数据遍历
+							dingdanDaifahuo1+='<div class="goods">'+
+								'<p>订单编号：'+waitsendlist[i]['orderid']+'</p>'+
+								'<p>下单时间：'+waitsendlist[i]['ordertime'] +
+									'<span>等待卖家发货</span>'+
+								'</p>';
+							for(var k=0;k<waitsendlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
+								// alert(orderList[i]['productList'].length);
+								dingdanDaifahuo2+='<div class="goodsItem">'+
+									'<div class="giPicture">'+
+										'<img src="__PUBLIC__/Home/images/ro_01_03.png" alt="">'+
+									'</div>'+
+									'<div class="giDescription">'+
+										'<b>'+waitsendlist[i]['productList'][k]['productname']+'</b>'+
+										'<p>'+waitsendlist[i]['productList'][k]['productbrief']+'</p>'+
+										'<div>'+
+											'<b>￥'+ waitsendlist[i]['productList'][k]['price'] +'</b>'+
+											'<span>X&nbsp;'+waitsendlist[i]['productList'][k]['productnumber']+'</span>'+
+										'</div>'+
+									'</div>'+
+								'</div>';
+							}
+							dingdanDaifahuo1+=dingdanDaifahuo2+'<div class="calc">'+
+									'<div>'+
+										'共'+ waitsendlist[i]['totalnumber'] +'件商品&emsp;'+
+										'合计：<b>￥'+waitsendlist[i]['totalprice']+'</b>'+
+										'<span>&nbsp;(含邮费￥'+waitsendlist[i]['postage']+')</span>'+
+									'</div>'+
+									'<div>'+
+										'<div class="cancel">'+
+											'<span>已付款</span>'+
+										'</div>'+
+										'<div class="pay start2">'+
+											'<span>提醒发货</span>'+
+										'</div>'+
+									'</div>'+
+								'</div>'+
+							'</div>';
+						 	dingdanDaifahuo2='';
+						}
+						$("#dingdanDaifahuo").html(dingdanDaifahuo1);
                     }else{
                         // 查询无数据提示
                         alert(res.message);
                     }
                 }
             });
-        })();
+
+ 			// $.ajax({
+    //             url:"{{:U('Home/Order/order_list')}}",
+    //             data:{"status":2},
+    //             dataType:"json",
+    //             type: 'post',
+    //             success:function(res){
+    //                 // console.dir(res);
+    //                 if(res.code == 200){
+    //                 	// 查询有数据
+    //                 	console.dir(res.data)
+    //                 }else{
+    //                     // 查询无数据提示
+    //                     alert(res.message);
+    //                 }
+    //             }
+    //         });  
+
+ 			// $.ajax({
+    //             url:"{{:U('Home/Order/order_list')}}",
+    //             data:{"status":4},
+    //             dataType:"json",
+    //             type: 'post',
+    //             success:function(res){
+    //                 // console.dir(res);
+    //                 if(res.code == 200){
+    //                 	// 查询有数据
+    //                 	console.dir(res.data)
+    //                 }else{
+    //                     // 查询无数据提示
+    //                     alert(res.message);
+    //                 }
+    //             }
+    //         });  
+
+ 			// $.ajax({
+    //             url:"{{:U('Home/Order/order_list')}}",
+    //             data:{"status":5},
+    //             dataType:"json",
+    //             type: 'post',
+    //             success:function(res){
+    //                 // console.dir(res);
+    //                 if(res.code == 200){
+    //                 	// 查询有数据
+    //                 	console.dir(res.data)
+    //                 }else{
+    //                     // 查询无数据提示
+    //                     alert(res.message);
+    //                 }
+    //             }
+    //         });  
+    //售后评论
+	   	// (".commentAfter").click(function(){
+	   	// 	var commentIndex=$(this).attr("name");
+	   	// 	window.location.href="__URL__/mycomment"+;
+	   	// }); 
+    })();
 
 	</script>
 </body>

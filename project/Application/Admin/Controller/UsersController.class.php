@@ -23,6 +23,7 @@ class UsersController extends CommonController
         $user = D('users');
         $total = $user->where($map)->count();
         $page  = new \Think\Page($total,8);
+        page_config($page);
         $pageButton =$page->show();
 
         $userlist = $user->where($map)->limit($page->firstRow.','.$page->listRows)->select();

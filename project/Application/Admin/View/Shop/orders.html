@@ -150,7 +150,7 @@
 
         $('body').on('click','.btn-success',function(){
             var orderId = $(this).attr('orderId')
-            location.href = "selectOrder?id="+orderId;            
+            location.href = "{{:U('selectOrder'),'',''}}?id="+orderId;            
         })
         
     </script>

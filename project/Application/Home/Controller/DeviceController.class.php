@@ -20,7 +20,8 @@ class DeviceController extends CommonController
         $openId = $_SESSION['homeuser']['open_id'];
         // 查询绑定设备
         $user_device = D('UserDevice');
-        $bind_device = $user_device->getBindInof(session('user.id')); //where('uid='.session('user.id'))->select();
+        $map['ud.uid'] = session('user.id');
+        $bind_device = $user_device->getBindInof($map); //where('uid='.session('user.id'))->select();
         // dump($bind_device);die;
         //分配数据        
         $this->assign('info',$signPackage);
@@ -66,6 +67,39 @@ class DeviceController extends CommonController
             ];
             $this->ajaxReturn($err);
         }        
+    }
+
+    // 设置默认
+    public function setDefault()
+    {
+        try {
+            $user_device = D('UserDevice');
+            $where['device_code'] = I('post.code');
+            $map['uid'] = 58;//session('user.id');
+
+            $user_device->startTrans();
+            // 修改当前用户的所有状态
+            $res = $user_device->where($map)->save(['status'=>0]);
+            if(!$res) E('无法更新',603);
+
+            // 查询当前设备ID
+            $map['did'] = M('Devices')->where($where)->find()['id'];
+            // 设置当前设备状态
+            $user_status = $user_device->where($map)->save(['status'=>1]);;
+            if($user_status){
+                $user_device->commit();
+                E('更新成功',200);
+            } else {
+                $user_device->rollback();
+                E('更新失败',604);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
     }
 }
 
