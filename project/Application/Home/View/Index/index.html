@@ -6,7 +6,42 @@
   <title>速腾水家电</title>
   <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
-
+  <style>
+    .menu {
+      width: 100%;
+      display: flex;
+    }
+    .menu>li {
+      flex: 1 1 20%;
+    }
+    .chbuTop{
+      width: 100vw;
+      height: auto;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .chbuTop>ul>li{
+      width: 49%;
+      height: 8vh;
+      display: inline-block;
+      font-size: 0.80rem;
+      line-height: 6vh;
+      margin-top: 1.5vh;
+    }
+    .chbuTop>ul{
+      width: 100%;
+      padding: 1% 5%;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    .chbuTop>ul>li:nth-of-type(odd){
+      float: left;
+    }
+    .chbuTop>ul>li>p {
+      width: 80%;
+      white-space: nowrap;
+    }
+  </style>
 </head>
 <body>
 <input type="hidden" value={{$device|json_encode}} class="deviceInfo">

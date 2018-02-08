@@ -29,6 +29,11 @@
 		.haveDevice{
 			/*display: none;*/
 		}
+		#lost {
+			width: 100%;
+			height: 70vh;
+			position: relative;
+		}
 		.deviceTop h3{
 			font-size: 0.72rem;
 			font-weight: 500;
@@ -133,7 +138,7 @@
 			line-height:1.6rem;
 			border-top: 1px solid #F6F6F6;
 			background: #fff;
-
+			z-index: 999;
 		}
 		.deviceFoot i{
 		  color: #41BDB1;
@@ -376,6 +381,8 @@
 					</div>
 					
 				</div>
+
+				<div id="lost"></div>
 				<div class="deviceFoot" id="devices-add">
 					<p><i class="iconfont icon-tianjia"></i><span>添加新设备</span></p>
 				</div>
@@ -410,6 +417,7 @@
 		</div>
 		
 	</div>
+	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>	
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script>
@@ -417,23 +425,29 @@
 		$('.deviceitemRight>i').eq(0).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
 		// 选中当前的设备
 		$('.deviceitemRight>i').click(function(){
-			$('.deviceitemRight>i').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-			$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
-			$('.devicepay').hide();
-			var device_code = $(this).parents(".deviceitemRight ").find(".device_code").text()
+			var code = $(this).parents(".deviceitemRight ").find(".device_code").text()
 			// console.log(device_code)
 			$.ajax({
-				url: "{{:U('Device/index')}}",
+				url: "{{:U('Device/setDefault')}}",
 				type: 'post',
-				data: device_code,
+				data: {'code':code},
 				success: function(res){
 					console.log('成功！',res);
 					if(res.code == 200){
-						location.href = '{{:U("VipCenter/minepack")}}';
+						layuiHint("切换成功！")
+						$('.deviceitemRight>i').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+						$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+						$('.devicepay').hide();
+						setTimeout(function(){
+							location.href = '{{:U("VipCenter/minepack")}}';
+						},500)
+					}else{
+						layuiHint("切换失败，请稍后再试！")
 					}
 				},
 				error: function(res){
 					console.log('失败！',res);
+					layuiHint("遇到未知问题，请稍后再试！")
 				}
 			})
 			
@@ -446,17 +460,17 @@
 			 if(bb=='iconfont icon-xuanze'){
 			 	console.dir($(this).nextAll().fadeIn("slow"))
 			 	$(this).nextAll().fadeIn("slow");
-			 		$('.devicepay>i').click(function(){
-			 			// console.dir(0);
-			 			
-			 			$('.paystyle').slideDown("slow");
-			 			$('.deviceFoot').hide();
-			 		})
+		 		$('.devicepay>i').click(function(){
+		 			// console.dir(0);
+		 			
+		 			$('.paystyle').slideDown("slow");
+		 			$('.deviceFoot').hide();
+		 		})
 			 }
 			
 		})
-		
-		$('.devicepay>span').click(function(){
+		//点击空白处隐藏租赁机转个人的弹框
+		$('#lost').click(function(){
 			$('.devicepay').hide();
 		})
 		// 付款方式的单选框
