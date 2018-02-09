@@ -6,8 +6,6 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
   	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
  	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
-	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
-  	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<title>发表评论</title>
 </head>
 <style>
@@ -39,7 +37,7 @@
 		position: relative;
 	}
 	/*文本域*/
-	.shangpingpic>label>textarea,.shangpingpic>label>p{
+	.shangpingpic>label>textarea{
 		color:#5a5a5a;
 		font-size: 0.7rem;
 	}
@@ -182,8 +180,7 @@
 			<div class="shangping">
 				<div class="shangpingpic">
 					<label for="shopping">
-						<p>请您对我们的商品做出评价……</p>
-						<textarea name="content" id="shopping" cols="30" rows="10"></textarea>
+						<textarea name="content" id="shopping" cols="30" rows="10" placeholder="请您对我们的商品做出评价……"></textarea>
 					</label>
 					<span><i class="iconfont icon-tianjia"></i><em>限3张内</em></span>
 					<input class="file_upload" multiple name="pic[]" type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
@@ -191,22 +188,21 @@
 			</div>
 			<a href="{{:U('Home/Comment/commentsucceed')}}">
 				<div class="saleBott">
-					<input id="submit" type="submit" value="发表">
+					<input id="submit" type="submit" value="提交">
 				</div>
 			</a>
 		</form>
 	</div>
+	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+	<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
+	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+  	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script>
-	// {{:U('Home/Comment/commentsucceed')}}
-		// 获取上传文件的input标签	
-		var file = $("#form")[0];
-		// 实例化一个formdata对象
-		var formData = new FormData(file);
-		// 获取的图片文件
-		var fileList;
-		// console.log(file,'\n' ,formData);
+		var file = $("#form")[0];// 获取上传文件的input标签	
+		var formData = new FormData(file);// 实例化一个formdata对象
+		var fileList;// 获取的图片文件
 		formData.append("file",file);
- 
 		$(".file_upload").on('change',function(e){
 			var fileList = e.target.files;
 			console.log(fileList)
@@ -216,6 +212,12 @@
 				console.log(formData.getAll('UploadForm[picture][]'));
 			})
 		})
+		$("#submit").click(function(){
+			if($("#shopping").val()==""){
+				layuiHint("请您对我们的商品做出评价呗");
+				return false;
+			}
+		});
 	</script>
 </body>
 </html>
