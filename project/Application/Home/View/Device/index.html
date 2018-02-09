@@ -525,8 +525,8 @@
 					    	data:{device_code:res.resultStr},
 					    	dataType:'json',
 					    	success:function(data){
-								alert(data.msg);
-								location.href("VipCenter/personalInformation");		
+								// alert(data.msg);
+								location.href="{{:U('Home/VipCenter/personalInformation')}}";		
 					    	},
 					    	error:function(jqXHR, textStatus, errorThrown){
 
@@ -556,8 +556,8 @@
 					    	data:{device_code:res.resultStr},
 					    	dataType:'json',
 					    	success:function(data){
-								alert(data.msg);
-								location.href("VipCenter/personalInformation");		
+								// alert(data.msg);
+								location.href="{{:U('Home/VipCenter/personalInformation')}}";		
 					    	},
 					    	error:function(jqXHR, textStatus, errorThrown){
 

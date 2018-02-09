@@ -82,5 +82,14 @@ class GoodsModel extends BaseModel
         return $attr;
     }
 
-
+    public function getPrice($map=array())
+    {
+        $data = $this
+            ->alias('g')
+            ->where($map)
+            ->join('__PRICE__ p ON g.id=p.gid', 'LEFT')
+            ->field('p.*')
+            ->select();
+        return $data;
+    }
 }

@@ -6,8 +6,6 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
   	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
  	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
-	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
-  	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<title>售后评分</title>
 </head>
 <style>
@@ -45,19 +43,12 @@
 	}
 	.saleTop>p>i{
 		line-height: 1.8rem;
-		letter-spacing: 0.2rem;
 		display: inline-block;
 		color:#FBC91D;
 		font-size: 1.4rem;
 	}
 	/*顶部内容结束*/
 	/*中部文本领域开始*/
-	.saleMidd h3 {
-		font-size: 0.7rem;
-		color: #373737;
-		line-height: 0.8rem;
-		margin-bottom: 0.266667rem;
-	}
 	.saleMidd label textarea {
 		margin-top: 0.133333rem 0.5rem 0;
 		height:5.333333rem;
@@ -100,7 +91,7 @@
 <body>
 	<div class="saleContain">
 		<!-- 顶部内容开始 -->
-		<div class="saleTop">
+		<div class="saleTop" id="score">
 			<p class="clearfix">
 				<b>安装人员评分</b>
 				<i class="iconfont icon-jingdiananli_kongwujiaoxing_shoucang"></i>
@@ -108,6 +99,7 @@
 				<i class="iconfont icon-jingdiananli_kongwujiaoxing_shoucang"></i>
 				<i class="iconfont icon-jingdiananli_kongwujiaoxing_shoucang"></i>
 				<i class="iconfont icon-jingdiananli_kongwujiaoxing_shoucang"></i>
+				<input type="hidden" value="0" />
 			</p>
 			<p class="clearfix">
 				<b>服务态度评分</b>
@@ -116,6 +108,7 @@
 				<i class="iconfont icon-jingdiananli_kongwujiaoxing_shoucang"></i>
 				<i class="iconfont icon-jingdiananli_kongwujiaoxing_shoucang"></i>
 				<i class="iconfont icon-jingdiananli_kongwujiaoxing_shoucang"></i>
+				<input type="hidden" value="0" />
 			</p>
 			<p class="clearfix">
 				<b>着装评分</b>
@@ -124,6 +117,7 @@
 				<i class="iconfont icon-jingdiananli_kongwujiaoxing_shoucang"></i>
 				<i class="iconfont icon-jingdiananli_kongwujiaoxing_shoucang"></i>
 				<i class="iconfont icon-jingdiananli_kongwujiaoxing_shoucang"></i>
+				<input type="hidden" value="0" />
 			</p>
 			
 			
@@ -132,35 +126,47 @@
 		<!-- 中部文本领域开始 -->
 		<div class="saleMidd">
 			<label for="sale">
-				<h3>请您对我们的售后服务作出评价……</h3>
-	          	<textarea name="" id="sale" cols="30" rows="10"></textarea>
+	          	<textarea name="" id="sale" cols="30" rows="10" placeholder="请您对我们的售后服务作出评价……"></textarea>
           	</label>
 		</div>
 		<!-- 中部文本领域结束 -->
 		<a href="{{:U('Home/Comment/commentsucceed')}}">
 			<div class="saleBott">
-				<input type="submit" value="发表">
+				<input class="submitBtn" type="submit" value="提交">
 			</div>
 		</a>
-		
-		
 	</div>
+	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+	<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
+  	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script>
+		// 评分等级
 		$('.saleTop>p>i').click(function(){
+			var _this=$(this).parent().children("i");//获取当前星号总数
+			var classNameBfore='iconfont icon-jingdiananli_kongwujiaoxing_shoucang';
+			var classNameAfter='iconfont icon-jingdiananli_wujiaoxing_shoucanghou';
+			for(var i=0;i<_this.size();i++){
+				if(i<$(this).index()){
+					_this.eq(i).removeClass(classNameBfore).addClass(classNameAfter);
 
-			var leiName=$(this).attr('class')
-			if(leiName=='iconfont icon-jingdiananli_kongwujiaoxing_shoucang'){
-				$(this).removeClass(leiName)
-				$(this).addClass('iconfont icon-jingdiananli_wujiaoxing_shoucanghou')
-			
-			 }
-			 else{
-				$(this).removeClass(leiName);
-				$(this).addClass('iconfont icon-jingdiananli_kongwujiaoxing_shoucang');
-
+				}else{
+					_this.eq(i).removeClass(classNameAfter).addClass(classNameBfore);
+				}
 			}
-					// console.dir(leiName);
-
+			$(this).siblings("input").val($(this).index());
+		});
+		$(".submitBtn").click(function(){
+			for(var i=0;i<$('.saleTop>p>input').size();i++){
+				if($('.saleTop>p').eq(i).children("input").val()==0){
+					layuiHint("给商品评分再提交呗！");
+					return false;
+				}
+			}
+			if($("#sale").val()==""){
+				layuiHint("给我们的服务做个评价呗");
+				return false;
+			}
 		});
 	</script>
 </body>

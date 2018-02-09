@@ -159,6 +159,7 @@ class ShopController extends CommonController
             $goods_detail = D('GoodsDetail');
             $cate = D('Category');
             $data = I('post.');
+            $price = $data['price'];
             $goods['cid'] = $cate->sureCate();
             if(!$goods['cid']) E('请选择分类', 605);
             $goods['name'] = $data['name'];
@@ -170,7 +171,6 @@ class ShopController extends CommonController
             // 商品添加
             $goods_status = $goods_add->add();
             $goodsDetail['gid'] = $goods_status;
-            $goodsDetail['price'] = $data['price'];
             $goodsDetail['cost'] = $data['cost'];
             $goodsDetail['stock'] = $data['stock'];
             if(!$goods_detail->create($goodsDetail)) E($goods_detail->getError(),408);
@@ -191,7 +191,15 @@ class ShopController extends CommonController
                     E('属性缺失，请刷新页面', 506);
                 }
             }
-            if($goods_status && $attr_val_status && $goodsDetail_status){
+
+            // 商品单价添加
+            foreach ($price as $key => $value) {
+                $p['price'] = $value;
+                $p['grade'] = $key;
+                $p['gid'] = $goods_status;
+                $price_status = M('Price')->add($p);
+            }
+            if($goods_status && $attr_val_status && $goodsDetail_status && price_status){
                 $goods_add->commit();
                 E('商品添加成功，可继续添加',200);
             } else {
@@ -349,6 +357,22 @@ class ShopController extends CommonController
         ];
         $this->assign($assign);
         $this->display('orderDetail');
+    }
+
+    // 查看当前商品单价
+    public function price()
+    {
+        try {
+            $gid = I('post.gid');
+            $data = M('Price')->where('gid='.$gid)->select();
+            $this->ajaxReturn($data);
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
     }
 
 }

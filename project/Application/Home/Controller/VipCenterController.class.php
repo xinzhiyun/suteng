@@ -124,35 +124,75 @@ class VipCenterController extends CommonController
      */
     public function personalInformation()
     {
+        $map['uid'] = session('user.id');
+        $map['status'] = 1;
+        $user_device = M('user_device')->where($map)->find();
+        $this->assign('user_device',$user_device);
         $this->display();
     }
 
     public function infomationAction()
     {
         try {
-            // $user_device = D('UserDevice');
-            // $data = I('post.');
-            // $map['uid'] = session('user.id');
-            // // $map['status'] = 1;
-            // $res = $user_device->where($map)->find();
-            // dump($res);die;
-            // if($res){
-            //     $user_device->startTrans();
-            //     $save_status = $user_device->where($map)->save(['status'=>0]);
-            //     if(!$save_status) E('存储失败',604);
-            // }
-            // $data['did'] = $res['did'];
-            // $data['addtime'] = time();
-            // $data['updatetime'] = time();
-            // $data['uid'] = session('user.id');
-            // $res = $user_device->add($data);
-            if($res){
-                // $user_device->commit();
-                E('OK',200);
-            } else {
-                // $user_device->rollback();
-                E('添加失败',603);
+            $user_device = D('UserDevice');
+            $data = I('post.');
+            $map['uid'] = session('user.id');
+            $map['status'] = 1;
+            $res = $user_device->where($map)->field('name,sex,birth,phone,address')->find();
+
+            if($res && $res != $data){
+                // 实例化验证类
+                $validate   = new \Org\Util\Validate;
+                if($data['name'] != $res['name']){
+                    if($validate->isName($data['name'])){
+                        $saveData['name'] = $data['name'];
+                    }else{
+                         E('用户名格式不正确',200);
+                    }
+                }
+
+                if($data['sex'] != $res['sex']){
+                    if($validate->original('/^[0,1]{1}$/',$data['sex'])){
+                        $saveData['sex'] = $data['sex'];
+                    }else{
+                         E('性别格式不正确',200);
+                    }
+                }
+
+                if($data['birth'] != $res['birth']){
+                        $saveData['birth'] = $data['birth'];
+                }
+
+                if($data['phone'] != $res['phone']){
+                    // if($validate->isPhone($data['phone'])){
+                        $saveData['phone'] = $data['phone'];
+                    // }else{
+                    //      E('手机号码格式不正确',200);
+                    // }
+                }
+
+                if($data['address'] != $res['address']){
+                    // if($validate->isAddress($data['address'])){
+                        $saveData['address'] = $data['address'];
+                    // }else{
+                    //      E('地址格式格式不正确',200);
+                    // }
+                }
+
+                $user_device->startTrans();
+                $data['updatetime'] = time();
+                $save_status = $user_device->where($map)->save($saveData);
+                if($res){
+                    $user_device->commit();
+                    E('OK',200);
+                } else {
+                    $user_device->rollback();
+                    E('添加失败',603);
+                }
+            }else{
+                E('您没有修改！',200);
             }
+
         } catch (\Exception $e) {
             $err = [
                 'code' => $e->getCode(),

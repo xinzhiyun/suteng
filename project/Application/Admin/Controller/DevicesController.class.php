@@ -469,12 +469,13 @@ class DevicesController extends CommonController
                 $i++;
             }
             if(!$type->create($data)) E($type->getError());
-            $type = I('post.type');
-            if($type == 'on'){
+            $types = I('post.type');
+            if($types == 'on'){
                 $data['type'] = 1;
             } else {
                 $data['type'] = 0;
             }
+            // dump($data);die;
             $res = $type->add($data);
             if($res){
                 E('设置成功', 200);
@@ -499,6 +500,7 @@ class DevicesController extends CommonController
             $where['id'] = I('post.id');
             $data['typename'] = $arr['typename'];
             $types = I('post.type');
+            // dump($types);die;
             if($types == 'on'){
                 $data['type'] = 1;
             } else {

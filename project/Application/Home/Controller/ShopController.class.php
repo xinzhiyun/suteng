@@ -15,7 +15,9 @@ class ShopController extends CommonController
         $goods = D('Goods');
         $cartInfo = M('Cart')->where('uid='.session('user.id'))->count();
         $cate = M('Category')->select();
-        $goodsList = $goods->getGoodsList(['gd.status'=>0]);
+        $map['pr.grade'] = session('user.grade');
+        $map['gd.status'] = 0;
+        $goodsList = $goods->getGoodsList($map);
         foreach($goodsList as $val){
     		$key = $val['gid'];
     		if(isset($arr[$key])) {
@@ -26,6 +28,11 @@ class ShopController extends CommonController
     		}
     	}
     	$goodsList = array_values($arr);
+        // $map['p.grade'] = session('user.grade');
+        // M('GOODS')
+        //     ->where($map)
+        //     ->join('__PRICE__ u ON g.')
+        // dump($goodsList);
         $assign = [
             'cate' => json_encode($cate),
             'cartInfo' => json_encode($cartInfo),
