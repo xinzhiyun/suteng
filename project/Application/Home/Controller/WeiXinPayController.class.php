@@ -356,6 +356,8 @@ class WeiXinPayController extends Controller
                     if($saveData['total_money']>=$user_upgrade){
                         // 升级钻石会员
                         $saveData['grade'] = 4;
+                        // 更新会员等级缓存
+                        $_SESSION['user']['grade'] = 4;
                     }
                 }
 
