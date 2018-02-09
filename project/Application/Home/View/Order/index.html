@@ -1127,9 +1127,9 @@
 									'<div>'+
 										'<div class="cancel">'+
 										'</div>'+
-										'<div class="pay commentBtn" name='+ waitcommentlist[i]['orderid'] +' >'+
+										'<a href="{{:U('Home/Comment/index')}}" class="pay commentBtn" name='+ waitcommentlist[i]['orderid'] +' >'+
 											'<span>评&nbsp;论</span>'+
-										'</div>'+
+										'</a>'+
 									'</div>'+
 								'</div>'+
 							'</div>';
@@ -1177,10 +1177,10 @@
                 }
             });  
     //售后评论
-	   	// (".commentAfter").click(function(){
-	   	// 	var commentIndex=$(this).attr("name");
-	   	// 	window.location.href="__URL__/mycomment"+;
-	   	// }); 
+	   	$(".commentAfter").click(function(){
+	   		// var commentIndex=$(this).attr("name");
+	   		window.location.href="{{:U('Home/Comment/saleServic')}}";
+	   	}); 
     })();
 
 	</script>
