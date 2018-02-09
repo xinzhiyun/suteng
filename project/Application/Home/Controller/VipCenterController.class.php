@@ -172,11 +172,11 @@ class VipCenterController extends CommonController
                 }
 
                 if($data['address'] != $res['address']){
-                    if($validate->isAddress($data['address'])){
+                    // if($validate->isAddress($data['address'])){
                         $saveData['address'] = $data['address'];
-                    }else{
-                         E('地址格式格式不正确',200);
-                    }
+                    // }else{
+                    //      E('地址格式格式不正确',200);
+                    // }
                 }
 
                 $user_device->startTrans();
@@ -190,7 +190,7 @@ class VipCenterController extends CommonController
                     E('添加失败',603);
                 }
             }else{
-                E('您没有修改！',603);
+                E('您没有修改！',200);
             }
 
         } catch (\Exception $e) {
