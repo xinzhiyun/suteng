@@ -164,11 +164,11 @@ class VipCenterController extends CommonController
                 }
 
                 if($data['phone'] != $res['phone']){
-                    if($validate->isPhone($data['phone'])){
+                    // if($validate->isPhone($data['phone'])){
                         $saveData['phone'] = $data['phone'];
-                    }else{
-                         E('手机号码格式不正确',200);
-                    }
+                    // }else{
+                    //      E('手机号码格式不正确',200);
+                    // }
                 }
 
                 if($data['address'] != $res['address']){

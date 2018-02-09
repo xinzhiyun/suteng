@@ -160,6 +160,9 @@
 							    	<option value="1">女</option>
 				    				<option value="0">男</option>
 							    </case>
+							    <default />
+							    	<option value="0">男</option>
+									<option value="1">女</option>
 							</switch>
 	   					</select><!--下拉选择-->
 					</div>
@@ -254,10 +257,13 @@
 			        processData: false,
 					data: data,//JSON.stringify(obj),
 					success: function(res){
-						// if(res.code == 200){
-						// 	// location.href = '{{:U("VipCenter/minepack")}}'
-						// }
-						layuiHint(res.msg);
+						if(res.code == 200){
+							layuiHint(res.msg);
+							window.setTimeout("window.location='{{:U('VipCenter/minepack')}}'",2000); 
+						}else{
+							layuiHint(res.msg);
+						}
+						
 					},
 					error: function(res){
 						console.log('失败!', res)

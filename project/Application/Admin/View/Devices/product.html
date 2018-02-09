@@ -256,6 +256,31 @@
             var filter8 = $(obj).attr('filter8');
             var type = $(obj).attr('type');
             console.log(type);
+
+            var html = '';
+            // 状态判断
+            if(type==1){
+                html = '<input type="checkbox" name="type" class="js-switch1" checked/>';
+            }else{
+                html = '<input type="checkbox" name="type" class="js-switch1"/>';
+            }
+            $('#is_true').html(html);
+            // 初始化按钮
+            var elem = document.querySelector('.js-switch1');
+            var init = new Switchery(elem);
+            defaults = {
+                color             : '#64bd63'
+              , secondaryColor    : '#dfdfdf'
+              , jackColor         : '#fff'
+              , jackSecondaryColor: null
+              , className         : 'switchery'
+              , disabled          : false
+              , disabledOpacity   : 0.5
+              , speed             : '0.1s'
+              , size              : 'default'
+            }
+
+
             arr.push(filter1,filter2,filter3,filter4,filter5,filter6,filter7,filter8);
             html = "";
             for (var i = 0; i < arr.length; i++) {

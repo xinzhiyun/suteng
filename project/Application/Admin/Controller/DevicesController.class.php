@@ -499,6 +499,7 @@ class DevicesController extends CommonController
             $where['id'] = I('post.id');
             $data['typename'] = $arr['typename'];
             $types = I('post.type');
+            // dump($types);die;
             if($types == 'on'){
                 $data['type'] = 1;
             } else {
