@@ -17,14 +17,15 @@ class CommonController extends Controller
      */
     public function _initialize()
     {
+        // $_SESSION = null;
         // 实例化微信JSSDK
         $weixin = new WeixinJssdk;
         // 获取用户open_id
         if(empty($_SESSION['open_id'])){
             // 如果不存在则，跳转获取open_id,并缓存
-            // $_SESSION['open_id'] = $weixin->GetOpenid();
+            $_SESSION['open_id'] = $weixin->GetOpenid();
             // 前端调试通道
-            $_SESSION['open_id'] = 'oQktJwD-T2RrIFJh2nAa4hDdmOjo';
+            // $_SESSION['open_id'] = 'oQktJwGB2hfmNSaNkjTTF4kt2fEw';
 
         }
         // 获取用户open_id
@@ -67,8 +68,10 @@ class CommonController extends Controller
                                 // dump($ticket);die;
                                 // 将微信用户信息和二维码票据合并人新数组
                                 $newData    = array_merge($newData,$weixinData,$ticket);
+
                                 // 添加会员级别
                                 $newData['grade'] = 0;
+                                $newData['original_grade'] = 0;
                                 // 创建微信用户信息
                                 $userRes = M('users')->add($newData);
 
@@ -118,6 +121,7 @@ class CommonController extends Controller
                                 $newData    = array_merge($newData,$weixinData,$ticket);
                                 // 添加会员级别
                                 $newData['grade'] = 1;
+                                $newData['original_grade'] = 1;
                                 //dump($newData);die;
                                 // 创建微信用户信息
                                 $userRes = M('users')->add($newData);
@@ -259,6 +263,7 @@ class CommonController extends Controller
                                 $newData    = array_merge($newData,$weixinData,$ticket);
                                 // 添加会员级别
                                 $newData['grade'] = 0;
+                                $newData['original_grade'] = 0;
                                 // 创建微信用户信息
                                 $userRes = M('users')->add($newData);
 
@@ -296,9 +301,10 @@ class CommonController extends Controller
                 }
                 break;
             case '1':
+                // dump($_SESSION['open_id']);die;
                 // 分销通道
                 // $this->redirect('RegisteredVendor/index');
-                if(empty($_SESSION['user'])){
+                // if(empty($_SESSION['user'])){
                     // 更新条件
                     $userWhere['open_id'] = $_SESSION['open_id'];
                     // 查询用户表
@@ -331,17 +337,17 @@ class CommonController extends Controller
                         $addData['parameter']       = 0;
                         // 二维码有效时间
                         $addData['ticket_time']     = 0;
-                        // 获取微信用户基本信息
-                        $weixinData = $this->getWeiXinUserInfo($_SESSION['open_id']);
+                        // 分销商名称
+                        $addData['nickname']        = $vendor['name'];
+                        // 分销商头像
+                        $addData['head']            = $vendor['head'];
                         // 更新时间
                         $addData['addtime'] = $addData['updatetime'] = time();
-                        // 将微信信合并
-                        $newData    = array_merge($addData,$weixinData);
-                        // 添加会员级别
-                        $newData['grade'] = 4;
-
+                        // 分销商会员级别
+                        $addData['grade']            = 4;
+                        $newData['original_grade'] = 4;
                         // 创建用户
-                        $addRes = M('users')->add($newData);
+                        $addRes = M('users')->add($addData);
 
                         // 如果添加成功
                         if($addRes){
@@ -350,14 +356,16 @@ class CommonController extends Controller
                         }
                     }
 
-                    // 如果没有绑定设备，跳转到设备绑定页面
-                    if(empty(session('device.id'))){
-                        $this->redirect("Device/index");
-                    }
-                }
+                    // dump($_SESSION);die;
+
+                    // if(empty(session('device.id'))){
+                    //     $this->redirect("Device/index");
+                    // }
+                // }
                 break;
             default:
                 // 未关注
+                // $this->follow();
                 $this->redirect('Home/Wechat/follow');
                 break;
         }
