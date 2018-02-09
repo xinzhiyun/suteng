@@ -469,6 +469,12 @@ class DevicesController extends CommonController
                 $i++;
             }
             if(!$type->create($data)) E($type->getError());
+            $type = I('post.type');
+            if($type == 'on'){
+                $data['type'] = 1;
+            } else {
+                $data['type'] = 0;
+            }
             $res = $type->add($data);
             if($res){
                 E('设置成功', 200);
@@ -492,17 +498,16 @@ class DevicesController extends CommonController
             $arr = I('post.');
             $where['id'] = I('post.id');
             $data['typename'] = $arr['typename'];
-            // $i = 1;
-            // foreach ($arr['arr'] as $key => $value) {
-            //     $data['filter'.$i] = $value;
-            //     $i++;
-            // }
-            // dump($arr['arr']);
+            $types = I('post.type');
+            if($types == 'on'){
+                $data['type'] = 1;
+            } else {
+                $data['type'] = 0;
+            }
             for ($i=1; $i <= 8; $i++) { 
                 $data['filter'.$i] = $arr['arr'][$i-1];
             }
             $data['updatetime'] = time();
-            // dump($data);die;
             $res = $type->where($where)->save($data);
             if($res){
                 E('更新成功',200);

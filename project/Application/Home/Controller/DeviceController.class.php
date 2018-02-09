@@ -42,6 +42,7 @@ class DeviceController extends CommonController
             $res = $device->where('device_code='.$code)->find();
             if(!$res) E('设备不存在',603);
             $did = $res['id'];
+            $type = $res['type_id'];
             $res_find = $user_device->where('did='.$did)->find();
             if($res_find != null) E('设备已绑定',604);
             $data['did']        = $did;
@@ -51,8 +52,28 @@ class DeviceController extends CommonController
             $data['updatetime'] = time();
             $user_device->where('uid='.$uid)->save(['status'=>0]);
             $res_save = $user_device->add($data);
+
+            // 查询设备类型
+            $device_type = M('Type')->where('id='.$type)->field('type')->find();
+            if($device_type){
+                $leavel = 3;
+            } else {
+                $leavel = 2;
+            }
+
+            // 查询当前会员最高等级
+            $cur_device = $user_device->where('id='.$uid)->field('did')->select();
+            $arr = [];
+            foreach ($cur_device as $key => $value) {
+                $arr[$key] = $value;
+            }
+            $arr = max($arr);
+            
+            // 根据会员级别更新等级
+            if($arr < $leavel) M('Users')->where('id='.$uid)->save(['grade'=>$leavel]);
+            
+            // dump($type);die;
             if($res_save){
-                // session('device.did',$did);
                 $_SESSION['device']['did'] = $did;
                 $device->commit();
                 E('设备绑定成功',200);

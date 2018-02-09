@@ -79,6 +79,7 @@ class MallController extends CommonController
             $order['uid'] = session('user.id');
             $order['order_id'] = gerOrderId();
             $order['addtime'] = time();
+            $order['g_type'] = 2;
             $order['g_cost'] = "";
             $detail = [];
             foreach($data as $key => $value){
