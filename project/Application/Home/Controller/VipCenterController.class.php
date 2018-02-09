@@ -105,6 +105,7 @@ class VipCenterController extends CommonController
             $map['c.uid'] = session('user.id');
             $map['so.status'] = 3;
             $data = $com->getInfo($map);
+            dump($data);die;
             $this->ajaxReturn($data);
         } catch (\Exception $e) {
             $err = [

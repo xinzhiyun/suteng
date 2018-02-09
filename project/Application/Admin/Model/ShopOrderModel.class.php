@@ -12,7 +12,7 @@ class ShopOrderModel extends BaseModel
             ->alias('o')
             ->join('__ADDRESS__ a ON o.address_id=a.id', 'LEFT')
             ->join('__USERS__ u ON o.uid=u.id', 'LEFT')
-            ->field('a.address,a.phone,a.name,o.order_id,o.g_cost,o.g_price,o.g_num,o.addtime,o.status,o.mode')
+            ->field('a.address,a.phone,a.name,o.order_id,o.g_cost,o.g_price,o.g_num,o.addtime,o.status,o.mode,o.g_type')
             ->count();
         $Page       = new \Think\Page($count,10);
         page_config($Page);
@@ -22,7 +22,7 @@ class ShopOrderModel extends BaseModel
             ->alias('o')
             ->join('__ADDRESS__ a ON o.address_id=a.id', 'LEFT')
             ->join('__USERS__ u ON o.uid=u.id', 'LEFT')
-            ->field('a.address,a.phone,a.name,o.order_id,o.g_cost,o.g_price,o.g_num,o.addtime,o.status,o.mode')
+            ->field('a.address,a.phone,a.name,o.order_id,o.g_cost,o.g_price,o.g_num,o.addtime,o.status,o.mode,o.g_type')
             ->limit($Page->firstRow.','.$Page->listRows)
             ->select();
         $data = [
