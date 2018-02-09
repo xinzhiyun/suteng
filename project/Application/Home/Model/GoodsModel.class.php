@@ -17,8 +17,9 @@ class GoodsModel extends Model
             ->join('__ATTR__ a ON av.aid=a.id', 'LEFT')
             ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
             ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
+            ->join('__PRICE__ pr ON g.id=pr.gid', 'LEFT')
             ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
-            ->field('g.name,g.addtime,g.updatetime,av.*,g.cid,c.name cname,a.attr,gd.*,p.path')
+            ->field('g.name,g.addtime,g.updatetime,av.*,g.cid,c.name cname,a.attr,gd.*,p.path,pr.price')
             ->select();
         return $goods;
     }
