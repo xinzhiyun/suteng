@@ -264,37 +264,27 @@ class WeiXinPayController extends Controller
 
         // 获取微信服务器返回的xml文档
         $xml=file_get_contents('php://input', 'r');
-        // file_put_contents('./wx_pay1.txt',$xml."\r\n", FILE_APPEND);die;
+        // file_put_contents('./wx_payjb.txt',$xml."\r\n", FILE_APPEND);die;
         //echo 1;die;
 // 金币模拟数据
 //         $xml = '<xml><appid><![CDATA[wx0bab2f4b5b7ec3b5]]></appid>
-// <attach><![CDATA[17,gold]]></attach>
+// <attach><![CDATA[22,gold]]></attach>
 // <bank_type><![CDATA[CFT]]></bank_type>
 // <cash_fee><![CDATA[1]]></cash_fee>
 // <fee_type><![CDATA[CNY]]></fee_type>
 // <is_subscribe><![CDATA[Y]]></is_subscribe>
 // <mch_id><![CDATA[1490274062]]></mch_id>
-// <nonce_str><![CDATA[lfrkw9gmvr9lh35r39kserjfq0gk0qvp]]></nonce_str>
+// <nonce_str><![CDATA[n04snivpxcaj5t4gaghhlttugo97sezk]]></nonce_str>
 // <openid><![CDATA[oQktJwL8ioR4DoxSQmikdzekbUyU]]></openid>
-// <out_trade_no><![CDATA[274960238018351]]></out_trade_no>
+// <out_trade_no><![CDATA[719213140992603]]></out_trade_no>
 // <result_code><![CDATA[SUCCESS]]></result_code>
 // <return_code><![CDATA[SUCCESS]]></return_code>
-// <sign><![CDATA[F5A2A01E2FFD4223E073137AF62E8DA4]]></sign>
-// <time_end><![CDATA[20180205191926]]></time_end>
+// <sign><![CDATA[B279412A7346A525107278426AE3C708]]></sign>
+// <time_end><![CDATA[20180209150329]]></time_end>
 // <total_fee>1</total_fee>
 // <trade_type><![CDATA[JSAPI]]></trade_type>
-// <transaction_id><![CDATA[4200000071201802057648810477]]></transaction_id>
+// <transaction_id><![CDATA[4200000077201802099682820642]]></transaction_id>
 // </xml>';
-        
-
-//             // [detail] => gold
-//             // [body] => 100元充值100个金币
-//             // [attach] => 16
-//             // [out_trade_no] => 685361645248128
-//             // [total_fee] => 1
-//             // [notify_url] => http://test.dianqiukj.com/index.php/Home/WeiXinPay/congzhiNotify.html
-//             // [trade_type] => JSAPI
-//             // [openid] => oQktJwL8ioR4DoxSQmikdzekbUyU
         if($xml){
             //解析微信返回数据数组格式
             $result = $this->notifyData($xml);
@@ -353,6 +343,9 @@ class WeiXinPayController extends Controller
                 if($user['grade']== 3){
                     // 查询用户升级条件
                     $user_upgrade =  M('config')->where('id=1')->field('user_upgrade')->find()['user_upgrade'];
+
+
+
                     if($saveData['total_money']>=$user_upgrade){
                         // 升级钻石会员
                         $saveData['grade'] = 4;
