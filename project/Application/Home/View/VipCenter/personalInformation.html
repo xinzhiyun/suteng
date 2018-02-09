@@ -144,36 +144,44 @@
 				<label for="name" class="">
 					<i class="iconfont icon-wode1"></i>
 					<div >
-						<span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input name="name" id="name" type="text">
+						<span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input name="name" id="name" type="text" value="{{$user_device['name']}}">
 					</div>
 				</label>
 				<label for="sex">
 					<i class="iconfont icon-weibiaoti-"></i>
 					<div >
 						<span>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span><select name="sex" >
-	    				<option value="男">男</option>
-						<option value="女">女</option>
+							<switch name="user_device.sex">
+							    <case value="0">
+				    				<option value="0">男</option>
+									<option value="1">女</option>
+							    </case>
+							    <case value="1">
+							    	<option value="1">女</option>
+				    				<option value="0">男</option>
+							    </case>
+							</switch>
 	   					</select><!--下拉选择-->
 					</div>
 				</label>
 				<label for="birth">
 					<i class="iconfont icon-shengridangao2-copy"></i>
 					<div >
-						<span>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</span><input name="birth" class="dateSelect" id="birth" placeholder="请选择生日年月" type="text"><!--日期插件-->
+						<span>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</span><input name="birth" class="dateSelect" id="birth" placeholder="请选择生日年月" type="text" value="{{$user_device['birth']}}"><!--日期插件-->
 					</div>
 				</label>
 				
 				<label for="tel">
 					<i class="iconfont icon-shouji2-copy"></i>
 					<div >
-						<span>手机号码：</span><input id="tel" name="phone" type="text">
+						<span>手机号码：</span><input id="tel" name="phone" type="text" value="{{$user_device['phone']}}" >
 					</div>
 				</label>
 				
 				<label for="addr">
 					<i class="iconfont icon-dizhi"></i>
 					<div >
-						<span>住&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：</span><input name="address" id="addr" type="text">
+						<span>住&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：</span><input name="address" id="addr" type="text" value="{{$user_device['address']}}">
 					</div>
 				</label>
 			</div>

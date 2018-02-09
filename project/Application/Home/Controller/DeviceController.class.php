@@ -10,7 +10,6 @@ class DeviceController extends CommonController
      */
     public function index()
     {
-
         //调用微信JS-SDK类获取签名需要用到的数据
         $weixin = new WeixinJssdk;
         $signPackage = $weixin->getSignPackage();
@@ -21,6 +20,7 @@ class DeviceController extends CommonController
         // 查询绑定设备
         $user_device = D('UserDevice');
         $map['ud.uid'] = session('user.id');
+
         $bind_device = $user_device->getBindInof($map); //where('uid='.session('user.id'))->select();
         // dump($bind_device);die;
         //分配数据        
@@ -55,9 +55,11 @@ class DeviceController extends CommonController
 
             // 查询设备类型
             $device_type = M('Type')->where('id='.$type)->field('type')->find();
-            if($device_type){
+            if($device_type['type']){
+                // 商务
                 $leavel = 3;
             } else {
+                // 家用
                 $leavel = 2;
             }
 
@@ -68,9 +70,16 @@ class DeviceController extends CommonController
                 $arr[$key] = $value;
             }
             $arr = max($arr);
-            
+
             // 根据会员级别更新等级
-            if($arr < $leavel) M('Users')->where('id='.$uid)->save(['grade'=>$leavel]);
+            if($arr < $leavel){
+                // 更新用户表会员等级
+                M('Users')->where('id='.$uid)->save(['grade'=>$leavel]);
+                // 更新缓存会员等级
+                $_SESSION['user']['grade'] = $leavel;
+            }
+
+                
             
             // dump($type);die;
             if($res_save){
