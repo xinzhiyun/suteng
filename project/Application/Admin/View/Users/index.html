@@ -16,6 +16,9 @@
                                 <th width="5%">
                                     序号
                                 </th>
+                                <th>
+                                    会员等级
+                                </th>
                                 <th width="15%">
                                     用户昵称
                                 </th>
@@ -43,6 +46,16 @@
                                 <volist name="data" id="vo">
                                     <tr>
                                         <td>{{$i}}</td>
+                                        <td>
+                                            <!-- 会员等级{0：非企业会员，1：普通会员，2：VIP会员，3：标准会员，4：钻石会员} -->
+                                            <switch name="vo.grade">
+                                                <case value="0">非企业会员</case>
+                                                <case value="1">普通会员</case>
+                                                <case value="2">VIP会员</case>
+                                                <case value="3">标准会员</case>
+                                                <case value="4">钻石会员</case>
+                                            </switch>
+                                        </td>
                                         <td><a href="#">{{$vo.nickname}}</a></td>
                                         <td><img style="width: 80;height: 80px" src="{{$vo.head}}"></td>
                                         <td>
