@@ -293,10 +293,7 @@
 				<h3>选择套餐</h3>
 				<ul>
 					<li class="taocanSelectNow">100元套餐含<b>1000L</b>流量</li>
-					<!-- <li>100元套餐含<b>1000L</b>流量</li> -->
 					<li>100元套餐含<b>1000天</b>流量</li>
-<!-- 					<li>100元套餐含<b>1000L</b>流量</li>
-					<li>100元套餐含<b>1000L</b>流量</li> -->
 				</ul>
 			</div>
 		
@@ -363,6 +360,26 @@
 		      'chooseWXPay'
 		    ]
 		});
+		/*
+			点击立即支付
+		 */
+		$(".payBott").click(function(){
+			$.ajax({
+				url: '{{:U("Shop")}}',
+				type: 'post',
+				success: function(res){
+					console.log('成功！ ', res);
+					//如果返回的是订单号
+					if(typeof res == 'number'){
+						weixinPay(res);
+					}
+				},
+				error: function(res){
+					console.log('失败！ ', res);			
+				}
+			})
+		})
+		
       	/*
       		微信支付方法
       	 */ 

@@ -115,6 +115,7 @@
 		left: 0;
 		overflow: hidden;
 	}
+	/*空五角星，做背景*/
 	.pingfen:before {
 		content: "\e64b\e64b\e64b\e64b\e64b";
 		display: block;
@@ -258,7 +259,7 @@
 				<li><a href="#"><img src="__PUBLIC__/Home/images/comm_03.png" alt=""></a></li>
 				<li><a href="#"><img src="__PUBLIC__/Home/images/comm_03.png" alt=""></a></li>
 
-			</ul>	
+			</ul>
 		</div>
 	</div>
 	<script>
@@ -267,11 +268,11 @@
 			请求评论数据
 		 */
 		$.ajax({
-			url: '{{:("VipCenter/mycomment")}}',
+			url: '{{:U("VipCenter/ajaxMy")}}',
 			type: 'post',
 			success: function(res){
 				console.log('成功！ ',res);
-				var picStr = '';	//存储图片的html
+				var picStr = '';	//存放图片的html
 				var picArr = [];	//存放评论图片的数组
 				//模拟数据
 				res = [{'path': ['comm_02.png','comm_02.png','comm_02.png']},{'path': ['comm_02.png','comm_02.png']}];
