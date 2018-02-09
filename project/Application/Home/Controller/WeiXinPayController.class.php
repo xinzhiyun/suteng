@@ -346,6 +346,19 @@ class WeiXinPayController extends Controller
                         # code...
                         break;
                 }
+
+                // 累计充值金额消费的金额
+                $saveData['total_money'] = (($user['total_money']*100) + ($flowData['money']*100))/100;
+                // 如果用户是标准类型
+                if($user['grade']== 3){
+                    // 查询用户升级条件
+                    $user_upgrade =  M('config')->where('id=1')->field('user_upgrade')->find()['user_upgrade'];
+                    if($saveData['total_money']>=$user_upgrade){
+                        // 升级钻石会员
+                        $saveData['grade'] = 4;
+                    }
+                }
+
                 // 支付类型
                 $addData['mode']    = 2;
                 // 支付描述
