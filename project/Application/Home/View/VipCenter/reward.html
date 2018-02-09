@@ -85,12 +85,13 @@
              <h3>我的奖励金</h3>
              <div class="iconReward">
                 <span><p>累计：</p><b>金币<em>402</em></b></span>
-                <span class="spanRight"><b>金币<em>402</em></b></span>
+                <span class="spanRight"><b>银币<em>403</em></b></span>
              </div>
            </div>
         </div>
         <div class="rewardFoot">
           <ul>
+            <!-- <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
             <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
             <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
             <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
@@ -101,12 +102,45 @@
             <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
             <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
             <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
+            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li> -->
           </ul>
         </div>
        
     </div>
   </div>
+  <script>
+  // 数据遍历
+    window.onload=function(){
+        $(function(){
+            var waterNote=[
+            // {"iconjin":"10","iconyin":"10","date":"2018-01-01"},
+            {"icon":"10","date":"2018-01-02","noteType":"jin"},
+            {"icon":"12","date":"2018-01-03","noteType":"yin"},
+            {"icon":"11","date":"2018-01-02","noteType":"jin"},
+            {"icon":"12","date":"2018-01-03","noteType":"yin"},
+            {"icon":"10","date":"2018-01-02","noteType":"jin"},
+            {"icon":"12","date":"2018-01-03","noteType":"yin"},
+            {"icon":"11","date":"2018-01-02","noteType":"jin"},
+            {"icon":"12","date":"2018-01-03","noteType":"yin"}
+            ];
+            // console.dir(waterNote[0].date);
+            var liList='';
+            var jinicon='';
+            var yinicon='';
+            for(var i=0;i<waterNote.length;i++){
+              if(waterNote[i].noteType=="jin"){
+                  liList += '<li><span class="iconBig">奖励金币<b>'+waterNote[i].icon+'</b></span><span>'+waterNote[i].date+'</span></li> ';
+                
+              }else{
+                   liList += '<li><span class="iconBig">奖励银币<b>'+waterNote[i].icon+'</b></span><span>'+waterNote[i].date+'</span></li> ';
+                   var num1= Number((waterNote[i].icon));
+              }
+            }
+            $(".rewardFoot>ul").html(liList);
+
+        })
+
+    }
+  </script>
 </body>
 </html>                                                                                                                                                                                                                                                                      
