@@ -25,7 +25,7 @@ class CommonController extends Controller
             // 如果不存在则，跳转获取open_id,并缓存
             $_SESSION['open_id'] = $weixin->GetOpenid();
             // 前端调试通道
-            // $_SESSION['open_id'] = 'oQktJwGB2hfmNSaNkjTTF4kt2fEw';
+            // $_SESSION['open_id'] = 'oQktJwL8ioR4DoxSQmikdzekbUyU';
 
         }
         // 获取用户open_id
