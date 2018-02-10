@@ -60,53 +60,8 @@ window.onload = function(){
         }
     }
     //页面加载时获取数据
-    // var getdataList = JSON.parse($(".deviceInfo").val());
-    //页面加载时获取数据
-    var getdataList={
-        "id":"1",
-        "deviceid":"228733445596778",
-        "devicestause":"0",
-        "reflow":"34000",
-        "reday":"85",
-        "rawtds":"75",
-        "puretds":"42",
-        "temperature":"24",
-        "reflowfilter1":"10000",
-        "redayfilter1":"100000",
-        "reflowfilter2":"50",
-        "redayfilter2":"95",
-        "reflowfilter3":"60",
-        "redayfilter3":"85",
-        "reflowfilter4":"10000",
-        "redayfilter4":"95",
-        "reflowfilter5":"40",
-        "redayfilter5":"47",
-        "reflowfilter6":"80",
-        "redayfilter6":"76",
-        "reflowfilter7":"45",
-        "redayfilter7":"95",
-        "reflowfilter8":"76",
-        "redayfilter8":"42",
-        "leasingmode":"2",
-        "alivestause":"1",
-        "roomtemperature":"26",
-         "sumflow":"24",
-        "sumday":"65",
-        "phval":"3.8",
-        "coldwater":"20",
-        "hotwater":"95",
-        "filtermode":"1",
-        "device":"GPRS",
-        "iccid":"11223344556677889900",
-        "csq":"90",
-        "loaction":"10020�����",
-        "addtime":"1513238294",
-        "updatetime":"1513299086"
-    };
-    var res = JSON.parse($(".res").val());
-    console.log(getdataList);
-    // console.log(res);
-
+    var getdataList = JSON.parse($(".deviceInfo").val());//滤芯剩余量数据
+    var res = JSON.parse($(".res").val());//滤芯详情数据
     var _status=getdataList.devicestause;//获取设备当前状态-> 0:制水 1:冲洗 2:水满 3:缺水 4漏水 5:检修 6:欠费停机 7:关机 8:开机(仅命令)
 
     machineStatus();//执行当前设备状态

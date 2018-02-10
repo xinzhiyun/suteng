@@ -84,8 +84,8 @@
            <div class="myReward">
              <h3>我的奖励金</h3>
              <div class="iconReward">
-                <span><p>累计：</p><b>金币<em>402</em></b></span>
-                <span class="spanRight"><b>银币<em>403</em></b></span>
+                <span><p>累计：</p><b><!-- 金币<em>402</em> --></b></span>
+                <span class="spanRight"><b><!-- 银币<em>403</em> --></b></span>
              </div>
            </div>
         </div>
@@ -109,11 +109,11 @@
     </div>
   </div>
   <script>
-  // 数据遍历
+ 
     window.onload=function(){
+         // 数据遍历
         $(function(){
             var waterNote=[
-            // {"iconjin":"10","iconyin":"10","date":"2018-01-01"},
             {"icon":"10","date":"2018-01-02","noteType":"jin"},
             {"icon":"12","date":"2018-01-03","noteType":"yin"},
             {"icon":"11","date":"2018-01-02","noteType":"jin"},
@@ -125,21 +125,32 @@
             ];
             // console.dir(waterNote[0].date);
             var liList='';
-            var jinicon='';
-            var yinicon='';
+            var jinicon=0;
+            var yinicon=0;
             for(var i=0;i<waterNote.length;i++){
               if(waterNote[i].noteType=="jin"){
                   liList += '<li><span class="iconBig">奖励金币<b>'+waterNote[i].icon+'</b></span><span>'+waterNote[i].date+'</span></li> ';
-                
+                  // 金币总数
+                  jinicon+=(waterNote[i].icon-0);
               }else{
                    liList += '<li><span class="iconBig">奖励银币<b>'+waterNote[i].icon+'</b></span><span>'+waterNote[i].date+'</span></li> ';
                    var num1= Number((waterNote[i].icon));
+                   // 银币总数
+                    yinicon+=(waterNote[i].icon-0);
               }
             }
+            console.dir(jinicon+'hh'+yinicon) 
             $(".rewardFoot>ul").html(liList);
+            // $('.iconReward>span>em').text(jinicon);
+            // console.dir($('.iconReward>span:first-child>b>em').text());
+            // 金银币总数
+            $('.iconReward>span:first-child>b').html('金币<em>'+jinicon+'</em>');
+            $('.iconReward>span:last-child>b').html('银币<em>'+yinicon+'</em>');
+           
+
 
         })
-
+             
     }
   </script>
 </body>
