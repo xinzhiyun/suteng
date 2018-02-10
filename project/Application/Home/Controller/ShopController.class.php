@@ -68,4 +68,12 @@ class ShopController extends CommonController
         ];
         $this->ajaxReturn($data);
     }
+
+    public function chooseMeal()
+    {
+        $meal = D('setmeal')->select();
+        // print_r($meal);
+        $this->assign('list',$meal);
+        $this->display();
+    }
 }

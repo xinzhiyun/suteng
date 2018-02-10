@@ -441,7 +441,24 @@ class RechargeController extends CommonController
 	 */
     public function gold_list()
     {
-        $data = M('gold')->select();
+        $map = '';
+        if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
+            switch (I('get.keywords')) {
+                case '上架':
+                        $map['status'] = 1;
+                    break;
+                case '下架':
+                        $map['status'] = 0;
+                    break;
+                
+                default:
+                    $map['status'] = I('get.keywords');
+                    break;
+                    
+            }
+        }
+
+        $data = M('gold')->where($map)->select();
         $assign = [
             'data' => $data,
         ];
@@ -454,7 +471,23 @@ class RechargeController extends CommonController
 	 */
     public function silver_list()
     {
-        $data = M('silver')->select();
+
+        $map = '';
+        if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
+            switch (I('get.keywords')) {
+                case '上架':
+                        $map['status'] = 1;
+                    break;
+                case '下架':
+                        $map['status'] = 0;
+                    break;
+                
+                default:
+                    $map['status'] = I('get.keywords');
+                    break;
+            }
+        }
+        $data = M('silver')->where($map)->select();
         $assign = [
             'data' => $data,
         ];
@@ -467,7 +500,22 @@ class RechargeController extends CommonController
 	 */
     public function gold_silver_list()
     {
-        $data = M('gold_silver')->select();
+        $map = '';
+        if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
+            switch (I('get.keywords')) {
+                case '上架':
+                        $map['status'] = 1;
+                    break;
+                case '下架':
+                        $map['status'] = 0;
+                    break;
+                
+                default:
+                    $map['status'] = I('get.keywords');
+                    break;
+            }
+        }
+        $data = M('gold_silver')->where($map)->select();
         $assign = [
             'data' => $data,
         ];

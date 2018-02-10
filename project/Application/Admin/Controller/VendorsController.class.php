@@ -168,7 +168,12 @@ class VendorsController extends CommonController
      */
     public function company_list()
     {
-        $data = D('vendors')->companyList();
+        $map = '';
+        if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
+            $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
+        }
+
+        $data = D('vendors')->companyList($map);
         $assign = [
             'data' => $data,
         ];
@@ -536,7 +541,12 @@ class VendorsController extends CommonController
      */
     public function vendor_list()
     {
-        $data = D('vendors')->vendorList();
+        $map = '';
+        if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
+            $map[I('get.key')] = array('like',"%".trim(I('get.keywords'))."%");
+        }
+        strlen(I('get.status')) ? $map['status'] = I('get.status') : '';
+        $data = D('vendors')->vendorList($map);
         $assign = [
             'data' => $data,
         ];
@@ -551,7 +561,11 @@ class VendorsController extends CommonController
      */
     public function vendor_reviewed()
     {
-        $data = D('vendors')->vendorReviewed();
+        $map = '';
+        if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
+            $map[I('get.key')] = array('like',"%".trim(I('get.keywords'))."%");
+        }
+        $data = D('vendors')->vendorReviewed($map);
         // dump($data);die;
         $assign = [
             'data' => $data,

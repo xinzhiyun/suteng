@@ -18,7 +18,10 @@ class DevicesController extends CommonController
         $device = D('Devices');
         // 查询条件
         $map = '';
-        if(!empty($_GET['code'])) $map['device_code'] = array('like',"%{$_GET['code']}%");
+        if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
+            $map[I('get.key')] = array('like',"%".trim(I('get.keywords'))."%");
+        }
+        // strlen(I('get.AliveStause')) ? (int)$map['ds.AliveStause'] = I('get.AliveStause'):'';
         $count = $device                                                            
             ->where($map)
             ->alias('d')
@@ -41,7 +44,6 @@ class DevicesController extends CommonController
             ->field('d.device_code,d.type_id,d.addtime,v.user,d.device_statu,t.typename,ds.AliveStause')
             ->select();
         $filterType = M('type')->where(['status'=>0])->select();
-        // dump($devices);
         $assign = [
             'deviceInfo' => $devices,
             'deviceType' => $filterType,
@@ -305,8 +307,10 @@ class DevicesController extends CommonController
     // 滤芯显示
     public function filterList()
     {
+        $map['status'] = 0;
+        strlen(I('get.filtername')) ? $map['filtername'] = trim(I('get.filtername')):'';
         $filters = D('Filters');
-        $data = $filters->where('status=0')->select();
+        $data = $filters->where($map)->select();
         $assign = [
             'data' => $data,
         ];
@@ -413,9 +417,11 @@ class DevicesController extends CommonController
     // 产品类型
     public function product()
     {
+        $map['status'] = 0;
+        strlen(I('get.typename')) ? $map['typename'] = trim(I('get.typename')):'';
         $type = D('Type');
         $filters = D('Filters');
-        $data = $type->where('status=0')->select();
+        $data = $type->where($map)->select();
         $filter = $filters->where(['status'=>0])->select();
         $assign = [
             'data' => $data,
