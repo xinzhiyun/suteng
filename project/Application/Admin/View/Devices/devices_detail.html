@@ -180,12 +180,10 @@
             </div>
             <script>
                 var statu = JSON.parse($(".statu").val());
-                // console.log(statu);
                 var filterInfo = JSON.parse($(".filterInfo").val());
                 var filter = JSON.parse($(".filter").val());
                 // 经销商数据
                 var vendor=JSON.parse($(".vendor").val());
-                console.log(vendor);
                 var vendorHtml='<tr>'+
                                 '<td>'+vendor.user+'</td>'+
                                 '<td>'+vendor.name+'</td>'+
@@ -275,11 +273,9 @@
                             }else{
                                  $('._table').html("暂无数据");
                             }
-                            console.log(html);
                         }
                         $('._table').append(html);
                     }  
-                    console.log(filterInfo);
                     var html2 = '<tr>'+
                                     '<td>'+'设备编号'+'</td>'+
                                     '<td class="tdDeviceId">'+(statu.deviceid?statu.deviceid:'--')+'</td>'+
@@ -369,9 +365,7 @@
                             numAdd=0;
                             $('._table').html("");
                             var filterMode='';
-                            console.log(dataList);
                             for(var i = 0;i<filterInfo.length;i++){
-                                //console.log(data.filterInfo.length);
                                 //按流量计算百分比值
                                 var ReFlowFilter=0;//剩余
                                 var ReDayFilter=0;
@@ -485,9 +479,7 @@
                         }else if(dataList.PackType=="SetData")//设置数据类型数据
                         {
                             identify=0;
-                            console.log(123);
                             for(var i=0;i<CmdList.length;i++){
-                                console.log(CmdList[i]);
                                 if(CmdList[i].cmd.PackNum==dataList.PackNum)
                                 {
                                     if(CmdList[i].type=="关机中")
