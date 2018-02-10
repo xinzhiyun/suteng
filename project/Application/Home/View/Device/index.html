@@ -411,6 +411,8 @@
 	<script>
 		// 选中当前的设备
 		$('.deviceitemRight>i').click(function(){
+			var _this = $(this);
+			// console.log(location.href)
 			var code = $(this).parents(".deviceitemRight ").find(".device_code").text()
 			// console.log(device_code)
 			$.ajax({
@@ -420,12 +422,14 @@
 				success: function(res){
 					console.log('成功！',res);
 					if(res.code == 200){
-						layuiHint("切换成功！")
 						$('.deviceitemRight>i').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-						$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+						_this.removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
 						$('.devicepay').hide();
+						layuiHint("切换成功！");
 						setTimeout(function(){
-							location.replace('{{:U("Index/index")}}');
+							//替换当前地址为首页地址，防止后退后再回到设备界面
+							history.replaceState({},null,'{{:U("Index/index")}}');
+
 							location.href = '{{:U("VipCenter/minepack")}}';
 						},500)
 					}else{

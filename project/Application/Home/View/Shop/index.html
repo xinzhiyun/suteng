@@ -248,26 +248,24 @@
 	</header>
 	<div class="shopTop clearfix">
 		<div class="search clearfix">
-			<label for="search-all" >
+			<label for="search-all">
 				<input type="text" placeholder="请输入您想买的东西" ><i class="iconfont icon-msnui-find-bold"></i>
-			</label>
-			<a href="{{:U('ShoppingCart/index')}}" class="iconfont  icon-gouwuche"><span>1</span></a>
+			</label><i class="iconfont  icon-gouwuche"></i><span>1</span>
 		</div>
 		<!-- 轮播图 -->
 		<div id="myFocus"><!--焦点图盒子-->
 			 <div class="loading"><img src="__PUBLIC__/Home/images/loading.gif" alt="请稍候..." /></div><!--载入画面(可删除)-->
 			  <div class="pic"><!--图片列表-->
 			  	<ul>
-			        <li><a href="#1"><img src="__PUBLIC__/Home/images/1b.png" thumb="" alt="" text="" /></a></li>
-			        <li><a href="#2"><img src="__PUBLIC__/Home/images/2b.png"  /></a></li>
-			        <li><a href="#3"><img src="__PUBLIC__/Home/images/3b.png" /></a></li>
-			        <li><a href="#4"><img src="__PUBLIC__/Home/images/4b.png" /></a></li>
-			        <!-- <li><a href="#5"><img src="__PUBLIC__/Home/images/5a.jpg" /></a></li> -->
+			        <li><a goods_gid="{{$goodsList[0]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[0]['path']}}" /></a></li>
+			        <li><a goods_gid="{{$goodsList[1]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[1]['path']}}"  /></a></li>
+			        <li><a goods_gid="{{$goodsList[2]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[2]['path']}}" /></a></li>
+			        <li><a goods_gid="{{$goodsList[3]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[3]['path']}}" /></a></li>
+			        <li><a goods_gid="{{$goodsList[4]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[4]['path']}}" /></a></li>
 			  	</ul>
 			  </div>
 		</div>
 	</div>
-	
 	<div id="content">
 		
 		<!-- 净水器 -->
@@ -318,6 +316,7 @@
 					CategoryHTML += '<span class="tab" index='+i+'>'+ _cate[i].name +'</span>';
 					categoryArr.push(_cate[i].name);
 				}
+
 				/*
 					遍历模板
 				 */
@@ -373,7 +372,18 @@
 							}
 						}
 					}
-					console.log(_htmlArr)
+
+					//遍历轮播图
+					// var lubolength = _goods.length > 4 ? 4 : _cate.length;
+					// console.dir(_goods.length)
+					// var lunboHTML = '';
+					// for(var i=0;i<lubolength; i++){
+					// 	// lunboHTML += '<li><a href="'+{{:U("Shop/shoppingdetail")}}+'" gid="'+lubolength.gid+'"><img src="/Uploads/'+_goods[j].path+'" /></a></li>';
+					// 	lunboHTML += '<li><a href="{{:U("Shop/shoppingdetail")}}" goods_gid="'+_goods[i].gid+'"><img src=""/Uploads/'+_goods[i].path+'" /></a></li>';
+					// }
+					// $(".pic>ul").html(lunboHTML);
+					// console.log(lunboHTML)
+
 				}
 			}else{
 				//无数据
