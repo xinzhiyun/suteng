@@ -47,15 +47,17 @@ class MallController extends CommonController
 
         $filter = D('Filters');
         $device = D('Devices');
-        $devices['d.id'] =169;// session('device.did');
+        $devices['d.id'] = session('device.did');
         $res = $filter->getFilters($devices);
         $data = $device
             ->alias('d')
             ->where($devices)
             ->join('__DEVICES_STATU__ ds ON d.device_code=ds.DeviceID', 'LEFT')
             ->find();
-        // dump($data);
-        // dump($res);
+        // echo '<pre>';
+        // print_r($devices['d.id']);die;
+        // print_r($data);
+        // print_r($res);die;
         $assign = [
             'res' => json_encode($res),
             'data' => json_encode($data),
