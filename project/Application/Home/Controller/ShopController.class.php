@@ -34,6 +34,7 @@ class ShopController extends CommonController
             'cartInfo' => json_encode($cartInfo),
             'goods' => json_encode($goodsList),
         ];
+        $this->assign('goodsList',$goodsList);
         $this->assign($assign);
         $this->display();
     }
