@@ -105,7 +105,7 @@ class DeviceController extends CommonController
         try {
             $user_device = D('UserDevice');
             $where['device_code'] = I('post.code');
-            $map['uid'] = 58;//session('user.id');
+            $map['uid'] = session('user.id');
 
             $user_device->startTrans();
             // 修改当前用户的所有状态
@@ -116,6 +116,7 @@ class DeviceController extends CommonController
             $map['did'] = M('Devices')->where($where)->find()['id'];
             // 设置当前设备状态
             $user_status = $user_device->where($map)->save(['status'=>1]);;
+            $_SESSION['device']['did'] = $map['did'];
             if($user_status){
                 $user_device->commit();
                 E('更新成功',200);

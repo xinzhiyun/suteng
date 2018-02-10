@@ -50,10 +50,13 @@ class ShopController extends CommonController
     // 商品详情页面
     public function goods_detail()
     {
-        $id['g.id'] = I('get.id');
+        $map['g.id'] = I('get.id');
         $goods = D('Goods');
+        $map['pr.grade'] = session('user.grade');
+        $map['gd.status'] = 0;
+        $map['g.status'] = array('neq', 2);
         $arr = [];
-        $goodsDetail = $goods->getGoodsList($id);
+        $goodsDetail = $goods->getGoodsList($map);
     	foreach($goodsDetail as $val){
     		$key = $val['gid'];
     		if(isset($arr[$key])) {
@@ -64,7 +67,7 @@ class ShopController extends CommonController
     		}
     	}
     	$goodsDetail = array_values($arr);
-        $commentInfo = $goods->getComment($id);
+        $commentInfo = $goods->getComment($map['g.id']);
         $data = [
             'goodsDetail' => $goodsDetail,
             'commentInfo' => $commentInfo,

@@ -18,8 +18,8 @@ class ShoppingCartController extends CommonController
         try {
             $cart = D('Cart');
             $where['c.uid'] = session('user.id');
+            $where['pr.grade'] = session('user.grade');
             $data = $cart->getCart($where);
-            // dump($data);die;
             foreach($data as $val){
         		$key = $val['gid'];
         		if(isset($arr[$key])) {

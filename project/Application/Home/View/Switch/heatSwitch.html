@@ -8,6 +8,8 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+	<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
 	<style>
 		body{
 			font-size: 0.8rem;
@@ -249,6 +251,34 @@
    //       $('li').add('<p>新的p元素</p>').appendTo($('.right'))
    //  })
    
+   	/**
+   	 * [success description]
+   	 * 请求:"{{:U('Home/Task/get_time')}}
+   	 * 参数:
+   	 * 		type   [0:开机，1：关机,2：开启加热，3：关闭加热，不传参：获取全部]
+   	 * 		json 数据
+     
+   	 */
+   	$.ajax({
+	    url:"{{:U('Home/Task/get_time')}}",
+	    // data:{type:},
+	    dataType:"json",
+	    type: 'post',
+	    success:function(res){
+	        // console.dir(res);
+	        if(res.code == 200){
+	            // 添加成功
+	            swal(res.msg,res.msg, "success");
+	            // 两秒后刷新
+	            // setTimeout(function(){
+	            //     window.location.reload();
+	            // },1000);
+	        }else{
+	            // 添加失败
+	            swal(res.msg, "请重新提交！", "success");
+	        }
+	    }
+	});
      
 
     </script>
