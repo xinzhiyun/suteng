@@ -379,7 +379,7 @@
 		/*
 			点击立即购买，选择支付方式
 		 */
-		var money, tid;		//获取需要传到后台的套餐价钱，id
+		var money, tid, remodel;		//获取需要传到后台的套餐价钱，id, 套餐类型
 		$('.chooseFoot>input').click(function(){
 			// console.log($(".taocanSelectNow"))
 			if($(".taocanSelectNow").length){
@@ -394,7 +394,7 @@
 			$.ajax({
 				url: '{{:U("PaymentSystem/information")}}',
 				type: 'post',
-				data: {'num':1,'tid':tid,'money':money},
+				data: {'num':1,'tid':tid,'money':money,'remodel':remodel},
 				success: function(res){
 					console.log('成功！ ', res);
 					//如果返回的是订单号
@@ -414,7 +414,7 @@
 			$.ajax({
 				url: '{{:U("PaymentSystem/information")}}',
 				type: 'post',
-				data: {'num':1,'tid':tid,'money':money},
+				data: {'num':1,'tid':tid,'money':money,'remodel':remodel},
 				success: function(res){
 					console.log('成功！ ', res);
 					weixinPay(dingdanID);
