@@ -17,6 +17,7 @@ class ShopController extends CommonController
         $cate = M('Category')->select();
         $map['pr.grade'] = session('user.grade');
         $map['gd.status'] = 0;
+        $map['g.status'] = array('neq', 2);
         $goodsList = $goods->getGoodsList($map);
         foreach($goodsList as $val){
     		$key = $val['gid'];
@@ -28,11 +29,6 @@ class ShopController extends CommonController
     		}
     	}
     	$goodsList = array_values($arr);
-        // $map['p.grade'] = session('user.grade');
-        // M('GOODS')
-        //     ->where($map)
-        //     ->join('__PRICE__ u ON g.')
-        // dump($goodsList);
         $assign = [
             'cate' => json_encode($cate),
             'cartInfo' => json_encode($cartInfo),
@@ -54,10 +50,13 @@ class ShopController extends CommonController
     // 商品详情页面
     public function goods_detail()
     {
-        $id['g.id'] = I('get.id');
+        $map['g.id'] = I('get.id');
         $goods = D('Goods');
+        $map['pr.grade'] = session('user.grade');
+        $map['gd.status'] = 0;
+        $map['g.status'] = array('neq', 2);
         $arr = [];
-        $goodsDetail = $goods->getGoodsList($id);
+        $goodsDetail = $goods->getGoodsList($map);
     	foreach($goodsDetail as $val){
     		$key = $val['gid'];
     		if(isset($arr[$key])) {
@@ -68,11 +67,19 @@ class ShopController extends CommonController
     		}
     	}
     	$goodsDetail = array_values($arr);
-        $commentInfo = $goods->getComment($id);
+        $commentInfo = $goods->getComment($map['g.id']);
         $data = [
             'goodsDetail' => $goodsDetail,
             'commentInfo' => $commentInfo,
         ];
         $this->ajaxReturn($data);
+    }
+
+    public function chooseMeal()
+    {
+        $meal = D('setmeal')->select();
+        // print_r($meal);
+        $this->assign('list',$meal);
+        $this->display();
     }
 }

@@ -24,15 +24,30 @@
                         <div class="ibox-tools">
                         </div>
                     </div>
+                <form method="get" action="">
+                    <div class="input-group col-md-3"  style="float: right;margin-right: 60px;">
+                        <select name="key" class="form-control" name="account" style="width:30%">
+                            <option value="truename">报修人</option>
+                            <option value="phone">联系电话</option>
+                            <option value="device_code">设备编码</option>
+                            <option value="st_repair.address">报修地址</option>
+                        </select>
+                        <input type="text" name="keywords" placeholder="输入搜索关键字" class="input form-control"   style="width:60%">
+                        <span class="input-group-btn" style="display: inline-block;">
+                                <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
+                        </span>
+                    </div>
+                </form>
                     <div class="ibox-content">
                         <table class="table">
                             <thead>
                             <tr>
                                 <th>报修编号</th>
                                 <th>用户ID</th>
+                                <th>报修人</th>
+                                <th>联系电话</th>
                                 <th>设备编码</th>
-                                <th>用户昵称</th>
-                                <!-- <th>经销商手机</th> -->
+                                <th>报修原因</th>
                                 <th>报修内容</th>
                                 <th>图片</th>
                                 <th>报修地址</th>
@@ -47,13 +62,14 @@
                                     <tr>
                                         <td>{{$key+1}}</td>
                                         <td>{{$vo.uid}}</td>
+                                        <td>{{$vo.truename}}</td>
+                                        <td>{{$vo.phone}}</td>
                                         <td>{{$vo.device_code}}</td>
-                                        <td>{{$vo.nickname}}</td>
-                                        <!-- <td>{{$vo.phone}}</td> -->
+                                        <td>{{$vo.reason}}</td>
                                         <td>{{$vo.content}}</td>
                                         <td><img width="40" src="__PUBLIC__{{$vo.picpath}}" alt=""></td>
                                         <td>{{$vo.address}}</td>
-                                        <td>{{$vo.addtime|date='Y-m-d H:i:s',###}}</td>
+                                        <td>{{$vo.date}}</td>
                                         <td>
                                             <switch name="vo.status">
                                                 <case value="0">未处理</case>

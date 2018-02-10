@@ -33,11 +33,11 @@
 			height: 1.333333rem;
 			width: 100%;
 			border:1px solid #E5E5E5;
-			margin-top: 0.4rem;
-			font-size: 0.666667rem;
+			margin-top: 0.6rem;
+			font-size: 0.766667rem;
 			line-height: 1.333333rem;
 			text-align: center;
-			padding: 0.2rem 0;
+			padding: 0.4rem 0;
 			border-radius: 0.2rem;
 			font-weight: 600;
 		}
@@ -287,13 +287,14 @@
 	</style>
 </head>
 <body>
+	<input type="hidden" value='{{$list}}' id="meal">
 	<div class="_chooseMeal">
 		<div class="chooseMeal">
 			<div class="chooseContain">
 				<h3>选择套餐</h3>
 				<ul>
-					<li class="taocanSelectNow">100元套餐含<b>1000L</b>流量</li>
-					<li>100元套餐含<b>1000天</b>流量</li>
+					<!-- <li class="taocanSelectNow">100元套餐含<b>1000L</b>流量</li>
+					<li>100元套餐含<b>1000天</b>流量</li> -->
 				</ul>
 			</div>
 		
@@ -345,6 +346,7 @@
 		</div>
 	</div>
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script>
@@ -360,18 +362,44 @@
 		      'chooseWXPay'
 		    ]
 		});
+		var dingdanID = '';		//存储后台返回的订单号
+		var meal, mealHTML = '';		//遍历套餐的数据
+		if($("#meal").val()){
+			//后台传过来的数据
+			meal = JSON.parse($("#meal").val());
+			console.log(meal);
+			//遍历套餐充值数据
+			for(var i=0; i<meal.length; i++){
+				mealHTML += '<li remodel="'+meal[i].remodel+'" flow="'+meal[i].flow+'" money="'+meal[i].money+'" tid="'+meal[i].id+'">'+ meal[i].describe +'</li>'
+			}
+			//将套餐数据添加到页面上
+			$(".chooseContain>ul").html(mealHTML);
+		}
+		
 		/*
-			点击立即支付
+			点击立即购买，选择支付方式
 		 */
-		$(".payBott").click(function(){
+		var money, tid, remodel;		//获取需要传到后台的套餐价钱，id, 套餐类型
+		$('.chooseFoot>input').click(function(){
+			// console.log($(".taocanSelectNow"))
+			if($(".taocanSelectNow").length){
+				$('.paystyle').slideDown("slow");
+			}else{
+	       		parent.layer.msg('请先选择购买的套餐');
+			}
+			money = $(".taocanSelectNow").attr("money");
+			tid = $(".taocanSelectNow").attr("tid");
+			console.log(money,id)
+			//发送请求让后台生成订单号
 			$.ajax({
-				url: '{{:U("Shop")}}',
+				url: '{{:U("PaymentSystem/information")}}',
 				type: 'post',
+				data: {'num':1,'id':tid,'money':money,'remodel':remodel},
 				success: function(res){
 					console.log('成功！ ', res);
 					//如果返回的是订单号
 					if(typeof res == 'number'){
-						weixinPay(res);
+						dingdanID  = res;
 					}
 				},
 				error: function(res){
@@ -379,7 +407,54 @@
 				}
 			})
 		})
-		
+		/*
+			点击立即支付
+		 */
+		$(".payBott").click(function(){
+			$.ajax({
+				url: '{{:U("PaymentSystem/information")}}',
+				type: 'post',
+				data: {'num':1,'id':tid,'money':money,'remodel':remodel},
+				success: function(res){
+					console.log('成功！ ', res);
+					weixinPay(dingdanID);
+				},
+				error: function(res){
+					console.log('失败！ ', res);			
+				}
+			})
+		})
+
+		// 选中背景改变
+		$('.chooseContain>ul').on('click','li',function(){
+			$(this).addClass('taocanSelectNow').siblings().removeClass("taocanSelectNow");
+		})
+
+		// 付款方式的单选框
+		$('.paymidd>ul>li>span').click(function(){
+			$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+			$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+		})
+		// 付款方式页面隐藏
+		$('.paytop>.paytopLeft>i').click(function(){
+			$('.paystyle').slideUp("slow");
+		})
+		// 模态框的js
+		// $(function(){
+		//   	$(".start").on("click",function(){
+		//   	   $(".modelAll").css('display','block');
+		//    	   $(".modal").addClass("in");
+		//    	   $(".modal").css('z-index','1001');
+		//    	   $(".modal-backup").css('display','block');
+		//    });
+		//   	$(".close").on("click",function(){
+		//    	   $(".modal").removeClass('in');
+		//    	   $(".modal").css('z-index','-1');
+		//    	   $(".modal-backup").fadeOut('slow');
+		//    });
+		// 	})
+		// .icon-kuang1{background:#57BFEE; }
+
       	/*
       		微信支付方法
       	 */ 
@@ -409,41 +484,6 @@
       			}
       		)
       	}
-		// 选中背景改变
-		$('.chooseContain>ul>li').click(function(){
-			$(this).addClass('taocanSelectNow').siblings().removeClass("taocanSelectNow");
-		})
-
-		//支付方式
-		$('.chooseFoot>input').click(function(){
-			$('.paystyle').slideDown("slow");
-		})
-
-		// 付款方式的单选框
-		$('.paymidd>ul>li>span').click(function(){
-			$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-			$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
-		})
-		// 付款方式页面隐藏
-		$('.paytop>.paytopLeft>i').click(function(){
-			$('.paystyle').slideUp("slow");
-		})
-		// 模态框的js
-		// $(function(){
-		//   	$(".start").on("click",function(){
-		//   	   $(".modelAll").css('display','block');
-		//    	   $(".modal").addClass("in");
-		//    	   $(".modal").css('z-index','1001');
-		//    	   $(".modal-backup").css('display','block');
-		//    });
-		//   	$(".close").on("click",function(){
-		//    	   $(".modal").removeClass('in');
-		//    	   $(".modal").css('z-index','-1');
-		//    	   $(".modal-backup").fadeOut('slow');
-		//    });
-		// 	})
-		// .icon-kuang1{background:#57BFEE; }
-
 	</script>
 </body>
 </html>                                                                                                                                                                                                                                                                      

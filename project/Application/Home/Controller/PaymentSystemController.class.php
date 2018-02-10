@@ -50,10 +50,17 @@ class PaymentSystemController extends CommonController
             $order['g_cost'] = "";
             $detail = [];
             foreach($data as $key => $value){
-                $where['gid'] = $value['gid'];
+                $where['pr.gid'] = $value['gid'];
+                $where['pr.grade'] = session('user.grade');
                 $order['g_price'] += $value['money'];
                 $order['g_num'] += $value['num'];
-                $arr = $goods->alias('g')->where($where)->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')->field('gd.price,gd.cost')->find();
+                $arr = $goods
+                    ->alias('g')
+                    ->where($where)
+                    ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
+                    ->join('__PRICE__ pr ON g.id=pr.gid','LEFT')
+                    ->field('pr.price,gd.cost')
+                    ->find();
                 $order['g_cost'] += $value['num']*$arr['cost'];
                 $detail['order_id'] = $order['order_id'];
                 $detail['gid'] = $value['gid'];
@@ -66,10 +73,8 @@ class PaymentSystemController extends CommonController
             }
 
             $res = $orders->add($order);
-
             if($res){
-                $msg = M('Cart')->where('uid='.session('user.id'))->delete();
-                
+                M('Cart')->where('uid='.session('user.id'))->delete();
                 $orders->commit();
                 $this->ajaxReturn($order['order_id']);
             } else {

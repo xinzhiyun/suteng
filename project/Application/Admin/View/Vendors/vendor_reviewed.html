@@ -10,6 +10,21 @@
                     <div class="ibox-title">
                         <h5>分销商管理 <small>分销商审核</small></h5>
                     </div>
+                <form method="get" action="">
+                    <div class="input-group col-md-4"  style="float: right;margin-right: 60px;">
+                        <select name="key" class="form-control" name="account" style="width:20%">
+                            <option value="user">账号</option>
+                            <option value="name">姓名</option>
+                            <option value="phone">手机</option>
+                            <option value="identity">身份证</option>
+                            <option value="company">公司名称</option>
+                        </select>
+                        <input type="text" name="keywords" placeholder="输入搜索关键字" class="input form-control"   style="width:40%">
+                        <span class="input-group-btn" style="display: inline-block;">
+                                <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
+                        </span>
+                    </div>
+                </form>
                     <div class="ibox-content">
                         <table class="table">
                             <thead>

@@ -17,6 +17,17 @@
                             </a>
                         </div>
                     </div>
+                <form method="get" action="">
+                    <div class="input-group col-md-3"  style="float: right;margin-right: 60px;">
+                        <select name="key" class="form-control" name="account" style="width:30%">
+                            <option value="status">套餐状态</option>
+                        </select>
+                        <input type="text" name="keywords" placeholder="输入搜索关键字" class="input form-control"   style="width:60%">
+                        <span class="input-group-btn" style="display: inline-block;">
+                                <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
+                        </span>
+                    </div>
+                </form>
                     <div class="ibox-content">
                         <table class="table">
                             <thead>
@@ -154,10 +165,10 @@
                     type: 'post',
                     success:function(res){
                         if(res.code==200){
-                            st==1?$('.status').removeClass('btn-success').html('下架').attr('st',0):$('.status').addClass("btn-success").html('上架').attr('st',1);
+                            // st==1?$('.status').removeClass('btn-success').html('下架').attr('st',0):$('.status').addClass("btn-success").html('上架').attr('st',1);
                             // 分公司交接成功
                             swal('设置成功',res.msg, "success");
-
+                            location.reload();
                         }else{
                             // 分公司交接失败
                             swal("设置失败",res.msg, "error");

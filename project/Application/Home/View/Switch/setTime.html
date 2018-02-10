@@ -9,6 +9,8 @@
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+	<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
 	<style>
 		body{
 				font-size: 0.8rem;
@@ -16,7 +18,7 @@
 			}
 		.switchTop{
 			width: 100%;
-			border-bottom:0.4rem solid #ECECEC;
+			/*border-bottom:0.4rem solid #ECECEC;*/
 		}
 		.swContain{ 
 			width: 100%;
@@ -73,69 +75,99 @@
 				.inputTime {
 	   				 margin: 1rem 0 1rem;
 				}
-			}
+		}
+		.action_type,.time_type{
+			display: flex;
+           -webkit-justify-content: center; 
+           -moz-justify-content: center; 
+
+		}
+		.time_type{
+			margin: 2rem auto;
+		}
+		.action_type>span,.time_type>span{
+			display: inline-block;
+			padding:0.2rem 0.3rem;
+			text-align: center;
+			color: #373737;
+			background: #FFF;
+			margin:0rem 0.3rem;
+			border-radius: 0.2rem;
+			border:1px solid #f1f1f1;
+		}
+		span.checked{
+			color: #fff;
+			background: #2EB6AA;
+			border:1px solid #2EB6AA;
+		}
+
+
+
 	</style>
 </head>
 <body>
 	<div class="switchAll">
 		<div class="switchTop">
 			<div class="swContain">
-				<p>开机时间：(时/分)</p>
-				<div class="inputTime open"><input type="time" value="00:00" class="setdata"></div>
+				<p>时间设置：(时/分)</p>
+				<div class="inputTime open"><input type="time" name="time" value="00:00" class="setdata"></div>
 			</div>
 		</div>
-		<div class="switchTop">
-			<div class="swContain">
-				<p>关机时间：(时/分)</p>
-				<div class="inputTime close"><input type="time" value="00:00" class="setdata"></div>
-			</div>
-		</div>
-		
+		<div class="action_type">
+			<span class="checked" alt="0">开机</span><span alt="1">关机</span><span alt="2">开启加热</span><span alt="3">关闭加热</span>
+		</div>	
+		<div class="time_type">
+			<span class="checked" alt="0">一次</span><span alt="1">每天</span>
+		</div>	
 		<div class="switchFoot">
 			<input type="button" value="保存" id="save">
 		</div>
 	</div>
 	<script>
-		/*
-			点击保存
-		 */
+
+		$('.action_type>span').click(function (){
+			$('.action_type>span').removeClass('checked');
+			$(this).addClass('checked');
+		});
+
+		$('.time_type>span').click(function (){
+			$('.time_type>span').removeClass('checked');
+			$(this).addClass('checked');
+		});
+
 		$("#save").click(function(){
-			var timeObj = [];
-			timeObj.push({
-				'shutdown': $(".setdata").eq(0).val(),
-				'poweroff': $(".setdata").eq(1).val()
-			})
-			// console.log(timeObj)
-			sessionStorage.setItem("timeObj",JSON.stringify(timeObj));
-			parent.layer.msg('保存成功！');
-			setTimeout(function(){
-				location.href = '{{:U("Switch/index")}}'
-			},500)
+			// 获取表单数据
+        	var time = $('input[name="time"]').val();
+        	var action_type = $('.action_type>span.checked').attr('alt');
+        	var time_type = $('.time_type>span.checked').attr('alt');
+        	console.dir(time)
+        	console.dir(action_type)
+        	console.dir(time_type)
+	        $.ajax({
+	            url:"{{:U('Home/Task/set_time')}}",
+	            data:{time:time,type:action_type,repeat:time_type},
+	            dataType:"json",
+	            type: 'post',
+	            success:function(res){
+	                // console.dir(res);
+	                if(res.code == 200){
+	                    // 添加成功
+	                    swal(res.msg,res.msg, "success");
+	                    // 两秒后刷新
+	                    // setTimeout(function(){
+	                    //     window.location.reload();
+	                    // },1000);
+	                }else{
+	                    // 添加失败
+	                    swal(res.msg, "请重新提交！", "success");
+	                }
+	            }
+	        });
 		})
 
-		// ajax请求
-		window.onload=function(){
-			$('.switchFoot>input').click(function(){
-			   	$.ajax({
+        
+        //  异步请求
 
-		             type: "POST",
-
-		             url: "url.html",
-
-		             data: {
-		             	"open":$('.open>input').val(),
-		             	"close":$('.close>input').val()
-		             },
-
-		             success: function(data){},
-
-		             error : function(){}
-
-		        });
-		   })
-		}
-	  
-		
 	</script>
 </body>
 </html>                                                                                                                                                                                                                                                                      	

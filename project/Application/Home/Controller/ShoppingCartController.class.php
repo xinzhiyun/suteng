@@ -18,8 +18,8 @@ class ShoppingCartController extends CommonController
         try {
             $cart = D('Cart');
             $where['c.uid'] = session('user.id');
+            $where['pr.grade'] = session('user.grade');
             $data = $cart->getCart($where);
-            // dump($data);die;
             foreach($data as $val){
         		$key = $val['gid'];
         		if(isset($arr[$key])) {
@@ -60,8 +60,9 @@ class ShoppingCartController extends CommonController
             } else {
                 $res = $cart->add($data);
             }
+            $cartInfo = M('Cart')->where('uid='.session('user.id'))->count();
             if($res){
-                E('加入购物车', 200);
+                // E('加入购物车', 200);
             } else {
                 E('无法加入购物车', 603);
             }
@@ -72,6 +73,7 @@ class ShoppingCartController extends CommonController
             ];
             $this->ajaxReturn($err);
         }
+        $this->ajaxReturn($cartInfo);
     }
 
     // 购物车删除

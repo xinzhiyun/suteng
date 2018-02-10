@@ -14,6 +14,32 @@
                             </a>
                         </div> -->
                     </div>
+                <form method="get" action="">
+                    <div class="input-group col-md-4"  style="float: right;margin-right: 60px;">
+                        <select name="key" class="form-control" name="account" style="width:20%">
+                            <option value="name">姓名</option>
+                            <option value="leavel">级别</option>
+                            <option value="user">分配用户名</option>
+                        </select>
+                        <input type="text" name="keywords" placeholder="输入搜索关键字" class="input form-control"   style="width:40%">
+                        <select name="status" class="form-control" name="account" style="width:30%">
+                            <option value="">-- 状态 --</option>
+                            <option value="0">身份填写</option>
+                            <option value="1">公司信息填写 </option>
+                            <option value="2">签协议</option>
+                            <option value="3">待审批</option>
+                            <option value="4">身份证审批失败</option>
+                            <option value="5">公司信息审批失败</option>
+                            <option value="6">协议审批失败</option>
+                            <option value="7">审批成功</option>
+                            <option value="8">禁用分销商</option>
+                            <!-- 0:身份填写 1:公司信息填写 2:签协议 3:待审批 4:身份证审批失败 5:公司信息审批失败 6:协议审批失败  7：审批成功  8：禁用分销商 -->
+                        </select>
+                        <span class="input-group-btn" style="display: inline-block;">
+                                <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
+                        </span>
+                    </div>
+                </form>
                     <div class="ibox-content">
                         <table class="table">
                             <thead>
