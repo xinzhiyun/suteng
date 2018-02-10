@@ -362,7 +362,7 @@
 		      'chooseWXPay'
 		    ]
 		});
-		var dingdanID = '';		//存储后台返回的订单号
+		var dingdanID;		//存储后台返回的订单号
 		var meal, mealHTML = '';		//遍历套餐的数据
 		if($("#meal").val()){
 			//后台传过来的数据
@@ -374,6 +374,8 @@
 			}
 			//将套餐数据添加到页面上
 			$(".chooseContain>ul").html(mealHTML);
+		}else{
+			$(".chooseContain>ul").html('<h3 style="width:100%;height:50vh;text-align:center;padding:20vh 0">暂无数据</h3>');
 		}
 		
 		/*
@@ -394,13 +396,14 @@
 			$.ajax({
 				url: '{{:U("Mall/information")}}',				
 				type: 'post',
+				async: false,
 				data: {'num':1,'id':tid,'money':money,'remodel':remodel},
 				success: function(res){
 					console.log('成功！ ', res);
 					$("#money").text('￥'+money);
 					//如果返回的是订单号
-					if(typeof res == 'number'){
-						dingdanID  = res;
+					if(typeof JSON.parse(res) == 'number'){
+						dingdanID = res;
 					}
 				},
 				error: function(res){
@@ -412,9 +415,11 @@
 			点击立即支付
 		 */
 		$(".payBott").click(function(){
+			console.log(dingdanID)
 			$.ajax({
 				url: '{{:U("Home/PaymentSystem/orderPay")}}',
 				type: 'post',
+				async: false,
 				data: {order: dingdanID},
 				success: function(res){
 					console.log('成功！ ', res);
