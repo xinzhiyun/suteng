@@ -38,6 +38,9 @@ class MallController extends CommonController
         $this->display();
     }
 
+
+
+
     /**
      * [lvxin 滤芯]
      * @return [type] [description]
@@ -108,6 +111,26 @@ class MallController extends CommonController
             // D('OrderDetail')->data($dataOD)->add();
             $this->ajaxReturn($orderId);
         }
+    }
+
+    public function chooseMeal()
+    {
+
+        $meal = D('setmeal')->select();
+
+        //调用微信JS-SDK类获取签名需要用到的数据
+        $weixin = new WeixinJssdk;
+        $signPackage = $weixin->getSignPackage();
+        // 查询用户微信中的openid
+        // $openId = $weixin->GetOpenid();
+        $openId = $_SESSION['open_id'];
+        //分配数据        
+        $this->assign('info',$signPackage);
+        $this->assign('openId',$openId);
+
+        // dump($signPackage);die;
+        $this->assign('list',json_encode($meal));
+        $this->display();
     }
 
     function getOrderId()

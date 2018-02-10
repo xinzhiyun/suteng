@@ -228,49 +228,50 @@
 	            // 添加成功
 	            // swal(res.msg,res.msg, "success");
 	            var html = '';
+	            if(res.data.length){
+		            for (var i = res.data.length - 1; i >= 0; i--) {
+		            	
+						html += '<hgroup><div class="hgContain .clearfix"><div class="setLeft .clearfix"><p><span  class="sLeft">';
 
-	            for (var i = res.data.length - 1; i >= 0; i--) {
-	            	
-					html += '<hgroup><div class="hgContain .clearfix"><div class="setLeft .clearfix"><p><span  class="sLeft">';
+						 switch (res.data[i].type) {
+						     case '0':
+						         html += '开机时间';
+						         break;
+						     case '1':
+						         html += '关机时间';
+						         break;
+						     case '2':
+						         html += '开启加热';
+						         break;
+						     case '3':
+						         html += '关闭加热';
+						         break;
+						 }						
+						
+						html += '</span><span class="sRight"><b>'+res.data[i].hour+'</b>时：<b>'+res.data[i].minute+'</b>分';
 
-					 switch (res.data[i].type) {
-					     case '0':
-					         html += '开机时间';
-					         break;
-					     case '1':
-					         html += '关机时间';
-					         break;
-					     case '2':
-					         html += '开启加热';
-					         break;
-					     case '3':
-					         html += '关闭加热';
-					         break;
-					 }						
-					
-					html += '</span><span class="sRight"><b>'+res.data[i].hour+'</b>时：<b>'+res.data[i].minute+'</b>分';
-
-					if(res.data[i].repeat==1){
-						html+='<b>  每天</b></span></p>';
-					}else{
-						html+='<b>  一次</b></span></p>';
-					}
+						if(res.data[i].repeat==1){
+							html+='<b>  每天</b></span></p>';
+						}else{
+							html+='<b>  一次</b></span></p>';
+						}
 
 
-					if(res.data[i].state==1){
-						html += '</div><div class="setRight"><div class="open1" name="one"><div class="open2" name="two"></div>';
-					}else{
-						html += '</div><div class="setRight"><div class="close1" name="one"><div class="close2" name="two"></div>';
-					}
+						if(res.data[i].state==1){
+							html += '</div><div class="setRight"><div class="open1" name="one"><div class="open2" name="two"></div>';
+						}else{
+							html += '</div><div class="setRight"><div class="close1" name="one"><div class="close2" name="two"></div>';
+						}
 
-					html += '</div></div><div class="delBtn delete" alt="'+res.data[i].id+'"><input type="submit" value="删除"></div></div></hgroup>';	
-									
+						html += '</div></div><div class="delBtn delete" alt="'+res.data[i].id+'"><input type="submit" value="删除"></div></div></hgroup>';	
+										
+		            }
 	            }
 
 	        }else{
 	            // 添加失败
 	            // swal(res.msg, "请重新提交！", "success");
-	            html += res.msg;
+	            html += '暂无定时任务！';
 	        }
 
 	        $('._setTimecontain').html(html);
