@@ -417,7 +417,7 @@
 		$(".payBott").click(function(){
 			console.log(dingdanID)
 			$.ajax({
-				url: '{{:U("Home/PaymentSystem/orderPay")}}',
+				url: '{{:U("Home/PaymentSystem/choosePay")}}',
 				type: 'post',
 				async: false,
 				data: {order: dingdanID},

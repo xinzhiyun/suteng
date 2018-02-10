@@ -79,12 +79,12 @@ class DeviceController extends CommonController
                 $_SESSION['user']['grade'] = $leavel;
             }
 
-                
-            
+
             // dump($type);die;
             if($res_save){
                 $_SESSION['device']['did'] = $did;
                 $device->commit();
+                
                 E('设备绑定成功',200);
             } else {
                 $device->rollback();

@@ -354,7 +354,6 @@
 	</style>
 </head>
 <body>
-<!-- {{$data|dump}} -->
     <input type="hidden" value={{$data['res']}} class="lvxin_data"><!--滤芯寿命-->
     <input type="hidden" value={{$data['data']}} class="filterData"><!--滤芯当前数据-->
 	<header id="header">
@@ -542,7 +541,7 @@
     		if(lvxinData.length){
     			// 发送ajax请求让后台生成订单号
     			$.ajax({
-    				url: '{{:U("information")}}',
+    				url: '{{:U("Home/Shop/information")}}',
     				type: 'post',
     				data: {'data':JSON.stringify(lvxinData)},
     				success: function(res){

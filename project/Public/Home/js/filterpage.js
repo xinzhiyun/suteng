@@ -5,7 +5,8 @@ $(function(){
 	//页面加载时获取滤芯数据
 	var data = JSON.parse($(".filterData").val());//滤芯剩余量数据
 	var res = JSON.parse($(".lvxin_data").val()).filterInfo;//滤芯详情数据
-	// console.log(data);
+	// console.dir(data);
+	// console.log(res);
 	//页面加载时获取数据 
     // var data={
     //     "id":"1",
@@ -131,7 +132,7 @@ $(function(){
 	
 
 	
-	// console.log(data);
+	console.log(data);
 	
 	var filtermode = data.filtermode;
 	var moHTML = '',lvxinIntroduceHTML='';//html box
@@ -152,6 +153,7 @@ $(function(){
 			reflow = (data['reflowfilter'+(i+1)]?data['reflowfilter'+(i+1)]:0);
 			redaypercent = (((data['redayfilter'+(i+1)]/res[i].timelife)*100).toFixed(2)>100)?100:(((data['redayfilter'+(i+1)]/res[i].timelife)*100).toFixed(2));
 			reflowpercent = (((data['reflowfilter'+(i+1)]/res[i].flowlife)*100).toFixed(0)>100)?100:(((data['reflowfilter'+(i+1)]/res[i].flowlife)*100).toFixed(0));
+			console.dir(filtermode);
 		    if(filtermode =="0"){//时常
 		        // 遍历膜的详情, 不存在则不遍历
 		        if(res[i].filtername){

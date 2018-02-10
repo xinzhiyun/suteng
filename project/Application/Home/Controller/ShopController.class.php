@@ -90,7 +90,7 @@ class ShopController extends CommonController
        
         try {
             $fliter = D('Filters');
-            $orders = D('Order');
+            $orders = D('shop_order');
             $order_detail = D('OrderDetail');
             $data = json_decode($_POST['data'],'true');
             $orders->startTrans();
@@ -145,12 +145,11 @@ class ShopController extends CommonController
         if(IS_POST){
             // echo 1;
             // // 准备订单查询数据
-            // $showWhere['order_id'] = I('post.order');125585013811241
-            $showWhere['order_id'] = 125585013811241;
-                
+            $showWhere['order_id'] = I('post.order');
+ 
             // // 查询订单表
             $orderData = D('OrderSetmeal')->where($showWhere)->find();
-            print_r($orderData);
+
             // 判断订单未支付
             if($orderData['status']==0){
                 // 订单金额
