@@ -126,6 +126,15 @@ class OrderController extends CommonController
     {
         $this->display();
     }
+    
+    /**
+     * 耗材订单
+     * @return [type] [description]
+     */
+    public function consumable()
+    {
+        $this->display();
+    }
 }
 
 

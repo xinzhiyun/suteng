@@ -185,8 +185,9 @@
                 var filter = JSON.parse($(".filter").val());
                 // 经销商数据
                 var vendor=JSON.parse($(".vendor").val());
+                console.log(vendor);
                 var vendorHtml='<tr>'+
-                                '<td>'+ vendor.user +'</td>'+
+                                '<td>'+vendor.user+'</td>'+
                                 '<td>'+vendor.name+'</td>'+
                                 '<td>'+vendor.phone+'</td>'+
                                 '<td>'+vendor.company+'</td>'+
