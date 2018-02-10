@@ -5,7 +5,11 @@ return array(
     'DB_HOST'                => 'localhost', // 服务器地址
     'DB_NAME'                => 'suteng', // 数据库名
     'DB_USER'                => 'root', // 用户名
+<<<<<<< HEAD
+    'DB_PWD'                 => 'root', // 密码
+=======
     'DB_PWD'                 => 'baijjgu', // 密码baijjgu
+>>>>>>> 8555a5891c96456ce80c6a82d35f78c8d09880a3
     'DB_PORT'                => '3306', // 端口
     'DB_PREFIX'              => 'st_', // 数据库表前缀
     'DB_PARAMS'              => array(), // 数据库连接参数

@@ -557,7 +557,11 @@
 					    	dataType:'json',
 					    	success:function(data){
 								// alert(data.msg);
-								location.href="{{:U('Home/VipCenter/personalInformation')}}";		
+								if(data.code == 200 ){
+									location.href="{{:U('Home/VipCenter/personalInformation')}}";		
+								} else {
+									alert(data.msg);
+								}
 					    	},
 					    	error:function(jqXHR, textStatus, errorThrown){
 

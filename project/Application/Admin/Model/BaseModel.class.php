@@ -70,12 +70,12 @@ class BaseModel extends Model{
      * @param  string $order 排序方式
      * @return array         结构数据
      */
-    public function getTreeData($type='tree',$order='',$name='name',$child='id',$parent='pid'){
+    public function getTreeData($type='tree',$order='',$name='name',$child='id',$parent='pid',$map=''){
         // 判断是否需要排序
         if(empty($order)){
-            $data=$this->select();
+            $data=$this->where($map)->select();
         }else{
-            $data=$this->order($order.' is null,'.$order)->select();
+            $data=$this->where($map)->order($order.' is null,'.$order)->select();
         }
         // 获取树形或者结构数据
         if($type=='tree'){

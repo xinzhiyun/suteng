@@ -20,22 +20,24 @@ class SetmealController extends CommonController
     {	
        // 根据名称进行搜索
         $map = '';
-        if(!empty($_GET['typename'])) $map['typename'] = array('like',"%{$_GET['typename']}%");
+        if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
+            $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
+        }
 
         $type = M('setmeal');
         
         $total =$type->where($map)
-                    ->join('pub_device_type ON pub_setmeal.tid = pub_device_type.id')
-                    ->field('pub_setmeal.*,pub_device_type.typename')
+                    ->join('st_type ON st_setmeal.tid = st_type.id')
+                    ->field('st_setmeal.*,st_type.typename')
                     ->count();
         $page  = new \Think\Page($total,8);
-        D('devices')->getPageConfig($page);
+        // D('devices')->getPageConfig($page);
         $pageButton =$page->show();
 
         $list = $type->where($map)
                     ->limit($page->firstRow.','.$page->listRows)
-                    ->join('pub_device_type ON pub_setmeal.tid = pub_device_type.id')
-                    ->field('pub_setmeal.*,pub_device_type.typename')
+                    ->join('st_type ON st_setmeal.tid = st_type.id')
+                    ->field('st_setmeal.*,st_type.typename')
                     ->select();
         // dump($list);die;
         $this->assign('list',$list);
@@ -47,6 +49,7 @@ class SetmealController extends CommonController
     {
         if (IS_POST) {
             // dump($_POST);die;
+            $_POST['addtime'] = time();
             $setmeal = D('setmeal');
             $info = $setmeal->create();
            
@@ -54,19 +57,19 @@ class SetmealController extends CommonController
 
                 $res = $setmeal->add();
                 if ($res) {
-                    $this->success('套餐设置成功啦！！！',U('setmeal/index'));
+                    return $this->ajaxReturn(['code'=>200,'msg'=>'套餐设置成功']);
                 } else {
-                    $this->error('套餐设置失败啦！');
+                    return $this->ajaxReturn(['code'=>500,'msg'=>'套餐设置失败']);
                 }
             
             } else {
                 // getError是在数据创建验证时调用，提示的是验证失败的错误信息
-                $this->error($setmeal->getError());
+                return $this->ajaxReturn(['code'=>500,'msg'=>$setmeal->getError()]);
             }
 
         }else{
-            $type = M('device_type');
-            $list = $type->select();
+            $type = M('type');
+            $list = $type->field('id,typename')->select();
             $this->assign('list',$list);
             $this->display();
         }

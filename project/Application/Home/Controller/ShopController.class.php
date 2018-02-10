@@ -17,6 +17,7 @@ class ShopController extends CommonController
         $cate = M('Category')->select();
         $map['pr.grade'] = session('user.grade');
         $map['gd.status'] = 0;
+        $map['g.status'] = array('neq', 2);
         $goodsList = $goods->getGoodsList($map);
         foreach($goodsList as $val){
     		$key = $val['gid'];
@@ -28,11 +29,6 @@ class ShopController extends CommonController
     		}
     	}
     	$goodsList = array_values($arr);
-        // $map['p.grade'] = session('user.grade');
-        // M('GOODS')
-        //     ->where($map)
-        //     ->join('__PRICE__ u ON g.')
-        // dump($goodsList);
         $assign = [
             'cate' => json_encode($cate),
             'cartInfo' => json_encode($cartInfo),
@@ -74,5 +70,13 @@ class ShopController extends CommonController
             'commentInfo' => $commentInfo,
         ];
         $this->ajaxReturn($data);
+    }
+
+    public function chooseMeal()
+    {
+        $meal = D('setmeal')->select();
+        // print_r($meal);
+        $this->assign('list',$meal);
+        $this->display();
     }
 }
