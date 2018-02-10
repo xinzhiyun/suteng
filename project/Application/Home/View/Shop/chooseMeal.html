@@ -362,40 +362,44 @@
 		      'chooseWXPay'
 		    ]
 		});
-		var select = '';
-		var meal, mealHTML = '';
+		var dingdanID = '';		//存储后台返回的订单号
+		var meal, mealHTML = '';		//遍历套餐的数据
 		if($("#meal").val()){
+			//后台传过来的数据
 			meal = JSON.parse($("#meal").val());
 			console.log(meal);
+			//遍历套餐充值数据
 			for(var i=0; i<meal.length; i++){
 				mealHTML += '<li remodel="'+meal[i].remodel+'" flow="'+meal[i].flow+'" money="'+meal[i].money+'" tid="'+meal[i].tid+'">'+ meal[i].describe +'</li>'
 			}
+			//将套餐数据添加到页面上
 			$(".chooseContain>ul").html(mealHTML);
 		}
 		
 		/*
-			点击立即购买，出现支付方式
+			点击立即购买，选择支付方式
 		 */
+		var money, tid;		//获取需要传到后台的套餐价钱，id
 		$('.chooseFoot>input').click(function(){
-			console.log($(".taocanSelectNow"))
+			// console.log($(".taocanSelectNow"))
 			if($(".taocanSelectNow").length){
 				$('.paystyle').slideDown("slow");
 			}else{
 	       		parent.layer.msg('请先选择购买的套餐');
 			}
-			var money = $(".taocanSelectNow").attr("money")
-				tid = $(".taocanSelectNow").attr("tid");
+			money = $(".taocanSelectNow").attr("money");
+			tid = $(".taocanSelectNow").attr("tid");
 			console.log(money,tid)
 			//发送请求让后台生成订单号
 			$.ajax({
 				url: '{{:U("PaymentSystem/information")}}',
 				type: 'post',
-				data: {'num':1,'gid':tid,'money':money},
+				data: {'num':1,'tid':tid,'money':money},
 				success: function(res){
 					console.log('成功！ ', res);
 					//如果返回的是订单号
 					if(typeof res == 'number'){
-						weixinPay(res);
+						dingdanID  = res;
 					}
 				},
 				error: function(res){
@@ -410,12 +414,10 @@
 			$.ajax({
 				url: '{{:U("PaymentSystem/information")}}',
 				type: 'post',
+				data: {'num':1,'tid':tid,'money':money},
 				success: function(res){
 					console.log('成功！ ', res);
-					//如果返回的是订单号
-					if(typeof res == 'number'){
-						weixinPay(res);
-					}
+					weixinPay(dingdanID);
 				},
 				error: function(res){
 					console.log('失败！ ', res);			
