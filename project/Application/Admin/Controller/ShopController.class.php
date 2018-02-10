@@ -278,6 +278,12 @@ class ShopController extends CommonController
         }
     }
 
+    // 修改商品
+    public function goodsEdit()
+    {
+        
+    }
+
     // 根据pid获取分类
     public function getCate()
     {

@@ -105,7 +105,7 @@ class DevicesController extends CommonController
             'statu' => $statu,
             'filterInfo' => $filterInfo,
             'filter' => $filter,
-            'vendor' => $vendor,
+            'vendor' => $vendors,
         ];
         $this->assign($assign);
         $this->display('devices_detail');
