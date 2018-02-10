@@ -355,8 +355,8 @@
 </head>
 <body>
 <!-- {{$data|dump}} -->
-    <input type="hidden" value={{$data['res']}} class="lvxin_data"><!--滤芯寿命-->
-    <input type="hidden" value={{$data['data']}} class="filterData"><!--滤芯当前数据-->
+    <input type="hidden" value={{$data['res']|json_encode}} class="lvxin_data"><!--滤芯寿命-->
+    <input type="hidden" value={{$data['data']|json_encode}} class="filterData"><!--滤芯当前数据-->
 	<header id="header">
 		<span class="tabTitle" index="0">滤芯详情</span>
 		<span class="tabTitle" index="1">滤芯复位</span>
