@@ -344,10 +344,10 @@
 					}
 					
 				}
-				for(var i in res.order_filters){
+				for(var i in res.devices){
 					// 遍历新增设备数量
-					if(res.order_filters[i]){
-						series_data[1].push(parseInt(res.order_filters[i].total_num));
+					if(res.devices[i]){
+						series_data[1].push(parseInt(res.devices[i].count));
 					}else {
 						series_data[1].push(0);
 					}
