@@ -310,7 +310,7 @@
 					<div class="paytopLeft"><i class="iconfont icon-cuohao"></i></div>
 					<div class="paytopRight">
 						<h3>付款</h3>
-						<p>￥3620.00</p>
+						<p id="money">￥3620.00</p>
 					</div>	
 				</div>
 				<div class="paymidd">
@@ -389,14 +389,15 @@
 			}
 			money = $(".taocanSelectNow").attr("money");
 			tid = $(".taocanSelectNow").attr("tid");
-			console.log(money,id)
+			console.log(money,tid)
 			//发送请求让后台生成订单号
 			$.ajax({
-				url: '{{:U("PaymentSystem/information")}}',				
+				url: '{{:U("Mall/information")}}',				
 				type: 'post',
 				data: {'num':1,'id':tid,'money':money,'remodel':remodel},
 				success: function(res){
 					console.log('成功！ ', res);
+					$("#money").text('￥'+money);
 					//如果返回的是订单号
 					if(typeof res == 'number'){
 						dingdanID  = res;
@@ -412,15 +413,21 @@
 		 */
 		$(".payBott").click(function(){
 			$.ajax({
-				url: '{{:U("PaymentSystem/information")}}',
+				url: '{{:U("Home/PaymentSystem/orderPay")}}',
 				type: 'post',
-				data: {'num':1,'id':tid,'money':money,'remodel':remodel},
+				data: {order: dingdanID},
 				success: function(res){
 					console.log('成功！ ', res);
-					weixinPay(dingdanID);
+					if(res == -1){
+						console.log('支付错误！');
+						parent.layer.msg('支付错误！');
+					}else{
+						weixinPay(dingdanID);
+					}
 				},
 				error: function(res){
-					console.log('失败！ ', res);			
+					console.log('失败！ ', res);
+	       			parent.layer.msg('系统出了一点小问题，请稍后再试！');			
 				}
 			})
 		})
