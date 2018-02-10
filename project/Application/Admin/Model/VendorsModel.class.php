@@ -87,7 +87,7 @@ class VendorsModel extends BaseModel
      * [companyList 分销商列表]
      * @return [type] [description]
      */
-    public function vendorList($map=''){
+    public function vendorList($map=array()){
         // 查询分公司数据
         if (!empty($map)) {
             $list = $this->where('`leavel`>1')->where($map)->order('updatetime desc')->select();
