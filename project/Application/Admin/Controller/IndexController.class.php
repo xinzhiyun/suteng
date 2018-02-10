@@ -33,7 +33,6 @@ class IndexController extends CommonController
 	    	$this->ajaxReturn($data);
     	} else {
     		$this->display();
-    	}
-        
+    	}       
     }
 }
