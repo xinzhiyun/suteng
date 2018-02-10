@@ -134,4 +134,35 @@ class ShopController extends CommonController
             $this->ajaxReturn($err);
         }
     }
+
+    /**
+     * [paytofailed 订单支付]
+     * @return [type] [description]
+     */
+    public function orderPay()
+    {
+        if(IS_POST){
+            // echo 1;
+            // // 准备订单查询数据
+            $showWhere['order_id'] = I('post.order');
+                
+            // // 查询订单表
+            $orderData = D('OrderSetmeal')->where($showWhere)->find();
+            // print_r($orderData);
+            // 判断订单未支付
+            if($orderData['status']==8){
+                // 订单金额
+                $money = $orderData['goods_price'];
+                // 订单号码
+                $order_id = $orderData['order_id'];
+                // 订单描述
+                $content = '速腾商城商品购买';
+                $this->uniformOrderTow($money,$order_id,$content);
+            }else{
+                // 订单不存在
+                echo -1;
+            }
+            // $this->uniformOrder(100,123456,'content');
+        }
+    }
 }
