@@ -142,7 +142,7 @@ $(function(){
 	var redaypercent;//滤芯剩余时间百分比
 	var reflowpercent;//滤芯剩余流量百分比
 	
-	for(var i=0; i<res.length; i++){
+	for(var i=0; i<res.length; i++){ 
 		
 		if(res[i]){
 			console.log(res[i].introduce);
