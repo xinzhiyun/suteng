@@ -895,7 +895,7 @@
 							for(var k=0;k<waitpaylist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
 								dingdanDaifukuan2+='<div class="goodsItem">'+
 									'<div class="giPicture">'+
-										'<img src="_PUBLIC__/Pic/repair/'+waitpaylist[i]['orderimg']+'" alt="">'+
+										'<img src="_PUBLIC__/Pic/repair/'+waitpaylist[i]['productList'][k]['orderimg']+'" alt="">'+
 									'</div>'+
 									'<div class="giDescription">'+
 										'<b>'+waitpaylist[i]['productList'][k]['productname']+'</b>'+
@@ -1012,7 +1012,7 @@
 								// alert(orderList[i]['productList'].length);
 								dingdanDaifahuo2+='<div class="goodsItem">'+
 									'<div class="giPicture">'+
-										'<img src="_PUBLIC__/Pic/repair/'+waitsendlist[i]['orderimg']+'" alt="">'+
+										'<img src="_PUBLIC__/Pic/repair/'+waitsendlist[i]['productList'][k]['orderimg']+'" alt="">'+
 									'</div>'+
 									'<div class="giDescription">'+
 										'<b>'+waitsendlist[i]['productList'][k]['productname']+'</b>'+
@@ -1078,7 +1078,7 @@
 							for(var k=0;k<waitgainlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
 								dingdanDaishouhuo2+='<div class="goodsItem">'+
 									'<div class="giPicture">'+
-										'<img src="_PUBLIC__/Pic/repair/'+waitgainlist[i]['orderimg']+'" alt="">'+
+										'<img src="_PUBLIC__/Pic/repair/'+waitgainlist[i]['productList'][k]['orderimg']+'" alt="">'+
 									'</div>'+
 									'<div class="giDescription">'+
 										'<b>'+waitgainlist[i]['productList'][k]['productname']+'</b>'+
@@ -1138,7 +1138,7 @@
 							for(var k=0;k<waitcommentlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
 								dingdanDaipinglun2+='<div class="goodsItem">'+
 									'<div class="giPicture">'+
-										'<img src="_PUBLIC__/Pic/repair/'+waitcommentlist[i]['orderimg']+'" alt="">'+
+										'<img src="_PUBLIC__/Pic/repair/'+waitcommentlist[i]['productList'][k]['orderimg']+'" alt="">'+
 									'</div>'+
 									'<div class="giDescription">'+
 										'<b>'+waitcommentlist[i]['productList'][k]['productname']+'</b>'+
