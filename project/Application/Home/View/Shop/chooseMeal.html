@@ -392,7 +392,7 @@
 			console.log(money,id)
 			//发送请求让后台生成订单号
 			$.ajax({
-				url: '{{:U("PaymentSystem/information")}}',
+				url: '{{:U("PaymentSystem/information")}}',				
 				type: 'post',
 				data: {'num':1,'id':tid,'money':money,'remodel':remodel},
 				success: function(res){

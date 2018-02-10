@@ -69,53 +69,63 @@ class MallController extends CommonController
     // 信息确认并生成订单
     public function information()
     {
-       
-        try {
-            $fliter = D('Filters');
-            $orders = D('ShopOrder');
-            $order_detail = D('OrderDetail');
-            $data = json_decode($_POST['data'],'true');
-            $orders->startTrans();
-            $order['uid'] = session('user.id');
-            $order['order_id'] = gerOrderId();
-            $order['addtime'] = time();
-            $order['g_type'] = 2;
-            $order['g_cost'] = "";
-            $detail = [];
-            foreach($data as $key => $value){
-                $where['id'] = $value['gid'];
-                $order['g_price'] += $value['money'];
-                $order['g_num'] += $value['num'];
-                $arr = $fliter->alias('g')->where($where)->field('price,cost')->find();
-                $order['g_cost'] += $value['num']*$arr['cost'];
-                $detail['order_id'] = $order['order_id'];
-                $detail['gid'] = $value['gid'];
-                $detail['num'] = $value['num'];
-                $detail['cost'] = $arr['cost'];
-                $detail['price'] = $arr['price'];
-                $detail['addtime'] = time();
-                $detail_statut = $order_detail->add($detail);
-                if(!$detail_statut) E('请重新结算',603);
-            }
-
-            $res = $orders->add($order);
-
-            if($res){
-                $msg = M('Cart')->where('uid='.session('user.id'))->delete();
-                
-                $orders->commit();
-                $this->ajaxReturn($order['order_id']);
-            } else {
-                $orders->rollback();
-                E('请重新购买',603);
-            }
-        } catch (\Exception $e) {
-            $err = [
-                'code' => $e->getCode(),
-                'msg' => $e->getMessage(),
+        if (IS_AJAX) {                    
+            // 处理订单信息
+            $mealId     = I('post.id');     // 商品（套餐）ID
+            $num        = I('post.num');    // 套餐数量
+            $money      = I('post.money');    // 套餐金额
+            $mealInfo   = D('setmeal')->find($mealId);
+            $orderId    = $this->getOrderId();
+            // print_r($mealInfo);
+            // 写入订单表
+            $dataDS = [
+                'order_id'      =>  $orderId,
+                'uid'           =>  session('user.id'),
+                'setmeal_id'    =>  $mealId,
+                'type_id'       =>  $mealInfo['tid'],
+                'remodel'       =>  $mealInfo['remodel'],
+                'money'         =>  $money,
+                'flow'          =>  $mealInfo['flow'],
+                'describe'      =>  $mealInfo['describe'],
+                'goods_num'     =>  $num,
+                'goods_price'   =>  $money,
+                'status'        =>  0,
+                'created_at'    =>  time()
             ];
-            $this->ajaxReturn($err);
+            $orderSetmeal = D('OrderSetmeal');
+            $insertId = $orderSetmeal->data($dataDS)->add();        
+            // 订单详情表(商品遍历)
+            // $order = $orderSetmeal->where('id='.$insertId)->field('order_id,created_at')->find();
+            // $dataOD = [
+            //     'order_id'      =>  $order['order_id'],
+            //     'gid'           =>  $mealId,
+            //     'num'           =>  $num,
+            //     'price'         =>  $money,
+            //     'status'        =>  0,
+            //     'addtime'       =>  $order['created_at'],
+            // ];
+            // D('OrderDetail')->data($dataOD)->add();
+            $this->ajaxReturn($orderId);
         }
+    }
+
+    function getOrderId()
+    {
+      $orderId = onlyOrderId();
+
+      do {
+        //查询订单号是否存在
+        $oid = M('shop_order')->where("`order_id`='{$orderId}'")->field('id')->find();
+        $osid = D('OrderSetmeal')->where("`order_id`='{$orderId}'")->field('id')->find();
+        if ($oid || $osid) {
+            $res = true;
+        } else {
+            $res = false;
+        }
+        // 如果订单号已存在再重新获取一次
+      } while ($oid);
+      // 绝对唯一的32位订单ID号
+      return $orderId;
     }
 }
 
