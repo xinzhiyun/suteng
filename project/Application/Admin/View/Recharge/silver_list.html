@@ -165,10 +165,10 @@
                     type: 'post',
                     success:function(res){
                         if(res.code==200){
-                            st==1?$('.status').removeClass('btn-success').html('下架').attr('st',0):$('.status').addClass("btn-success").html('上架').attr('st',1);
+                            // st==1?$('.status').removeClass('btn-success').html('下架').attr('st',0):$('.status').addClass("btn-success").html('上架').attr('st',1);
                             // 分公司交接成功
                             swal('设置成功',res.msg, "success");
-
+                            location.reload();
                         }else{
                             // 分公司交接失败
                             swal("设置失败",res.msg, "error");
@@ -293,7 +293,7 @@
                         if(res.code==200){
                             // 套餐删除成功
                             swal('删除成功',res.msg, "success");
-
+                            location.reload();
                         }else{
                             // 套餐删除失败
                             swal("删除失败",res.msg, "error");

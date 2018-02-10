@@ -105,7 +105,7 @@ class DeviceController extends CommonController
         try {
             $user_device = D('UserDevice');
             $where['device_code'] = I('post.code');
-            $map['uid'] = 58;//session('user.id');
+            $map['uid'] = session('user.id');
 
             $user_device->startTrans();
             // 修改当前用户的所有状态

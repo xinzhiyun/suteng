@@ -293,7 +293,7 @@
                         if(res.code==200){
                             // 套餐删除成功
                             swal('删除成功',res.msg, "success");
-
+                            location.reload();
                         }else{
                             // 套餐删除失败
                             swal("删除失败",res.msg, "error");
