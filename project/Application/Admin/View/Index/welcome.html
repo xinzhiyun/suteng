@@ -305,7 +305,7 @@
 		// 要显示的数据
 		var series_data = [[],[]];
 		$.ajax({
-			url: "{{:U('Admin/Index/index')}}", 
+			url: "{{:U('Admin/Index/welcome')}}", 
 			type: 'post',
 			success: function(res){
 				console.log(res);
@@ -331,7 +331,7 @@
 		})
 		// 请求后台数据
 		$.ajax({
-			url: "{{:U('Admin/Index/index')}}",
+			url: "{{:U('Admin/Index/welcome')}}",
 			type: 'post',
 			async: false,
 			dataType: 'json',
