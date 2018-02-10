@@ -14,7 +14,7 @@ class DevicesModel extends Model
     protected $_validate = array(
         array('device_code', '15', '编码格式不正确', '0', 'length'),
         array('device_code', '/^\d{15}$/', '编码格式不正确', '2', 'regex'),
-        array('device_code', '', '已经添加', '1', 'unique'),
+        array('device_code', '', '设备重复添加', '1', 'unique'),
     );
 
     // 自动完成
@@ -84,6 +84,18 @@ class DevicesModel extends Model
             ->alias('d')
             ->where($map)
             ->join('__TYPE__ t ON d.type_id=t.id', 'LEFT')
+            ->find();
+        return $data;
+    }
+
+    // 获取经销商信息
+    public function getVendors($map=array())
+    {
+        $data = $this
+            ->alias('d')
+            ->where($map)
+            ->join('__VENDORS__ v ON d.vid=v.id', 'LEFT')
+            ->field('v.*')
             ->find();
         return $data;
     }

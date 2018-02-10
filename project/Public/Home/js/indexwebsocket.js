@@ -30,7 +30,7 @@ window.onload = function(){
         $(".btmTxt").html("设备已关机");
         $(".clickBtn").css({color:'#f00',filter:'grayscale(0%)'});
     }
-    function arrearage(){//欠费停机 6
+    function arrearage(){//欠费 6
         $(".arrearage").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(100%)'});
         $(".btmTxt").html("欠费");
@@ -71,22 +71,22 @@ window.onload = function(){
         "rawtds":"75",
         "puretds":"42",
         "temperature":"24",
-        "reflowfilter1":null,
-        "redayfilter1":null,
-        "reflowfilter2":null,
-        "redayfilter2":null,
-        "reflowfilter3":null,
-        "redayfilter3":null,
-        "reflowfilter4":null,
-        "redayfilter4":null,
-        "reflowfilter5":null,
-        "redayfilter5":null,
-        "reflowfilter6":null,
-        "redayfilter6":null,
-        "reflowfilter7":null,
-        "redayfilter7":null,
-        "reflowfilter8":null,
-        "redayfilter8":null,
+        "reflowfilter1":"10000",
+        "redayfilter1":"100000",
+        "reflowfilter2":"50",
+        "redayfilter2":"95",
+        "reflowfilter3":"60",
+        "redayfilter3":"85",
+        "reflowfilter4":"10000",
+        "redayfilter4":"95",
+        "reflowfilter5":"40",
+        "redayfilter5":"47",
+        "reflowfilter6":"80",
+        "redayfilter6":"76",
+        "reflowfilter7":"45",
+        "redayfilter7":"95",
+        "reflowfilter8":"76",
+        "redayfilter8":"42",
         "leasingmode":"2",
         "alivestause":"1",
         "roomtemperature":"26",
@@ -102,10 +102,10 @@ window.onload = function(){
         "loaction":"10020�����",
         "addtime":"1513238294",
         "updatetime":"1513299086"
-    }
+    };
     var res = JSON.parse($(".res").val());
     console.log(getdataList);
-    console.log(res);
+    // console.log(res);
 
     var _status=getdataList.devicestause;//获取设备当前状态-> 0:制水 1:冲洗 2:水满 3:缺水 4漏水 5:检修 6:欠费停机 7:关机 8:开机(仅命令)
 
@@ -143,7 +143,6 @@ window.onload = function(){
     var websoket=new WebSocket("ws://120.27.12.1:6001");
     var PackNum=0;//包数据
     var CmdList=[];//命令队列
-    // var identify=0;
     var numAdd=0;
     var deviceId=getdataList.deviceid;
     // 获取设备id
@@ -184,7 +183,7 @@ window.onload = function(){
             var coldwater = dataList.coldwater;
             var roomtemperature = dataList.roomtemperature;
             var rawtds = dataList.RawTDS;
-            var phval = dataList.phval;
+            var phval = dataList.phval; 
             var puretds = dataList.PureTDS;
             //1.设备状态页面数据显示
             $(".rawtdsVal").html((rawtds?rawtds:54));//纯水值
@@ -230,7 +229,10 @@ window.onload = function(){
                         layui.use('layer', function(){
                             var layer = layui.layer;
                             layer.msg('已经给您加热了，天气冷小心烫着！');
-                            $('.heat').show().fadeOut(6000);
+                            // $('.heat').show().fadeOut(6000).fadeIn(3);
+                            // setTimeout(function(){
+                            //         $('.heat').hide();
+                            // },6000);
                         })
                     }
 

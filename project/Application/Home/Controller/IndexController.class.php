@@ -10,7 +10,6 @@ class IndexController extends CommonController
         $user_device = D('UserDevice');
         $device = D('Devices');
         $where['status'] = 1;//session('device.did');
-
         $where['uid'] = session('user.id');
         $res = $user_device->where($where)->find();
         if(empty($res['did'])) $this->redirect('Home/Device/index');

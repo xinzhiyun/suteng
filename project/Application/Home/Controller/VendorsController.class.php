@@ -26,9 +26,48 @@ class VendorsController extends Controller
 
         // 获取用户open_id
         $showData['open_id'] = $_SESSION['vendorInfo']['open_id'];
-        // 查询分销商状态
+        // 查询分销商
         $vendor = M('vendors')->where($showData)->find();
+        // 分销商级别
+        $vendor_leavel = $vendor['leavel'];
+        // 昨日时间区间
+        $Yesterday = array(array('gt',strtotime(date("Y-m-d 00:00:00",strtotime("-1 day")))),array('lt',strtotime(date("Y-m-d 23:59:59",strtotime("-1 day")))));
+        // 本月时间区间
+        $month = array(array('gt',strtotime(date("Y-m-1 00:00:00"))),array('lt',strtotime(date("Y-m-d 23:59:59"))));
 
+        // 根据分销商级别匹配查询条件
+        switch ($vendor_leavel) {
+            case '2':
+                    // A级分销商
+                    $vendor_code = 'vendora_code';
+                break;
+            case '3':
+                    // B级分销商
+                    $vendor_code = 'vendorb_code';
+                break;
+            case '4':
+                    // C级分销商
+                    $vendor_code = 'vendorc_code';
+                break;
+            default:
+                # code...
+                break;
+        }
+        // dump($Yesterday);die;
+        // 昨天统计
+        $YesterdayData = $this->showTimeData($vendor_code,$vendor['code'],$Yesterday);
+        // 本月统计
+        $monthData = $this->showTimeData($vendor_code,$vendor['code'],$month); 
+        // 查询下属用户总数量
+        $userNum = $this->showUserData($vendor_code,$vendor['code']);
+        // 查询下属分销商总数量
+        $verdorNum = $this->showVerdorData($vendor['code']);
+
+        $this->assign('YesterdayData',$YesterdayData);
+        $this->assign('monthData',$monthData);
+        $this->assign('userNum',$userNum);
+        $this->assign('verdorNum',$verdorNum);
+        $this->assign('vendor',$vendor);
         if($vendor){
         	// 获取分销商状态码
 	        $status = $vendor['status'];
@@ -48,24 +87,26 @@ class VendorsController extends Controller
 	        		break;
 	        	case '3':
 	        		// 待审批
-	        		echo '等待审批';
+	        		// echo '等待审批';
+                    $this->display('vendor_wait');
 	        		break;
 	        	case '4':
 	        		// 身份证审批失败
-	        		echo '身份证审批失败';
-	        		// 身份证信息填写
                 	$this->identity_refillings();
 	        		break;
 	        	case '5':
 	        		// 公司信息审批失败
-	        		echo '公司信息审批失败';
 	        		$this->company_refillings();
 	        		break;
 	        	case '6':
 	        		// 协议审批失败
-	        		echo '重新上传协议';
 	        		$this->display('protocol_refillings');
 	        		break;
+                case '9':
+                    // 交加盟费，传入分销商级别
+                    // $this->protocol_fee();
+                    $this->redirect('Home/vendors/protocol_fee');
+                    break;
 	        	case '7':
                     $leavel = $vendor['vendor'];
                     switch ($leavel) {
@@ -115,7 +156,7 @@ class VendorsController extends Controller
                             break;
                     }
                     $this->assign('data',$data);
-                    $this->assign('vendor',$vendor);
+                    
 	        		// 审批成功
 	        		$this->display('index');
 	        		break;
@@ -135,13 +176,13 @@ class VendorsController extends Controller
 
     }
 
-
     // 身份证信息填写
     public function identity()
     {
     	if(IS_POST){
     		// 获取缓存用户微信标识
     		$open_id = $_SESSION['vendorInfo']['open_id'];
+
     		// 接收表单信息
     		$name 		= I('post.name');
   			$phone 		= I('post.phone');
@@ -615,7 +656,7 @@ class VendorsController extends Controller
     	$info = $this->upload();
 
     	if($info){
-    		$info['status'] = 3;
+    		$info['status'] = 9;
             // 更新条件
             $saveData['open_id'] = $open_id;
             // 更新分销商信息
@@ -637,8 +678,124 @@ class VendorsController extends Controller
     	$this->ajaxReturn($message); 
     }
 
+    /**
+     * [protocol 签协议]
+     * @return [type] [description]
+     */
+    public function protocol_re()
+    {   
+        // 获取微信用户唯一标识
+        $open_id = $_SESSION['vendorInfo']['open_id'];
 
+        // 上传合同文件
+        $info = $this->upload();
 
+        if($info){
+            $info['status'] = 3;
+            // 更新条件
+            $saveData['open_id'] = $open_id;
+            // 更新分销商信息
+            $vandorRes = M('vendors')->where($saveData)->save($info);
+            if($vandorRes){
+                // $this->success('合同信息提交成功', U('Home/Vendors/index'));
+                $message['code'] = 200;
+                $message['res']  = '合同信息提交成功';
+            }else{
+                // $this->error('合同信息提交失败，请重新上传！');
+                $message['code'] = 605;
+                $message['res']  = '合同信息提交失败，请重新上传！';
+            }
+        }else{
+            $message['code'] = 605;
+            $message['res']  = '合同信息提交失败，请重新上传！';
+        }
+
+        $this->ajaxReturn($message); 
+    }
+    
+
+    // 收加盟费
+    public function protocol_fee()
+    {
+        // 获取微信用户唯一标识
+        $open_id = $_SESSION['vendorInfo']['open_id'];
+
+        // 准备查询条件
+        $showData['id'] = 1;
+        // 查询分销商加盟费
+        $vendor_fee = M('vendor_fee')->where($showData)->field('vendor_a,vendor_b,vendor_c')->find();
+
+        // 匹配分销商级别
+        switch ($_SESSION['vendorInfo']['leavel']) {
+            case '2':
+                // A级分销商
+                $money = $vendor_fee['vendor_a'];
+                break;
+            case '3':
+                // B级分销商
+                $money = $vendor_fee['vendor_b'];
+            case '4':
+                // C级分销商
+                $money = $vendor_fee['vendor_c'];
+                break;
+            default:
+                # code...
+                break;
+        }
+
+        // 微信支付配置
+        $weixin = new WeixinJssdk;
+        $signPackage = $weixin->getSignPackage();
+        // 查询用户微信中的openid
+        // $openId = $weixin->GetOpenid();
+        $openId = $_SESSION['vendorInfo']['open_id'];
+        // 获取用户open_id
+        $showDataa['open_id'] = $openId;
+        // 查询分销商状态
+        $vendor = M('vendors')->where($showDataa)->find();
+        $this->assign('vendor',$vendor);
+
+        //分配数据        
+        $this->assign('info',$signPackage);
+        $this->assign('openId',$openId);
+        $this->assign('money',$money);
+        // 显示模板
+        $this->display('protocol_fee');
+    }
+
+    // 收益明细
+    public function profit_details()
+    {
+        // 获取分销商标识
+        $showData['vendor_code'] = $_SESSION['vendorInfo']['code'];
+        // 查询分销商收益明细
+        $data = M('vendors_commission')->where($showData)->select();
+        $total = 0;
+        foreach ($data as $key => $value) {
+            // 避免小数运算
+            $total += $value['abonus']*100;
+        }
+        // 单位换算
+        $total = $total/100;
+
+        // 分配数据
+        $this->assign('data',$data);
+        $this->assign('total',$total);
+        // 显示模板
+        $this->display();
+    }
+
+    // 分销商团队
+    public function vendor_team()
+    {
+        $this->display();
+    }
+
+    // 收入详情
+    public function income_detailed()
+    {
+        $this->display();
+    }
 
     /**
      * [upload 图片上传]
@@ -667,6 +824,122 @@ class VendorsController extends Controller
         }
     }
 
+    /**
+     * [showTimeData 按时间区间统计分销商]
+     * @param  [type] $vendor [分销商级别]
+     * @param  [type] $code   [分销商标识]
+     * @param  [type] $time   [时间区间]
+     * @return [type]         [区间新增加会员，区间新增加订单，区间订单总额]
+     */
+    public function showTimeData($vendor,$code,$time)
+    {
+
+        // A级分销商
+        $showYesterdayUser = array($vendor=>$code);
+
+        // 昨日时间区间
+        $showYesterdayUser['addtime'] = $time;
+
+        // 昨日新增会员
+        $YesterdayUserData =  M('users')->where($showYesterdayUser)->field('id')->select();
+        
+        // 1.统计昨日新增会员数量
+        $YesterdayUserNum = 0;
+        if(!empty($YesterdayUserData)){
+            $YesterdayUserNum = count($YesterdayUserData);
+        } 
+        
+        // 昨日订单时间区间
+        $showYesterdayUserOrder['o.addtime'] = $time;
+        $showYesterdayUserOrder['u.'.$vendor] = $code;
+
+        // 昨日会员订单
+        $YesterdayUserOrderData = M('shop_order')
+                                    ->alias('o')
+                                    ->where($showYesterdayUserOrder)
+                                    ->join('__USERS__ u ON o.uid = u.id','LEFT')
+                                    ->field('o.id,o.g_price')
+                                    ->select();
+
+        // 2.昨日会员订单数量
+        $YesterdayUserOrderNum = 0;
+        
+        // 3.昨日会员订单总金额
+        $YesterdayUserOrderPrice = 0;
+
+        // 有订单数据就汇总金额
+        if(!empty($YesterdayUserOrderData)){
+            $YesterdayUserOrderNum = count($YesterdayUserOrderData);
+            // 统计订单金额
+            foreach ($YesterdayUserOrderData as $key => $value) {
+                // 单位转换
+                $YesterdayUserOrderPrice += $value['g_price'] * 100;
+            }
+            // 单位转换
+            $YesterdayUserOrderPrice = $YesterdayUserOrderPrice / 100;
+        }
+
+        // 新增加会员数量
+        $data['user_num'] = $YesterdayUserNum;
+        // 会员订单数量
+        $data['order_num'] = $YesterdayUserOrderNum;
+        // 会员订单金额
+        $data['order_price'] = $YesterdayUserOrderPrice;
+
+        return $data;
+    }
+
+    /**
+     * [showTimeData 分销商下用户总数量]
+     * @param  [type] $vendor [分销商级别]
+     * @param  [type] $code   [分销商标识]
+     * @return [type]         [用户总数量]
+     */
+    public function showUserData($vendor,$code)
+    {
+        // A级分销商
+        $showYesterdayUser[$vendor] = $code;
+
+        // 昨日新增会员
+        $YesterdayUserData =  M('users')->where($showYesterdayUser)->field('id')->select();
+        
+        // 1.统计昨日新增会员数量
+        $YesterdayUserNum = 0;
+        if(!empty($YesterdayUserData)){
+            $YesterdayUserNum = count($YesterdayUserData);
+        } 
+ 
+        return $YesterdayUserNum;
+    }
+
+    /**
+     * [showTimeData 按时间区间统计分销商]
+     * @param  [type] $vendor [分销商级别]
+     * @param  [type] $code   [分销商标识]
+     * @param  [type] $time   [时间区间]
+     * @return [type]         [区间新增加会员，区间新增加订单，区间订单总额]
+     */
+    public function showVerdorData($code)
+    {
+        // 上级分销商
+        $showYesterdayUser['superior_code']   = $code;
+        // 上上级分销商
+        $showYesterdayUser['superiors_code']  = $code;
+        // 同级邀请分销商
+        // $showYesterdayUser['invitation_code'] = $code;
+        $showYesterdayUser['_logic'] = 'OR';
+
+        // 昨日新增会员
+        $YesterdayUserData =  M('vendors')->where($showYesterdayUser)->field('id')->select();
+        
+        // 1.统计昨日新增会员数量
+        $YesterdayUserNum = 0;
+        if(!empty($YesterdayUserData)){
+            $YesterdayUserNum = count($YesterdayUserData);
+        } 
+ 
+        return $YesterdayUserNum;
+    }
 
 
 }

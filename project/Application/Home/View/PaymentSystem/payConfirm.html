@@ -345,11 +345,15 @@
     		font-size: 1.5rem;
 		}
 		/*支付图标的颜色*/
-		.icon-jinbi{
-			color:#FEDA02;
+		.icon-tubiao207{
+		  color:#f9df04; 
+          font-size: 1.2rem;
+          font-weight: 800;
 		}
-		.icon-yingbi{
-			color:#97C3C0;
+		.icon-tubiao207-copy{
+			 font-size: 1.2rem;
+          color: #dadad5;
+          font-weight: 800;
 			
 		}
 		.icon-z-weixin{
@@ -360,8 +364,8 @@
 			color:#22A8FF;
 			
 		}
-		.icon-yinhang-yinlian-{
-			color:#6BB5BB;
+		.icon-yinlian{
+			color:#1296DB;
 			
 		}
 		.paytop>.paytopRight{
@@ -542,11 +546,11 @@
 			<div class="paymidd">
 				<h3>选择支付方式</h3>
 				<ul class="clearfix">
-					<li index="1"><i class="iconfont icon-jinbi"></i>金币<span class="iconfont icon-xuanze"></span></li>
-					<li index="2"><i class="iconfont icon-yingbi"></i>银币<span class="iconfont icon-kuang1"></span></li>
+					<li index="1"><i class="iconfont icon-tubiao207"></i>金币<span class="iconfont icon-xuanze"></span></li>
+					<li index="2"><i class="iconfont icon-tubiao207-copy"></i>银币<span class="iconfont icon-kuang1"></span></li>
 					<li index="3"><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-kuang1"></span></li>
 					<li index="4"><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
-					<li index="5"><i class="iconfont icon-yinhang-yinlian-"></i>银联<span class="iconfont icon-kuang1"></span></li>
+					<li index="5"><i class="iconfont icon-yinlian"></i>银联<span class="iconfont icon-kuang1"></span></li>
 				</ul>
 			</div>
 			<div class="payBott">
@@ -587,6 +591,9 @@
 		    ]
 		});
 		$(function(){
+			$("#hLeft").click(function(){
+				location.href = "{{:U('Address/index')}}";
+			})
 			//获取从后台传来的订单号
 			var dangdanID;	
 			if(sessionStorage.getItem('order_id')){
@@ -645,7 +652,7 @@
 				// 遍历需要支付的滤芯商品信息
 				for(var i=0; i<lvxinData.length;i++){
 					goodsHTML += '<div class="goods">'+
-						'<div class="img"><img src="'+ lvxinData[i].picturepath +'" alt="正在加载..."></div>'+
+						'<div class="img"><img src="/Uploads/'+ lvxinData[i].picturepath +'" alt="正在加载..."></div>'+
 						'<div class="dec">'+
 							'<h5>'+ lvxinData[i].filtername +'</h5>'+
 							'<p>'+ lvxinData[i].desc +'</p>'+
@@ -671,7 +678,7 @@
 			}else if(goods_data){	// 如果有商品购买，从商品详情’立即购买‘过来
 				// 遍历需要支付的商品信息
 				goodsHTML += '<div class="goods">'+
-					'<div class="img"><img src="'+ goods_data.goodsDetail.path +'" alt="正在加载..."></div>'+
+					'<div class="img"><img src="/Uploads/'+ goods_data.goodsDetail.path +'" alt="正在加载..."></div>'+
 					'<div class="dec">'+
 						'<h5>'+ goods_data.goodsDetail.name +'</h5>'+
 						'<p>'+ goods_data.goodsDetail.desc +'</p>'+

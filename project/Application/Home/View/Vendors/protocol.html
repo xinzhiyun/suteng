@@ -50,7 +50,7 @@
             background: #ccc;
             float: left;
             overflow: hidden;
-            padding-right: 0.5rem;
+/*            padding-right: 0.5rem;*/
 
         }
          header>p>b>img{
@@ -148,6 +148,7 @@
             top: 2.15rem;
             color: #5a5a5a;
             border: 1px dashed #76DED3;
+            overflow: hidden;
         }
         .xiePic>i{
             position: absolute;
@@ -336,8 +337,8 @@
 <body>
     <div class="ibox-content">
         <header>
-            <p><b></b></p>
-            <p><span>分销商名称</span></p>
+            <p><b><img src="{{$vendor.head}}" alt="" width="120%"></b></p>
+            <p><span>{{$vendor.name}}</span></p>
         </header>
         <form action="javascript:false;" method="post" id="pic" class="form-horizontal clearfix" enctype="multipart/form-data">    
             <div class="form-group">
@@ -400,22 +401,7 @@
             </div>
         </div>
     </div>
-<!-- 微信支付支持JS部分代码 -->
-<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>                                                                                      
-<script>
-        //微信接口
-        wx.config({
-            debug: false,
-            appId: '{{$info["appId"]}}',
-            timestamp: '{{$info["timestamp"]}}',
-            nonceStr: '{{$info["nonceStr"]}}',
-            signature: '{{$info["signature"]}}',
-            jsApiList: [
-              // 所有要调用的 API 都要加到这个列表中
-              'chooseWXPay'
-            ]
-        });
-
+    <script>
         //支付方式
         $('.xieBtn').click(function(){
             // 获取表单数据
@@ -431,8 +417,8 @@
                 processData: false,
                 success: function (res) {
                     if(res.code == 200){
-                        // location.reload();
-                        $('.paystyle').slideDown("slow");
+                         // 跳转到微信支付页面 
+                         window.location.href="{{:U('Home/Vendors/index')}}";
                     } else {
                         swal('提交失败',res.msg, "error");
                     }
@@ -443,31 +429,6 @@
             });
 
         })
-
-        // 付款方式的单选框
-        $('.paymidd>ul>li>span').click(function(){
-            $('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-            $(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
-        })
-        // 付款方式页面隐藏
-        $('.paytop>.paytopLeft>i').click(function(){
-            $('.paystyle').slideUp("slow");
-        })
-        // 模态框的js
-        $(function(){
-            $(".start").on("click",function(){
-               $(".modelAll").css('display','block');
-               $(".modal").addClass("in");
-               $(".modal").css('z-index','1001');
-               $(".modal-backup").css('display','block');
-           });
-            $(".close").on("click",function(){
-               $(".modal").removeClass('in');
-               $(".modal").css('z-index','-1');
-               $(".modal-backup").fadeOut('slow');
-           });
-        })
-
 
         function protocolImage(file) {
             if (!file.files || !file.files[0]) {

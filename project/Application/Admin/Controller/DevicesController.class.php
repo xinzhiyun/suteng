@@ -42,6 +42,7 @@ class DevicesController extends CommonController
             ->join('__VENDORS__ v ON d.vid=v.id', 'LEFT')
             ->limit($Page->firstRow.','.$Page->listRows)
             ->field('d.device_code,d.type_id,d.addtime,v.user,d.device_statu,t.typename,ds.AliveStause')
+            ->order('d.id desc')
             ->select();
         $filterType = M('type')->where(['status'=>0])->select();
         $assign = [
@@ -93,21 +94,46 @@ class DevicesController extends CommonController
     public function deviceDetail()
     {
         $map['device_code'] = I('get.code');
-        $device = D('Devices');
+        $device     = D('Devices');
         // 状态信息
-        $statu = $device->getDeviceInfo($map);
-
+        $statu      = $device->getDeviceInfo($map);
+        $vendors = $device->getVendors($map);
         // 滤芯信息
-        $filter = $device->getFilterInfo($map);
+        $filter     = $device->getFilterInfo($map);
         $filterInfo = $device->getFilterDetail($filter);
         $assign = [
             'statu' => $statu,
             'filterInfo' => $filterInfo,
             'filter' => $filter,
+            'vendor' => $vendor,
         ];
-        dump($assign);
         $this->assign($assign);
         $this->display('devices_detail');
+    }
+
+    // 设备批量绑定
+    public function deviceAdds()
+    {
+        try {
+            $upload = new \Think\Upload();// 实例化上传类
+            $upload->maxSize   =     3145728 ;// 设置附件上传大小
+            $upload->exts      =     array('xls', 'xlsx');// 设置附件上传类型
+            $upload->rootPath  =     './Uploads/'; // 设置附件上传根目录
+            $upload->savePath  =     ''; // 设置附件上传（子）目录
+            // 上传文件 
+            $info   =   $upload->upload();
+            $info = $info['batch'];
+            $exts = $info['ext'];
+            if(!$info) E($upload->getError(),603);
+            $path = './Uploads/'.$info['savepath'].$info['savename'];
+            $this->goods_import($path,$exts);
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
     }
 
     /**
@@ -126,12 +152,14 @@ class DevicesController extends CommonController
             ); // 设置附件上传类
             $upload->savePath = '/'; // 设置附件上传目录
             $info = $upload->uploadOne($_FILES['batch']);
+            dump($info);die;
             $filename = './Uploads' . $info['savepath'] . $info['savename'];
             $exts = $info['ext'];
-            if (! $info) {
+            if (!$info) {
                 // 上传错误提示错误信息
                 E($upload->getError(),202);
             } else {
+
                 // 上传成功
                 $this->goods_import($filename, $exts);
 
@@ -149,22 +177,23 @@ class DevicesController extends CommonController
     {
         $i = 0;
         foreach ($data as $key => $val) {
+            $i ++;
             $_POST['device_code'] = $val['A'];
             $_POST['type_id'] = $val['B'];
-            $Devices = D('Devices');
-            $res = D('Devices')->getCate();
-            $info = $Devices->create();
-            if($info){
-                $res = $Devices->add();
-                if (!$res) {
-                    E('导入失败啦！', 202);
-                }
-            } else {
-                E('第'.($i+1).'条数据开始不正确或是已经添加', 203);
-            }
-            $i ++;
+            $devices = D('Devices');
+            $data = $_POST;
+            $res = $devices->getCate();
+            // dump($res);
+            // dump((string)$data['type_id']);die;
+            if(!in_array((string)$data['type_id'],$res)) E('第'.$i.'条'.$data['device_code'].'设备类型不存在！', 206);
+            $info = $devices->create();
+            // dump($i);die;
+            if(!$info) E('第'.$i.'条'.$data['device_code'].$devices->getError().',之后数据未添加', 203);
+            $res = $devices->add();
+            if(!$res) E('第'.$i.'条数据开始不正确或是已经添加',204);
         }
-        E('共'.$i.'条数据导入成功', 200);
+        E('数据插入成功'.$i.'条',200);
+        
     }
 
     private function getExcel($fileName, $headArr, $data)
@@ -219,10 +248,9 @@ class DevicesController extends CommonController
         // 如果excel文件后缀名为.xls，导入这个类
         if ($exts == 'xls') {
             $PHPReader = new \PHPExcel_Reader_Excel5();
-        } else
-            if ($exts == 'xlsx') {
-                $PHPReader = new \PHPExcel_Reader_Excel2007();
-            }
+        } elseif ($exts == 'xlsx') {
+            $PHPReader = new \PHPExcel_Reader_Excel2007();
+        }
 
         // 载入文件
         $PHPExcel = $PHPReader->load($filename);
@@ -447,6 +475,13 @@ class DevicesController extends CommonController
                 $i++;
             }
             if(!$type->create($data)) E($type->getError());
+            $types = I('post.type');
+            if($types == 'on'){
+                $data['type'] = 1;
+            } else {
+                $data['type'] = 0;
+            }
+            // dump($data);die;
             $res = $type->add($data);
             if($res){
                 E('设置成功', 200);
@@ -470,17 +505,17 @@ class DevicesController extends CommonController
             $arr = I('post.');
             $where['id'] = I('post.id');
             $data['typename'] = $arr['typename'];
-            // $i = 1;
-            // foreach ($arr['arr'] as $key => $value) {
-            //     $data['filter'.$i] = $value;
-            //     $i++;
-            // }
-            // dump($arr['arr']);
+            $types = I('post.type');
+            // dump($types);die;
+            if($types == 'on'){
+                $data['type'] = 1;
+            } else {
+                $data['type'] = 0;
+            }
             for ($i=1; $i <= 8; $i++) { 
                 $data['filter'.$i] = $arr['arr'][$i-1];
             }
             $data['updatetime'] = time();
-            // dump($data);die;
             $res = $type->where($where)->save($data);
             if($res){
                 E('更新成功',200);
@@ -519,4 +554,6 @@ class DevicesController extends CommonController
             $this->ajaxReturn($err);
         }
     }
+
+    
 }

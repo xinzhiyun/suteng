@@ -1,6 +1,8 @@
 <extend name="Public/base" />
 <block name="mylink">
     <link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/layui/css/layui.css">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/switchery.min.css" rel="stylesheet">
 </block>
 <block name="content">
     <div class="content">
@@ -35,6 +37,9 @@
                                     </th>
                                     <th colspan="8">
                                         滤芯详情
+                                    </th>
+                                    <th>
+                                        是否商用
                                     </th>
                                     <th>
                                         更新时间
@@ -81,11 +86,18 @@
                                                 {{$vo.filter8}}
                                             </td>
                                             <td>
+                                                <switch name="vo.type">
+                                                    <case value="0">家用机型</case>
+                                                    <case value="1">商用机型</case>
+                                                </switch>
+                                            </td>
+
+                                            <td>
                                                 {{$vo.updatetime|date="Y-m-d H:i:s",###}}
                                             </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <a data-toggle="modal" class="btn btn-outline btn-success" data-target="#myModal" typename="{{$vo.typename}}" typeid="{{$vo.id}}" filter1="{{$vo.filter1}}" filter2="{{$vo.filter2}}" filter3="{{$vo.filter3}}" filter4="{{$vo.filter4}}" filter5="{{$vo.filter5}}" filter6="{{$vo.filter6}}" filter7="{{$vo.filter7}}" filter8="{{$vo.filter8}}" onclick="edit(this)">
+                                                    <a data-toggle="modal" class="btn btn-outline btn-success" data-target="#myModal" typename="{{$vo.typename}}" typeid="{{$vo.id}}" filter1="{{$vo.filter1}}" filter2="{{$vo.filter2}}" filter3="{{$vo.filter3}}" filter4="{{$vo.filter4}}" filter5="{{$vo.filter5}}" filter6="{{$vo.filter6}}" filter7="{{$vo.filter7}}" filter8="{{$vo.filter8}}" type="{{$vo.type}}" onclick="edit(this)">
                                                         编辑
                                                     </a>
                                                     <a class="btn btn-outline btn-success deletBnt" productId="{{$vo['id']}}" onclick="del(this)">
@@ -138,7 +150,14 @@
                             <label class="col-sm-4 control-label">
                                 已选择滤芯：<br />
                             </label>
-                            <div class="col-sm-8 choosed">
+                            <div class="col-sm-8 choosed"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                是否商用
+                            </label>
+                            <div class="col-md-3" id="is_true">
+                                <input type="checkbox" name="type" class="js-switch" checked />
                             </div>
                         </div>
                         <div class="form-group">
@@ -154,7 +173,22 @@
 </block>
 <block name="myjs">
     <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/switchery.min.js"></script>
     <script>
+        var elem = document.querySelector('.js-switch');
+        var init = new Switchery(elem);
+        defaults = {
+            color             : '#64bd63'
+          , secondaryColor    : '#dfdfdf'
+          , jackColor         : '#fff'
+          , jackSecondaryColor: null
+          , className         : 'switchery'
+          , disabled          : false
+          , disabledOpacity   : 0.5
+          , speed             : '0.1s'
+          , size              : 'default'
+        }
         function add()
         {
             $("#myModalLabel").html('类型设置');
@@ -167,6 +201,7 @@
         }
         $('.sure').on('click','.product-add',function(e){
             var form = $("#form").serializeArray();
+            console.log(form);
             parent.layer.confirm('确认设置该类型吗？', {
                 btn: ['确认','取消'], //按钮
                 shade: false //不显示遮罩
@@ -196,7 +231,6 @@
             var filterName = $(this).text();
             var html = "<span class='btn btn-primary btn-white deltype'>"+filterName+"<input type='hidden' name=arr[] value='"+filterName+"'></span>";
             var num = $('.choosed span').length;
-            console.log(num);
             if( num >= 8 ){
                 parent.layer.msg('滤芯达到上限，不可添加');
                 return false;
@@ -229,6 +263,33 @@
             var filter6 = $(obj).attr('filter6');
             var filter7 = $(obj).attr('filter7');
             var filter8 = $(obj).attr('filter8');
+            var type = $(obj).attr('type');
+            console.log(type);
+
+            var html = '';
+            // 状态判断
+            if(type==1){
+                html = '<input type="checkbox" name="type" class="js-switch1" checked/>';
+            }else{
+                html = '<input type="checkbox" name="type" class="js-switch1"/>';
+            }
+            $('#is_true').html(html);
+            // 初始化按钮
+            var elem = document.querySelector('.js-switch1');
+            var init = new Switchery(elem);
+            defaults = {
+                color             : '#64bd63'
+              , secondaryColor    : '#dfdfdf'
+              , jackColor         : '#fff'
+              , jackSecondaryColor: null
+              , className         : 'switchery'
+              , disabled          : false
+              , disabledOpacity   : 0.5
+              , speed             : '0.1s'
+              , size              : 'default'
+            }
+
+
             arr.push(filter1,filter2,filter3,filter4,filter5,filter6,filter7,filter8);
             html = "";
             for (var i = 0; i < arr.length; i++) {
@@ -249,6 +310,7 @@
         // 修改
         $('.sure').on('click','.product-edit',function(e){
             var form = $("#form").serializeArray();
+            console.log(form);
             parent.layer.confirm('确认修改该类型吗？', {
                 btn: ['确认','取消'], //按钮
                 shade: true //不显示遮罩

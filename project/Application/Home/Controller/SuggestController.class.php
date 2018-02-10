@@ -18,6 +18,7 @@ class SuggestController extends CommonController
     	if (IS_AJAX) {
     		$data['uid'] = $_SESSION['user']['id'];
     		$data['content'] = I('post.content');
+            $data['addtime'] = time();
     		$feeds = D("feeds");
 	        $res = $feeds->add($data); 
 	        if($res){

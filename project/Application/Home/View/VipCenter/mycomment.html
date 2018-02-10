@@ -8,7 +8,7 @@
  	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
   	<script src="__PUBLIC__/Home/js/public.js"></script>
-	<title>售后评分</title>
+	<title>我的评论</title>
 </head>
 <style>
 
@@ -73,7 +73,7 @@
 	.itemgoodsBott>p{
 		line-height: 1.1rem;
 		color: #5A5A5A;
-
+	
 
 	}
 	.itemgoodsBott>.commpic{
@@ -106,7 +106,27 @@
 	.mysaleContain{
 		width: 100%;
 	}
-
+	/*满五角星*/
+	.pingfen>span {
+		width: 100%;
+		height: 100%;
+		display: inline-block;
+		position: absolute;
+		left: 0;
+		overflow: hidden;
+	}
+	/*空五角星，做背景*/
+	.pingfen:before {
+		content: "\e64b\e64b\e64b\e64b\e64b";
+		display: block;
+		color: #FBC91D;    
+	}
+	.pingfen>span:after {
+		content: "\e64a\e64a\e64a\e64a\e64a";
+		display: block;
+		position: absolute;
+		color: #FBC91D;
+	}
 	.mysaleBot{
 		width: 90%;
 		padding:0.666667rem 5% 1rem;
@@ -125,7 +145,8 @@
 		margin-right: 0.5rem;
 	}
 	.mysaleBot>p>i{
-		display: inline-block;
+		display: inline-flex;
+		position: relative;
 		color:#FBC91D;
 		font-size: 1.2rem;
 	
@@ -161,22 +182,18 @@
 	    border-radius: 0.3rem;
 	}
 	
-	
-	
-	
-		
 </style>
 <body>
 	<div class="mycommentContain">
 		<!-- 第一类好评开始开始 -->
-		<div class="mycomItem-first clearfix">
+		<!-- <div class="mycomItem-first clearfix">
 			<div class="itemgoodsTop">
 				<h3><span>2019-1-4</span><span>10:28:39</span></h3>
 				<div class="goodspic clearfix">
 					<div class="mygoodsLeft"><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
 					<div class="mygoodsRight">
 						<p>尼康（Nikon）D3300 单反套（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头熔体破天也5替人图片</p>
-						<b>5699.0</b>
+						<b>5699.00</b>
 					</div>
 				</div>
 			</div>
@@ -190,22 +207,22 @@
 					</ul>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<!-- 第一类好评结束 -->
 		<!-- 第二类五星好评开始开始 -->
-		<div class="mycomItem-second clearfix">
+		<!-- <div class="mycomItem-second clearfix">
 			<div class="itemgoodsTop">
 				<h3><span>2019-1-4</span><span>10:28:39</span></h3>
 				<div class="goodspic .clearfix">
 					<div class="mygoodsLeft"><img src="__PUBLIC__/Home/images/comm_03.png" alt=""></div>
 					<div class="mygoodsRight">
 						<p>尼康（Nikon）D3300 单反套（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头熔体破天也5替人图片</p>
-						<b>5699.0</b>
+						<b>5699.00</b>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<!-- 五星评分 -->
-			<div class="mysaleContain">
+			<!-- <div class="mysaleContain">
 				<div class="mysaleBot">
 					<p class=".clearfix">
 						<b>安装人员评分</b>
@@ -234,7 +251,7 @@
 					<p>安装师傅认真负责，很好的一次用户体现</p>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<div class="mycommentFoot clearfix">
 			<h3>————<span>继续评论以下商品</span>————</h3>
 			<ul>
@@ -242,25 +259,120 @@
 				<li><a href="#"><img src="__PUBLIC__/Home/images/comm_03.png" alt=""></a></li>
 				<li><a href="#"><img src="__PUBLIC__/Home/images/comm_03.png" alt=""></a></li>
 
-			</ul>	
+			</ul>
 		</div>
 	</div>
 	<script>
-		$('.mysaleBot>p>i').click(function(){
+		var commetHTML = '';	//存放评论的数据
+		/*
+			请求评论数据
+		 */
+		$.ajax({
+			url: '{{:U("VipCenter/ajaxMy")}}',
+			type: 'post',
+			success: function(res){
+				console.log('成功！ ',res);
+				var picStr = '';	//存放图片的html
+				var picArr = [];	//存放评论图片的数组
+				var text_html = '';		//安装评价或非安装评论
+				//模拟数据
+				res = [
+					{'pingjia':0,'path': ['comm_02.png','comm_02.png','comm_02.png'],'content':'宝贝很好~~~好喜欢好喜欢宝贝很好','addtime':'2017-12-11'},
+					{'pingjia':1,'path': ['comm_02.png','comm_02.png'],'content':'宝贝很不错，挺好的挺好的','addtime':'2017-12-12','xing1':'4','xing2':'5','xing3':'3'},
+					{'pingjia':0,'path': ['comm_02.png'],'content':'真的很不错，物有所值','addtime':'2017-12-13','xing1':'5','xing2':'4','xing3':'4'}
+				];
+				for(var i=0; i<res.length; i++){
+					if(!res[i].pingjia){	//商品评论
+						text_html = '<!-- 评论内容 -->'+
+							'<div class="itemgoodsBott">'+
+								'<p>'+ res[i].content +'</p>'+
+								'<div class="commpic">'+
+									'<ul></ul>'+
+								'</div>'+
+							'</div>';
+					}else{		//安装评价
+						text_html = '<!-- 五星评分 -->'+
+							'<div class="mysaleContain">'+
+								'<div class="mysaleBot">'+
+									'<p class=".clearfix">'+
+										'<b>安装人员评分</b>'+
+										'<i index="1" class="iconfont pingfen"><span style="width:'+ res[i].xing1*20 +'%"></span></i>'+
+									'</p>'+
+									'<p class=".clearfix">'+
+										'<b>服务态度评分</b>'+
+										'<i index="1" class="iconfont pingfen"><span style="width:'+ res[i].xing2*20 +'%"></span></i>'+
+									'</p>'+
+									'<p class=".clearfix">'+
+										'<b>着装评分</b>'+
+										'<i index="1" class="iconfont pingfen"><span style="width:'+ res[i].xing3*20 +'%"></span></i>'+
+									'</p>'+
+									'<p>安装师傅认真负责，很好的一次用户体现</p>'+
+								'</div>'+
+							'</div>';
+					}
+					commetHTML += '<div class="mycomItem-first clearfix">'+
+							'<div class="itemgoodsTop">'+
+								'<h3><span>'+ res[i].addtime +'</span><span>10:28:39</span></h3>'+
+								'<div class="goodspic clearfix">'+
+									'<div class="mygoodsLeft"><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>'+
+									'<div class="mygoodsRight">'+
+										'<p>尼康（Nikon）D3300 单反套（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头熔体破天也5替人图片</p>'+
+										'<b>5699.00</b>'+
+									'</div>'+
+								'</div>'+
+							'</div>'+
+						'</div>' + text_html;
 
-			var leiName=$(this).attr('class')
-			if(leiName=='iconfont icon-jingdiananli_kongwujiaoxing_shoucang'){
-				$(this).removeClass(leiName)
-				$(this).addClass('iconfont icon-jingdiananli_wujiaoxing_shoucanghou')
-			
-			 }
-			 else{
-				$(this).removeClass(leiName);
-				$(this).addClass('iconfont icon-jingdiananli_kongwujiaoxing_shoucang');
-
+					if(res[i].path.length == 1){//图片只有一张
+						picArr.push({'picHTML':'<li><img src="__PUBLIC__/Home/images/'+res[i].path+'" alt=""></li>'})
+					}else if(res[i].path.length > 1){
+						picStr = '';	//先清空再生成
+						//图片多于一张
+						// console.log(res[i].path.length)
+						for(var j=0; j<res[i].path.length; j++){
+							picStr += '<li><img src="__PUBLIC__/Home/images/'+res[i].path[j]+'" alt=""></li>'
+						}
+						picArr.push({'picHTML':picStr});
+					}
+				}
+				// console.log('picArr: ',picArr)
+				// console.log('commetHTML: ',commetHTML)
+				if(commetHTML){
+					$(".mycommentContain").html(commetHTML);		//评价的内容
+					//遍历评价的图片
+					for(var i=0; i<picArr.length; i++){
+						$(".commpic").eq(i).children("ul").html(picArr[i].picHTML);			//评价的图片
+					}
+				}else{
+					$(".mycommentContain").html('您还没有已评论的记录');
+				}
+			},
+			error: function(res){
+				console.log('失败！ ',res);
 			}
+		})
+		// $('.mycommentContain').on('click','.mysaleBot>p>i',function(){
+		// 	var index = $(this).attr("index");
+		// 	console.log(index);
+		// 	var leiName=$(this).attr('class');
+		// 	//点击空五角星
+		// 	if(leiName=='iconfont icon-jingdiananli_kongwujiaoxing_shoucang'){
+		// 		$(this).removeClass(leiName)
+		// 		$(this).siblings('i').removeAttr("class").addClass('iconfont icon-jingdiananli_kongwujiaoxing_shoucang');
+		// 		for(var i=0; i<index; i++){
+		// 			$(this).parent().find('i').eq(i).removeAttr("class").addClass('iconfont icon-jingdiananli_wujiaoxing_shoucanghou')
+		// 		}
+			
+		// 	}else{
+		// 		$(this).removeClass(leiName)
+		// 		$(this).siblings('i').removeAttr("class").addClass('iconfont icon-jingdiananli_kongwujiaoxing_shoucang');
+		// 		for(var i=0; i<index; i++){
+		// 			$(this).parent().find('i').eq(i).removeAttr("class").addClass('iconfont icon-jingdiananli_wujiaoxing_shoucanghou')
+		// 		}
 
-		});
+		// 	}
+
+		// });
 	</script>
 </body>
 </html>

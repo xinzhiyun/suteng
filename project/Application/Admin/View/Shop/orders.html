@@ -59,6 +59,9 @@
                                     支付方式
                                 </th>
                                 <th>
+                                    订单类型
+                                </th>
+                                <th>
                                     订单状态
                                 </th>
                                 <th>
@@ -73,7 +76,7 @@
                                 <volist name="data" id="v">
                                     <tr>
                                         <td>
-                                            {{$v['order_id']}}
+                                            <a href="__URL__/selectOrder?code={{$v['order_id']}}">{{$v['order_id']}}</a>
                                         </td>
                                         <td>
                                             {{$v['name']}}
@@ -101,18 +104,26 @@
                                             </switch>
                                         </td>
                                         <td>
+                                            <switch name="v.g_type">
+                                                <case value="0">租赁订单</case>
+                                                <case value="1">商品订单</case>
+                                                <case value="2">耗材订单</case>
+                                                <case value="3">兑换订单</case>
+                                            </switch>
+                                        </td>
+                                        <td>
                                             <!-- 0已下单，1处理中，2已发货，3已收货，4退货处理中，5已退货，6申诉中，7订单完成，8未支付 -->
                                             <switch name="v.status">
-                                                <case value="0"><span>已下单</span></case>
-                                                <case value="1"><span>处理中</span></case>
-                                                <case value="2"><span>已发货</span></case>
-                                                <case value="3"><span>已收货</span></case>
-                                                <case value="4"><span>退货处理中</span></case>
-                                                <case value="5"><span>已退货</span></case>
-                                                <case value="6"><span>申诉中</span></case>
-                                                <case value="7"><span>订单完成</span></case>
-                                                <case value="8"><span>未支付</span></case>
-                                                <case value="9"><span>已支付</span></case>
+                                                <case value="0"><span style="color:pink;">已下单</span></case>
+                                                <case value="1"><span style="color:darkblue;">处理中</span></case>
+                                                <case value="2"><span style="color:darkred;">已发货</span></case>
+                                                <case value="3"><span style="color:darkpink;">已收货</span></case>
+                                                <case value="4"><span style="color:lightblue;">退货处理中</span></case>
+                                                <case value="5"><span style="color:">已退货</span></case>
+                                                <case value="6"><span style="color:">申诉中</span></case>
+                                                <case value="7"><span style="color:">订单完成</span></case>
+                                                <case value="8"><span style="color:red;">未支付</span></case>
+                                                <case value="9"><span style="color:green;">已支付</span></case>
                                             </switch>
                                         </td>
                                         <td>
@@ -132,6 +143,9 @@
                             </empty>
                         </tbody>
                     </table>
+                    <div>
+                        {{$show}}
+                    </div>
                 </div>
 
             </div>
@@ -243,44 +257,7 @@
 
         $('body').on('click','.showmore',function(){
             var orderId = $(this).attr('orderId')
-            location.href = "selectOrder?id="+orderId;            
-        })
-        $(function(){
-            var span = $("span").html();
-            var sp = $("span");
-            switch(span)
-            {
-                case '已下单':
-                    sp.css('color','blue');
-                    break;
-                case '处理中':
-                    sp.css('color','blue');
-                    break;
-                case '已发货':
-                    sp.css('color','blue');
-                    break;
-                case '已收货':
-                    sp.css('color','blue');
-                    break;
-                case '退货处理中':
-                    sp.css('color','blue');
-                    break;
-                case '已退货':
-                    sp.css('color','blue');
-                    break;
-                case '申诉中':
-                    sp.css('color','blue');
-                    break;
-                case '订单完成':
-                    sp.css('color','blue');
-                    break;
-                case '未支付':
-                    sp.css('color','red');
-                    break;
-                case '已支付':
-                    sp.css('color','green');
-                    break;
-            }
+            location.href = "{{:U('selectOrder'),'',''}}?id="+orderId;            
         })
         
     </script>

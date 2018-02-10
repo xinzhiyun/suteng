@@ -88,4 +88,29 @@
 		</div>
 	</div>
 </body>
+<script>
+	// ajax请求
+	   $('.switchFoot>input').click(function(){
+		   	$.ajax({
+
+	             type: "POST",
+
+	             url: "url.html",
+
+	             data: {
+	             	"jiare":$('inputTime').val(),
+	             	
+	             },
+
+	             success: function(data){
+	             },
+
+	             error : function(){
+	             	// alert(1);
+	             	
+	             }
+
+	        });
+	   })
+</script>
 </html>                                                                                                                                                                                                                                                                      	

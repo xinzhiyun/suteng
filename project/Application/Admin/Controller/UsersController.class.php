@@ -23,6 +23,7 @@ class UsersController extends CommonController
         $user = D('users');
         $total = $user->where($map)->count();
         $page  = new \Think\Page($total,8);
+        page_config($page);
         $pageButton =$page->show();
 
         $userlist = $user->where($map)->limit($page->firstRow.','.$page->listRows)->select();
@@ -212,6 +213,48 @@ class UsersController extends CommonController
                 'msg' => $e->getMessage(),
             ];
             $this->ajaxReturn($err);
+        }
+    }
+
+    public function user_upgrade()
+    {
+        // 查询标准会员升级钻石会员条件
+        $user =  M('config')->where('id=1')->field('user_upgrade')->find();
+
+        if(IS_POST){
+            // 接收表单数据
+            $data = I('post.');
+
+
+            // 实例化验证类
+            $validate   = new \Org\Util\Validate;
+            // 判断A级分销商加盟费是否修改
+            if($data['user_upgrade'] != $user['user_upgrade']){
+                // 验证是加盟费格式
+                if($validate->original('/^[\d]{1,18}[\.][\d]{2}$/',$data['user_upgrade'])){
+                    $saveData['user_upgrade'] = $data['user_upgrade'];
+
+                    $res = M('config')->where('id=1')->save($saveData);
+
+                    if($res){
+                        $message = ['code' => 200, 'message' =>'升级条件充值额度设置成功！'];
+                    }else{
+                        $message = ['code' => 403, 'message' =>'升级条件充值额度修改失败，请重试！'];
+                    }
+
+                }else{
+                    $message = ['code' => 403, 'message' =>'升级条件充值额度格式试不正确，请检测！'];
+                }
+            }else{
+                $message = ['code' => 403, 'message' =>'您没有修改升级条件额度！'];
+            }
+
+            // 返回JSON格式数据
+            $this->ajaxReturn($message);  
+        }else{
+            // dump($data);die;
+            $this->assign('data',$user);
+            $this->display('user_upgrade');
         }
     }
 }

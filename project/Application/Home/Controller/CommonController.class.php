@@ -17,14 +17,15 @@ class CommonController extends Controller
      */
     public function _initialize()
     {
+        // $_SESSION = null;
         // 实例化微信JSSDK
         $weixin = new WeixinJssdk;
         // 获取用户open_id
         if(empty($_SESSION['open_id'])){
             // 如果不存在则，跳转获取open_id,并缓存
-            // $_SESSION['open_id'] = $weixin->GetOpenid();
+            $_SESSION['open_id'] = $weixin->GetOpenid();
             // 前端调试通道
-            $_SESSION['open_id'] = 'oQktJwL8ioR4DoxSQmikdzekbUyU';
+            // $_SESSION['open_id'] = 'oQktJwL8ioR4DoxSQmikdzekbUyU';
 
         }
         // 获取用户open_id
@@ -45,6 +46,7 @@ class CommonController extends Controller
                     case '0':
                         // 会员资料填写注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员}
                         // 邀请人类型:{0：分公司，1：A级分销，2：B级分销，3：C级分销，4：会员 5：普通二维码}
+                        // 会员等级{0：非企业会员，1：普通会员，2：VIP会员，3：标准会员，4：钻石会员}
                         switch ($wechat['recommend']) {
                             case '0':
                                 // 会员扫不带参数二维码注册（公众号普通二维码）
@@ -67,7 +69,9 @@ class CommonController extends Controller
                                 // 将微信用户信息和二维码票据合并人新数组
                                 $newData    = array_merge($newData,$weixinData,$ticket);
 
-                                
+                                // 添加会员级别
+                                $newData['grade'] = 0;
+                                $newData['original_grade'] = 0;
                                 // 创建微信用户信息
                                 $userRes = M('users')->add($newData);
 
@@ -115,6 +119,9 @@ class CommonController extends Controller
                                 $ticket                 = $dimensionClass->user();
                                 // 将微信用户信息和二维码票据合并人新数组
                                 $newData    = array_merge($newData,$weixinData,$ticket);
+                                // 添加会员级别
+                                $newData['grade'] = 1;
+                                $newData['original_grade'] = 1;
                                 //dump($newData);die;
                                 // 创建微信用户信息
                                 $userRes = M('users')->add($newData);
@@ -211,7 +218,8 @@ class CommonController extends Controller
                                 $ticket                 = $dimensionClass->user();
                                 // 将微信用户信息和二维码票据合并人新数组
                                 $newData    = array_merge($newData,$weixinData,$ticket);
-
+                                // 添加会员级别
+                                $newData['grade'] = 1;
                                 //dump($newData);die;
                                 // 创建微信用户信息
                                 $userRes = M('users')->add($newData);
@@ -253,7 +261,9 @@ class CommonController extends Controller
                                 $ticket                 = $dimensionClass->user();
                                 // 将微信用户信息和二维码票据合并人新数组
                                 $newData    = array_merge($newData,$weixinData,$ticket);
-
+                                // 添加会员级别
+                                $newData['grade'] = 0;
+                                $newData['original_grade'] = 0;
                                 // 创建微信用户信息
                                 $userRes = M('users')->add($newData);
 
@@ -291,22 +301,75 @@ class CommonController extends Controller
                 }
                 break;
             case '1':
+                // dump($_SESSION['open_id']);die;
                 // 分销通道
                 // $this->redirect('RegisteredVendor/index');
+                // if(empty($_SESSION['user'])){
+                    // 更新条件
+                    $userWhere['open_id'] = $_SESSION['open_id'];
+                    // 查询用户表
+                    $user = M('users')->where($userWhere)->find();
+
+                    if($user){
+                        $_SESSION['user'] = $user;
+                    }else{
+                        // 查询用户信息,并缓存
+                        $vendor = M('vendors')->where($userWhere)->find();
+                        // 创建分销商前台用户
+                        $addData['open_id'] = $_SESSION['open_id'];
+                        // 分公司
+                        $addData['office_code']     = $vendor['office_code'];
+                        // A级分销商
+                        $addData['vendora_code']    = 0;
+                        // B级分销商
+                        $addData['vendora_code']    = 0;
+                        // C级分销商
+                        $addData['vendora_code']    = 0;
+                        // 分销商邀请人
+                        $addData['vendori_code']    = 0;
+                        // 分销商唯一标识
+                        $addData['code']            = $vendor['code'];
+                        // 邀请人类型
+                        $addData['invite']          = 0;
+                        // 分销商会员邀请码
+                        $addData['ticket']          = 0;
+                        // 请求二维码的参数
+                        $addData['parameter']       = 0;
+                        // 二维码有效时间
+                        $addData['ticket_time']     = 0;
+                        // 分销商名称
+                        $addData['nickname']        = $vendor['name'];
+                        // 分销商头像
+                        $addData['head']            = $vendor['head'];
+                        // 更新时间
+                        $addData['addtime'] = $addData['updatetime'] = time();
+                        // 分销商会员级别
+                        $addData['grade']            = 4;
+                        $newData['original_grade'] = 4;
+                        // 创建用户
+                        $addRes = M('users')->add($addData);
+
+                        // 如果添加成功
+                        if($addRes){
+                            // 去主页
+                            $this->redirect("Home/Index/index");
+                        }
+                    }
+
+                    // dump($_SESSION);die;
+
+                    // if(empty(session('device.id'))){
+                    //     $this->redirect("Device/index");
+                    // }
+                // }
                 break;
             default:
                 // 未关注
                 // $this->follow();
+                $this->redirect('Home/Wechat/follow');
                 break;
         }
 
-    }
-
-    // 请先关注微信公众号
-    public function follow()
-    {
-        // 显示模板
-        $this->display('follow');
     }
 
     // 获取微信信息

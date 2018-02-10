@@ -57,9 +57,11 @@ class VipCenterController extends CommonController
     {
         // 准备查询条件
         $showUser['open_id'] = $_SESSION['open_id'];
+        $map['ud.uid'] = session('user.id');
+        $map['ud.status'] = 1;
         // // 执行查询
         $user = M('users')->where($showUser)->find();
-        $device = D('UserDevice')->getBindInof(session('user.id'))[0];
+        $device = D('UserDevice')->getBindInof($map)[0];
         // 分配数据
         $this->assign('user',$user);
         $this->assign('device',$device);
@@ -95,6 +97,25 @@ class VipCenterController extends CommonController
         $this->display();
     }
 
+    // AJAX请求评论数据
+    public function ajaxMy()
+    {
+        try {
+            $com = D('Comment');
+            $map['c.uid'] = session('user.id');
+            $map['so.status'] = 3;
+            $data = $com->getInfo($map);
+            dump($data);die;
+            $this->ajaxReturn($data);
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn();
+        }
+    }
+
 
 
     /**
@@ -103,6 +124,10 @@ class VipCenterController extends CommonController
      */
     public function personalInformation()
     {
+        $map['uid'] = session('user.id');
+        $map['status'] = 1;
+        $user_device = M('user_device')->where($map)->find();
+        $this->assign('user_device',$user_device);
         $this->display();
     }
 
@@ -111,12 +136,63 @@ class VipCenterController extends CommonController
         try {
             $user_device = D('UserDevice');
             $data = I('post.');
-            $res = $user_device->add();
-            if($res){
-                E('OK',200);
-            } else {
-                E('false',603);
+            $map['uid'] = session('user.id');
+            $map['status'] = 1;
+            $res = $user_device->where($map)->field('name,sex,birth,phone,address')->find();
+
+            if($res && $res != $data){
+                // 实例化验证类
+                $validate   = new \Org\Util\Validate;
+                if($data['name'] != $res['name']){
+                    if($validate->isName($data['name'])){
+                        $saveData['name'] = $data['name'];
+                    }else{
+                         E('用户名格式不正确',200);
+                    }
+                }
+
+                if($data['sex'] != $res['sex']){
+                    if($validate->original('/^[0,1]{1}$/',$data['sex'])){
+                        $saveData['sex'] = $data['sex'];
+                    }else{
+                         E('性别格式不正确',200);
+                    }
+                }
+
+                if($data['birth'] != $res['birth']){
+                        $saveData['birth'] = $data['birth'];
+                }
+
+                if($data['phone'] != $res['phone']){
+                    // if($validate->isPhone($data['phone'])){
+                        $saveData['phone'] = $data['phone'];
+                    // }else{
+                    //      E('手机号码格式不正确',200);
+                    // }
+                }
+
+                if($data['address'] != $res['address']){
+                    // if($validate->isAddress($data['address'])){
+                        $saveData['address'] = $data['address'];
+                    // }else{
+                    //      E('地址格式格式不正确',200);
+                    // }
+                }
+
+                $user_device->startTrans();
+                $data['updatetime'] = time();
+                $save_status = $user_device->where($map)->save($saveData);
+                if($res){
+                    $user_device->commit();
+                    E('OK',200);
+                } else {
+                    $user_device->rollback();
+                    E('添加失败',603);
+                }
+            }else{
+                E('您没有修改！',200);
             }
+
         } catch (\Exception $e) {
             $err = [
                 'code' => $e->getCode(),

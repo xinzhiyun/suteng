@@ -1,0 +1,90 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                    <h5>分销商管理 <small>加盟费设置</small></h5>
+                </div>
+                    <div class="ibox-content">
+                        <form action="javascript:false;" method="post" class="form-horizontal" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">A级分销商加盟费(元)</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="vendor_a" class="form-control" value="{{$data.vendor_a}}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">B级分销商加盟费(元)</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="vendor_b" class="form-control" value="{{$data.vendor_b}}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">C级分销商加盟费(元)</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="vendor_c" class="form-control" value="{{$data.vendor_c}}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">最后一次设置责任人</label>
+                                <div class="col-md-3">
+                                    <p class="form-control" id="name">{{$data.name}}</p>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" id="proportion" type="submit">保存</button>
+                                    <button class="btn btn-white" type="reset">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+<script src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+<script>
+    /**
+     * [ajaxData 设置佣金分配]
+     * @return {[type]}    [json数据]
+     */
+    $('#proportion').click(function(){
+        var vendor_a    = $("input[name='vendor_a']").val();
+        var vendor_b    = $("input[name='vendor_b']").val();
+        var vendor_c    = $("input[name='vendor_c']").val();
+
+        $.ajax({
+            url:"{{:U('Admin/Vendors/vendor_fee')}}",
+            data:{
+                "vendor_a":vendor_a,
+                "vendor_b":vendor_b,
+                "vendor_c":vendor_c,
+            },
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                //console.dir(res);
+                if(res.code==200){
+                    // 更新责任人
+                    $('#name').html(res.name);
+                    // 显示提示
+                    swal("设置成功！", "加盟费已更新。", "success");
+                }else{
+                    swal("设置失败！", res.message, "error");
+                }
+
+            }
+        });
+    });
+</script>
+</block>

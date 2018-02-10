@@ -6,6 +6,7 @@
   <title>我的钱包</title>
   <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_2pexqgs1lqyta9k9.css">
   <style>
         body{
           font-size: 0.7rem;
@@ -18,15 +19,15 @@
           position: relative;
         }
         .MineTop{
-          height:6rem;
+          height:7rem;
           width: 100%;
           border-bottom: 0.4rem solid #F3F3F3;
-           background: linear-gradient(to bottom right, #99FCEF ,#3B90E1); 
+           background: linear-gradient(to bottom right, #7aecdc 20%,#5291ee); 
         }
-        .mineLeft{
+        /*.mineLeft{
           margin-right: 5%;
           width: 25%;
-        }
+        }*/
         .mineLeft span{
           margin:1.3rem auto;
           display: block;
@@ -46,31 +47,52 @@
           color: #FFF;
         }
         .mineLeft,.mineRight{
-          height:100%; 
+          height:60%;
+          width:40;
+
           float: left;
         }
+        .mineLeft{
+          width: 30%;
+        }
+        .mineRight{
+          width: 62%;
+        }
         .mineRight ul li{
-          margin-top: 0.666667rem;
+          margin-top: 0.5rem;
           display: block;
           width: 100%;
-          height: 0.933333rem;
-          line-height: 0.933333rem;
+          height: 1.2rem;
+          line-height:1.2rem;
           font-size: 0.7rem;
+        }
+        .mineRight ul li p{
+          font-size: 0.72rem;
+        }
+         .mineRight ul li:first-child{
+          margin-top: 1.2rem;
         }
         .mineRight ul li b{
           display: inline-block;
           color: #FFF;
+          font-weight: 400;
         }
         .mineRight .m-left{
-          margin:0 0.2rem;
+          margin:0 0.4rem;
         }
-        .mineRight>ul>li>i.icon-jinbi{
-          color:#DEBA10; 
-          font-size: 1.4rem;
+        .mineRight>ul>li>i{
+          position: relative;
+          top:0.15rem;
         }
-        .mineRight>ul>li>i.icon-yingbi{
-          color: #8ABCBD;
-          font-size: 1.4rem;
+        .mineRight>ul>li>i.icon-tubiao207{
+          color:#f9df04; 
+          font-size: 1.2rem;
+          font-weight: 800;
+        }
+        .mineRight>ul>li>i.icon-tubiao207-copy{
+          color: #dadad5;
+           font-size: 1.2rem;
+          font-weight: 800;
         }
         .mineRight .yingIcon{
           width: 70%;
@@ -81,11 +103,12 @@
           line-height: 1.5rem;
           font-size: 0.7rem;
           border-bottom:1px solid #F3F3F3;
-          padding:0.3rem 5% ;
+          padding:0.3rem 3% ;
         }
         .MineFoot ul li a{
           display: block;
         }
+       
         .MineFoot ul li:nth-child(3){
           border-bottom:0.4rem solid #F3F3F3;
         }
@@ -94,18 +117,28 @@
           border-bottom: 0.4rem solid #F3F3F3;
         }
         .MineFoot .Mf-left{
-          margin:0.2rem;
-          font-size: 1.0rem;
+          margin-right:0.4rem;
+          font-size: 1.1rem;
+        }
+        /*设备管理字体*/
+        .MineFoot .icon-shebeiguanli{
+          /*font-size: 1.05rem;*/
+        }
+        .MineFoot .icon-dengpao1{
+          font-size: 1.15rem;
+        }
+        .MineFoot .icon-wuyebaoxiu{
+          font-size: 1.15rem;
         }
         .MineFoot>ul>li>a>span{
-          font-weight: 600;
+          font-weight: 500;
           font-size: 0.72rem;
         }
         .MineFoot>ul>li>a>b{
           display: inline-block;
           float: right;
           font-size: 0.6rem;
-          font-weight: 500;
+          font-weight: 400;
           color:#909393;
         }
         .MineFoot .Mf-right{
@@ -122,6 +155,9 @@
         .icon-yongshuijilu,.icon-wuyebaoxiu{
           color:#26A085;
         }
+       /* .MineFoot ul li a i..icon-wuyebaoxiu,.MineFoot ul li a i.icon-dengpao1{
+
+        }*/
   </style>
 </head>
 <body>
@@ -134,26 +170,31 @@
             <div class="mineRight">
                <ul>
                  <li><p>{{$user['nickname']}}</p></li>
-                 <li><b>我的钱包:</b><i class="iconfont icon-jinbi m-left"></i><span>金币<em>{{$user['gold_num']}}</em>个</span></li>
-                  <li class="yingIcon"><i class="iconfont icon-yingbi m-left"></i><span>金币<em>{{$user['silver']}}</em>个</span></li>
+                 <li><b>我的钱包:</b><i class="iconfont icon-tubiao207 m-left"></i><span>金币<em>{{$user['gold_num']}}</em>个</span></li>
+                  <li class="yingIcon"><i class="iconfont icon-tubiao207-copy m-left"></i><span>银币<em>{{$user['silver']}}</em>个</span></li>
                </ul>
             </div>                                
         </div>
         <div class="MineFoot">
           <ul>
-            <li><a href="{{:U('Home/Device/index')}}"><i class="iconfont icon-shebeiguanli Mf-left"></i><span>设备管理</span><i class="iconfont icon-dayuhao Mf-right"></i><b>当前设备：{{$device['device_code']}}</b></a></li>
-            <li><a href="{{:U('Home/Switch/index')}}"><i class="iconfont icon-naozhong Mf-left"></i><span>定时设置</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
-            <li><a href="{{:U('Home/Switch/setTime')}}"><i class="iconfont icon-jiare Mf-left"></i><span>加热设置</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
-            <li><a href="{{:U('Home/VipCenter/usedNotes')}}"><i class="iconfont icon-yongshuijilu Mf-left"></i><span>用水记录</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
-            <li><a href="{{:U('Home/VipCenter/purificationNotes')}}"><i class="iconfont icon-jilu1 Mf-left"></i><span>净水记录</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
-            <li class="Mf-infor"><a href="{{:U('Home/VipCenter/personalInformation')}}"><i class="iconfont icon-gerenxinxi Mf-left"></i><span>个人信息</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
-            <li><a href="{{:U('Home/Repair/index')}}"><i class="iconfont icon-wuyebaoxiu Mf-left"></i><span>报      修</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
-            <li><a href="{{:U('Home/Suggest/index')}}"><i class="iconfont icon-dengpao1 Mf-left"></i><span>建       议</span><i class="iconfont icon-dayuhao Mf-right"></i></a></li>
+            <li><a href="{{:U('Home/Device/index')}}"><i class="iconfont icon-shebeiguanli Mf-left"></i><span>设备管理</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i><b id="device_now">当前设备：{{$device['device_code']}}</b></a></li>
+            <li><a href="{{:U('Home/Switch/index')}}"><i class="iconfont icon-naozhong Mf-left"></i><span>定时设置</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a></li>
+            <li><a href="{{:U('Home/Switch/setTime')}}"><i class="iconfont icon-jiare Mf-left"></i><span>加热设置</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a></li>
+            <li><a href="{{:U('Home/VipCenter/usedNotes')}}"><i class="iconfont icon-yongshuijilu Mf-left"></i><span>用水记录</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a></li>
+            <li><a href="{{:U('Home/VipCenter/purificationNotes')}}"><i class="iconfont icon-jilu1 Mf-left"></i><span>净水记录</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a></li>
+            <li class="Mf-infor"><a href="{{:U('Home/VipCenter/personalInformation')}}"><i class="iconfont icon-gerenxinxi Mf-left"></i><span>个人信息</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a></li>
+            <li><a href="{{:U('Home/Repair/index')}}"><i class="iconfont icon-wuyebaoxiu Mf-left"></i><span>报      修</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a></li>
+            <li><a href="{{:U('Home/Suggest/index')}}"><i class="iconfont icon-dengpao1 Mf-left"></i><span>建       议</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a></li>
           </ul>
         </div>
     </div>
   </div>
   <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
   <script src="__PUBLIC__/Home/js/public.js"></script>
+  <script> 
+    //传设备编码到报修界面
+    // console.log($("#device_now").text().slice(5));
+    sessionStorage.setItem("device_now",$("#device_now").text().slice(5));
+  </script>
 </body>
 </html>                                                                                                                                                                                                                                                                      

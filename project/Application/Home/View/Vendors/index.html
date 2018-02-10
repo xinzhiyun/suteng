@@ -1,281 +1,506 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
-	<script src="__PUBLIC__/Home/js/public.js"></script>
-	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_n9r4gvjlv5dsra4i.css">
-	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
-	<title>经销商首页</title>
-	<style>
-		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
-		body {
-			font-size: .7rem;
-			overflow-x: hidden;
-			color:#373737;
-		}
-		#content {
-			width: 100vw;
-			height: 64vh;
-		}
-		/*头像*/
-		#content>div>p {
-			padding: 2% 4% 3%;
-			text-align: left;
-			color: #5a5a5a;
-			font-size: 0.72rem;
-		}
-		#content>div>p>b{
-			display: inline-block;
-			width: 30vw;
-			height: 30vw;
-			border-radius: 20vw;
-			background: #ccc;
-			float: left;
-			overflow: hidden;
-			padding-right: 0.5rem;
-
-		}
-		#content>div>p>b>img{
-			width: 100%;
-		}
-		#content>div>p>span{
-			line-height: 30vw;
-			margin-left: 1rem;
-			color: #5a5a5a;
-		}
-		.taocan {
-			padding: 2% 0;
-			text-align: center;
-		}
-		.taocan>div {
-			display: inline-flex;
-			padding: 3vmin 1vmin;
-			align-content:center;
-
-			text-align: center;
-			border-radius: 4px;
-			border: 1px solid #e8e8e8;
-		}
-		
-		.taocanSelectNow {
-			color: #fff;
-			border: 1px solid #56AAF1;
-			background: #56AAF1;
-		}
-		
-		.money {
-			position: relative;
-		}
-		.money>div {
-			width: 50%;
-			position: absolute;
-			margin:0 25%;
-			background: #fff;
-			height: 30vh;
-		}
-		.money>div>p{
-			text-align: center;
-		}
-		.moneySon>img{
-			width: 100%;
-		}
-		.money>div>div {
-			width: 70%;
-			position: relative;
-			top: 0;
-			padding: 3vmin 8vmin;
-			margin: 2vh auto;
-			border-radius: 4px;
-			border: 1px solid #e8e8e8;
-			text-align: center;
-		}
-		.money>div:nth-of-type(2) {
-			left: 100vw;
-		}
-		.money>div:nth-of-type(3) {
-			left: 200vw;
-		}
-		.money>div:nth-of-type(4) {
-			left: 300vw;
-		}
-		.list{
-			/*background: red;*/
-		    display: fixed;
-		    /*position: absolute;*/
-		    bottom: 0;
-		    align-content: center;
-		    width: 100vw;
-		   
-		}
-		.list>h3{
-			padding: 0 5vw;
-			line-height: 2rem;
-		}
-		.list>h3>i{
-			font-size: 1rem;
-			margin-right: 2vw;
-			color: #4caf50;
-		}
-		.list>p{
-			/*padding:3vh 1vh;*/
-			 padding:0 5vw;
-			line-height: 6.5vh;
-			display: block;
-			height: 6.5vh;
-			border-bottom:1px solid #f3f3f3;
-		}
-		.list>p>i{
-			margin-right: 2vw;
-			color:#03a9f4;
-
-		}
-		.list>p:nth-child(1)>i{
-			color:#f5dc04;
-		}
-		.list>p:nth-child(2)>i{
-			color:#f5dc04;
-		}
-		.list>p:nth-child(3)>i{
-			color:#ff5722;
-		}
-		.list>p:last-child>i{
-			color:#8400d4;
-		}
-
-		.list>p>i.icon-jingxiaoshang{
-			color:#ff721f;
-		}
-		.list>p>span{
-			padding:0 3vw 0 0;
-		}
-		.list>p>span>b{
-			padding-left:10vw;
-			color:#fc2a2b;
-		}
-		.list>p>em{
-			float: right;
-			font-size: 0.62rem;
-		}
-		
-		
-		
-	
-	</style>
+    <meta charset="UTF-8">
+    <title>分销商主页</title>
+    <!-- <link href="/Public/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet"> -->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+    <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+   <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_83znlswgev3oko6r.css">
+   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+   <script src="__PUBLIC__/Home/js/public.js"></script>
 </head>
+<style>
+    body{
+         width: 100vw;
+         height: 100vh;
+        font-size: 0.7rem;
+         color:#373737;
+         box-sizing: border-box;
+    }
+    .ibox-content{
+        width: 100vw;
+
+    }
+     header{
+        display: flex;
+        padding-top: 0.3rem;
+        height: 7rem;
+        background: -webkit-radial-gradient(top left , #99FCEF, #5291EE);
+        background: radial-gradient(top left , #99FCEF, #5291EE);
+        flex-direction: column;
+        align-items: center;
+     }
+    header>p {
+        flex-direction:column;
+        justify-content:center;
+        padding: 5% 4% 0%;
+        text-align: left;
+        color: #FFF;
+        font-size: 0.72rem;
+        }
+    header>p>b{
+       display: block;
+       width: 3.8rem;
+       height: 3.8rem;
+       border-radius: 4rem; 
+       background: #ccc;
+       float: left;
+       overflow: hidden;
+    }
+    header>p>b>img{
+        width: 100%;
+    }
+    header>span{
+       line-height: 2rem;
+       margin-left: 1rem;
+       color: #5a5a5a;
+    }
+    /*微信分享*/
+    .weishare {
+     position: absolute;
+     right: 0.8rem;
+     
+    }
+    .weishare>i{
+      font-size: 1.05rem; 
+      color: #fff; 
+    }
+    .weishare>i:first-child{
+        font-size: 1.4rem;  
+        margin:0.7rem;
+    }
+    /*列表项*/
+    .contain>ul>li{
+        display: flex;
+        flex-direction: row;
+        border-bottom: 8px solid #F1F1F1;
+
+    }
+    .contain>ul>li:last-child{
+        border-bottom: 18px solid #F1F1F1;
+    }
+    .contain>ul>li>span{
+        width: 33.33333%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        padding:0.3rem 0 0.2rem;
+    }
+    .contain>ul>li>span>p:first-child{
+        font-size: 0.84rem;
+        color:#5a5a5a;
+        font-weight: 300;
+    }
+   .contain>ul>li>span>p{
+    line-height: 1.7rem;
+  
+
+   }
+    .contain>ul>li>p{
+        display: inline-block;
+        padding:0.6rem 0rem 0.6rem;
+        width: 55%;
+    }
+     .contain>ul>li>p:nth-of-type(1){
+        width: 43%;
+    }
+    .contain>ul>li>p>i{
+        float: left;
+        margin-top: -0.2rem;
+        padding-right:0.5rem;
+    }
+    .contain>ul>li>p:nth-of-type(2)>i{
+        float: right;
+        padding-top: 0.28rem;
+        font-style: normal;
+         padding-right:1.2rem;
+    }
+    .contain>ul>li>p:nth-of-type(2)>i.icon-dayuhao-copy-copy{
+        padding-top: 0.34rem;
+        padding-right:0rem;
+
+    }
+    .contain>ul>li>p>span{
+        padding: 0.1rem 0.2rem 0;
+        font-size: 0.72rem;
+        float: left;
+    }
+    .icon-shouyimingxi{
+        color:#E54545;
+        font-size: 1.3rem;
+        padding:0 0.2rem 0 0.8rem;
+    }
+    .icon-tuandui1{
+        color:#23A0E8;
+        font-size: 1.2rem;
+        padding:0 0.3rem 0 0.8rem;
+    }
+
+    /*分享*/
+    #sharePanel {
+        width: 100vw;
+        height: 100vh;
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        font-size: .8rem;
+        background: rgba(0,0,0, .5);
+    }
+    #maskbg {
+        width: 100vw;
+        height: 56vh;
+    }
+    #sharePart {
+        width: 100vw;
+        height: 44vh;
+        position: absolute;
+        bottom: -44vh;
+        background: #eee;
+    }
+    #sharePart>div {
+        width: 96%;
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 auto;
+    }
+    .shareIcon {
+        width: 24vmin;
+        height: 24vmin;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column;
+        margin: 5% 0;
+    }
+    .shareIcon>.img {
+        width: 80%;
+        height: 80%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+        background-size: 80%;
+        background-position: center;
+    }
+    .shareIcon>.img:active {
+        background: #e1e1e1;
+    }
+    .shareIcon>.img>img {
+        width: 40%;
+        margin: 10px 0;
+    }
+    .shareIcon>p {
+        margin-top: 3%;
+        text-align: center;
+        white-space: nowrap;
+    }
+    /*点击右上角二维码*/
+    #myCode {
+        width: 100vw;
+        height: 100vh;
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column;
+        background: #fff;
+
+    }
+    #qrcode {
+        width: 50vmin;
+        height: 50vmin;
+        margin: 20vmin;
+        background: #e1e1e1;
+    }
+    #saveCode {
+        width: 86%;
+        margin: 0 auto;
+        text-align: center;
+        padding: 3%;
+        font-size: .8rem;
+        color: #fff;
+        border-radius: 4px;
+        background: #2EB6AA;
+    }
+    /*二维码*/
+    #content {
+        width: 100vw;
+        height:100vh;
+    }
+    .taocan {
+        padding: 2% 0 10%;
+        text-align: center;
+    }
+    .taocan>div {
+        display: inline-flex;
+        padding: 3vmin 1vmin;
+        align-content:center;
+        font-size: 0.7rem;
+        text-align: center;
+        border-radius: 4px;
+        border: 1px solid #e8e8e8;
+    }
+    
+    .taocanSelectNow {
+        color: #fff;
+        border: 1px solid #56AAF1;
+        background: #56AAF1;
+    }
+    
+    .money {
+        position: relative;
+    }
+    .money>div {
+        width: 50%;
+        position: absolute;
+        margin:0 25%;
+        background: #fff;
+        height: 30vh;
+    }
+    .money>div>p{
+        text-align: center;
+    }
+    .moneySon>img{
+        width: 100%;
+    }
+    .money>div>div {
+        width: 70%;
+        position: relative;
+        top: 0;
+        padding: 3vmin 8vmin;
+        margin: 2vh auto;
+        border-radius: 4px;
+        border: 1px solid #e8e8e8;
+        text-align: center;
+    }
+    .money>div:nth-of-type(2) {
+        left: 100vw;
+    }
+    .money>div:nth-of-type(3) {
+        left: 200vw;
+    }
+    .money>div:nth-of-type(4) {
+        left: 300vw;
+    }      
+</style>
 <body>
-	<div id="content">
-		<div class="taocan">
-			<p class="clearfix"><b></b><span>分销商名</span></p>
-			<div class="taocanSelectNow" index="0" >
-				A级分销商
-			</div>
-			<div index="1" >
-				B级分销商
-			</div>
-			<div index="2" >
-				C级分销商
-			</div>
-			<div index="3" >
-				D级分销商
-			</div>
-		</div>
-		<div class="money clearfix">
-			
-			<div class="moneySon">
-				<p>A级邀请码：</p>
-				<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_a}}" alt=""><br/>
-			</div>
-			<!-- 银币 -->
-			<div class="moneySon">
-				<p>B级邀请码：</p>
-				<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_b}}" alt=""><br/>
-			</div>
-			<div class="moneySon">
-				<p>C会员邀请码：</p>
-			<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_user}}" alt=""><br/>
-			</div>
-			<div class="moneySon">
-				<p>D会员邀请码：</p>
-				<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_user}}" alt=""><br/>
-			</div>
-		</div>
-		
-	</div>
-	<div class="list clearfix">
-			<h3><i class="iconfont icon-tuandui"></i>我的团队</h3>
-			<p><i class="iconfont icon-huiyuanjibie"></i><span>A级分销商<b>30人</b></span><em>今日新增2人</em></p>
-			<p><i class="iconfont icon-huiyuanjibie"></i><span>B级分销商<b>30人</b></span><em>今日新增2人</em></p>
-			<p><i class="iconfont icon-huiyuanjibie"></i><span>C级分销商<b>30人</b></span><em>今日新增2人</em></p>
-			<p><i class="iconfont icon-huiyuanjibie"></i><span>D级分销商<b>30人</b></span><em>今日新增2人</em></p>
+    <div class="ibox-content">
+        <header>
+            <div class="weishare">
+                <i class="iconfont icon-erweima"></i>
+                <i class="iconfont icon-zhixiang share"></i>
+            </div>
+            <p><b><img src="{{$vendor.head}}" alt="" width="100%"></b></p>
+            <p><span>{{$vendor.name}}</span></p>
+        </header>
+        <div class="contain">
+            <ul>
+                <li>
+                    <span><p>{{$YesterdayData.order_num}}</p><p>昨天订单</p></span>
+                    <span><p>{{$YesterdayData.order_price}}</p><p>昨天订单额</p></span>
+                    <span><p>{{$YesterdayData.user_num}}</p><p>昨天新增用户</p></span>
+                </li>
+                <li>
+                    <span><p>{{$monthData.order_num}}</p><p>本月订单</p></span>
+                    <span><p>{{$monthData.order_price}}</p><p>本月订单额</p></span>
+                    <span><p>{{$monthData.user_num}}</p><p>本月新增用户</p></span>
+                </li>
+                 <li>
+                    <span><p>{{$userNum}}</p><p>用户总数</p></span>
+                    <span><p>{{$verdorNum}}</p><p>下属经销商数</p></span>
+                </li>
+                <li>
+                    <p><i class="iconfont icon-shouyimingxi"></i><span><a href="{{:U('Home/Vendors/profit_details')}}">收益明细</a></span></p>
+                    <p><i class="iconfont icon-dayuhao-copy-copy"></i><i>{{$vendor.abonus}}</i><i>总收益:</i></p>
+                </li>
+                <li>
+                    <p><i class="iconfont icon-tuandui1"></i><span><a href="{{:U('Home/Vendors/vendor_team')}}">经销商团队</a></span></p>
+                    <p><i class="iconfont icon-dayuhao-copy-copy tiao"></i></p>
+                </li>
 
-	</div>
-	
-	
-	
-	<script>
+            </ul>
+        </div>
+      
+    </div>
+    <div id="sharePanel">
+        <div id="maskbg"></div>
+        <div id="sharePart">
+            <div>
+                <span class="shareIcon">
+                    <span class="img">
+                        <img src="__PUBLIC__/Home/images/weixin.png" alt="">
+                    </span>
+                    <p>发送给朋友</p>
+                </span>
+                <span class="shareIcon">
+                    <span class="img">
+                        <img src="__PUBLIC__/Home/images/pengyouquan.png" alt="">
+                    </span>
+                    <p>分享到朋友圈</p>
+                </span>
+                <span class="shareIcon">
+                    <span class="img">
+                        <img src="__PUBLIC__/Home/images/qq.png" alt="">
+                    </span>
+                    <p>QQ</p>
+                </span>
+                <span class="shareIcon">
+                    <span class="img">
+                        <img src="__PUBLIC__/Home/images/qqcom.png" alt="">
+                    </span>
+                    <p>QQ空间</p>
+                </span>
+                <span class="shareIcon">
+                    <span class="img">
+                        <img src="__PUBLIC__/Home/images/weibo.png" alt="">
+                    </span>
+                    <p>微博</p>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div id="myCode">
+       <div id="content">
+        <header>
+            <div class="weishare">
+            	<i class="iconfont icon-cuohao" id="out"></i>
+                <!-- <i class="iconfont icon-erweima"></i> -->
+                <i class="iconfont icon-zhixiang share" id="share"></i>
 
-		$(".taocan div").on("click", function(){
-			$(this).addClass('taocanSelectNow').siblings().removeClass("taocanSelectNow");
+            </div>
+            <p><b><img src="{{$vendor.head}}" alt="" width="100%"></b></p>
+            <p><span>{{$vendor.name}}</span></p>
+        </header>
+        <div class="taocan">
+            <notempty name="vendor.vendor_a">
+                <div class="taocanSelectNow" index="0">
+                    A级分销商
+                </div>
+                <div index="1" >
+                    B级分销商
+                </div>
+                <div index="2" >
+                    C级分销商
+                </div>
+                <div index="3" >
+                    会员邀请码
+                </div>
+            </notempty>
 
-			// $(this).attr("index") == 0 
-			// ? (
-			// 	$(".moneySon").eq(0).animate({left: '0vw'}),
-			// 	$(".moneySon").eq(1).animate({left: '100vw'}),
-			// 	$(".moneySon").eq(2).animate({left: '200vw'})
+            <empty name="vendor.vendor_a">
+                <notempty name="vendor.vendor_b">
+                    <div index="0" class="taocanSelectNow">
+                        B级分销商
+                    </div>
+                    <div index="1" >
+                        C级分销商
+                    </div>
+                    <div index="2" >
+                        会员邀请码
+                    </div>
+                </notempty>
+            </empty>
 
-			// ) 
-			// : (
-			// 	$(".moneySon").eq(0).animate({left: '100vw'}),
-			// 	$(".moneySon").eq(1).animate({left: '0vw'}),
-			// 	$(".moneySon").eq(2).animate({left: '-100vw'})
+            <empty name="vendor.vendor_b">
+                <notempty name="vendor.vendor_c">
+                    <div index="0" class="taocanSelectNow">
+                        C级分销商
+                    </div>
+                    <div index="1" >
+                        会员邀请码
+                    </div>
+                </notempty>
+            </empty>
+        </div>
+        <div class="money clearfix">
+            <notempty name="vendor.vendor_a">
+                <div class="moneySon">
+                    <p>A级邀请码：</p>
+                    <img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_a}}" alt=""><br/>
+                </div>
+            </notempty>
+            <notempty name="vendor.vendor_b">
+                <div class="moneySon">
+                    <p>B级邀请码：</p>
+                    <img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_b}}" alt=""><br/>
+                </div>
+            </notempty>
+            <notempty name="vendor.vendor_c">
+                <div class="moneySon">
+                    <p>C级邀请码:</p>
+                    <img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_c}}" alt=""><br/>
+                </div>
+            </notempty>
+            <notempty name="vendor.vendor_user">
+                <div class="moneySon">
+                    <p>会员邀请码：</p>
+                    <img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_user}}" alt=""><br/>
+                </div>
+            </notempty>
+        </div>
+    </div>
+    </div>
+    <script>
+        // 点击右上角二维码
+        $(".icon-erweima").on("click", function(){
+            $("#myCode").css({display: 'flex'})
+        })
 
-			// )
-			var _index=$(this).attr("index");
-			if(_index==0){
-				$(".moneySon").eq(0).animate({left: '0vw'}),
-				$(".moneySon").eq(1).animate({left: '100vw'}),
-				$(".moneySon").eq(2).animate({left: '200vw'}),
-				$(".moneySon").eq(3).animate({left: '300vw'})
+        // 点击右上角分享
+        $(".share").on("click", function(){
 
-				// $('#footer').click(function
-			}else if(_index==1){
-				$(".moneySon").eq(0).animate({left: '-100vw'}),
-			 	$(".moneySon").eq(1).animate({left: '0vw'}),
-			 	$(".moneySon").eq(2).animate({left: '100vw'}),
-				$(".moneySon").eq(3).animate({left: '200vw'})
+            $("#sharePanel").css({display: 'block'});
+            $("#sharePart").animate({bottom: '0'})
+        })
 
-			}else if(_index==2){
-				$(".moneySon").eq(0).animate({left: '-200vw'}),
-			 	$(".moneySon").eq(1).animate({left: '-100vw'}),
-			 	$(".moneySon").eq(2).animate({left: '0vw'}),
-				$(".moneySon").eq(3).animate({left: '100vw'})
+        // 分享界面点击上部分退出分享
+        $("#maskbg").on("click", function(){
 
-			}else if(_index==3){
-				$(".moneySon").eq(0).animate({left: '-300vw'}),
-			 	$(".moneySon").eq(1).animate({left: '-200vw'}),
-				$(".moneySon").eq(2).animate({left: '-100vw'}),
-			 	$(".moneySon").eq(3).animate({left: '0vw'})
-			}
-			
-		})
+            $("#sharePanel").css({display: 'none'});
+            $("#sharePart").css({bottom: '-44vh'})
+        })
 
-		$(".moneyItem").each(function(key, value){
+        // 二维码分享效果
+        $(".taocan div").on("click", function(){
+            $(this).addClass('taocanSelectNow').siblings().removeClass("taocanSelectNow");
 
-			$(value).on("click", function(){
+            var _index=$(this).attr("index");
+            if(_index==0){
+                $(".moneySon").eq(0).animate({left: '0vw'}),
+                $(".moneySon").eq(1).animate({left: '100vw'}),
+                $(".moneySon").eq(2).animate({left: '200vw'}),
+                $(".moneySon").eq(3).animate({left: '300vw'})
 
-				$(value).addClass('taocanSelectNow').siblings().removeClass("taocanSelectNow");
-			});
-			
-		})
-		
+            }else if(_index==1){
+                $(".moneySon").eq(0).animate({left: '-100vw'}),
+                $(".moneySon").eq(1).animate({left: '0vw'}),
+                $(".moneySon").eq(2).animate({left: '100vw'}),
+                $(".moneySon").eq(3).animate({left: '200vw'})
 
+            }else if(_index==2){
+                $(".moneySon").eq(0).animate({left: '-200vw'}),
+                $(".moneySon").eq(1).animate({left: '-100vw'}),
+                $(".moneySon").eq(2).animate({left: '0vw'}),
+                $(".moneySon").eq(3).animate({left: '100vw'})
 
-	</script>
+            }else if(_index==3){
+                $(".moneySon").eq(0).animate({left: '-300vw'}),
+                $(".moneySon").eq(1).animate({left: '-200vw'}),
+                $(".moneySon").eq(2).animate({left: '-100vw'}),
+                $(".moneySon").eq(3).animate({left: '0vw'})
+            }
+            
+        })
+         // 二维码方式页面隐藏
+        $('#out').click(function(){
+            $('#myCode').css("display","none");
+        })
+    </script>
 </body>
 </html>
+

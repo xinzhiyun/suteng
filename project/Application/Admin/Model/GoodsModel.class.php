@@ -25,6 +25,20 @@ class GoodsModel extends BaseModel
 
     public function getGoodsList($where=array())
     {
+        // $count = $this
+        //     ->where($where)
+        //     ->alias('g')
+        //     ->join('__ATTR_VAL__ av ON g.id=av.gid', 'LEFT')
+        //     ->join('__ATTR__ a ON av.aid=a.id', 'LEFT')
+        //     ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
+        //     ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
+        //     ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
+        //     ->field('p.*,g.*,c.name cname,av.val,a.attr,gd.*,p.path')
+        //     ->order(' addtime desc')
+        //     ->count();
+        // $Page       = new \Think\Page($count,10);
+        // page_config($Page);
+        // $show       = $Page->show();
         $goodsData = $this
             ->where($where)
             ->alias('g')
@@ -35,7 +49,23 @@ class GoodsModel extends BaseModel
             ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
             ->field('p.*,g.*,c.name cname,av.val,a.attr,gd.*,p.path')
             ->order(' addtime desc')
+            ->limit($Page->firstRow.','.$Page->listRows)
             ->select();
+        $goodsData = [
+            'goodsData' => $goodsData,
+            // 'show' => $show,
+        ];
+        foreach($goodsData['goodsData'] as $val){
+            $key = $val['gid'];
+            if(isset($arr[$key])) {
+                $arr[$key]['attr'] .= $val['attr'].':'.$val['val'].'|';
+            } else {
+                $arr[$key] = $val;
+                $arr[$key]['attr'] = $val['attr'].':'.$val['val'].'|';
+            }
+        }
+        $goodsData['goodsData'] = array_values($arr);
+        // dump($goodsData);
         return $goodsData;
     }
 
@@ -52,5 +82,14 @@ class GoodsModel extends BaseModel
         return $attr;
     }
 
-
+    public function getPrice($map=array())
+    {
+        $data = $this
+            ->alias('g')
+            ->where($map)
+            ->join('__PRICE__ p ON g.id=p.gid', 'LEFT')
+            ->field('p.*')
+            ->select();
+        return $data;
+    }
 }

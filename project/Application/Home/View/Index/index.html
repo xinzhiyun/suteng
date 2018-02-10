@@ -6,18 +6,55 @@
   <title>速腾水家电</title>
   <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
-
+  <style>
+    .menu {
+      width: 100%;
+      display: flex;
+    }
+    .menu>li {
+      flex: 1 1 20%;
+    }
+    .chbuTop{
+      width: 100vw;
+      height: auto;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .chbuTop>ul>li{
+      width: 49%;
+      height: 8vh;
+      display: inline-block;
+      font-size: 0.80rem;
+      line-height: 6vh;
+      margin-top: 1.5vh;
+    }
+    .chbuTop>ul{
+      width: 100%;
+      padding: 1% 5%;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    .chbuTop>ul>li:nth-of-type(odd){
+      float: left;
+    }
+    .chbuTop>ul>li>p {
+      width: 80%;
+      white-space: nowrap;
+    }
+  </style>
 </head>
 <body>
 <input type="hidden" value={{$device|json_encode}} class="deviceInfo">
 <input type="hidden" value={{$data|json_encode}} class="res">
 
-
+ 
   <div class="_chongxi">
     <div class="chongContainer">
       <div class="chongTop ">
-          <div class="heat"></div>
-          <p class="heatTxt">加热</p>
+          <div style="height: 3rem">
+            <div class="heat"></div>
+          <span style="max-width: 15vw;max-height: 15vw; position: fixed; right: 7vw;top:9vw; display: inline-block;" class="heatTxt">加热</span>
+          </div>
           <div class="statusList">
               <!--冲洗-->
               <div class="xuanhuan clear">

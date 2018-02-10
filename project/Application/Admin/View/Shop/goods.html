@@ -100,17 +100,12 @@
                                             </empty>
                                         </td>
                                         <td>
-                                            <!-- <empty name="v.desc'">
-                                                <a class="btn btn-white" href="javascript:;">添加描述</a>
-                                            <else />
-                                                {{$v['desc']}}
-                                            </empty> -->
                                         </td>
                                         <td>
                                             {{$v['attr']}}
                                         </td>
                                         <td>
-                                            {{$v['price']}}
+                                            <span goods="{{$v.gid}}" class="btn btn-success select">查看单价</span>
                                         </td>
                                         <td>
                                             {{$v['stock']}}
@@ -133,10 +128,6 @@
                                         </td>
                                         <td>
                                             <div class="btn-group">
-                                                <!-- <a class="btn btn-outline btn-success" href="javascript:;" goodsId="{{$v['id']}}" ruleName="{{$v['name']}}" ruleTitle="{{$v['pid']}}"
-                                                onclick="edit(this)">
-                                                    更新
-                                                </a> -->
                                                 <a id="del" class="btn btn-outline btn-success deletBnt" goodsName="{{$v['name']}}" goodsId="{{$v['gid']}}">
                                                     删除
                                                 </a>
@@ -147,8 +138,10 @@
                             </empty>
                         </tbody>
                     </table>
+                    <div>
+                        {{$show}}
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -191,8 +184,17 @@
             </div>
         </div>
     </div>
+    <div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body my_content">
+                </div>
+            </div>
+        </div>
+    </div>
 </block>
 <block name="myjs">
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
     <script>
         // 图片添加
         function addpic(obj)
@@ -234,7 +236,7 @@
             var goodsName = $(this).attr('goodsName');
             parent.layer.confirm('确认删除'+goodsName+'这款商品吗？', {
                 btn: ['确认','取消'], //按钮
-                shade: false //不显示遮罩
+                shade: true //不显示遮罩
             }, function(){
                 $.ajax({
                     url:'goodsDel',
@@ -276,6 +278,39 @@
             });
         })
 
-
+        $("td").on('click','.select', function(e){
+            $('#myModal6').modal('show');
+            var gid = $(this).attr('goods');
+            var html = "";
+            $.ajax({
+                url:'price',
+                type:'post',
+                data:{'gid':gid},
+                success:function(res){
+                    for (var i = res.length - 1; i >= 0; i--) {
+                        var g;
+                        switch(res[i]['grade']){
+                            case '0':
+                                g = "非企业会员";
+                                break;
+                            case '1':
+                                g = "普通会员";
+                                break;
+                            case '2':
+                                g = "VIP会员";
+                                break;
+                            case '3':
+                                g = "标准会员";
+                                break;
+                            case '4':
+                                g = "钻石会员";
+                                break;
+                        }
+                        html+="<p><span>"+g+"</span>:<span>"+res[i]['price']+"</span></p>"
+                    }
+                    $(".my_content").html(html);
+                }
+            });
+        });
     </script>
 </block>

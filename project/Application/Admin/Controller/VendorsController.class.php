@@ -11,6 +11,87 @@ class VendorsController extends CommonController
     }
 
     /**
+     * [vendor_fee 分销商加盟费]
+     * @return [type] [description]
+     */
+    public function vendor_fee()
+    {
+        if(IS_POST){
+            $data = I('post.');
+
+            // 准备查询条件
+            $showData['id'] = 1;
+            // 查询佣金分配比例
+            $vendor_fee = M('vendor_fee')->where($showData)->field('vendor_a,vendor_b,vendor_c')->find();
+
+            if($data==$vendor_fee){
+                $message = ['code' => 403, 'message' =>'您没有修改分销商加盟费！'];
+            }else{
+                // 实例化验证类
+                $validate   = new \Org\Util\Validate;
+                // 判断A级分销商加盟费是否修改
+                if($data['vendor_a'] != $vendor_fee['vendor_a']){
+                    // 验证是加盟费格式
+                    if($validate->original('/^[\d]{1,18}[\.][\d]{2}$/',$data['vendor_a'])){
+                        $saveData['vendor_a'] = $data['vendor_a'];
+                    }else{
+                        $message = ['code' => 403, 'message' =>'A级分销商加盟费格式试不正确，请检测！'];
+                    }
+                }
+
+                // 判断B级分销商加盟费是否修改
+                if($data['vendor_b'] != $vendor_fee['vendor_b']){
+                    // 验证是加盟费格式
+                    if($validate->original('/^[\d]{1,18}[\.][\d]{2}$/',$data['vendor_b'])){
+                        $saveData['vendor_b'] = $data['vendor_b'];
+                    }else{
+                        $message = ['code' => 403, 'message' =>'B级分销商加盟费格式试不正确，请检测！'];
+                    }
+                }
+
+                // 判断C级分销商加盟费是否修改
+                if($data['vendor_c'] != $vendor_fee['vendor_c']){
+                    // 验证是加盟费格式
+                    if($validate->original('/^[\d]{1,18}[\.][\d]{2}$/',$data['vendor_c'])){
+                        $saveData['vendor_c'] = $data['vendor_c'];
+                    }else{
+                        $message = ['code' => 403, 'message' =>'C级分销商加盟费格式试不正确，请检测！'];
+                    }
+                }
+
+                // 最后一次更新责任人
+                $name = $saveData['name'] = $_SESSION['adminInfo']['user'];
+                // 更新时间
+                $saveData['updatetime'] = time();
+
+                // 执行更新
+                $saveRes = M('vendor_fee')->where($showData)->save($saveData);
+
+                if($saveRes){
+                    $message = ['code' => 200, 'message' =>'加盟费更新成功！','name'=>$name];
+                }else{
+                    $message = ['code' => 603, 'message' =>'加盟费更新失败，请刷新浏览后重试！'];
+                }
+                
+            }
+            
+            // 返回JSON格式数据
+            $this->ajaxReturn($message);  
+        }else{
+            // 准备查询条件
+            $showData['id'] = 1;
+            // 查询加盟费
+            $vendor_fee = M('vendor_fee')->where($showData)->find();
+            // 分配数据
+            $this->assign('data',$vendor_fee);
+            // 显示模板
+            $this->display(); 
+        }
+
+
+    }
+
+    /**
      * [company_add 分公司添加]
      * @return [type] [description]
      */
@@ -150,8 +231,6 @@ class VendorsController extends CommonController
                         $this->error('邀请二维码创建失败，请重新申请！');
                         return false;
                     }
-
-
                 }
             }else{
                 $this->error('图片上传失败，请重新上传！');

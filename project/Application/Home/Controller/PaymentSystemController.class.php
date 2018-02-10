@@ -94,6 +94,15 @@ class PaymentSystemController extends CommonController
     	$this->display();
     }
 
+    /**
+     * [paytosuccess 支付成功]
+     * @return [type] [description]
+     */
+    public function paytosuccess_cz()
+    {
+        $this->display();
+    }
+
 
     /**
      * [paytofailed 支付失败]
@@ -172,7 +181,7 @@ class PaymentSystemController extends CommonController
              
         }
     }
-
+   
     /**
      * 统一下单充值并返回数据
      * @return string json格式的数据，可以直接用于js支付接口的调用

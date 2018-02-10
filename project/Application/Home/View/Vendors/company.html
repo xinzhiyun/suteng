@@ -49,8 +49,6 @@
             background: #ccc;
             float: left;
             overflow: hidden;
-            padding-right: 0.5rem;
-
         }
          header>p>b>img{
             width: 100%;
@@ -154,6 +152,7 @@
             top: 2.15rem;
             color: #5a5a5a;
             border: 1px dashed #76DED3;
+            overflow: hidden;
         }
         .xiePic>i{
             position: absolute;
@@ -170,8 +169,6 @@
         }
           /*申请按钮*/
           .xieBtn>input{
-            position: absolute;
-            bottom: 0;
             background: #2EB6AA;
             width: 100vw;
             border:none;
@@ -195,8 +192,8 @@
 <body>
     <div class="ibox-content">
         <header>
-            <p><b></b></p>
-            <p><span>分销商名称</span></p>
+            <p><b><img src="{{$vendor.head}}" alt="" width="120%"></b></p>
+            <p><span>{{$vendor.name}}</span></p>
         </header>
         <form action="{{:U('Home/Vendors/company')}}" method="post" class="form-horizontal clearfix" enctype="multipart/form-data">    
             <div class="form-group">
@@ -228,7 +225,8 @@
                 <div class="col-md-3">
                     <input type="file" id="comLicen" name="licence" class="form-control" onchange="licenceImage(this);">
                      <i class="iconfont icon-tianjiajingdian"></i>
-                     <div class="xiePic"><img src="" id="licence" style="width: 100%;"><i class="iconfont icon-cuohao"></i></div>
+                     <div class="xiePic">
+                        <img src="" id="licence" style="width: 100%;"><i class="iconfont icon-cuohao"></i></div>
                 </div>
             </div> 
             <div class="xieBtn">

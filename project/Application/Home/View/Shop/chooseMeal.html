@@ -6,7 +6,6 @@
 	<title>选择充值方式</title>
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
-	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_p8cbsn51ch2utyb9.css">
 	<style>
 		body{
 			font-size: 0.72rem;
@@ -180,11 +179,13 @@
     		font-size: 1.5rem;
 		}
 		/*支付图标的颜色*/
-		.icon-jinbi{
-			color:#FEDA02;
+		.icon-tubiao207{
+            color:#f9df04;
+            font-weight: 800; 
 		}
-		.icon-yingbi{
-			color:#97C3C0;
+		.icon-tubiao207-copy{
+			color: #dadad5;
+			 font-weight: 800;
 			
 		}
 		.icon-z-weixin{
@@ -195,8 +196,9 @@
 			color:#22A8FF;
 			
 		}
-		.icon-yinhang-yinlian-{
-			color:#6BB5BB;
+		.icon-yinlian{
+			color:#1296DB;
+			font-size: 1.3rem!important;
 			
 		}
 		.paytop>.paytopRight{
@@ -229,6 +231,7 @@
 		.paymidd>ul>li>i{
 			padding-right:0.4rem; 
 			font-size: 1.2rem;
+           
 		}
 		.paymidd>ul>li>span{
 			float: right;
@@ -290,16 +293,7 @@
 				<h3>选择套餐</h3>
 				<ul>
 					<li class="taocanSelectNow">100元套餐含<b>1000L</b>流量</li>
-					<!-- <li>100元套餐含<b>1000L</b>流量</li> -->
 					<li>100元套餐含<b>1000天</b>流量</li>
-<!-- 					<li>100元套餐含<b>1000L</b>流量</li>
-					<li>100元套餐含<b>1000L</b>流量</li>
-					<li>100元套餐含<b>1000L</b>流量</li>
-					<li>100元套餐含<b>1000L</b>流量</li>
-					<li>100元套餐含<b>1000L</b>流量</li>
-					<li>100元套餐含<b>1000L</b>流量</li>
-					<li>100元套餐含<b>1000L</b>流量</li>
-					<li>100元套餐含<b>1000L</b>流量</li> -->
 				</ul>
 			</div>
 		
@@ -321,11 +315,11 @@
 				<div class="paymidd">
 					<h3>选择支付方式</h3>
 					<ul class="clearfix">
-						<li><i class="iconfont icon-jinbi"></i>金币<span class="iconfont icon-xuanze"></span></li>
-						<li><i class="iconfont icon-yingbi"></i>银币<span class="iconfont icon-kuang1"></span></li>
+						<li><i class="iconfont icon-tubiao207"></i>金币<span class="iconfont icon-xuanze"></span></li>
+						<li><i class="iconfont icon-tubiao207-copy"></i>银币<span class="iconfont icon-kuang1"></span></li>
 						<li><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-kuang1"></span></li>
 						<li><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
-						<li><i class="iconfont icon-yinhang-yinlian-"></i>银联<span class="iconfont icon-kuang1"></span></li>
+						<li><i class="iconfont icon-yinlian"></i>银联<span class="iconfont icon-kuang1"></span></li>
 					</ul>
 				</div>
 				<div class="payBott start">
@@ -350,12 +344,78 @@
 			</div>
 		</div>
 	</div>
+	<script src="__PUBLIC__/Home/js/vue.js"></script>
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script>
+		var select = '';
+		//微信接口
+		wx.config({
+		    debug: false,
+		    appId: '{{$info["appId"]}}',
+		    timestamp: '{{$info["timestamp"]}}',
+		    nonceStr: '{{$info["nonceStr"]}}',
+		    signature: '{{$info["signature"]}}',
+		    jsApiList: [
+		      // 所有要调用的 API 都要加到这个列表中
+		      'chooseWXPay'
+		    ]
+		});
+		/*
+			点击立即支付
+		 */
+		$(".payBott").click(function(){
+			$.ajax({
+				url: '{{:U("Shop")}}',
+				type: 'post',
+				success: function(res){
+					console.log('成功！ ', res);
+					//如果返回的是订单号
+					if(typeof res == 'number'){
+						weixinPay(res);
+					}
+				},
+				error: function(res){
+					console.log('失败！ ', res);			
+				}
+			})
+		})
+		
+      	/*
+      		微信支付方法
+      	 */ 
+      	function weixinPay(res){
+      		WeixinJSBridge.invoke(
+      			'getBrandWCPayRequest',
+      			JSON.parse(res),
+      			function(res){
+      				if(res.err_msg.substr(-2) == 'ok'){
+
+       					parent.layer.msg('付款成功！');
+      					//付款成功后的操作
+      					setTimeout(function(){
+      						location.href = '{{:U("PaymentSystem/paytosuccess")}}';
+      					},500);
+      					
+      				}else if(res.err_msg.substr(-6) == 'cancel'){
+      					//取消订单操作
+      				}else{
+       					parent.layer.msg('付款失败！');
+      					//付款失败操作
+      					setTimeout(function(){
+      						location.href = '{{:U("PaymentSystem/paytofailed")}}';
+      					},500);
+      					
+      				}
+      			}
+      		)
+      	}
 		// 选中背景改变
-		$('.chooseContain>ul>li').click(function(){
+		$('.chooseContain>ul').on('click','li',function(){
 			$(this).addClass('taocanSelectNow').siblings().removeClass("taocanSelectNow");
+			select = $(this).attr("index");
+			console.log(select)
 		})
 
 		//支付方式
@@ -373,19 +433,19 @@
 			$('.paystyle').slideUp("slow");
 		})
 		// 模态框的js
-		$(function(){
-	      	$(".start").on("click",function(){
-	      	   $(".modelAll").css('display','block');
-	       	   $(".modal").addClass("in");
-	       	   $(".modal").css('z-index','1001');
-	       	   $(".modal-backup").css('display','block');
-	       });
-	      	$(".close").on("click",function(){
-	       	   $(".modal").removeClass('in');
-	       	   $(".modal").css('z-index','-1');
-	       	   $(".modal-backup").fadeOut('slow');
-	       });
-      	})
+		// $(function(){
+		//   	$(".start").on("click",function(){
+		//   	   $(".modelAll").css('display','block');
+		//    	   $(".modal").addClass("in");
+		//    	   $(".modal").css('z-index','1001');
+		//    	   $(".modal-backup").css('display','block');
+		//    });
+		//   	$(".close").on("click",function(){
+		//    	   $(".modal").removeClass('in');
+		//    	   $(".modal").css('z-index','-1');
+		//    	   $(".modal-backup").fadeOut('slow');
+		//    });
+		// 	})
 		// .icon-kuang1{background:#57BFEE; }
 
 	</script>

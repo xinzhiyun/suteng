@@ -29,7 +29,17 @@
       font-size: 3rem;
       color: #32C97C;
      }
-    
+    #foot{
+      padding:40px 20px 20px 20px;
+    }
+    #order{
+      display: block;
+      float: left;
+    }
+    #shop{
+      display: block;
+      float: right;
+    }
   </style>
   <script>
      
@@ -41,7 +51,9 @@
            <p><i class="iconfont icon-chenggong"></i></p>
            <p>支付成功</p>
         </div>
-        
+        <div id="foot">
+            <a id="order" href="{{:U('Home/Order/index')}}">查看订单</a><a id="shop" href="{{:U('Home/Shop/index')}}">返回首页</a>
+        </div>
     </div>
 </body>
 </html>                                                                                                                                                                                                                                                                      

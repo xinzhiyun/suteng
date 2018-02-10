@@ -5,6 +5,103 @@ use Think\Controller;
 
 class WeiXinPayController extends Controller
 {
+
+    /**
+     * 分销商交加盟费接口
+     */
+    public function vendor_fee(){
+        // 准备查询条件
+        $showData['id'] = 1;
+        // 查询分销商加盟费
+        $vendor_fee = M('vendor_fee')->where($showData)->field('vendor_a,vendor_b,vendor_c')->find();
+
+        // 匹配分销商级别
+        switch ($_SESSION['vendorInfo']['leavel']) {
+            case '2':
+                // A级分销商
+                $money = $vendor_fee['vendor_a'];
+                break;
+            case '3':
+                // B级分销商
+                $money = $vendor_fee['vendor_b'];
+            case '4':
+                // C级分销商
+                $money = $vendor_fee['vendor_c'];
+                break;
+            default:
+                # code...
+                break;
+        }
+
+        // 描述
+        $content = '速腾分销商加盟费支付';
+        // 分销商标识
+        $code = $money;
+        // 下单
+        $this->uniformOrderVendor($money,$code,$content);
+    }
+    
+    /**
+     * 统一收分销商加盟费并返回数据
+     * @return string json格式的数据，可以直接用于js支付接口的调用
+     * @param  [type] $money    [订单金额]
+     * @param  [type] $order_id [订单号码]
+     * @param  [type] $content  [订单详情]
+     */
+    public function uniformOrderVendor($money,$code,$content)
+    {
+        // dump($_SESSION);die;
+        // $content = substr($content,0,80);
+        // 将金额强转换整数
+        $money = $money * 100;
+        // 冲值测试额1分钱
+        $money = 1;
+        // 用户在公众号的唯一ID
+        $openId = $_SESSION['vendorInfo']['open_id'];
+
+
+        //微信examle的WxPay.JsApiPay.php
+        vendor('WxPay.jsapi.WxPay#JsApiPay');
+
+        $tools = new \JsApiPay();
+
+        //②、统一下单
+        vendor('WxPay.jsapi.WxPay#JsApiPay');
+        $input = new \WxPayUnifiedOrder();
+        // 傳用戶ID
+        //$input->SetDetail($uid);
+        // 产品内容
+        $input->SetBody($content);
+        // 唯一订单ID
+        $input->SetAttach($code);
+        // 设置商户系统内部的订单号,32个字符内、可包含字母, 其他说明见商户订单号
+        $input->SetOut_trade_no(gerOrderId());
+        // 产品金额单位为分
+        // $input->SetTotal_fee($money);
+        // 调试用1分钱
+        $input->SetTotal_fee($money);
+        // 设置订单生成时间
+        // $input->SetTime_start(date("YmdHis"));
+        // 设置订单失效时间
+        // $input->SetTime_expire(date("YmdHis", time() + 300));
+        //$input->SetGoods_tag($uid);
+        // 支付成功的回调地址
+        // 微信充值回调地址
+        $input->SetNotify_url('http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/vendorNotify'));
+        // 支付方式 JS-SDK 类型是：JSAPI
+        $input->SetTrade_type("JSAPI");
+        // 用户在公众号的唯一标识
+        $input->SetOpenid($openId);
+        // 统一下单
+        $order = \WxPayApi::unifiedOrder($input);
+
+        // 返回支付需要的对象JSON格式数据
+        $jsApiParameters = $tools->GetJsApiParameters($order);
+
+        echo $jsApiParameters;
+        exit;
+    }
+
     /**
      * 处理订单写入数据
      * @return array 返回数组格式的notify数据
@@ -51,10 +148,17 @@ class WeiXinPayController extends Controller
                 // 开启事务
                 // $order->startTrans();
                 // dump();die;
-                $saveOrder['order_id'] = $orderData['order_id'];
-
+                $saveOrder['order_id']  = $orderData['order_id'];
+                // 用户ID
+                $showAddres['uid']      = $orderData['uid'];
+                // 默认的地址
+                $showAddres['status']   = 0;
+                // 快递地址ID
+                $saveOrderDara['address_id'] = M('address')->where($showAddres)->find()['id'];
                 // 准备更新数据
                 $saveOrderDara['status'] = 9;
+                // 支付类型
+                $saveOrderDara['mode'] = 0;
                 // 执行更新操作
                 $order->where($saveOrder)->save($saveOrderDara);
                 // 准备佣金数据
@@ -70,11 +174,11 @@ class WeiXinPayController extends Controller
                 // 总利润
                 $profit = $price - $cost;
                 // 佣金比例
-                $yjbl = 0.3;
+                $yjbl = 0.03;
                 // 金币比例
-                $jbbl = 0.1;
+                $jbbl = 0.01;
                 // 银币比例
-                $ybbl = 0.2;
+                $ybbl = 0.02;
 
                 // 佣金
                 $yj = ($profit*$yjbl)>0?($profit*$yjbl):0;
@@ -89,6 +193,60 @@ class WeiXinPayController extends Controller
             }
         }
     }
+
+    /**
+     * [vendorNotify 分销商加盟费回调]
+     * @return [type] [description]
+     */
+    public function vendorNotify(){
+        // 接收微信支付回调
+        $xml=file_get_contents('php://input', 'r');
+        // 写文件测试
+        // file_put_contents('./wx_payFee.txt',$xml."\r\n", FILE_APPEND);die;
+
+//         $xml = '<xml><appid><![CDATA[wx0bab2f4b5b7ec3b5]]></appid>
+// <attach><![CDATA[10000.00]]></attach>
+// <bank_type><![CDATA[CFT]]></bank_type>
+// <cash_fee><![CDATA[1]]></cash_fee>
+// <fee_type><![CDATA[CNY]]></fee_type>
+// <is_subscribe><![CDATA[Y]]></is_subscribe>
+// <mch_id><![CDATA[1490274062]]></mch_id>
+// <nonce_str><![CDATA[7zdvpsqu62x2t0gdf4u5g6mvcjpa651l]]></nonce_str>
+// <openid><![CDATA[oQktJwL8ioR4DoxSQmikdzekbUyU]]></openid>
+// <out_trade_no><![CDATA[389282621064792]]></out_trade_no>
+// <result_code><![CDATA[SUCCESS]]></result_code>
+// <return_code><![CDATA[SUCCESS]]></return_code>
+// <sign><![CDATA[5A964113D173D6C037E4685ABA9E53C8]]></sign>
+// <time_end><![CDATA[20180206142758]]></time_end>
+// <total_fee>1</total_fee>
+// <trade_type><![CDATA[JSAPI]]></trade_type>
+// <transaction_id><![CDATA[4200000073201802068049959066]]></transaction_id>
+// </xml>';
+
+        if($xml){
+            //解析微信返回数据数组格式
+            $result = $this->notifyData($xml);
+            // 分销商openid
+            $showData['open_id']      = $result['openid'];
+            // 加盟费
+            $saveData['fee']          = $result['attach'];
+            // 状态
+            $saveData['status']       = 3;
+            // 更新时间
+            $saveData['updatetime  '] = time();
+            // 执行更新操作
+            $saveRes = M('vendors')->where($showData)->save($saveData);
+
+            if($saveRes){
+                // 分红
+                // dump($result);die;
+            }
+ 
+  
+        }
+    }
+
+
 
     /**
      * 处理充值写入数据
@@ -106,37 +264,27 @@ class WeiXinPayController extends Controller
 
         // 获取微信服务器返回的xml文档
         $xml=file_get_contents('php://input', 'r');
-        // file_put_contents('./wx_pay1.txt',$xml."\r\n", FILE_APPEND);die;
+        // file_put_contents('./wx_payjb.txt',$xml."\r\n", FILE_APPEND);die;
         //echo 1;die;
 // 金币模拟数据
 //         $xml = '<xml><appid><![CDATA[wx0bab2f4b5b7ec3b5]]></appid>
-// <attach><![CDATA[17,gold]]></attach>
+// <attach><![CDATA[22,gold]]></attach>
 // <bank_type><![CDATA[CFT]]></bank_type>
 // <cash_fee><![CDATA[1]]></cash_fee>
 // <fee_type><![CDATA[CNY]]></fee_type>
 // <is_subscribe><![CDATA[Y]]></is_subscribe>
 // <mch_id><![CDATA[1490274062]]></mch_id>
-// <nonce_str><![CDATA[lfrkw9gmvr9lh35r39kserjfq0gk0qvp]]></nonce_str>
+// <nonce_str><![CDATA[n04snivpxcaj5t4gaghhlttugo97sezk]]></nonce_str>
 // <openid><![CDATA[oQktJwL8ioR4DoxSQmikdzekbUyU]]></openid>
-// <out_trade_no><![CDATA[274960238018351]]></out_trade_no>
+// <out_trade_no><![CDATA[719213140992603]]></out_trade_no>
 // <result_code><![CDATA[SUCCESS]]></result_code>
 // <return_code><![CDATA[SUCCESS]]></return_code>
-// <sign><![CDATA[F5A2A01E2FFD4223E073137AF62E8DA4]]></sign>
-// <time_end><![CDATA[20180205191926]]></time_end>
+// <sign><![CDATA[B279412A7346A525107278426AE3C708]]></sign>
+// <time_end><![CDATA[20180209150329]]></time_end>
 // <total_fee>1</total_fee>
 // <trade_type><![CDATA[JSAPI]]></trade_type>
-// <transaction_id><![CDATA[4200000071201802057648810477]]></transaction_id>
+// <transaction_id><![CDATA[4200000077201802099682820642]]></transaction_id>
 // </xml>';
-        
-
-//             // [detail] => gold
-//             // [body] => 100元充值100个金币
-//             // [attach] => 16
-//             // [out_trade_no] => 685361645248128
-//             // [total_fee] => 1
-//             // [notify_url] => http://test.dianqiukj.com/index.php/Home/WeiXinPay/congzhiNotify.html
-//             // [trade_type] => JSAPI
-//             // [openid] => oQktJwL8ioR4DoxSQmikdzekbUyU
         if($xml){
             //解析微信返回数据数组格式
             $result = $this->notifyData($xml);
@@ -188,6 +336,24 @@ class WeiXinPayController extends Controller
                         # code...
                         break;
                 }
+
+                // 累计充值金额消费的金额
+                $saveData['total_money'] = (($user['total_money']*100) + ($flowData['money']*100))/100;
+                // 如果用户是标准类型
+                if($user['grade']== 3){
+                    // 查询用户升级条件
+                    $user_upgrade =  M('config')->where('id=1')->field('user_upgrade')->find()['user_upgrade'];
+
+
+
+                    if($saveData['total_money']>=$user_upgrade){
+                        // 升级钻石会员
+                        $saveData['grade'] = 4;
+                        // 更新会员等级缓存
+                        $_SESSION['user']['grade'] = 4;
+                    }
+                }
+
                 // 支付类型
                 $addData['mode']    = 2;
                 // 支付描述

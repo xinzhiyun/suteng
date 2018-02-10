@@ -37,9 +37,9 @@ class UsersModel extends Model
             ->alias('u')
             ->where($where)
             ->join('__USER_DEVICE__ ud ON u.id=ud.uid','LEFT')
-            ->join('__DEVICES__ d ON ud.did=d.id', 'LEFT')
-            ->join('__DEVICES_STATU__ ds ON d.device_code=ds.DeviceID', 'LEFT')
-            ->join('__TYPE__ t ON d.type_id=t.id', 'LEFT')
+            ->join('__DEVICES__ d ON ud.did=d.id','LEFT')
+            ->join('__DEVICES_STATU__ ds ON d.device_code=ds.DeviceID','LEFT')
+            ->join('__TYPE__ t ON d.type_id=t.id','LEFT')
             ->field('d.device_code,t.typename,ud.name,ud.phone,ud.address,ud.status,ud.addtime')
             ->select();
         if(empty($data)) $data = null;
@@ -55,6 +55,15 @@ class UsersModel extends Model
         if(empty($id)) E("请重试", 10061);
         $uid['did'] = $id['id'];
         $data = $use_device->where('uid='.$uid['uid'])->select();
+        // $arr = array();
+        // foreach ($data as $key => $value) {
+        //     $arr[] = $value['did'];
+        // }
+        // $count = M('Devices')
+        //     ->alias('d')
+        //     ->where(['id',['in',$arr]])
+        //     ->join('__TYPE__ t ON d.type_id=t.id', 'LEFT')
+        //     ->
         if(count($data) == 1){
             $f_status = $use_device->where($uid)->delete();
         } else {
