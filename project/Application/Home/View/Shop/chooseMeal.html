@@ -344,10 +344,12 @@
 			</div>
 		</div>
 	</div>
+	<script src="__PUBLIC__/Home/js/vue.js"></script>
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script>
+		var select = '';
 		//微信接口
 		wx.config({
 		    debug: false,
@@ -410,8 +412,10 @@
       		)
       	}
 		// 选中背景改变
-		$('.chooseContain>ul>li').click(function(){
+		$('.chooseContain>ul').on('click','li',function(){
 			$(this).addClass('taocanSelectNow').siblings().removeClass("taocanSelectNow");
+			select = $(this).attr("index");
+			console.log(select)
 		})
 
 		//支付方式

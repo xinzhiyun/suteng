@@ -57,9 +57,10 @@ class VendorsModel extends BaseModel
      * [companyList 分公司列表]
      * @return [type] [description]
      */
-    public function companyList(){
+    public function companyList($map=''){
         // 查询分公司数据
-        $list = $this->where('`leavel`=1')->order('updatetime desc')->select();
+        $map['leavel'] = 1;
+        $list = $this->where($map)->order('updatetime desc')->select();
         // 返回格式化后数据
         return $this->formatData($list);
 
@@ -69,10 +70,14 @@ class VendorsModel extends BaseModel
      * [vendorReviewed 分销商待审核列表]
      * @return [type] [description]
      */
-    public function vendorReviewed(){
+    public function vendorReviewed($map=''){
         
         // 查询分公司数据
-        $list = $this->where('`leavel`>1 AND `status`=3')->order('updatetime desc')->select();
+        if (!empty($map)) {
+            $list = $this->where('`leavel`>1 AND `status`=3')->where($map)->order('updatetime desc')->select();
+        }else{
+            $list = $this->where('`leavel`>1 AND `status`=3')->order('updatetime desc')->select();
+        }
         // 返回格式化后数据
         return $this->formatData($list);
     }
@@ -82,9 +87,13 @@ class VendorsModel extends BaseModel
      * [companyList 分销商列表]
      * @return [type] [description]
      */
-    public function vendorList(){
+    public function vendorList($map=''){
         // 查询分公司数据
-        $list = $this->where('`leavel`>1')->order('updatetime desc')->select();
+        if (!empty($map)) {
+            $list = $this->where('`leavel`>1')->where($map)->order('updatetime desc')->select();
+        } else {
+            $list = $this->where('`leavel`>1')->order('updatetime desc')->select();
+        }
         // 返回格式化后数据
         return $this->formatData($list);
 

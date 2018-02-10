@@ -21,7 +21,11 @@ class WorkController extends CommonController
     {
        // 根据名称进行搜索
         $map = '';
-        if(!empty($_GET['name'])) $map['name'] = array('like',"%{$_GET['name']}%");
+        if(strlen($_GET['number'])) $map['number'] = array('like',"%{$_GET['number']}%");
+
+        strlen(I('get.type')) ? (int)$map['type'] = I('get.type'):'';
+
+        strlen(I('get.result')) ? (int)$map['result'] = I('get.result'):'';
 
         $work = D('work');
         $workList = $work->getPage($work,$map,'create_at desc');

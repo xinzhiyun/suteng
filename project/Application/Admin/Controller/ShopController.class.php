@@ -21,7 +21,12 @@ class ShopController extends CommonController
      */
     public function category()
     {
-        $data = D('Category')->getTreeData('tree','id, name');
+        $map = '';
+        if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
+            $map[I('get.key')] = array('like',"%".trim(I('get.keywords'))."%");
+        }
+
+        $data = D('Category')->getTreeData('tree','id, name',$name='name',$child='id',$parent='pid',$map);
         $assign = [
             'data' => $data,
         ];
@@ -95,6 +100,10 @@ class ShopController extends CommonController
      */
     public function goods()
     {
+        $map = '';
+        if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
+            $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
+        }
         $cate = D('Category');
         $cateInfo = $cate->getAllCate();
         $goods = D('Goods');
@@ -338,14 +347,38 @@ class ShopController extends CommonController
      */
     public function orders()
     {
+        $map = '';
+        if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
+            $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
+        }
         $order = D('ShopOrder');
-        $data = $order->getOrders();
+        $data = $order->getOrders($map);
         $assign = [
             'data' => $data['data'],
             'show' => $data['show'],
         ];
         $this->assign($assign);
         $this->display();
+    }
+
+    /**
+     * 为订单发货
+     * @return [json] [description]
+     */
+    public function ship()
+    {
+        if (IS_AJAX) {
+            $id = I('post.orderid');
+            $data['express'] = I('post.express');
+            $data['status'] = 2;
+            $order = D('ShopOrder');
+            $res = $order->where('order_id='.$id)->save($data);
+            if ($res) {
+                return $this->ajaxReturn(['code'=>200,'msg'=>'发货成功']);
+            } else {
+                return $this->ajaxReturn(['code'=>500,'msg'=>'发货失败']);
+            }
+        }             
     }
 
     // 查看订单详情

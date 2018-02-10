@@ -18,7 +18,9 @@ class FeedsController extends CommonController
     {	
         // 根据用户昵称进行搜索
         $map = '';
-    	if(!empty($_GET['name'])) $map['name'] = array('like',"%{$_GET['name']}%");
+        if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
+            $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
+        }
 
         $user = M('feeds');
         $total = $user->where($map)
@@ -62,8 +64,9 @@ class FeedsController extends CommonController
     {
         // 根据用户昵称进行搜索
         $map = '';
-        if(!empty($_GET['name'])) $map['name'] = array('like',"%{$_GET['nickname']}%");
-
+        if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
+            $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
+        }
         $user = M('repair');
         $total = $user->where($map)
                         ->join('st_users ON st_repair.uid = st_users.id')
