@@ -370,7 +370,7 @@
 			console.log(meal);
 			//遍历套餐充值数据
 			for(var i=0; i<meal.length; i++){
-				mealHTML += '<li remodel="'+meal[i].remodel+'" flow="'+meal[i].flow+'" money="'+meal[i].money+'" tid="'+meal[i].tid+'">'+ meal[i].describe +'</li>'
+				mealHTML += '<li remodel="'+meal[i].remodel+'" flow="'+meal[i].flow+'" money="'+meal[i].money+'" tid="'+meal[i].id+'">'+ meal[i].describe +'</li>'
 			}
 			//将套餐数据添加到页面上
 			$(".chooseContain>ul").html(mealHTML);
@@ -389,12 +389,12 @@
 			}
 			money = $(".taocanSelectNow").attr("money");
 			tid = $(".taocanSelectNow").attr("tid");
-			console.log(money,tid)
+			console.log(money,id)
 			//发送请求让后台生成订单号
 			$.ajax({
 				url: '{{:U("PaymentSystem/information")}}',
 				type: 'post',
-				data: {'num':1,'tid':tid,'money':money,'remodel':remodel},
+				data: {'num':1,'id':tid,'money':money,'remodel':remodel},
 				success: function(res){
 					console.log('成功！ ', res);
 					//如果返回的是订单号
@@ -414,7 +414,7 @@
 			$.ajax({
 				url: '{{:U("PaymentSystem/information")}}',
 				type: 'post',
-				data: {'num':1,'tid':tid,'money':money,'remodel':remodel},
+				data: {'num':1,'id':tid,'money':money,'remodel':remodel},
 				success: function(res){
 					console.log('成功！ ', res);
 					weixinPay(dingdanID);
