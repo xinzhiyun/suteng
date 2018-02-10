@@ -5,7 +5,7 @@ $(function(){
 	//页面加载时获取滤芯数据
 	var data = JSON.parse($(".filterData").val());//滤芯剩余量数据
 	var res = JSON.parse($(".lvxin_data").val()).filterInfo;//滤芯详情数据
-	// console.log(res)
+	// console.log(data);
 	//页面加载时获取数据
     // var data={
     //     "id":"1",
