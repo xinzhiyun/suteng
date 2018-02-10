@@ -18,7 +18,15 @@ class DevicesController extends CommonController
         $device = D('Devices');
         // 查询条件
         $map = '';
-        if(!empty($_GET['code'])) $map['device_code'] = array('like',"%{$_GET['code']}%");
+        // if(!empty($_GET['code'])) $map['device_code'] = array('like',"%{$_GET['code']}%");
+        if(!empty($_GET)){
+            if($_GET['key'] == 'device_code'){
+                $map['d.device_code'] = array('like',"%{$_GET['keywords']}%");
+            }
+            if($_GET['key'] == 'typename'){
+                $map['t.typename'] = array('like',"%{$_GET['keywords']}%");
+            }
+        }
         $count = $device                                                            
             ->where($map)
             ->alias('d')
@@ -333,8 +341,14 @@ class DevicesController extends CommonController
     // 滤芯显示
     public function filterList()
     {
+        $map = array('status'=>0);
+        if(!empty($_GET)){
+            if($_GET['filtername'] != null){
+                $map['filtername'] = array('like',"%{$_GET['filtername']}%");
+            }
+        }
         $filters = D('Filters');
-        $data = $filters->where('status=0')->select();
+        $data = $filters->where($map)->select();
         $assign = [
             'data' => $data,
         ];
@@ -441,9 +455,13 @@ class DevicesController extends CommonController
     // 产品类型
     public function product()
     {
+        $map = array('status'=>0);
+        if(!empty($_GET['typename'])){
+            $map['typename'] = array('like',"%{$_GET['typename']}%");
+        }
         $type = D('Type');
         $filters = D('Filters');
-        $data = $type->where('status=0')->select();
+        $data = $type->where($map)->select();
         $filter = $filters->where(['status'=>0])->select();
         $assign = [
             'data' => $data,

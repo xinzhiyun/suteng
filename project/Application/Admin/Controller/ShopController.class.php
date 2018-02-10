@@ -25,7 +25,6 @@ class ShopController extends CommonController
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
             $map[I('get.key')] = array('like',"%".trim(I('get.keywords'))."%");
         }
-
         $data = D('Category')->getTreeData('tree','id, name',$name='name',$child='id',$parent='pid',$map);
         $assign = [
             'data' => $data,

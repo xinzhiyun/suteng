@@ -425,6 +425,7 @@
 						$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
 						$('.devicepay').hide();
 						setTimeout(function(){
+							location.replace('{{:U("Index/index")}}');
 							location.href = '{{:U("VipCenter/minepack")}}';
 						},500)
 					}else{
