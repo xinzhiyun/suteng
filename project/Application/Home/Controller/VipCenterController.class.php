@@ -140,7 +140,7 @@ class VipCenterController extends CommonController
             $map['status'] = 1;
             $res = $user_device->where($map)->field('name,sex,birth,phone,address')->find();
 
-            if($res && $res != $data){
+            if($res && ($res != $data)){
                 // 实例化验证类
                 $validate   = new \Org\Util\Validate;
                 if($data['name'] != $res['name']){
