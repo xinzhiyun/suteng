@@ -1,0 +1,248 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>商城管理 <small>订单管理</small></h5>
+                    <!-- <div class="ibox-tools">
+                        <i class="fa fa-user-plus"></i>
+                        <a href="{{:U('goodsAdd')}}">添加商品</a>
+                    </div> -->
+                </div>
+                <form method="get" action="">
+                    <div class="input-group col-md-3"  style="float: right;margin-right: 60px;">
+                        <select name="key" class="form-control" name="account" style="width:30%">
+                            <option value="st_type.typename">产品类型</option>
+                        </select>
+                        <input type="text" name="keywords" placeholder="输入搜索关键字" class="input form-control"   style="width:60%">
+                        <span class="input-group-btn" style="display: inline-block;">
+                                <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
+                        </span>
+                    </div>
+                </form>
+                <div class="ibox-content">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    产品类型
+                                </th>
+                                <th>
+                                    套餐金额
+                                </th>
+                                <th>
+                                    套餐量
+                                </th>
+                                <th>
+                                    描述
+                                </th>
+                                <th>
+                                    添加时间
+                                </th>
+                                <th>
+                                    操作
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <empty name="list">
+                                <tr><td colspan="12">暂无商品数据</td></tr>
+                            <else />
+                                <volist name="list" id="v">
+                                    <tr>
+                                        <td>
+                                            {{$v['typename']}}
+                                        </td>
+                                        <td>
+                                            {{$v['money']}}
+                                        </td>
+                                        <td>
+                                            <switch name="v.remodel">
+                                                <case value="0">{{$v['flow']}}(天)</case>
+                                                <case value="1">{{$v['flow']}}(L)</case>
+                                                <default />
+                                            </switch>                                     
+                                        </td>
+                                        <td>
+                                            {{$v['describe']}}
+                                        </td>
+                                        <td>
+                                            {{$v['addtime']||date="y-m-d",###}}
+                                        </td>   
+                                        <td>
+                                            <div class="btn-group">
+                                                <a class="btn btn-outline btn-success showmore" href="javascript:;" orderId="">
+                                                    删除
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </volist>
+                            </empty>
+                        </tbody>
+                    </table>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                {{$button|bootstrap_page_style}}
+                            </ul>
+                        </nav>
+                </div>
+
+            </div>
+        </div>
+    </div>
+                <div class="modal inmodal" id="st-edit" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content animated bounceInRight">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                            <h4 class="modal-title" id="edit-modal-title">
+                                发货
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="edit_errmsg" style="text-align: center;color: red;">
+                                    msgerror
+                                </div>
+                            <form id="bjy-form2" class="form-inline" action=""
+                            method="post">
+                                <input class="input-medium" type="text" id="edit_id" name="id" class="form-control" value="" readonly="" hidden="">
+                                <table class="table table-striped table-bordered table-hover table-condensed">
+                                     <tr>
+                                        <th>
+                                            快递单号：
+                                        </th>
+                                        <td>
+                                            <input class="input-medium" type="text" name="express" id="express" class="form-control" value="">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                        </th>
+                                        <td>
+                                            <input id="edit_submit" class="btn btn-success" type="button" value="确认发货">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</block>
+<block name="myjs">
+    <script>
+        $('.btn-group').on('click','.deletBnt',function(e){
+            var goodsId = $(this).attr('goodsId');
+            var goodsName = $(this).attr('goodsName');
+            parent.layer.confirm('确认删除'+goodsName+'这款商品吗？', {
+                btn: ['确认','取消'], //按钮
+                shade: false //不显示遮罩
+            }, function(){
+                $.ajax({
+                    url:'goodsDel',
+                    type:'post',
+                    dataType:'json',
+                    data:{'id':goodsId},
+                    success:function(res){
+                        if(res.code == 200){
+                            location.reload();
+                            parent.layer.msg(res.msg);
+                        }
+                    }
+                });
+            }, function(){
+                parent.layer.msg('已取消', {shift: 6});
+            });
+        })
+
+        // 发货状态处理
+        function ship(goodId) {
+            $('.edit_errmsg').text('');
+            $('#edit_id').val(goodId);              
+            $('#st-edit').modal('show');        
+        }
+
+
+    $('#edit_submit').click(function(){
+        var data = {
+                'orderid' : $('#edit_id').val(),
+                'express' : $('#express').val(),
+            }
+        $.ajax({
+            type : 'POST',
+            url : "{{:U('Admin/shop/ship')}}",
+            data : data,
+            success : function(msg){
+                if (msg.code == 200) {
+                    $('#st-add').modal('hide');
+                    parent.layer.msg(msg.msg);
+                    window.location.href="{{:U('Admin/shop/orders')}}?p=";
+                }
+                if (msg.code == 500) {
+                    text = '';
+                    $.each(msg.msg, function(i, n){
+                      text = text + '*' + n + '</br>';                     
+                    });
+                    $('.errmsg').html(text);
+                    console.log(msg);
+                }               
+            }
+        });
+    });
+
+
+
+        $('body').on('click','.showmore',function(){
+            var orderId = $(this).attr('orderId')
+            location.href = "selectOrder?id="+orderId;            
+        })
+        $(function(){
+            var span = $("span").html();
+            var sp = $("span");
+            switch(span)
+            {
+                case '已下单':
+                    sp.css('color','blue');
+                    break;
+                case '处理中':
+                    sp.css('color','blue');
+                    break;
+                case '已发货':
+                    sp.css('color','blue');
+                    break;
+                case '已收货':
+                    sp.css('color','blue');
+                    break;
+                case '退货处理中':
+                    sp.css('color','blue');
+                    break;
+                case '已退货':
+                    sp.css('color','blue');
+                    break;
+                case '申诉中':
+                    sp.css('color','blue');
+                    break;
+                case '订单完成':
+                    sp.css('color','blue');
+                    break;
+                case '未支付':
+                    sp.css('color','red');
+                    break;
+                case '已支付':
+                    sp.css('color','green');
+                    break;
+            }
+        })
+        
+    </script>
+</block>
