@@ -213,6 +213,38 @@ class VipCenterController extends CommonController
     {
         $this->display();
     }
+
+    // 我的奖励金接口
+    public function get_reward()
+    {
+        // 获取用户唯一标识
+        $uWhere['u.id'] = session('user.id');
+
+        $data = M('users')
+            ->alias('u')
+            ->where($uWhere)
+            ->join('__USERS_COMMISSION__ c ON c.user_code = u.code','LEFT')
+            ->select(); 
+
+        // 返回数据
+        if(empty($data)){
+            $message    = ['code' => 403, 'message' => '暂无奖励金!'];    
+        }else{
+            $total_gold_num = 0;
+            $total_silver = 0;
+
+            foreach ($data as $key => $value) {
+                $total_gold_num += $value['gold_num'];
+                $total_silver += $value['silver'];
+            }
+            $message    = ['code' => 200, 'message' => '奖励金数据查询成功!','total_gold_num'=>$total_gold_num,'total_silver'=>$total_silver,'data'=>$data];
+        }
+        // echo '<pre>';
+        // print_r($message);
+
+        // 返回JSON格式数据
+        $this->ajaxReturn($message);
+    }
     
 
 }

@@ -77,6 +77,33 @@ class OrderController extends CommonController
 
     }
 
+    /**
+     * [cancellation_of_order 取消订单]
+     * @return [type] [description]
+     */
+    public function cancellation_of_order()
+    {
+        if(IS_POST){
+            // 要取消的订单编号
+            $whrerData['order_id'] = I('post.order_id');
+            // 修改订单状态
+            $saveData['status'] = 1;
+            // 执行修改
+            $res = M('shop_order')->where($whrerData)->save($saveData);
+            // 判断修改是否成功
+            if($res){
+                // 成功返回
+                $message    = ['code' => 200, 'message' => '订单取消成功!'];
+            }else{
+                // 失败返回
+                $message    = ['code' => 403, 'message' => '订单取消失败!']; 
+            }
+
+            // 返回JSON格式数据
+            $this->ajaxReturn($message);
+        }
+    }
+
 
 
     /**
