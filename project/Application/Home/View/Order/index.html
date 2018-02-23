@@ -877,7 +877,10 @@
     (function unpaid_order(){
             $.ajax({//8：未支付
                 url:"{{:U('Home/Order/order_list')}}",
-                data:{"status":8},
+                data:{
+                	"g_type":0,//订单类型：{0：租赁订单}
+                	"status":8
+                },
                 dataType:"json",
                 type: 'post',
                 success:function(res){
@@ -959,6 +962,7 @@
 			      	});
 			      	//点击支付
 			      	$(".payBtn").on("click",function(){
+			      		alert(123);
 			      		$.ajax({
 			      			url:"{{:U('Home/PaymentSystem/orderPay')}}",
 			      			type:"post",
