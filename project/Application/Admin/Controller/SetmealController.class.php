@@ -27,7 +27,7 @@ class SetmealController extends CommonController
         $type = M('setmeal');
         
         $total =$type->where($map)
-                    ->join('st_type ON st_setmeal.tid = st_type.id')
+                    ->join(' LEFT JOIN st_type ON st_setmeal.tid = st_type.id')
                     ->field('st_setmeal.*,st_type.typename')
                     ->count();
         $page  = new \Think\Page($total,8);
@@ -36,7 +36,7 @@ class SetmealController extends CommonController
 
         $list = $type->where($map)
                     ->limit($page->firstRow.','.$page->listRows)
-                    ->join('st_type ON st_setmeal.tid = st_type.id')
+                    ->join(' LEFT JOIN st_type ON st_setmeal.tid = st_type.id')
                     ->field('st_setmeal.*,st_type.typename')
                     ->select();
         // dump($list);die;
@@ -83,13 +83,15 @@ class SetmealController extends CommonController
      */
     public function del()
     {
-        $map['id'] = I("get.id");
-        $res = M('setmeal')->where($map)->delete();
-        if($res) {
-            $this->success("删除成功");
-        } else {
-            $this->error("删除失败");
-        }
+        if (IS_AJAX) {
+            $map['id'] = I("post.id");
+            $res = M('setmeal')->where($map)->delete();
+            if($res) {
+                $this->ajaxReturn(['code'=>200,'msg'=>'删除成功']);
+            } else {
+                $this->ajaxReturn(['code'=>200,'msg'=>'删除成功']);
+            }
+        }           
     }
 
     

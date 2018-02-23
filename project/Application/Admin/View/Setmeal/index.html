@@ -10,7 +10,7 @@
         <div class="row-fluid fl" id="main">
             <div class="tableBox">
                 <div class="ibox-title">
-                    <h5>商城管理 <small>订单管理</small></h5>
+                    <h5>商城管理 <small>套餐列表</small></h5>
                     <!-- <div class="ibox-tools">
                         <i class="fa fa-user-plus"></i>
                         <a href="{{:U('goodsAdd')}}">添加商品</a>
@@ -78,7 +78,7 @@
                                         </td>   
                                         <td>
                                             <div class="btn-group">
-                                                <a class="btn btn-outline btn-success showmore" href="javascript:;" orderId="">
+                                                <a class="btn btn-outline btn-success showmore" href="javascript:;" sId="{{$v['id']}}" id="del">
                                                     删除
                                                 </a>
                                             </div>
@@ -98,61 +98,21 @@
             </div>
         </div>
     </div>
-                <div class="modal inmodal" id="st-edit" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content animated bounceInRight">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                &times;
-                            </button>
-                            <h4 class="modal-title" id="edit-modal-title">
-                                发货
-                            </h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="edit_errmsg" style="text-align: center;color: red;">
-                                    msgerror
-                                </div>
-                            <form id="bjy-form2" class="form-inline" action=""
-                            method="post">
-                                <input class="input-medium" type="text" id="edit_id" name="id" class="form-control" value="" readonly="" hidden="">
-                                <table class="table table-striped table-bordered table-hover table-condensed">
-                                     <tr>
-                                        <th>
-                                            快递单号：
-                                        </th>
-                                        <td>
-                                            <input class="input-medium" type="text" name="express" id="express" class="form-control" value="">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                        </th>
-                                        <td>
-                                            <input id="edit_submit" class="btn btn-success" type="button" value="确认发货">
-                                        </td>
-                                    </tr>
-                                </table>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+             
 </block>
 <block name="myjs">
     <script>
-        $('.btn-group').on('click','.deletBnt',function(e){
-            var goodsId = $(this).attr('goodsId');
-            var goodsName = $(this).attr('goodsName');
-            parent.layer.confirm('确认删除'+goodsName+'这款商品吗？', {
+        $('#del').on('click',function(e){
+            var sId = $(this).attr('sId');
+            parent.layer.confirm('确认删除吗？', {
                 btn: ['确认','取消'], //按钮
                 shade: false //不显示遮罩
             }, function(){
                 $.ajax({
-                    url:'goodsDel',
+                    url:'del',
                     type:'post',
                     dataType:'json',
-                    data:{'id':goodsId},
+                    data:{'id':sId},
                     success:function(res){
                         if(res.code == 200){
                             location.reload();
@@ -165,84 +125,5 @@
             });
         })
 
-        // 发货状态处理
-        function ship(goodId) {
-            $('.edit_errmsg').text('');
-            $('#edit_id').val(goodId);              
-            $('#st-edit').modal('show');        
-        }
-
-
-    $('#edit_submit').click(function(){
-        var data = {
-                'orderid' : $('#edit_id').val(),
-                'express' : $('#express').val(),
-            }
-        $.ajax({
-            type : 'POST',
-            url : "{{:U('Admin/shop/ship')}}",
-            data : data,
-            success : function(msg){
-                if (msg.code == 200) {
-                    $('#st-add').modal('hide');
-                    parent.layer.msg(msg.msg);
-                    window.location.href="{{:U('Admin/shop/orders')}}?p=";
-                }
-                if (msg.code == 500) {
-                    text = '';
-                    $.each(msg.msg, function(i, n){
-                      text = text + '*' + n + '</br>';                     
-                    });
-                    $('.errmsg').html(text);
-                    console.log(msg);
-                }               
-            }
-        });
-    });
-
-
-
-        $('body').on('click','.showmore',function(){
-            var orderId = $(this).attr('orderId')
-            location.href = "selectOrder?id="+orderId;            
-        })
-        $(function(){
-            var span = $("span").html();
-            var sp = $("span");
-            switch(span)
-            {
-                case '已下单':
-                    sp.css('color','blue');
-                    break;
-                case '处理中':
-                    sp.css('color','blue');
-                    break;
-                case '已发货':
-                    sp.css('color','blue');
-                    break;
-                case '已收货':
-                    sp.css('color','blue');
-                    break;
-                case '退货处理中':
-                    sp.css('color','blue');
-                    break;
-                case '已退货':
-                    sp.css('color','blue');
-                    break;
-                case '申诉中':
-                    sp.css('color','blue');
-                    break;
-                case '订单完成':
-                    sp.css('color','blue');
-                    break;
-                case '未支付':
-                    sp.css('color','red');
-                    break;
-                case '已支付':
-                    sp.css('color','green');
-                    break;
-            }
-        })
-        
     </script>
 </block>
