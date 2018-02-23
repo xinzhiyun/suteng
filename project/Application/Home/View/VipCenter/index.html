@@ -111,6 +111,7 @@
 			width: 100%;
 			display: flex;
    		 	align-items: center;
+   		 	clear:both;
 		}
 		
 		#income>p>a {
@@ -129,12 +130,15 @@
 		    width: 11%;
 		    font-size: 1.4rem;
 		}
-		#more>div>a>i.icon-duihuan-{
+		#more>div>a>i.icon-duihuan{
 			color:#2EB6AA;
+		    font-size: 1.48rem;
+
 		}
 		#more>div>a>i:nth-of-type(2){
 			position: absolute;
 			right: 2%;
+			padding:0.4rem 0 0.2rem;
 		}
 		
 		#indent>div {
@@ -382,8 +386,8 @@
 		</div>
 		<div id="more">
 			<div id="pay">
-				<a href="{{:U('Home/Mall/chongzhi')}}">
-					<i class="iconfont icon-duihuan-"></i><!-- icon-duihuan- -->
+				<a  href="{{:U('Home/Mall/chongzhi')}}">
+					<i class="iconfont icon-duihuan"></i><!-- icon-duihuan- -->
 					<p>兑换金银币</p>
 					<i class="iconfont icon-dayuhao-copy-copy"></i>
 				</a>
