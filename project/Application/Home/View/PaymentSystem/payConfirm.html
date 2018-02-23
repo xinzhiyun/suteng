@@ -651,8 +651,9 @@
 			if(lvxinData){
 				// 遍历需要支付的滤芯商品信息
 				for(var i=0; i<lvxinData.length;i++){
+					// console.dir(lvxinData[i])
 					goodsHTML += '<div class="goods">'+
-						'<div class="img"><img src="/Uploads/'+ lvxinData[i].picturepath +'" alt="正在加载..."></div>'+
+						'<div class="img"><img src="'+ lvxinData[i].picpath +'" alt="正在加载..."></div>'+
 						'<div class="dec">'+
 							'<h5>'+ lvxinData[i].filtername +'</h5>'+
 							'<p>'+ lvxinData[i].desc +'</p>'+

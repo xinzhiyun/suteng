@@ -1,7 +1,7 @@
 <?php
 namespace Home\Controller;
 use Think\Controller;
-
+use \Org\Util\WeixinJssdk;
 /**
  * 商城
  */
@@ -78,8 +78,20 @@ class ShopController extends CommonController
 
     public function chooseMeal()
     {
+
+        
         $meal = D('setmeal')->select();
-        // print_r($meal);
+
+        //调用微信JS-SDK类获取签名需要用到的数据
+        $weixin = new WeixinJssdk;
+        $signPackage = $weixin->getSignPackage();
+        // 查询用户微信中的openid
+        // $openId = $weixin->GetOpenid();
+        $openId = $_SESSION['open_id'];
+        //分配数据        
+        $this->assign('info',$signPackage);
+        $this->assign('openId',$openId);
+
         $this->assign('list',json_encode($meal));
         $this->display();
     }

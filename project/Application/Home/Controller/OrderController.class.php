@@ -19,11 +19,17 @@ class OrderController extends CommonController
     public function order_list()
     {
         if(IS_POST){
+            // 接收请求数据
+            // 订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+            $g_type = I('post.g_type');
+            // 8：未支付，9：待发货，2：待收货，7：待评论 4：退款处理中 5：已退货
             $status = I('post.status');
-            // echo $status;die;
+            
             // 查询用户
             $showData['uid']     = $_SESSION['user']['id'];
-            // 订单状态-未支付
+            // 订单类型
+            $g_type['g_type'] = $g_type;
+            // 订单状态
             $showData['status'] = $status;
             // 查询订单表
             $arrList = M('shop_order')->where($showData)->select();
