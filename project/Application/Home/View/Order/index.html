@@ -24,13 +24,13 @@
 		}
 		#header {
 			width: 100vw;
-   			height: 10vh;
-   			padding:8vh 0 0.8rem;
+   			height: 15vh;
+   			padding:9vh 0 3vh;
    			position: fixed;
    			display: flex;
    			justify-content: space-between;
    			align-items: center;
-   			border-bottom: 1vh solid #eee;
+   			border-bottom: 1vh solid #ebebeb;
    			background: #fff;
    			z-index: 999;
 		}
@@ -42,7 +42,10 @@
 		    display: block;
 		    text-align: center;
 		    font-size: 0.72rem;
-		    color:#373737;
+		    color:#6a6a6a;
+		}
+		#header>span:first-child{
+			color:#373737;
 		}
 		#header>span>p{
 			line-height: 2vh;
@@ -53,18 +56,21 @@
 			font-size: 1.4rem;
 			color:#60ACF0;
 		}
+		#header>span>p>i:nth-of-type(2){
+			font-size: 1.5rem;
+		}
 		#header>span>p>b{
 			position: absolute;
 		    left: 11vw;
 		    top: 0.5vh;
 		    width: 0.8rem;
 		    height: 0.8rem;
-		    line-height: 0.8rem;
+		    line-height: 0.78rem;
 		    text-align: center;
 		    display: inline-block;
-		    background: red;
+		    background: #d22838;
 		    border-radius: 1rem;
-		    font-size: 0.5rem;
+		    font-size: 0.6rem;
 		    color: #fff;
 		    font-weight: 600;
 
@@ -160,7 +166,7 @@
 		#dingdanDaipinglun {
 			width: 100vw;
 			position: absolute;
-			padding: 5vh 0;
+			padding: 7vh 0 5vh;
 			top: 0;
 			background: #fff;
 			transition: left .4s ease-out;
@@ -181,9 +187,12 @@
 			left: 400vw;
 		}
 		/*订单部分*/
+		.goods>p:first-child{
+			padding: 3% 2% 1%;
+		}
 		.goods>p {
-			padding: 2%;
-			color: #5a5a5a;
+			padding: 2% 2% 2%;
+			color: #343434;
 			font-size: 0.68rem;
 		}
 		/*订单状态：等待买家付款，交易完成，等待发货等*/
@@ -206,6 +215,8 @@
 			display: flex;
 			padding: 2%;
 			background: #F8F8F8;
+			box-shadow: 1px 0px 1px 0px #e4e3e3 inset;
+
 		}
 		
 		.goods>div.goodsItem:nth-of-type(2n) {
@@ -222,8 +233,8 @@
 			height: 100%;
 			display: block;
 			border-radius: 6px;
-			border: 1px solid #ccc;
 			background: #fff;
+
 		}
 		/*商品描述*/
 		.giDescription {
@@ -231,12 +242,11 @@
 			padding: 2%;
 		}
 		.giDescription>b{
-			color: #7d7d7d;
+			color: #373737;
 			font-size: 0.72rem;
 		}
 		.giDescription>p {
 			margin: 6px 0;
-			color: #666;
 			font-size: .6rem;
 			color: #5a5a5a;
 			font-size: 0.68 rem;
@@ -279,7 +289,7 @@
 		.calc {
 			padding-top: 5%;
 			/*border-top: 1px solid #ddd;*/
-			border-bottom: 1vh solid #eee;
+			border-bottom:10px solid #ebebeb;
 			font-size: 0.68rem;
 			color: #5a5a5a;
 		}
@@ -798,6 +808,8 @@
 			// $("#content").animate({left: '-'+ $(this).attr("index") +'00vw'});
 			$("#content").css({transition:'.3s ease',transform: 'translate(-'+ $(this).attr("index") +'00vw)'});
 			$("#line").css({left: $(this).attr("index")*2 + '0%'});
+			$(".tab").css('color','#5A5A5A');
+			$(this).css('color','#373737');
 		});
 
 		// 寄件点击展开效果
