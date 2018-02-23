@@ -5,6 +5,57 @@ use \Org\Util\WeixinJssdk;
 class PaymentSystemController extends CommonController
 {
     /**
+     * [exchange 金币兑换银币]
+     * @return [type] [description]
+     */
+    public function exchange()
+    {
+        // 获取兑换套餐ID
+        $showData['id'] = I('post.id');
+        // 查询兑换套餐
+        $silverData = M('gold_silver')->where($showData)->find();
+        // 判断兑换套餐是否存在
+        if($silverData){
+            // 如果兑换套餐存在，查询用户金币
+            $showUser['id'] = session('user.id');
+            $user = M('users')->where($showUser)->find();
+            if($user){
+                // 判断用户是否有足够金币兑换
+                if($user['gold_num'] > $silverData['gold']){
+                    // 进行金币兑换操作
+                    // 用户金币等于当前金币-兑换金额
+                    $saveData['gold_num'] = $user['gold_num'] - $silverData['gold'];
+                    // 用户当前银币等于当前银币+兑换的银币
+                    $saveData['silver'] = $user['silver'] + $silverData['silver_num'];
+
+                    $res = M('users')->where($showUser)->save($saveData);
+
+                    if($res){
+                        $message    = ['code' => 200, 'message' => '银币兑换兑换成功!'];
+                    }else{
+                        $message    = ['code' => 403, 'message' => '银币兑换失败请重试!'];
+                    }
+
+                }else{
+                    // 用户用于兑换的金币余额不足
+                    $message    = ['code' => 403, 'message' => '用户用于兑换的金币余额不足!'];
+                }
+            }else{
+                // 用户信息查询失败
+                $message    = ['code' => 403, 'message' => '用户信息查询失败!'];
+            }
+            
+        }else{
+            // 如果兑换套餐不存在
+            $message    = ['code' => 403, 'message' => '没有这个兑换套餐!'];
+        }
+        
+        // 返回JSON格式数据
+        $this->ajaxReturn($message);
+    }
+
+
+    /**
      * [payConfirm 确认支付]
      * @return [type] [description]
      */

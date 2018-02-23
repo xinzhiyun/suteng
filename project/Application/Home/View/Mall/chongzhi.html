@@ -320,7 +320,7 @@
 				</ul>
 			</div>
 			<div class="payBott">
-				<input class=" start" type="submit" value="立即支付">
+				<input class="start" type="submit" value="立即支付">
 			</div>
 		</div>
 	</div>
@@ -432,7 +432,7 @@
 		        	// 微信支付
 		        	// 获取充值的产品
 		        	var obj = $('.money>div').eq(type).children('.taocanSelectNow');
-		        	console.dir('银币兑换');
+		        	// console.dir('银币兑换');
 		        	if( obj.length != 0 ){
 						// 获取产品价格
 						var money 		= $(obj).attr('money');
@@ -478,7 +478,7 @@
 					// console.dir(payType);
 					switch(payType){
 						case '0':
-								console.dir('微信支付');
+								// console.dir('微信支付');
 								$.post('{{:U("Home/PaymentSystem/wxchongzhi")}}',{'id':id,'money':money,'gold_num':gold_num,'name':name,'content':content}, function(res){
 									// 调用微信支付
 									weixinPay(res);
@@ -486,10 +486,10 @@
 								});
 							break;
 						case '1':
-								console.dir('支付宝支付');
+								// console.dir('支付宝支付');
 							break;
 						case '2':
-								console.dir('银联支付');
+								// console.dir('银联支付');
 							break;
 					}
 		        	
@@ -515,7 +515,7 @@
 					// console.dir(payType);
 					switch(payType){
 						case '0':
-								console.dir('微信支付');
+								// console.dir('微信支付');
 								$.post('{{:U("Home/PaymentSystem/wxchongzhi")}}',{'id':id,'money':money,'silver_num':silver_num,'name':name,'content':content}, function(res){
 									// 调用微信支付
 									weixinPay(res);
@@ -523,10 +523,10 @@
 								});
 							break;
 						case '1':
-								console.dir('支付宝支付');
+								// console.dir('支付宝支付');
 							break;
 						case '2':
-								console.dir('银联支付');
+								// console.dir('银联支付');
 							break;
 					}
 		            break;
@@ -535,6 +535,25 @@
 
 
 
+
+		});
+
+		// 发起支付
+		$('.paystyle1 .start').click(function(){
+			// 获取充值产品类型
+			var type = $('.taocanSelectNow').attr('index');
+			// 获取当前选择的兑换套餐
+			var obj = $('.money>div').eq(type).children('.taocanSelectNow');
+			// 获取产品ID
+			var id 			= $(obj).attr('alt');
+			$.post('{{:U("Home/PaymentSystem/exchange")}}',{'id':id}, function(res){
+				if(res.code==200){
+					swal("兑换成功",res.message, "success");
+				}else{
+					swal("兑换失败",res.message, "error");
+				}
+				
+			});
 
 		});
 
