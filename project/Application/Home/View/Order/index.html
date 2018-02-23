@@ -19,7 +19,7 @@
 		body {
 			width: 100vw;
 			height: 100vh;
-			font-size: .6rem;
+			font-size: .7rem;
 			overflow-x: hidden;
 		}
 		#header {
@@ -30,7 +30,8 @@
    			display: flex;
    			justify-content: space-between;
    			align-items: center;
-   			border-bottom: 1vh solid #ebebeb;
+   			border-bottom: 8px solid #ebebeb;
+   			box-shadow: 0px 1px 1px 0px #ccc inset;
    			background: #fff;
    			z-index: 999;
 		}
@@ -38,10 +39,10 @@
 			flex: 1;
    			flex-direction:column;
 			height: 15vh;
-    		line-height: 5vh;
+    		line-height: 6vh;
 		    display: block;
 		    text-align: center;
-		    font-size: 0.72rem;
+		    font-size: 0.68rem;
 		    color:#6a6a6a;
 		}
 		#header>span:first-child{
@@ -62,10 +63,10 @@
 		#header>span>p>b{
 			position: absolute;
 		    left: 11vw;
-		    top: 0.5vh;
+		    top: 0vh;
 		    width: 0.8rem;
 		    height: 0.8rem;
-		    line-height: 0.78rem;
+		    line-height: 0.88rem;
 		    text-align: center;
 		    display: inline-block;
 		    background: #d22838;
@@ -88,7 +89,7 @@
 		}
 		#line>span {
 			width: 50%;
-			height: 1vh;
+			height: 8px;
 		    display: block;
 		    margin: 0 auto;
 		    border-radius: 10px;
@@ -188,7 +189,7 @@
 		}
 		/*订单部分*/
 		.goods>p:first-child{
-			padding: 3% 2% 1%;
+			padding: 5% 2% 1%;
 		}
 		.goods>p {
 			padding: 2% 2% 2%;
@@ -197,7 +198,6 @@
 		}
 		/*订单状态：等待买家付款，交易完成，等待发货等*/
 		.goods>p>span {
-			font-weight: bold;
 			float: right;
 			color:#ff721f;
 			font-size: 0.72rem;
@@ -244,6 +244,7 @@
 		.giDescription>b{
 			color: #373737;
 			font-size: 0.72rem;
+			font-weight: 400;
 		}
 		.giDescription>p {
 			margin: 6px 0;
@@ -254,13 +255,13 @@
 		/*价格*/
 		.giDescription>div>b {
 			color:#fc2a2b;
-			letter-spacing: 2px;
-			font-size: 0.68rem;
+			letter-spacing: 1px;
+			font-size: 0.72rem;
 		}
 		/*数量*/
 		.giDescription>div>span {
 			float: right;
-			font-size: 0.68rem;
+			font-size: 0.72rem;
 			color: #5a5a5a;
 		}
 		.giDescription>div>span:after {
@@ -299,6 +300,9 @@
 			font-size: 0.68rem;
 
 		}
+		.calc>div>span{
+			font-size: 0.6rem;
+		}
 		/*价格*/
 		.calc>div>b {
 			color: #FC2C2D;
@@ -307,7 +311,7 @@
 		.calc>div:nth-of-type(2) {
 			width: 100%;
 			display: flex;
-			padding: 6% 4%;
+			padding: 5% 4%;
 			align-items: center;
 		}
 		/*取消订单*/
@@ -320,29 +324,29 @@
 		}
 		.cancel>span {
 			display: inline-block;
-			padding: 2% 8%;
+			padding:2% 6%;
 			border-radius: 4px;
 			border: 1px solid #aaa;
-			font-size: 0.82rem;
-			letter-spacing: 0.05rem;
+			font-size: 0.72rem;
+			/*letter-spacing: 0.05rem;*/
 			color: #7d7d7d;
 		}
 		/*付款*/
 		.pay {
-			width: 40%;
+			width: 37%;
 			display: inline-block;
 			text-align: right;
 			padding: 2% 0;
 		}
 		.pay>span {
 			display: inline-block;
-			padding: 1vmin 3vmin;
+			padding: 1vmin 3.5vmin;
 			border-radius: 4px;
 			color: #fff;
 			border: 1px solid #2EB6AA;
 			background: #2EB6AA;
-			font-size: 0.82rem;
-			letter-spacing: 0.05rem;
+			font-size: 0.72rem;
+			/*letter-spacing: 0.05rem;*/
 		}
 
 		/*没有内容时添加这个类*/
