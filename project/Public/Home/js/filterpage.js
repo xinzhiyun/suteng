@@ -112,6 +112,7 @@ $(function(){
 			}
 		}
 		// 横线移动
+		
 		if(data.leasingmode=="0"){
 			$("#line").css({marginLeft: $(this).attr("index")*50 + '%'});
 		}else{
