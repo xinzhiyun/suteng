@@ -930,7 +930,7 @@
             $.ajax({//8：未支付
                 url:"{{:U('Home/Order/order_list')}}",
                 data:{
-                	"g_type":0,//订单类型：{0：租赁订单}
+                	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
                 	"status":8
                 },
                 dataType:"json",
@@ -1021,6 +1021,7 @@
 			      		$.ajax({
 			      			url:"{{:U('Home/PaymentSystem/orderPay')}}",
 			      			type:"post",
+			      			dataType:"json",
 			      			data:{
 			      				order: _thisname,
 			      				paymoney: price
@@ -1048,7 +1049,10 @@
 
  			$.ajax({//9：待发货
                 url:"{{:U('Home/Order/order_list')}}",
-                data:{"status":9},
+                data:{
+                	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单},
+                	"status":9
+                },
                 dataType:"json",
                 type: 'post',
                 success:function(res){
@@ -1116,7 +1120,10 @@
 
  			$.ajax({//2：待收货
                 url:"{{:U('Home/Order/order_list')}}",
-                data:{"status":2},
+                data:{
+                	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+                	"status":2
+            	},
                 dataType:"json",
                 type: 'post',
                 success:function(res){
@@ -1176,7 +1183,10 @@
 
  			$.ajax({//7：待评论
                 url:"{{:U('Home/Order/order_list')}}",
-                data:{"status":7},
+                data:{
+                	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+                	"status":7
+            	},
                 dataType:"json",
                 type: 'post',
                 success:function(res){
@@ -1251,7 +1261,10 @@
             });  
             $.ajax({//5：已退货
                 url:"{{:U('Home/Order/order_list')}}",
-                data:{"status":5},
+                data:{
+                	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+                	"status":5
+                },
                 dataType:"json",
                 type: 'post',
                 success:function(res){
