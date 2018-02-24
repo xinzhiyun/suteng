@@ -859,7 +859,7 @@
        	   			type:"post",
        	   			datatype:"json",
        	   			data:{
-       	   				orderID:_thisname
+       	   				order_id:_thisname
        	   			},
        	   			success:function(res){
        	   				alert("操作成功");
@@ -960,14 +960,14 @@
 			       	    // 取消订单ajax请求
 				      	$(".cancelOrder").bind("click").click(function(){
 				      		$.ajax({
-				      			url:"",
+				      			url:"{{:U('Home/Order/cancellation_of_order')}}",
 				      			type:"post",
 				      			datatype:"json",
 				      			data:{
-				      				orderID:_thisname
+				      				order_id:_thisname
 				      			},
 				      			success:function(res){
-				      				alert("操作成功");
+				      				
 				      				window.location.reload();
 				      			}
 				      			// error:function(res){
@@ -978,13 +978,13 @@
 			      	});
 			      	//点击支付
 			      	$(".payBtn").on("click",function(){
-			      		alert(123);
+			      		var _thisname=$(this).attr("name");
 			      		$.ajax({
 			      			url:"{{:U('Home/PaymentSystem/orderPay')}}",
 			      			type:"post",
 			      			dataType:"json",
 			      			data:{
-			      				orderID:_thisname,
+			      				order_id:_thisname,
 			      				paymoney:parseInt(waitpaylist[i]['postage']+waitpaylist[i]['totalprice'])
 			      			},
 			      			success:function(res){

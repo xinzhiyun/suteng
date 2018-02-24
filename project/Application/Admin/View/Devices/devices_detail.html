@@ -204,7 +204,6 @@
                     $('._dive div h1').eq(3).html(statu.leasingmode?leasingmode[statu.leasingmode]:'--');
 
                     var html='';//滤芯剩余显示
-                    alert(filterInfo.length);
                     if(filterInfo){
                         for(var i = 0;i<filterInfo.length;i++){
                             if(filterInfo[i]){
@@ -416,7 +415,6 @@
 
                                 }else if(parseInt(dataList['ReFlowFilter1'])>0 && parseInt(dataList['ReDayFilter1'])<=0){
                                     //流量模式
-                                    //alert(124);
                                     filterMode='按流量';
                                     html+= '<tr>'+
                                         '<td style="width:10%;">'+filterInfo[i].filtername+'</td>'+
