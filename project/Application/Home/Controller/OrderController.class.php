@@ -1,5 +1,6 @@
 <?php
 namespace Home\Controller;
+use \Org\Util\WeixinJssdk;
 
 class OrderController extends CommonController
 {
@@ -9,6 +10,12 @@ class OrderController extends CommonController
      */
     public function index()
     {   
+        $weixin = new WeixinJssdk;
+        $signPackage = $weixin->getSignPackage();
+        //分配数据        
+        $this->assign('info',$signPackage);
+        $this->assign('openId',$openId);
+
     	$this->display();
     }
 
