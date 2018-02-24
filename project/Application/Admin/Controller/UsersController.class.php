@@ -16,9 +16,13 @@ class UsersController extends CommonController
      */
     public function index()
     {	
-        // 根据用户昵称进行搜索
+       // 根据名称进行搜索
         $map = '';
-    	if(!empty($_GET['name'])) $map['name'] = array('like',"%{$_GET['name']}%");
+        if(strlen($_GET['nicknane'])) $map['nicknane'] = array('like',"%{$_GET['nicknane']}%");
+
+        strlen(I('get.original_grade')) ? (int)$map['original_grade'] = I('get.original_grade'):'';
+
+        strlen(I('get.sex')) ? (int)$map['sex'] = I('get.sex'):'';
 
         $user = D('users');
         $total = $user->where($map)->count();
@@ -31,6 +35,7 @@ class UsersController extends CommonController
             'data' => $userlist,
             'button' => $pageButton,
         ];
+
         $this->assign($assign);
         $this->display();
     }
