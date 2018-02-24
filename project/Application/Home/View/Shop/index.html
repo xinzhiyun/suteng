@@ -7,6 +7,7 @@
   	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
   	<link rel="stylesheet" href="__PUBLIC__/Home/css/mF_fancy.css">
  	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+ 	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_v25vpfqtkjegsyvi.css">
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/myfocus-2.0.1.min.js"></script>
   	<script src="__PUBLIC__/Home/js/public.js"></script>
@@ -41,19 +42,21 @@
 			overflow-x: scroll;
 			overflow-y: hidden;
 			box-sizing: content-box;
+    		border-bottom: 1px solid #e6eaea;
 		}
 		#header>span {
 			flex: 1 0 25%;
 			width: 30vw;
 			/*min-width: 60px;*/
 			height: 8vh;
-    		line-height: 8vh;
+    		line-height: 9vh;
     		position: relative;
 		    display: inline-block;
 		    margin: 0 10px;
 		    text-align: center;
 		    font-size: 0.72rem;
 		    color: #5A5A5A;
+		    font-weight: 400!important;
 		}
 		#header>span:nth-child(1){
 			color:#373737;
@@ -70,7 +73,7 @@
 			margin-bottom: -1vh;
 			transition: left .2s ease-in;
     		border-radius: 10px;
-    		background: #60ACF0;
+    		background: #2eb6aa;
 		}
 		
 		#content {
@@ -105,10 +108,37 @@
     		width: 90%;
 			height: 1.6rem;
 			line-height: 1.4rem;
-    		margin: 0rem auto;
+    		margin: 2.5rem auto -0.2rem;
     		border-radius: 0.266667rem;
     		position: relative;
 		}
+		.search>label>i {
+   			font-size: 0.9rem;
+       }
+		.search>i {
+		   display: inline-block;
+		    width: 2%;
+		    position: absolute;
+		    top: 0.1rem;
+		    color: #464646;
+		    right: 1.2rem;
+		    font-size: 1.25rem;
+		}
+		.search>span {
+		    position: absolute;
+		    display: inline-block;
+   			padding: 0.01rem 0.25rem;
+		    border-radius: 1rem;
+		    background: #F00;
+		    right: 0rem;
+		    top: 0rem;
+		    font-size: 0.62rem;
+		    font-weight: 600;
+		    text-align: center;
+		    line-height: 0.8rem;
+		    color: #FFF;
+        }
+
 		.search>label {
 			width: 88%;
 		    display: inline-block;
@@ -161,10 +191,11 @@
 			border-radius: 0.3rem;
 		}
 		.mF_fancy .prev,.mF_fancy .next{
-			top:25%!important;
+			top:57px!important;
 		}
 		.pic>ul>li>a>img{
-			/*width: 100%;*/
+			width:90vw;
+			height: 180px;
 		}
 		.mF_fancy_myFocus{
 			margin-top: 0.066667rem;
@@ -172,11 +203,11 @@
 		/*所有商品*/
 		.goodstitle>h3{
 			text-align: center;
-    	    font-weight: 600;
-    	    margin-bottom: 0.5rem;
-    	    font-size: 0.73rem;
-    	    margin-top: 0.5rem;
-    	    color:#373737;
+		    font-weight: 400;
+		    margin-bottom: 0.5rem;
+		    font-size: 0.73rem;
+		    margin-top: 0.5rem;
+		    color: #373737;
 		}
 		.goodstitle>h3>span{
 			color:#ff2e2e;
@@ -188,47 +219,56 @@
 		}
 		.allgoods>ul>li{
 		   	float: left;
-		    display: block;
-		    position: relative;
-		    width: 50%;
-		    height: 8.5rem;
-		    padding: 5% 5%;
-		    box-sizing: border-box;
+    		display: block;
+    		position: relative;
+    		width: 46%;
+    		height: 8.5rem;
+    		padding: 5% 0% 6% 7%;
+    		box-sizing: border-box;
 		}
 		.allgoods>ul>li>a{
 			height: 7rem;
 			width: 5rem;
 			display: block;
 			position: relative;
+			border: none!important;
 		}
 		.allgoods>ul>li>a>p{
-    		width: 130%;
+    		/*width: 130%;
 			display: block;
 			font-size: 0.67rem;
     		line-height: 1rem;
     		overflow: hidden;
     		text-overflow: ellipsis;
-    		white-space: nowrap;
+    		white-space: nowrap;*/
+		    display: block;
+		    font-size: 0.67rem;
+		    line-height: 1.7rem;
+		    width: 130%;
+		    color: #373737;
 		}
 		.allgoods>ul>li>i{
-			font-size: 1.2rem;
-			color: #ff3232;
-		    position: absolute;
-		    right: 8%;
-		    bottom: 8%;
+			font-size: 1rem;
+		    color: #ff3232;
+		    /* position: relative; */
+		    /* right: -83%; */
+		    /* bottom: 0%; */
+		    float: right;
+		    margin-top: -0.74rem;
 		    z-index: 999;
 		}
 		.allgoods>ul>li>a>b{
 			display: inline-block;
-			margin-top: 6%;
-			font-size: 0.68rem;
+			/*margin-top: 6%;*/
+			font-size: 0.74rem;
 			color: #ff3232;
+			font-weight: 400;
 		}
 		.allgoods>ul>li>a>img{
 			width: 130%;
 			height: 66%;
 			display: inline-block;
-			border: 1px solid #ddd;
+			/*border: 1px solid #ddd;*/
 			border-radius: 4px;
 		}
 		
@@ -258,7 +298,7 @@
 			  <div class="pic"><!--图片列表-->
 			  	<ul>
 			        <li><a goods_gid="{{$goodsList[0]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[0]['path']}}" /></a></li>
-			        <li><a goods_gid="{{$goodsList[1]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[1]['path']}}"  /></a></li>
+			        <li><a goods_gid="{{$goodsList[1]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[1]['path']}}" /></a></li>
 			        <li><a goods_gid="{{$goodsList[2]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[2]['path']}}" /></a></li>
 			        <li><a goods_gid="{{$goodsList[3]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[3]['path']}}" /></a></li>
 			        <li><a goods_gid="{{$goodsList[4]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[4]['path']}}" /></a></li>
@@ -281,7 +321,7 @@
 							<a href="#">
 								<img src="__PUBLIC__/Home/images/goods1.png" alt="">
 								<p>Jagabee 麦片套装</p>
-								<b>¥ 89.00</b><i class="iconfont icon-gouwuchetianjia "></i><span class="iconfont "></span>
+								<b>¥ 89.00</b><i class="iconfont icon-jiarugouwuche "></i><span class="iconfont "></span>
 							</a>
 						</li>
 					</ul>
@@ -365,7 +405,7 @@
 											'<p class="name">'+ _goods[j].name +'</p>'+
 											'<b class="price">¥'+ _goods[j].price +'</b><span class="iconfont "></span>'+
 										'</a>'+
-										'<i class="iconfont icon-gouwuchetianjia "></i>'
+										'<i class="iconfont icon-jiarugouwuche "></i>'
 									'</li>';
 							}else{
 								_htmlArr[i] += '';
@@ -427,7 +467,7 @@
 				}
 				// if($('#content>div').length != 0){
 					 $('#header>span').css('color','#5A5A5A').css('font-weight','400');
-					$(this).css('color','#373737').css('font-weight','600');
+					$(this).css('color','#373737').css('font-weight','400');
 					// $("#content")
 					// .css({height: dingdanArr[$(this).attr("index")]
 					// 	.height, 
@@ -455,7 +495,7 @@
 			/*
 				点击商品旁边的购物车图标
 			 */
-			$(".allgoods").on("click",".icon-gouwuchetianjia",function(){
+			$(".allgoods").on("click","icon-gouwuche",function(){
 				// 获取商品id
 				var gid = $(this).siblings(".pic").attr("goods_gid");
 				console.log(gid);
@@ -480,7 +520,7 @@
 		myFocus.set({
 			id:'myFocus',//ID
 			pattern:'mF_fancy',//风格
-			time:2,
+			time:3,
 			height:180,
 			// width:600,
 		});
