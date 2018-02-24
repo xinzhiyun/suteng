@@ -189,8 +189,7 @@
 			justify-content: center;
 			align-items: center;
 			position: fixed;
-			padding: 3% 0%;
-			bottom: 8vmin;
+			bottom: 6vmin;
 		}
 		#footer>input {
 			width: 80vmin;
@@ -202,6 +201,12 @@
 		    vertical-align: middle;
 		    font-size: .8rem;
 		    background: #2EB6AA;
+		}
+		#addressDetial{
+			height: 25vh;
+		}
+		#areaID{
+			color: 
 		}
 	</style>
 </head>
@@ -218,19 +223,18 @@
 		<div>
 			<span>所在地区:</span>
 			<span>
-				<input type="button" id="areaID" class="area" value="请选择">
-				<input type="button" readonly value=">">
+				<input type="text" id="areaID" class="area" onfocus="this.blur()" placeholder="请选择 >">
 			</span>
 			
 		</div>
 		<div>
-			<span>街&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道:</span>
+			<span>街&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道:</span>
 			<span>
 				<input type="button" id="townID" class="town" placeholder="请输入街道">
 			</span>
 			
 		</div>
-		<textarea name="" id="addressDetial" cols="30" rows="10" placeholder="请谨慎填写详细地址"></textarea>
+		<textarea name="" id="addressDetial" cols="2" rows="10" placeholder="请谨慎填写详细地址"></textarea>
 	</div>
 	<div id="areaChoose" class="citys">
 		<div class="areaChoosebg"></div>
