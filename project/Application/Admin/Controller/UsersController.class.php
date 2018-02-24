@@ -18,7 +18,7 @@ class UsersController extends CommonController
     {	
        // 根据名称进行搜索
         $map = '';
-        if(strlen($_GET['nicknane'])) $map['nicknane'] = array('like',"%{$_GET['nicknane']}%");
+        if(strlen($_GET['nickname'])) $map['nickname'] = array('like',"%{$_GET['nickname']}%");
 
         strlen(I('get.original_grade')) ? (int)$map['original_grade'] = I('get.original_grade'):'';
 
