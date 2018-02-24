@@ -9,295 +9,70 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>站内信 <small>站内信首页</small></h5>
-                        <div class="ibox-tools">
-                            <a href="add_gold" class="close-link">
-                                <i class="fa fa-user-plus"></i>
-                                发送站内信
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="ibox-content">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>序号</th>
-                                    <th>套餐单价</th>
-                                    <th>金币数量</th>
-                                    <th>套餐描述</th>
-                                    <th>状态</th>
-                                    <th>加入时间</th>
-                                    <th>更新时间</th>
-                                    <th>操作</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <empty name="data">
-                                    <tr><td><h3>暂无消息</h3></td></tr>
-                                <else />
-                                    <volist name="data" id="val">
-                                        <tr>
-                                            <td>{{$i}}</td>
-                                            <td>{{$val.money}}</td>
-                                            <td>{{$val.gold_num}}</td>
-                                            <td>{{$val.content}}</td>
-                                            <td>
-                                                <switch name="val.status">
-                                                    <case value="0"><button st="{{$val.status}}" id="{{$val.id}}" class="btn status btn-sm">下架</button></case>
-                                                    <case value="1"><button st="{{$val.status}}" id="{{$val.id}}" class="btn status btn-sm btn-success">上架</button></case>
-                                                    <default />
-                                                </switch>
-                                            </td>
-
-                                            <td>{{$val.addtime|date="Y-m-d H:i:s",###}}</td>
-                                            <td>{{$val.updatetime|date="Y-m-d H:i:s",###}}</td>
-                                            <td>
-                                                <a class="btn btn-sm btn-success" href="javascript:update({{$val.id}})">修改</a>
-                                                <a class="btn btn-danger btn-sm" href="javascript:del({{$val.id}})">删除</a>
-                                            </td>
-                                        </tr>
-                                    </volist>
-                                </empty>
-                            </tbody>
-                        </table>
-                    </div>
+                    <h5>站内信<small>发布公告</small></h5>
                 </div>
-            </div>
-        </div>
-    </div>
-    <!-- 弹框信息 -->
-    <div class="modal inmodal" id="update_gold" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content animated bounceInRight">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">
-                        修改分套餐
-                    </h4>
-                </div>
-                <div class="modal-body">
-                    <!-- 修改分套餐 -->
                     <div class="ibox-content">
-                        <form action="javascript:false;" method="post" class="form-horizontal" enctype="multipart/form-data" id="saveForm">
+                        <form action="javascript:false;" method="post" class="form-horizontal" enctype="multipart/form-data">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">套餐价格</label>
-                                <div class="col-md-10">
-                                    <input type="text" name="money" class="form-control" placeholder="标准价钱格式，例如：2.00">
+                                <label class="col-sm-2 control-label">公告标题</label>
+                                <div class="col-md-8">
+                                    <input type="text" name="title" class="form-control" placeholder="请填写公告的标题">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">金币数量</label>
-                                <div class="col-md-10">
-                                    <input type="text" name="gold_num" class="form-control" placeholder="标准数量格式，例如：2">
+                                <label class="col-sm-2 control-label" >公告正文</label>
+                                <div class="col-md-8">
+                                <textarea rows="20"  style="text-align: left;width:100%;" class="col-sm-10 control-label" name="content"></textarea>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">套餐描述</label>
-                                <div class="col-md-10">
-                                    <input type="text" name="content" class="form-control"  placeholder="套餐简要描述50个字以内">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">是否上架</label>
-                                <div class="col-md-10" id="statusHtml">
-                                    <!-- <input type="checkbox" name="status" class="js-switch" checked/> -->
-                                </div>
-                            </div>
-                            <input type="hidden" name="saveid" value="10" />
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-primary" type="submit" id="save">修改</button>
+                                    <button class="btn btn-primary" type="submit">发布</button>
                                     <button class="btn btn-white" type="reset">重置</button>
                                 </div>
                             </div>
                         </form>
-                    </div>
-
+                    </div>             
                 </div>
             </div>
         </div>
     </div>
 </block>
 <block name="myjs">
-
 <script src="__PUBLIC__/Admin/layui/layui.js"></script>
 <script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="__PUBLIC__/Admin/js/switchery.min.js"></script>
 <script>
-    // 上架或者下架
-    $('.status').click(function(){
-        // 获取产品状态
-        var st = $(this).attr('st');
-        var id = $(this).attr('id');
-        // console.dir(st+' '+id);
-        // 确定上架或者下架吗
-        swal({
-            title: st==1?'您确定要下架吗？':'您确定要上架吗？',
-            text: st==1?'下架之后套餐将无法在用户充值列表显示，请谨慎操作！':'上架之后套餐将在用户充值列表显示，请谨慎操作！',
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: st==1?'是的，套餐确定下架！':'是的，套餐确定上架！',
-            cancelButtonText: "让我再考虑一下…",
-            closeOnConfirm: false,
-            closeOnCancel: false
-        },
-        function (isConfirm) {
-            if (isConfirm) {
-                $.ajax({
-                    url:"{{:U('Admin/Recharge/gold_status')}}",
-                    data:{"id":id,"status":st},
-                    dataType:"json",
-                    type: 'post',
-                    success:function(res){
-                        if(res.code==200){
-                            // st==1?$('.status').removeClass('btn-success').html('下架').attr('st',0):$('.status').addClass("btn-success").html('上架').attr('st',1);
-                            // 分公司交接成功
-                            swal('设置成功',res.msg, "success");
-                            location.reload();
-
-                        }else{
-                            // 分公司交接失败
-                            swal("设置失败",res.msg, "error");
-                        }
-                    },
-                    error:function(res){
-                        // 交接失败提示
-                        swal("设置失败",res.msg, "error");
-                    }
-                });
-            } else {
-                swal("已取消", "您取消了删除操作！", "error");
-            }
-        });
-    });
-
-    // 显示更新数据
-    function update(id){
-        // 显示模态框
-        $('#update_gold').modal('show');
-        $.ajax({
-            url:"{{:U('Admin/Recharge/get_id_gold')}}",
-            data:{"id":id},
-            dataType:"json",
-            type: 'post',
-            success:function(res){
-                if(res.code==200){
-                    // 更新数据
-                    // console.dir(res);
-                    // 初始化
-                    $('input[name="money"]').val(res.data.money);
-                    $('input[name="gold_num"]').val(res.data.gold_num);
-                    $('input[name="content"]').val(res.data.content);
-                    var html = '';
-                    // 状态判断
-                    if(res.data.status==1){
-                        html = '<input type="checkbox" name="status" class="js-switch" checked/>';
-                    }else{
-                        html = '<input type="checkbox" name="status" class="js-switch"/>';
-                    }
-                    $('#statusHtml').html(html);
-                    // 初始化按钮
-                    var elem = document.querySelector('.js-switch');
-                    var init = new Switchery(elem);
-                    defaults = {
-                        color             : '#64bd63'
-                      , secondaryColor    : '#dfdfdf'
-                      , jackColor         : '#fff'
-                      , jackSecondaryColor: null
-                      , className         : 'switchery'
-                      , disabled          : false
-                      , disabledOpacity   : 0.5
-                      , speed             : '0.1s'
-                      , size              : 'default'
-                    }
-                    // ID值
-                    $('input[name="saveid"]').val(res.data.id);
-
-                }else{
-                    // 分公司交接失败
-                    swal("获取失败了!",res.msg, "error");
-                }
-            },
-            error:function(res){
-                // 交接失败提示
-                swal("获取失败了!",res.msg, "error");
-            }
-        });
-    }
-
-    // 执行更新操作
-    $('#save').click(function(){
-        // 关闭模态框
-        $('#update_gold').modal('hide');
+    /**
+     * [获取表单数据]
+     * @param  {[type]} )
+     * @return {[type]}     [description]
+     */
+    $('.btn-primary').click(function(){
         // 获取表单数据
-        var data = $("#saveForm").serialize();
-        //  异步请求
+        var data = $("form").serialize();
+        console.dir(data);
+        //  异不请求
         $.ajax({
-            url:"{{:U('Admin/Recharge/update_gold')}}",
+            url:"{{:U('Admin/Mail/index')}}",
             data:data,
             dataType:"json",
             type: 'post',
             success:function(res){
-                // console.dir(res);
+                console.dir(res);
                 if(res.code == 200){
                     // 添加成功
-                    swal(res.msg,res.msg, "success");
-                    // 两秒后刷新
-                    setTimeout(function(){
-                        window.location.reload();
-                    },500);
+                    swal('设置成功',res.message, "success");
+                    // location.reload();
+                    // window.location.reload();
                 }else{
                     // 添加失败
-                    swal(res.msg, "请重新提交！", "success");
+                    swal(res.message, "请重新提交！", "success");
                 }
             }
         });
     });
 
-    // 删除金币套餐
-    function del(id){
-        swal({
-            title: '您确定要删除该套餐吗？',
-            text: '套餐删除之后将无法恢复，请谨慎操作！',
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText:'是的，确定删除套餐！',
-            cancelButtonText: "让我再考虑一下…",
-            closeOnConfirm: false,
-            closeOnCancel: false
-        },
-        function (isConfirm) {
-            if (isConfirm) {
-                $.ajax({
-                    url:"{{:U('Admin/Recharge/del_gold')}}",
-                    data:{"id":id},
-                    dataType:"json",
-                    type: 'post',
-                    success:function(res){
-                        if(res.code==200){
-                            // 套餐删除成功
-                            swal('删除成功',res.msg, "success");
-                            location.reload();
-                        }else{
-                            // 套餐删除失败
-                            swal("删除失败",res.msg, "error");
-                        }
-                    },
-                    error:function(res){
-                        // 套餐删除失败
-                        swal("删除失败",res.msg, "error");
-                    }
-                });
-            } else {
-                swal("已取消", "您取消了删除操作！", "error");
-            }
-        });
-    }
-    </script>
+</script>
 </block>

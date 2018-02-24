@@ -1,0 +1,176 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/switchery.min.css" rel="stylesheet">
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>站内信<small>公告列表</small></h5>
+                        <div class="ibox-tools">
+                            <a href="index" class="close-link">
+                                <i class="fa fa-user-plus"></i>
+                                发布公告
+                            </a>
+                        </div>
+                    </div>
+                <form method="get" action="">
+                    <div class="input-group col-md-3"  style="float: right;margin-right: 60px;">
+                        <select name="key" class="form-control" name="account" style="width:30%">
+                            <option value="title">标题</option>
+                            <option value="content">内容</option>
+                        </select>
+                        <input type="text" name="keywords" placeholder="输入搜索关键字" class="input form-control"   style="width:60%">
+                        <span class="input-group-btn" style="display: inline-block;">
+                                <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
+                        </span>
+                    </div>
+                </form>
+                    <div class="ibox-content">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th class="col-md-3">公告标题</th>
+                                    <th>公告内容</th>
+                                    <th>发布人</th>
+                                    <th>状态</th>
+                                    <th>加入时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <empty name="data">
+                                    <tr><td><h3>暂无消息</h3></td></tr>
+                                <else />
+                                    <volist name="data" id="val">
+                                        <tr>
+                                            <td>{{$i}}</td>
+                                            <td>{{$val.title}}</td>
+                                            <td>{{$val.content}}</td>
+                                            <td>{{$val.sender}}</td>
+                                            <td>
+                                                <switch name="val.status">
+                                                    <case value="0"><button st="{{$val.status}}" id="{{$val.id}}" class="btn status btn-sm">启用</button></case>
+                                                    <case value="1"><button st="{{$val.status}}" id="{{$val.id}}" class="btn status btn-sm btn-success">禁用</button></case>
+                                                    <default />
+                                                </switch>
+                                            </td>
+                                            <td>{{$val.addtime|date="Y-m-d H:i:s",###}}</td>
+                                            <td>
+                                                <a class="btn btn-danger btn-sm" href="javascript:del({{$val.id}})">删除</a>
+                                            </td>
+                                        </tr>
+                                    </volist>
+                                </empty>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+
+<script src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="__PUBLIC__/Admin/js/switchery.min.js"></script>
+<script>
+    // 启用或者禁用
+    $('.status').click(function(){
+        // 获取产品状态
+        var st = $(this).attr('st');
+        var id = $(this).attr('id');
+        // console.dir(st+' '+id);
+        // 确定上架或者下架吗
+        swal({
+            title: st==1?'您确定要启用吗？':'您确定禁用要吗？',
+            text: st==1?'启用之后公告将显示，请谨慎操作！':'禁用之后公告将无法显示，请谨慎操作！',
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: st==1?'是的，确定启用公告！':'是的，确定禁用公告！',
+            cancelButtonText: "让我再考虑一下…",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url:"{{:U('Admin/Mail/status')}}",
+                    data:{"id":id,"status":st},
+                    dataType:"json",
+                    type: 'post',
+                    success:function(res){
+                        if(res.code==200){
+                            // st==1?$('.status').removeClass('btn-success').html('下架').attr('st',0):$('.status').addClass("btn-success").html('上架').attr('st',1);
+                            // 分公司交接成功
+                            swal('设置成功',res.msg, "success");
+                            location.reload();
+
+                        }else{
+                            // 分公司交接失败
+                            swal("设置失败",res.msg, "error");
+                        }
+                    },
+                    error:function(res){
+                        // 交接失败提示
+                        swal("设置失败",res.msg, "error");
+                    }
+                });
+            } else {
+                swal("已取消", "您取消了操作！", "error");
+            }
+        });
+    });
+
+
+    // 删除金币套餐
+    function del(id){
+        swal({
+            title: '您确定要删除该公告吗？',
+            text: '公告删除之后将无法恢复，请谨慎操作！',
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText:'是的，确定删除公告！',
+            cancelButtonText: "让我再考虑一下…",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url:"{{:U('Admin/Mail/del')}}",
+                    data:{"id":id},
+                    dataType:"json",
+                    type: 'post',
+                    success:function(res){
+                        if(res.code==200){
+                            // 套餐删除成功
+                            swal('删除成功',res.msg, "success");
+                            // 两秒后刷新
+                            setTimeout(function(){
+                                location.reload();
+                            },1500);
+                        }else{
+                            // 套餐删除失败
+                            swal("删除失败",res.msg, "error");
+                        }
+                    },
+                    error:function(res){
+                        // 套餐删除失败
+                        swal("删除失败",res.msg, "error");
+                    }
+                });
+            } else {
+                swal("已取消", "您取消了删除操作！", "error");
+            }
+        });
+    }
+    </script>
+</block>
