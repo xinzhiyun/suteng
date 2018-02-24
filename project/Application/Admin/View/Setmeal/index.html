@@ -78,7 +78,7 @@
                                         </td>   
                                         <td>
                                             <div class="btn-group">
-                                                <a class="btn btn-outline btn-success showmore" href="javascript:;" sId="{{$v['id']}}" id="del">
+                                                <a class="btn btn-outline btn-success showmore del" href="javascript:;" sId="{{$v['id']}}">
                                                     删除
                                                 </a>
                                             </div>
@@ -102,7 +102,7 @@
 </block>
 <block name="myjs">
     <script>
-        $('#del').on('click',function(e){
+        $('.del').on('click',function(e){
             var sId = $(this).attr('sId');
             parent.layer.confirm('确认删除吗？', {
                 btn: ['确认','取消'], //按钮

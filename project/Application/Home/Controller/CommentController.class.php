@@ -45,17 +45,20 @@ class CommentController extends CommonController
             $pic_status = M("com_pic")->add($com_pic);
             if($com_status&&$pic_status){
                 $comment->commit();
-                E('评论成功', 200);
+                // E('评论成功', 200);
+                $this->success('评论成功');
             } else {
                 $comment->rollback();
-                E('评论失败', 603);
+                // E('评论失败', 603);
+                $this->error('评论失败');
             }
         } catch (\Exception $e) {
-            $err = [
-                'code' => $e->getCode(),
-                'msg' => $e->getMessage(),
-            ];
-            $this->ajaxReturn($err);
+            // $err = [
+            //     'code' => $e->getCode(),
+            //     'msg' => $e->getMessage(),
+            // ];
+            // $this->ajaxReturn($err);
+            $this->error('评论失败');
         }
     }
 
