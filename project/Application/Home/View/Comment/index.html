@@ -154,7 +154,7 @@
         	position: absolute;
         	width: 70%;
         	height: 4rem;
-        	bottom: 1rem;
+        	bottom: .6rem;
         	right: 0;
         	display: block;
         }
@@ -163,13 +163,17 @@
         	height: 100%;
         	display: inline-block;
         	position: relative;
-        	margin: 0 6px;
+        	margin: 0 4px;
+        }
+        #picShow>span>img {
+        	width: 100%;
+        	height: 90%;
         }
         .delPic {
         	position: absolute;
         	width: .8rem;
         	height: .8rem;
-        	top: 0;
+        	top: -10px;
         	right: 0;
         	display: flex;
         	justify-content: center;
@@ -185,7 +189,7 @@
 	<div class="commentcontain">
 		<form id="form" action="commentsucceed" method="post" enctype="multipart/form-data">
 			<div class="xuanping clearfix">
-				<div class="pingpic"><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>
+				<div class="pingpic"><img src="" alt=""></div>
 				<!-- 用户ID -->
 				<input type="hidden" name="uid" value="11111">
 				<!-- 商品ID -->
@@ -229,6 +233,7 @@
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
   	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script>
+	//{{:U('Home/Comment/commentsucceed')}}
 		//将评论的商品信息显示到页面从我的订单~待评论传来
 		if(sessionStorage.getItem("pinglunObj")){
 			var pinglunObj = JSON.parse(sessionStorage.getItem("pinglunObj"));
@@ -278,11 +283,24 @@
 				$('#picShow').append(span);
 			}
 		})
+
+		/**
+			点击上传的图片右上角的" x "，删除这张图片
+		 */ 
+		$("#picShow").on("click", ".delPic", function(){
+			// console.log($(this).parent());
+			$(this).parent().remove()
+			
+		})
+		/**
+			点击提交
+		 */
 		$("#submit").click(function(){
 			if($("#shopping").val()==""){
 				layuiHint("请您对我们的商品做出评价呗");
 				return false;
 			}
+			console.log(formData.getAll('UploadForm[picture][]'));
 		});
 	</script>
 </body>
