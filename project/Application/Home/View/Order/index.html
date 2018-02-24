@@ -5,8 +5,6 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_3mgodvjd6sp833di.css">
-
-	
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
     <script src="__PUBLIC__/Home/js/public.js"></script>
 	<title>我的订单</title>
@@ -708,26 +706,26 @@
 			$('.noContain').show();
 		}
 		
-		// var returneddata1=[//待商家同意退货数据
-		// 	{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"},
-		// 	{"updatetime":"2018-01-31","orderimg":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"}
-		// ];
-		// var returneddata2=[//商家同意退款，请尽早退货
-		// 	{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8","shouhuoren":"张三","tel":"18475698574","adress":"广东省韶关市"},
-		// 	{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8","shouhuoren":"张三","tel":"18475698574","adress":"广东省韶关市"},
-		// ];
-		// var returneddata3=[//商品已寄出，退款退货中
-		// 	{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"},
-		// 	{"updatetime":"2018-01-31","orderimg":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"}
-		// ];
-		// var returneddata4=[//退货成功
-		// 	{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"},
-		// 	{"updatetime":"2018-01-31","orderimg":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"}
-		// ];
-		// var returneddata5=[//退货成功
-		// 	{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"},
-		// 	{"updatetime":"2018-01-31","orderimg":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"}
-		// ];
+		var returneddata1=[//待商家同意退货数据
+			{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"},
+			{"updatetime":"2018-01-31","orderimg":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"}
+		];
+		var returneddata2=[//商家同意退款，请尽早退货
+			{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8","shouhuoren":"张三","tel":"18475698574","adress":"广东省韶关市"},
+			{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8","shouhuoren":"张三","tel":"18475698574","adress":"广东省韶关市"},
+		];
+		var returneddata3=[//商品已寄出，退款退货中
+			{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"},
+			{"updatetime":"2018-01-31","orderimg":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"}
+		];
+		var returneddata4=[//退货成功
+			{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"},
+			{"updatetime":"2018-01-31","orderimg":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"}
+		];
+		var returneddata5=[//退货成功
+			{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"},
+			{"updatetime":"2018-01-31","orderimg":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"}
+		];
 		var dingdanDaifukuan1='';//待付款页面html
 		var dingdanDaifukuan2='';
 		var dingdanDaifahuo1='';//待发货页面html
@@ -741,94 +739,94 @@
 		var returned3='';
 		var returned4='';
 		var returned5='';
-		// for(var i=0;i<returneddata1.length;i++){//退货过程1
-		// 	returned1+='<p>信息更新时间：'+ returneddata1[i]['updatetime'] +'</p>'+
-		// 			'<div class="shangpingnei clearfix">'+
-		// 				'<div class="tuikuangLeft ">'+
-		// 					'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
-		// 				'</div>'+
-		// 				'<div class="tuikuangRight">'+
-		// 					'<span>'+ returneddata1[i]['productbrief'] +'</span>'+
-		// 					'<p><b>￥'+returneddata1[i]['price'] +'</b><span>x '+ returneddata1[i]['productnumber'] +'</span></p>'+
-		// 				'</div>'+
-		// 			'</div>'+
-		// 			'<p><b>等待商家同意退款</b></p>';
-		// }
-		// $(".returned1").html(returned1);
-		// for(var i=0;i<returneddata2.length;i++){//退货过程2
-		// 	returned2+='<p>信息更新时间：'+returneddata2[i]['updatetime']+'</p>'+
-		// 			'<div class="shangpingnei clearfix">'+
-		// 				'<div class="tuikuangLeft ">'+
-		// 					'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
-		// 				'</div>'+
-		// 				'<div class="tuikuangRight">'+
-		// 					'<span>'+returneddata2[i]['productbrief']+'</span>'+
-		// 					'<p><b>￥'+returneddata2[i]['price']+'</b><span>x'+returneddata2[i]['productnumber']+'</span></p>'+
-		// 				'</div>'+
-		// 			'</div>'+
-		// 			'<p><b>商家同意退款，请尽早退货</b><span>点击展开<i class="iconfont icon-shuangxiajiantou"></i></span></p>'+
-		// 			'<!-- 隐藏的评论内容 -->'+
-		// 			'<div class="commentHidden">'+
-		// 				'<div class="hidTop">'+
-		// 					'<p><span>收货人： '+returneddata2[i]['shouhuoren']+'</span>'+returneddata2[i]['tel']+'</p>'+
-		// 					'<p>'+returneddata2[i]['adress']+'</p>'+
-		// 				'</div>'+
-		// 				'<div class="hidBott">'+
-		// 					'<div class="hidbotttxt">'+
-		// 						'<a href="#">'+
-		// 							'<p>我已寄件</p>'+
-		// 							'<p>点击填写物流单号</p>'+
-		// 						'</a>'+
-		// 					'</div>'+
-		// 				'</div>'+
-		// 			'</div>';
-		// }
-		// $(".returned2").html(returned2);
-		// for(var i=0;i<returneddata3.length;i++){//退货过程3
-		// 	returned3+='<p>信息更新时间：'+ returneddata3[i]['updatetime'] +'</p>'+
-		// 			'<div class="shangpingnei clearfix">'+
-		// 				'<div class="tuikuangLeft ">'+
-		// 					'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
-		// 				'</div>'+
-		// 				'<div class="tuikuangRight">'+
-		// 					'<span>'+ returneddata3[i]['productbrief'] +'</span>'+
-		// 					'<p><b>￥'+returneddata3[i]['price'] +'</b><span>x '+ returneddata3[i]['productnumber'] +'</span></p>'+
-		// 				'</div>'+
-		// 			'</div>'+
-		// 			'<p><b>商品已寄出，退款退货中</b></p>';
-		// }
-		// $(".returned3").html(returned3);
-		// for(var i=0;i<returneddata4.length;i++){//退货过程4
-		// 	returned4+='<p>信息更新时间：'+ returneddata4[i]['updatetime'] +'</p>'+
-		// 			'<div class="shangpingnei clearfix">'+
-		// 				'<div class="tuikuangLeft ">'+
-		// 					'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
-		// 				'</div>'+
-		// 				'<div class="tuikuangRight">'+
-		// 					'<span>'+ returneddata4[i]['productbrief'] +'</span>'+
-		// 					'<p><b>￥'+returneddata4[i]['price'] +'</b><span>x '+ returneddata4[i]['productnumber'] +'</span></p>'+
-		// 				'</div>'+
-		// 			'</div>'+
-		// 			'<p><b>退款成功</b></p>';
-		// }
-		// $(".returned4").html(returned4);
-		// for(var i=0;i<returneddata5.length;i++){//退货过程5
-		// 	returned5+='<p>信息更新时间：'+ returneddata5[i]['updatetime'] +'</p>'+
-		// 			'<div class="shangpingnei clearfix">'+
-		// 				'<div class="tuikuangLeft ">'+
-		// 					'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
-		// 				'</div>'+
-		// 				'<div class="tuikuangRight">'+
-		// 					'<span>'+ returneddata5[i]['productbrief'] +'</span>'+
-		// 					'<p><b>￥'+returneddata5[i]['price'] +'</b><span>x '+ returneddata5[i]['productnumber'] +'</span></p>'+
-		// 				'</div>'+
-		// 			'</div>'+
-		// 			'<p class="noborder"><b>报装中，客服电话：020-84765556</b></p>'+
-		// 			'<div class="pinglunBtn">'+
-		// 			'<input class="commentAfter" type="submit" value="评论">'+
-		// 			'</div>';
-		// }
-		// $(".returned5").html(returned5);
+		for(var i=0;i<returneddata1.length;i++){//退货过程1
+			returned1+='<p>信息更新时间：'+ returneddata1[i]['updatetime'] +'</p>'+
+					'<div class="shangpingnei clearfix">'+
+						'<div class="tuikuangLeft ">'+
+							'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
+						'</div>'+
+						'<div class="tuikuangRight">'+
+							'<span>'+ returneddata1[i]['productbrief'] +'</span>'+
+							'<p><b>￥'+returneddata1[i]['price'] +'</b><span>x '+ returneddata1[i]['productnumber'] +'</span></p>'+
+						'</div>'+
+					'</div>'+
+					'<p><b>等待商家同意退款</b></p>';
+		}
+		$(".returned1").html(returned1);
+		for(var i=0;i<returneddata2.length;i++){//退货过程2
+			returned2+='<p>信息更新时间：'+returneddata2[i]['updatetime']+'</p>'+
+					'<div class="shangpingnei clearfix">'+
+						'<div class="tuikuangLeft ">'+
+							'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
+						'</div>'+
+						'<div class="tuikuangRight">'+
+							'<span>'+returneddata2[i]['productbrief']+'</span>'+
+							'<p><b>￥'+returneddata2[i]['price']+'</b><span>x'+returneddata2[i]['productnumber']+'</span></p>'+
+						'</div>'+
+					'</div>'+
+					'<p><b>商家同意退款，请尽早退货</b><span>点击展开<i class="iconfont icon-shuangxiajiantou"></i></span></p>'+
+					'<!-- 隐藏的评论内容 -->'+
+					'<div class="commentHidden">'+
+						'<div class="hidTop">'+
+							'<p><span>收货人： '+returneddata2[i]['shouhuoren']+'</span>'+returneddata2[i]['tel']+'</p>'+
+							'<p>'+returneddata2[i]['adress']+'</p>'+
+						'</div>'+
+						'<div class="hidBott">'+
+							'<div class="hidbotttxt">'+
+								'<a href="#">'+
+									'<p>我已寄件</p>'+
+									'<p>点击填写物流单号</p>'+
+								'</a>'+
+							'</div>'+
+						'</div>'+
+					'</div>';
+		}
+		$(".returned2").html(returned2);
+		for(var i=0;i<returneddata3.length;i++){//退货过程3
+			returned3+='<p>信息更新时间：'+ returneddata3[i]['updatetime'] +'</p>'+
+					'<div class="shangpingnei clearfix">'+
+						'<div class="tuikuangLeft ">'+
+							'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
+						'</div>'+
+						'<div class="tuikuangRight">'+
+							'<span>'+ returneddata3[i]['productbrief'] +'</span>'+
+							'<p><b>￥'+returneddata3[i]['price'] +'</b><span>x '+ returneddata3[i]['productnumber'] +'</span></p>'+
+						'</div>'+
+					'</div>'+
+					'<p><b>商品已寄出，退款退货中</b></p>';
+		}
+		$(".returned3").html(returned3);
+		for(var i=0;i<returneddata4.length;i++){//退货过程4
+			returned4+='<p>信息更新时间：'+ returneddata4[i]['updatetime'] +'</p>'+
+					'<div class="shangpingnei clearfix">'+
+						'<div class="tuikuangLeft ">'+
+							'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
+						'</div>'+
+						'<div class="tuikuangRight">'+
+							'<span>'+ returneddata4[i]['productbrief'] +'</span>'+
+							'<p><b>￥'+returneddata4[i]['price'] +'</b><span>x '+ returneddata4[i]['productnumber'] +'</span></p>'+
+						'</div>'+
+					'</div>'+
+					'<p><b>退款成功</b></p>';
+		}
+		$(".returned4").html(returned4);
+		for(var i=0;i<returneddata5.length;i++){//退货过程5
+			returned5+='<p>信息更新时间：'+ returneddata5[i]['updatetime'] +'</p>'+
+					'<div class="shangpingnei clearfix">'+
+						'<div class="tuikuangLeft ">'+
+							'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
+						'</div>'+
+						'<div class="tuikuangRight">'+
+							'<span>'+ returneddata5[i]['productbrief'] +'</span>'+
+							'<p><b>￥'+returneddata5[i]['price'] +'</b><span>x '+ returneddata5[i]['productnumber'] +'</span></p>'+
+						'</div>'+
+					'</div>'+
+					'<p class="noborder"><b>报装中，客服电话：020-84765556</b></p>'+
+					'<div class="pinglunBtn">'+
+					'<input class="commentAfter" type="submit" value="评论">'+
+					'</div>';
+		}
+		$(".returned5").html(returned5);
 
 		// 订单状态
 		var dingdanArr = [ '#dingdanDaifukuan','#dingdanDaifahuo','#dingdanDaishouhuo','#dingdanDaipinglun','#saleAfter']
@@ -1260,7 +1258,10 @@
 
  			$.ajax({//4：退款处理中
                 url:"{{:U('Home/Order/order_list')}}",
-                data:{"status":4},
+                data:{
+                	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+                	"status":4
+            	},
                 dataType:"json",
                 type: 'post',
                 success:function(res){
