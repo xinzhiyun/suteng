@@ -665,6 +665,7 @@
   	  <div class="modal-backup3"></div>
   	</div>
 
+	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script>
 		if($('#content>div').length==0){
 			$('.noContain').show();
@@ -792,7 +793,18 @@
 		// }
 		// $(".returned5").html(returned5);
 
-
+		//微信接口
+		wx.config({
+		    debug: false,
+		    appId: '{{$info["appId"]}}',
+		    timestamp: '{{$info["timestamp"]}}',
+		    nonceStr: '{{$info["nonceStr"]}}',
+		    signature: '{{$info["signature"]}}',
+		    jsApiList: [
+		      // 所有要调用的 API 都要加到这个列表中
+		      'chooseWXPay'
+		    ]
+		});
 
 		// 订单状态
 		var dingdanArr = [ '#dingdanDaifukuan','#dingdanDaifahuo','#dingdanDaishouhuo','#dingdanDaipinglun','#saleAfter']
@@ -929,8 +941,8 @@
 							dingdanDaifukuan1+=dingdanDaifukuan2+'<div class="calc">'+
 									'<div>'+
 										'共'+ waitpaylist[i]['totalnumber'] +'件商品&emsp;'+
-										'合计：<b>￥'+waitpaylist[i]['totalprice']+'</b>'+
-										'<span>&nbsp;(含邮费￥'+waitpaylist[i]['postage']+')</span>'+
+										'合计：<b class="price">￥'+waitpaylist[i]['totalprice']+'</b>'+
+										'<span class="postage">&nbsp;(含邮费￥'+waitpaylist[i]['postage']+')</span>'+
 									'</div>'+
 									'<div>'+
 										'<div class="cancel start1" name='+waitpaylist[i]['orderid']+'>'+
@@ -978,14 +990,17 @@
 			      	});
 			      	//点击支付
 			      	$(".payBtn").on("click",function(){
-			      		var _thisname=$(this).attr("name");
+			      		var _thisname = JSON.parse($(this).siblings().attr("name"));
+			      		// var paymoney = parseFloat($(this).parents(".calc").find(".postage").text().substr(6));	//邮费
+			      		var price = parseInt($(this).parents(".calc").find(".price").text().substr(1)*100)/100;
+			      		// console.log(_thisname,price);
 			      		$.ajax({
 			      			url:"{{:U('Home/PaymentSystem/orderPay')}}",
 			      			type:"post",
 			      			dataType:"json",
 			      			data:{
-			      				order_id:_thisname,
-			      				paymoney:parseInt(waitpaylist[i]['postage']+waitpaylist[i]['totalprice'])
+			      				order: _thisname,
+			      				paymoney: price
 			      			},
 			      			success:function(res){
 			      				console.log(res);
@@ -993,16 +1008,10 @@
 									console.log('支付错误！');
        								parent.layer.msg('支付错误！');
 								}else{
-									if($("#addressInfo").val()){
-										// 调用微信支付方法
-										weixinPay(res);
-									}else{
-										//无地址
-       									parent.layer.msg('请添加一个地址');
-										setTimeout(function(){
-											location.href = '{{:U("Address/newAddress")}}';
-										},500);
-									}
+									
+									// 调用微信支付方法
+									weixinPay(res);
+									
 								}
 			      			}
 			      		});
@@ -1047,8 +1056,8 @@
 							dingdanDaifahuo1+=dingdanDaifahuo2+'<div class="calc">'+
 									'<div>'+
 										'共'+ waitsendlist[i]['totalnumber'] +'件商品&emsp;'+
-										'合计：<b>￥'+waitsendlist[i]['totalprice']+'</b>'+
-										'<span>&nbsp;(含邮费￥'+waitsendlist[i]['postage']+')</span>'+
+										'合计：<b class="price">￥'+waitsendlist[i]['totalprice']+'</b>'+
+										'<span class="postage">&nbsp;(含邮费￥'+waitsendlist[i]['postage']+')</span>'+
 									'</div>'+
 									'<div>'+
 										'<div class="cancel">'+
@@ -1113,8 +1122,8 @@
 							dingdanDaishouhuo1+=dingdanDaishouhuo2+'<div class="calc">'+
 									'<div>'+
 										'共'+ waitgainlist[i]['totalnumber'] +'件商品&emsp;'+
-										'合计：<b>￥'+waitgainlist[i]['totalprice']+'</b>'+
-										'<span>&nbsp;(含邮费￥'+waitgainlist[i]['postage']+')</span>'+
+										'合计：<b class="price">￥'+waitgainlist[i]['totalprice']+'</b>'+
+										'<span class="postage">&nbsp;(含邮费￥'+waitgainlist[i]['postage']+')</span>'+
 									'</div>'+
 									'<div>'+
 										'<div class="cancel">'+
@@ -1173,8 +1182,8 @@
 							dingdanDaipinglun1+=dingdanDaipinglun2+'<div class="calc">'+
 									'<div>'+
 										'共'+ waitcommentlist[i]['totalnumber'] +'件商品&emsp;'+
-										'合计：<b>￥'+waitcommentlist[i]['totalprice']+'</b>'+
-										'<span>&nbsp;(含邮费￥'+waitcommentlist[i]['postage']+')</span>'+
+										'合计：<b class="price">￥'+waitcommentlist[i]['totalprice']+'</b>'+
+										'<span class="postage">&nbsp;(含邮费￥'+waitcommentlist[i]['postage']+')</span>'+
 									'</div>'+
 									'<div>'+
 										'<div class="cancel">'+
