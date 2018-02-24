@@ -99,7 +99,7 @@
 	    width: 4.2rem;
 	    height: 4.2rem;
 	    position: absolute;
-	    top: 7.9rem;
+	    bottom: 1rem;
 	    left: 0.8rem;
 	}
 	/*中好差评的样式设置*/
@@ -149,6 +149,35 @@
    			border-left: none;
    			transform: rotate(45deg);
         }
+        /*显示上传的图片*/
+        #picShow {
+        	position: absolute;
+        	width: 70%;
+        	height: 4rem;
+        	bottom: 1rem;
+        	right: 0;
+        	display: block;
+        }
+        #picShow>span {
+        	width: 30%;
+        	height: 100%;
+        	display: inline-block;
+        	position: relative;
+        	margin: 0 6px;
+        }
+        .delPic {
+        	position: absolute;
+        	width: .8rem;
+        	height: .8rem;
+        	top: 0;
+        	right: 0;
+        	display: flex;
+        	justify-content: center;
+        	align-items: center;
+        	color: #fff;
+        	border-radius: 50%;
+        	background: red;
+        }
 	
 </style>
 
@@ -184,11 +213,12 @@
 					</label>
 					<span><i class="iconfont icon-tianjia"></i><em>限3张内</em></span>
 					<input class="file_upload" multiple name="pic[]" type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
+					<div id="picShow"></div>
 				</div>
 			</div>
 			<a href="{{:U('Home/Comment/commentsucceed')}}">
 				<div class="saleBott">
-					<input id="submit" type="submit" value="提交">
+					<input id="submit" type="button" value="提交">
 				</div>
 			</a>
 		</form>
@@ -199,6 +229,12 @@
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
   	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script>
+		//将评论的商品信息显示到页面从我的订单~待评论传来
+		if(sessionStorage.getItem("pinglunObj")){
+			var pinglunObj = JSON.parse(sessionStorage.getItem("pinglunObj"));
+			// console.log(pinglunObj)
+			$(".pingpic>img").attr("src",pinglunObj.pic);
+		}
 		var file = $("#form")[0];// 获取上传文件的input标签	
 		var formData = new FormData(file);// 实例化一个formdata对象
 		var fileList;// 获取的图片文件
@@ -209,8 +245,38 @@
 			$.each(fileList, function(index, item){
 				var fileName = item.name;
 				formData.append('UploadForm[picture][]',item)
+				if(formData.getAll('UploadForm[picture][]').length > 2){
+					console.log('3张了');
+					$(".file_upload").css({display: 'none'});
+				}
 				console.log(formData.getAll('UploadForm[picture][]'));
 			})
+			//图片显示
+			var files =this.files;
+			var span = $("<span></span>"),
+				span1 = $("<span>X</span>"),
+				img = $('<img src="" alt="" />'
+					);
+			var reader =new FileReader();
+			reader.readAsDataURL(files[0]);
+			reader.onload =function(e){
+				
+				var dx =(e.total/1024)/1024;
+				if(dx>=2){
+				  alert("文件大小大于2M");
+				  return;
+				}
+				img[0].src = this.result;
+				img[0].width = "100%";
+				img[0].height = "90%";
+				
+				// console.log(span, span[0]);
+				span1.addClass("delPic");
+				span1.css({zIndex: '999'});
+				span.append(span1);
+				span.append(img[0]);
+				$('#picShow').append(span);
+			}
 		})
 		$("#submit").click(function(){
 			if($("#shopping").val()==""){
