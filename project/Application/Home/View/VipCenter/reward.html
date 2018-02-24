@@ -91,67 +91,34 @@
         </div>
         <div class="rewardFoot">
           <ul>
-            <!-- <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li>
-            <li><span class="iconBig">奖励金币<b>30</b></span><span>2017-12-252</span></li> -->
           </ul>
         </div>
        
     </div>
   </div>
   <script>
- 
-    window.onload=function(){
-         // 数据遍历
-        $(function(){
-            var waterNote=[
-            {"icon":"10","date":"2018-01-02","noteType":"jin"},
-            {"icon":"12","date":"2018-01-03","noteType":"yin"},
-            {"icon":"11","date":"2018-01-02","noteType":"jin"},
-            {"icon":"12","date":"2018-01-03","noteType":"yin"},
-            {"icon":"10","date":"2018-01-02","noteType":"jin"},
-            {"icon":"12","date":"2018-01-03","noteType":"yin"},
-            {"icon":"11","date":"2018-01-02","noteType":"jin"},
-            {"icon":"12","date":"2018-01-03","noteType":"yin"}
-            ];
-            // console.dir(waterNote[0].date);
-            var liList='';
-            var jinicon=0;
-            var yinicon=0;
-            for(var i=0;i<waterNote.length;i++){
-              if(waterNote[i].noteType=="jin"){
-                  liList += '<li><span class="iconBig">奖励金币<b>'+waterNote[i].icon+'</b></span><span>'+waterNote[i].date+'</span></li> ';
-                  // 金币总数
-                  jinicon+=(waterNote[i].icon-0);
-              }else{
-                   liList += '<li><span class="iconBig">奖励银币<b>'+waterNote[i].icon+'</b></span><span>'+waterNote[i].date+'</span></li> ';
-                   var num1= Number((waterNote[i].icon));
-                   // 银币总数
-                    yinicon+=(waterNote[i].icon-0);
-              }
+    // 数据遍历
+    $(function(){
+        //数据遍历显示        
+        $.ajax({
+            url:"{{:U('Home/VipCenter/get_reward')}}",
+            type:"post",
+            dataType:"json",
+            success:function(res){
+                if(res.code == 200){
+                    var liList='';
+                    $('.iconReward>span:first-child>b').html('金币<em>'+res.total_gold_num+'</em>');
+                    $('.iconReward>span:last-child>b').html('银币<em>'+res.total_silver+'</em>');
+                    for(var i=0;i<res.data.length;i++){
+                        var addtime=getMyDate(parseInt(res.data[i].addtime));
+                        liList += '<li><span class="iconBig">奖励金币<b>'+res.data[i].gold_num+'</b></span><span>'+addtime+'</span></li><li><span class="iconBig">奖励银币<b>'+res.data[i].silver+'</b></span><span>'+addtime+'</span></li> ';
+                    }
+                    $(".rewardFoot>ul").html(liList);
+
+                }
             }
-            console.dir(jinicon+'hh'+yinicon) 
-            $(".rewardFoot>ul").html(liList);
-            // $('.iconReward>span>em').text(jinicon);
-            // console.dir($('.iconReward>span:first-child>b>em').text());
-            // 金银币总数
-            $('.iconReward>span:first-child>b').html('金币<em>'+jinicon+'</em>');
-            $('.iconReward>span:last-child>b').html('银币<em>'+yinicon+'</em>');
-           
-
-
-        })
-             
-    }
+        });
+    })
   </script>
 </body>
 </html>                                                                                                                                                                                                                                                                      

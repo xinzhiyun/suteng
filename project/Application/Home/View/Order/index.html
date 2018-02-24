@@ -577,7 +577,7 @@
 		<span class="tab" index='1'><p><i class="iconfont icon-daifahuo"></i><b class="waitsend"></b></p>待发货</span>	
 		<span class="tab" index='2'><p><i class="iconfont icon-daishouhuo"></i><b class="waitharvest"></b></p>待收货</span>
 		<span class="tab" index='3'><p><i class="iconfont icon-pinglun"></i><b class="waitassess"></b></p>待评价</span>
-		<span class="tab" index='4'><p><i class="iconfont icon-shouhoutuikuan"></i><b class="waitdrawback">0</b></p>退款/售后</span>
+		<span class="tab" index='4'><p><i class="iconfont icon-shouhoutuikuan"></i><b class="waitdrawback"></b></p>退款/售后</span>
 		<div id="line">
 			<span></span>
 		</div>
@@ -1268,6 +1268,7 @@
                     if(res.code == 200){
                     	// 查询有数据
                     	console.dir(res.data)
+                    	$(".waitdrawback").html(res.data.length);
                     }else{
                         // 查询无数据提示
                         console.log(res.message);

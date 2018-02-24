@@ -72,7 +72,7 @@ function slipDel(parent,obj,i){
 }
 
 // 
-// 基于layui 弹框提示封装 王诗平
+// 基于layui 弹框提示封装
 function layuiHint(text){
     layui.use('layer', function(){
         var layer = layui.layer;
@@ -80,7 +80,25 @@ function layuiHint(text){
     });  
 }
 
-// 验证姓名，手机号，地址的正则变量定义 王诗平
+// 验证姓名，手机号，地址的正则变量定义
 var	nameReg = /^([a-zA-Z0-9_\u4e00-\u9fa5]){2,30}$/,
 	phoneReg = /^(1[3|4|5|7|8])\d{9}$/,
 	addressReg = /^(?=.*?[\u4E00-\u9FA5])[\dA-Za-z\u4E00-\u9FA5]{8,}/;
+//时间戳转换为日期
+function getMyDate(str){  
+    var oDate = new Date(str),  
+    oYear = oDate.getFullYear(),  
+    oMonth = oDate.getMonth()+1,  
+    oDay = oDate.getDate(),  
+    oHour = oDate.getHours(),  
+    oMin = oDate.getMinutes(),  
+    oSen = oDate.getSeconds(),  
+    oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay) +' '+ getzf(oHour) +':'+ getzf(oMin) +':'+getzf(oSen);//最后拼接时间  
+    return oTime;  
+}; 
+function getzf(num){  
+  if(parseInt(num) < 10){  
+      num = '0'+num;  
+  }  
+  return num;  
+}
