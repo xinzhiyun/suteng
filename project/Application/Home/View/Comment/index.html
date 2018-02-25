@@ -167,7 +167,10 @@
         }
         #picShow>span>img {
         	width: 100%;
-        	height: 90%;
+        	height: auto;
+        	position: absolute;
+        	top: 50%;
+        	transform: translateY(-50%);
         }
         .delPic {
         	position: absolute;
@@ -222,7 +225,7 @@
 			</div>
 			<a href="{{:U('Home/Comment/commentsucceed')}}">
 				<div class="saleBott">
-					<input id="submit" type="button" value="提交">
+					<input id="submit" type="submit" value="提交">
 				</div>
 			</a>
 		</form>
@@ -239,6 +242,8 @@
 			var pinglunObj = JSON.parse(sessionStorage.getItem("pinglunObj"));
 			// console.log(pinglunObj)
 			$(".pingpic>img").attr("src",pinglunObj.pic);
+			// $('input[name="uid"]').val(pinglunObj.uid);
+			// $('input[name="gid"]').val(pinglunObj.gid);
 		}
 		var file = $("#form")[0];// 获取上传文件的input标签	
 		var formData = new FormData(file);// 实例化一个formdata对象
@@ -246,16 +251,15 @@
 		formData.append("file",file);
 		$(".file_upload").on('change',function(e){
 			var fileList = e.target.files;
-			console.log(fileList)
-			$.each(fileList, function(index, item){
-				var fileName = item.name;
-				formData.append('UploadForm[picture][]',item)
-				if(formData.getAll('UploadForm[picture][]').length > 2){
-					console.log('3张了');
-					$(".file_upload").css({display: 'none'});
-				}
-				console.log(formData.getAll('UploadForm[picture][]'));
-			})
+			console.log('原始： ',fileList)
+			// $.each(fileList, function(index, item){
+			// 	var fileName = item.name;
+			// 	// console.log('item: ',item);
+			// 	formData.append('UploadForm[picture][]',item)
+			// 	console.log(formData.getAll('UploadForm[picture][]'));
+
+			// })
+			
 			//图片显示
 			var files =this.files;
 			var span = $("<span></span>"),
@@ -265,23 +269,73 @@
 			var reader =new FileReader();
 			reader.readAsDataURL(files[0]);
 			reader.onload =function(e){
-				
+				var result = this.result;
+				// console.log(e)
 				var dx =(e.total/1024)/1024;
-				if(dx>=2){
-				  alert("文件大小大于2M");
-				  return;
+				if(dx>=.5){
+					console.log("文件大小大于1M");
+					//文件大于1M则压缩后上传
+					img[0].src = compressImage(result);
+
+				}else{
+					img[0].src = result;
+					// img[0].src = compressImage(result);	//测试用
+					
+					// console.log(span, span[0]);
+					span1.addClass("delPic");
+					span1.css({zIndex: '999'});
+					span.append(span1);
+					span.append(img[0]);
+					$('#picShow').append(span);
+					//将图片转成二进制后 append 进 formData
+					formData.append('UploadForm[picture][]',convert2Binary(result));
+					console.log('不压缩： ',formData.get('UploadForm[picture][]'))
 				}
-				img[0].src = this.result;
-				img[0].width = "100%";
-				img[0].height = "90%";
 				
-				// console.log(span, span[0]);
-				span1.addClass("delPic");
-				span1.css({zIndex: '999'});
-				span.append(span1);
-				span.append(img[0]);
-				$('#picShow').append(span);
+				//最多3张图片
+				if($('#picShow>span').length > 2){
+					console.log('3张了');
+					$(".file_upload").css({display: 'none'});
+				}else{
+					$(".file_upload").css({display: 'block'});
+				}
+
+				/*
+					图片压缩
+				 */
+				function compressImage(url) {
+					let canvas = document.createElement("canvas");
+					let ctx = canvas.getContext("2d");
+					let img = new Image();
+					img.src = url;
+
+					img.onload = function(){
+						canvas.width = img.width*8;
+						canvas.height = img.height*8;
+
+						setTimeout(function(){
+							ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+							img.src = canvas.toDataURL('image/jpeg', .5);
+							// console.log(img.src);
+							//将base64字符串转为2进制
+							formData.append('UploadForm[picture][]',convert2Binary(img.src));
+							console.log(formData.get('UploadForm[picture][]'))
+							//停止 img.onload
+							img.onload = null;
+						},0)
+					}
+					// $('#picShow').html('');
+					if(img){
+						span1.addClass("delPic");
+						span1.css({zIndex: '999'});
+						span.append(span1);
+						span.append(img);
+						$('#picShow').append(span);
+					}
+					
+				}
 			}
+
 		})
 
 		/**
@@ -290,6 +344,9 @@
 		$("#picShow").on("click", ".delPic", function(){
 			// console.log($(this).parent());
 			$(this).parent().remove()
+			//最多3张图片
+			$(".file_upload").css({display: 'block'});
+			console.log(formData.getAll('UploadForm[picture][]'));
 			
 		})
 		/**
@@ -298,10 +355,27 @@
 		$("#submit").click(function(){
 			if($("#shopping").val()==""){
 				layuiHint("请您对我们的商品做出评价呗");
+				console.log(formData.getAll('UploadForm[picture][]'));
 				return false;
 			}
-			console.log(formData.getAll('UploadForm[picture][]'));
 		});
+
+		/*
+			将base64字符串转换为2进制
+		 */
+		function convert2Binary(dataURI){
+			let byteString = window.atob(dataURI.split(',')[1]);
+			let ab = new ArrayBuffer(byteString.length);
+			let ua = new Uint8Array(ab);
+
+			for(var i=0; i<byteString.length; i++){
+				ua[i] = byteString.charCodeAt(i)
+			}
+			// console.log(ua)
+			let bb = new window.Blob([ ab ]);
+			// console.log(bb)
+			return bb;
+		}
 	</script>
 </body>
 </html>
