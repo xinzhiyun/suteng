@@ -117,7 +117,9 @@
                             // st==1?$('.status').removeClass('btn-success').html('下架').attr('st',0):$('.status').addClass("btn-success").html('上架').attr('st',1);
                             // 分公司交接成功
                             swal('设置成功',res.msg, "success");
-                            location.reload();
+                            setTimeout(function(){
+                                location.reload();
+                            },1500);
 
                         }else{
                             // 分公司交接失败
@@ -136,7 +138,7 @@
     });
 
 
-    // 删除金币套餐
+    // 删除站内信
     function del(id){
         swal({
             title: '您确定要删除该站内信吗？',

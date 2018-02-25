@@ -110,8 +110,9 @@
                             // st==1?$('.status').removeClass('btn-success').html('下架').attr('st',0):$('.status').addClass("btn-success").html('上架').attr('st',1);
                             // 分公司交接成功
                             swal('设置成功',res.msg, "success");
-                            location.reload();
-
+                            setTimeout(function(){
+                                location.reload();
+                            },1500);
                         }else{
                             // 分公司交接失败
                             swal("设置失败",res.msg, "error");
