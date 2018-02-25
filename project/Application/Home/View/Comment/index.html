@@ -453,14 +453,19 @@
 		$("#submit").click(function(){
 			if($("#shopping").val()==""){
 				layuiHint("请您对我们的商品做出评价呗");
-				console.log(formData.getAll('UploadForm[picture][]'));
 				// return false;
 			}
 			// console.log($('input[name="status"]:checked')[0].value);
 			// console.log($('#shopping').val());
 			//评分
+			formData.delete("status");
+			formData.delete("content");	//清空，防止多次点击提交
 			formData.append('status',$('input[name="status"]:checked')[0].value);
 			formData.append('content',$('#shopping').val());	//评价的内容
+
+			console.log(formData.getAll('status'));
+			console.log(formData.getAll('content'));
+			console.log(formData.getAll('UploadForm[picture][]'));
 			//发送数据到后台
 			$.ajax({
 				url: '{{:U("Comment/commentsucceed")}}',
