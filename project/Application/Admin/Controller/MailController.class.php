@@ -6,7 +6,7 @@ use Think\Controller;
 class MailController extends CommonController
 {
 	/**
-	 * [index 站内信首页]
+	 * [index 发布公告]
 	 * @return [type] [description]
 	 */
     public function index()
@@ -19,8 +19,10 @@ class MailController extends CommonController
     		}else if(empty($addData['content'])){
     			$message    = ['code' => 403, 'message' => '公告内容必须填写!'];
     		}else{
-	    		$addData['sender'] = $_SESSION['adminInfo']['user'];
+    			$addData['sender'] = $_SESSION['adminInfo']['user'];
+	    		$addData['sender_code'] = $_SESSION['adminInfo']['code'];
 				$addData['recipients'] = '所有人';
+				$addData['recipients_code'] = '所有人';
 				$addData['type'] = 0;
 				$addData['status'] = 0;
 				$addData['updatetime'] = $addData['addtime'] = time();
@@ -45,7 +47,7 @@ class MailController extends CommonController
     }
 
 	/**
-	 * [index 站内信首页]
+	 * [announcement 公告列表]
 	 * @return [type] [description]
 	 */
     public function announcement()
@@ -104,7 +106,7 @@ class MailController extends CommonController
         }
     }
 
-    // 删除套餐
+    // 删除站内信
     public function del()
     {
         try {
@@ -114,9 +116,9 @@ class MailController extends CommonController
 	    	$delRes = M('mail')->where($delData)->delete();
         	// 执行更新操作
         	if($delRes){
-        		E('套餐删除成功',200);
+        		E('删除成功',200);
         	}else{
-        		E('套餐删除失败',605);
+        		E('删除失败',605);
         	}
         } catch (\Exception $e) {
             $err = [
@@ -125,5 +127,112 @@ class MailController extends CommonController
             ];
             $this->ajaxReturn($err);
         }
+    }
+
+    /**
+     * [send_email 发送站内信]
+     * @return [type] [description]
+     */
+    public function send()
+    {
+    	if(IS_POST){
+
+    	}else{
+    		$this->display('send');
+    	}
+    }
+
+
+    // 获取用户列表
+    public function userlist()
+    {
+    	if(IS_POST){
+	    	$user = I('post.user');
+	    	$map['nickname'] = array('like',"%{$user}%");
+	    	$data = M('users')->where($map)->field('code,nickname')->select();
+	    	if($data){
+	    		$message    = ['code' => 200, 'message' => '用户查询成功!', 'data' => $data];
+	    	}else{
+	    		$message    = ['code' => 403, 'message' => '没有匹配的用户!'];
+	    	}
+
+	        // 返回JSON格式数据
+	        $this->ajaxReturn($message);
+    	}
+    }
+
+    /**
+     * 给用户发站内信
+     */
+    public function usermail()
+    {
+    	$post = I('post.');
+    	// 准备用户查询条件
+    	$showUser['code'] = $post['code'];
+
+
+
+    	if(empty($post['title'])){
+    		$message    = ['code' => 403, 'message' => '公告标题必须填写!'];
+    	}else if(empty($post['content'])){
+    		$message    = ['code' => 403, 'message' => '公告内容必须填写!'];
+    	}else{
+	    	// 查询用户
+	    	$userData = M('users')->where($showUser)->field('code,nickname')->find();
+
+	    	if($userData){
+	    			$addData['sender'] = $_SESSION['adminInfo']['user'];
+		    		$addData['sender_code']   = $_SESSION['adminInfo']['code'];
+					$addData['recipients_code'] = $userData['code'];
+					$addData['recipients'] = $userData['nickname'];
+					$addData['title'] = $post['title'];
+					$addData['content'] = $post['content'];
+					$addData['type'] = 1;
+					$addData['status'] = 2;
+					$addData['updatetime'] = $addData['addtime'] = time();
+
+		    		$res = M('mail')->add($addData);
+
+		    		if($res){
+		    			$message    = ['code' => 200, 'message' => '站内信已成功投递到用户信箱!'];	
+		    		}else{
+		    			$message    = ['code' => 403, 'message' => '站内信投递失败，请刷新后重试!'];
+		    		}
+	    	}else{
+	    		$message    = ['code' => 403, 'message' => '收件人错误，没有这个用户!'];
+	    	}
+    	}
+
+	    // 返回JSON格式数据
+	    $this->ajaxReturn($message);
+    }
+
+	/**
+	 * [mail 站内信列表]
+	 * @return [type] [description]
+	 */
+    public function mail()
+    {	
+    	$map['type'] = 1;
+
+        if(!empty($_GET)){
+
+        	$map[$_GET['key']] = array('like',"%{$_GET['keywords']}%");
+
+        	// if($_GET['key'] == 'content'){
+        	//     $map['content'] = array('like',"%{$_GET['keywords']}%");
+        	// }
+        }
+
+    	$data = M('mail')->where($map)->select();
+
+	    $assign = [
+	        'data' => $data,
+	    ];
+
+	    // 分配数据
+	    $this->assign($assign);
+
+        $this->display();
     }
 }

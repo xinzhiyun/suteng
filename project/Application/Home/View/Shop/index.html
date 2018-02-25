@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
   	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
-  	<link rel="stylesheet" href="__PUBLIC__/Home/css/mF_fancy.css">
  	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
  	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_v25vpfqtkjegsyvi.css">
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/myfocus-2.0.1.min.js"></script>
   	<script src="__PUBLIC__/Home/js/public.js"></script>
+
+  	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/font-awesome.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/style.css">
 	<title>商城首页</title>
 	<style>
 		body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0; } 
@@ -183,23 +185,25 @@
 		    color: #FFF;
 		}
 		/*<!-- 轮播图 -->*/
-		#myFocus{
-			border:1px solid #F6F6F6;
-			width:90%;
-			height:6rem;
-			margin:0.8rem 5%;
-			border-radius: 0.3rem;
-		}
-		.mF_fancy .prev,.mF_fancy .next{
-			top:57px!important;
-		}
-		.pic>ul>li>a>img{
-			width:90vw;
+		#slider-wrap{
+			width: 90vw;
 			height: 180px;
+			background: red;
+			margin:30px auto;
+			position:relative;
 		}
-		.mF_fancy_myFocus{
-			margin-top: 0.066667rem;
+		
+		#slider>li>a{
+			display: block;
+			width: 100%;
+
+
 		}
+		#slider>li>a>img{
+			width: 100%;
+		}
+
+	
 		/*所有商品*/
 		.goodstitle>h3{
 			text-align: center;
@@ -293,23 +297,30 @@
 			</label><i class="iconfont  icon-gouwuche"></i><span>1</span>
 		</div>
 		<!-- 轮播图 -->
-		<div id="myFocus"><!--焦点图盒子-->
-			 <div class="loading"><img src="__PUBLIC__/Home/images/loading.gif" alt="请稍候..." /></div><!--载入画面(可删除)-->
-			  <div class="pic"><!--图片列表-->
-			  	<ul>
-			        <li><a goods_gid="{{$goodsList[0]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[0]['path']}}" /></a></li>
-			        <li><a goods_gid="{{$goodsList[1]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[1]['path']}}" /></a></li>
-			        <li><a goods_gid="{{$goodsList[2]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[2]['path']}}" /></a></li>
-			        <li><a goods_gid="{{$goodsList[3]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[3]['path']}}" /></a></li>
-			        <li><a goods_gid="{{$goodsList[4]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[4]['path']}}" /></a></li>
-			        <!-- <li><a goods_gid="{{$goodsList[0]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="__PUBLIC__/Home/images/1a.jpg" /></a></li>
-					<li><a goods_gid="{{$goodsList[1]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="__PUBLIC__/Home/images/2a.jpg" /></a></li>
-					<li><a goods_gid="{{$goodsList[2]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="__PUBLIC__/Home/images/3a.jpg" /></a></li>
-					<li><a goods_gid="{{$goodsList[3]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="__PUBLIC__/Home/images/4a.jpg" /></a></li>
-					<li><a goods_gid="{{$goodsList[4]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="__PUBLIC__/Home/images/5a.jpg" /></a></li> -->
-			  	</ul>
+		<div id="wrapper">
+	
+			<div id="slider-wrap">
+			  <ul id="slider">
+			    <li><a goods_gid="{{$goodsList[0]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[0]['path']}}" /></a></li>
+			    <li><a goods_gid="{{$goodsList[1]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[1]['path']}}" /></a></li>
+			    <li><a goods_gid="{{$goodsList[2]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[2]['path']}}" /></a></li>
+			    <li><a goods_gid="{{$goodsList[3]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[3]['path']}}" /></a></li>
+			    <li><a goods_gid="{{$goodsList[4]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[4]['path']}}" /></a></li>		 
+			  </ul>
+			  
+			   <!--controls-->
+			  <div class="btns" id="next"><i class="fa fa-arrow-right"></i></div>
+			  <div class="btns" id="previous"><i class="fa fa-arrow-left"></i></div>
+			  <div id="counter"></div>
+			  
+			  <div id="pagination-wrap">
+				<ul>
+				</ul>
 			  </div>
-		</div>
+			  <!--controls-->  
+					 
+			</div>
+		</div>		
 	</div>
 	<div id="content">
 		
@@ -533,5 +544,7 @@
 		$("#line").width = $(".tab").width;
 
 	</script>
+<!-- 	<script src="__PUBLIC__/Home/js/jquery.min.js"></script> -->
+	<script type="text/javascript" src="__PUBLIC__/Home/js/slide.js"></script>
 </body>
 </html>

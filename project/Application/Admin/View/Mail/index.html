@@ -52,7 +52,7 @@
     $('.btn-primary').click(function(){
         // 获取表单数据
         var data = $("form").serialize();
-        console.dir(data);
+        // console.dir(data);
         //  异不请求
         $.ajax({
             url:"{{:U('Admin/Mail/index')}}",
@@ -64,8 +64,9 @@
                 if(res.code == 200){
                     // 添加成功
                     swal('设置成功',res.message, "success");
-                    // location.reload();
-                    // window.location.reload();
+                    setTimeout(function(){
+                        location.reload();
+                    },1500);
                 }else{
                     // 添加失败
                     swal(res.message, "请重新提交！", "success");

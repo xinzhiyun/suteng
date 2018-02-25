@@ -22,6 +22,8 @@
                         <select name="key" class="form-control" name="account" style="width:30%">
                             <option value="title">标题</option>
                             <option value="content">内容</option>
+                            <option value="sender">发件人</option>
+                            <option value="recipients">收件人</option>
                         </select>
                         <input type="text" name="keywords" placeholder="输入搜索关键字" class="input form-control"   style="width:60%">
                         <span class="input-group-btn" style="display: inline-block;">
@@ -34,11 +36,13 @@
                             <thead>
                                 <tr>
                                     <th>序号</th>
-                                    <th class="col-md-2">公告标题</th>
-                                    <th>公告内容</th>
-                                    <th>发布人</th>
+                                    <th class="col-md-2">站内信标题</th>
+                                    <th class="col-md-3">站内信内容</th>
+                                    <th>发信人</th>
+                                    <th>收信人</th>
                                     <th>状态</th>
                                     <th>加入时间</th>
+                                    <th>更新时间</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
@@ -52,14 +56,17 @@
                                             <td>{{$val.title}}</td>
                                             <td>{{$val.content}}</td>
                                             <td>{{$val.sender}}</td>
+                                            <td>{{$val.recipients}}</td>
                                             <td>
                                                 <switch name="val.status">
-                                                    <case value="0"><button st="{{$val.status}}" id="{{$val.id}}" class="btn status btn-sm">启用</button></case>
-                                                    <case value="1"><button st="{{$val.status}}" id="{{$val.id}}" class="btn status btn-sm btn-success">禁用</button></case>
+                                                    <case value="2">未读</case>
+                                                    <case value="3">已读</case>
+                                                    <case value="4">回收</case>
                                                     <default />
                                                 </switch>
                                             </td>
                                             <td>{{$val.addtime|date="Y-m-d H:i:s",###}}</td>
+                                            <td>{{$val.updatetime|date="Y-m-d H:i:s",###}}</td>
                                             <td>
                                                 <a class="btn btn-danger btn-sm" href="javascript:del({{$val.id}})">删除</a>
                                             </td>
@@ -113,6 +120,7 @@
                             setTimeout(function(){
                                 location.reload();
                             },1500);
+
                         }else{
                             // 分公司交接失败
                             swal("设置失败",res.msg, "error");
@@ -130,15 +138,15 @@
     });
 
 
-    // 删除金币套餐
+    // 删除站内信
     function del(id){
         swal({
-            title: '您确定要删除该公告吗？',
-            text: '公告删除之后将无法恢复，请谨慎操作！',
+            title: '您确定要删除该站内信吗？',
+            text: '站内信删除之后将无法恢复，请谨慎操作！',
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
-            confirmButtonText:'是的，确定删除公告！',
+            confirmButtonText:'是的，确定删除站内信！',
             cancelButtonText: "让我再考虑一下…",
             closeOnConfirm: false,
             closeOnCancel: false
