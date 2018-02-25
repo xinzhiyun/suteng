@@ -9,7 +9,10 @@
  	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
  	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_v25vpfqtkjegsyvi.css">
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+
 	<script src="__PUBLIC__/Home/js/myfocus-2.0.1.min.js"></script>
+	<script src="__PUBLIC__/Home/js/mf-pattern/mF_fancy.js"></script>
+
   	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<title>商城首页</title>
 	<style>
@@ -194,7 +197,7 @@
 			top:57px!important;
 		}
 		.pic>ul>li>a>img{
-			width:90vw;
+			/*width:90vw;*/
 			height: 180px;
 		}
 		.mF_fancy_myFocus{
@@ -302,7 +305,7 @@
 			        <li><a goods_gid="{{$goodsList[2]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[2]['path']}}" /></a></li>
 			        <li><a goods_gid="{{$goodsList[3]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[3]['path']}}" /></a></li>
 			        <li><a goods_gid="{{$goodsList[4]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[4]['path']}}" /></a></li>
-			        <!-- <li><a goods_gid="{{$goodsList[0]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="__PUBLIC__/Home/images/1a.jpg" /></a></li>
+			       <!--  <li><a goods_gid="{{$goodsList[0]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="__PUBLIC__/Home/images/1a.jpg" /></a></li>
 					<li><a goods_gid="{{$goodsList[1]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="__PUBLIC__/Home/images/2a.jpg" /></a></li>
 					<li><a goods_gid="{{$goodsList[2]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="__PUBLIC__/Home/images/3a.jpg" /></a></li>
 					<li><a goods_gid="{{$goodsList[3]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="__PUBLIC__/Home/images/4a.jpg" /></a></li>
