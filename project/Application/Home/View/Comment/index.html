@@ -190,7 +190,7 @@
 
 <body>
 	<div class="commentcontain">
-		<form id="form" action="commentsucceed" method="post" enctype="multipart/form-data">
+		<form id="form" action="" method="post" enctype="multipart/form-data">
 			<div class="xuanping clearfix">
 				<div class="pingpic"><img src="" alt=""></div>
 				<!-- 用户ID -->
@@ -223,9 +223,9 @@
 					<div id="picShow"></div>
 				</div>
 			</div>
-			<a href="{{:U('Home/Comment/commentsucceed')}}">
+			<a href="javascript:;">
 				<div class="saleBott">
-					<input id="submit" type="submit" value="提交">
+					<input id="submit" type="button" value="提交">
 				</div>
 			</a>
 		</form>
@@ -250,6 +250,9 @@
 		var fileList;// 获取的图片文件
 		formData.append("file",file);
 
+		/*
+			图片压缩上传
+		 */
 		$(".file_upload").on('change',function(e){
 			var fileList = e.target.files;
 			console.log('原始： ',fileList)
@@ -334,11 +337,13 @@
 				for(var i in fileList){
 					// console.log(Object.prototype.toString.call(fileList[i]));
 					if(Object.prototype.toString.call(fileList[i]) === '[object File]'){
-						var reader =new FileReader();						//图片显示
-						var span = $("<span></span>"),
-							span1 = $("<span>X</span>"),
-							img = $('<img src="" alt="" />');
+						var reader =new FileReader();
 						(function(file){
+
+							//图片显示
+							var span = $("<span></span>"),
+								span1 = $("<span>X</span>"),
+								img = $('<img src="" alt="" />');
 							reader.readAsDataURL(file);
 							reader.onload = function readerFun(e){
 								var result = this.result;
@@ -449,8 +454,30 @@
 			if($("#shopping").val()==""){
 				layuiHint("请您对我们的商品做出评价呗");
 				console.log(formData.getAll('UploadForm[picture][]'));
-				return false;
+				// return false;
 			}
+			// console.log($('input[name="status"]:checked')[0].value);
+			// console.log($('#shopping').val());
+			//评分
+			formData.append('status',$('input[name="status"]:checked')[0].value);
+			formData.append('content',$('#shopping').val());	//评价的内容
+			//发送数据到后台
+			$.ajax({
+				url: '{{:U("Comment/commentsucceed")}}',
+				type: 'post',
+				cache: false,
+				data: formData,
+				processData: false,
+				contentType: false,
+				success: function(res){
+					console.log('连接',res)
+					//评论成功后跳转
+					// location.href = "{{:U('Home/Comment/commentsucceed')}}";
+				},
+				error: function(res){
+					console.log('失败', res);
+				}
+			})
 		});
 
 		/*
