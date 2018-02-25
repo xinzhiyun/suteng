@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50636
 File Encoding         : 65001
 
-Date: 2018-02-23 10:12:48
+Date: 2018-02-25 14:33:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,7 +31,7 @@ CREATE TABLE `st_address` (
   `address` varchar(255) NOT NULL COMMENT '收货人地址',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '地址状态，默认为0，设为默认地址，否则为1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_admin_menu
@@ -45,7 +45,7 @@ CREATE TABLE `st_admin_menu` (
   `ico` varchar(50) DEFAULT '' COMMENT 'font-awesome图标',
   `order_number` int(11) unsigned DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=57 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=62 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_attr
@@ -105,7 +105,7 @@ CREATE TABLE `st_auth_rule` (
   `condition` char(100) NOT NULL DEFAULT '' COMMENT '规则表达式，为空表示存在就验证，不为空表示按照条件验证',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=58 DEFAULT CHARSET=utf8 COMMENT='规则表';
+) ENGINE=MyISAM AUTO_INCREMENT=63 DEFAULT CHARSET=utf8 COMMENT='规则表';
 
 -- ----------------------------
 -- Table structure for st_binding
@@ -148,7 +148,7 @@ CREATE TABLE `st_cart` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '购物车状态0未结算，1已结算',
   `addtime` varchar(12) NOT NULL COMMENT '添加购物时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_category
@@ -258,7 +258,7 @@ CREATE TABLE `st_devices` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '设备状态，备用字段',
   PRIMARY KEY (`id`),
   KEY `id` (`id`,`device_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=198 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_devices_statu
@@ -317,7 +317,7 @@ CREATE TABLE `st_dimension` (
   `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=891 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=993 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_dimension_num
@@ -340,7 +340,7 @@ CREATE TABLE `st_feeds` (
   `uid` int(11) NOT NULL COMMENT '用户ID',
   `addtime` int(11) NOT NULL COMMENT '反馈时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_filters
@@ -364,7 +364,7 @@ CREATE TABLE `st_filters` (
   `updatetime` int(11) NOT NULL COMMENT '滤芯更新时间',
   PRIMARY KEY (`id`),
   KEY `device_id` (`filtername`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_flow
@@ -385,7 +385,7 @@ CREATE TABLE `st_flow` (
   `addtime` int(11) NOT NULL COMMENT '充值时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_gold
@@ -400,7 +400,7 @@ CREATE TABLE `st_gold` (
   `addtime` int(11) NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_gold_silver
@@ -436,7 +436,7 @@ CREATE TABLE `st_goods` (
   `updatetime` int(12) NOT NULL COMMENT '商品更新时间',
   PRIMARY KEY (`id`),
   KEY `id` (`id`,`cid`)
-) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_goods_detail
@@ -452,7 +452,26 @@ CREATE TABLE `st_goods_detail` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '商品状态，0下架，默认1为上架',
   PRIMARY KEY (`id`),
   KEY `id` (`id`,`gid`,`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for st_mail
+-- ----------------------------
+DROP TABLE IF EXISTS `st_mail`;
+CREATE TABLE `st_mail` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `sender` varchar(20) NOT NULL COMMENT '发信人',
+  `sender_code` varchar(20) DEFAULT NULL COMMENT '发件人coed',
+  `recipients` varchar(20000) NOT NULL COMMENT '收件人',
+  `recipients_code` varchar(20) DEFAULT NULL COMMENT '用户code',
+  `title` varchar(255) NOT NULL COMMENT '站内信标题',
+  `content` text COMMENT '站内信内容',
+  `type` tinyint(1) DEFAULT '0' COMMENT '站内信类型{0：公告，1:一对一短信，2：一对多短信}',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '站内信类型{0：启用，1:禁用 2：未读，3：已读，4：回收站}',
+  `addtime` int(11) NOT NULL COMMENT '创建时间',
+  `updatetime` int(11) NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_order_detail
@@ -468,7 +487,7 @@ CREATE TABLE `st_order_detail` (
   `status` tinyint(1) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL COMMENT '订单生成时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=390 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=398 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for st_order_setmeal
@@ -491,7 +510,7 @@ CREATE TABLE `st_order_setmeal` (
   `updated_at` int(11) unsigned DEFAULT NULL COMMENT '订单修改时间',
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`(11))
-) ENGINE=InnoDB AUTO_INCREMENT=223 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=233 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_orders
@@ -528,7 +547,7 @@ CREATE TABLE `st_pic` (
   `path` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '图片地址',
   PRIMARY KEY (`id`),
   KEY `id` (`id`,`gid`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for st_price
@@ -540,7 +559,7 @@ CREATE TABLE `st_price` (
   `price` double(12,2) NOT NULL COMMENT '商品单价',
   `grade` tinyint(1) NOT NULL COMMENT '会员级别',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_repair
@@ -560,7 +579,7 @@ CREATE TABLE `st_repair` (
   `addtime` int(11) NOT NULL COMMENT '报修时间',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态0：未处理 1：已处理',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_setmeal
@@ -575,7 +594,7 @@ CREATE TABLE `st_setmeal` (
   `describe` varchar(255) NOT NULL COMMENT '套餐描述',
   `addtime` int(11) NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_shop_order
@@ -591,12 +610,12 @@ CREATE TABLE `st_shop_order` (
   `g_price` double(12,2) NOT NULL COMMENT '商品总金额',
   `g_num` int(11) NOT NULL COMMENT '商品总数量',
   `addtime` varchar(12) NOT NULL COMMENT '订单添加时间',
-  `status` tinyint(1) NOT NULL DEFAULT '8' COMMENT '0已下单，1处理中，2已发货，3已收货，4退货处理中，5已退货，6申诉中，7订单完成，8未支付',
+  `status` tinyint(1) NOT NULL DEFAULT '8' COMMENT '0：已下单，1：已取消，2：已发货，3：已收货，4：退货处理中，5：已退货，6：申诉中，7：订单完成，8：未支付，9：已支付',
   `g_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}',
   `mode` tinyint(1) DEFAULT NULL COMMENT '支付方式(0-微信、1-支付宝、2-银联、3-金币、4-银币)',
   `express` varchar(32) DEFAULT NULL COMMENT '快递单号',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=314 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=319 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_silver
@@ -629,7 +648,7 @@ CREATE TABLE `st_task` (
   `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_type
@@ -651,7 +670,7 @@ CREATE TABLE `st_type` (
   `addtime` int(11) NOT NULL,
   `updatetime` int(11) NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=57 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_user_device
@@ -670,7 +689,7 @@ CREATE TABLE `st_user_device` (
   `addtime` varchar(12) CHARACTER SET utf8 NOT NULL COMMENT '绑定时间',
   `updatetime` varchar(12) CHARACTER SET utf8 NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for st_users
@@ -704,7 +723,7 @@ CREATE TABLE `st_users` (
   `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=730 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=807 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_users_commission
@@ -725,7 +744,7 @@ CREATE TABLE `st_users_commission` (
   `addtime` int(11) unsigned DEFAULT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=gbk;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=gbk;
 
 -- ----------------------------
 -- Table structure for st_vendor_fee
@@ -784,7 +803,7 @@ CREATE TABLE `st_vendors` (
   `addtime` int(11) unsigned NOT NULL COMMENT '添加时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_vendors_commission
@@ -804,7 +823,7 @@ CREATE TABLE `st_vendors_commission` (
   `updatetime` int(11) unsigned DEFAULT NULL COMMENT '更新时间',
   `nexus_user` varchar(11) NOT NULL COMMENT '产生分成的关联分销商',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=gbk;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=gbk;
 
 -- ----------------------------
 -- Table structure for st_wechat
@@ -821,7 +840,7 @@ CREATE TABLE `st_wechat` (
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   `recommend` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员 4:分公司邀请分销商 5:分销商邀请分销商}',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1177 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1290 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for st_work
@@ -845,4 +864,4 @@ CREATE TABLE `st_work` (
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `dw_uid` (`dw_uid`)
-) ENGINE=MyISAM AUTO_INCREMENT=24134 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=24135 DEFAULT CHARSET=utf8;
