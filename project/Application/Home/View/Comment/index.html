@@ -152,7 +152,7 @@
         /*显示上传的图片*/
         #picShow { 
         	position: absolute;
-        	width: 70%;
+        	width: 66%;
         	height: 4rem;
         	bottom: .6rem;
         	right: 0;
@@ -477,7 +477,11 @@
 				success: function(res){
 					console.log('连接',res)
 					//评论成功后跳转
-					// location.href = "{{:U('Home/Comment/commentsucceed')}}";
+					if(res.code == 200){
+						location.href = "{{:U('Home/Comment/commentsucceed')}}";
+					}else{
+						layuiHint('评论失败！')
+					}
 				},
 				error: function(res){
 					console.log('失败', res);
