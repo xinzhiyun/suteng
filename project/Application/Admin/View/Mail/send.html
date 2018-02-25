@@ -1,0 +1,189 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/switchery.min.css" rel="stylesheet">
+    <style>
+        .user{
+            position: relative;
+        }
+        #userlist{
+            position: absolute;
+            top: 33px;
+            left: 0;
+            width: 100%;
+            padding: 0 15px;
+            background: #fff;
+            z-index: 100;
+            display: none;
+        }
+        #userlist>ul{
+            border:1px solid #1DB392;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        #userlist>ul>li{
+            margin: 0;
+            padding-left:5px;
+            padding-bottom: 5px 0;
+        }
+        .hover{
+            background: #eee;
+        }
+        .colorred{
+            color: red;
+        }
+    </style>
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                    <h5>站内信<small>发站内信</small></h5>
+                </div>
+                    <div class="ibox-content">
+                        <form action="javascript:false;" method="post" class="form-horizontal" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">收信人</label>
+                                <div class="col-md-8 user">
+                                    <input type="text" name="recipients" id="recipients" autocomplete="off" class="form-control" placeholder="请填写用户昵称的关键字">
+                                    <input type="hidden" name="code" id="usercode" value="">
+                                    <div id="userlist">
+                                        <ul>
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">站内信标题</label>
+                                <div class="col-md-8">
+                                    <input type="text" name="title" class="form-control" placeholder="请填写公告的标题">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" >站内信正文</label>
+                                <div class="col-md-8">
+                                <textarea rows="20"  style="text-align: left;width:100%;" class="col-sm-10 control-label" name="content"></textarea>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit">发送</button>
+                                    <button class="btn btn-white" type="reset">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>             
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+<script src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="__PUBLIC__/Admin/js/switchery.min.js"></script>
+<script>
+    /**
+     * [获取表单数据]
+     * @param  {[type]} )
+     * @return {[type]}     [description]
+     */
+    $('.btn-primary').click(function(){
+        // 获取表单数据
+        var data = $("form").serialize();
+        // console.dir(data);
+        //  请求
+        $.ajax({
+            url:"{{:U('Admin/Mail/usermail')}}",
+            data:data,
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                // console.dir(res);
+                if(res.code == 200){
+                    // 添加成功
+                    swal('发送成功',res.message, "success");
+                    // location.reload();
+                    // window.location.reload();
+                }else{
+                    // 添加失败
+                    swal('发送失败', res.message, "success");
+                }
+            }
+        });
+    });
+
+
+    $("#recipients").bind('input propertychange',function(){
+
+        // console.dir();
+        $.ajax({
+            url:"{{:U('Admin/Mail/userlist')}}",
+            data:{'user':$(this).val()},
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                if(res.code == 200){
+                    var recipients = $('#recipients').val();
+
+                    console.dir(res.data.length);
+                    console.dir(recipients);
+                    console.dir(res.data[0].nickname);
+
+                    if(res.data.length==1 && recipients==res.data[0].nickname){
+                            $('#usercode').val(res.data[0].code);
+                            $('#recipients').val(res.data[0].nickname);
+                            $('#userlist').css({'display':'none'});
+                            $('#recipients').removeClass("colorred")
+                    }else{
+                        // 添加成功
+                        var htmlStr = '<ul>';
+
+                        for (var i = 0;i<res.data.length;i++) {
+                            htmlStr += '<li code="'+res.data[i].code+'">'+res.data[i].nickname+'</li>';
+                            // console.dir(res.data[i].nickname);
+                        }
+
+                        htmlStr += '</ul>';
+
+                        $('#userlist').html(htmlStr);
+
+                        $("#userlist>ul>li").hover(
+                          function () {
+                            $(this).addClass("hover");
+                          },
+                          function () {
+                            $(this).removeClass("hover");
+                          }
+                        );
+                        //html +='</ul>';
+                        $('#userlist>ul>li').click(function(){
+                            var code = $(this).attr('code');
+                            var name = $(this).text();
+                            $('#recipients').val(name);
+                            $('#usercode').val(code);
+                            $('#recipients').removeClass("colorred")
+                            $('#userlist').css({'display':'none'});
+                        });
+                        $('#userlist').css({'display':'block'});
+                    }
+
+
+                }else{
+                    $('#userlist').css({'display':'none'});
+                    $('#usercode').val('');
+                    $('#recipients').addClass("colorred");
+                }
+            }
+        });
+
+        
+    });
+
+</script>
+</block>
