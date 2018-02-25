@@ -11,26 +11,27 @@
     <script src="__PUBLIC__/Home/js/public.js"></script>
 	<title>耗材订单</title>
 	<style>
-		body,h1,h2,h3, h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td{ margin:0; padding:0; } 
-
 		* {
+			margin: 0;
+			padding: 0;
 			box-sizing: border-box;
 		}
 		body {
 			width: 100vw;
 			height: 100vh;
-			font-size: .6rem;
+			font-size: .7rem;
 			overflow-x: hidden;
 		}
 		#header {
 			width: 100vw;
-   			height: 10vh;
-   			padding:8vh 0 0.8rem;
+   			height: 15vh;
+   			padding:9vh 0 3vh;
    			position: fixed;
    			display: flex;
    			justify-content: space-between;
    			align-items: center;
-   			border-bottom: 1vh solid #eee;
+   			border-bottom: 8px solid #ebebeb;
+   			box-shadow: 0px 1px 1px 0px #ccc inset;
    			background: #fff;
    			z-index: 999;
 		}
@@ -38,11 +39,14 @@
 			flex: 1;
    			flex-direction:column;
 			height: 15vh;
-    		line-height: 5vh;
+    		line-height: 6vh;
 		    display: block;
 		    text-align: center;
-		    font-size: 0.72rem;
-		    color:#373737;
+		    font-size: 0.68rem;
+		    color:#6a6a6a;
+		}
+		#header>span:first-child{
+			color:#373737;
 		}
 		#header>span>p{
 			line-height: 2vh;
@@ -53,18 +57,21 @@
 			font-size: 1.4rem;
 			color:#60ACF0;
 		}
+		#header>span>p>i:nth-of-type(2){
+			font-size: 1.5rem;
+		}
 		#header>span>p>b{
 			position: absolute;
 		    left: 11vw;
-		    top: 0.5vh;
+		    top: 0vh;
 		    width: 0.8rem;
 		    height: 0.8rem;
-		    line-height: 0.8rem;
+		    line-height: 0.88rem;
 		    text-align: center;
 		    display: inline-block;
-		    background: red;
+		    background: #d22838;
 		    border-radius: 1rem;
-		    font-size: 0.5rem;
+		    font-size: 0.6rem;
 		    color: #fff;
 		    font-weight: 600;
 
@@ -82,7 +89,7 @@
 		}
 		#line>span {
 			width: 50%;
-			height: 1vh;
+			height: 8px;
 		    display: block;
 		    margin: 0 auto;
 		    border-radius: 10px;
@@ -160,7 +167,7 @@
 		#dingdanDaipinglun {
 			width: 100vw;
 			position: absolute;
-			padding: 5vh 0;
+			padding: 7vh 0 5vh;
 			top: 0;
 			background: #fff;
 			transition: left .4s ease-out;
@@ -181,14 +188,16 @@
 			left: 400vw;
 		}
 		/*订单部分*/
+		.goods>p:first-child{
+			padding: 5% 2% 1%;
+		}
 		.goods>p {
-			padding: 2%;
-			color: #5a5a5a;
+			padding: 2% 2% 2%;
+			color: #343434;
 			font-size: 0.68rem;
 		}
 		/*订单状态：等待买家付款，交易完成，等待发货等*/
 		.goods>p>span {
-			font-weight: bold;
 			float: right;
 			color:#ff721f;
 			font-size: 0.72rem;
@@ -206,6 +215,8 @@
 			display: flex;
 			padding: 2%;
 			background: #F8F8F8;
+			box-shadow: 1px 0px 1px 0px #e4e3e3 inset;
+
 		}
 		
 		.goods>div.goodsItem:nth-of-type(2n) {
@@ -222,8 +233,8 @@
 			height: 100%;
 			display: block;
 			border-radius: 6px;
-			border: 1px solid #ccc;
 			background: #fff;
+
 		}
 		/*商品描述*/
 		.giDescription {
@@ -231,12 +242,12 @@
 			padding: 2%;
 		}
 		.giDescription>b{
-			color: #7d7d7d;
+			color: #373737;
 			font-size: 0.72rem;
+			font-weight: 400;
 		}
 		.giDescription>p {
 			margin: 6px 0;
-			color: #666;
 			font-size: .6rem;
 			color: #5a5a5a;
 			font-size: 0.68 rem;
@@ -244,13 +255,13 @@
 		/*价格*/
 		.giDescription>div>b {
 			color:#fc2a2b;
-			letter-spacing: 2px;
-			font-size: 0.68rem;
+			letter-spacing: 1px;
+			font-size: 0.72rem;
 		}
 		/*数量*/
 		.giDescription>div>span {
 			float: right;
-			font-size: 0.68rem;
+			font-size: 0.72rem;
 			color: #5a5a5a;
 		}
 		.giDescription>div>span:after {
@@ -279,7 +290,7 @@
 		.calc {
 			padding-top: 5%;
 			/*border-top: 1px solid #ddd;*/
-			border-bottom: 1vh solid #eee;
+			border-bottom:10px solid #ebebeb;
 			font-size: 0.68rem;
 			color: #5a5a5a;
 		}
@@ -289,6 +300,9 @@
 			font-size: 0.68rem;
 
 		}
+		.calc>div>span{
+			font-size: 0.6rem;
+		}
 		/*价格*/
 		.calc>div>b {
 			color: #FC2C2D;
@@ -297,7 +311,7 @@
 		.calc>div:nth-of-type(2) {
 			width: 100%;
 			display: flex;
-			padding: 6% 4%;
+			padding: 5% 4%;
 			align-items: center;
 		}
 		/*取消订单*/
@@ -310,29 +324,29 @@
 		}
 		.cancel>span {
 			display: inline-block;
-			padding: 2% 8%;
+			padding:2% 6%;
 			border-radius: 4px;
 			border: 1px solid #aaa;
-			font-size: 0.82rem;
-			letter-spacing: 0.05rem;
+			font-size: 0.72rem;
+			/*letter-spacing: 0.05rem;*/
 			color: #7d7d7d;
 		}
 		/*付款*/
 		.pay {
-			width: 40%;
+			width: 37%;
 			display: inline-block;
 			text-align: right;
 			padding: 2% 0;
 		}
 		.pay>span {
 			display: inline-block;
-			padding: 1vmin 3vmin;
+			padding: 1vmin 3.5vmin;
 			border-radius: 4px;
 			color: #fff;
 			border: 1px solid #2EB6AA;
 			background: #2EB6AA;
-			font-size: 0.82rem;
-			letter-spacing: 0.05rem;
+			font-size: 0.72rem;
+			/*letter-spacing: 0.05rem;*/
 		}
 
 		/*没有内容时添加这个类*/
@@ -559,11 +573,11 @@
 </head>
 <body>
 	<header id="header">
-		<span class="tab" index='0'><p><i class="iconfont icon-daifukuan"></i><b class="waitpay">0</b></p>待付款</span>
-		<span class="tab" index='1'><p><i class="iconfont icon-daifahuo"></i><b class="waitsend">0</b></p>待发货</span>	
-		<span class="tab" index='2'><p><i class="iconfont icon-daishouhuo"></i><b class="waitharvest">0</b></p>待收货</span>
-		<span class="tab" index='3'><p><i class="iconfont icon-pinglun"></i><b class="waitassess">0</b></p>待评论</span>
-		<span class="tab" index='4'><p><i class="iconfont icon-shouhoutuikuan"></i><b class="waitdrawback">0</b></p>退款/售后</span>
+		<span class="tab" index='0'><p><i class="iconfont icon-daifukuan"></i><b class="waitpay"></b></p>待付款</span>
+		<span class="tab" index='1'><p><i class="iconfont icon-daifahuo"></i><b class="waitsend"></b></p>待发货</span>	
+		<span class="tab" index='2'><p><i class="iconfont icon-daishouhuo"></i><b class="waitharvest"></b></p>待收货</span>
+		<span class="tab" index='3'><p><i class="iconfont icon-pinglun"></i><b class="waitassess"></b></p>待评价</span>
+		<span class="tab" index='4'><p><i class="iconfont icon-shouhoutuikuan"></i><b class="waitdrawback"></b></p>退款/售后</span>
 		<div id="line">
 			<span></span>
 		</div>
@@ -647,19 +661,53 @@
   	      </div>
   	    </div>
   	  </div>
+
   	  <div class="modal-backup3"></div>
   	</div>
 
+	<!-- 微信支付支持JS部分代码 -->
+	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>	                                                                                     
 	<script>
+		//微信接口
+		wx.config({
+		    debug: false,
+		    appId: '{{$info["appId"]}}',
+		    timestamp: '{{$info["timestamp"]}}',
+		    nonceStr: '{{$info["nonceStr"]}}',
+		    signature: '{{$info["signature"]}}',
+		    jsApiList: [
+		      // 所有要调用的 API 都要加到这个列表中
+		      'chooseWXPay'
+		    ]
+		});
+
+		// 微信支付方法
+		function weixinPay(res){
+		    WeixinJSBridge.invoke(
+		        'getBrandWCPayRequest',
+		        JSON.parse(res),
+		        function(res){
+		            if (res.err_msg.substr(-2) == 'ok') {
+		                // 付款成功，跳转前台主页
+		                location.href = "{{:U('Home/PaymentSystem/paytosuccess_cz')}}";
+		            } else if (res.err_msg.substr(-6) == 'cancel') {
+		                    // 取消付款
+		                    // 跳转到待付款订单页面
+		                    location.href = "{{:U('Home/PaymentSystem/paytofailed')}}";
+		            }else{
+		                    // 付款失败
+		                    // 跳转到待付款订单页面
+		                    location.href = "{{:U('Home/PaymentSystem/paytofailed')}}";
+		            }
+		        }
+		    );
+		};
+
 
 		if($('#content>div').length==0){
 			$('.noContain').show();
 		}
-		$(".waitpay").html();//待付款条数
-		$(".waitsend").html();//待发货条数
-		$(".waitharvest").html();//待收货条数
-		$(".waitassess").html();//待评论条数
-		$(".waitdrawback").html();//待退款售后条数
+		
 		var returneddata1=[//待商家同意退货数据
 			{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"},
 			{"updatetime":"2018-01-31","orderimg":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"}
@@ -797,9 +845,11 @@
 					: 'hidden'
 				});
 			}
-			$("#content").css({transition:'.3s ease',transform: 'translate(-'+ $(this).attr("index") +'00vw)'});
 			// $("#content").animate({left: '-'+ $(this).attr("index") +'00vw'});
+			$("#content").css({transition:'.3s ease',transform: 'translate(-'+ $(this).attr("index") +'00vw)'});
 			$("#line").css({left: $(this).attr("index")*2 + '0%'});
+			$(".tab").css('color','#5A5A5A');
+			$(this).css('color','#373737');
 		});
 
 		// 寄件点击展开效果
@@ -834,7 +884,7 @@
 			$(".modal-backup").fadeOut('slow');
 		});      	
 	    //确认收货 模态框的js
-      	$(".start3").on("click",function(){
+      	$('#dingdanDaishouhuo').on("click",".start3",function(){
       		var _thisname=$(this).attr("name");
       		$(".modelAll3").show();
        	   	$(".modal").addClass("in").css('z-index','1001');
@@ -845,7 +895,7 @@
        	   			type:"post",
        	   			datatype:"json",
        	   			data:{
-       	   				orderID:_thisname
+       	   				order_id:_thisname
        	   			},
        	   			success:function(res){
        	   				alert("操作成功");
@@ -873,30 +923,35 @@
 
     /**
      * [unpaid_order 查询订单]
-     * @param  {[type]} status 	[8：未支付，9：待发货，2：待收货，7：待评论 4：退款处理中 5：已退货]
+     * @param  {[type]} status 	参数: g_type 订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+        参数：status 订单状态：[0：已下单，1：已取消，2：待收货，3：已收货，4：退货处理中，5：已退货，6：申诉中，7：待评论，8：未支付，9：待发货]
      * @return {[type]}    		[description]
      */
     (function unpaid_order(){
             $.ajax({//8：未支付
                 url:"{{:U('Home/Order/order_list')}}",
-                data:{"status":8},
+                data:{
+                	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+                	"status":8
+                },
                 dataType:"json",
                 type: 'post',
                 success:function(res){
+                	console.dir(res)
                     if(res.code == 200){
                     	// 查询有数据
-                    	// console.dir(res.data)
+                    	console.dir(res.data)
                     	var waitpaylist=res.data;
                     	for(var i=0;i<waitpaylist.length;i++){//待付款数据遍历
 							dingdanDaifukuan1+='<div class="goods">'+
 								'<p>订单编号：'+waitpaylist[i]['orderid']+'</p>'+
 								'<p>下单时间：'+waitpaylist[i]['ordertime'] +
 									'<span>等待买家付款</span>'+
-								'</p>';
+								'</p>';//<img src="__PUBLIC__/Pic/repair/2018-02-06/5a7975ef16907.png">
 							for(var k=0;k<waitpaylist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
 								dingdanDaifukuan2+='<div class="goodsItem">'+
 									'<div class="giPicture">'+
-										'<img src="__PUBLIC__/Home/images/ro_01_03.png" alt="">'+
+										'<img src="/Uploads/'+waitpaylist[i]['productList'][k]['orderimg']+'" alt="">'+
 									'</div>'+
 									'<div class="giDescription">'+
 										'<b>'+waitpaylist[i]['productList'][k]['productname']+'</b>'+
@@ -906,19 +961,19 @@
 											'<span>X&nbsp;'+waitpaylist[i]['productList'][k]['productnumber']+'</span>'+
 										'</div>'+
 									'</div>'+
-								'</div>';
+								'</div>'; 
 							}
 							dingdanDaifukuan1+=dingdanDaifukuan2+'<div class="calc">'+
 									'<div>'+
 										'共'+ waitpaylist[i]['totalnumber'] +'件商品&emsp;'+
-										'合计：<b>￥'+waitpaylist[i]['totalprice']+'</b>'+
-										'<span>&nbsp;(含邮费￥'+waitpaylist[i]['postage']+')</span>'+
+										'合计：<b class="price">￥'+waitpaylist[i]['totalprice']+'</b>'+
+										'<span class="postage">&nbsp;(含邮费￥'+waitpaylist[i]['postage']+')</span>'+
 									'</div>'+
 									'<div>'+
 										'<div class="cancel start1" name='+waitpaylist[i]['orderid']+'>'+
 											'<span>取消订单</span>'+
 										'</div>'+
-										'<div class="pay">'+
+										'<div class="pay payBtn" >'+
 											'<span>&nbsp;付&nbsp;&nbsp;款&nbsp;</span>'+
 										'</div>'+
 									'</div>'+
@@ -930,9 +985,8 @@
 						$(".waitpay").html(waitpaylist.length);
                     }else{
                         // 查询无数据提示
-                        // alert(res.message);
-						$("#dingdanDaifukuan").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
-						$('.waitpay').eq(0).text(0);
+                        $("#dingdanDaifukuan").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
+						$('.waitpay').text(0);
                     }
                     // 取消订单弹框
 			      	$(".start1").on("click",function(){
@@ -943,14 +997,14 @@
 			       	    // 取消订单ajax请求
 				      	$(".cancelOrder").bind("click").click(function(){
 				      		$.ajax({
-				      			url:"",
+				      			url:"{{:U('Home/Order/cancellation_of_order')}}",
 				      			type:"post",
 				      			datatype:"json",
 				      			data:{
-				      				orderID:_thisname
+				      				order_id:_thisname
 				      			},
 				      			success:function(res){
-				      				alert("操作成功");
+				      				
 				      				window.location.reload();
 				      			}
 				      			// error:function(res){
@@ -959,12 +1013,47 @@
 				      		});
 				      	});
 			      	});
+			      	//点击支付
+			      	$(".payBtn").on("click",function(){
+			      		var _thisname = JSON.parse($(this).siblings().attr("name"));
+			      		// var paymoney = parseFloat($(this).parents(".calc").find(".postage").text().substr(6));	//邮费
+			      		var price = parseInt($(this).parents(".calc").find(".price").text().substr(1)*100)/100;
+			      		// console.log(_thisname,price);
+			      		$.ajax({
+			      			url:"{{:U('Home/PaymentSystem/orderPay')}}",
+			      			type:"post",
+			      			dataType:"json",
+			      			data:{
+			      				order: _thisname,
+			      				paymoney: price
+			      			},
+			      			success:function(res){
+			      				console.log(res);
+								if(res == -1){
+									console.log('支付错误！');
+       								parent.layer.msg('支付错误！');
+								}else{
+									
+									// 调用微信支付方法
+									weixinPay(res);
+									
+								}
+								weixinPay(res);
+			      			}
+
+
+			      		});
+
+			      	});
                 }
             });
 
  			$.ajax({//9：待发货
                 url:"{{:U('Home/Order/order_list')}}",
-                data:{"status":9},
+                data:{
+                	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单},
+                	"status":9
+                },
                 dataType:"json",
                 type: 'post',
                 success:function(res){
@@ -984,7 +1073,7 @@
 								// alert(orderList[i]['productList'].length);
 								dingdanDaifahuo2+='<div class="goodsItem">'+
 									'<div class="giPicture">'+
-										'<img src="__PUBLIC__/Home/images/ro_01_03.png" alt="">'+
+										'<img src="/Uploads/'+waitsendlist[i]['productList'][k]['orderimg']+'" alt="">'+
 									'</div>'+
 									'<div class="giDescription">'+
 										'<b>'+waitsendlist[i]['productList'][k]['productname']+'</b>'+
@@ -999,8 +1088,8 @@
 							dingdanDaifahuo1+=dingdanDaifahuo2+'<div class="calc">'+
 									'<div>'+
 										'共'+ waitsendlist[i]['totalnumber'] +'件商品&emsp;'+
-										'合计：<b>￥'+waitsendlist[i]['totalprice']+'</b>'+
-										'<span>&nbsp;(含邮费￥'+waitsendlist[i]['postage']+')</span>'+
+										'合计：<b class="price">￥'+waitsendlist[i]['totalprice']+'</b>'+
+										'<span class="postage">&nbsp;(含邮费￥'+waitsendlist[i]['postage']+')</span>'+
 									'</div>'+
 									'<div>'+
 										'<div class="cancel">'+
@@ -1024,16 +1113,18 @@
 				        });
                     }else{
                         // 查询无数据提示
-                        // alert(res.message);
-						$("#dingdanDaifahuo").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
-						$('.waitsend').eq(0).text(0);
+                        $("#dingdanDaifahuo").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
+						$('.waitsend').text(0);
                     }
                 }
             });
 
  			$.ajax({//2：待收货
                 url:"{{:U('Home/Order/order_list')}}",
-                data:{"status":2},
+                data:{
+                	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+                	"status":2
+            	},
                 dataType:"json",
                 type: 'post',
                 success:function(res){
@@ -1051,7 +1142,7 @@
 							for(var k=0;k<waitgainlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
 								dingdanDaishouhuo2+='<div class="goodsItem">'+
 									'<div class="giPicture">'+
-										'<img src="__PUBLIC__/Home/images/ro_01_03.png" alt="">'+
+										'<img src="/Uploads/'+waitgainlist[i]['productList'][k]['orderimg']+'" alt="">'+
 									'</div>'+
 									'<div class="giDescription">'+
 										'<b>'+waitgainlist[i]['productList'][k]['productname']+'</b>'+
@@ -1066,8 +1157,8 @@
 							dingdanDaishouhuo1+=dingdanDaishouhuo2+'<div class="calc">'+
 									'<div>'+
 										'共'+ waitgainlist[i]['totalnumber'] +'件商品&emsp;'+
-										'合计：<b>￥'+waitgainlist[i]['totalprice']+'</b>'+
-										'<span>&nbsp;(含邮费￥'+waitgainlist[i]['postage']+')</span>'+
+										'合计：<b class="price">￥'+waitgainlist[i]['totalprice']+'</b>'+
+										'<span class="postage">&nbsp;(含邮费￥'+waitgainlist[i]['postage']+')</span>'+
 									'</div>'+
 									'<div>'+
 										'<div class="cancel">'+
@@ -1085,16 +1176,18 @@
 						$(".waitharvest").html(waitgainlist.length);
                     }else{
                         // 查询无数据提示
-                        // alert(res.message);
-						$("#dingdanDaishouhuo").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
-						$('.waitharvest').eq(0).text(0);
+                        $("#dingdanDaishouhuo").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
+						$('.waitharvest').text(0);
                     }
                 }
             });  
 
  			$.ajax({//7：待评论
                 url:"{{:U('Home/Order/order_list')}}",
-                data:{"status":7},
+                data:{
+                	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+                	"status":7
+            	},
                 dataType:"json",
                 type: 'post',
                 success:function(res){
@@ -1112,7 +1205,7 @@
 							for(var k=0;k<waitcommentlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
 								dingdanDaipinglun2+='<div class="goodsItem">'+
 									'<div class="giPicture">'+
-										'<img src="__PUBLIC__/Home/images/ro_01_03.png" alt="">'+
+										'<img src="/Uploads/'+waitcommentlist[i]['productList'][k]['orderimg']+'" alt="">'+
 									'</div>'+
 									'<div class="giDescription">'+
 										'<b>'+waitcommentlist[i]['productList'][k]['productname']+'</b>'+
@@ -1127,15 +1220,15 @@
 							dingdanDaipinglun1+=dingdanDaipinglun2+'<div class="calc">'+
 									'<div>'+
 										'共'+ waitcommentlist[i]['totalnumber'] +'件商品&emsp;'+
-										'合计：<b>￥'+waitcommentlist[i]['totalprice']+'</b>'+
-										'<span>&nbsp;(含邮费￥'+waitcommentlist[i]['postage']+')</span>'+
+										'合计：<b class="price">￥'+waitcommentlist[i]['totalprice']+'</b>'+
+										'<span class="postage">&nbsp;(含邮费￥'+waitcommentlist[i]['postage']+')</span>'+
 									'</div>'+
 									'<div>'+
 										'<div class="cancel">'+
 										'</div>'+
-										'<div class="pay commentBtn" name='+ waitcommentlist[i]['orderid'] +' >'+
-											'<span>评&nbsp;论</span>'+
-										'</div>'+
+										'<a href="javascript:;" class="pay commentBtn" name='+ waitcommentlist[i]['orderid'] +' >'+
+											'<span>评&nbsp;价</span>'+
+										'</a>'+
 									'</div>'+
 								'</div>'+
 							'</div>';
@@ -1143,18 +1236,35 @@
 						}
 						$("#dingdanDaipinglun").html(dingdanDaipinglun1);
 						$(".waitassess").html(waitcommentlist.length);
-                    }else{
+                    }else{ 
                         // 查询无数据提示
-                        // alert(res.message);
-						$("#dingdanDaipinglun").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
-						$('.waitassess').eq(0).text(0);
+                        $("#dingdanDaipinglun").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
+						$('.waitassess').text(0);
                     }
+                    //如果有本地评论数据则清除
+                    if(sessionStorage.getItem("pinglunObj")){
+                    	sessionStorage.setItem("pinglunObj","");
+                    }
+                    /*
+                    	点击评论
+                     */
+                    $('#dingdanDaipinglun').on('click',".commentBtn",function(){
+                    	var pinglunObj = {};	//存储带评论的订单编号
+                    	pinglunObj['order_id'] = $(this).attr("name");
+                    	pinglunObj['pic'] = $(this).parents(".goods").find('.giPicture>img').attr('src');
+                    	//将点击的带评论商品数据存到本地存储中
+                    	sessionStorage.setItem("pinglunObj",JSON.stringify(pinglunObj));
+                    	location.href = '{{:U("Comment/index")}}';
+                    })
                 }
             });  
 
  			$.ajax({//4：退款处理中
                 url:"{{:U('Home/Order/order_list')}}",
-                data:{"status":4},
+                data:{
+                	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+                	"status":4
+            	},
                 dataType:"json",
                 type: 'post',
                 success:function(res){
@@ -1162,15 +1272,20 @@
                     if(res.code == 200){
                     	// 查询有数据
                     	console.dir(res.data)
+                    	$(".waitdrawback").html(res.data.length);
+
                     }else{
                         // 查询无数据提示
-                        // alert(res.message);
+                        console.log(res.message);
                     }
                 }
             });  
             $.ajax({//5：已退货
                 url:"{{:U('Home/Order/order_list')}}",
-                data:{"status":5},
+                data:{
+                	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+                	"status":5
+                },
                 dataType:"json",
                 type: 'post',
                 success:function(res){
@@ -1180,19 +1295,18 @@
                     	console.dir(res.data)
                     }else{
                         // 查询无数据提示
-                        // alert(res.message);
-						$("#saleAfter").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
-						$('.waitdrawback').eq(0).text(0);
+                        console.log(res.message);
                     }
                 }
             });  
-
     	//售后评论
-	   	// (".commentAfter").click(function(){
-	   	// 	var commentIndex=$(this).attr("name");
-	   	// 	window.location.href="__URL__/mycomment"+;
-	   	// }); 
+	   	$(".commentAfter").click(function(){
+	   		// var commentIndex=$(this).attr("name");
+	   		window.location.href="{{:U('Home/Comment/saleServic')}}";
+	   	}); 
     })();
+
+
 
 	</script>
 </body>

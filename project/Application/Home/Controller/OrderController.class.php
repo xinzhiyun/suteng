@@ -35,7 +35,7 @@ class OrderController extends CommonController
             // 查询用户
             $showData['uid']     = $_SESSION['user']['id'];
             // 订单类型
-            $g_type['g_type'] = $g_type;
+            $showData['g_type'] = $g_type;
             // 订单状态
             $showData['status'] = $status;
             // 查询订单表
@@ -175,6 +175,23 @@ class OrderController extends CommonController
     {
         $this->display();
     }
-}
+    /**
+     * 租赁订单
+     * @return [type] [description]
+     */
+    public function lease()
+    {
+        $this->display();
+    }
+
+    /**
+     * 租赁订单
+     * @return [type] [description]
+     */
+    public function exchangeNotes()
+    {
+        $this->display();
+    }
+}   
 
 
