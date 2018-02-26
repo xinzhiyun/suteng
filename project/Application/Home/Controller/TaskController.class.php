@@ -83,6 +83,30 @@ class TaskController extends CommonController
         // 返回数据
         $this->ajaxReturn($data);
     }
+
+    /**
+     * [del 删除定时设置]
+     * @return [type] [description]
+     */
+    public function del()
+    {
+        // 接收删除条件
+        $delData['id'] = I('post.id');
+        // $delData['id'] = 67;
+        if($delData['id']){
+            $res = M('task')->where($delData)->delete();
+            if($res){
+                $message    = ['code' => 200, 'message' => '删除成功!'];
+            }else{
+                $message    = ['code' => 403, 'message' => '删除失败，请刷新后重试!'];
+            }
+        }else{
+            $message    = ['code' => 403, 'message' => '删除失败，请指定删除条件!'];
+        }
+        // dump($message);
+        // 返回数据
+        $this->ajaxReturn($message);
+    }
 }
 
 
