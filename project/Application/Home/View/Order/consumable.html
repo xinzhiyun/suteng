@@ -937,10 +937,10 @@
                 dataType:"json",
                 type: 'post',
                 success:function(res){
-                	console.dir(res)
+                	// console.dir(res)
                     if(res.code == 200){
                     	// 查询有数据
-                    	console.dir(res.data)
+                    	// console.dir(res.data)
                     	var waitpaylist=res.data;
                     	for(var i=0;i<waitpaylist.length;i++){//待付款数据遍历
 							dingdanDaifukuan1+='<div class="goods">'+
@@ -1272,7 +1272,7 @@
                     if(res.code == 200){
                     	// 查询有数据
                     	console.dir(res.data)
-                    	$(".waitdrawback").html(res.data.length);
+                    	$(".waitdrawback").html(res.data.length?res.data.length:0);
 
                     }else{
                         // 查询无数据提示
@@ -1292,10 +1292,10 @@
                     // console.dir(res);
                     if(res.code == 200){
                     	// 查询有数据
-                    	console.dir(res.data)
+                    	// console.dir(res.data)
                     }else{
                         // 查询无数据提示
-                        console.log(res.message);
+                        // console.log(res.message);
                     }
                 }
             });  
