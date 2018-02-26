@@ -22,14 +22,14 @@
 			min-height: 100vh;
 			overflow-x: hidden;
 			overflow-y: scroll;
-			background: #f1f1f1;
+			background: #f3f3f3;
 		}
 		#header {
 			width: 100vw;
 			display: flex;
 			position: relative;
 			font-size: .7rem;    
-			padding: 5% 4%;
+			padding: 5% 4% 3%;
 			background: #fff;
 		}
 		#hLeft {
@@ -49,7 +49,7 @@
 			width: 100%;
 			display: inline-block;
 			position: relative;
-			margin: 2% 0;
+			margin: 0% 0;
 			font-size: 0.68rem;
 		}
 		#header>div>p>span:nth-of-type(1) {
@@ -69,12 +69,12 @@
 			/*height: 83vh;*/
 			position: relative;
 			left: 0;
-			border-top: 1vh solid #f1f1f1;
+			border-top: 10px solid #f3f3f3;
 			background: #fff;
 		}
 		/*订单ID*/
 		.dingdanID {
-			padding: 1% 4%;
+			padding: 4% 4% 0%;
 		}
 		.goods {
 			width: 94vw;
@@ -103,15 +103,21 @@
 			padding: 2% 0 2% 2%;
 			background: #fff;
 		}
+		.goods>.dec>h5{
+			font-size: 0.72rem;
+
+		}
 		.goods>.dec>p {
-			font-size: .5rem;
+			font-size: .62rem;
 			margin: 4% 0;
 			color: #555;
 		}
 		.num {
-			width: 26%;
+			width: 14%;
 			float: right;
 			white-space: nowrap;
+			font-size: 0.7rem;
+
 		}
 		.num:after {
 			content: '';
@@ -119,47 +125,55 @@
 		}
 		.price {
 			color: #FC3132;
-			font-size: .7rem;
+			font-size: .76rem;
+		}
+		.num>b{
+			font-size: 0.76rem;
 		}
 		.num>b, .num>input {
 			width: 33%;
 			text-align: center;
+			font-weight: 500;
+
 		}
 		#calc {
 		    color: #333;
-			border-bottom: 1px solid #eee;
+			border-bottom: 10px solid #f3f3f3;
 			background: #fff;
+			padding:0.4rem;
 		}
 		.ynticket{
-			padding: 4% 3% 5%;
+			padding: 2.5% 3% 3.5%;
 			/*height: 1.6rem;*/
 			line-height: 1.6rem;
 			width: 100%;
 			background: #fff;
 			margin-bottom: 8vh;
 		}
-		.ynticke>b{
-			display: inline-block;
-			float: left;
+		.ynticket>b{
+			/*display: inline-block;
+			float: left;*/
+			font-weight: 400;
 		}
 		.ynticket>a{
 			width: 50%;
 			display: inline-block;
 			padding-right: 5%;
-			font-size: 0.6rem;
+			font-size: 0.62rem;
 			float: right;
 			text-align: right;
+			color: #5a5a5a;
 		}
 		.ynticket>a>i{
 			font-size:0.6rem; 
 		}
 		#calc>p {
-		    padding: 4% 3%;
+		    padding: 2% 3%;
 		    font-size: .7rem;
 		    text-align: right;
 		}
 		#calc>p>b{
-			color: #5a5a5a;
+			color: #373737;
 		}
 		#payWay {
 			width: 100vw;
@@ -279,7 +293,7 @@
 		}
 		#footerContain {
 			width: 100vw;
-			height: 8vh;
+			height: 9vh;
 			display: flex;
 			justify-content: space-around;
 			align-items: center;
@@ -293,9 +307,9 @@
 
 		#footerContain>div, 
 		#footerContain>span {
-			height: 8vh;    
+			height: 9vh;    
 			display: inline-block;
-		    line-height: 8vh;
+		    line-height: 9vh;
     		text-align: center;
 		    vertical-align: middle;
 		}
@@ -309,6 +323,7 @@
 			width: 40%;
 			color: #fff;
 			background: #2EB6AA;
+			letter-spacing: 0.04rem;
 		}
 		/*付款页面*/
 		.paystyle{
@@ -540,7 +555,7 @@
 				<div class="paytopLeft"><i class="iconfont icon-cuohao"></i></div>
 				<div class="paytopRight">
 					<h3>付款</h3>
-					<p>3620.00</p>
+					<p>￥3620.00</p>
 				</div>	
 			</div>
 			<div class="paymidd">

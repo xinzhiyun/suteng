@@ -6,9 +6,8 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
   	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
  	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
- 	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_v25vpfqtkjegsyvi.css">
+ 	<!-- <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_v25vpfqtkjegsyvi.css"> -->
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
-	<script src="__PUBLIC__/Home/js/myfocus-2.0.1.min.js"></script>
   	<script src="__PUBLIC__/Home/js/public.js"></script>
 
   	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/font-awesome.css">
@@ -189,7 +188,6 @@
 		#slider-wrap{
 			width: 90vw;
 			height: 180px;
-			margin:30px auto;
 			position:relative;
 			background: #fff;
 		}
@@ -274,8 +272,8 @@
 			width: 130%;
 			height: 66%;
 			display: inline-block;
-			/*border: 1px solid #ddd;*/
-			border-radius: 4px;
+			border: 1px solid #ddd;
+    		border-radius: 6px;
 		}
 		
 	</style>
@@ -303,11 +301,11 @@
 	
 			<div id="slider-wrap">
 			  <ul id="slider">
-			    <li><a goods_gid="{{$goodsList[0]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[0]['path']}}" /></a></li>
-			    <li><a goods_gid="{{$goodsList[1]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[1]['path']}}" /></a></li>
-			    <li><a goods_gid="{{$goodsList[2]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[2]['path']}}" /></a></li>
-			    <li><a goods_gid="{{$goodsList[3]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[3]['path']}}" /></a></li>
-			    <li><a goods_gid="{{$goodsList[4]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[4]['path']}}" /></a></li>		 
+			    <li><a class="pic" goods_gid="{{$goodsList[0]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[0]['path']}}" /></a></li>
+			    <li><a class="pic" goods_gid="{{$goodsList[1]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[1]['path']}}" /></a></li>
+			    <li><a class="pic" goods_gid="{{$goodsList[2]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[2]['path']}}" /></a></li>
+			    <li><a class="pic" goods_gid="{{$goodsList[3]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[3]['path']}}" /></a></li>
+			    <li><a class="pic" goods_gid="{{$goodsList[4]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[4]['path']}}" /></a></li>		 
 			  </ul>
 			  
 			   <!--controls-->
@@ -468,6 +466,11 @@
 				点击的时候记录当前点击的商品gid，传给商品详情页面
 			 */
 			$(".goodsBlock").on('click','.pic',function(){
+				// console.log($(this).attr("goods_gid"))
+				sessionStorage.setItem("goods_gid", $(this).attr("goods_gid"))
+			})
+
+			$("#slider").on('click','.pic',function(){
 				// console.log($(this).attr("goods_gid"))
 				sessionStorage.setItem("goods_gid", $(this).attr("goods_gid"))
 			})

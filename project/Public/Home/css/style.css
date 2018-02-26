@@ -7,7 +7,7 @@ body, hmtl{background: #ecf0f1; font-family: 'Anton', sans-serif;}
 
 #wrapper{
 	width:90vw;
-	margin:50px auto;
+	margin:20px auto 0;
 	height:180px;
 	position:relative;
 	color:#fff;
@@ -15,11 +15,7 @@ body, hmtl{background: #ecf0f1; font-family: 'Anton', sans-serif;}
 }
 
 #slider-wrap{
-	/*width:600px;
 	
-	*/
-  
-	/*height:400px;*/
 	 width:90vw;
 	height:180px;
 	position:relative;
@@ -102,8 +98,8 @@ body, hmtl{background: #ecf0f1; font-family: 'Anton', sans-serif;}
 #next{right:-50px; border-radius:7px 0px 0px 7px;}
 #previous{left:-50px; border-radius:0px 7px 7px 7px;}
 #counter{
-	top: 30px; 
-	right:35px; 
+	top: 7px; 
+	right:18px; 
 	width:auto;
 	position:absolute;
 }

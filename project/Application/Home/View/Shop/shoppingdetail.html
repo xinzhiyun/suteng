@@ -170,12 +170,16 @@
 	.detailContain>p{
 		padding: 2.5rem 5% 0.4rem;
 		font-size: 0.68rem;
+		position: relative;
 
 	}
 	.detailContain>p>i{
-		font-size: 0.8rem;
+		font-size: 1.1rem;
 		padding-right: 0.05rem;
 		color:#FBC91D;
+		position: relative;
+		top: 0.05rem;
+		margin-right: 0.3rem;
 	}
 	.detailItem>p>span{
 		font-size: 0.68rem;
@@ -183,7 +187,7 @@
 	/*个人评论内容*/
 	.detailItem{
 		padding:0.6rem 5%;
-		border-bottom:6px solid #E5E5E5;
+		border-bottom:10px solid #f3f3f3;
 	}
 	.detailItem>p{
 		padding: 0.2rem 5% 0.2rem 0;
@@ -252,6 +256,7 @@
 		background: #FFF;
 		overflow: hidden;
 		border-top:1px solid #E5E5E5;
+		font-size: 0.74rem;
 	}
 	.shopdetailBott>div{
 		display: inline-block;
@@ -260,32 +265,33 @@
 	}
 	.shopdetailBott>a {
 		width: 20%;
-		height: 6vh;
+		height: 8vh;
 		display: inline-block;
-		line-height: 6vh;
+		line-height: 8vh;
 		text-align: center;
 	}
 	.shopdetailBott>a:active>i{
 		color: #960532;
 	}
 	.shopdetailBott>a>i{
-		font-size: 1.3rem;
+		font-size: 1.2rem;
+
     	color: #F04B7E;
 	}
 	.shopdetailBott>div>input{
-		padding: 0.5rem;
+		padding: 0.64rem;
 		background: #F04B7E;
 		border:none;
-		width: 48%;
+		width: 52%;
 		color:#fff;
 		border-radius: 0px!important;
 	}
 	/*加入购物车*/
 	#add2ShopCart {
-		height: 6vh;
-		width: 50%;
+		height: 8vh;
+		width: 46%;
 	    display: inline-block;
-	    line-height: 6vh;
+	    line-height: 8vh;
 	    text-align: center;
 	}
 	#add2ShopCart:active {
@@ -334,7 +340,7 @@
 		</div>
 		<div class="shopdetailBott">
 			<a href="{{:U('ShoppingCart/index')}}">
-				<i class="iconfont icon-icon-- "></i>
+				<i class="iconfont icon-gouwuche "></i>
 			</a>
 			<div>
 				<div id="add2ShopCart">加入购物车</div>

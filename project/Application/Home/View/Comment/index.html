@@ -12,6 +12,14 @@
 	body{
 		font-size: 0.7rem;
 	}
+	#form {
+		position: relative;
+		min-height: 800px;
+	}
+	#form>a {
+		position: relative;
+		display: block;
+	}
 	/*评论级别*/
 	.xuanping{
 		width: 90%;
@@ -193,10 +201,8 @@
 		<form id="form" action="" method="post" enctype="multipart/form-data">
 			<div class="xuanping clearfix">
 				<div class="pingpic"><img src="" alt=""></div>
-				<!-- 用户ID -->
-				<input type="hidden" name="uid" value="11111">
 				<!-- 商品ID -->
-				<input type="hidden" name="gid" value="22222">
+				<input type="hidden" name="gid" value="">
 			    <div class='everyItem'>
 			        <input id="item1" type="radio" name="status" value="1" checked>
 			        <label for="item1"></label>
@@ -219,7 +225,7 @@
 						<textarea name="content" id="shopping" cols="30" rows="10" placeholder="请您对我们的商品做出评价……"></textarea>
 					</label>
 					<span><i class="iconfont icon-tianjia"></i><em>限3张内</em></span>
-					<input class="file_upload" multiple name="pic[]" type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
+					<input class="file_upload" name="pic[]" type="file" multiple="" accept="image/*" >
 					<div id="picShow"></div>
 				</div>
 			</div>
@@ -236,20 +242,18 @@
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
   	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script>
-	//{{:U('Home/Comment/commentsucceed')}}
+		//{{:U('Home/Comment/commentsucceed')}};
+	
+		var file = $("#form")[0];	// 获取上传文件的input标签	
+		var formData = new FormData(file);	// 实例化一个formdata对象
+		var fileList;	// 获取的图片文件
+		formData.append("file",file);
 		//将评论的商品信息显示到页面从我的订单~待评论传来
 		if(sessionStorage.getItem("pinglunObj")){
 			var pinglunObj = JSON.parse(sessionStorage.getItem("pinglunObj"));
 			// console.log(pinglunObj)
 			$(".pingpic>img").attr("src",pinglunObj.pic);
-			// $('input[name="uid"]').val(pinglunObj.uid);
-			// $('input[name="gid"]').val(pinglunObj.gid);
 		}
-		var file = $("#form")[0];// 获取上传文件的input标签	
-		var formData = new FormData(file);// 实例化一个formdata对象
-		var fileList;// 获取的图片文件
-		formData.append("file",file);
-
 		/*
 			图片压缩上传
 		 */
@@ -453,16 +457,19 @@
 		$("#submit").click(function(){
 			if($("#shopping").val()==""){
 				layuiHint("请您对我们的商品做出评价呗");
-				return false;
+				// return false;
 			}
 			// console.log($('input[name="status"]:checked')[0].value);
 			// console.log($('#shopping').val());
 			//评分
 			formData.delete("status");	//清空，防止多次点击提交
 			formData.delete("content");	//清空，防止多次点击提交
+			formData.delete("gid");
+			formData.append('gid',pinglunObj.gid);
 			formData.append('status',$('input[name="status"]:checked')[0].value);
 			formData.append('content',$('#shopping').val());	//评价的内容
-
+			console.group();
+			console.log(formData.getAll('gid'));
 			console.log(formData.getAll('status'));
 			console.log(formData.getAll('content'));
 			console.log(formData.getAll('UploadForm[]'));
@@ -478,7 +485,7 @@
 					console.log('连接',res)
 					//评论成功后跳转
 					if(res.code == 200){
-						location.href = "{{:U('Home/Comment/commentsucceed')}}";
+						location.href = "{{:U('Home/Order/index')}}";
 					}else{
 						layuiHint('评论失败,请稍后再试！')
 					}

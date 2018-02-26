@@ -941,5 +941,185 @@ class VendorsController extends Controller
         return $YesterdayUserNum;
     }
 
+    // 查询分销商团队
+    public function get_vendor_team()
+    {
+        // 用户级别2:A级分销商 3:B级分销商 4:C级分销商
+        $leavel = $_SESSION['vendorInfo']['leavel'];
+        // 分销商标识
+        $code = $_SESSION['vendorInfo']['code'];
+        // 接收获取数据类型
+        $type = I('post.type');
+        // 匹配分销商级别
+        switch ($leavel) {
+            case '2':
+            // A级分销商区间
+                switch ($type) {
+                    case 'A':
+                        // A级分销商
+                        $showDataA['invitation_code'] = $code;
+                        $showDataA['leavel'] = 2;
+                        $vendor_a = M('vendors')->where($showDataA)->select();
+
+                        if($vendor_a){
+                            $message    = ['code' => 200, 'message' => '分销商数据查询成功!', 'data' => $vendor_a , 'num' => count($vendor_a)];
+                        }else{
+                            $message    = ['code' => 403, 'message' => '暂无该级别分销商，赶紧去邀请吧!'];
+                        }
+                        break;
+                    case 'B':
+                        // B级分销商
+                        $showDataB['superior_code'] = $code;
+                        $showDataB['leavel'] = 3;
+                        $vendor_b = M('vendors')->where($showDataB)->select();
+
+                        if($vendor_b){
+                            $message    = ['code' => 200, 'message' => '分销商数据查询成功!', 'data' => $vendor_b , 'num' => count($vendor_b)];
+                        }else{
+                            $message    = ['code' => 403, 'message' => '暂无该级别分销商，赶紧去邀请吧!'];
+                        }
+                        break;
+                    case 'C':
+                        // C级分销商
+                        $showDataC['superiors_code'] = $code;
+                        $showDataC['leavel'] = 4;
+                        $vendor_c = M('vendors')->where($showDataC)->select();
+
+                        if($vendor_c){
+                            $message    = ['code' => 200, 'message' => '分销商数据查询成功!', 'data' => $vendor_c , 'num' => count($vendor_c)];
+                        }else{
+                            $message    = ['code' => 403, 'message' => '暂无该级别分销商，赶紧去邀请吧!'];
+                        }
+                        break;
+                    case 'U':
+                        // 分销商会员
+                        $showDataU['vendora_code'] = $code;
+                        $vendor_u =  M('users')->where($showDataU)->select();
+
+                        if($vendor_u){
+                            $message    = ['code' => 200, 'message' => '会员数据查询成功!', 'data' => $vendor_u , 'num' => count($vendor_u)];
+                        }else{
+                            $message    = ['code' => 403, 'message' => '暂无会员员，赶紧去邀请吧!'];
+                        }
+                        break;
+                }
+
+                break;
+            case '3':
+                // B级分销商
+                switch ($type) {
+                    case 'A':
+                        // A级分销商
+                        $message    = ['code' => 403, 'message' => 'B级分销商下没有A级分销商'];
+                        break;
+                    case 'B':
+                        // B级分销商
+                        $showDataB['invitation_code'] = $code;
+                        $showDataB['leavel'] = 3;
+                        $vendor_b = M('vendors')->where($showDataB)->select();
+
+                        if($vendor_b){
+                            $message    = ['code' => 200, 'message' => '分销商数据查询成功!', 'data' => $vendor_b , 'num' => count($vendor_b)];
+                        }else{
+                            $message    = ['code' => 403, 'message' => '暂无该级别分销商，赶紧去邀请吧!'];
+                        }
+                        break;
+                    case 'C':
+                        // C级分销商
+                        $showDataC['superior_code'] = $code;
+                        $showDataC['leavel'] = 4;
+                        $vendor_c = M('vendors')->where($showDataC)->select();
+
+                        if($vendor_c){
+                            $message    = ['code' => 200, 'message' => '分销商数据查询成功!', 'data' => $vendor_c ,'num' => count($vendor_c)];
+                        }else{
+                            $message    = ['code' => 403, 'message' => '暂无该级别分销商，赶紧去邀请吧!'];
+                        }
+                        break;
+                    case 'U':
+                        // 分销商会员
+                        $showDataU['vendora_code'] = $code;
+                        $vendor_u =  M('users')->where($showDataU)->select();
+
+                        if($vendor_u){
+                            $message    = ['code' => 200, 'message' => '会员数据查询成功!', 'data' => $vendor_u, 'num' => count($vendor_u)];
+                        }else{
+                            $message    = ['code' => 403, 'message' => '暂无会员员，赶紧去邀请吧!'];
+                        }
+                        break;
+                }
+                break;
+            case '4':
+                // C级分销商
+                switch ($type) {
+                    case 'A':
+                        // A级分销商
+                        $message    = ['code' => 403, 'message' => 'C级分销商下没有B级分销商'];
+                        break;
+                    case 'B':
+                        // B级分销商
+                        $message    = ['code' => 403, 'message' => 'C级分销商下没有B级分销商'];
+                        break;
+                    case 'C':
+                        // C级分销商
+                        $showDataC['invitation_code'] = $code;
+                        $showDataC['leavel'] = 4;
+                        $vendor_c = M('vendors')->where($showDataC)->select();
+
+                        if($vendor_c){
+                            $message    = ['code' => 200, 'message' => '分销商数据查询成功!', 'data' => $vendor_c ,'num' => count($vendor_c)];
+                        }else{
+                            $message    = ['code' => 403, 'message' => '暂无该级别分销商，赶紧去邀请吧!'];
+                        }
+                        break;
+                    case 'U':
+                        // 分销商会员
+                        $showDataU['vendora_code'] = $code;
+                        $vendor_u =  M('users')->where($showDataU)->select();
+
+                        if($vendor_u){
+                            $message    = ['code' => 200, 'message' => '会员数据查询成功!', 'data' => $vendor_u,'num' => count($vendor_u)];
+                        }else{
+                            $message    = ['code' => 403, 'message' => '暂无会员员，赶紧去邀请吧!'];
+                        }
+                        break;
+                }
+                break;
+        }
+        echo '<pre>';
+        print_r($message);
+        // 返回JSON格式数据
+        $this->ajaxReturn($message);
+    }
+
+    /**
+     * 获取当前分销商级别
+     */
+    public function get_leavel()
+    {
+        // 用户级别2:A级分销商 3:B级分销商 4:C级分销商
+        $leavel = $_SESSION['vendorInfo']['leavel']; 
+
+        switch ($leavel) {
+            case '2':
+                $data = 'A级分销商';
+                break;
+            case '3':
+                $data = 'B级分销商';
+                break;
+            case '4':
+                $data = 'C级分销商';
+                break;
+        }
+
+        if($leavel){
+            $message    = ['code' => 200, 'message' => '分销商级别获取成功!', 'leavel' => $data];
+        }else{
+            $message    = ['code' => 403, 'message' => '分销商级别获取失败!'];
+        }
+
+        // 返回JSON格式数据
+        $this->ajaxReturn($message);
+    }
 
 }

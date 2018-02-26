@@ -66,6 +66,9 @@ class WorkController extends CommonController
             $data['title']      = I('post.title');
             $data['type']       = I('post.type');
             $data['content']    = I('post.content');
+            $data['province']       = I('post.province');
+            $data['city']       = I('post.city');
+            $data['district']       = I('post.district');
             $data['address']    = I('post.address');
             $data['number']     = $this->getWorkNumber();
             $data['create_at']  = time();

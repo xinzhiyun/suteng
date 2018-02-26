@@ -66,11 +66,11 @@ window.onload = function(){
 
     machineStatus();//执行当前设备状态
 
-    $(".rawtdsVal").html(getdataList.rawtds);//纯水值
-    $(".phVal").html(getdataList.phval);//ph酸碱值
-    $(".puretdsVal").html(getdataList.puretds);//原水值
-    $(".rawtdsVal2").html(getdataList.rawtds);//纯水值
-    $(".hotwater").html(parseInt(Math.random()*10+90)+"&#8451;");
+    $(".rawtdsVal").html(getdataList.rawtds?getdataList.rawtds:0);//纯水值
+    $(".phVal").html(getdataList.phval?getdataList.phval:0);//ph酸碱值
+    $(".puretdsVal").html(getdataList.puretds?getdataList.puretds:0);//原水值
+    $(".rawtdsVal2").html(getdataList.rawtds?getdataList.rawtds:0);//纯水值
+    $(".hotwater").html((getdataList.temperature?getdataList.temperature:0)+"&#8451;");
     $(".coldwater").html(parseInt(Math.random()*10+10)+"&#8451;");
     $(".roomtemperature").html(parseInt(Math.random()*10+20)+"&#8451;");
     var usedflow = getdataList.sumslow;
@@ -146,8 +146,8 @@ window.onload = function(){
             $(".puretdsVal").html((puretds?puretds:567));//原水值
             $(".rawtdsVal2").html((rawtds?rawtds:54));//纯水值
             $(".hotwater").html((hotwater?hotwater:98)+"&#8451;");//热水温度
-            $(".coldwater").html((coldwater?coldwater:12)+"&#8451;");//冷水温度
-            $(".roomtemperature").html((roomtemperature?roomtemperature:45)+"&#8451;");//室内温度
+            // $(".coldwater").html((coldwater?coldwater:12)+"&#8451;");//冷水温度
+            // $(".roomtemperature").html((roomtemperature?roomtemperature:45)+"&#8451;");//室内温度
 
             if(dataList.LeasingMode=="0"){//按零售
                 $(".surplusVal").html("已用流量："+(usedflow?usedflow:75)+"L");

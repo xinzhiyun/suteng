@@ -55,9 +55,10 @@
                                 <tr>
                                     <th>工单编号</th>
                                     <th>主题</th>
-                                    <th>维护类型</th>
+                                    <th width="6%">维护类型</th>
                                     <th>工作内容</th>
-                                    <th>地址</th>
+                                    <th>所在地区</th>
+                                    <th>详细地址</th>
                                     <th>处理结果</th>
                                     <th>创建时间</th>
                                     <th>处理时间</th>
@@ -81,6 +82,7 @@
                                                 </switch>
                                             </td>
                                             <td><a class="" href="javascript:;" onclick="details({{$val.id}})">{{$val.content}}</a></td>
+                                            <td style="">{{$val.province}}&nbsp;{{$val.city}}&nbsp;{{$val.district}}</td>
                                             <td style="">{{$val.address}}</td>
                                             <td>
                                                 <switch name="val.result">
@@ -168,7 +170,7 @@
                                     </tr>
                                     <tr>
                                         <th>
-                                            工单地址：
+                                            所在地区：
                                         </th>
                                         <td>
                                           <div data-toggle="distpicker">
@@ -178,6 +180,14 @@
                                                   <select class="input-medium" name="district" id="district" data-district="---- 选择区 ----"></select>
                                             </div>
                                           </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th width="16%">
+                                            详细地址：
+                                        </th>
+                                        <td>
+                                            <textarea class="ks-combobox-input i-ta disabled tsl" aria-combobox="list" role="combobox" autocomplete="off" aria-label="详细地址" placeholder="建议您如实填写详细收货地址，例如街道名称，门牌号码，楼层和房间号等信息" data-inner_placeholder="d_p_input_inner_detailAddress" data-pattern="^[\s\S]{5,120}$" data-msg="d_p_detailAddress_msg" data-ph="建议您如实填写详细收货地址，例如街道名称，门牌号码，楼层和房间号等信息" data-spm-anchor-id="0.0.0.i1.4f06175cW3DmW9" cols="51" rows="3" id="address"></textarea>
                                         </td>
                                     </tr>                                     
                                     <tr>
@@ -310,6 +320,18 @@
                                     <td style="font-weight: bold;">处理结果</td>
                                     <td id="details_result"></td>
                                 </tr>
+                                </tr><tr>
+                                    <td style="font-weight: bold;">所在地区</td>
+                                    <td id="details_diqu"></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">详细地址</td>
+                                    <td id="details_address"></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">处理结果</td>
+                                    <td id="details_result"></td>
+                                </tr>
                                 <tr>
                                     <td style="font-weight: bold;">提交时间</td>
                                     <td id="details_create_at"></td>
@@ -341,7 +363,10 @@
         var data = {
                 'title' : $('#add_title').val(),
                 'type' : $("input[name='add_type']:checked").val(),
-                'address' : $('#province').val() + $('#city').val() + $('#district').val(),
+                'province'  : $('#province').val(),
+                'city'      : $('#city').val(),
+                'district'  : $('#district').val(),
+                'address' : $('#address').val(),
                 'content' : $('#add_content').val()
             }
         $.ajax({
@@ -462,7 +487,9 @@
                     msg.data.name?name=msg.data.name:name="";
                     msg.data.phone?phone=msg.data.phone:phone="";
                     msg.data.time?time=msg.data.time:time="";
-                    // console.log(msg.data)
+                    msg.data.diqu = msg.data.province + '&nbsp;' + msg.data.city + '&nbsp;' + msg.data.district;
+                    console.log(id)
+
                     $('#details_number').text(msg.data.number);
                     $('#details_title').text(msg.data.title);                   
                     $('#details_name').text(msg.data.Vendors.name);
@@ -471,6 +498,8 @@
                     $('#details_dw_phone').text(phone);
                     $('#details_type').text(msg.data.type);
                     $('#details_content').text(msg.data.content);
+                    $('#details_diqu').text(msg.data.diqu);
+                    $('#details_address').text(msg.data.address);
                     $('#details_result').text(msg.data.result);
                     $('#details_create_at').text(msg.data.create_at);
                     $('#details_time').text(time);                    

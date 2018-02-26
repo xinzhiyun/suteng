@@ -9,6 +9,7 @@ class VipCenterController extends CommonController
 	 */
     public function index()
     {
+
         // 准备查询条件
         $showUser['open_id'] = $_SESSION['open_id'];
         // // 执行查询
@@ -246,7 +247,165 @@ class VipCenterController extends CommonController
         $this->ajaxReturn($message);
     }
     
+    // 会员订单
+    public function user_order()
+    {
+        $code = session('user.code');
+        // 获取用户唯一标识
+        $uWhere['c.user_code'] = array('EQ',$code);
+        $uWhere['c.nexus_user'] = array('NEQ',$code);
+    
+        $data = M('users_commission')
+            ->alias('c')
+            ->where($uWhere)
+            ->join('__USERS__ u ON u.code = c.nexus_user','LEFT')
+            ->join('__SHOP_ORDER__ o ON o.order_id = c.order_id','LEFT')
+            ->field('u.nickname,o.g_price,c.gold_num,c.silver,c.addtime')
+            ->select();
 
+        $reData['tatal_num']    = 0;
+        $reData['tatal_gold']   = 0;
+        $reData['tatal_silver'] = 0;
+
+        if($data){
+            // 统计会员订单总数
+            $reData['tatal_num'] = count($data);
+
+            foreach ($data as $key => $value) {
+                $reData['tatal_gold'] += $value['gold_num'];
+                $reData['tatal_silver'] += $value['silver'];
+            }
+            $reData['data'] = $data;
+
+            $message    = ['code' => 200, 'message' => '会员订单数据查询成功！!', 'redata' => $reData];
+        }else{
+            // 没有会员订单
+            $message    = ['code' => 403, 'message' => '暂无会员订单，赶紧去邀请吧!', 'redata' => $reData];
+        }
+
+        // echo '<pre>';
+        // print_r($message);
+        // 返回JSON格式数据
+        $this->ajaxReturn($message);
+
+    }
 }
+// Array
+// (
+//     [0] => Array
+//         (
+//             [nickname] => 快乐翱翔
+//             [g_price] => 500.00
+//             [gold_num] => 0
+//             [silver] => 1
+//             [addtime] => 1519442351
+//         )
 
+//     [1] => Array
+//         (
+//             [nickname] => 快乐翱翔
+//             [g_price] => 1000.00
+//             [gold_num] => 1
+//             [silver] => 2
+//             [addtime] => 1518259208
+//         )
 
+// )
+
+// Array
+// (
+//     [0] => Array
+//         (
+//             [id] => 255
+//             [nexus_user] => 96B1944669C
+//             [user_code] => 5BBED4D4B5F
+//             [order_id] => 815782408320460
+//             [gold_num] => 50000450
+//             [silver] => 903
+//             [current_gold_num] => 407
+//             [current_silver] => 1817
+//             [describe] => 自己购买，单号为[815782408320460]的商品获得金币奖励:0.72个,获得银币奖励：1.44个
+//             [type] => 0
+//             [status] => 9
+//             [addtime] => 1518242765
+//             [updatetime] => 1519608241
+//             [open_id] => fgs
+//             [office_code] => 653A61
+//             [vendora_code] => 
+//             [vendorb_code] => 
+//             [vendorc_code] => 
+//             [vendori_code] => 
+//             [invitation_code] => 67037D
+//             [code] => 96B1944669C
+//             [invite] => 0
+//             [ticket] => gQGy7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZVVUamtFMmJkOTAxRXpxQXhxMXgAAgTzFH1aAwQwhScA
+//             [parameter] => 27
+//             [ticket_time] => 1520736803
+//             [nickname] => 快乐翱翔
+//             [head] => http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUicB78UOvFu61ibbk8DRhmMnRK79oAKfibo9ficu1aVSzaFEjHoYD7oYHrRlw5K4S9zEnkL0TsfpvvibGf5cwURvpKVJ/132
+//             [sex] => 0
+//             [area] => 广东
+//             [address] => 中国 广东 广州
+//             [balance] => 0.00
+//             [original_grade] => 0
+//             [total_money] => 100.00
+//             [grade] => 3
+//             [uid] => 35
+//             [address_id] => 52
+//             [gid] => 
+//             [g_cost] => 380.00
+//             [g_price] => 500.00
+//             [g_num] => 1
+//             [g_type] => 2
+//             [mode] => 0
+//             [express] => 
+//         )
+
+//     [1] => Array
+//         (
+//             [id] => 279
+//             [nexus_user] => 96B1944669C
+//             [user_code] => 5BBED4D4B5F
+//             [order_id] => 764154273195985
+//             [gold_num] => 50000450
+//             [silver] => 903
+//             [current_gold_num] => 1301
+//             [current_silver] => 3
+//             [describe] => 自己购买，单号为[764154273195985]的商品获得金币奖励:1.44个,获得银币奖励：2.88个
+//             [type] => 0
+//             [status] => 9
+//             [addtime] => 1518259196
+//             [updatetime] => 1519608241
+//             [open_id] => fgs
+//             [office_code] => 653A61
+//             [vendora_code] => 
+//             [vendorb_code] => 
+//             [vendorc_code] => 
+//             [vendori_code] => 
+//             [invitation_code] => 67037D
+//             [code] => 96B1944669C
+//             [invite] => 0
+//             [ticket] => gQGy7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZVVUamtFMmJkOTAxRXpxQXhxMXgAAgTzFH1aAwQwhScA
+//             [parameter] => 27
+//             [ticket_time] => 1520736803
+//             [nickname] => 快乐翱翔
+//             [head] => http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUicB78UOvFu61ibbk8DRhmMnRK79oAKfibo9ficu1aVSzaFEjHoYD7oYHrRlw5K4S9zEnkL0TsfpvvibGf5cwURvpKVJ/132
+//             [sex] => 0
+//             [area] => 广东
+//             [address] => 中国 广东 广州
+//             [balance] => 0.00
+//             [original_grade] => 0
+//             [total_money] => 100.00
+//             [grade] => 3
+//             [uid] => 35
+//             [address_id] => 52
+//             [gid] => 
+//             [g_cost] => 760.00
+//             [g_price] => 1000.00
+//             [g_num] => 2
+//             [g_type] => 2
+//             [mode] => 0
+//             [express] => 
+//         )
+
+// )
