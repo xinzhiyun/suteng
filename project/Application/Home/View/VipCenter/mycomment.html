@@ -184,6 +184,7 @@
 </style>
 <body>
 	<div class="mycommentContain">
+
 		<!-- 第一类好评开始开始 -->
 		<!-- <div class="mycomItem-first clearfix">
 			<div class="itemgoodsTop">
@@ -261,6 +262,7 @@
 			</ul>
 		</div>
 	</div>
+	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<script>
 		var commetHTML = '';	//存放评论的数据
 		/*
@@ -273,15 +275,15 @@
 				console.log('成功！ ',res);
 				var picStr = '';	//存放图片的html
 				var picArr = [];	//存放评论图片的数组
-				var text_html = '';		//安装评价或非安装评论
+				var text_html = '';		//商品评价或安装评论
 				//模拟数据
 				res = [
-					{'pingjia':0,'path': ['comm_02.png','comm_02.png','comm_02.png'],'content':'宝贝很好~~~好喜欢好喜欢宝贝很好','addtime':'2017-12-11'},
-					{'pingjia':1,'path': ['comm_02.png','comm_02.png'],'content':'宝贝很不错，挺好的挺好的','addtime':'2017-12-12','xing1':'4','xing2':'5','xing3':'3'},
-					{'pingjia':0,'path': ['comm_02.png'],'content':'真的很不错，物有所值','addtime':'2017-12-13','xing1':'5','xing2':'4','xing3':'4'}
+					{'comment':0,'path': ['comm_02.png','comm_02.png','comm_02.png'],'content':'宝贝很好~~~好喜欢好喜欢宝贝很好','addtime':'2017-12-11'},
+					{'comment':1,'path': ['comm_02.png','comm_02.png'],'content':'宝贝很不错，挺好的挺好的','addtime':'2017-12-12','xing1':'4','xing2':'5','xing3':'3'},
+					{'comment':0,'path': ['comm_02.png'],'content':'真的很不错，物有所值','addtime':'2017-12-13','xing1':'5','xing2':'4','xing3':'4'}
 				];
 				for(var i=0; i<res.length; i++){
-					if(!res[i].pingjia){	//商品评论
+					if(!res[i].comment){	//商品评论
 						text_html = '<!-- 评论内容 -->'+
 							'<div class="itemgoodsBott">'+
 								'<p>'+ res[i].content +'</p>'+
@@ -334,16 +336,17 @@
 						picArr.push({'picHTML':picStr});
 					}
 				}
+				var commet;
 				// console.log('picArr: ',picArr)
 				// console.log('commetHTML: ',commetHTML)
-				if(commetHTML){
+				if(commet){
 					$(".mycommentContain").html(commetHTML);		//评价的内容
 					//遍历评价的图片
 					for(var i=0; i<picArr.length; i++){
 						$(".commpic").eq(i).children("ul").html(picArr[i].picHTML);			//评价的图片
 					}
 				}else{
-					$(".mycommentContain").html('您还没有已评论的记录');
+					$(".mycommentContain").html("<div style='width:100%;height:50vh;display:flex;justify-content:center;align-items:center;'>您还没有已评论的记录</div>");
 				}
 			},
 			error: function(res){
