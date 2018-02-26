@@ -42,6 +42,8 @@ class OrderController extends CommonController
             $arrList = M('shop_order')->where($showData)->select();
             // 未支付订单
             $waitpaylist = [];
+
+
             $i = 0;
             foreach ($arrList as $key => $value) {
                 // 订单编号
@@ -64,7 +66,7 @@ class OrderController extends CommonController
                                                     ->join('__GOODS__ g ON g.id = d.gid','LEFT')
                                                     ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
                                                     ->join('__PIC__ p ON g.id = p.gid','LEFT')
-                                                    ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.price'=>'price','d.num'=>'productnumber'))
+                                                    ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber'))
                                                     ->select();
                 $i++;
             }
