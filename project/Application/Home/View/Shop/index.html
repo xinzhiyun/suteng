@@ -303,11 +303,11 @@
 	
 			<div id="slider-wrap">
 			  <ul id="slider">
-			    <li><a goods_gid="{{$goodsList[0]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[0]['path']}}" /></a></li>
-			    <li><a goods_gid="{{$goodsList[1]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[1]['path']}}" /></a></li>
-			    <li><a goods_gid="{{$goodsList[2]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[2]['path']}}" /></a></li>
-			    <li><a goods_gid="{{$goodsList[3]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[3]['path']}}" /></a></li>
-			    <li><a goods_gid="{{$goodsList[4]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[4]['path']}}" /></a></li>		 
+			    <li><a class="pic" goods_gid="{{$goodsList[0]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[0]['path']}}" /></a></li>
+			    <li><a class="pic" goods_gid="{{$goodsList[1]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[1]['path']}}" /></a></li>
+			    <li><a class="pic" goods_gid="{{$goodsList[2]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[2]['path']}}" /></a></li>
+			    <li><a class="pic" goods_gid="{{$goodsList[3]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[3]['path']}}" /></a></li>
+			    <li><a class="pic" goods_gid="{{$goodsList[4]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[4]['path']}}" /></a></li>		 
 			  </ul>
 			  
 			   <!--controls-->
@@ -468,6 +468,11 @@
 				点击的时候记录当前点击的商品gid，传给商品详情页面
 			 */
 			$(".goodsBlock").on('click','.pic',function(){
+				// console.log($(this).attr("goods_gid"))
+				sessionStorage.setItem("goods_gid", $(this).attr("goods_gid"))
+			})
+
+			$("#slider").on('click','.pic',function(){
 				// console.log($(this).attr("goods_gid"))
 				sessionStorage.setItem("goods_gid", $(this).attr("goods_gid"))
 			})
