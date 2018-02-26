@@ -125,33 +125,46 @@
         <div class="memberFoot">
           <p><span>昵称</span><span>消费金额</span><span>奖励</span></p>
           <ul class="clearfix">
+            <!-- <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
+            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300银币</span><span>2017-12-252</span></li>
             <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
+            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300银币</span><span>2017-12-252</span></li>
+            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300银币</span><span>2017-12-252</span></li>
             <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
-            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
+            <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li> -->
+            
           </ul>
         </div>
        
     </div>
   </div>
+   <script>
+
+   // 注意：未明数据格式：金币和银币，故还没有判断，遍历了默认用了金币
+
+    // 数据遍历
+    $(function(){
+
+      var _date = [
+        {"name":"夏普","cost":"100","icon":"300","time":"2018-1-24"},
+        {"name":"夏歌","cost":"200","icon":"400","time":"2018-1-25"},
+        {"name":"夏抚","cost":"300","icon":"500","time":"2018-1-28"},
+        {"name":"夏雨","cost":"300","icon":"500","time":"2018-1-28"}   
+
+       ];
+      var liHtml='';
+      for(var i=0;i<_date.length;i++){
+
+        liHtml += '<li><span>'+_date[i].name+'</span><span>'+_date[i].cost+'</span><span>'+_date[i].icon+'金币</span><span>'+_date[i].time+'</span></li>';
+      }
+      $(".memberFoot>ul").html(liHtml);
+
+
+
+    })
+    
+    
+
+  </script>
 </body>
 </html>                                                                                                                                                                                                                                                                      
