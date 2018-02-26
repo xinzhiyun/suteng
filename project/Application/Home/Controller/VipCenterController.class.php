@@ -9,6 +9,7 @@ class VipCenterController extends CommonController
 	 */
     public function index()
     {
+
         // 准备查询条件
         $showUser['open_id'] = $_SESSION['open_id'];
         // // 执行查询
@@ -246,7 +247,19 @@ class VipCenterController extends CommonController
         $this->ajaxReturn($message);
     }
     
+    // 会员订单
+    public function user_order()
+    {
+        // 获取用户唯一标识
+        $uWhere['c.user_code'] = session('user.code');
+       $data = M('users_commission')
+            ->alias('c')
+            ->where($uWhere)
+            ->select();
 
+        echo '<pre>';
+        print_r($data);
+    }
 }
 
 
