@@ -157,24 +157,18 @@
 		</div>
 	</div>
 	<div class="appFoot">
-		<span><i class="iconfont icon-kuang1"></i>全选</span><input type="submit" value="确定">
+		<span><i class="iconfont icon-kuang1"></i>全选</span><input type="submit" value="确定" class="selected">
 	</div>
-
 	<script>
-		
 		// 选中框
 		$('.item>.appLeft>i').click(function(){
 			var _class=$(this).attr('class');
 			
 			if(_class=='iconfont icon-xuanze'){
 				$(this).removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-				
-
 			}else{
-				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
-			
+				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');	
 			}
-
 		})
 		// 全选事件
 		$('.appFoot>span>i').click(function(){
@@ -187,11 +181,12 @@
 			}else{
 				$(this).removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 				var _class=$('.item>.appLeft>i').attr('class');
-				$('.item>.appLeft>i').removeClass(_class).addClass('iconfont icon-kuang1');
-
-			}
-			
+				$('.item>.appLeft>i').removeClass(_class).addClass('iconfont icon-kuang1')
+			}	
 		})
+		$(".selected").click(function(){
+			window.location.href="{{:U('Home/Order/applicRefund')}}";
+		});
 	</script>
 </body>
 </html>                                                                                                                                                                                                                                                                      	 

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+  <meta charset="UTF-8">
+  <title>兑换记录</title>
+  <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+  <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+  <script src="__PUBLIC__/Home/js/public.js"></script>
+    <style>
+        
+        body{
+          font-size: .7rem;
+          color:#373737;
+        }
+        .memberTop{
+           width: 90%;
+           height: 2.8rem;
+           line-height: 2.8rem;
+           padding:3% 5%;
+           color:#fff;
+           background: linear-gradient(to right, #3B90E1, #76F5E4); 
+        }
+        .myMember{
+          width: 100%;
+          height: 100%;
+        }
+        .myMember h3{
+          font-size: 0.8rem;
+          
+          font-size: 0.72rem;
+          font-weight: 500;
+        }
+        .myMember h3 span{
+          margin-left: 0.2rem;
+          font-size: 0.68rem;
+        }
+        .memberFoot ul{
+          width: 100%;
+          
+        }
+        .memberFoot ul li{
+          font-size: 0.7rem;
+          width: 90%;
+          padding: 0 5%;
+          display: block;
+          height: 2rem;
+          line-height: 2rem;
+          border-bottom: 1px solid #F6F6F6;
+        }
+        .memberFoot>ul>li>span:first-child{
+          width: 50%;
+          display: inline-block;
+          text-align: center;
+          overflow: hidden!important;
+          white-space:nowrap;
+          text-overflow:ellipsis;
+          font-size: 0.68rem;
+        }
+        .memberFoot ul li span:last-child{
+          float: right;
+          font-size: 0.62rem;
+        }
+        .memberFoot ul li span.iconBig{
+          font-size: 0.6rem;
+          font-weight: 600;
+          letter-spacing: 0.02rem;
+        }
+        .memberFoot ul li span b{
+          margin-left: 0.26rem
+        }
+
+        /*会员订单没有相关记录*/
+        .nomemberFoot {
+          margin:8.0rem auto 0;
+          width: 40%;
+          height: 2rem;
+          line-height: 2rem;
+          text-align: center;
+        }
+    </style>
+</head>
+<body>
+  <div class="_member">
+    <div class="memberContainer">
+        <div class="memberTop">金币&银币兑换</div>
+        <div class="memberFoot">
+          <ul class="clearfix">
+         
+
+          </ul>
+        </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+  $(function(){
+    /**
+     * [unpaid_order 查询订单]
+     * @param  {[type]} status  参数: g_type 订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+        参数：status 订单状态：[0：已下单，1：已取消，2：待收货，3：已收货，4：退货处理中，5：已退货，6：申诉中，7：待评论，8：未支付，9：待发货]
+     * @return {[type]}         [description]
+     */
+    $.ajax({//3：已收货
+        url:"{{:U('Home/Order/order_list')}}",
+        data:{
+          "g_type":3,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+          "status":3
+        },
+        dataType:"json",
+        type: 'post',
+        success:function(res){
+            console.dir(res)
+            var htmllist='';
+            if(res.code == 200){
+                // 查询有数据
+                console.dir(res.data)
+                for(var i=0;i<res.data.length;i++){
+                    htmllist+='<li><span>'+res.data[i].productbrief+'</span><span>'+getMyDate(parseInt(res.data[i].ordertime))+'</span></li>'
+                }
+                $(".clearfix").html(htmllist);
+            }else{
+                $(".clearfix").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
+            }
+        }
+    });
+  });
+  </script>
+</body>
+</html>                                                                                                                                                                                                                                                                      
