@@ -485,7 +485,7 @@
 					console.log('连接',res)
 					//评论成功后跳转
 					if(res.code == 200){
-						location.href = "{{:U('Home/Comment/commentsucceed')}}";
+						location.href = "{{:U('Home/Order/index')}}";
 					}else{
 						layuiHint('评论失败,请稍后再试！')
 					}

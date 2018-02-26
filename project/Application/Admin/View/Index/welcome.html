@@ -357,11 +357,18 @@
 				console.log('错误 ',res)
 			}
 		})
-		//这里是假数据
-		// yAxis_data = [[11,23,50,36,2,6,45,11,9,17,22,52,31,48,87],[9,17,22,52,31,48,37,11,23,50,86,2,6,45]];
-		// series_data = [[11,23,50,36,2,6,45,11,23,50,86,2,6,45,88],[9,17,22,52,31,48,37,11,23,50,86,2,6,45]];
 		
 		if(series_data[0].length){
+
+			//收入 折线图显示
+	        income.setOption(getOption('金额','收入',yAxis_data[0],series_data[0], '收入'));
+			//新增设备 折线图显示
+	        newMoreDevice.setOption(getOption('设备数量','新增设备',yAxis_data[1],series_data[1], '新增数量'));
+		}else{
+			
+			//这里是没数据时显示0
+			yAxis_data = [[0],[0]];
+			series_data = [[0],[0]];
 
 			//收入 折线图显示
 	        income.setOption(getOption('金额','收入',yAxis_data[0],series_data[0], '收入'));
