@@ -1,9 +1,13 @@
 <?php
 namespace Api\Controller;
+use Think\Controller;
+use Think\Log;
 class TestController extends Controller
 {
+    // 执行定时器
     public function action()
     {
-        return 1;
+        // Log::write('计划任务','action');
+        file_put_contents('filename', 'data'."\n", FILE_APPEND);
     }
 }

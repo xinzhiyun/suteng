@@ -22,7 +22,11 @@ class DeviceController extends CommonController
         $map['ud.uid'] = session('user.id');
 
         $bind_device = $user_device->getBindInof($map); //where('uid='.session('user.id'))->select();
-        // dump($bind_device);die;
+        // 将当前设备的ID存到SESSION中
+        $where['status'] = 1;
+        $where['uid'] = session('user.id');
+        $cur_device = $user_device->where($where)->find();
+        session('device.did',$cur_device['did']);
         //分配数据        
         $this->assign('info',$signPackage);
         $this->assign('bindInfo',$bind_device);

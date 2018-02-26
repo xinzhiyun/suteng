@@ -65,7 +65,6 @@ class MallController extends CommonController
             'res' => json_encode($res),
             'data' => json_encode($data),
         ];
-        // dump($assign);die;
         $this->assign('data',$assign);
         $this->display();
     } 
