@@ -89,7 +89,8 @@ class WorkModel extends RelationModel
     {
          $data = $this
             ->relation(['Vendors','dwVendor'])
-            ->find($id);
+            ->where('id='.$id)
+            ->find();
         return $data;
     }
 
