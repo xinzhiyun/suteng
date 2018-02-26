@@ -132,6 +132,9 @@
       		font-size: 0.72rem;
       		font-weight: 500;
 		}
+		hgroup>span{
+			line-height: 4.5rem;
+		}
 		
 	</style>
 
@@ -263,7 +266,7 @@
 							html += '</div><div class="setRight"><div class="close1" name="one"><div class="close2" name="two"></div>';
 						}
 
-						html += '</div></div><div class="delBtn delete" alt="'+res.data[i].id+'"><input type="submit" value="删除"></div></div></hgroup>';	
+						html += '</div></div><div class="delBtn delete" alt="'+res.data[i].id+'"></div></div></hgroup>';	
 										
 		            }
 	            }
@@ -291,6 +294,11 @@
 
 	    }
 	});
+   	// 删除按钮
+	slipDel('._setTimecontain','hgroup','statenum');
+
+
+
 
 
 
