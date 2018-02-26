@@ -1013,6 +1013,7 @@
 				      		});
 				      	});
 			      	});
+
 			      	//点击支付
 			      	$(".payBtn").on("click",function(){
 			      		var _thisname = JSON.parse($(this).siblings().attr("name"));
@@ -1045,6 +1046,7 @@
 			      		});
 
 			      	});
+
                 }
             });
 
@@ -1226,7 +1228,7 @@
 									'<div>'+
 										'<div class="cancel">'+
 										'</div>'+
-										'<a href="javascript:;" class="pay commentBtn" name='+ waitcommentlist[i]['orderid'] +' >'+
+										'<a href="javascript:;" class="pay commentBtn" name='+ waitcommentlist[i]['orderid'] +' gid='+ waitcommentlist[i].productList[0].gid +'>'+
 											'<span>评&nbsp;价</span>'+
 										'</a>'+
 									'</div>'+
@@ -1241,6 +1243,7 @@
                         $("#dingdanDaipinglun").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
 						$('.waitassess').text(0);
                     }
+
                     //如果有本地评论数据则清除
                     if(sessionStorage.getItem("pinglunObj")){
                     	sessionStorage.setItem("pinglunObj","");
@@ -1251,6 +1254,7 @@
                     $('#dingdanDaipinglun').on('click',".commentBtn",function(){
                     	var pinglunObj = {};	//存储带评论的订单编号
                     	pinglunObj['order_id'] = $(this).attr("name");
+                    	pinglunObj['gid'] = $(this).attr("gid");
                     	pinglunObj['pic'] = $(this).parents(".goods").find('.giPicture>img').attr('src');
                     	//将点击的带评论商品数据存到本地存储中
                     	sessionStorage.setItem("pinglunObj",JSON.stringify(pinglunObj));
