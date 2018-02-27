@@ -6,7 +6,9 @@
     <link href="__PUBLIC__/Admin/css/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/switchery.min.css" rel="stylesheet">
 </block>
 <block name="content">
     <div class="wrapper wrapper-content animated fadeInRight">
@@ -105,6 +107,16 @@
                             <label class="col-sm-2 control-label">商品库存：</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="stock" placeholder="至少为1，不可负数">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">是否安装</label>
+                            <div class="col-md-2">
+                                <input type="checkbox" name="is_install" class="is_install" checked/>
+                            </div>
+                            <label class="col-sm-2 control-label">是否租赁</label>
+                            <div class="col-md-2">
+                                <input type="checkbox" name="is_hire" class="is_hire" checked/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -240,7 +252,9 @@
     <!-- SUMMERNOTE -->
     <script src="__PUBLIC__/Admin/js/plugins/summernote/summernote.min.js"></script>
     <script src="__PUBLIC__/Admin/js/plugins/summernote/summernote-zh-CN.js"></script>
-
+    <script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/switchery.min.js"></script>
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
     <script>
         function recheck(){
             $('.i-checks').iCheck({
@@ -260,6 +274,35 @@
             $("#form .iCheck-helper").on("click", function(e){
                 bindClick();
             });
+
+            // 按钮初始化
+            var elem = document.querySelector('.is_install');
+            var init = new Switchery(elem);
+            defaults = {
+                color             : '#64bd63', 
+                secondaryColor    : '#dfdfdf', 
+                jackColor         : '#fff', 
+                jackSecondaryColor: null, 
+                className         : 'switchery', 
+                disabled          : false, 
+                disabledOpacity   : 0.5, 
+                speed             : '0.1s', 
+                size              : 'default'
+            }
+
+            var elem = document.querySelector('.is_hire');
+            var init = new Switchery(elem);
+            defaults = {
+                color             : '#64bd63', 
+                secondaryColor    : '#dfdfdf', 
+                jackColor         : '#fff', 
+                jackSecondaryColor: null, 
+                className         : 'switchery', 
+                disabled          : false, 
+                disabledOpacity   : 0.5, 
+                speed             : '0.1s', 
+                size              : 'default'
+            }
 
         });
         function bindClick(){

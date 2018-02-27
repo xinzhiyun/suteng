@@ -10,4 +10,11 @@ class TestController extends Controller
         // Log::write('计划任务','action');
         file_put_contents('filename', 'data'."\n", FILE_APPEND);
     }
+
+    // redis连接
+    public function connectRedis()
+    {
+        $redis = new \Redis();
+        dump($redis);die;
+    }
 }

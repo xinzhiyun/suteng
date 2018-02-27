@@ -181,6 +181,16 @@ class ShopController extends CommonController
             $goodsDetail['gid'] = $goods_status;
             $goodsDetail['cost'] = $data['cost'];
             $goodsDetail['stock'] = $data['stock'];
+            if($data['is_install'] == 'on'){
+                $goodsDetail['is_install'] = 1;
+            } else {
+                $goodsDetail['is_install'] = 0;
+            }
+            if($data['is_hire'] == 'on'){
+                $goodsDetail['is_hire'] = 1;
+            } else {
+                $goodsDetail['is_hire'] = 0;
+            }
             if(!$goods_detail->create($goodsDetail)) E($goods_detail->getError(),408);
             // 商品详情添加
             $goodsDetail_status = $goods_detail->add($goodsDetail);

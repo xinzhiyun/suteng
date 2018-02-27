@@ -63,6 +63,12 @@
                                     库存
                                 </th>
                                 <th>
+                                    是否安装
+                                </th>
+                                <th>
+                                    是否租赁
+                                </th>
+                                <th>
                                     状态
                                 </th>
                                 <th>
@@ -109,6 +115,18 @@
                                         </td>
                                         <td>
                                             {{$v['stock']}}
+                                        </td>
+                                        <td>
+                                            <switch name="v.is_install">
+                                                <case value="0">否</case>
+                                                <case value="1">是</case>
+                                            </switch>
+                                        </td>
+                                        <td>
+                                            <switch name="v.is_hire">
+                                                <case value="0">否</case>
+                                                <case value="1">是</case>
+                                            </switch>
                                         </td>
                                         <td>
                                             <switch name="v.status">
