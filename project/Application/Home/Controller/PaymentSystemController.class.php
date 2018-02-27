@@ -18,7 +18,8 @@ class PaymentSystemController extends CommonController
         if($silverData){
             // 如果兑换套餐存在，查询用户金币
             $showUser['id'] = session('user.id');
-            $user = M('users')->where($showUser)->find();
+            $userDB = M('users');
+            $user = $userDB->where($showUser)->find();
             if($user){
                 // 判断用户是否有足够金币兑换
                 if($user['gold_num'] > $silverData['gold']){
@@ -27,12 +28,24 @@ class PaymentSystemController extends CommonController
                     $saveData['gold_num'] = $user['gold_num'] - $silverData['gold'];
                     // 用户当前银币等于当前银币+兑换的银币
                     $saveData['silver'] = $user['silver'] + $silverData['silver_num'];
+                    $userDB->startTrans();
+                    $res = $userDB->where($showUser)->save($saveData);
 
-                    $res = M('users')->where($showUser)->save($saveData);
+                    // 写记录
+                    $addData['user_id']     = session('user.id');
+                    $addData['gold_num']    = $silverData['gold'];       
+                    $addData['silver_num']  = $silverData['silver_num']; 
+                    $addData['content']     = $silverData['content'];
+                    $addData['status']      = 0;
+                    $addData['updatetime']  = $addData['addtime'] = time();
+                    
+                    $exchangeRes = M('exchange_record')->add($addData);
 
-                    if($res){
+                    if($res && $exchangeRes){
+                        $userDB->commit();
                         $message    = ['code' => 200, 'message' => '银币兑换兑换成功!'];
                     }else{
+                        $userDB->rollback();
                         $message    = ['code' => 403, 'message' => '银币兑换失败请重试!'];
                     }
 
