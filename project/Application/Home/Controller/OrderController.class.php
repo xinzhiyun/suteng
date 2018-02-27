@@ -54,6 +54,11 @@ class OrderController extends CommonController
                 $waitpaylist[$i]['totalprice']  = $value['g_price'];
                 // 订单快递费
                 $waitpaylist[$i]['postage']     = mt_rand(5,22);
+                // 快递名称
+                $waitpaylist[$i]['express_name']     = $value['express_name'];
+                // 快递名称
+                $waitpaylist[$i]['express']     = $value['express'];
+
 
                 // 订单详情表
                 $dWhere = array('d.order_id'=>$value['order_id']);
@@ -130,6 +135,10 @@ class OrderController extends CommonController
         }
     }
 
+    public function editOrder()
+    {
+        
+    }
 
 
     /**
