@@ -773,7 +773,7 @@
 						'</div>'+
 						'<div class="hidBott">'+
 							'<div class="hidbotttxt">'+
-								'<a href="#">'+
+								'<a class="writeOrder">'+
 									'<p>我已寄件</p>'+
 									'<p>点击填写物流单号</p>'+
 								'</a>'+
@@ -782,6 +782,9 @@
 					'</div>';
 		}
 		$(".returned2").html(returned2);
+		$(".writeOrder").click(function(){
+			// window.location.href="{{:U('Home/order/')}}";
+		});
 		for(var i=0;i<returneddata3.length;i++){//退货过程3
 			returned3+='<p>信息更新时间：'+ returneddata3[i]['updatetime'] +'</p>'+
 					'<div class="shangpingnei clearfix">'+
@@ -1090,7 +1093,7 @@
 									'</div>'+
 									'<div>'+
 										'<div class="cancel">'+
-											'<span>已付款</span>'+
+											'<span class="waitRejected">退货</span>'+
 										'</div>'+
 										'<div class="pay start2">'+
 											'<span>提醒发货</span>'+
@@ -1102,6 +1105,9 @@
 						}
 						$("#dingdanDaifahuo").html(dingdanDaifahuo1);
 						$(".waitsend").html(waitsendlist.length);//代发货条数
+						$(".waitRejected").click(function(){
+							window.location.href="{{:U('Home/Order/choiceRefund')}}";
+						});
 						// 提醒发货
 						$(".start2").click(function(){
 							$(".modal").addClass("in").css({'position':'absolute','z-index':'1001'});
@@ -1159,7 +1165,7 @@
 									'</div>'+
 									'<div>'+
 										'<div class="cancel">'+
-											'<span>退货</span>'+
+											'<span class="Rejected">退货</span>'+
 										'</div>'+
 										'<div class="pay start3" name='+ waitgainlist[i]['orderid'] +' >'+
 											'<span>确认收货</span>'+
@@ -1171,6 +1177,10 @@
 						}
 						$("#dingdanDaishouhuo").html(dingdanDaishouhuo1);
 						$(".waitharvest").html(waitgainlist.length);
+						//退货
+						$(".Rejected").click(function(){
+							window.location.href="{{:U('Home/Order/choiceRefund')}}"
+						});
                     }else{
                         // 查询无数据提示
                         $("#dingdanDaishouhuo").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
