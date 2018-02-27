@@ -86,6 +86,12 @@
           text-overflow:ellipsis;
           font-size: 0.68rem;
         }
+         .memberFoot ul>span{
+          display: block;
+          width:100%;
+          text-align: center;
+          line-height: 40vh;
+         }
         .memberFoot ul li span:last-child{
           float: right;
           font-size: 0.62rem;
@@ -117,8 +123,8 @@
            <div class="myMember">
              <h3>我的会员订单：<span>26</span></h3>
              <div class="iconMember clearfix">
-                <span><p>累计：</p><b>金币<em>402</em></b></span>
-                <span class="spanRight"><b>银币<em>402</em></b></span>
+                <span><p>累计：</p><b>金币<em id="gold">402</em></b></span>
+                <span class="spanRight"><b>银币<em id="silver">402</em></b></span>
              </div>
            </div>
         </div>
@@ -132,6 +138,7 @@
             <li><span>丹丹阿飞辅导费</span><span>300</span><span>300银币</span><span>2017-12-252</span></li>
             <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li>
             <li><span>丹丹阿飞辅导费</span><span>300</span><span>300金币</span><span>2017-12-252</span></li> -->
+            <!-- <span>暂无会员订单</span> -->
             
           </ul>
         </div>
@@ -143,27 +150,71 @@
    // 注意：未明数据格式：金币和银币，故还没有判断，遍历了默认用了金币
 
     // 数据遍历
-    $(function(){
+    // $(function(){
 
-      var _date = [
-        {"name":"夏普","cost":"100","icon":"300","time":"2018-1-24"},
-        {"name":"夏歌","cost":"200","icon":"400","time":"2018-1-25"},
-        {"name":"夏抚","cost":"300","icon":"500","time":"2018-1-28"},
-        {"name":"夏雨","cost":"300","icon":"500","time":"2018-1-28"}   
+    //   var _date = [
+    //     {"name":"夏普","cost":"100","icon":"300","time":"2018-1-24"},
+    //     {"name":"夏歌","cost":"200","icon":"400","time":"2018-1-25"},
+    //     {"name":"夏抚","cost":"300","icon":"500","time":"2018-1-28"},
+    //     {"name":"夏雨","cost":"300","icon":"500","time":"2018-1-28"}   
 
-       ];
-      var liHtml='';
-      for(var i=0;i<_date.length;i++){
+    //    ];
+    //   var liHtml='';
+    //   for(var i=0;i<_date.length;i++){
 
-        liHtml += '<li><span>'+_date[i].name+'</span><span>'+_date[i].cost+'</span><span>'+_date[i].icon+'金币</span><span>'+_date[i].time+'</span></li>';
-      }
-      $(".memberFoot>ul").html(liHtml);
+    //     liHtml += '<li><span>'+_date[i].name+'</span><span>'+_date[i].cost+'</span><span>'+_date[i].icon+'金币</span><span>'+_date[i].time+'</span></li>';
+    //   }
+    //   $(".memberFoot>ul").html(liHtml);
 
 
 
-    })
-    
-    
+    // })
+
+
+    $.ajax({
+        url:"{{:U('Home/VipCenter/user_order')}}",
+        dataType:"json",
+        type: 'post',
+        success:function(res){
+            if(res.code == 200){
+
+                // 有数据
+                $('.myMember>h3>span').text(res.redata.tatal_num);
+                $('#gold').text(res.redata.tatal_gold);
+                $('#silver').text(res.redata.tatal_silver);
+                var _date = res.redata.data;
+                var liHtml='';
+                for(var i=0;i<_date.length;i++){
+                  if(_date[i].gold_num>0){
+                    liHtml += '<li><span>'+_date[i].nickname+'</span><span>'+_date[i].g_price+'</span><span>'+_date[i].gold_num+'金币</span><span>'+timetrans((_date[i].addtime-0))+'</span></li>';
+                  }
+                  if(_date[i].silver>0){
+                    liHtml += '<li><span>'+_date[i].nickname+'</span><span>'+_date[i].g_price+'</span><span>'+_date[i].silver+'银币</span><span>'+timetrans((_date[i].addtime-0))+'</span></li>';
+                  }
+                  
+                }
+
+                $(".memberFoot>ul").html(liHtml);
+
+            }else{
+                // 无数据
+                $(".memberFoot>ul").html('<span>暂无会员订单！</span>');
+            }
+        }
+    });
+
+  // 格式化日期时间
+  function timetrans(date){
+      var date = new Date(date*1000);//如果date为13位不需要乘1000
+      var Y = date.getFullYear() + '-';
+      var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+      var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+      var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+      var m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+      var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
+      //return Y+M+D+h+m+s;
+      return Y+M+D;
+  }
 
   </script>
 </body>

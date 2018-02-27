@@ -232,9 +232,10 @@
 	            // swal(res.msg,res.msg, "success");
 	            var html = '';
 	            if(res.data.length){
+	            	//console.dir(res.data);
 		            for (var i = res.data.length - 1; i >= 0; i--) {
 		            	
-						html += '<hgroup><div class="hgContain .clearfix"><div class="setLeft .clearfix"><p><span  class="sLeft">';
+						html += '<hgroup alt="'+res.data[i].id+'""><div class="hgContain .clearfix"><div class="setLeft .clearfix"><p><span  class="sLeft">';
 
 						 switch (res.data[i].type) {
 						     case '0':
@@ -296,9 +297,74 @@
 	});
    	// 删除按钮
 	slipDel('._setTimecontain','hgroup','statenum');
-	$('._setTimecontain').on('click',function(){
-		console.dir(1);
+	$('._setTimecontain').on('click','.del',function(e){
+		// console.dir($(this).parent());
+		// $(this).parent().remove();
+		var id = $(this).parent('hgroup').attr('alt');
+		var _this = $(this);
+		//console.dir(id);
+        $.ajax({
+            url:"{{:U('Home/Task/del')}}",
+            dataType:"json",
+            data:{'id':id},
+            type: 'post',
+            success:function(res){
+                if(res.code == 200){
+                    // 有数据，数据格式查看 26 行
+                    $(_this).parent('hgroup').remove();
+                }else{
+                    // 无数据，数据格式查看 32 行
+                    swal('删除失败',res.message, "error");
+                }
+            }
+        });
 	});
+	
+	// var id= 
+	  // $.ajax({
+   //              url:"{{:U('Home/Task/del')}}",
+   //              dataType:"json",
+   //              data:{'id':id},
+   //              type: 'post',
+   //              success:function(res){
+
+   //                  if(res.code == 200){
+
+   //                     $('._setTimecontain').on('click','.del',function(e){
+
+			// 			// console.dir($(this).parent());
+						
+			// 			$(this).parent().remove();
+
+			// 			// "message":"\u5220\u9664\u6210\u529f!",  
+			// 			console.dir(res);  
+
+			// 		   });
+
+   // //                  }else{
+
+   //                      // 无数据，数据格式查看 32 行
+   //                      // "code":403,                                                                                  
+   //             			// "message":"\u5220\u9664\u5931\u8d25\uff0c\u8bf7\u6307\u5b9a\u5220\u9664\u6761\u4ef6!"    
+
+   //                  }
+   //              }
+   //          });
+
+            // 成功，返回数据格式：
+            // {
+            //     "code":200,                                                                        
+            //     "message":"\u5220\u9664\u6210\u529f!",                                              
+            // }
+
+            // 失败，返回数据格式：
+            // {
+            //     "code":403,                                                                                  
+            //     "message":"\u5220\u9664\u5931\u8d25\uff0c\u8bf7\u6307\u5b9a\u5220\u9664\u6761\u4ef6!"             
+            // }
+
+
+
 
 
 
