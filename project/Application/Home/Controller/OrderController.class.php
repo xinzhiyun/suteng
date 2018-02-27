@@ -42,8 +42,6 @@ class OrderController extends CommonController
             $arrList = M('shop_order')->where($showData)->select();
             // 未支付订单
             $waitpaylist = [];
-
-
             $i = 0;
             foreach ($arrList as $key => $value) {
                 // 订单编号
@@ -84,6 +82,25 @@ class OrderController extends CommonController
         }
 
 
+    }
+
+    public function exchange_record()
+    {
+        // 用户ID
+        $showData['user_id'] = session('user.id');
+        // 启用状态
+        $showData['status']  = 0;
+        // 查询用户兑换记录
+        $data = M('exchange_record')->where($showData)->select();
+    
+        if($data){
+            $message    = ['code' => 200, 'message' => '兑换记录查询成功!' , 'data' => $data];
+        }else{
+            $message    = ['code' => 403, 'message' => '暂无兑换记录!'];
+        }
+
+        // 返回JSON格式数据
+        $this->ajaxReturn($message); 
     }
 
     /**
@@ -194,6 +211,8 @@ class OrderController extends CommonController
     {
         $this->display();
     }
+
+    
 }   
 
 
