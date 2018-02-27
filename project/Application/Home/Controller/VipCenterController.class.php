@@ -26,9 +26,22 @@ class VipCenterController extends CommonController
             $comData['gold_num'] += $value['gold_num'];
             $comData['silver'] += $value['silver'];
         }
+
+        $code = session('user.code');
+        // 获取用户唯一标识
+        $uWhere['c.user_code'] = array('EQ',$code);
+        $uWhere['c.nexus_user'] = array('NEQ',$code);
+    
+        $orderNum = 0;
+        $orderData = M('users_commission')
+            ->alias('c')
+            ->where($uWhere)->field('c.id')
+            ->select();
+        $orderNum = count($orderData);
         // 分配数据
         $this->assign('user',$user);
         $this->assign('comData',$comData);
+        $this->assign('orderNum',$orderNum);
         // dump($user);
         // 显示模板
  		$this->display();

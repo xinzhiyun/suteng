@@ -133,7 +133,7 @@
                 //console.dir(res.message) 
                 var htmllist = '';
                 for(var i=0;i<res.data.length;i++){
-                    htmllist+='<li><span>'+res.data[i].content+'</span><span>'+getMyDate(parseInt(res.data[i].addtime)).substr(0,10)+'</span></li>'
+                    htmllist+='<li><span>'+res.data[i].content+'</span><span>'+timetrans(parseInt(res.data[i].addtime))+'</span></li>'
                 }
                 $(".clearfix").html(htmllist);
             }else{
@@ -141,7 +141,20 @@
                 $(".clearfix").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
             }
         }
-    })
+    });
+
+  // 格式化日期时间
+  function timetrans(date){
+      var date = new Date(date*1000);//如果date为13位不需要乘1000
+      var Y = date.getFullYear() + '-';
+      var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+      var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+      var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+      var m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+      var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
+      //return Y+M+D+h+m+s;
+      return Y+M+D;
+  }
   </script>
 </body>
 </html>                                                                                                                                                                                                                                                                      
