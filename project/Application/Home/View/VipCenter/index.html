@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+	<link rel="stylesheet" href="//at.alicdn.com/t/font_574708_lrbbkvcwhcjo47vi.css">
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
     <script src="__PUBLIC__/Home/js/public.js"></script>
 	<title>会员中心</title>
@@ -17,11 +18,13 @@
 		body {
 			font-size: .7rem;
 			color: #373737;
+			overflow-x: hidden;
 		}
 		#header {
 			width: 100vw;
-			height: 24vh;
+			height: 26vh;
 			display: flex;
+			position: relative;
 			color: #fff;
 			background: -webkit-radial-gradient(top left, #99FCEF 35%, #5B97EF);
 		}
@@ -43,6 +46,7 @@
 		}
 		#header>#hRight {
 			flex: 2;
+			height: 84%;
 		}
 		#qrCode_share {
 			width: 100%;
@@ -70,6 +74,47 @@
 			margin-left: 2%;
 			margin-top: -0.25rem;
 			font-size: 0.72rem;
+		}
+		/*站内信*/
+		#msg {
+			position: absolute;
+			width: 94%;
+			height: 1rem;
+			display: flex;
+			align-items: center;
+			padding: 0 2%;
+			bottom: 0;
+			left: 4px;
+			color: #BD032B;
+			overflow: hidden;
+		}
+		.icon-laba {
+			width: 1rem;
+			height: 1rem;
+			display: inline-block;
+			margin-right: 10px;
+			color: #BD032B;
+			font-size: 1rem;
+		}
+		#msg>div {
+			height: 100%;
+    		width: 90%;
+			display: inline-block;
+			position: relative;
+		}
+		#msgDiv {
+			width: 100%;
+			position: absolute;
+			top: 0;
+			overflow: hidden;
+			/*transition: ease .5s;
+    		transform: translateY(-0%);*/
+		}
+		#msgDiv>p {
+			height: 100%;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
 		}
 		#content {
 			width: 100vw;
@@ -322,6 +367,9 @@
 			border-radius: 4px;
 			background: #2EB6AA;
 		}
+		.icon-msgcenter {
+			color: #028760;
+		}
 	</style>
 </head>
 <body>
@@ -339,6 +387,14 @@
 				<div>
 					<p><i class="iconfont icon-tubiao207"></i>金币{{$user['gold_num']}}个</p>
 					<p><i class="iconfont icon-tubiao207-copy"></i>银币{{$user['silver']}}个</p>
+				</div>
+			</div>
+		</div>
+		<div id="msg">
+			<i class="iconfont icon-laba"></i>
+			<div>
+				<div id="msgDiv">
+					<!-- <p>哈哈哈有系统消息</p> -->
 				</div>
 			</div>
 		</div>
@@ -417,6 +473,13 @@
 					<i class="iconfont icon-dayuhao-copy-copy"></i>
 				</a>
 			</div>
+			<div id="msgcenter">
+				<a href="{{:U('Home/Mail/msgcenter')}}">
+					<i class="iconfont icon-msgcenter"></i>
+					<p>站内信</p>
+					<i class="iconfont icon-dayuhao-copy-copy"></i>
+				</a>
+			</div>
 		</div>
 	</div>
 	<div id="myCode">
@@ -425,6 +488,44 @@
 	</div>
 	<canvas id="canvas" style="display: none"></canvas>
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
+	<script>
+		/*
+			站内信
+		 */
+		var len;	//存放公告条数
+		var num = 1;	//公告轮播记录
+		var msgHTML = '';	//公告信息
+		var offset;		//轮播长度
+		var msgInfo = ['家里的看法回归到理发店付过款','是对付款优惠哎呦','还不开始接电话方式肯定会','规划局肯定是有覅uyy','金欧莱艾萨我不坑人家航空今日白天热卡特让他截图截图'];
+		for(var i=0; i<msgInfo.length; i++){
+			msgHTML += '<p>'+ msgInfo[i] +'</p>'
+		}
+		$('#msgDiv').html(msgHTML);
+		if($('#msgDiv').find('p')){
+			len = $('#msgDiv').find('p').length;
+			
+			// 公告轮播
+			setInterval(function(){
+				msgGo();
+			},2000);
+		}
+		function msgGo(){
+			offset = (100/len)*100/100;
+			$("#msgDiv").css({
+				transition: 'ease .5s',
+				transform: 'translateY(-'+ offset*num +'%)'
+			})
+			// console.log(num*offset);
+			if(num*offset >= (100-offset)){
+				num = 0;
+				// $("#msgDiv").css({transition: 'none'})
+			}else{
+				num++;
+				// $("#msgDiv").css({transition: 'ease .5s'})
+			}
+		}
+		
+	</script>
 	<script>
 
 		//微信接口

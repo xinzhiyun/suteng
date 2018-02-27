@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<link rel="stylesheet" href="//at.alicdn.com/t/font_574708_lrbbkvcwhcjo47vi.css">
+	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+    <script src="__PUBLIC__/Home/js/public.js"></script>
+	<title>站内消息</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		} 
+		body {
+			width: 100vw;
+			height: 100vh;
+			font-size: .7rem;
+			color: #373737;
+			overflow-x: hidden;
+			background: #F3F3F3;
+		}
+		#newMsg,
+		#oldMsg {
+			background: #fff;
+			margin-bottom: 2vh;
+		}
+		#newMsg>div:nth-of-type(1),
+		#oldMsg>div:nth-of-type(1) {
+			width: 100%;
+			display: flex;
+			align-items: center;
+			padding: 4% 2%;
+		}
+		#newMsg>div>i,
+		#oldMsg>div>i {
+			width: 8%;
+			text-align: center;
+		}
+		#newMsg>div>p,
+		#oldMsg>div>p {
+			width: 84%;
+			position: relative;
+			padding-left: 2%;
+		} 
+		/*消息列表*/
+		.msgList>div {
+			display: flex;
+			align-items: flex-start;
+			flex-wrap: nowrap;
+			padding: 4% 2%;
+			border-top: 1px solid #eee;
+		}
+		.msgList>div>p {
+			padding-left: 2%;
+		}
+		/*数量*/
+		.num {
+			position: absolute;
+			right: 5%;
+		}
+		.icon-weiduxiaoxi {
+			color: #F50D29;
+			font-size: 1rem;
+		}
+		#newMsg .icon-xiaoxi {
+			color: #ED7C89;
+			font-size: 1rem;
+		}
+		#oldMsg .icon-xiaoxi {
+			color: #57C4A4;
+			font-size: 1rem;
+		}
+		.icon-yiduxiaoxi {
+			color: #028760;
+			font-size: 1rem;
+		}
+		.del {
+			position: absolute;
+			width: 2rem;
+			height: 100%;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			top:0;
+			right: -2rem;
+			color:#fff;
+			background: #D3520C;
+		}
+	</style>
+</head>
+<body>
+	<div id="newMsg">
+		<div>
+			<i class="iconfont icon-weiduxiaoxi"></i>
+			<p>未读消息<span class="num">0</span></p>
+			<i class="iconfont icon-down"></i>
+		</div>
+		<!-- 列表放这里 -->
+		<div class="msgList">
+			<!-- <div>
+				<i class="iconfont icon-xiaoxi"></i>
+				<p>未读消息第三方缸发动机了</p>
+			</div> -->
+		</div>
+	</div>
+	<div id="oldMsg">
+		<div>
+			<i class="iconfont icon-yiduxiaoxi"></i>
+			<p>已读消息<span class="num">0</span></p>
+			<i class="iconfont icon-down"></i>
+		</div>
+		<!-- 列表放这里 -->
+		<div class="msgList">
+			<!-- <div>
+				<i class="iconfont icon-xiaoxi"></i>
+				<p>未读消息第三方缸发动机了</p>
+			</div> -->
+		</div>
+	</div>
+	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
+	<script>
+		/*
+			请求公告数据
+			ststus: 2代表未读，3代表已读，4代表回收
+		 */
+		$.ajax({
+			url: '{{:U("Mail/get_mail")}}',
+			type: 'post',
+			async: false,
+			success: function(res){
+				console.log('连接成功! ',res);
+				var newHTML = '';		//未读消息
+				var oldHTML = '';		//已读消息
+				var newnum = 0, oldnum = 0;
+				//获取数据成功
+				if(res.code == 200){
+					for(var i=0; i<res.data.length; i++){
+						if(res.data[i].status == 2){	//未读消息
+							console.log('未读消息',res.data[i]);
+							newHTML += '<div index="'+ newnum +'" mid="'+ res.data[i].id +'">'+
+									'<i class="iconfont icon-xiaoxi"></i>'+
+									'<p>'+ res.data[i].content +'</p>'+
+								'</div>';
+							newnum++;
+						}else if(res.data[i].status == 3){
+							console.log('已读消息',res.data[i]);
+							oldHTML += '<div index="'+ oldnum +'" mid="'+ res.data[i].id +'">'+
+									'<i class="iconfont icon-xiaoxi"></i>'+
+									'<p>'+ res.data[i].content +'</p>'+
+								'</div>';
+							oldnum++;
+						}else{}
+					}
+					// console.log(newHTML, oldHTML);
+					$('#newMsg .msgList').html(newHTML)
+					$('#oldMsg .msgList').html(oldHTML)
+				}else{
+					layuiHint('暂无消息！');
+				}
+			},
+			error: function(res){
+				console.log('连接失败! ',res);
+				layuiHint('系统遇到位置问题，请稍后再试！');
+			}
+		})
+		/*
+			获取站内信未读条数
+		 */
+		$.ajax({
+			url: '{{:U("Mail/count_mail")}}',
+			type: 'post',
+			async: false,
+			success: function(res){
+				console.log(res)
+				if(res.code == 200){
+					$(".num").eq(0).text(res.num);
+				}
+			},
+			error: function(res){}
+		})
+		$("#newMsg").click(function(){})
+		/*
+			删除信息
+		 */
+		$('.msgList').on('click','.del',function(){
+			var delElem = $(this).parent()[0];
+			var mid = $(this).parent()[0].getAttribute('mid');
+			console.log($(this).parent()[0], mid);
+			layer.confirm('确认删除？删除后无法恢复！', 
+	            {
+	              btn: ['确定','取消'] //按钮
+	            }, 
+	            function(){
+		            // 发送ajax让后台删除这条地址在数据库的数据
+		            $.ajax({
+		            	url: '{{:U("Mail/del_mail")}}',
+		            	type: 'post',
+		            	data: {'id': address_id},
+		            	success: function(res){
+		            		console.log('成功！', res)
+		            		//后台返回参数确认删除成功
+		            		if(res.code == 200){
+		            			delElem.remove();
+		            			layHint('删除成功！');
+		            		}else{
+		            			layHint('删除失败！');
+		            		}
+		            	},
+		            	error: function(res){
+		            		console.log('失败！', res)
+		            		layHint('删除失败！');
+		            	}
+		            })
+		            return true;
+	            },
+	            function(){
+	                layer.msg('已取消！', {icon: 1});
+	                return false;
+	            }
+	        );
+			
+		})
+		var obj = $('.msgList>div');
+		var index;
+		for(var i=0; i<obj.length; i++){	//存储当前选择的元素 this 
+			obj[i].addEventListener("touchstart", function(e) {
+			    // 判断默认行为是否可以被禁用
+			    if (e.cancelable) {
+			        // 判断默认行为是否已经被禁用
+			        if (!e.defaultPrevented) {
+			            //e.preventDefault();
+			        }
+			    }   
+			    console.log(this.parentNode.childrenNodes(index))
+			    index = this.getAttribute("index");
+			    console.log('index: ', index)
+			})
+		}
+		console.log($('.msgList>div').attr("index"))
+		slideDel($('.msgList'), $('.msgList>div'));
+		/*
+			滑动删除
+		 */
+		function slideDel(parent, obj){
+			var startX, startY, moveEndX, moveEndY;
+			parent.on("touchstart", obj, function(e) {
+			    // 判断默认行为是否可以被禁用
+			    if (e.cancelable) {
+			        // 判断默认行为是否已经被禁用
+			        if (!e.defaultPrevented) {
+			            //e.preventDefault();
+			        }
+			    }   
+			    startX = e.originalEvent.changedTouches[0].pageX;
+			    startY = e.originalEvent.changedTouches[0].pageY;
+			});
+			parent.on("touchend", obj, function(e) {         
+			    // 判断默认行为是否可以被禁用
+			    if (e.cancelable) {
+			        // 判断默认行为是否已经被禁用
+			        if (!e.defaultPrevented) {
+			            //e.preventDefault();
+			        }
+			    }               
+			    moveEndX = e.originalEvent.changedTouches[0].pageX;
+			    moveEndY = e.originalEvent.changedTouches[0].pageY;
+			    var X = moveEndX - startX;
+			    var Y = moveEndY - startY;
+			    // console.dir(this)
+			    $(this).css({'position': 'relative','overflow': 'hidden'});
+			    // 右滑
+			    if ( X > 0 ) {
+			        $(this).find(obj).eq(index).css({'position': 'relative','left':'0px'});
+			        $(this).find(obj).eq(index).children("span").remove();
+			    }
+			    // 左滑
+			    else if ( X < 0 ) {
+			    	// var parentHeight=$(this).parent().attr('height');
+			    	// console.dir(parentHeight);
+			    	// line-height: 4rem;	字体居中给obj>span{line-height:X}
+			        $(this).find(obj).eq(index).css({'position': 'relative','left':'-2rem'});
+			        $(this).find(obj).eq(index).append("<span class='del'>删除</span>");
+			    }
+			});
+		}
+	</script>
+</body>
+</html>
