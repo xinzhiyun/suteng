@@ -155,15 +155,16 @@
 						}else{}
 					}
 					// console.log(newHTML, oldHTML);
-					$('#newMsg .msgList').html(newHTML)
-					$('#oldMsg .msgList').html(oldHTML)
+					$('#newMsg .msgList').html(newHTML);
+					$('#oldMsg .msgList').html(oldHTML);
+					$(".num").eq(1).text($('#oldMsg .msgList>div').length);
 				}else{
-					layuiHint('暂无消息！');
+					parent.layer.msg('暂无消息！');
 				}
 			},
 			error: function(res){
 				console.log('连接失败! ',res);
-				layuiHint('系统遇到位置问题，请稍后再试！');
+				parent.layer.msg('系统遇到位置问题，请稍后再试！');
 			}
 		})
 		/*
@@ -188,7 +189,8 @@
 		$('.msgList').on('click','.del',function(){
 			var delElem = $(this).parent()[0];
 			var mid = $(this).parent()[0].getAttribute('mid');
-			console.log($(this).parent()[0], mid);
+			// console.log($(this).parent()[0], mid);
+		    console.log($('#newMsg .msgList>div').length)
 			layer.confirm('确认删除？删除后无法恢复！', 
 	            {
 	              btn: ['确定','取消'] //按钮
@@ -198,20 +200,22 @@
 		            $.ajax({
 		            	url: '{{:U("Mail/del_mail")}}',
 		            	type: 'post',
-		            	data: {'id': address_id},
+		            	data: {'id': mid},
 		            	success: function(res){
 		            		console.log('成功！', res)
 		            		//后台返回参数确认删除成功
 		            		if(res.code == 200){
-		            			delElem.remove();
-		            			layHint('删除成功！');
+		            			parent.layer.msg('删除成功！');
+		            			setTimeout(function(){
+		            				location.href = location.href;
+		            			},500)
 		            		}else{
-		            			layHint('删除失败！');
+		            			parent.layer.msg('删除失败！');
 		            		}
 		            	},
 		            	error: function(res){
 		            		console.log('失败！', res)
-		            		layHint('删除失败！');
+		            		parent.layer.msg('删除失败！');
 		            	}
 		            })
 		            return true;
@@ -234,7 +238,7 @@
 			            //e.preventDefault();
 			        }
 			    }   
-			    console.log(this.parentNode.childrenNodes(index))
+			    console.log(this.parentNode)
 			    index = this.getAttribute("index");
 			    console.log('index: ', index)
 			})
