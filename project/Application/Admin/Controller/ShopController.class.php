@@ -423,4 +423,40 @@ class ShopController extends CommonController
         }
     }
 
+    // 添加商品描述
+    public function addDesc()
+    {
+        $map['id'] = I('get.gid');
+        $goodsName = M('Goods')->where($map)->find();
+        $content = M('GoodsDetail')->where('gid='.$map['id'])->find();
+        $assign = [
+            'goodsName' => $goodsName['name'],
+            'content' => $content['desc'],
+            'gid' => $map['id'],
+        ];
+        $this->assign($assign);
+        $this->display();
+    }
+
+    // 商品描述数据处理
+    public function addDescAction()
+    {
+        try {
+            $desc = I('post.desc');
+            $data['desc'] = $desc;
+            $gid = I('post.gid');
+            $res = M('GoodsDetail')->where('gid='.$gid)->save($data);
+            if($res){
+                E('OK',200);
+            } else {
+                E('请重新编辑',603);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
 }

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>添加商品描述</title>
+    <link href="__PUBLIC__/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>添加<span style="color:red;">{{$goodsName}}</span>商品描述</h5>
+                        <button id="edit" class="btn btn-primary btn-xs m-l-sm" onclick="edit()" type="button">
+                            编辑
+                        </button>
+                        <button id="save" class="btn btn-primary  btn-xs" onclick="save()" type="button">
+                            预览
+                        </button>
+                        <button id="submit" gid="{{$gid}}" class="btn btn-primary btn-xs" onclick="submit(this)" type="button">
+                            提交
+                        </button>
+                    </div>
+                    <div class="ibox-content" id="eg">
+
+                        <div class="click2edit wrapper">{{$content|html_entity_decode}}</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- 全局js -->
+    <script src="__PUBLIC__/Admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/Admin/js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- SUMMERNOTE -->
+    <script src="__PUBLIC__/Admin/js/plugins/summernote/summernote.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/plugins/summernote/summernote-zh-CN.js"></script>
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('.summernote').summernote({
+                lang: 'zh-CN'
+            });
+
+        });
+        var edit = function () {
+            $("#eg").addClass("no-padding");
+            $('.click2edit').summernote({
+                lang: 'zh-CN',
+                focus: true
+            });
+        };
+        var save = function () {
+            $("#eg").removeClass("no-padding");
+            var aHTML = $('.click2edit').code(); //save HTML If you need(aHTML: array).
+            $('.click2edit').destroy();
+        };
+        var submit = function (obj) {
+            $("#eg").removeClass("no-padding");
+            var aHTML = $('.click2edit').code();
+            var gid = $(obj).attr('gid');
+            $.ajax({
+                url:'addDescAction',
+                type:'post',
+                data:{'desc':aHTML,'gid':gid},
+                success:function(res){
+
+                }
+            });
+        };
+    </script>
+
+</body>
+</html>

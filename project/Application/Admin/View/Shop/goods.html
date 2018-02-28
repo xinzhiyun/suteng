@@ -51,9 +51,6 @@
                                     图片
                                 </th>
                                 <th>
-                                    描述
-                                </th>
-                                <th>
                                     规格
                                 </th>
                                 <th>
@@ -106,8 +103,6 @@
                                             </empty>
                                         </td>
                                         <td>
-                                        </td>
-                                        <td>
                                             {{$v['attr']}}
                                         </td>
                                         <td>
@@ -148,6 +143,9 @@
                                             <div class="btn-group">
                                                 <a id="del" class="btn btn-outline btn-success deletBnt" goodsName="{{$v['name']}}" goodsId="{{$v['gid']}}">
                                                     删除
+                                                </a>
+                                                <a href="addDesc?gid={{$v['gid']}}" class="btn btn-outline btn-success">
+                                                    商品描述
                                                 </a>
                                             </div>
                                         </td>
@@ -330,5 +328,6 @@
                 }
             });
         });
+
     </script>
 </block>
