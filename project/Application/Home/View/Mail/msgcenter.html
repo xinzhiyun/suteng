@@ -34,7 +34,7 @@
 			display: flex;
 			align-items: center;
 			padding: 4% 2%;
-			z-index: 999;
+			z-index: 100;
 		}
 		#newMsg>div>i,
 		#oldMsg>div>i {
@@ -78,14 +78,28 @@
 			}
 		}
 		.msgList>div {
+			position: relative;
 			display: flex;
-			align-items: flex-start;
+			align-items: center;
 			flex-wrap: nowrap;
 			padding: 4% 2%;
 			border-top: 1px solid #eee;
+			transition: .3s ease;
 		}
 		.msgList>div>p {
 			padding-left: 2%;
+		}
+		.msgList>div>p:nth-of-type(1) {
+			width: 86%;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			font-size: .6rem;
+		}
+		.msgList>div>p:nth-of-type(2) {
+			text-align: center;
+			font-size: 14px;
+			white-space: nowrap;
 		}
 		/*数量*/
 		.num {
@@ -115,10 +129,46 @@
 			display: inline-flex;
 			align-items: center;
 			justify-content: center;
-			top:0;
+			top: 0;
 			right: -2rem;
-			color:#fff;
+			color: #fff;
 			background: #FA4343;
+			transition: .2s ease;
+		}
+		/*已读*/
+		.read {
+			padding-right: 10%;
+			color: green;
+		}
+		#showMsg {
+			width: 100%;
+			height: 100%;
+			display: none;
+			background: rgba(0,0,0, .5);
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 999;
+		}
+		#showMsg>div {
+			width: 90%;
+			/*height: 50%;*/
+			position: relative;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			border-radius: 4px;
+			background: #f9f9f9;
+			box-shadow: 1px 3px 10px rgba(0,0,0, .2);
+		}
+		#showMsg>div>h2 {
+			padding: 3% 2%;
+			text-align: center;
+			background: #eee;
+		}
+
+		#showMsg>div>div {
+			padding: 5% 10%;
 		}
 	</style>
 </head>
@@ -151,10 +201,17 @@
 			</div> -->
 		</div>
 	</div>
+	<!-- 这个空标签用来 点击读取显示消息内容 -->
+	<div id="showMsg">
+		<div>
+			<h2></h2>
+			<div></div>
+		</div>
+	</div>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script>
 		/*
-			请求公告数据
+			请求站内信息数据
 			ststus: 2代表未读，3代表已读，4代表回收
 		 */
 		$.ajax({
@@ -173,14 +230,18 @@
 							console.log('未读消息',res.data[i]);
 							newHTML += '<div class="msgitem" index="'+ newnum +'" mid="'+ res.data[i].id +'">'+
 									'<i class="iconfont icon-xiaoxi"></i>'+
-									'<p>'+ res.data[i].content +'</p>'+
+									'<p text="'+ res.data[i].content +'" title="'+ res.data[i].title +'">'+ res.data[i].title +'</p>'+
+									'<p text="'+ res.data[i].content +'" title="'+ res.data[i].title +'"><span class="read"></span>查看详情</p>'+
+									'<span class="del">删除</span>'+
 								'</div>';
 							newnum++;
 						}else if(res.data[i].status == 3){
 							console.log('已读消息',res.data[i]);
 							oldHTML += '<div class="msgitem" index="'+ oldnum +'" mid="'+ res.data[i].id +'">'+
 									'<i class="iconfont icon-xiaoxi"></i>'+
-									'<p>'+ res.data[i].content +'</p>'+
+									'<p text="'+ res.data[i].content +'" title="'+ res.data[i].title +'">'+ res.data[i].title +'</p>'+
+									'<p text="'+ res.data[i].content +'" title="'+ res.data[i].title +'">查看详情</p>'+
+									'<span class="del">删除</span>'+
 								'</div>';
 							oldnum++;
 						}else{}
@@ -231,11 +292,11 @@
 			.siblings('.msgDiv').find('.msgPar')[0]
 			.childNodes[5].getAttribute('class');
 
-			console.log('msgClickNum: ',msgClickNum)
-			console.log(other)
-			console.log(other_up)
+			// console.log('msgClickNum: ',msgClickNum)
+			// console.log(other)
+			// console.log(other_up)
 			if(other_up.indexOf('up') > -1){
-				console.log('dhnfskldf')
+				// console.log('dhnfskldf')
 				other.style.display = 'none';
 				_this.parent()
 				.siblings('.msgDiv').find('.msgPar')[0]
@@ -278,13 +339,69 @@
 			}
 		}
 		/*
+			点击查看 未读消息
+		 */
+		$('.msgList').on('click','.msgitem>p',function(){
+			var _this = $(this);
+			var title = $(this).attr('title');
+			var msgInfo = $(this).attr('text');
+			var mid = $(this).parents('.msgitem')[0].getAttribute('mid');
+			// console.log(msgInfo,mid);
+			$('#showMsg').fadeIn('fast');
+			$('#showMsg>div>h2').html(title);
+			$('#showMsg>div>div').html(msgInfo);
+			console.log($(this).parents('#newMsg'))
+			if($(this).parents('#newMsg').length){
+
+				// 标记当前已读消息的未读记录
+				$(this).parents('.msgitem').find('.read').text('已读');
+				$(this).parents('.msgitem')[0].style.background = '#f9f9f9';
+			}
+			
+			// console.log($(this).parents('.msgList'))
+			/*
+				发送当前消息 id，
+				告诉后台更改当前消息状态
+			 */
+			$.ajax({
+				url: '{{:U("Mail/reading_mail")}}',
+				type: 'post',
+				data: {id: mid},
+				success: function(res){
+					console.log('请求成功！', res);
+				},
+				error: function(res){
+					console.log('请求失败！', res);
+				}
+			})
+		})
+		// 隐藏查看未读消息面板
+		$('#showMsg').click(function(){
+			$('#showMsg').fadeOut('slow');
+		})
+		/*
 			删除信息
 		 */
 		$('.msgList').on('click','.del',function(){
 			var delElem = $(this).parent()[0];
+		  	var index;	//判断未读还是已读
+			//消息 id
 			var mid = $(this).parent()[0].getAttribute('mid');
+			//未读消息条数
+			var num = $(this).parents('.msgList').find('.msgitem').length;	
 			// console.log($(this).parent()[0], mid);
-		    console.log($('#newMsg .msgList>div').length)
+		    // console.log($('#newMsg .msgList>div').length)
+		    var par = $(this).parents('.msgList').find('.msgitem');
+		    var _thisElem = $(this).parents('.msgitem');
+
+			if($(this).parents('#newMsg')){
+		   		index = 0;
+		   	}else if($(this).parents('#oldMsg')){
+		   		index = 1;
+		   	}
+		   		
+		    console.log('num: ',num);
+		    console.log('index: ',index);
 			layer.confirm('确认删除？删除后无法恢复！', 
 	            {
 	              btn: ['确定','取消'] //按钮
@@ -300,9 +417,11 @@
 		            		//后台返回参数确认删除成功
 		            		if(res.code == 200){
 		            			parent.layer.msg('删除成功！');
-		            			setTimeout(function(){
-		            				location.href = location.href;
-		            			},500)
+		            			//删除当前元素
+		    					_thisElem.remove();
+	    						$(".num").eq(index).text(num-1);
+								console.log(num-1)
+								
 		            		}else{
 		            			parent.layer.msg('删除失败！');
 		            		}
@@ -322,7 +441,6 @@
 			
 		})
 		var obj = $('.msgList>div');
-		var index;
 		for(var i=0; i<obj.length; i++){	//存储当前选择的元素 this 
 			obj[i].addEventListener("touchstart", function(e) {
 			    // 判断默认行为是否可以被禁用
@@ -332,8 +450,12 @@
 			            //e.preventDefault();
 			        }
 			    }   
-			    // console.log(this.parentNode)
-			    index = this.getAttribute("index");
+			    
+			    var par = $(this).parents('.msgList').find('.msgitem');
+			    var _thisElem = $(this);
+			    //获取当前元素是父元素的第几个儿子
+			    index = par.index(_thisElem);
+			    // console.log(par, _thisElem)
 			    // console.log('index: ', index)
 			})
 		}
@@ -368,19 +490,16 @@
 			    var X = moveEndX - startX;
 			    var Y = moveEndY - startY;
 			    // console.dir(this)
-			    $(this).css({'position': 'relative','overflow': 'hidden'});
 			    // 右滑
-			    if ( X > 0 ) {
-			        $(this).find(obj).eq(index).css({'position': 'relative','left':'0px'});
-			        $(this).find(obj).eq(index).children("span").remove();
+			    if ( X > 10 ) {
+			        $(this).find(obj).eq(index).css({'transform':'translateX(0)'});
 			    }
 			    // 左滑
-			    else if ( X < 0 ) {
+			    else if ( X < -10 ) {
 			    	// var parentHeight=$(this).parent().attr('height');
 			    	// console.dir(parentHeight);
 			    	// line-height: 4rem;	字体居中给obj>span{line-height:X}
-			        $(this).find(obj).eq(index).css({'position': 'relative','left':'-2rem'});
-			        $(this).find(obj).eq(index).append("<span class='del'>删除</span>");
+			        $(this).find(obj).eq(index).css({'transform':'translateX(-2rem)'});
 			    }
 			});
 		}
