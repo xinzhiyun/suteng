@@ -279,6 +279,7 @@
 	</style>
 </head>
 <body>
+
 	<input type="hidden" value='{{$cate}}' id="_cate">
 	<input type='hidden' value='{{$goods}}' id='_goods'>
 	<input type="hidden" value='{{$cartInfo}}' id="cartInfo">
@@ -296,6 +297,7 @@
 				<input type="text" placeholder="请输入您想买的东西" ><i class="iconfont icon-msnui-find-bold"></i>
 			</label><i class="iconfont  icon-gouwuche"></i><span>1</span>
 		</div>
+
 		<!-- 轮播图 -->
 		<div id="wrapper">
 	
@@ -404,6 +406,7 @@
 				遍历商品
 			 */
 			var _goods;
+			console.log(typeof JSON.parse($("#_goods").val()));
 			if($("#_goods").val() != 'null'){
 				//有数据
 				_goods = JSON.parse($("#_goods").val());
@@ -538,18 +541,19 @@
 		})
 
 		// 轮播
-		myFocus.set({
-			id:'myFocus',//ID
-			pattern:'mF_fancy',//风格
-			time:3,
-			height:180,
-			// width:600,
-		});
+		// myFocus.set({
+		// 	id:'myFocus',//ID
+		// 	pattern:'mF_fancy',//风格
+		// 	time:3,
+		// 	height:180,
+		// 	// width:600,
+		// });
 		// $('.pic>ul>li>a>img').css('width','94vw');
 		$("#line").width = $(".tab").width;
 
 	</script>
 <!-- 	<script src="__PUBLIC__/Home/js/jquery.min.js"></script> -->
 	<script type="text/javascript" src="__PUBLIC__/Home/js/slide.js"></script>
+
 </body>
 </html>
