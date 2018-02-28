@@ -220,6 +220,10 @@ class OrderController extends CommonController
     {
         $this->display();
     }
+    //填写物流单号页面
+    public function expressOrder(){
+        $this->display();
+    }
 
     
 }   
