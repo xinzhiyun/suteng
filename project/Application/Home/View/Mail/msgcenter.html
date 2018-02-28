@@ -26,6 +26,7 @@
 		#oldMsg {
 			background: #fff;
 			margin-bottom: 2vh;
+			border-bottom: 1px solid #eee;
 		}
 		#newMsg>div:nth-of-type(1),
 		#oldMsg>div:nth-of-type(1) {
@@ -33,6 +34,7 @@
 			display: flex;
 			align-items: center;
 			padding: 4% 2%;
+			z-index: 999;
 		}
 		#newMsg>div>i,
 		#oldMsg>div>i {
@@ -46,6 +48,35 @@
 			padding-left: 2%;
 		} 
 		/*消息列表*/
+		.msgList {
+			display: none;
+			transition: .2s ease;
+			z-index: 998;
+			overflow: hidden;
+		}
+
+		.down {
+			animation: msgdown .3s ease;
+		}
+		.up {
+			animation: msgup .3s ease;
+		}
+		@keyframes msgdown {
+			from {
+				transform: translateY(-60%);
+			}
+			to {
+				transform: translateY(0%);
+			}
+		}
+		@keyframes msgup {
+			from {
+				transform: translateY(0%);
+			}
+			to {
+				transform: translateY(-100%);
+			}
+		}
 		.msgList>div {
 			display: flex;
 			align-items: flex-start;
@@ -87,13 +118,13 @@
 			top:0;
 			right: -2rem;
 			color:#fff;
-			background: #D3520C;
+			background: #FA4343;
 		}
 	</style>
 </head>
 <body>
-	<div id="newMsg">
-		<div>
+	<div id="newMsg" class="msgDiv">
+		<div class="msgPar">
 			<i class="iconfont icon-weiduxiaoxi"></i>
 			<p>未读消息<span class="num">0</span></p>
 			<i class="iconfont icon-down"></i>
@@ -106,8 +137,8 @@
 			</div> -->
 		</div>
 	</div>
-	<div id="oldMsg">
-		<div>
+	<div id="oldMsg" class="msgDiv">
+		<div class="msgPar">
 			<i class="iconfont icon-yiduxiaoxi"></i>
 			<p>已读消息<span class="num">0</span></p>
 			<i class="iconfont icon-down"></i>
@@ -140,14 +171,14 @@
 					for(var i=0; i<res.data.length; i++){
 						if(res.data[i].status == 2){	//未读消息
 							console.log('未读消息',res.data[i]);
-							newHTML += '<div index="'+ newnum +'" mid="'+ res.data[i].id +'">'+
+							newHTML += '<div class="msgitem" index="'+ newnum +'" mid="'+ res.data[i].id +'">'+
 									'<i class="iconfont icon-xiaoxi"></i>'+
 									'<p>'+ res.data[i].content +'</p>'+
 								'</div>';
 							newnum++;
 						}else if(res.data[i].status == 3){
 							console.log('已读消息',res.data[i]);
-							oldHTML += '<div index="'+ oldnum +'" mid="'+ res.data[i].id +'">'+
+							oldHTML += '<div class="msgitem" index="'+ oldnum +'" mid="'+ res.data[i].id +'">'+
 									'<i class="iconfont icon-xiaoxi"></i>'+
 									'<p>'+ res.data[i].content +'</p>'+
 								'</div>';
@@ -155,8 +186,8 @@
 						}else{}
 					}
 					// console.log(newHTML, oldHTML);
-					$('#newMsg .msgList').html(newHTML);
-					$('#oldMsg .msgList').html(oldHTML);
+					$('#newMsg .msgList').html(newHTML);	//未读消息
+					$('#oldMsg .msgList').html(oldHTML);	//已读消息
 					$(".num").eq(1).text($('#oldMsg .msgList>div').length);
 				}else{
 					parent.layer.msg('暂无消息！');
@@ -182,7 +213,70 @@
 			},
 			error: function(res){}
 		})
-		$("#newMsg").click(function(){})
+		var msgClickNum = 0;	//判断消息的开关状态
+		/*
+			打开消息列表，关闭消息列表
+		 */
+		$(".msgPar").on('click',function(){
+			showMsg($(this));
+		})
+		showMsg($(".msgPar").eq(0));
+		function showMsg(_this){
+			// var _this = $(this);
+			var msgList = _this.siblings('.msgList');
+			var div = _this.siblings('.msgList')[0].childNodes;
+			var other = _this.parent().siblings('.msgDiv')
+			.find('.msgList')[0];
+			var other_up = _this.parent()
+			.siblings('.msgDiv').find('.msgPar')[0]
+			.childNodes[5].getAttribute('class');
+
+			console.log('msgClickNum: ',msgClickNum)
+			console.log(other)
+			console.log(other_up)
+			if(other_up.indexOf('up') > -1){
+				console.log('dhnfskldf')
+				other.style.display = 'none';
+				_this.parent()
+				.siblings('.msgDiv').find('.msgPar')[0]
+				.childNodes[5].setAttribute('class', 'iconfont icon-down');
+
+				msgList.show();
+				for(var i=0; i<div.length; i++){
+					
+					// console.log(div[i].getAttribute('class'))
+					div[i].setAttribute('class', 'msgitem down');
+				}
+				msgClickNum = 0;
+			}
+			if(msgClickNum == 0){
+				msgList.show();
+				for(var i=0; i<div.length; i++){
+					
+					// console.log(div[i].getAttribute('class'))
+					div[i].setAttribute('class', 'msgitem down');
+				}
+				msgClickNum = 1;
+				//更改箭头方向
+				_this.find('.icon-down')
+				.attr('class','iconfont icon-up');
+
+			}else if(msgClickNum == 1){
+				
+				for(var i=0; i<div.length; i++){
+
+					div[i].setAttribute('class', 'msgitem up');
+				}
+				setTimeout(function(){
+					msgList.hide();
+				},100)
+				msgClickNum = 0;
+				//更改箭头方向
+				_this.find('.icon-up')
+				.attr('class','iconfont icon-down');
+
+			}
+		}
 		/*
 			删除信息
 		 */
@@ -238,12 +332,12 @@
 			            //e.preventDefault();
 			        }
 			    }   
-			    console.log(this.parentNode)
+			    // console.log(this.parentNode)
 			    index = this.getAttribute("index");
-			    console.log('index: ', index)
+			    // console.log('index: ', index)
 			})
 		}
-		console.log($('.msgList>div').attr("index"))
+		// console.log($('.msgList>div').attr("index"))
 		slideDel($('.msgList'), $('.msgList>div'));
 		/*
 			滑动删除
