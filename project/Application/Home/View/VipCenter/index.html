@@ -490,38 +490,52 @@
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script>
 		/*
-			站内信
+			公告信息
 		 */
 		var len;	//存放公告条数
 		var num = 1;	//公告轮播记录
 		var msgHTML = '';	//公告信息
 		var offset;		//轮播长度
-		var msgInfo = ['家里的看法回归到理发店付过款','是对付款优惠哎呦','还不开始接电话方式肯定会','规划局肯定是有覅uyy','金欧莱艾萨我不坑人家航空今日白天热卡特让他截图截图'];
-		for(var i=0; i<msgInfo.length; i++){
-			msgHTML += '<p>'+ msgInfo[i] +'</p>'
-		}
-		$('#msgDiv').html(msgHTML);
-		if($('#msgDiv').find('p')){
-			len = $('#msgDiv').find('p').length;
-			
-			// 公告轮播
-			setInterval(function(){
-				msgGo();
-			},2000);
-		}
+		$.ajax({
+			url: '{{:U("Mail/get_announcement")}}',
+			type: 'post',
+			success: function(res){
+				console.log('连接成功! ',res)
+
+				for(var i=0; i<res.data.length; i++){
+					msgHTML += '<p>'+ res.data[i].content +'</p>'
+				}
+				$('#msgDiv').html(msgHTML+'<p>'+ res.data[0].content +'</p>');
+				if($('#msgDiv').find('p')){
+					len = $('#msgDiv').find('p').length;
+					if(len > 1){
+						// 公告轮播
+						setInterval(function(){
+							msgGo();
+						},2000);
+					}
+				}
+			},
+			error: function(res){
+				console.log('连接失败! ',res)
+			}
+		})
+		//	公告轮播函数
 		function msgGo(){
 			offset = (100/len)*100/100;
 			$("#msgDiv").css({
-				transition: 'ease .5s',
 				transform: 'translateY(-'+ offset*num +'%)'
 			})
 			// console.log(num*offset);
 			if(num*offset >= (100-offset)){
 				num = 0;
-				// $("#msgDiv").css({transition: 'none'})
+				setTimeout(function(){
+					$("#msgDiv").css({transition: 'none'})
+				},2000)
+				
 			}else{
 				num++;
-				// $("#msgDiv").css({transition: 'ease .5s'})
+				$("#msgDiv").css({transition: 'ease .5s'})
 			}
 		}
 		
