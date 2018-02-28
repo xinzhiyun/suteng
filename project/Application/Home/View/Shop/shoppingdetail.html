@@ -360,6 +360,7 @@
 		// 从本地sessionStorage中获取从商城首页点击的商品唯一id
 		var goods_gid = sessionStorage.getItem("goods_gid");
 		console.log(goods_gid)
+		var desc;
 		// ajax发送商品id查询商品详情
 		$.ajax({
 			url: '{{:U("Shop/goods_detail")}}',
@@ -369,7 +370,7 @@
 				console.log('成功！ ',res);
 				goodsDetail = res.goodsDetail[0];
 				var goodsDetail_html = '', commentInfo_html = '';
-				goodsDetail.desc = !goodsDetail.desc ? '商品暂无描述' : goodsDetail.desc;
+				desc = !goodsDetail.desc ? '商品暂无描述' : goodsDetail.desc;
 				goodsDetail.attr = !goodsDetail.attr ? '' : goodsDetail.attr;
 				// 输出商品详情
 				goodsDetail_html = '<div class="detailpic">'+
@@ -378,7 +379,7 @@
 					'<!-- /*商品说明*/ -->'+
 					'<div class="detailTxt">'+
 						'<span><b>￥'+ goodsDetail.price +'</b><em>已售： 210</em></span>'+
-						'<p>'+ goodsDetail.desc +'</p>'+
+						'<p></p>'+
 						'<em>'+ goodsDetail.attr +'</em>'+
 					'</div>'+
 					'<!-- /*商品选择，数量，邮费*/ -->'+
@@ -434,11 +435,19 @@
 					$('.detailItem:nth-child(1)').css('display','block');
 					$('.detailItem:nth-child(2)').css('display','block');
 				}
+				$(".detailTxt p").html(escape2Html(desc));
 			},
 			error: function(res){
 				console.log('失败！ ',res)
 			}
 		})
+		//处理后台传过来的转义字符
+		var escape2Html = function(str) {   
+			 var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};   
+			 return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,i){
+			 	return arrEntities[i];
+			 });   
+		}; 
 		var price;
 		/*
 			 按加'+'号
