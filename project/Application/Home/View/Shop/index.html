@@ -73,7 +73,7 @@
 			top: 0;
 			left: 3vw;
 			margin-bottom: -1vh;
-			transition: left .2s ease-in;
+			transition: left .3s linear;
     		border-radius: 10px;
     		background: #2eb6aa;
 		}
@@ -552,12 +552,21 @@
 
 				$("#line").css({left: $(this)[0].offsetLeft+$(this)[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
 				// $(this).parents('#header')[0].scrollLeft = $(this)[0].offsetLeft;
-				for(var i=0; i<$(this)[0].offsetLeft; i++){
-					if(i<$(this)[0].offsetLeft){
-						//顶部分类左移
-						_this.parents('#header')[0].scrollLeft = i - $(this)[0].offsetLeft/2;
+				// for(var i=0; i<$(this)[0].offsetLeft; i++){
+				var len = 10;
+				//顶部分类移动
+				var int = setInterval(function(){
+					_this.parents('#header')[0]
+						.scrollLeft = _this[0].offsetLeft/2;
+					
+					len += 6;
+						console.log(len, _this[0].offsetLeft)
+					if(len >= _this[0].offsetLeft-1){
+						len = 0;
+						clearInterval(int);
 					}
-				}
+				},1)
+				// }
 				// console.log($(this)[0].offsetLeft)
 			});
 			// console.log($('.tab')[0].offsetLeft+$('.tab')[0].clientWidth-$("#line")[0].clientWidth/2)
