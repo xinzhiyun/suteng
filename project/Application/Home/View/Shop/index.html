@@ -468,7 +468,7 @@
 
 								_htmlArr[i] += 
 									'<li>'+
-										'<a class="pic" goods_gid="'+_goods[j].gid+'" href="{{:U('Shop/shoppingdetail')}}">'+
+										'<a class="pic" goods_gid="'+_goods[j].gid+'" href="javasctipt:;">'+
 											'<img src="/Uploads/'+_goods[j].path+'" alt="正在加载中...">'+
 											'<p class="name">'+ _goods[j].name +'</p>'+
 											'<b class="price">¥'+ _goods[j].price +'</b><span class="iconfont "></span>'+
@@ -520,7 +520,12 @@
 			 */
 			$(".goodsBlock").on('click','.pic',function(){
 				// console.log($(this).attr("goods_gid"))
-				sessionStorage.setItem("goods_gid", $(this).attr("goods_gid"))
+				sessionStorage.setItem("goods_gid", $(this).attr("goods_gid"));
+				// 将当前商品id拼接到地址URL
+				$(this).attr("href", "{{:U('Shop/shoppingdetail')}}?gid=" + $(this).attr("goods_gid"));
+				// console.log($(this).attr('href'));
+				// 跳转到商品详情页面
+				location.href = $(this).attr('href');
 			})
 
 			$("#slider").on('click','.pic',function(){
