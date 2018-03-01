@@ -515,7 +515,7 @@
 				$(this).css('color','#373737').css('font-weight','400');
 
 				$("#content")
-				.animate({left: '-'+ $(this).attr("index") +'00vw'});
+				.css({transition: '.5s ease',transform: 'translateX(-'+ $(this).attr("index") +'00vw)'});
 
 				$("#line").css({left: $(this)[0].offsetLeft+$(this)[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
 				// $(this).parents('#header')[0].scrollLeft = $(this)[0].offsetLeft;
