@@ -61,7 +61,7 @@
 		    font-weight: 400!important;
 		}
 		#header>span:nth-child(1){
-			color:#373737;
+			color: #373737;
 		}
 	
 		/*顶部标题下面的线*/
@@ -114,7 +114,9 @@
     		border-radius: 0.266667rem;
     		position: relative;
 		}
-		.search>label>i {
+		.search>label>i {    
+			height: 100%;
+    		display: inline-block;
    			font-size: 0.9rem;
        }
 		.search>i {
@@ -128,8 +130,8 @@
 		}
 		/*购物车*/
 		.cartnum {
-			width: 40px;
-			height: 40px;
+			width: 1.6rem;
+			height: 1.6rem;
 		    position: absolute;
 		    right: 0;
 		    top: 0;
@@ -193,6 +195,21 @@
 		    line-height: 0.8rem;
 		    color: #FFF;
 		}
+		#searchPanel {
+			position: absolute;
+			width: 104%;
+			display: none;
+			padding: 1% 2%;
+			left: 50%;
+			transform: translateX(-50%);
+			border-radius: 4px;
+			background: #fff;
+			box-shadow: 0 1px 8px rgba(0,0,0,.3);
+			z-index: 999;
+		}
+		#searchPanel>a {
+			margin: 4px 0;
+		}
 		/*<!-- 轮播图 -->*/
 		#slider-wrap{
 			width: 90vw;
@@ -204,15 +221,12 @@
 		#slider>li>a{
 			display: block;
 			width: 100%;
-
-
 		}
 		#slider>li>a>img{
 			width: 90vw;
 			height: 180px;
 		}
 
-	
 		/*所有商品*/
 		.goodstitle>h3{
 			text-align: center;
@@ -261,13 +275,15 @@
 		    color: #373737;
 		}
 		.allgoods>ul>li>i{
-			font-size: 1rem;
-		    color: #ff3232;
-		    /* position: relative; */
-		    /* right: -83%; */
-		    /* bottom: 0%; */
-		    float: right;
+			position: absolute;
+			width: 2rem;
+		    height: 1.2rem;
+		    display: inline-block;
+    		right: 0;
 		    margin-top: -0.74rem;
+		    text-align: right;
+			font-size: 1rem;
+		    color: #ff3232;    
 		    z-index: 999;
 		}
 		.allgoods>ul>li>a>b{
@@ -317,8 +333,13 @@
 	<div class="shopTop clearfix">
 		<div class="search clearfix">
 			<label for="search-all">
-				<input type="text" placeholder="请输入您想买的东西" ><i class="iconfont icon-msnui-find-bold"></i>
+				<input type="text" placeholder="请输入您想买的东西" ><i class="searchBtn iconfont icon-msnui-find-bold"></i>
 			</label><i class="iconfont  icon-gouwuche"></i><span class="cartnum"><span></span></span>
+			<div id="searchPanel">
+				<!-- <p>见识到了官方十多个</p>
+				<p>见识到了官方十多个</p>
+				<p>见识到了官方十多个</p> -->
+			</div>
 		</div>
 
 		<!-- 轮播图 -->
@@ -386,6 +407,7 @@
 			var CategoryHTML = '', categoryArr = [];
 			var goodblockHTML = '';		//分栏商品模板
 			var _htmlArr = [];	//存放对应分类数据的数组
+			var searchArr = [];		//存放搜索用数据
 			// 获取商品分类
 			var _cate;
 			if($("#_cate").val()){
@@ -436,9 +458,14 @@
 				if(_cate){
 					for(var i=0;i<_cate.length; i++){
 						_htmlArr[[i]] = '';		//使用前先初始化
+						searchArr[[i]] = '';		//使用前先初始化
 						for(var j=0; j<_goods.length; j++){
 							if(_goods[j].cid == _cate[i].id){	//对应分类下有商品
 								// console.log(_goods[j].cid, _cate[i].id);
+								searchArr[i] += '<a href="{{:U('Shop/shoppingdetail')}}" goods_gid="'+_goods[j].gid+'">'+
+										'<p>'+ _goods[j].name +'</p>'+
+									'</a>';
+
 								_htmlArr[i] += 
 									'<li>'+
 										'<a class="pic" goods_gid="'+_goods[j].gid+'" href="{{:U('Shop/shoppingdetail')}}">'+
@@ -480,6 +507,7 @@
 			/*
 				如果第一页有内容则加载第一页
 			 */
+			console.log(_htmlArr)
 			if(_htmlArr[0]){
 				$(".allgoods>ul").eq(0).html(_htmlArr[0]);
 				// console.log($("#content>div").eq(0).attr("index"))
@@ -513,7 +541,7 @@
 				}
 				$('#header>span').css('color','#5A5A5A').css('font-weight','400');
 				$(this).css('color','#373737').css('font-weight','400');
-
+				//切换内容
 				$("#content")
 				.css({transition: '.5s ease',transform: 'translateX(-'+ $(this).attr("index") +'00vw)'});
 
@@ -521,11 +549,10 @@
 				// $(this).parents('#header')[0].scrollLeft = $(this)[0].offsetLeft;
 				for(var i=0; i<$(this)[0].offsetLeft; i++){
 					if(i<$(this)[0].offsetLeft){
-
+						//顶部分类左移
 						_this.parents('#header')[0].scrollLeft = i - $(this)[0].offsetLeft/2;
 					}
 				}
-				$(this).parents('#header').css({transition: '.5s ease'});
 				// console.log($(this)[0].offsetLeft)
 			});
 			// console.log($('.tab')[0].offsetLeft+$('.tab')[0].clientWidth-$("#line")[0].clientWidth/2)
@@ -540,19 +567,22 @@
 				// 获取商品id
 				var gid = $(this).siblings(".pic").attr("goods_gid");
 				console.log(gid);
-				 
+				//添加点击效果
 				$(this).addClass("numShow");
 				$(".cartnum>span").addClass("numShow");
 				setTimeout(function(){
+					//移除点击效果
 					_this.removeClass("numShow");
 					$(".cartnum>span").removeClass("numShow");
 				},500)
+				//告诉后台添加到数据库
 				$.ajax({
 					url: '{{:U("ShoppingCart/shopAdd")}}',
 					type: 'post',
 					data: {'gid': gid,'num': 1},
 					success: function(res){
 						console.log('成功！ ',res);
+						//更新购物车商品数量
 	       				$(".cartnum>span").text(res);
 	       				parent.layer.msg('已加入购物车！');
 					},
@@ -562,14 +592,45 @@
 					}
 				})
 			})
-
+			//点击搜索框旁的购物车图标跳转到购物车
 			$('.cartnum').click(function(){
 				location.href = '{{:U("ShoppingCart/index")}}';
 			})
-		})
 
-		// $('.pic>ul>li>a>img').css('width','94vw');
-		$("#line").width = $(".tab").width;
+			/*
+				监听input内容实时搜索
+			 */
+			$(".search input").on('keyup', function(){
+				_search($(this).val());
+			})
+			/*
+				点击搜索
+			 */
+			$(".searchBtn").click(function(){
+				_search($(this).siblings('input').val());
+
+			})
+			// 点击搜索内容存储 商品id 到本地存储 给 商品详情页面用
+			$("#searchPanel").on('click', 'a', function(){
+				sessionStorage.setItem("goods_gid", $(this).attr("goods_gid"))
+			})
+			//搜索函数
+			function _search(word){
+				// console.log(word);
+				if(word){
+					// console.log(searchArr);
+					//遍历适配的数据
+					for(var i=0; i<searchArr.length; i++){
+						if(searchArr[i].indexOf(word) > -1){
+							$("#searchPanel").html(searchArr[i]);
+						}
+					}
+					$("#searchPanel").fadeIn('fast');
+				}else{
+					console.log('没有输入内容!')
+				}
+			}
+		})
 
 	</script>
 <!-- 	<script src="__PUBLIC__/Home/js/jquery.min.js"></script> -->
