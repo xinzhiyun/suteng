@@ -286,6 +286,23 @@
 		color:#fff;
 		border-radius: 0px!important;
 	}
+	.icon-gouwuche {
+		position: relative;
+	}
+	.icon-gouwuche>span {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 70%;
+		height: 70%;
+		top: -20%;
+		right: -40%;
+		color: #fff;
+		border-radius: 50%;
+		font-size: 16px;
+		background: #f00;
+	}
 	/*加入购物车*/
 	#add2ShopCart {
 		height: 8vh;
@@ -340,7 +357,7 @@
 		</div>
 		<div class="shopdetailBott">
 			<a href="{{:U('ShoppingCart/index')}}">
-				<i class="iconfont icon-gouwuche "></i>
+				<i class="iconfont icon-gouwuche"><span>{{$cartInfo}}</span></i>
 			</a>
 			<div>
 				<div id="add2ShopCart">加入购物车</div>
@@ -354,7 +371,13 @@
 
 		//清除历史发票信息sessionStorage
 		sessionStorage.setItem("voiceArr", '');
+		//显示购物车数量
+		if(typeof Number($("#cartInfo").val()) == 'number'){
+			$('.cartnum>span').text($("#cartInfo").val())
 
+		}else{
+			$('.cartnum>span').text(0);
+		}
 		//存放ajax请求成功返回的商品信息
 		var goodsDetail;
 		// 从本地sessionStorage中获取从商城首页点击的商品唯一id
@@ -368,6 +391,8 @@
 			data: {'id': goods_gid},
 			success: function(res){
 				console.log('成功！ ',res);
+				//显示购物车数量
+				$(".icon-gouwuche>span").text(res.cartnum);
 				goodsDetail = res.goodsDetail[0];
 				var goodsDetail_html = '', commentInfo_html = '';
 				desc = !goodsDetail.desc ? '商品暂无描述' : goodsDetail.desc;
@@ -516,6 +541,8 @@
 				data: {'gid': goods_gid,'num':num},
 				success: function(res){
 					console.log('成功！ ', res)
+					//更新购物车数量
+					$('.icon-gouwuche>span').text(res);
 	       			parent.layer.msg('添加成功！');
 				},
 				error: function(res){

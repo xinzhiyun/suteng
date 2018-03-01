@@ -126,14 +126,23 @@
 		    right: 1.2rem;
 		    font-size: 1.25rem;
 		}
-		.search>span {
+		/*购物车*/
+		.cartnum {
+			width: 40px;
+			height: 40px;
 		    position: absolute;
+		    right: 0;
+		    top: 0;
+			display: flex;
+			align-items: flex-start;
+			justify-content: flex-end;
+		}
+		.cartnum>span {
+			width: 50%;
+    		height: 50%;
 		    display: inline-block;
-   			padding: 0.01rem 0.25rem;
-		    border-radius: 1rem;
-		    /*background: #F00;*/
-		    right: 0rem;
-		    top: 0rem;
+		    border-radius: 50%;
+		    background: #F00;
 		    font-size: 0.62rem;
 		    font-weight: 600;
 		    text-align: center;
@@ -275,6 +284,20 @@
 			border: 1px solid #ddd;
     		border-radius: 6px;
 		}
+		.numShow {
+			animation: numshow .5s ease;
+		}
+		@keyframes numshow {
+			0%, 33% {
+				transform: scale(.8);
+			}
+			34%, 67% {
+				transform: scale(1.2);
+			}
+			68%, 100% {
+				transform: scale(1);
+			}
+		}
 		
 	</style>
 </head>
@@ -295,7 +318,7 @@
 		<div class="search clearfix">
 			<label for="search-all">
 				<input type="text" placeholder="请输入您想买的东西" ><i class="iconfont icon-msnui-find-bold"></i>
-			</label><i class="iconfont  icon-gouwuche"></i><span>1</span>
+			</label><i class="iconfont  icon-gouwuche"></i><span class="cartnum"><span></span></span>
 		</div>
 
 		<!-- 轮播图 -->
@@ -354,10 +377,10 @@
 			//首页显示购物车数量
 			// console.log($("#cartInfo").val())
 			if(JSON.parse($("#cartInfo").val())){
-				$(".icon-gouwuche>span").text(JSON.parse($("#cartInfo").val()));
+				$(".cartnum>span").text(JSON.parse($("#cartInfo").val()));
 			}else {
 				// 如果购物车没有商品
-				$(".icon-gouwuche>span").hide();
+				$(".cartnum>span").text(0);
 			}
 			//存放分栏的商品信息
 			var CategoryHTML = '', categoryArr = [];
@@ -423,7 +446,7 @@
 											'<p class="name">'+ _goods[j].name +'</p>'+
 											'<b class="price">¥'+ _goods[j].price +'</b><span class="iconfont "></span>'+
 										'</a>'+
-										'<i class="iconfont icon-jiarugouwuche "></i>'
+										'<i class="iconfont icon-jiarugouwuche"></i>'
 									'</li>';
 							}else{
 								_htmlArr[i] += '';
@@ -481,35 +504,29 @@
 				点击顶部导航栏，切换订单状态
 			 */ 
 			$("#header").on("click",'.tab',function(){
-				
-				if(_htmlArr[$(this).attr("index")]){
+				var _this = $(this);
+				if(_htmlArr[$(this).attr("index")]){	//如果当前分类下有商品
 					$(".allgoods>ul").eq($(this).attr("index")).html(_htmlArr[$(this).attr("index")]);
 					// console.log($("#content>div").eq($(this).attr("index")).attr("index"))
 				}else{
 					$(".allgoods>ul").eq($(this).attr("index")).html('<h3 style="text-align: center;padding:5% 0;">暂无内容，敬请期待！<div></div></h3>')
 				}
-				// if($('#content>div').length != 0){
-					 $('#header>span').css('color','#5A5A5A').css('font-weight','400');
-					$(this).css('color','#373737').css('font-weight','400');
-					// $("#content")
-					// .css({height: dingdanArr[$(this).attr("index")]
-					// 	.height, 
-					// 	overflowY: $(dingdanArr[$(this).attr("index")])[0].offsetHeight > $("#content")[0].offsetHeight 
-					// 	? 'visible'
-					// 	: 'hidden'
-					// });
-					
-					// console.log( $(this).attr("index") );
-					// console.log( $("#content")[0].offsetHeight );
+				$('#header>span').css('color','#5A5A5A').css('font-weight','400');
+				$(this).css('color','#373737').css('font-weight','400');
 
-					// }
-					$("#content")
-					.animate({left: '-'+ $(this).attr("index") +'00vw'});
+				$("#content")
+				.animate({left: '-'+ $(this).attr("index") +'00vw'});
 
-					$("#line").css({left: $(this)[0].offsetLeft+$(this)[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
+				$("#line").css({left: $(this)[0].offsetLeft+$(this)[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
+				// $(this).parents('#header')[0].scrollLeft = $(this)[0].offsetLeft;
+				for(var i=0; i<$(this)[0].offsetLeft; i++){
+					if(i<$(this)[0].offsetLeft){
 
-					// console.log($(this)[0].offsetLeft)
-					console.log($(this))
+						_this.parents('#header')[0].scrollLeft = i - $(this)[0].offsetLeft/2;
+					}
+				}
+				$(this).parents('#header').css({transition: '.5s ease'});
+				// console.log($(this)[0].offsetLeft)
 			});
 			// console.log($('.tab')[0].offsetLeft+$('.tab')[0].clientWidth-$("#line")[0].clientWidth/2)
 			$("#line").css({left: $('.tab')[0].offsetLeft+$('.tab')[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
@@ -518,18 +535,26 @@
 			/*
 				点击商品旁边的购物车图标
 			 */
-			$(".allgoods").on("click","icon-gouwuche",function(){
+			$(".allgoods").on("click",".icon-jiarugouwuche",function(){
+				var _this = $(this);
 				// 获取商品id
 				var gid = $(this).siblings(".pic").attr("goods_gid");
 				console.log(gid);
+				 
+				$(this).addClass("numShow");
+				$(".cartnum>span").addClass("numShow");
+				setTimeout(function(){
+					_this.removeClass("numShow");
+					$(".cartnum>span").removeClass("numShow");
+				},500)
 				$.ajax({
 					url: '{{:U("ShoppingCart/shopAdd")}}',
 					type: 'post',
 					data: {'gid': gid,'num': 1},
 					success: function(res){
 						console.log('成功！ ',res);
+	       				$(".cartnum>span").text(res);
 	       				parent.layer.msg('已加入购物车！');
-	       				$(".icon-gouwuche>span").text(res);
 					},
 					error: function(res){
 						console.log('失败！ ',res);
@@ -537,16 +562,12 @@
 					}
 				})
 			})
+
+			$('.cartnum').click(function(){
+				location.href = '{{:U("ShoppingCart/index")}}';
+			})
 		})
 
-		// 轮播
-		// myFocus.set({
-		// 	id:'myFocus',//ID
-		// 	pattern:'mF_fancy',//风格
-		// 	time:3,
-		// 	height:180,
-		// 	// width:600,
-		// });
 		// $('.pic>ul>li>a>img').css('width','94vw');
 		$("#line").width = $(".tab").width;
 

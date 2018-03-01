@@ -69,11 +69,9 @@ class ShopController extends CommonController
     	}
     	$goodsDetail = array_values($arr);
         $commentInfo = $goods->getComment($map['g.id']);
-        $cartInfo = M('Cart')->where('uid='.session('user.id'))->count();
         $data = [
             'goodsDetail' => $goodsDetail,
             'commentInfo' => $commentInfo,
-            'cartInfo' => json_encode($cartInfo),
         ];
         $this->ajaxReturn($data);
     }
@@ -240,6 +238,15 @@ class ShopController extends CommonController
 
         echo $jsApiParameters;
         exit;
+    }
+
+    // 
+    public function shoppingdetail()
+    {
+        $cartInfo = M('Cart')->where('uid='.session('user.id'))->count();
+        $this->assign('cartInfo',$cartInfo);
+
+        $this->display();
     }
 
 }
