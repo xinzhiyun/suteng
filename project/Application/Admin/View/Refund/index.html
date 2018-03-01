@@ -1,0 +1,157 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>售后管理 <small>退款退货</small></h5>
+                    <!-- <div class="ibox-tools">
+                        <i class="fa fa-user-plus"></i>
+                        <a href="{{:U('goodsAdd')}}">添加商品</a>
+                    </div> -->
+                </div>
+                <form method="get" action="">
+                    <div class="input-group col-md-3"  style="float: right;margin-right: 60px;">
+                        <select name="key" class="form-control" name="account" style="width:30%">
+                            <option value="serial_num">售后流水号</option>
+                            <option value="name">收货人姓名</option>
+                            <option value="phone">电话</option>
+                            <option value="address">收货地址</option>
+                        </select>
+                        <input type="text" name="keywords" placeholder="输入搜索关键字" class="input form-control"   style="width:60%">
+                        <span class="input-group-btn" style="display: inline-block;">
+                                <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
+                        </span>
+                    </div>
+                </form>
+                <div class="ibox-content">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    退款流水号
+                                </th>
+                                <th>
+                                    总金额
+                                </th>
+                                <th>
+                                    客户
+                                </th>
+                                <th>
+                                    售后方式
+                                </th>
+                                <th>
+                                    处理进度
+                                </th>
+                                <th>
+                                    申请时间
+                                </th>
+                                <th>
+                                    操作
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <empty name="data">
+                                <tr><td colspan="12">暂无数据</td></tr>
+                            <else />
+                                <volist name="data['data']" id="v">
+                                    <tr>
+                                        <td>
+                                            {{$v['serial_num']}}
+                                        </td>
+                                        <td>
+                                            {{$v['total_amount']}}
+                                        </td>
+                                        <td>
+                                            {{$v['uid']}}
+                                        </td>
+                                        <td>
+                                            <switch name="v.method">
+                                                <case value="1">仅退款</case>
+                                                <case value="2">退款及退货</case>
+                                            </switch>
+                                        </td>
+                                        <td>
+                                            <switch name="v.status">
+                                                <case value="0">未处理</case>
+                                                <case value="1">正在处理</case>
+                                                <case value="2">已退款</case>
+                                                <case value="3">已退货</case>
+                                            </switch>
+                                        </td>
+                                        <td>
+                                            {{$v['create_time']|date='Y-m-d H:i:s',###}}
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a class="btn btn-outline btn-success showmore" href="javascript:;" rId="{{$v['id']}}">
+                                                    查看
+                                                </a>
+                                                <switch name="v.status">
+                                                    <case value="0">
+                                                        <if condition="$v['method'] eq 1"> 
+                                                            <a class="btn btn-outline btn-success edit" href="javascript:;" rId="{{$v['id']}}" status="1">同意退款</a>
+                                                        <elseif condition="$v['method'] eq 2"/>
+                                                            <a class="btn btn-outline btn-success edit" href="javascript:;" rId="{{$v['id']}}" status="3">同意退款退货</a>
+                                                        <else /> 
+                                                        </if>
+                                                    </case>
+                                                    <case value="1">正在处理</case>
+                                                    <case value="2">已退款</case>
+                                                    <case value="3">已退货</case>
+                                                </switch>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </volist>
+                            </empty>
+                        </tbody>
+                    </table>
+                    <div>
+                        {{$data.page}}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script>
+
+        $('body').on('click','.showmore',function(){
+            var rId = $(this).attr('rId')
+            location.href = "{{:U('showDetails'),'',''}}?id="+rId;      
+        })
+        
+
+        $('.edit').click(function(){
+            status = $(this).attr('status');
+            id = $(this).attr('rId');
+            $.ajax({
+                type : 'GET',
+                url : "{{:U('Admin/Refund/editStatus')}}",
+                data : {'id':id,'status':status},
+                success : function(msg){
+                    if (msg.code == 200) {
+                        console.log(msg);
+                        parent.layer.msg(msg.msg);
+                        location.reload();
+                    }
+                    if (msg.code == 400) {
+                        location.reload();
+                        parent.layer.msg(msg.msg);
+                        console.log(msg);
+                    }               
+                }
+            });
+        })
+    </script>
+</block>
