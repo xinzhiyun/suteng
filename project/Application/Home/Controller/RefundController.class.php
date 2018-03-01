@@ -65,6 +65,24 @@ class RefundController extends CommonController
         echo 'success:'.$result;die;
     }
 
+    /**
+     * 退货填写物流信息
+     * @return [type] [description]
+     */
+    public function logistics()
+    {   
+        if (IS_AJAX) {
+            $data['rf_id'] = 2;
+            $data['name']   = '顺风快递';
+            $data['number'] = '65891546455546';
+            $res = D('refund_logistics')->data($data)->add();
+            if ($res) {
+                return $this->ajaxReturn(['code'=>200,'msg'=>'发货成功']);
+            } else {
+                return $this->ajaxReturn(['code'=>400,'msg'=>'发货失败']);
+            }
+        }       
+    }
 
     /**
      * 生成工单编号
