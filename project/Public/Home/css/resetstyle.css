@@ -27,8 +27,7 @@ ul, li, dl, dt, dd, form, h1, h2, h3, h4, p, input, form ,select{
 	appearance:none;
 	-moz-appearance:none;
 	-webkit-appearance:none;
-	-webkit-appearance: none;  
-	background:white;
+	-webkit-appearance: none;
 }
 .bg1{ 
 	background: #FFC0CB;
