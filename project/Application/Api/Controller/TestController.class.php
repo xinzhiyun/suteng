@@ -17,6 +17,6 @@ class TestController extends Controller
         $redis = new \Redis();
         $redis->connect('127.0.0.1',6379);
         $redis->set('test','PassWord@!');
-        echo $redis->get("test");
+        dump($redis->get(date('i',$time)));
     }
 }

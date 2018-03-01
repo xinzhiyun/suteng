@@ -33,6 +33,11 @@ class TaskController extends CommonController
             // 判断是否添加成功
             if($addRes){
                 // 设置成功
+                $redis = new \Redis();
+                $redis->connect('127.0.0.1',6379);
+                $redis->set(date('i',$time),json_encode($data));
+                // dump($redis);die;
+                
                 // 设置返回提示码
                 $data['code'] = 200;
                 // 设置返回提示信息
