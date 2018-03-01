@@ -27,7 +27,7 @@ return array(
         'AUTH_GROUP_ACCESS' => 'pub_auth_group_access', //用户组明细表
         'AUTH_RULE' => 'pub_auth_rule', //权限规则表
         'AUTH_USER' => 'pub_vendors'//用户信息表
-    )
+    ),
 
     // 缓存配置
     'DATA_CACHE_PREFIX' => 'Redis_',//缓存前缀

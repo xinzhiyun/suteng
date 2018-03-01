@@ -15,6 +15,8 @@ class TestController extends Controller
     public function connectRedis()
     {
         $redis = new \Redis();
-        dump($redis);die;
+        $redis->connect('127.0.0.1',6379);
+        $redis->set('test','PassWord@!');
+        echo $redis->get("test");
     }
 }
