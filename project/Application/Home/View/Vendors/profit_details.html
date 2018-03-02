@@ -123,11 +123,17 @@
         <div class="rewardFoot">
           <ul>
             <empty name="data">
-              <li>暂无收益...</li>
-            <else /> 
-              <foreach name="data" item="vo" >
-                  <li><span class="iconBig">{{$vo.describe}}</span><span class="countto">{{$vo.abonus}}</span><span>{{:date("Y-m-d",$vo['addtime'])}}</span></li>
-              </foreach>
+                <li>暂无收益...</li>
+                <else /> 
+                <foreach name="data" item="vo">
+                    <li>
+                        <a href="{{:U('Home/Vendors/income_detailed')}}"><!--需要添加连接参数-->
+                            <span class="iconBig">{{$vo.describe}}</span>
+                            <span class="countto">{{$vo.abonus}}</span>
+                            <span>{{:date("Y-m-d",$vo['addtime'])}}</span>
+                        </a>
+                    </li>
+                </foreach>
             </empty> 
           </ul>
         </div>
