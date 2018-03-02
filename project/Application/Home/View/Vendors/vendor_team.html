@@ -146,7 +146,7 @@
             }
           },
           error: function(res) {
-            console.log("出错123" , res)
+            console.log("出错123" , res);
           }
       });
       //2. 请求分销商团队的数据
@@ -156,14 +156,14 @@
           data: {'type' : traderLeavelNum},//传入分销级别
           type: 'post',
           success: function(res) {
-            res = $.parseJSON(res)//转成json格式
+            res = $.parseJSON(res);//转成json格式
             if(res.code == 200) {
               // 获取经销商信息 res.data[i].head分销商头像  res.data[i].name 分销商名字
               var list = "";//要放入的分销商
               var num = 0;//分销商的个数
               for(var i in res.data) {
                 list = list + "<li><b><img src=' "+res.data[i].head+"' alt=''></b><span>" + res.data[i].name + "</span></li>";
-                      num++
+                      num++;
               }
               listNull = "<li><span>暂无分销商</span></li>";
               var tradeName;//包容分销商内容的块
