@@ -97,7 +97,7 @@
 			font-size: .6rem;
 		}
 		.msgList>div>p:nth-of-type(2) {
-			text-align: center;
+			text-align: right;
 			font-size: 14px;
 			white-space: nowrap;
 		}
@@ -163,12 +163,17 @@
 		}
 		#showMsg>div>h2 {
 			padding: 3% 2%;
-			text-align: center;
-			background: #eee;
+			color: #fff;
+		    text-align: center;
+		    border-radius: 4px;
+		    background: #90caf9;
 		}
 
 		#showMsg>div>div {
-			padding: 5% 10%;
+			max-height: 70vh;
+    		padding: 5% 3%;
+    		line-height: 2;
+    		overflow-y: scroll;
 		}
 	</style>
 </head>
@@ -227,11 +232,12 @@
 				if(res.code == 200){
 					for(var i=0; i<res.data.length; i++){
 						if(res.data[i].status == 2){	//未读消息
+							
 							console.log('未读消息',res.data[i]);
 							newHTML += '<div class="msgitem" index="'+ newnum +'" mid="'+ res.data[i].id +'">'+
 									'<i class="iconfont icon-xiaoxi"></i>'+
 									'<p text="'+ res.data[i].content +'" title="'+ res.data[i].title +'">'+ res.data[i].title +'</p>'+
-									'<p text="'+ res.data[i].content +'" title="'+ res.data[i].title +'"><span class="read"></span>查看详情</p>'+
+									'<p text="'+ res.data[i].content +'" title="'+ res.data[i].title +'"><span class="read"></span>查看详情<br /><span>'+ format(res.data[i].addtime) +'</span></p>'+
 									'<span class="del">删除</span>'+
 								'</div>';
 							newnum++;
@@ -240,7 +246,7 @@
 							oldHTML += '<div class="msgitem" index="'+ oldnum +'" mid="'+ res.data[i].id +'">'+
 									'<i class="iconfont icon-xiaoxi"></i>'+
 									'<p text="'+ res.data[i].content +'" title="'+ res.data[i].title +'">'+ res.data[i].title +'</p>'+
-									'<p text="'+ res.data[i].content +'" title="'+ res.data[i].title +'">查看详情</p>'+
+									'<p text="'+ res.data[i].content +'" title="'+ res.data[i].title +'">查看详情<br /><span>'+ format(res.data[i].addtime) +'</span></p>'+
 									'<span class="del">删除</span>'+
 								'</div>';
 							oldnum++;
@@ -344,12 +350,17 @@
 		$('.msgList').on('click','.msgitem>p',function(){
 			var _this = $(this);
 			var title = $(this).attr('title');
-			var msgInfo = $(this).attr('text');
+			// 遇到感叹号和句号则换行+缩进
+			var msgInfo = $(this).attr('text')
+			.replace(/(\!)+/g, '!<br/>&emsp;&emsp;')
+			.replace(/(\！)+/g, '！<br/>&emsp;&emsp;')
+			.replace(/(\。)+/g, '。<br/>&emsp;&emsp;');
+
 			var mid = $(this).parents('.msgitem')[0].getAttribute('mid');
 			// console.log(msgInfo,mid);
 			$('#showMsg').fadeIn('fast');
 			$('#showMsg>div>h2').html(title);
-			$('#showMsg>div>div').html(msgInfo);
+			$('#showMsg>div>div').html('&emsp;&emsp;' + msgInfo);
 			console.log($(this).parents('#newMsg'))
 			if($(this).parents('#newMsg').length){
 
@@ -503,6 +514,22 @@
 			    }
 			});
 		}
+		/*
+			时间戳转化为时间格式
+		 */
+		function format(time){
+			//time：时间戳(单位：秒)
+			var fortime = new Date(parseInt(time)*1000);
+			var newtime = fortime.getFullYear() + '年' +
+			(fortime.getMonth()+1) + "月" +
+			fortime.getDate() + "日&nbsp;" +
+			fortime.getHours() + ":" +
+			fortime.getMinutes() + ":" +
+			fortime.getSeconds();
+			console.log(newtime);
+			return newtime;
+		}
+
 	</script>
 </body>
 </html>
