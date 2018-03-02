@@ -90,13 +90,15 @@
 			padding-left: 2%;
 		}
 		.msgList>div>p:nth-of-type(1) {
-			width: 86%;
+			width: 50%;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
 			font-size: .6rem;
 		}
 		.msgList>div>p:nth-of-type(2) {
+			position: absolute;
+    		width: 94%;
 			text-align: right;
 			font-size: 14px;
 			white-space: nowrap;
@@ -215,6 +217,68 @@
 	</div>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script>
+		var one_isOpen = false;	//判断消息的开关状态
+		function showMsg(_this){
+			// var _this = $(this);
+			// 当前消息状态的列表
+			var msgList = _this.siblings('.msgList');
+			// 未读消息项目或已读消息项目
+			var div = _this.siblings('.msgList')[0].childNodes;
+			// 当前点击的另一个消息状态列表
+			var other = _this.parent().siblings('.msgDiv')
+			.find('.msgList')[0];
+			// 当前点击的另一个消息状态箭头方向
+			var other_up = _this.parent()
+			.siblings('.msgDiv').find('.msgPar')[0]
+			.childNodes[5].getAttribute('class');
+
+			// console.log('one_isOpen: ',one_isOpen)
+			// console.log(other)
+			// console.log(other_up)
+			/* 
+			 * 当前消息的另一个消息状态列表已打开, 
+			 * 则关闭它，然后往下走，打开当前点击的消息状态列表
+			*/
+			if(other_up.indexOf('up') > -1){
+				// console.log('dhnfskldf')
+				other.style.display = 'none';	//初始化
+				_this.parent()
+				.siblings('.msgDiv').find('.msgPar')[0]
+				.childNodes[5].setAttribute('class', 'iconfont icon-down');
+
+				one_isOpen = false;
+			}
+			if(one_isOpen == false){
+				msgList.show();
+				// 显示当前消息列表
+				for(var i=0; i<div.length; i++){
+					
+					// console.log(div[i].getAttribute('class'))
+					div[i].setAttribute('class', 'msgitem down');
+				}
+				one_isOpen = true;
+				//更改箭头方向
+				_this.find('.icon-down')
+				.attr('class','iconfont icon-up');
+
+			}else if(one_isOpen == true){
+				// 关闭当前消息列表
+				for(var i=0; i<div.length; i++){
+
+					div[i].setAttribute('class', 'msgitem up');
+				}
+				setTimeout(function(){
+					msgList.hide();
+				},100)
+				one_isOpen = false;
+				//更改箭头方向
+				_this.find('.icon-up')
+				.attr('class','iconfont icon-down');
+
+			}
+		}
+	</script>
+	<script>
 		/*
 			请求站内信息数据
 			ststus: 2代表未读，3代表已读，4代表回收
@@ -238,7 +302,7 @@
 									'<i class="iconfont icon-xiaoxi"></i>'+
 									'<p text="'+ res.data[i].content +'" title="'+ res.data[i].title +'">'+ res.data[i].title +'</p>'+
 									'<p text="'+ res.data[i].content +'" title="'+ res.data[i].title +'"><span class="read"></span>查看详情<br /><span>'+ format(res.data[i].addtime) +'</span></p>'+
-									'<span class="del">删除</span>'+
+									'<span class="del" msgIndex="0">删除</span>'+
 								'</div>';
 							newnum++;
 						}else if(res.data[i].status == 3){
@@ -247,7 +311,7 @@
 									'<i class="iconfont icon-xiaoxi"></i>'+
 									'<p text="'+ res.data[i].content +'" title="'+ res.data[i].title +'">'+ res.data[i].title +'</p>'+
 									'<p text="'+ res.data[i].content +'" title="'+ res.data[i].title +'">查看详情<br /><span>'+ format(res.data[i].addtime) +'</span></p>'+
-									'<span class="del">删除</span>'+
+									'<span class="del" msgIndex="1">删除</span>'+
 								'</div>';
 							oldnum++;
 						}else{}
@@ -256,13 +320,24 @@
 					$('#newMsg .msgList').html(newHTML);	//未读消息
 					$('#oldMsg .msgList').html(oldHTML);	//已读消息
 					$(".num").eq(1).text($('#oldMsg .msgList>div').length);
+
+					/*
+						打开消息列表，关闭消息列表
+					 */
+					$(".msgPar").on('click',function(){
+						showMsg($(this));
+					})
+
 				}else{
 					parent.layer.msg('暂无消息！');
 				}
 			},
 			error: function(res){
 				console.log('连接失败! ',res);
-				parent.layer.msg('系统遇到位置问题，请稍后再试！');
+				// 解绑事件
+				$(".msgPar").off('click');
+				$('.msgList').off('click','.msgitem>p');
+				parent.layer.msg('系统遇到未知问题，请稍后再试！');
 			}
 		})
 		/*
@@ -280,69 +355,8 @@
 			},
 			error: function(res){}
 		})
-		var msgClickNum = 0;	//判断消息的开关状态
-		/*
-			打开消息列表，关闭消息列表
-		 */
-		$(".msgPar").on('click',function(){
-			showMsg($(this));
-		})
-		showMsg($(".msgPar").eq(0));
-		function showMsg(_this){
-			// var _this = $(this);
-			var msgList = _this.siblings('.msgList');
-			var div = _this.siblings('.msgList')[0].childNodes;
-			var other = _this.parent().siblings('.msgDiv')
-			.find('.msgList')[0];
-			var other_up = _this.parent()
-			.siblings('.msgDiv').find('.msgPar')[0]
-			.childNodes[5].getAttribute('class');
-
-			// console.log('msgClickNum: ',msgClickNum)
-			// console.log(other)
-			// console.log(other_up)
-			if(other_up.indexOf('up') > -1){
-				// console.log('dhnfskldf')
-				other.style.display = 'none';
-				_this.parent()
-				.siblings('.msgDiv').find('.msgPar')[0]
-				.childNodes[5].setAttribute('class', 'iconfont icon-down');
-
-				msgList.show();
-				for(var i=0; i<div.length; i++){
-					
-					// console.log(div[i].getAttribute('class'))
-					div[i].setAttribute('class', 'msgitem down');
-				}
-				msgClickNum = 0;
-			}
-			if(msgClickNum == 0){
-				msgList.show();
-				for(var i=0; i<div.length; i++){
-					
-					// console.log(div[i].getAttribute('class'))
-					div[i].setAttribute('class', 'msgitem down');
-				}
-				msgClickNum = 1;
-				//更改箭头方向
-				_this.find('.icon-down')
-				.attr('class','iconfont icon-up');
-
-			}else if(msgClickNum == 1){
-				
-				for(var i=0; i<div.length; i++){
-
-					div[i].setAttribute('class', 'msgitem up');
-				}
-				setTimeout(function(){
-					msgList.hide();
-				},100)
-				msgClickNum = 0;
-				//更改箭头方向
-				_this.find('.icon-up')
-				.attr('class','iconfont icon-down');
-
-			}
+		if($('.msgitem').length){
+			showMsg($(".msgPar").eq(0));
 		}
 		/*
 			点击查看 未读消息
@@ -361,10 +375,11 @@
 			$('#showMsg').fadeIn('fast');
 			$('#showMsg>div>h2').html(title);
 			$('#showMsg>div>div').html('&emsp;&emsp;' + msgInfo);
-			console.log($(this).parents('#newMsg'))
+			// console.log($(this).parents('#newMsg'))
+
 			if($(this).parents('#newMsg').length){
 
-				// 标记当前已读消息的未读记录
+				// 标记当前未读消息为已读状态
 				$(this).parents('.msgitem').find('.read').text('已读');
 				$(this).parents('.msgitem')[0].style.background = '#f9f9f9';
 			}
@@ -395,7 +410,7 @@
 		 */
 		$('.msgList').on('click','.del',function(){
 			var delElem = $(this).parent()[0];
-		  	var index;	//判断未读还是已读
+			var msgIndex = $(this).attr("msgIndex");	//判断未读还是已读
 			//消息 id
 			var mid = $(this).parent()[0].getAttribute('mid');
 			//未读消息条数
@@ -404,15 +419,9 @@
 		    // console.log($('#newMsg .msgList>div').length)
 		    var par = $(this).parents('.msgList').find('.msgitem');
 		    var _thisElem = $(this).parents('.msgitem');
-
-			if($(this).parents('#newMsg')){
-		   		index = 0;
-		   	}else if($(this).parents('#oldMsg')){
-		   		index = 1;
-		   	}
 		   		
-		    console.log('num: ',num);
-		    console.log('index: ',index);
+		    // console.log('num: ',num);
+		    // console.log('msgIndex: ',msgIndex);
 			layer.confirm('确认删除？删除后无法恢复！', 
 	            {
 	              btn: ['确定','取消'] //按钮
@@ -430,8 +439,8 @@
 		            			parent.layer.msg('删除成功！');
 		            			//删除当前元素
 		    					_thisElem.remove();
-	    						$(".num").eq(index).text(num-1);
-								console.log(num-1)
+	    						$(".num").eq(msgIndex).text(num-1);
+								// console.log(num-1)
 								
 		            		}else{
 		            			parent.layer.msg('删除失败！');
@@ -521,11 +530,12 @@
 			//time：时间戳(单位：秒)
 			var fortime = new Date(parseInt(time)*1000);
 			var newtime = fortime.getFullYear() + '年' +
-			(fortime.getMonth()+1) + "月" +
-			fortime.getDate() + "日&nbsp;" +
-			fortime.getHours() + ":" +
-			fortime.getMinutes() + ":" +
-			fortime.getSeconds();
+				(fortime.getMonth()+1) + "月" +
+				fortime.getDate() + "日&nbsp;" +
+				fortime.getHours() + ":" +
+				fortime.getMinutes() + ":" +
+				fortime.getSeconds();
+
 			console.log(newtime);
 			return newtime;
 		}
