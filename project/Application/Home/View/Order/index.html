@@ -884,26 +884,7 @@
 			$(".modal").css('z-index','-1');
 			$(".modal-backup").fadeOut('slow');
 		});      	
-	    //确认收货 模态框的js
-      	$('#dingdanDaishouhuo').on("click",".start3",function(){
-      		var _thisname=$(this).attr("name");
-      		$(".modelAll3").show();
-       	   	$(".modal").addClass("in").css('z-index','1001');
-       	   	$(".modal-backup3").show();
-       	   	$(".confirm").bind("click").click(function(){
-       	   		$.ajax({
-       	   			url:"",
-       	   			type:"post",
-       	   			datatype:"json",
-       	   			data:{
-       	   				order_id:_thisname
-       	   			},
-       	   			success:function(res){
-       	   				alert("操作成功");
-       	   			}
-       	   		});
-       	   	});
-      	});
+	    
       	
       	//取消按钮操作效果
       	$(".close").on("click",function(){
@@ -1165,7 +1146,7 @@
 									'</div>'+
 									'<div>'+
 										'<div class="cancel">'+
-											'<span class="Rejected">退货</span>'+
+											'<span class="Rejected" name="'+waitgainlist[i]['orderid']+'">退货</span>'+
 										'</div>'+
 										'<div class="pay start3" name='+ waitgainlist[i]['orderid'] +' >'+
 											'<span>确认收货</span>'+
@@ -1179,8 +1160,31 @@
 						$(".waitharvest").html(waitgainlist.length);
 						//退货
 						$(".Rejected").click(function(){
-							window.location.href="{{:U('Home/Order/choiceRefund')}}"
+							var names=$(this).attr("name");
+							window.location.href="{{:U('Home/Order/choiceRefund?code=names')}}"
 						});
+						//确认收货 模态框的js
+				      	$('#dingdanDaishouhuo').on("click",".start3",function(){
+				      		var _thisname=$(this).attr("name");
+				      		$(".modelAll3").show();
+				       	   	$(".modal").addClass("in").css('z-index','1001');
+				       	   	$(".modal-backup3").show();
+				       	   	$(".confirm").bind("click").click(function(){
+				       	   		alert(_thisname);
+				       	   		$.ajax({
+				       	   			url:"{{:U('Home/Order/editOrder')}}",
+				       	   			type:"post",
+				       	   			datatype:"json",
+				       	   			data:{
+				       	   				order_id:_thisname
+				       	   			},
+				       	   			success:function(res){
+				       	   				window.location.reload();
+				       	   			}
+				       	   		});
+				       	   	});
+				      	});
+						
                     }else{
                         // 查询无数据提示
                         $("#dingdanDaishouhuo").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');

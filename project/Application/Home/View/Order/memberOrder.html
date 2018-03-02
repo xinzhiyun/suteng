@@ -146,31 +146,6 @@
     </div>
   </div>
    <script>
-
-   // 注意：未明数据格式：金币和银币，故还没有判断，遍历了默认用了金币
-
-    // 数据遍历
-    // $(function(){
-
-    //   var _date = [
-    //     {"name":"夏普","cost":"100","icon":"300","time":"2018-1-24"},
-    //     {"name":"夏歌","cost":"200","icon":"400","time":"2018-1-25"},
-    //     {"name":"夏抚","cost":"300","icon":"500","time":"2018-1-28"},
-    //     {"name":"夏雨","cost":"300","icon":"500","time":"2018-1-28"}   
-
-    //    ];
-    //   var liHtml='';
-    //   for(var i=0;i<_date.length;i++){
-
-    //     liHtml += '<li><span>'+_date[i].name+'</span><span>'+_date[i].cost+'</span><span>'+_date[i].icon+'金币</span><span>'+_date[i].time+'</span></li>';
-    //   }
-    //   $(".memberFoot>ul").html(liHtml);
-
-
-
-    // })
-
-
     $.ajax({
         url:"{{:U('Home/VipCenter/user_order')}}",
         dataType:"json",
@@ -202,20 +177,6 @@
             }
         }
     });
-
-  // 格式化日期时间
-  function timetrans(date){
-      var date = new Date(date*1000);//如果date为13位不需要乘1000
-      var Y = date.getFullYear() + '-';
-      var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-      var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
-      var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
-      var m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
-      var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
-      //return Y+M+D+h+m+s;
-      return Y+M+D;
-  }
-
   </script>
 </body>
 </html>                                                                                                                                                                                                                                                                      

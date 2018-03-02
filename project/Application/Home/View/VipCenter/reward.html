@@ -107,7 +107,7 @@
                     $('.iconReward>span:first-child>b').html('金币<em>'+res.total_gold_num+'</em>');
                     $('.iconReward>span:last-child>b').html('银币<em>'+res.total_silver+'</em>');
                     for(var i=0;i<res.data.length;i++){
-                        var addtime=getMyDate(parseInt(res.data[i].addtime));
+                        var addtime=timetrans(parseInt(res.data[i].addtime));
                         liList += '<li><span class="iconBig">奖励金币<b>'+res.data[i].gold_num+'</b></span><span>'+addtime+'</span></li><li><span class="iconBig">奖励银币<b>'+res.data[i].silver+'</b></span><span>'+addtime+'</span></li> ';
                     }
                     $(".rewardFoot>ul").html(liList);

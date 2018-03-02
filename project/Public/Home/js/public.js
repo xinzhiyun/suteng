@@ -84,21 +84,16 @@ function layuiHint(text){
 var	nameReg = /^([a-zA-Z0-9_\u4e00-\u9fa5]){2,30}$/,
 	phoneReg = /^(1[3|4|5|7|8])\d{9}$/,
 	addressReg = /^(?=.*?[\u4E00-\u9FA5])[\dA-Za-z\u4E00-\u9FA5]{8,}/;
-//时间戳转换为日期
-function getMyDate(str){  
-    var oDate = new Date(str),  
-    oYear = oDate.getFullYear(),  
-    oMonth = oDate.getMonth()+1,  
-    oDay = oDate.getDate(),  
-    oHour = oDate.getHours(),  
-    oMin = oDate.getMinutes(),  
-    oSen = oDate.getSeconds(),  
-    oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay) +' '+ getzf(oHour) +':'+ getzf(oMin) +':'+getzf(oSen);//最后拼接时间  
-    return oTime;  
-}; 
-function getzf(num){  
-  if(parseInt(num) < 10){  
-      num = '0'+num;  
-  }  
-  return num;  
-}
+
+// 格式化日期时间
+  function timetrans(date){
+      var date = new Date(date*1000);//如果date为13位不需要乘1000
+      var Y = date.getFullYear() + '-';
+      var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+      var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+      var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+      var m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+      var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
+      //return Y+M+D+h+m+s;
+      return Y+M+D;
+  }
