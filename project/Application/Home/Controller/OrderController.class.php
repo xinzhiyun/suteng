@@ -140,6 +140,14 @@ class OrderController extends CommonController
         
     }
 
+    /**
+     * 我的订单售后报装列表
+     * @return [type] [description]
+     */
+    public function install()
+    {
+        'select * from st_shop_order so LEFT join st_order_detail od ON od.order_id = so.order_id LEFT JOIN st_pic pic ON od.gid = pic.gid LEFT JOIN st_goods g ON od.gid = g.id LEFT JOIN st_goods_detail gd ON od.gid = gd.gid where so.uid = 32 AND gd.is_install = 1'
+    }
 
     /**
      * [paysuccBtn 提交成功]
