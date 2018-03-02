@@ -34,6 +34,24 @@
 			font-weight: 500;
 			color: #5a5a5a;
 		}
+		.deviceTop > p{
+			font-size: 0.72rem;
+			width: 100%;
+			height: 25px;
+			line-height: 25px;
+			font-weight: 500;
+			color: #f00;
+			text-align: center;
+			background: url(__PUBLIC__/Home/images/prompt.png) no-repeat;
+			background-size: 25px 25px;
+			background-position: .5rem center; 
+			margin-bottom: 10px;
+		}
+		.deviceTop p span {
+			display: inline-block;
+			height: 25px;
+			line-height: 25px;
+		}
 
 		/*每一个设备的样式*/
 		.deviceItem{
@@ -311,6 +329,7 @@
 			<!-- ==================有设备的页面显示开始================== -->
 			<div class="haveDevice">
 				<div class="deviceTop">
+					<p>点击设备编码，可把租赁机转个人</p>
 					<h3>所有设备</h3>
 						<volist name="bindInfo" id="vo">
 							<div class="deviceItem clearfix">
