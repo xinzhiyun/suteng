@@ -381,9 +381,9 @@
 		}
 		//存放ajax请求成功返回的商品信息
 		var goodsDetail;
-		// 从本地sessionStorage中获取从商城首页点击的商品唯一id
-		var goods_gid = sessionStorage.getItem("goods_gid");
-		console.log(goods_gid)
+		// 从地址栏URL中获取从商城首页点击的商品唯一id
+		var goods_gid = location.search.substr(location.search.indexOf("=")+1);
+		// console.log(goods_gid)
 		var desc;
 		// ajax发送商品id查询商品详情
 		$.ajax({

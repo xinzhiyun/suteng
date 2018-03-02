@@ -73,7 +73,7 @@
 			top: 0;
 			left: 3vw;
 			margin-bottom: -1vh;
-			transition: left .3s linear;
+			transition: left .05s linear;
     		border-radius: 10px;
     		background: #2eb6aa;
 		}
@@ -347,11 +347,11 @@
 	
 			<div id="slider-wrap">
 			  <ul id="slider">
-			    <li><a class="pic" goods_gid="{{$goodsList[0]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[0]['path']}}" /></a></li>
-			    <li><a class="pic" goods_gid="{{$goodsList[1]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[1]['path']}}" /></a></li>
-			    <li><a class="pic" goods_gid="{{$goodsList[2]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[2]['path']}}" /></a></li>
-			    <li><a class="pic" goods_gid="{{$goodsList[3]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[3]['path']}}" /></a></li>
-			    <li><a class="pic" goods_gid="{{$goodsList[4]['gid']}}" href="{{:U('Shop/shoppingdetail')}}"><img src="/Uploads/{{$goodsList[4]['path']}}" /></a></li>		 
+			    <li><a class="pic" goods_gid="{{$goodsList[0]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[0]['path']}}" /></a></li>
+			    <li><a class="pic" goods_gid="{{$goodsList[1]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[1]['path']}}" /></a></li>
+			    <li><a class="pic" goods_gid="{{$goodsList[2]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[2]['path']}}" /></a></li>
+			    <li><a class="pic" goods_gid="{{$goodsList[3]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[3]['path']}}" /></a></li>
+			    <li><a class="pic" goods_gid="{{$goodsList[4]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[4]['path']}}" /></a></li>		 
 			  </ul>
 			  
 			   <!--controls-->
@@ -462,7 +462,7 @@
 						for(var j=0; j<_goods.length; j++){
 							if(_goods[j].cid == _cate[i].id){	//对应分类下有商品
 								// console.log(_goods[j].cid, _cate[i].id);
-								searchArr[i] += '<a href="{{:U('Shop/shoppingdetail')}}" goods_gid="'+_goods[j].gid+'">'+
+								searchArr[i] += '<a href="javascript:;" goods_gid="'+_goods[j].gid+'">'+
 										'<p>'+ _goods[j].name +'</p>'+
 									'</a>';
 
@@ -480,17 +480,6 @@
 							}
 						}
 					}
-
-					//遍历轮播图
-					// var lubolength = _goods.length > 4 ? 4 : _cate.length;
-					// console.dir(_goods.length)
-					// var lunboHTML = '';
-					// for(var i=0;i<lubolength; i++){
-					// 	// lunboHTML += '<li><a href="'+{{:U("Shop/shoppingdetail")}}+'" gid="'+lubolength.gid+'"><img src="/Uploads/'+_goods[j].path+'" /></a></li>';
-					// 	lunboHTML += '<li><a href="{{:U("Shop/shoppingdetail")}}" goods_gid="'+_goods[i].gid+'"><img src=""/Uploads/'+_goods[i].path+'" /></a></li>';
-					// }
-					// $(".pic>ul").html(lunboHTML);
-					// console.log(lunboHTML)
 
 				}
 			}else{
@@ -519,18 +508,19 @@
 				点击的时候记录当前点击的商品gid，传给商品详情页面
 			 */
 			$(".goodsBlock").on('click','.pic',function(){
-				// console.log($(this).attr("goods_gid"))
-				sessionStorage.setItem("goods_gid", $(this).attr("goods_gid"));
 				// 将当前商品id拼接到地址URL
 				$(this).attr("href", "{{:U('Shop/shoppingdetail')}}?gid=" + $(this).attr("goods_gid"));
 				// console.log($(this).attr('href'));
 				// 跳转到商品详情页面
 				location.href = $(this).attr('href');
 			})
-
+			//点击轮播图片
 			$("#slider").on('click','.pic',function(){
-				// console.log($(this).attr("goods_gid"))
-				sessionStorage.setItem("goods_gid", $(this).attr("goods_gid"))
+
+				// 将当前商品id拼接到地址URL
+				$(this).attr("href", "{{:U('Shop/shoppingdetail')}}?gid=" + $(this).attr("goods_gid"));
+				// 跳转到商品详情页面
+				location.href = $(this).attr("href");
 			})
 
 			/*
@@ -626,7 +616,11 @@
 			})
 			// 点击搜索内容存储 商品id 到本地存储 给 商品详情页面用
 			$("#searchPanel").on('click', 'a', function(){
-				sessionStorage.setItem("goods_gid", $(this).attr("goods_gid"))
+
+				// 将当前商品id拼接到地址URL
+				$(this).attr("href", "{{:U('Shop/shoppingdetail')}}?gid=" + $(this).attr("goods_gid"));
+				// 跳转到商品详情页面
+				location.href = $(this).attr("href");
 			})
 			//搜索函数
 			function _search(word){
