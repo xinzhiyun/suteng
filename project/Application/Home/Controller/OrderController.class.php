@@ -147,20 +147,21 @@ class OrderController extends CommonController
     public function install()
     {
         // 'select * from st_shop_order so LEFT join st_order_detail od ON od.order_id = so.order_id LEFT JOIN st_pic pic ON od.gid = pic.gid LEFT JOIN st_goods g ON od.gid = g.id LEFT JOIN st_goods_detail gd ON od.gid = gd.gid where so.uid = 32 AND gd.is_install = 1'
-        if (IS_AJAX) {
+        // if (IS_AJAX) {
+            $uid = $_SESSION['user']['id'];
             $data = D('shop_order')->alias('so')
-                                ->where(['so.uid'=>32,'gd.is_install'=>1])
+                                ->where(['so.uid'=>$uid,'gd.is_install'=>1])
                                 ->join('st_order_detail od ON od.order_id = so.order_id','LEFT')
                                 ->join('st_pic pic ON od.gid = pic.gid','LEFT')
                                 ->join('st_goods g ON od.gid = g.id','LEFT')
                                 ->join('st_goods_detail gd ON od.gid = gd.gid','LEFT')
-                                ->field(array('so.uid','so.order_id','od.gid','od.num','od.price','g.name'=>'goodname','pic.path'=>'picpath'))
+                                ->field(array('so.uid','so.order_id','od.gid','od.num','od.price','g.name'=>'goodname','pic.path'=>'picpath','so.addtime'))
                                 ->select();
             if ($data) {
                 return $this->ajaxReturn(['code'=>200,'data'=>$data]);
             }
                 return $this->ajaxReturn(['code'=>400,'msg'=>'没有数据']);
-        }       
+        // }       
     }
 
     /**
