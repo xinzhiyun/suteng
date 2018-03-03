@@ -226,6 +226,10 @@ class OrderController extends CommonController
                         ->join('__PIC__ p ON g.id = p.gid','LEFT')
                         ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire'))
                         ->select();
+            if ($data) {
+                return $this->ajaxReturn(['code'=>200,'data'=>$data]);
+            }
+                return $this->ajaxReturn(['code'=>400,'msg'=>'没有数据']);
         } else {
             $this->display();
         }        
