@@ -734,24 +734,24 @@
 		var dingdanDaishouhuo2='';	
 		var dingdanDaipinglun1='';//待评论页面html
 		var dingdanDaipinglun2='';	
-		var returned1='';//退货html
+		var returned1='';//商家未同意html
 		var returned2='';
 		var returned3='';
 		var returned4='';
 		var returned5='';
-		for(var i=0;i<returneddata1.length;i++){//退货过程1
-			returned1+='<p>信息更新时间：'+ returneddata1[i]['updatetime'] +'</p>'+
-					'<div class="shangpingnei clearfix">'+
-						'<div class="tuikuangLeft ">'+
-							'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
-						'</div>'+
-						'<div class="tuikuangRight">'+
-							'<span>'+ returneddata1[i]['productbrief'] +'</span>'+
-							'<p><b>￥'+returneddata1[i]['price'] +'</b><span>x '+ returneddata1[i]['productnumber'] +'</span></p>'+
-						'</div>'+
-					'</div>'+
-					'<p><b>等待商家同意退款</b></p>';
-		}
+		// for(var i=0;i<returneddata1.length;i++){//退货过程1
+		// 	returned1+='<p>信息更新时间：'+ returneddata1[i]['updatetime'] +'</p>'+
+		// 			'<div class="shangpingnei clearfix">'+
+		// 				'<div class="tuikuangLeft ">'+
+		// 					'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
+		// 				'</div>'+
+		// 				'<div class="tuikuangRight">'+
+		// 					'<span>'+ returneddata1[i]['productbrief'] +'</span>'+
+		// 					'<p><b>￥'+returneddata1[i]['price'] +'</b><span>x '+ returneddata1[i]['productnumber'] +'</span></p>'+
+		// 				'</div>'+
+		// 			'</div>'+
+		// 			'<p><b>等待商家同意退款</b></p>';
+		// }
 		$(".returned1").html(returned1);
 		for(var i=0;i<returneddata2.length;i++){//退货过程2
 			returned2+='<p>信息更新时间：'+returneddata2[i]['updatetime']+'</p>'+
@@ -908,6 +908,7 @@
      * @param  {[type]} status 	[8：未支付，9：待发货，2：待收货，7：待评论 4：退款处理中 5：已退货]
      * @return {[type]}    		[description]
      */
+    // refundStatus   处理进度（0：未处理 1：同意退款 2：不同意退款 3：同意退货 4：不同意退货 5：已退款 6：正在退货 7：已收货 ）
     (function unpaid_order(){
             $.ajax({//8：未支付
                 url:"{{:U('Home/Order/order_list')}}",
@@ -918,10 +919,10 @@
                 dataType:"json",
                 type: 'post',
                 success:function(res){
-                	console.dir(res)
+                	// console.dir(res)
                     if(res.code == 200){
                     	// 查询有数据
-                    	console.dir(res.data)
+                    	// console.dir(res.data)
                     	var waitpaylist=res.data;
                     	for(var i=0;i<waitpaylist.length;i++){//待付款数据遍历
 							dingdanDaifukuan1+='<div class="goods">'+
@@ -1009,9 +1010,9 @@
 			      				paymoney: price
 			      			},
 			      			success:function(res){
-			      				console.log(res);
+			      				// console.log(res);
 								if(res == -1){
-									console.log('支付错误！');
+									// console.log('支付错误！');
        								parent.layer.msg('支付错误！');
 								}else{
 									
@@ -1074,7 +1075,7 @@
 									'</div>'+
 									'<div>'+
 										'<div class="cancel">'+
-											'<span class="waitRejected">退货</span>'+
+											'<span class="waitRejected" order_id="'+ waitsendlist[i]['orderid'] +'">退货</span>'+
 										'</div>'+
 										'<div class="pay start2">'+
 											'<span>提醒发货</span>'+
@@ -1087,7 +1088,8 @@
 						$("#dingdanDaifahuo").html(dingdanDaifahuo1);
 						$(".waitsend").html(waitsendlist.length);//代发货条数
 						$(".waitRejected").click(function(){
-							window.location.href="{{:U('Home/Order/choiceRefund')}}";
+							var order_id = $(this).attr('order_id');
+							location.href = "{{:U('Home/Order/choiceRefund')}}?order_id="+ order_id;
 						});
 						// 提醒发货
 						$(".start2").click(function(){
@@ -1161,7 +1163,7 @@
 						//退货
 						$(".Rejected").click(function(){
 							var names=$(this).attr("name");
-							window.location.href="{{:U('Home/Order/choiceRefund?code=names')}}"
+							location.href="{{:U('Home/Order/choiceRefund')}}?code="+names;
 						});
 						//确认收货 模态框的js
 				      	$('#dingdanDaishouhuo').on("click",".start3",function(){
@@ -1206,7 +1208,7 @@
                     if(res.code == 200){
                     	// 查询有数据
                     	var waitcommentlist=res.data;
-                    	console.dir(waitcommentlist);
+                    	// console.dir(waitcommentlist);
                     	for(var i=0;i<waitcommentlist.length;i++){//待评论数据遍历
 							dingdanDaipinglun1+='<div class="goods">'+
 								'<p>订单编号：'+waitcommentlist[i]['orderid']+'</p>'+
@@ -1271,24 +1273,43 @@
                 }
             });  
 
- 			$.ajax({//4：退款处理中
-                url:"{{:U('Home/Order/order_list')}}",
+ 			$.ajax({//4：退货/售后
+                url:"{{:U('Home/Refund/showGoods')}}",
                 data:{
                 	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-                	"status":4
+                	// "status":4
+                	"refundStatus":1,
             	},
-                dataType:"json",
-                type: 'post',
+                // dataType:"json",
+                type: 'get',
                 success:function(res){
                     // console.dir(res);
                     if(res.code == 200){
                     	// 查询有数据
-                    	console.dir(res.data)
+                    	console.dir(res);
+                    	for(var i=0;i<res.data.length;i++){
+                    		if(res.data[i]['status']=='0'){
+                    			returned1+='<p>信息更新时间：'+ res.data[i]['dw_time'] +'</p>'+
+									'<div class="shangpingnei clearfix">'+
+										'<div class="tuikuangLeft ">'+
+											'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
+										'</div>'+
+										'<div class="tuikuangRight">'+
+											'<span>'+ res.data[i]['description'] +'</span>'+
+											'<p><b>￥'+res.data[i]['price'] +'</b><span>x '+ returneddata1[i]['productnumber'] +'</span></p>'+
+										'</div>'+
+									'</div>'+
+									'<p><b>等待商家同意退款</b></p>';
+                    		}
+                    	}
                     	$(".waitdrawback").html(res.data.length);
                     }else{
                         // 查询无数据提示
-                        console.log(res.message);
+                        // console.log(res.message);
                     }
+                },
+                error:function(res){
+                	console.dir(456)
                 }
             });  
             $.ajax({//5：已退货
