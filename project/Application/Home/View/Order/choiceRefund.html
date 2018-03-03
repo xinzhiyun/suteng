@@ -128,9 +128,9 @@
 </head>
 <body>
 	<div class="appContain">
-		<!-- <div class="item clearfix">
+		<div class="item clearfix">
 			<div class="appLeft">
-				<i class="iconfont confont icon-kuang1"></i>
+				<i class="iconfont confont icon-kuang1" gid="73"></i>
 				<span><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></span>
 			</div>
 			<div class="appRight">
@@ -140,7 +140,7 @@
 				</div>
 				<p><b>￥120.00</b><span>X1</span></p> 
 			</div>
-		</div> -->
+		</div>
 	</div>
 	<div class="appFoot">
 		<span><i class="iconfont icon-kuang1"></i>全选</span><input type="submit" value="确定" class="selected">
@@ -163,7 +163,7 @@
 						var productbrief = res.data[i].productbrief ? res.data[i].productbrief : '暂无描述';
 						refundHTML += '<div class="item clearfix">'+
 								'<div class="appLeft">'+
-									'<i class="iconfont icon-xuanze"></i>'+
+									'<i class="iconfont icon-xuanze" gid="'+ res.data[i].gid +'"></i>'+
 									'<span><img src="/Uploads/'+ res.data[i].orderimg +'" alt=""></span>'+
 								'</div>'+
 								'<div class="appRight">'+
@@ -210,7 +210,15 @@
 		})
 		// 点击确定
 		$(".selected").click(function(){
-			window.location.href="{{:U('Home/Order/applicRefund')}}";
+			var selectObj = {};
+			var gidArr = [];
+			for(var i=0; i<$(".icon-xuanze").length; i++){
+				gidArr.push($(".icon-xuanze")[i].getAttribute("gid"))
+				
+			}
+			console.log(gidArr);
+			// selectObj['']
+			// location.href="{{:U('Home/Order/applicRefund')}}";
 		});
 	</script>
 </body>
