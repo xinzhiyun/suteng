@@ -215,19 +215,20 @@ class OrderController extends CommonController
      */
     public function choiceRefund()
     {
-        $orderid = '815782408320460';
-        // $data = M('shop_order')->alias('so')->where('order_id='.$orderid)->select();
-        $data = M('order_detail')
-                    ->alias('d')
-                    ->where('order_id='.$orderid)
-                    ->join('__GOODS__ g ON g.id = d.gid','LEFT')
-                    ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
-                    ->join('__PIC__ p ON g.id = p.gid','LEFT')
-                    ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire'))
-                    ->select();
-                    print_r($data);
-        $this->assign('data',$data);
-        $this->display();
+        if (IS_AJAX) {
+            $orderid = I('orderid');
+            // $data = M('shop_order')->alias('so')->where('order_id='.$orderid)->select();
+            $data = M('order_detail')
+                        ->alias('d')
+                        ->where('order_id='.$orderid)
+                        ->join('__GOODS__ g ON g.id = d.gid','LEFT')
+                        ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
+                        ->join('__PIC__ p ON g.id = p.gid','LEFT')
+                        ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire'))
+                        ->select();
+        } else {
+            $this->display();
+        }        
     }
     
     /**
