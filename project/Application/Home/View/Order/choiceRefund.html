@@ -151,6 +151,7 @@
 		// console.log(order_id)
 		// 存放当前订单商品
 		var refundHTML = '';
+		// 根据订单号请求商品数据
 		$.ajax({
 			url: '{{:U("Home/Order/choiceRefund")}}',
 			type: 'post',
@@ -208,18 +209,21 @@
 				$('.item>.appLeft>i').removeClass(_class).addClass('iconfont icon-kuang1')
 			}	
 		})
-		// 点击确定
+		/*
+			点击确定
+		 */ 
 		$(".selected").click(function(){
-			var selectObj = {};
-			var gidArr = [];
+			var gidArr = [];	// 选择的商品 id 集合
 			for(var i=0; i<$(".icon-xuanze").length; i++){
-				gidArr.push($(".icon-xuanze")[i].getAttribute("gid"))
+				gidArr.push({
+					gid: $(".icon-xuanze")[i].getAttribute("gid")
+				})
+				// gidArr.push($(".icon-xuanze")[i].getAttribute("gid"))
 				
 			}
 			console.log(gidArr);
-			// selectObj['']
 			// location.href="{{:U('Home/Order/applicRefund')}}";
 		});
 	</script>
 </body>
-</html>                                                                                                                                                                                                                                                                      	 
+</html>
