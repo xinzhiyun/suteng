@@ -133,15 +133,15 @@ class UsersController extends CommonController
 
         $flow = M('flow');
         $total = $flow->where($map)
-                                ->join('pub_users ON pub_flow.uid = pub_users.id')
-                                ->field('pub_flow.*,pub_users.name,pub_users.balance')
+                                ->join('st_users ON st_flow.user_id = st_users.id')
+                                ->field('st_flow.*,st_users.nickname,st_users.balance')
                                 ->count();
         $page  = new \Think\Page($total,8);
         $pageButton =$page->show();
 
         $list = $flow->where($map)->limit($page->firstRow.','.$page->listRows)
-                                ->join('pub_users ON pub_flow.uid = pub_users.id')
-                                ->field('pub_flow.*,pub_users.name,pub_users.balance')
+                                ->join('st_users ON st_flow.user_id = st_users.id')
+                                ->field('st_flow.*,st_users.nickname,st_users.balance')
                                 ->select();
         // dump($list);die;
         $this->assign('list',$list);
@@ -161,17 +161,17 @@ class UsersController extends CommonController
 
         $consume = M('consume');
         $total = $consume->where($map)
-                                ->join('pub_users ON pub_consume.uid = pub_users.id')
-                                // ->join('pub_card ON pub_consume.icid = pub_card.id')
-                                ->field('pub_consume.*,pub_users.name')
+                                ->join('st_users ON st_consume.uid = st_users.id')
+                                // ->join('st_card ON st_consume.icid = st_card.id')
+                                ->field('st_consume.*,st_users.name')
                                 ->count();
         $page  = new \Think\Page($total,8);
         $pageButton =$page->show();
 
         $list = $consume->where($map)->limit($page->firstRow.','.$page->listRows)
-                                ->join('pub_users ON pub_consume.uid = pub_users.id')
-                                // ->join('pub_card ON pub_consume.icid = pub_card.id')
-                                ->field('pub_consume.*,pub_users.name,pub_users.balance')
+                                ->join('st_users ON st_consume.uid = st_users.id')
+                                // ->join('st_card ON st_consume.icid = st_card.id')
+                                ->field('st_consume.*,st_users.name,st_users.balance')
                                 ->select();
         // dump($list);die;
         $this->assign('list',$list);

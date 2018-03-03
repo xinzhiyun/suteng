@@ -4,6 +4,7 @@ use Think\Controller;
 
 class TaskController extends CommonController
 {
+
     public function set_time()
     {
         // dump($_SESSION);die;
@@ -33,11 +34,24 @@ class TaskController extends CommonController
             // 判断是否添加成功
             if($addRes){
                 // 设置成功
-                $redis = new \Redis();
-                $redis->connect('127.0.0.1',6379);
-                $redis->set(date('i',$time),json_encode($data));
-                // dump($redis);die;
                 
+                // 查询设备码
+                $code = M('Devices')->where('id='.$data['did'])->getField('device_code');
+                // 实例化redis
+                $redis = new \Redis();
+                // redis连接
+                $redis->connect('127.0.0.1',6379);
+                // 查询当前设备下的设置状态是否存在
+                $res = $redis->exists($code[$data['type']]);
+                // 判断当前设备的设置状态
+                if($res){
+                    // 获取
+                    $value = $redis->get($code[$data['type']]);
+                    $arr[] = json_decode($value);
+                    $arr[] = $data;
+                }
+                $redis->set($code[$data['type']],json_encode($data));
+                // dump($redis->get($code[$data['type']]));die;
                 // 设置返回提示码
                 $data['code'] = 200;
                 // 设置返回提示信息
@@ -101,6 +115,7 @@ class TaskController extends CommonController
         if($delData['id']){
             $res = M('task')->where($delData)->delete();
             if($res){
+
                 $message    = ['code' => 200, 'message' => '删除成功!'];
             }else{
                 $message    = ['code' => 403, 'message' => '删除失败，请刷新后重试!'];
@@ -113,5 +128,3 @@ class TaskController extends CommonController
         $this->ajaxReturn($message);
     }
 }
-
-

@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <form method="get" action="">
-                    <div class="input-group col-md-4"  style="float: right;margin-right: 60px;">
+                    <div class="input-group col-md-6"  style="float: right;margin-right: 60px;">
                         <select name="key" class="form-control" name="account" style="width:20%">
                             <option value="device_code">设备编码</option>
                             <option value="typename">设备类型</option>
@@ -52,10 +52,13 @@
                                         绑定分销商
                                     </th>
                                     <th>
+                                        绑定用户
+                                    </th>
+                                    <th>
                                         激活状态
                                     </th>
                                     <th>
-                                        启用|禁用
+                                        分销商解绑
                                     </th>
                                 </tr>
                             </thead>
@@ -66,13 +69,20 @@
                                     <volist name="deviceInfo" id="vo">
                                         <tr>
                                             <td>{{$i}}</td>
-                                            <td><a class="deviceDetail" href="#">{{$vo.device_code}}</a></td>
+                                            <td><a class="btn btn-success deviceDetail" href="#">{{$vo.device_code}}</a></td>
                                             <td>{{$vo.typename}}</td>
                                             <td>
                                                 <empty name="vo.user">
-                                                    <span style="color:blue">未绑定</span>
+                                                    <span style="color:blue">未绑定分销商</span>
                                                 <else />
                                                     <span style="color:red">{{$vo.user}}</span>
+                                                </empty>
+                                            </td>
+                                            <td>
+                                                <empty name="vo.nickname">
+                                                    <span style="color:blue">未绑定用户</span>
+                                                <else />
+                                                    <span style="color:red">{{$vo.nickname}}</span>
                                                 </empty>
                                             </td>
                                             <td>
@@ -82,7 +92,7 @@
                                                     <default />未激活
                                                 </switch>
                                             </td>
-                                            <td><a href="#">启用中</a></td>
+                                            <td><a class="btn btn-success" href="#">解绑</a></td>
                                         </tr>
                                     </volist>
                                 </empty>
@@ -115,7 +125,7 @@
                                         <td>
                                             <label class="col-sm-3 control-label">设备编码：</label>
                                             <div class="col-sm-6 form-group">
-                                                <input class="input-medium form-control" placeholder="请输入设备编码..." type="text" name="name">
+                                                <input class="input-medium form-control" placeholder="请输入15位设备编码..." type="text" name="name">
                                             </div>
                                         </td>
                                     </tr>
