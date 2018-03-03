@@ -622,9 +622,11 @@
 			})
 			//搜索函数
 			function _search(word){
+				//searchArr: 所有商品的数据, 遍历商品的时候存进去的
 				// console.log(word);
 				if(word){
 					// console.log(searchArr);
+					$("#searchPanel").html('');	//每次输入都重新搜索
 					//遍历适配的数据
 					for(var i=0; i<searchArr.length; i++){
 						if(searchArr[i].indexOf(word) > -1){
@@ -632,7 +634,14 @@
 						}
 					}
 					$("#searchPanel").fadeIn('fast');
+					// console.log($("#searchPanel>a").length)
+					// 没有匹配到商品
+					if($("#searchPanel>a").length < 1){
+
+						$("#searchPanel").html('没有找到你搜索的商品！');
+					}
 				}else{
+					$("#searchPanel").html('^^换个姿势搜索看看^^');
 					console.log('没有输入内容!')
 				}
 			}
