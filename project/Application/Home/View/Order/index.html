@@ -1148,7 +1148,7 @@
 									'</div>'+
 									'<div>'+
 										'<div class="cancel">'+
-											'<span class="Rejected" name="'+waitgainlist[i]['orderid']+'">退货</span>'+
+											'<span class="Rejected" order_id="'+waitgainlist[i]['orderid']+'">退货</span>'+
 										'</div>'+
 										'<div class="pay start3" name='+ waitgainlist[i]['orderid'] +' >'+
 											'<span>确认收货</span>'+
@@ -1162,8 +1162,8 @@
 						$(".waitharvest").html(waitgainlist.length);
 						//退货
 						$(".Rejected").click(function(){
-							var names=$(this).attr("name");
-							location.href="{{:U('Home/Order/choiceRefund')}}?code="+names;
+							var order_id=$(this).attr("order_id");
+							location.href="{{:U('Home/Order/choiceRefund')}}?code="+order_id;
 						});
 						//确认收货 模态框的js
 				      	$('#dingdanDaishouhuo').on("click",".start3",function(){
@@ -1296,7 +1296,7 @@
 										'</div>'+
 										'<div class="tuikuangRight">'+
 											'<span>'+ res.data[i]['description'] +'</span>'+
-											'<p><b>￥'+res.data[i]['price'] +'</b><span>x '+ returneddata1[i]['productnumber'] +'</span></p>'+
+											'<p><b>￥'+res.data[i]['price'] +'</b><span>x '+ res.data[i]['productnumber'] +'</span></p>'+
 										'</div>'+
 									'</div>'+
 									'<p><b>等待商家同意退款</b></p>';
