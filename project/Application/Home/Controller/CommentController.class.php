@@ -38,7 +38,7 @@ class CommentController extends CommonController
                     fclose ( $$key );
                 }
             }else{
-                E('没有文件上床', 602);
+                E('没有文件上传', 602);
             }   
         // print_r($info);
         // die;
@@ -83,7 +83,7 @@ class CommentController extends CommonController
                 'msg' => $e->getMessage(),
             ];
             $this->ajaxReturn($err);
-            // $this->error('评论失败');
+            // $this->error('评论失败');                     
         }
     }
 

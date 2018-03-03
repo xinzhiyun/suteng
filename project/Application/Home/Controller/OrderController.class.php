@@ -150,7 +150,7 @@ class OrderController extends CommonController
         // if (IS_AJAX) {
             $uid = $_SESSION['user']['id'];
             $data = D('shop_order')->alias('so')
-                                ->where(['so.uid'=>$uid,'gd.is_install'=>1])
+                                ->where(['so.uid'=>$uid,'gd.is_install'=>1,'od.is_installed'=>0])
                                 ->join('st_order_detail od ON od.order_id = so.order_id','LEFT')
                                 ->join('st_pic pic ON od.gid = pic.gid','LEFT')
                                 ->join('st_goods g ON od.gid = g.id','LEFT')
@@ -160,7 +160,7 @@ class OrderController extends CommonController
             if ($data) {
                 return $this->ajaxReturn(['code'=>200,'data'=>$data]);
             }
-                return $this->ajaxReturn(['code'=>400,'msg'=>'没有数据']);
+                return $this->ajaxReturn(['code'=>400,'msg'=>'没有数据','uid'=>$uid]);
         // }       
     }
 

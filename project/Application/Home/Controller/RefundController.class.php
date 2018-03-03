@@ -11,7 +11,7 @@ class RefundController extends CommonController
     public function showGoods()
     {
         // if (IS_AJAX) {
-           $data = D('Refund')->relation(['goods'])->where(['uid'=>$_SESSION['user']['id']])->find();
+           $data = D('Refund')->relation(['goods'])->where(['uid'=>$_SESSION['user']['id']])->select();
             foreach ($data['goods'] as $key => $value) {
                 $data['goods'][$key] = M('order_detail')
                         ->alias('d')
@@ -34,6 +34,10 @@ class RefundController extends CommonController
         // $this->display();
     }
 
+    /**
+     * 退款退货申请
+     * @return [type] [description]
+     */
     public function create()
     {
         // 商品
