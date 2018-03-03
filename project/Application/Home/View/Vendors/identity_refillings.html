@@ -117,7 +117,6 @@
         display: block;
     }
      form>.form-group>.col-md-3>input{
-        width: 37vw;
         height: 1.2rem;
         border:none;
         padding-left: 1vw;
@@ -168,7 +167,7 @@
         opacity: 0;
         z-index: 999;
         left: 1rem;
-        top: -0.7rem;
+        top: 2.5rem;
     }
     /*.form-group>.col-md-5>i{
         position: relative;
@@ -182,7 +181,7 @@
     /*图片区域*/
     form>.form-group1>.col-md-5>i {
         position: absolute;
-        top: -1.3rem;
+        top:2.5rem;
         left: 0.8rem;
         font-size: 3.8rem;
         color: #DCF8FF;
@@ -191,18 +190,23 @@
         border-radius: 0.6rem;
     }
         .col-md-5>.xiePic{
+        visibility:hidden;
         width: 4.6rem;
         line-height: 4.6rem;
         text-align: center;
         height: 4.6rem;
         position: absolute;
-        background: #DCF8FF;
         border-radius: 0.5rem;
         left: 6rem;
-        top: -0.6rem;
+        top:2.5rem;
         color: #5a5a5a;
-        border: 1px dashed #76DED3;
-        overflow: hidden;
+        /*border: 1px dashed #76DED3;*/
+        /*overflow: hidden;*/
+    }
+    .col-md-5>.xiePic img{
+        border-radius: .4rem;
+        width: 100%;
+        height: 100%;
     }
     .xiePic>i{
             position: absolute;
@@ -218,7 +222,7 @@
             font-weight: 600;
         }
     /*申请按钮*/
-          .xieBtn>input{
+        .xieBtn>input{
             margin-top:2rem;
             position: absolute;
             background: #2EB6AA;
@@ -228,8 +232,7 @@
             height: 2rem;
             letter-spacing: 0.1rem;
             font-size: 0.8rem;
-          }
-
+        }
 </style>
 <body>
     <div class="ibox-content">
@@ -237,10 +240,10 @@
             <p><b><img src="{{$vendor.head}}" alt="" width="120%"></b></p>
             <p><span>{{$vendor.name}}</span></p>
         </header>
-        <form action="{{:U('Home/Vendors/identity_refillings')}}" method="post" class="form-horizontal clearfix" enctype="multipart/form-data">    
+        <form action="{{:U('Home/Vendors/identity_refillings')}}" method="post" class="form-horizontal clearfix" enctype="multipart/form-data" onsubmit="return validFn()">    
             <div class="form-group">
                 <i class="iconfont icon-gongsimingcheng"></i>
-                <label class="col-sm-2 control-label" for="comName">姓 &nbsp; &nbsp;名&nbsp;:</label>
+                <label class="col-sm-2 control-label" for="comName">姓&nbsp;&nbsp;&nbsp;名:</label>
 
                 <div class="col-md-3">
                     <input id="comName" type="text" name="name" class="form-control">
@@ -292,6 +295,7 @@
         </form>
     </div>
     <script>
+        // 正面图片
         function positiveImage(file) {
             if (!file.files || !file.files[0]) {
                 return;
@@ -299,28 +303,33 @@
             var reader = new FileReader();
             reader.onload = function (evt) {
                 document.getElementById('positive').src = evt.target.result;
+                $("#positive").parent().css("visibility","visible");
             }
             reader.readAsDataURL(file.files[0]);
         }
-
+        // 反面图片
         function oppositeImage(file) {
+            console.log(456);
             if (!file.files || !file.files[0]) {
                 return;
             }
             var reader = new FileReader();
             reader.onload = function (evt) {
                 document.getElementById('opposite').src = evt.target.result;
+                $("#opposite").parent().css("visibility","visible");
             }
             reader.readAsDataURL(file.files[0]);
         }
-
+        // 手持身份证图片
         function handheldImage(file) {
+            console.log(789);
             if (!file.files || !file.files[0]) {
                 return;
             }
             var reader = new FileReader();
             reader.onload = function (evt) {
                 document.getElementById('handheld').src = evt.target.result;
+                $("#handheld").parent().css("visibility","visible");
             }
             reader.readAsDataURL(file.files[0]);
         }

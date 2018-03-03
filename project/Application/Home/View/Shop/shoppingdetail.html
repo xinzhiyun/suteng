@@ -250,18 +250,22 @@
 	/*底部*/
 	.shopdetailBott{
 		width: 100%;
+		height: 8vh;
 		position: fixed;
 		display: flex;
-		bottom: 0 ;
-		margin-top:0.68rem;
+		bottom: 0;
+		margin-top: 0.68rem;
 		background: #FFF;
 		overflow: hidden;
-		border-top:1px solid #E5E5E5;
+		border-top: 1px solid #E5E5E5;
 		font-size: 0.74rem;
 	}
 	.shopdetailBott>div{
-		display: inline-block;
 		width: 80%;
+		height: 8vh;
+		display: inline-block;
+	    line-height: 8vh;
+		white-space: nowrap;
 		box-sizing: border-box;
 	}
 	.shopdetailBott>a {
@@ -275,17 +279,17 @@
 		color: #960532;
 	}
 	.shopdetailBott>a>i{
-		font-size: 1.2rem;
-
     	color: #F04B7E;
+		font-size: 1.2rem;
 	}
 	.shopdetailBott>div>input{
-		padding: 0.64rem;
-		background: #F04B7E;
-		border:none;
-		width: 52%;
+		width: 50%;
+		height: 8vh;
+	    line-height: 8vh;
+		border: none;
 		color:#fff;
 		border-radius: 0px!important;
+		background: #F04B7E;
 	}
 	.icon-gouwuche {
 		position: relative;
@@ -307,7 +311,7 @@
 	/*加入购物车*/
 	#add2ShopCart {
 		height: 8vh;
-		width: 46%;
+		width: 50%;
 	    display: inline-block;
 	    line-height: 8vh;
 	    text-align: center;
@@ -385,6 +389,8 @@
 		var goods_gid = location.search.substr(location.search.indexOf("=")+1);
 		// console.log(goods_gid)
 		var desc;
+		var picPathArr = []; 	//存放后台传过来的图片路径转换的数组
+		var commPicArr = [];	//存储每条评论的图片
 		// ajax发送商品id查询商品详情
 		$.ajax({
 			url: '{{:U("Shop/goods_detail")}}',
@@ -426,14 +432,20 @@
 				if(res.commentInfo){
 					if(res.commentInfo.length > 1){
 						for(var i=0; i<res.commentInfo.length; i++){
+							commPicArr[i] = []; //初始化
 							res.commentInfo[i].nickname = res.commentInfo[i].nickname == null ? '不知道是谁' : res.commentInfo[i].nickname;
 							res.commentInfo[i].content = res.commentInfo[i].content == null ? '该用户暂未评论' : res.commentInfo[i].content;
 							res.commentInfo[i].path = res.commentInfo[i].path == null ? '' : res.commentInfo[i].path;
 							commentInfo_html += '<div class="detailItem">'+
 								'<p><em><img src="'+ res.commentInfo[i].head +'" alt=""></em><b>'+ res.commentInfo[i].nickname +'</b></p>'+
 								'<p>'+ res.commentInfo[i].content +'</p>'+
-								'<span><img src="'+ res.commentInfo[i].path +'" alt=""></span>'+
 							'</div>';
+							picPathArr = res.commentInfo[i].path.split('|');
+							// 存储每条评论的图片
+							for(var j=0; j<picPathArr.length; j++){
+
+								commPicArr[i].push({'img':'<span><img class="commPic" src="/Uploads/'+ picPathArr[i] +'" alt=""></span>'});
+							}
 						}
 					}else{
 						res.commentInfo.nickname = res.commentInfo.nickname == null ? '不知道是谁' : res.commentInfo.nickname;
@@ -453,7 +465,14 @@
 				$(".detailTop>div").html(goodsDetail_html);
 				// 将评价添加到页面
 				$(".detailItemall").append(commentInfo_html);
-
+				// console.log(picPathArr, '\n', commPicArr)
+				// 遍历评论列表的每个评论的图片
+				for(var m=0; m<commPicArr.length; m++){
+					for(var n=0; n<commPicArr[m].length; n++){
+						// console.log('468: ', commPicArr[m][n].img)
+						$(".detailItem").eq(m).append(commPicArr[m][n].img)
+					}
+				}
 				// console.dir($('.detailItem').length);
 				// 只显示2条评论
 				var _length=$('.detailItem').length;
@@ -594,7 +613,7 @@
 						location.href = '{{:U("PaymentSystem/payConfirm")}}';
 					}else{
 						//支付发生错误，无法生成订单号
-						parent.layer.msg('系统发生错误，请稍后再试，还望谅解！');
+						parent.layer.msg('系统发生错误，请稍后再试！');
 					}
 				},
 				error: function(res){
