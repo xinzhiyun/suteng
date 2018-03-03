@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
 	<title>选择退款商品</title>
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
@@ -37,7 +37,8 @@
 		}
 		.item>.appLeft>span{
 			float: left;
-			width: 84%
+			width: 84%;
+			height: 100%;
 		}
 		.item>.appLeft>span>img{
 			width: 100%;
@@ -56,17 +57,16 @@
 		    font-weight: 700;
 		}
 		.appRight>.changTxt{
-			font-size: 0.213333rem;
-			overflow:hidden;
-			color: #5A5A5A; 
-			text-overflow:ellipsis;
+			padding: 2% 0;
 			display:-webkit-box; 
+			overflow:hidden;
+			text-overflow:ellipsis;
 			-webkit-box-orient:vertical;
 			box-orient:vertical;
 			-webkit-line-clamp:4; 
-			line-clamp:4; 
+			line-clamp: 4; 
 			color: #5A5A5A;
-            font-size: 0.68rem;
+            font-size: 0.62rem;
 		}
 		.appRight>p{
 			display: block;
@@ -110,10 +110,9 @@
 			margin-left:2.5rem;
 			margin-right: 0;
 		}
-		/*.appFoot>span>i.*/
 		.appFoot>input{
-			width: 50%;
-			height: 2rem;
+			width: 50%;    
+			height: 100%;
 			border:none;
 			display: inline-block;
 			background: #2EB6AA;
@@ -129,20 +128,7 @@
 </head>
 <body>
 	<div class="appContain">
-		<div class="item clearfix">
-			<div class="appLeft">
-				<i class="iconfont icon-xuanze"></i>
-				<span><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></span>
-			</div>
-			<div class="appRight">
-				<h4>RO膜</h4>
-				 <div class="changTxt">
-					RO膜能够有效地去除水中钙、 镁、细菌、有机物、无机物、金 属离子和放射性物质属离子性物质属离子离子性物质属离子
-				</div>
-				<p><b>￥120.00</b><span>X1</span></p> 
-			</div>
-		</div>
-		<div class="item clearfix">
+		<!-- <div class="item clearfix">
 			<div class="appLeft">
 				<i class="iconfont confont icon-kuang1"></i>
 				<span><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></span>
@@ -154,12 +140,50 @@
 				</div>
 				<p><b>￥120.00</b><span>X1</span></p> 
 			</div>
-		</div>
+		</div> -->
 	</div>
 	<div class="appFoot">
 		<span><i class="iconfont icon-kuang1"></i>全选</span><input type="submit" value="确定" class="selected">
 	</div>
 	<script>
+		// 订单编号
+		var order_id = location.search.substr(location.search.indexOf('=')+1);
+		// console.log(order_id)
+		// 存放当前订单商品
+		var refundHTML = '';
+		$.ajax({
+			url: '{{:U("Home/Order/choiceRefund")}}',
+			type: 'post',
+			data: {orderid: order_id},
+			success: function(res){
+				console.log('请求成功！',res);
+				if(res.code == 200){
+					for(var i=0; i<res.data.length; i++){
+
+						var productbrief = res.data[i].productbrief ? res.data[i].productbrief : '暂无描述';
+						refundHTML += '<div class="item clearfix">'+
+								'<div class="appLeft">'+
+									'<i class="iconfont icon-xuanze"></i>'+
+									'<span><img src="/Uploads/'+ res.data[i].orderimg +'" alt=""></span>'+
+								'</div>'+
+								'<div class="appRight">'+
+									'<h4>'+ res.data[i].productname +'</h4>'+
+									 '<div class="changTxt">'+ productbrief +'</div>'+
+									'<p><b>￥'+ res.data[i].price +'</b><span>X'+ res.data[i].productnumber +'</span></p>'+
+								'</div>'+
+							'</div>';
+					}
+					// console.log(refundHTML);
+					//将数据添加到页面
+					$('.appContain').append(refundHTML);
+				}else{
+					console.log('遇到问题!');
+				}
+			},
+			error: function(res){
+				console.log('请求失败！',res);
+			}
+		})
 		// 选中框
 		$('.item>.appLeft>i').click(function(){
 			var _class=$(this).attr('class');
@@ -184,6 +208,7 @@
 				$('.item>.appLeft>i').removeClass(_class).addClass('iconfont icon-kuang1')
 			}	
 		})
+		// 点击确定
 		$(".selected").click(function(){
 			window.location.href="{{:U('Home/Order/applicRefund')}}";
 		});
