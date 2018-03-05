@@ -174,6 +174,7 @@
 			height: 8rem;
 			padding:0 5%;
 			margin-bottom: 5rem;
+			box-sizing: border-box;
 		}
 		.sendpic>p{
 			line-height: 2rem;
@@ -183,15 +184,15 @@
 			position: relative;
 		}
 		.picBtn>i{
-			font-size: 5rem;
+			font-size: 4rem;
 			color:#DCF8FF;
 		}
 		.picBtn>span{
 			position: absolute;
 		    bottom: 0.7rem;
-		    left: 1.4rem;
+		    left: 1.2rem;
 			color: #5a5a5a;
-			font-size: 0.62rem;
+			font-size: 0.42rem;
 		}
 		.picBtn>input{
 			opacity: 0;
@@ -286,12 +287,48 @@
 		    margin-top: 2rem;
 		}
 
+        /*显示上传的图片*/
+        #picShow { 
+        	position: absolute;
+        	width: 66%;
+        	height: 4rem;
+        	bottom: 0;
+        	right: 0;
+        	display: block;
+        }
+        #picShow>span {
+        	width: 30%;
+        	height: 100%;
+        	display: inline-block;
+        	position: relative;
+        	margin: 0 4px;
+        }
+        #picShow>span>img {
+        	width: 100%;
+        	height: auto;
+        	position: absolute;
+        	top: 50%;
+        	transform: translateY(-50%);
+        }
+        .delPic {
+        	position: absolute;
+        	width: .8rem;
+        	height: .8rem;
+        	top: -10px;
+        	right: 0;
+        	display: flex;
+        	justify-content: center;
+        	align-items: center;
+        	color: #fff;
+        	border-radius: 50%;
+        	background: red;
+        }
 		
 			
 	</style>
 </head>
 <body>
-	<div class="appContainall">
+	<form class="appContainall" id="form">
 		<div class="appContain">
 			<h3>退款商品</h3>
 			<div class="itemContain clearfix">
@@ -375,7 +412,8 @@
 				<div class="picBtn">
 					<i class="iconfont icon-tianjia"></i>
 					<span>限3张内</span>
-					<input class="" type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
+					<input class="file_upload" type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
+					<div id="picShow"></div>
 				</div>
 			</div>	
 		</div>
@@ -384,7 +422,8 @@
 			<input type="button" value="提交">
 		</div>
 		
-	</div>
+	</form>
+  	<script src="__PUBLIC__/Home/js/upFile.js"></script>
 	<script>
 		var goodsInfo = JSON.parse(sessionStorage.getItem("goodsInfo"));
 		console.log(goodsInfo);
@@ -418,6 +457,8 @@
 		 */
 		$(".sendpic").hide();	// 默认不需要图片凭证
 		var status_index;	//商品状态选择的 第几个状态
+		// var formData = new formData();
+
 		$('.status').on('change', function(){
 			status_index = $(this)[0].selectedIndex;
 			console.log(status_index)
@@ -434,32 +475,71 @@
 			点击提交
 		 */
 		 $(".appFoot").click(function(){
-		 	// status: 商品状态，reason: 退款原因，explain: 退款说明
+		 		/*
+			 		status: 商品状态，
+			 		reason: 退款原因，
+			 		explain: 退款说明，
+			 		gid: 商品 id
+		 	 	*/ 
 		 	var status = $(".status>option:selected");
 		 	var reason = $(".reason>option:selected");
 		 	var explain = $("#Laddr").val();
-		 	
-		 	if(status.length && reason.length && explain){
-		 		console.log('通过!');
+		 	var gid = location.search.substr(1);
 
+		 	formData.append('status', status[0].index);
+		 	formData.append('reason', reason[0].index);
+		 	formData.append('explain', explain);
+		 	formData.append('gid', gid);
+
+		 	console.log(formData.getAll('status'),formData.getAll('reason'),formData.getAll('explain'),formData.getAll('gid'));
+
+		 	if(status[0].index != 0 && reason[0].index != 0 && explain){
+		 		console.log('通过!');
+		 		/*
+		 			提交给后台
+		 	 	*/
+		 	 	$.ajax({
+		 	 		url: '{{:U("Order/applicRefund")}}',
+		 	 		type: 'post',
+		 	 		data: formData,
+		 	 		cache: false,
+		 	 		processData: false,
+		 	 		contentType: false,
+		 	 		success: function(res){
+		 	 			console.log('请求成功！', res);
+		 	 			if(res.code == 200){	//提交成功
+		 	 				parent.layer.msg('提交成功！');
+		 	 				// location.href = '{{:U("")}}';
+		 	 			}
+		 	 		},
+		 	 		error: function(res){
+		 	 			console.log('请求失败！', res)
+		 	 		}
+		 	 	})
 			}else if(status[0].index == 0){	//未选择
 
 				parent.layer.msg('请选择商品状态！');
 			 	console.log('请选择商品状态！');
+			 	return false;
 
 			}else if(reason[0].index == 0){	//未选择
 				parent.layer.msg('请选择退款原因！');
 			 	console.log('请选择退款原因！');
+			 	return false;
 
 			}else if(!explain){
 				parent.layer.msg('请填写退款说明！');
 			 	console.log('请填写退款说明！');
+			 	return false;
 
 			}
-			console.log('order_id: ',goodsInfo[0].order_id);
+			console.log('order_id: ', goodsInfo[0].order_id);
 			console.log('status: ', status[0].index);
 		 	console.log('reason: ', reason[0].index);
-		 	console.log('explain: ', explain);
+		 	console.log('money: ', money);
+		 	console.log('gid: ', gid);
+		 	console.log('UploadForm[]: ', formData.getAll('UploadForm[]'));
+		 	
 		 })
 	</script>
 </body>
