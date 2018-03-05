@@ -1163,7 +1163,7 @@
 						//退货
 						$(".Rejected").click(function(){
 							var order_id=$(this).attr("order_id");
-							location.href="{{:U('Home/Order/choiceRefund')}}?code="+order_id;
+							location.href="{{:U('Home/Order/choiceRefund')}}?order_id="+order_id;
 						});
 						//确认收货 模态框的js
 				      	$('#dingdanDaishouhuo').on("click",".start3",function(){
@@ -1283,30 +1283,45 @@
                 // dataType:"json",
                 type: 'get',
                 success:function(res){
-                    // console.dir(res);
+                	// alert(123);
+                    console.dir(res);
                     if(res.code == 200){
                     	// 查询有数据
-                    	console.dir(res);
+                    	// alert(123);
+                    	console.log(res);
                     	for(var i=0;i<res.data.length;i++){
                     		if(res.data[i]['status']=='0'){
-                    			returned1+='<p>信息更新时间：'+ res.data[i]['dw_time'] +'</p>'+
+                    			console.log(res.data[i]['goods'].length);
+                    			for(var k=0;k<res.data[i]['goods'].length;k++){
+                    				console.log(res.data[i]['goods'][k]['dw_time']);
+                    				returned1+='<p>信息更新时间：'+ res.data[i]['goods'][k]['dw_time'] +'</p>'+
 									'<div class="shangpingnei clearfix">'+
 										'<div class="tuikuangLeft ">'+
 											'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
 										'</div>'+
 										'<div class="tuikuangRight">'+
-											'<span>'+ res.data[i]['description'] +'</span>'+
-											'<p><b>￥'+res.data[i]['price'] +'</b><span>x '+ res.data[i]['productnumber'] +'</span></p>'+
+											'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+											'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
 										'</div>'+
 									'</div>'+
 									'<p><b>等待商家同意退款</b></p>';
+                    			}
+                    		}else if(res.data[i]['status']=='3'){
+
+                    		}else if(res.data[i]['status']=='0'){
+                    			
+                    		}else if(res.data[i]['status']=='0'){
+                    			
+                    		}else if(res.data[i]['status']=='0'){
+                    			
                     		}
                     	}
-                    	$(".waitdrawback").html(res.data.length);
+                    	$(".returned1").html(returned1);
                     }else{
                         // 查询无数据提示
-                        // console.log(res.message);
+                        // console.log(res.msg);
                     }
+                    // $('waitdrawback').html(res.data.length);
                 },
                 error:function(res){
                 	console.dir(456)
@@ -1327,7 +1342,7 @@
                     	console.dir(res.data)
                     }else{
                         // 查询无数据提示
-                        console.log(res.message);
+                        // console.log(res.message);
                     }
                 }
             });  
