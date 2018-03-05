@@ -10,6 +10,7 @@
      <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_359ekha73vt8d7vi.css">
    <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
     <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 </head>
 <style>
     * {
@@ -202,7 +203,8 @@
             <p><b><img src="{{$vendor.head}}" alt="" width="120%"></b></p>
             <p><span>{{$vendor.name}}</span></p>
         </header>
-        <form action="{{:U('Home/Vendors/company')}}" method="post" class="form-horizontal clearfix" enctype="multipart/form-data">    
+        <!-- <form action="{{:U('Home/Vendors/company')}}" method="post" class="form-horizontal clearfix" enctype="multipart/form-data">    -->
+        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal clearfix"> 
             <div class="form-group">
                 <i class="iconfont icon-gongsimingcheng1"></i>
                 <label class="col-sm-2 control-label" for="comName">公司名称： </label>
@@ -230,10 +232,10 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label" for="comLicen">营业执照</label>
                 <div class="col-md-3">
-                    <input type="file" id="comLicen" name="licence" class="form-control" onchange="licenceImage(this);">
+                    <input type="file" id="comLicen" name="licence" class="form-control" onchange="licenceImage(this);" accept="image/jpg,image/png,image/jpeg,image/gif">
                      <i class="iconfont icon-tianjiajingdian"></i>
-                     <div class="xiePic">
-                        <img src="" id="licence"><i class="iconfont icon-cuohao"></i></div>
+                     <div class="xiePic" index="0">
+                        <img src="" id="licence"><i class="iconfont icon-cuohao" onclick="removePic(this)"></i></div>
                 </div>
             </div> 
             <div class="xieBtn">
@@ -247,12 +249,100 @@
                 return;
             }
             var reader = new FileReader();
-            reader.onload = function (evt) {
-                document.getElementById('licence').src = evt.target.result;
-                $("#licence").parent(".xiePic").css("visibility","visible");
+            reader.onload = function (evt) {//reader.onload成功读取
+                var dx =(evt.total/1024)/1024;
+               var result = this.result;//图片路径加密后信息
+                // 上传图片大小是否符合
+                if(dx>= 3) {
+                    layuiHint("营业执照图片超出允许上传文件大小3M")
+                }else{
+                    document.getElementById('licence').src = evt.target.result;
+                    $("#licence").parent(".xiePic").css("visibility","visible");
+                    $(".xiePic").attr("index", "1");
+
+                    // 图片压缩
+                    // var canvas = document.createElement("canvas");
+                    // var cxt = canvas.getContext("2d");
+                    // var img = new Image();
+                    // img.src = result;
+                    // canvas.width = 92;
+                    // canvas.height = 92;
+                    // img.onload = function() {
+                    //     drawImageByScale();
+                    //     // 点击放大上传图片
+                    //     $(".xiePic").on("click", function() {
+                    //         alert(11111)
+                    //         if($(this).attr("index") === "1") {
+                    //             var scale = 0.5;
+                    //             drawImageByScale(scale);
+                    //         }
+                    //     })
+                    //     function drawImageByScale(scale) {
+                    //         var scale = scale || 1;
+                    //         var imgWidth = 92 * scale;
+                    //         var imgHeight = 92 * scale;
+                    //         var dx = (canvas.width - imgWidth)/2;
+                    //         var dy = (canvas.height - imgHeight)/2;
+                    //         cxt.clearRect(0,0,canvas.width,canvas.height);
+                    //         cxt.drawImage(img,dx,dy,imgWidth,imgHeight);
+                    //     }
+                    // }
+                }
+                
             }
             reader.readAsDataURL(file.files[0]);
         }
+        // 点击叉叉隐藏div
+        function removePic(removeObj) {
+            removeObj.previousSibling.src = "";//将图片路径删除
+            removeObj.parentNode.style.visibility = "hidden";//隐藏div
+            removeObj.parentNode.setAttribute("index", "0");//设置index为0
+        }
+        // 提交验证
+        $('form').submit(function(e) {
+            var comNameVal = $('#comName').val();//输入公司名称
+            var comTellVal = $("#comTel").val();//输入公司固定电话
+            var comAddrVal = $("#comAddr").val();//公司地址
+            // 验证是否合法公司名称：字母或中文开头，数字字母下划线中文,2-30位
+            var comNameReg = /^[\u4e00-\u9fa5\w]{2,30}$/;
+            if(comNameVal) {
+                if(comNameReg.test(comNameVal)) {
+                    // 座机号码验证
+                    if(comTellVal) {
+                        var comTellReg = /^((0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/;//固定电话号码
+                        var comTellRegs = /^1[3|4|5|8][0-9]\d{4,8}$/;//手机号码
+                        if(comTellReg.test(comTellVal) || comTellRegs.test(comTellVal)) {
+                            // 公司地址验证
+                            if(comAddrVal) {
+                                var comAddrReg = /^[\u4e00-\u9fa5]+$/;
+                                if(comAddrReg.test(comAddrVal)) {
+                                    // 上传营业执照图片
+                                    if($(".xiePic").attr("index") === "1") {
+                                        layuiHint("成功");
+                                    }else{
+                                        layuiHint("营业执照图片必须上传");
+                                    }
+                                }else{
+                                    layuiHint("请输入完整的公司地址");
+                                }
+                            }else{
+                                layuiHint("请输入公司地址");
+                            }
+                        }else{
+                            layuiHint("坐机号码或手机号码格式不正确");
+                        }
+                    }else{
+                        layuiHint("请输入坐机号码");
+                    }
+                }else{
+                    layuiHint("公司名称格式不正确，请重新输入");
+                }
+            }else{
+                layuiHint("请输入公司名称");
+            }
+
+            return false;
+        })
     </script>
 </body>
 </html>
