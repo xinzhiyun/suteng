@@ -464,7 +464,7 @@
 		$(".sendpic").hide();	// 默认不需要图片凭证
 		var method_index;	//商品状态选择的 第几个状态
 		// var formData = new formData();
-
+		// 图片选择
 		$('.method').on('change', function(){
 			method_index = $(this)[0].selectedIndex;
 			console.log(method_index)
@@ -515,7 +515,10 @@
 		 	formData.append('price', goodsInfo[0].price);
 		 	formData.append('total_amount', money);
 
-		 	if(method[0].index != 0 && reason[0].index != 0 && description){
+		 	if(method[0].index != 0 && reason[0].index != 0 && description && method_index == 1){
+		 		// if(method_index == 2 || method_index == 3){		// 需要图片凭证
+		 		// 	return false;	
+			 	// }
 		 		console.log('通过!');
 
 			 	console.log('order_id: ',formData.getAll('order_id'));
@@ -564,6 +567,8 @@
 			 	console.log('请填写退款说明！');
 			 	return false;
 
+			}else if(formData.getAll('UploadForm[]').length <= 0 && method_index == 2 || method_index == 3){
+				parent.layer.msg('请上传凭证！');
 			}
 		 	
 		 })
