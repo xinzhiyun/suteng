@@ -115,7 +115,7 @@
 				// console.log(_cate);
 				// 遍历分类
 				for(var i=0;i<_cate.length; i++){
-					CategoryHTML += '<span class="tab" index='+i+'>'+ _cate[i].name +'</span>';
+					CategoryHTML += '<span class="tab" cid="'+ i +'" index='+i+'>'+ _cate[i].name +'</span>';
 					categoryArr.push(_cate[i].name);
 				}
 
@@ -277,6 +277,7 @@
 			var tabIndex;
 			$("#header").on("click",'.tab',function(){
 				tabContent($(this));
+				sessionStorage.setItem('shopCid', $(this).attr('cid'));
 			});
 			// 切换的函数
 			function tabContent(_this){
@@ -299,7 +300,9 @@
 				$("#content")
 				.css({transition: '.5s ease',transform: 'translateX(-'+ _this.attr("index") +'00vw)'});
 				//横线移动
-				$("#line").css({left: _this[0].offsetLeft+_this[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
+				// $("#line").css({left: _this[0].offsetLeft+_this[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
+
+				$("#line").css({transform: 'translateX('+ parseFloat(_this[0].offsetLeft+_this[0].clientWidth/2-$("#line")[0].clientWidth/2) +'px)'});
 
 				// 顶部滚动过渡效果
 				// console.log($(this)[0].offsetLeft)
@@ -315,11 +318,13 @@
 			}
 			// console.log($('.tab')[0].offsetLeft+$('.tab')[0].clientWidth-$("#line")[0].clientWidth/2)
 			// 页面加载时顶部分类横线位置初始化
-			$("#line").css({left: $('.tab')[0].offsetLeft+$('.tab')[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
+			$("#line").css({transform: 'translateX('+ parseFloat($('.tab')[0].offsetLeft+$('.tab')[0].clientWidth/2-$("#line")[0].clientWidth/2) +'px)'});
+
+			// $("#line").css({left: $('.tab')[0].offsetLeft+$('.tab')[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
 			$('#header>span').eq(0).css('color','#373737').css('font-weight','600');
 
 
-			/******************************* 搜索 ************************************/
+			/**************************** 搜索 ******************************/
 			/*
 				监听input内容实时搜索
 			 */
@@ -376,7 +381,7 @@
 				// })
 				tabContent($('.tab').eq(cid));
 				// 初始化
-				sessionStorage.setItem('shopCid', '');
+				// sessionStorage.setItem('shopCid', '');
 			}
 		})
 
