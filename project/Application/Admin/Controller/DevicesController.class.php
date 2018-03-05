@@ -38,7 +38,7 @@ class DevicesController extends CommonController
             ->limit($Page->firstRow.','.$Page->listRows)
             ->field('d.device_code,d.type_id,d.addtime,v.user,d.device_statu,t.typename,ds.AliveStause,u.nickname')
             ->count();
-        $Page       = new \Think\Page($count,20);
+        $Page       = new \Think\Page($count,10);
         page_config($Page);
         $show       = $Page->show();
         $devices = $device

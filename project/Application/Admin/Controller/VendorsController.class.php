@@ -336,7 +336,7 @@ class VendorsController extends CommonController
         $vendors = M('vendors');
         // 查询分公司资料
         $office = $vendors->where($showData)->find();
-
+        if( $office['status'] == 8 ) E('禁用的分公司不能进行交接', 606);
         // 查询分公司下是否有分销商
         // 准备查询条件
         $showOffice['office_code'] = $office['code'];

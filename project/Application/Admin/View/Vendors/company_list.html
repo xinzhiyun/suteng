@@ -34,6 +34,7 @@
                             <thead>
                                 <tr>
                                     <th>序号</th>
+                                    <th>分公司名称</th>
                                     <th>姓名</th>
                                     <th>编号</th>
                                     <th>A级分销商邀请</th>
@@ -54,23 +55,28 @@
                                     <volist name="data" id="val">
                                         <tr>
                                             <td>{{$i}}</td>
+                                            <td>{{$val.company}}</td>
                                             <td>{{$val.name}}</td>
                                             <td>{{$val.code}}</td>
-                                            <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_a}}" alt="A级邀请"></td>
-                                            <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_b}}" alt="B级邀请"></td>
-                                            <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_c}}" alt="C级邀请"></td>
-                                            <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_user}}" alt="C级邀请"></td>
+                                            <td><img width="80" height="80" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_a}}" alt="A级邀请"></td>
+                                            <td><img width="80" height="80" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_b}}" alt="B级邀请"></td>
+                                            <td><img width="80" height="80" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_c}}" alt="C级邀请"></td>
+                                            <td><img width="80" height="80" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_user}}" alt="C级邀请"></td>
                                             <td>{{$val.user}}</td>
                                             <td>{{$val.status}}</td>
                                             <td>{{$val.addtime|date="Y-m-d H:i:s",###}}</td>
                                             <td>{{$val.updatetime|date="Y-m-d H:i:s",###}}</td>
                                             <td>
-                                                <a class="btn btn-sm btn-success" href="javascript:revise({{$val.id}})">修改</a>
-                                                <a class="btn btn-sm btn-success" href="javascript:take_over({{$val.id}})">交接</a>
-                                                <if condition="$val.status eq 审批成功"><a class="btn btn-sm btn-success" href="javascript:forbidden({{$val.id}})">禁用</a>
-                                                    <else /> <a class="btn btn-sm btn-success" href="javascript:start({{$val.id}})">启用</a>
-                                                </if>
-                                                <a class="btn btn-danger btn-sm" href="javascript:del({{$val.id}})">删除</a>
+                                                <div class="btn-group">
+                                                    <a class="btn btn-outline btn-sm btn-success" href="javascript:revise({{$val.id}})">修改</a>
+                                                    <a class="btn btn-outline btn-sm btn-success" href="javascript:take_over({{$val.id}})">交接</a>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <if condition="$val.status eq 审批成功"><a class="btn btn-outline btn-sm btn-success" href="javascript:forbidden({{$val.id}})">禁用</a>
+                                                        <else /> <a class="btn btn-outline btn-sm btn-success" href="javascript:start({{$val.id}})">启用</a>
+                                                    </if>
+                                                    <a class="btn btn-outline btn-outline btn-success btn-sm" href="javascript:del({{$val.id}})">删除</a>
+                                                </div>
                                             </td>
                                         </tr>
                                     </volist>
