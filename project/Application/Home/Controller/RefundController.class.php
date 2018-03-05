@@ -10,28 +10,27 @@ class RefundController extends CommonController
 
     public function showGoods()
     {
-        // if (IS_AJAX) {
+        if (IS_AJAX) {
            $data = D('Refund')->relation(['goods'])->where(['uid'=>$_SESSION['user']['id']])->select();
-            foreach ($data['goods'] as $key => $value) {
-                $data['goods'][$key] = M('order_detail')
+
+            foreach ($data as $key => $value) {
+                foreach ($value['goods'] as $k => $val) {                                  
+                    $data[$key]['goods'][$k] = M('order_detail')
                         ->alias('d')
-                        ->where(['d.order_id'=>$value['oid'],'d.gid'=>(int)$value['gid']])
+                        ->where(['d.order_id'=>$val['oid'],'d.gid'=>(int)$val['gid']])
                         ->join('__GOODS__ g ON g.id = d.gid','LEFT')
                         ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
                         ->join('__PIC__ p ON g.id = p.gid','LEFT')
                         ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire'))
                         ->find();
+               } 
             }
             if ($data) {
                return $this->ajaxReturn(['code'=>200,'data'=>$data]);
             }else{
-               return $this->ajaxReturn(['code'=>400,'msg'=>'没有数据']); 
+               return $this->ajaxReturn(['code'=>400,'msg'=>'没有数据']);
             } 
-        // }
-        
-        
-        // $this->assign('data',$data);
-        // $this->display();
+        }
     }
 
     /**
@@ -51,7 +50,7 @@ class RefundController extends CommonController
         $data['goods'] = [
             0 => [
                 'oid' => 36,
-                'gid' => 66,
+                'gid' => 66,   
                 'amount' => 33
             ],
             1 => [

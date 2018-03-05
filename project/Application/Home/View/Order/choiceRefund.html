@@ -128,7 +128,7 @@
 </head>
 <body>
 	<div class="appContain">
-		<div class="item clearfix">
+		<!-- <div class="item clearfix">
 			<div class="appLeft">
 				<i class="iconfont confont icon-kuang1" gid="73"></i>
 				<span><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></span>
@@ -140,18 +140,21 @@
 				</div>
 				<p><b>￥120.00</b><span>X1</span></p> 
 			</div>
-		</div>
+		</div> -->
 	</div>
 	<div class="appFoot">
 		<span><i class="iconfont icon-kuang1"></i>全选</span><input type="submit" value="确定" class="selected">
 	</div>
+	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script>
 		// 订单编号
 		var order_id = location.search.substr(location.search.indexOf('=')+1);
 		// console.log(order_id)
 		// 存放当前订单商品
 		var refundHTML = '';
-		// 根据订单号请求商品数据
+		/*
+			根据 订单号 请求商品数据
+		 */ 
 		$.ajax({
 			url: '{{:U("Home/Order/choiceRefund")}}',
 			type: 'post',
@@ -164,11 +167,11 @@
 						var productbrief = res.data[i].productbrief ? res.data[i].productbrief : '暂无描述';
 						refundHTML += '<div class="item clearfix">'+
 								'<div class="appLeft">'+
-									'<i class="iconfont icon-xuanze" gid="'+ res.data[i].gid +'"></i>'+
+									'<i class="iconfont icon-xuanze" gid="'+ res.data[i].gid +'" price="'+ res.data[i].price +'" num="'+ res.data[i].productnumber +'" path="/Uploads/'+ res.data[i].orderimg +'"></i>'+
 									'<span><img src="/Uploads/'+ res.data[i].orderimg +'" alt=""></span>'+
 								'</div>'+
 								'<div class="appRight">'+
-									'<h4>'+ res.data[i].productname +'</h4>'+
+									'<h4 class="title" text="'+ res.data[i].productname +'">'+ res.data[i].productname +'</h4>'+
 									 '<div class="changTxt">'+ productbrief +'</div>'+
 									'<p><b>￥'+ res.data[i].price +'</b><span>X'+ res.data[i].productnumber +'</span></p>'+
 								'</div>'+
@@ -178,6 +181,7 @@
 					//将数据添加到页面
 					$('.appContain').append(refundHTML);
 				}else{
+					parent.layer.msg('系统遇到问题, 请稍后再试');
 					console.log('遇到问题!');
 				}
 			},
@@ -213,16 +217,51 @@
 			点击确定
 		 */ 
 		$(".selected").click(function(){
-			var gidArr = [];	// 选择的商品 id 集合
-			for(var i=0; i<$(".icon-xuanze").length; i++){
-				gidArr.push({
-					gid: $(".icon-xuanze")[i].getAttribute("gid")
+			/*
+				order_id: 订单编号
+				title: 商品名称,
+				path: 图片路径,
+				gid: 商品id,
+				price: 商品单价,
+				num: 商品数量,
+				brief: 商品描述
+			 */
+			var _this = $(this);
+			var goodsArr = [];	// 选择的商品 id 集合, 给退款界面用
+			console.log($(".title"))
+			for(var i=0; i<$(".appContain .icon-xuanze").length; i++){
+				// console.log($(".changTxt")[i].innerText)
+				//将数据存到本地存储，给退款界面用
+				goodsArr.push({
+					order_id: order_id,
+					title: $(".title").eq(i).attr("text"),
+					path: $(".icon-xuanze")[i].getAttribute("path"),
+					gid: $(".icon-xuanze")[i].getAttribute("gid"),
+					price: $(".icon-xuanze")[i].getAttribute("price"),
+					num: $(".icon-xuanze")[i].getAttribute("num"),
+					brief: $(".changTxt")[i].innerText
 				})
-				// gidArr.push($(".icon-xuanze")[i].getAttribute("gid"))
 				
 			}
-			console.log(gidArr);
-			// location.href="{{:U('Home/Order/applicRefund')}}";
+			console.log(goodsArr);
+			// 如果有选择商品
+			if(goodsArr.length){
+				// 存到本地存储
+				sessionStorage.setItem('goodsInfo', JSON.stringify(goodsArr));
+				var gidStr = '';	//选择的所有商品gid字符串
+				// 将商品 id 集合到一起，放到地址栏URL
+				for(var i=0; i<goodsArr.length; i++){
+
+					gidStr += 'gid=' + goodsArr[i].gid + '&';
+				}
+				gidStr = gidStr.substr(0, gidStr.length-1);	//去掉最后一个 '&'
+				console.log(gidStr);
+				// 跳到 退款提交界面
+				location.href = "{{:U('Home/Order/applicRefund')}}?" + gidStr;
+			}else{
+				parent.layer.msg('请选择需要退货的商品!');
+				console.log('请选择需要退货的商品!');
+			}
 		});
 	</script>
 </body>
