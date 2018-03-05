@@ -296,7 +296,7 @@
 	<div class="appContain">
 		<h3>退款商品</h3>
 		<div class="itemContain clearfix">
-			<div class="item clearfix">
+			<!-- <div class="item clearfix">
 				<div class="appLeft">
 					<span><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></span>
 				</div>
@@ -307,7 +307,7 @@
 					</div>
 					<p><b>￥120.00</b><span>X1</span></p> 
 				</div>
-			</div>
+			</div> -->
 			<!-- <div class="item clearfix">
 				<div class="appLeft">
 					<span><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></span>
@@ -349,7 +349,7 @@
 		<!-- list -->
 		<div class="applist">
 			<p class="clearfix"><b>商品状态</b><span>
-				<select>
+				<select class="status">
 				   <option value ="volvo">请选择</option>
 				   <option value ="volvo">仅退款(未发货)</option>
 				   <option value ="saab">退货退款(已收到货)</option>
@@ -357,7 +357,7 @@
 			<!-- <i class="iconfont icon-dayuhao-copy-copy"></i> -->
 			</span></p>
 			<p class="clearfix"><b>退款原因</b><span>
-				<select>
+				<select class="reason">
 				   <option value ="volvo">请选择</option>
 				   <option value ="volvo">质量问题退货</option>
 				   <option value ="saab">选拍错了</option>
@@ -368,7 +368,7 @@
               <p><b>退款说明：</b><i>*</i></p>
               <textarea name="" id="Laddr" cols="30" rows="10" placeholder=""></textarea>
             </label>
-			<p class="tuikuang clearfix "><b>退款金额：</b><em>￥120.00</em><span class="yuanzhifu">回原支付方式</span></p>
+			<p class="tuikuang clearfix "><b>退款金额：</b><em class="money">￥120.00</em><span class="yuanzhifu">回原支付方式</span></p>
 		</div>
 		<!-- /*图片上传*/ -->
 		<div class="sendpic">
@@ -382,21 +382,65 @@
 	</div>
 
 	<div class="appFoot">
-		<input type="submit" value="提交">
+		<input type="button" value="提交">
 	</div>
 	
 </div>
 	<script>
-	$(".appFoot").click(function(){
-		$.ajax({
-			url:"",
-			type:"post",
-			datatype:"json",
-			data:{
-				
+		var goodsInfo = JSON.parse(sessionStorage.getItem("goodsInfo"));
+		console.log(goodsInfo);
+		/*
+			遍历数据
+		 */
+		var html = '';
+		var money = 0;
+		$.each(goodsInfo, function(index, value){
+			// console.log(index, value)
+			// 遍历数据
+			html += '<div class="item clearfix">'+
+					'<div class="appLeft">'+
+						'<span><img src="'+ value.path +'" alt=""></span>'+
+					'</div>'+
+					'<div class="appRight">'+
+						'<h4>'+ value.title +'</h4>'+
+						 '<div class="changTxt">'+ value.brief +'</div>'+
+						'<p><b>￥'+ value.price +'</b><span>X'+ value.num +'</span></p> '+
+					'</div>'+
+				'</div>';
+				// 统计金额
+				money += Number(value.price)*Number(value.num);
+		})
+		// console.log(money)
+		$(".money").text('￥' + money);
+		// 添加到页面
+		$(".itemContain").html(html);
+
+		/*
+			点击提交
+		 */
+		 $(".appFoot").click(function(){
+		 	// status: 商品状态，reason: 退款原因，explain: 退款说明
+		 	var status = $(".status>option:selected");
+		 	var reason = $(".reason>option:selected");
+		 	var explain = $("#Laddr").val();
+		 	
+		 	if(status.length && reason.length && explain){
+		 		console.log('通过!');
+
+			}else if(status.index == 0){	//未选择
+			 	console.log('请选择商品状态！');
+
+			}else if(reason.index == 0){	//未选择
+			 	console.log('请选择退款原因！');
+
+			}else if(!explain){
+			 	console.log('请填写退款说明！');
+
 			}
-		});
-	});
+			console.log('status: ', status);
+		 	console.log('reason: ', reason);
+		 	console.log('explain: ', explain);
+		 })
 	</script>
 </body>
-</html>                                                                                                                                                                                                                                                                      	 
+</html>
