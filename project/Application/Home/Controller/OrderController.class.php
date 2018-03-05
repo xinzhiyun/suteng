@@ -150,12 +150,12 @@ class OrderController extends CommonController
         // if (IS_AJAX) {
             $uid = $_SESSION['user']['id'];
             $data = D('shop_order')->alias('so')
-                                ->where(['so.uid'=>$uid,'gd.is_install'=>1,'od.is_installed'=>0])
+                                ->where(['so.uid'=>$uid,'gd.is_install'=>1])
                                 ->join('st_order_detail od ON od.order_id = so.order_id','LEFT')
                                 ->join('st_pic pic ON od.gid = pic.gid','LEFT')
                                 ->join('st_goods g ON od.gid = g.id','LEFT')
                                 ->join('st_goods_detail gd ON od.gid = gd.gid','LEFT')
-                                ->field(array('so.uid','so.order_id','od.gid','od.num','od.price','g.name'=>'goodname','pic.path'=>'picpath','so.addtime'))
+                                ->field(array('so.uid','so.order_id','od.gid','od.num','od.price','g.name'=>'goodname','pic.path'=>'picpath','so.addtime','od.is_installed'))
                                 ->select();
             if ($data) {
                 return $this->ajaxReturn(['code'=>200,'data'=>$data]);
