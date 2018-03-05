@@ -12,6 +12,7 @@
     <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
     <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
     <script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 </head>
 <style>
     * {
@@ -135,18 +136,16 @@
             /*background: red;*/
         }
         form>div.form-group:nth-of-type(2)>.col-md-3>.xiePic{
+            visibility: hidden;
             width: 4.6rem;
             line-height: 4.6rem;
             text-align: center;
             height: 4.6rem;
             position: absolute;
-            background: #DCF8FF;
             border-radius: 0.5rem;
             left: 5rem;
             top: 2.15rem;
             color: #5a5a5a;
-            border: 1px dashed #76DED3;
-            overflow: hidden;
         }
         .xiePic>i{
             position: absolute;
@@ -160,6 +159,11 @@
             line-height: 1rem;
             color: #fff;
             font-weight: 600;
+        }
+        .xiePic>img{
+            border-radius: .4rem;
+            width: 100%;
+            height: 100%;
         }
 
         form>.form-group>i{
@@ -346,9 +350,9 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label" for="comLicen">上传协议文件</label>
                 <div class="col-md-3">
-                    <input type="file" id="comLicen" name="protocol" class="form-control" onchange="protocolImage(this);">
+                    <input type="file" id="comLicen" name="protocol" class="form-control" onchange="protocolImage(this);" accept="image/jpg, image/jpeg, image/png, image/gif">
                     <i class="iconfont icon-tianjiajingdian"></i>
-                    <div class="xiePic"><img src="" id="protocol" style="width: 100%;"><i class="iconfont icon-cuohao"></i></div>
+                    <div class="xiePic" index="0"><img src="" id="protocol" style="width: 100%;"><i class="iconfont icon-cuohao" onclick="removePic(this)"></i></div>
                 </div>
             </div> 
             <div class="xieBtn">
@@ -402,30 +406,35 @@
     <script>
         //支付方式
         $('.xieBtn').click(function(){
-            // 获取表单数据
-            var formData = new FormData(document.getElementById("pic"));
 
-            $.ajax({
-                url: "{{:U('Home/Vendors/protocol')}}",
-                type: 'post',
-                data: formData,
-                async: false,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (res) {
-                    if(res.code == 200){
-                         // 跳转到微信支付页面 
-                         window.location.href="{{:U('Home/Vendors/index')}}";
-                    } else {
+            if($(".xiePic").attr("index") === "1") {
+                // 获取表单数据
+                var formData = new FormData(document.getElementById("pic"));
+                console.log(formData)
+                $.ajax({
+                    url: "{{:U('Home/Vendors/protocol')}}",
+                    type: 'post',
+                    data: formData,
+                    dataType : "json",
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+                        if(res.code == 200){
+                             // 跳转到微信支付页面 
+                             window.location.href="{{:U('Home/Vendors/index')}}";
+                        } else {
+                            swal('提交失败',res.msg, "error");
+                        }
+                    },
+                    error: function (res) {
                         swal('提交失败',res.msg, "error");
                     }
-                },
-                error: function (res) {
-                    swal('提交失败',res.msg, "error");
-                }
-            });
-
+                });
+            }else{
+                layuiHint("协议文件必须上传")
+            }
         })
 
         function protocolImage(file) {
@@ -434,9 +443,25 @@
             }
             var reader = new FileReader();
             reader.onload = function (evt) {
-                document.getElementById('protocol').src = evt.target.result;
+                var dx =(evt.total/1024)/1024;
+                var result = this.result;//图片路径加密后信息
+                // 上传图片大小是否符合
+                if(dx>=3) {
+                    layuiHint("协调文件图片超出允许上传文件大小3M");
+                }else{
+                    document.getElementById('protocol').src = evt.target.result;
+                    $("#protocol").parent(".xiePic").css("visibility","visible");
+                    $(".xiePic").attr("index", "1");
+                }
+                
             }
             reader.readAsDataURL(file.files[0]);
+        }
+        // 点击叉叉隐藏div
+        function removePic(removeObj) {
+            removeObj.previousSibling.src = "";//将图片路径删除
+            removeObj.parentNode.style.visibility = "hidden";//隐藏div
+            removeObj.parentNode.setAttribute("index", "0");//设置index为0
         }
     </script>
 </body>
