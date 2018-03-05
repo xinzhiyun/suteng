@@ -1,0 +1,336 @@
+
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0; } 
+
+* {
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+body {
+	/*width: 100vw;*/
+	height: 100vh;
+	font-size: .7rem;
+	overflow-x: hidden;
+	background: #fff;
+}
+#header {
+	/*width: 200%;*/
+	height: 8vh;
+	position: fixed;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: start;
+	    -ms-flex-pack: start;
+	        justify-content: flex-start;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	background: #fff;
+	z-index: 999;
+	-webkit-transition: .5s ease;
+	transition: .5s ease;
+	/*overflow-x: scroll;*/
+	overflow-y: hidden;
+	-webkit-box-sizing: content-box;
+	        box-sizing: content-box;
+	border-bottom: 1px solid #e6eaea;
+}
+#header>span {
+	-webkit-box-flex: 1;
+	    -ms-flex: 1 0 16%;
+	        flex: 1 0 16%;
+	width: 16%;
+	/*min-width: 60px;*/
+	height: 8vh;
+	line-height: 8vh;
+	position: relative;
+    display: inline-block;
+    margin: 0 10px;
+    text-align: center;
+    font-size: 0.72rem;
+    color: #5A5A5A;
+    font-weight: 400!important;
+}
+#header>span:nth-child(1){
+	color: #373737;
+}
+
+/*顶部标题下面的线*/
+/*标题切换 改这里left,20%,40%,60%,80%*/
+#line {
+	width: 10vw;
+	height: 1vh;
+	position: absolute;
+	top: 0;
+	left: 3vw;
+	margin-bottom: -1vh;
+	-webkit-transition: left .2s linear;
+	transition: left .2s linear;
+	border-radius: 10px;
+	background: #2eb6aa;
+}
+
+#content {
+	width: 500vw;
+	position: relative;
+	padding: 1vh 0;
+}
+/*商品块*/
+.goodsBlock {
+	width: 100vw;
+	position: absolute;
+	padding: 1vh 0;
+	top: 0;
+	background: #fff;
+	-webkit-transition: left .4s ease-out;
+	transition: left .4s ease-out;
+}
+
+.goods{
+	width: 100%;
+}
+
+/*搜索栏 */
+.shopTop{
+	width: 100%;
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+	position: relative;
+	top:1.0vh;
+	z-index: 99;
+}
+.search{
+	width: 90%;
+	height: 1.6rem;
+	line-height: 1.4rem;
+	margin: 2.5rem auto -0.2rem;
+	border-radius: 0.266667rem;
+	position: relative;
+}
+.search>label>i {    
+	height: 100%;
+	display: inline-block;
+		font-size: 0.9rem;
+}
+.search>i {
+   display: inline-block;
+    width: 2%;
+    position: absolute;
+    top: 0.1rem;
+    color: #464646;
+    right: 1.2rem;
+    font-size: 1.25rem;
+}
+/*购物车*/
+.cartnum {
+	width: 1.6rem;
+	height: 1.6rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: start;
+	    -ms-flex-align: start;
+	        align-items: flex-start;
+	-webkit-box-pack: end;
+	    -ms-flex-pack: end;
+	        justify-content: flex-end;
+}
+.cartnum>span {
+	width: 50%;
+	height: 50%;
+    display: inline-block;
+    border-radius: 50%;
+    background: #F00;
+    font-size: 0.62rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 0.8rem;
+    color: #FFF;
+}
+
+.search>label {
+	width: 88%;
+    display: inline-block;
+    border: 1px solid #ccc;
+	border-radius: 0.266667rem;
+}
+.search>label>input{
+	display: inline-block;
+	margin-left: 0.2rem;
+	width: 90%;
+	height: 1.4rem;
+	border:none;
+	font-size: 0.7rem;
+}
+.search>label>a{
+	font-size: 0.9rem;
+}
+.search>a{
+	display: inline-block;
+	width: 10%;
+	float: right;
+	color:#838383;
+	position: absolute;
+	top:0;
+	color: #464646;
+	right: 0rem;
+	font-size: 1.25rem;
+}
+.search>a>span{
+	position: absolute;
+    display: inline-block;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 1rem;
+    background: #F00;
+    right: 0rem;
+    top: 0rem;
+    font-size: 0.53rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 0.8rem;
+    color: #FFF;
+}
+#searchPanel {
+	position: absolute;
+	width: 104%;
+	display: none;
+	padding: 1% 2%;
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	        transform: translateX(-50%);
+	border-radius: 4px;
+	background: #fff;
+	-webkit-box-shadow: 0 1px 8px rgba(0,0,0,.3);
+	        box-shadow: 0 1px 8px rgba(0,0,0,.3);
+	z-index: 999;
+}
+#searchPanel>a {
+	margin: 4px 0;
+}
+/*<!-- 轮播图 -->*/
+#slider-wrap{
+	width: 90vw;
+	height: 180px;
+	position:relative;
+	background: #fff;
+}
+
+#slider>li>a{
+	display: block;
+	width: 100%;
+}
+#slider>li>a>img{
+	width: 90vw;
+	height: 180px;
+}
+
+/*所有商品*/
+.goodstitle>h3{
+	text-align: center;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    font-size: 0.73rem;
+    margin-top: 0.5rem;
+    color: #373737;
+}
+.goodstitle>h3>span{
+	color:#ff2e2e;
+}
+.allgoods{
+	width: 100%;
+	height: 12rem;
+	margin:0 auto;
+}
+.allgoods>ul>li{
+   	float: left;
+	display: block;
+	position: relative;
+	width: 46%;
+	height: 8.5rem;
+	padding: 5% 0% 6% 7%;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+.allgoods>ul>li>a{
+	height: 7rem;
+	width: 5rem;
+	display: block;
+	position: relative;
+	border: none!important;
+}
+.allgoods>ul>li>a>p{
+	/*width: 130%;
+	display: block;
+	font-size: 0.67rem;
+	line-height: 1rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;*/
+    display: block;
+    font-size: 0.67rem;
+    line-height: 1.7rem;
+    width: 130%;
+    color: #373737;
+}
+.allgoods>ul>li>i{
+	position: absolute;
+	width: 2rem;
+    height: 1.2rem;
+    display: inline-block;
+	right: 0;
+    margin-top: -0.74rem;
+    text-align: right;
+	font-size: 1rem;
+    color: #ff3232;    
+    z-index: 999;
+}
+.allgoods>ul>li>a>b{
+	display: inline-block;
+	/*margin-top: 6%;*/
+	font-size: 0.74rem;
+	color: #ff3232;
+	font-weight: 400;
+}
+.allgoods>ul>li>a>img{
+	width: 130%;
+	height: 66%;
+	display: inline-block;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+}
+.numShow {
+	-webkit-animation: numshow .5s ease;
+	        animation: numshow .5s ease;
+}
+@-webkit-keyframes numshow {
+	0%, 33% {
+		-webkit-transform: scale(.8);
+		        transform: scale(.8);
+	}
+	34%, 67% {
+		-webkit-transform: scale(1.2);
+		        transform: scale(1.2);
+	}
+	68%, 100% {
+		-webkit-transform: scale(1);
+		        transform: scale(1);
+	}
+}
+@keyframes numshow {
+	0%, 33% {
+		-webkit-transform: scale(.8);
+		        transform: scale(.8);
+	}
+	34%, 67% {
+		-webkit-transform: scale(1.2);
+		        transform: scale(1.2);
+	}
+	68%, 100% {
+		-webkit-transform: scale(1);
+		        transform: scale(1);
+	}
+}
