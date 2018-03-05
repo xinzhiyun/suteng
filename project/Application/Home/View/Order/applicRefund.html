@@ -385,7 +385,7 @@
 			<!-- list -->
 			<div class="applist">
 				<p class="clearfix"><b>商品状态</b><span>
-					<select class="status">
+					<select class="method">
 					   <option value ="volvo">请选择</option>
 					   <option value ="volvo">仅退款(未发货)</option>
 					   <option value ="saab">退货退款(已收到货)</option>
@@ -427,6 +427,12 @@
 	<script>
 		var goodsInfo = JSON.parse(sessionStorage.getItem("goodsInfo"));
 		console.log(goodsInfo);
+		// 商品 id 集合
+		var gidArr = [];
+		for(var i=0; i<goodsInfo.length; i++){
+			gidArr.push(goodsInfo[i].gid);
+		}
+		// console.log(gidArr);
 		/*
 			遍历数据
 		 */
@@ -456,17 +462,17 @@
 			点击 ’商品状态-选择‘
 		 */
 		$(".sendpic").hide();	// 默认不需要图片凭证
-		var status_index;	//商品状态选择的 第几个状态
+		var method_index;	//商品状态选择的 第几个状态
 		// var formData = new formData();
 
-		$('.status').on('change', function(){
-			status_index = $(this)[0].selectedIndex;
-			console.log(status_index)
+		$('.method').on('change', function(){
+			method_index = $(this)[0].selectedIndex;
+			console.log(method_index)
 			// 仅退款（未发货）
-			if(status_index == 1){	// 不需要图片凭证
+			if(method_index == 1){	// 不需要图片凭证
 				$(".sendpic").hide();
 
-			}else if(status_index == 2 || status_index == 3){	// 需要图片凭证
+			}else if(method_index == 2 || method_index == 3){	// 需要图片凭证
 				$(".sendpic").show();
 
 			}
@@ -476,30 +482,56 @@
 		 */
 		 $(".appFoot").click(function(){
 		 		/*
-			 		status: 商品状态，
+			 		method: 商品状态，
 			 		reason: 退款原因，
-			 		explain: 退款说明，
+			 		description: 退款说明，
 			 		gid: 商品 id
 		 	 	*/ 
-		 	var status = $(".status>option:selected");
+		 	var method = $(".method>option:selected");
 		 	var reason = $(".reason>option:selected");
-		 	var explain = $("#Laddr").val();
-		 	var gid = location.search.substr(1);
+		 	var description = $("#Laddr").val();
+		 	var gid = gidArr;
+		 	// console.log(gid)
+		 	//	清空， 防止多次点击
+		 	formData.delete('gid[]');
+		 	formData.delete('order_id');
+		 	formData.delete('method');
+		 	formData.delete('reason');
+		 	formData.delete('description');
+		 	formData.delete('num');
+		 	formData.delete('price');
+		 	formData.delete('total_amount');
+ 
+		 	//重新赋值
+		 	for(var i=0; i<gid.length; i++){
 
-		 	formData.append('status', status[0].index);
+		 		formData.append('gid[]', gid[i]);
+		 	}
+		 	formData.append('order_id', goodsInfo[0].order_id);
+		 	formData.append('method', method[0].index);
 		 	formData.append('reason', reason[0].index);
-		 	formData.append('explain', explain);
-		 	formData.append('gid', gid);
+		 	formData.append('description', description);
+		 	formData.append('num', goodsInfo[0].num);
+		 	formData.append('price', goodsInfo[0].price);
+		 	formData.append('total_amount', money);
 
-		 	console.log(formData.getAll('status'),formData.getAll('reason'),formData.getAll('explain'),formData.getAll('gid'));
-
-		 	if(status[0].index != 0 && reason[0].index != 0 && explain){
+		 	if(method[0].index != 0 && reason[0].index != 0 && description){
 		 		console.log('通过!');
+
+			 	console.log('order_id: ',formData.getAll('order_id'));
+			 	console.log('gid[]: ',formData.getAll('gid[]'));
+			 	console.log('num: ',formData.getAll('num'));
+			 	console.log('price: ',formData.getAll('price'));
+			 	console.log('method: ',formData.getAll('method'));
+			 	console.log('reason: ',formData.getAll('reason'));
+			 	console.log('description: ',formData.getAll('description'));
+			 	console.log('total_amount: ',formData.getAll('total_amount'));
+			 	console.log('UploadForm[]: ', formData.getAll('UploadForm[]'));
 		 		/*
 		 			提交给后台
 		 	 	*/
 		 	 	$.ajax({
-		 	 		url: '{{:U("Order/applicRefund")}}',
+		 	 		url: '{{:U("Home/Refund/create")}}',
 		 	 		type: 'post',
 		 	 		data: formData,
 		 	 		cache: false,
@@ -516,7 +548,7 @@
 		 	 			console.log('请求失败！', res)
 		 	 		}
 		 	 	})
-			}else if(status[0].index == 0){	//未选择
+			}else if(method[0].index == 0){	//未选择
 
 				parent.layer.msg('请选择商品状态！');
 			 	console.log('请选择商品状态！');
@@ -527,18 +559,12 @@
 			 	console.log('请选择退款原因！');
 			 	return false;
 
-			}else if(!explain){
+			}else if(!description){
 				parent.layer.msg('请填写退款说明！');
 			 	console.log('请填写退款说明！');
 			 	return false;
 
 			}
-			console.log('order_id: ', goodsInfo[0].order_id);
-			console.log('status: ', status[0].index);
-		 	console.log('reason: ', reason[0].index);
-		 	console.log('money: ', money);
-		 	console.log('gid: ', gid);
-		 	console.log('UploadForm[]: ', formData.getAll('UploadForm[]'));
 		 	
 		 })
 	</script>

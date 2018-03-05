@@ -150,11 +150,7 @@
 		// 订单编号
 		var order_id = location.search.substr(location.search.indexOf('=')+1);
 		// console.log(order_id)
-		// 商品 id 集合
-		var gidArr = [];
-		for(var i=0; i>gidArr.length; i++){
-			gidArr.push(gidArr[i].gid);
-		}
+		
 		// 存放当前订单商品
 		var refundHTML = '';
 		/*
@@ -246,7 +242,7 @@
 					num: $(".icon-xuanze")[i].getAttribute("num"),
 					brief: $(".changTxt")[i].innerText
 				})
-				
+				 
 			}
 			console.log(goodsArr);
 			// 如果有选择商品
