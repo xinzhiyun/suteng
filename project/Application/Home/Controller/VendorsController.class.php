@@ -649,33 +649,38 @@ class VendorsController extends Controller
      */
     public function protocol()
     {	
-    	// 获取微信用户唯一标识
-    	$open_id = $_SESSION['vendorInfo']['open_id'];
+        if (IS_AJAX) {
+            // 获取微信用户唯一标识
+            $open_id = $_SESSION['vendorInfo']['open_id'];
 
-    	// 上传合同文件
-    	$info = $this->upload();
+            // 上传合同文件
+            $info = $this->upload();
 
-    	if($info){
-    		$info['status'] = 9;
-            // 更新条件
-            $saveData['open_id'] = $open_id;
-            // 更新分销商信息
-            $vandorRes = M('vendors')->where($saveData)->save($info);
-            if($vandorRes){
-            	// $this->success('合同信息提交成功', U('Home/Vendors/index'));
-                $message['code'] = 200;
-                $message['res']  = '合同信息提交成功';
+            if($info){
+                $info['status'] = 9;
+                // 更新条件
+                $saveData['open_id'] = $open_id;
+                // 更新分销商信息
+                $vandorRes = M('vendors')->where($saveData)->save($info);
+                if($vandorRes){
+                    // $this->success('合同信息提交成功', U('Home/Vendors/index'));
+                    $message['code'] = 200;
+                    $message['res']  = '合同信息提交成功';
+                }else{
+                    // $this->error('合同信息提交失败，请重新上传！');
+                    $message['code'] = 605;
+                    $message['res']  = '合同信息提交失败，请重新上传！';
+                }
             }else{
-            	// $this->error('合同信息提交失败，请重新上传！');
                 $message['code'] = 605;
                 $message['res']  = '合同信息提交失败，请重新上传！';
             }
-    	}else{
-            $message['code'] = 605;
-            $message['res']  = '合同信息提交失败，请重新上传！';
-    	}
 
-    	$this->ajaxReturn($message); 
+            $this->ajaxReturn($message); 
+        } else {
+            $this->display();
+        }
+    	
     }
 
     /**
