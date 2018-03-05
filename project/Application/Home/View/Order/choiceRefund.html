@@ -128,7 +128,7 @@
 </head>
 <body>
 	<div class="appContain">
-		<!-- <div class="item clearfix">
+		<div class="item clearfix">
 			<div class="appLeft">
 				<i class="iconfont confont icon-kuang1" gid="73"></i>
 				<span><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></span>
@@ -140,7 +140,7 @@
 				</div>
 				<p><b>￥120.00</b><span>X1</span></p> 
 			</div>
-		</div> -->
+		</div>
 	</div>
 	<div class="appFoot">
 		<span><i class="iconfont icon-kuang1"></i>全选</span><input type="submit" value="确定" class="selected">
@@ -150,6 +150,7 @@
 		// 订单编号
 		var order_id = location.search.substr(location.search.indexOf('=')+1);
 		// console.log(order_id)
+		
 		// 存放当前订单商品
 		var refundHTML = '';
 		/*
@@ -241,7 +242,7 @@
 					num: $(".icon-xuanze")[i].getAttribute("num"),
 					brief: $(".changTxt")[i].innerText
 				})
-				
+				 
 			}
 			console.log(goodsArr);
 			// 如果有选择商品
