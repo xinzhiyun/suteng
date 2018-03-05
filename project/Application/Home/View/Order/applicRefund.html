@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_p8cbsn51ch2utyb9.css">
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<style>
 		body{
@@ -91,7 +92,7 @@
 			padding:0 5%;
 			display: block;
 			height: 2.2rem;
-			line-height: 2rem;
+			line-height: 2.2rem;
 			border-bottom:1px solid #F3F3F3;
 			color:#373737;
 			font-size: 0.68rem;
@@ -200,18 +201,17 @@
 		    position: absolute;
 		    top: 0.58rem;
 		    left: 0.3rem;
-
 		}
-
 						
 		/*底部按钮*/
 		.appFoot{
 			height: 1.8rem;
 			width: 100%;
+			position: fixed;
+    		bottom: 0;
 			text-align: center;
 			line-height: 1.8rem;
 			z-index:12;
-
 		}
 		.appFoot>input{
 			width: 100%;
@@ -235,7 +235,6 @@
 			opacity: 0.5;
 			z-index: 94;
 			display: none;
-
 			
 		}
 		.appsureFoot{
@@ -292,100 +291,100 @@
 	</style>
 </head>
 <body>
-<div class="appContainall">
-	<div class="appContain">
-		<h3>退款商品</h3>
-		<div class="itemContain clearfix">
-			<!-- <div class="item clearfix">
-				<div class="appLeft">
-					<span><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></span>
-				</div>
-				<div class="appRight">
-					<h4>RO膜</h4>
-					 <div class="changTxt">
-						RO膜能够有效地去除水中钙、 镁、细菌、有机物、无机物、金 属离子和放射性物质属离子性物质属离子离子性物质属离子
+	<div class="appContainall">
+		<div class="appContain">
+			<h3>退款商品</h3>
+			<div class="itemContain clearfix">
+				<!-- <div class="item clearfix">
+					<div class="appLeft">
+						<span><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></span>
 					</div>
-					<p><b>￥120.00</b><span>X1</span></p> 
-				</div>
-			</div> -->
-			<!-- <div class="item clearfix">
-				<div class="appLeft">
-					<span><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></span>
-				</div>
-				<div class="appRight">
-					<h4>RO膜</h4>
-					 <div class="changTxt">
-						RO膜能够有效地去除水中钙、 镁、细菌、有机物、无机物、金 属离子和放射性物质属离子性物质属离子离子性物质属离子
+					<div class="appRight">
+						<h4>RO膜</h4>
+						 <div class="changTxt">
+							RO膜能够有效地去除水中钙、 镁、细菌、有机物、无机物、金 属离子和放射性物质属离子性物质属离子离子性物质属离子
+						</div>
+						<p><b>￥120.00</b><span>X1</span></p> 
 					</div>
-					<p><b>￥120.00</b><span>X1</span></p> 
-				</div>
-			</div>
-			<div class="item clearfix">
-				<div class="appLeft">
-					<span><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></span>
-				</div>
-				<div class="appRight">
-					<h4>RO膜</h4>
-					 <div class="changTxt">
-						RO膜能够有效地去除水中钙、 镁、细菌、有机物、无机物、金 属离子和放射性物质属离子性物质属离子离子性物质属离子
+				</div> -->
+				<!-- <div class="item clearfix">
+					<div class="appLeft">
+						<span><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></span>
 					</div>
-					<p><b>￥120.00</b><span>X1</span></p> 
-				</div>
-			</div>
-			<div class="item clearfix">
-				<div class="appLeft">
-					<span><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></span>
-				</div>
-				<div class="appRight">
-					<h4>RO膜</h4>
-					 <div class="changTxt">
-						RO膜能够有效地去除水中钙、 镁、细菌、有机物、无机物、金 属离子和放射性物质属离子性物质属离子离子性物质属离子
+					<div class="appRight">
+						<h4>RO膜</h4>
+						 <div class="changTxt">
+							RO膜能够有效地去除水中钙、 镁、细菌、有机物、无机物、金 属离子和放射性物质属离子性物质属离子离子性物质属离子
+						</div>
+						<p><b>￥120.00</b><span>X1</span></p> 
 					</div>
-					<p><b>￥120.00</b><span>X1</span></p> 
 				</div>
-			</div> -->
+				<div class="item clearfix">
+					<div class="appLeft">
+						<span><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></span>
+					</div>
+					<div class="appRight">
+						<h4>RO膜</h4>
+						 <div class="changTxt">
+							RO膜能够有效地去除水中钙、 镁、细菌、有机物、无机物、金 属离子和放射性物质属离子性物质属离子离子性物质属离子
+						</div>
+						<p><b>￥120.00</b><span>X1</span></p> 
+					</div>
+				</div>
+				<div class="item clearfix">
+					<div class="appLeft">
+						<span><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></span>
+					</div>
+					<div class="appRight">
+						<h4>RO膜</h4>
+						 <div class="changTxt">
+							RO膜能够有效地去除水中钙、 镁、细菌、有机物、无机物、金 属离子和放射性物质属离子性物质属离子离子性物质属离子
+						</div>
+						<p><b>￥120.00</b><span>X1</span></p> 
+					</div>
+				</div> -->
 
-		</div>
-		<!-- list -->
-		<div class="applist">
-			<p class="clearfix"><b>商品状态</b><span>
-				<select class="status">
-				   <option value ="volvo">请选择</option>
-				   <option value ="volvo">仅退款(未发货)</option>
-				   <option value ="saab">退货退款(已收到货)</option>
-				</select>   				
-			<!-- <i class="iconfont icon-dayuhao-copy-copy"></i> -->
-			</span></p>
-			<p class="clearfix"><b>退款原因</b><span>
-				<select class="reason">
-				   <option value ="volvo">请选择</option>
-				   <option value ="volvo">质量问题退货</option>
-				   <option value ="saab">选拍错了</option>
-				   <option value ="saab">其他原因</option>
-				</select>   
-			</span></p>
-			<label for="Laddr">
-              <p><b>退款说明：</b><i>*</i></p>
-              <textarea name="" id="Laddr" cols="30" rows="10" placeholder=""></textarea>
-            </label>
-			<p class="tuikuang clearfix "><b>退款金额：</b><em class="money">￥120.00</em><span class="yuanzhifu">回原支付方式</span></p>
-		</div>
-		<!-- /*图片上传*/ -->
-		<div class="sendpic">
-			<p><b>上传凭证</b></p>
-			<div class="picBtn">
-				<i class="iconfont icon-tianjia"></i>
-				<span>限3张内</span>
-				<input class="" type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
 			</div>
-		</div>	
-	</div>
+			<!-- list -->
+			<div class="applist">
+				<p class="clearfix"><b>商品状态</b><span>
+					<select class="status">
+					   <option value ="volvo">请选择</option>
+					   <option value ="volvo">仅退款(未发货)</option>
+					   <option value ="saab">退货退款(已收到货)</option>
+					</select>   				
+				<!-- <i class="iconfont icon-dayuhao-copy-copy"></i> -->
+				</span></p>
+				<p class="clearfix"><b>退款原因</b><span>
+					<select class="reason">
+					   <option value ="volvo">请选择</option>
+					   <option value ="volvo">质量问题退货</option>
+					   <option value ="saab">选拍错了</option>
+					   <option value ="saab">其他原因</option>
+					</select>   
+				</span></p>
+				<label for="Laddr">
+	              <p><b>退款说明：</b><i>*</i></p>
+	              <textarea name="" id="Laddr" cols="30" rows="10" placeholder=""></textarea>
+	            </label>
+				<p class="tuikuang clearfix "><b>退款金额：</b><em class="money">￥120.00</em><span class="yuanzhifu">回原支付方式</span></p>
+			</div>
+			<!-- /*图片上传*/ -->
+			<div class="sendpic">
+				<p><b>上传凭证</b></p>
+				<div class="picBtn">
+					<i class="iconfont icon-tianjia"></i>
+					<span>限3张内</span>
+					<input class="" type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
+				</div>
+			</div>	
+		</div>
 
-	<div class="appFoot">
-		<input type="button" value="提交">
+		<div class="appFoot">
+			<input type="button" value="提交">
+		</div>
+		
 	</div>
-	
-</div>
 	<script>
 		var goodsInfo = JSON.parse(sessionStorage.getItem("goodsInfo"));
 		console.log(goodsInfo);
@@ -414,7 +413,23 @@
 		$(".money").text('￥' + money);
 		// 添加到页面
 		$(".itemContain").html(html);
+		/*
+			点击 ’商品状态-选择‘
+		 */
+		$(".sendpic").hide();	// 默认不需要图片凭证
+		var status_index;	//商品状态选择的 第几个状态
+		$('.status').on('change', function(){
+			status_index = $(this)[0].selectedIndex;
+			console.log(status_index)
+			// 仅退款（未发货）
+			if(status_index == 1){	// 不需要图片凭证
+				$(".sendpic").hide();
 
+			}else if(status_index == 2 || status_index == 3){	// 需要图片凭证
+				$(".sendpic").show();
+
+			}
+		})
 		/*
 			点击提交
 		 */
@@ -427,18 +442,23 @@
 		 	if(status.length && reason.length && explain){
 		 		console.log('通过!');
 
-			}else if(status.index == 0){	//未选择
+			}else if(status[0].index == 0){	//未选择
+
+				parent.layer.msg('请选择商品状态！');
 			 	console.log('请选择商品状态！');
 
-			}else if(reason.index == 0){	//未选择
+			}else if(reason[0].index == 0){	//未选择
+				parent.layer.msg('请选择退款原因！');
 			 	console.log('请选择退款原因！');
 
 			}else if(!explain){
+				parent.layer.msg('请填写退款说明！');
 			 	console.log('请填写退款说明！');
 
 			}
-			console.log('status: ', status);
-		 	console.log('reason: ', reason);
+			console.log('order_id: ',goodsInfo[0].order_id);
+			console.log('status: ', status[0].index);
+		 	console.log('reason: ', reason[0].index);
 		 	console.log('explain: ', explain);
 		 })
 	</script>
