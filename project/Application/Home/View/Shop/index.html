@@ -27,7 +27,7 @@
 			background: #fff;
 		}
 		#header {
-			width: 100%;
+			/*width: 200%;*/
 			height: 8vh;
 			position: fixed;
 			display: -webkit-box;
@@ -41,17 +41,18 @@
 			        align-items: center;
 			background: #fff;
 			z-index: 999;
-			overflow-x: scroll;
+			transition: .5s ease;
+			/*overflow-x: scroll;*/
 			overflow-y: hidden;
 			box-sizing: content-box;
     		border-bottom: 1px solid #e6eaea;
 		}
 		#header>span {
-			flex: 1 0 25%;
-			width: 30vw;
+			flex: 1 0 16%;
+			width: 16%;
 			/*min-width: 60px;*/
 			height: 8vh;
-    		line-height: 9vh;
+    		line-height: 8vh;
     		position: relative;
 		    display: inline-block;
 		    margin: 0 10px;
@@ -408,6 +409,8 @@
 			var goodblockHTML = '';		//分栏商品模板
 			var _htmlArr = [];	//存放对应分类数据的数组
 			var searchArr = [];		//存放搜索用数据
+
+			/***************** 数据遍历 -- 开始 ************************/
 			// 获取商品分类
 			var _cate;
 			if($("#_cate").val()){
@@ -447,6 +450,8 @@
 				$("#header").html('暂无分类');
 				console.log('暂无分类');
 			}
+			// 顶部滚动过渡效果
+			$("#header").css({width: ($("#header>span").length+2)*20 + 'vw'});
 			/*
 				遍历商品
 			 */
@@ -504,7 +509,9 @@
 				$(".allgoods>ul").eq(0).html('<h3 style="text-align:center;padding:5% 0;">暂无内容，敬请期待！<div></div></h3>');
 			}
 
-			/******************************* 页面跳转 ************************************/
+			/***************** 数据遍历 -- 结束 ************************/
+			
+			/***************** 页面跳转 -- 开始 ************************/
 			/*
 				点击的时候记录当前点击的商品gid，传给商品详情页面
 			 */
@@ -561,7 +568,7 @@
 				location.href = '{{:U("ShoppingCart/index")}}';
 			})
 
-			/******************************* 页面跳转 ************************************/
+			/***************** 页面跳转 -- 结束 ************************/
 
 			/*
 				点击顶部导航栏，切换订单状态
@@ -572,8 +579,8 @@
 			$("#header").on("click",'.tab',function(){
 				var _this = $(this);
 				ullen = $(".allgoods").eq($(this).attr("index")).find("ul")[0].childElementCount;
-
-				if(_htmlArr[$(this).attr("index")] && ullen < 1){	//如果当前分类下有商品, 且页面已生成
+				//如果当前分类下有商品, 且页面未生成，则添加数据，否则不改动
+				if(_htmlArr[$(this).attr("index")] && ullen < 1){	
 					$(".allgoods>ul").eq($(this).attr("index")).html(_htmlArr[$(this).attr("index")]);
 					
 				}else if(!_htmlArr[$(this).attr("index")]){
@@ -582,18 +589,29 @@
 				// console.log('ullen: ',ullen)
 				$('#header>span').css('color','#5A5A5A').css('font-weight','400');
 				$(this).css('color','#373737').css('font-weight','400');
+
+				/******* 切换联动 *******/
+
 				//切换内容
 				$("#content")
 				.css({transition: '.5s ease',transform: 'translateX(-'+ $(this).attr("index") +'00vw)'});
-				//横向移动
+				//横线移动
 				$("#line").css({left: $(this)[0].offsetLeft+$(this)[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
-				// $(this).parents('#header')[0].scrollLeft = $(this)[0].offsetLeft;
-				//顶部分类移动
-				_this.parents('#header')[0]
-						.scrollLeft = _this[0].offsetLeft/2
+
+				// 顶部滚动过渡效果
 				// console.log($(this)[0].offsetLeft)
+				var offset = _this[0].offsetLeft/2 - _this[0].offsetWidth/2;
+				offset = Math.abs(offset) > this.offsetLeft/2 ? this.offsetLeft/2 : offset;
+
+				// console.log('this.offsetLeft/2: ',_this[0].offsetLeft/2);
+				// console.log('_this[0].offsetWidth/2: ',_this[0].offsetWidth/2);
+				// console.log('offset: ',offset);
+				_this.parents('#header')[0].style.transform = 'translateX(-'+ offset +'px)';
+
+				/******* 切换联动 *******/
 			});
 			// console.log($('.tab')[0].offsetLeft+$('.tab')[0].clientWidth-$("#line")[0].clientWidth/2)
+			// 页面加载时顶部分类横线位置初始化
 			$("#line").css({left: $('.tab')[0].offsetLeft+$('.tab')[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
 			$('#header>span').eq(0).css('color','#373737').css('font-weight','600');
 
@@ -612,7 +630,7 @@
 				_search($(this).siblings('input').val());
 
 			})
-			// 点击搜索内容存储 商品id 到本地存储 给 商品详情页面用
+			// 点击搜索内容存储 商品id 到地址栏URL 给 商品详情页面用
 			$("#searchPanel").on('click', 'a', function(){
 
 				// 将当前商品id拼接到地址URL
