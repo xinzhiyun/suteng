@@ -25,7 +25,6 @@ class RefundController extends CommonController
                         ->find();
                } 
             }
-            
             if ($data) {
                return $this->ajaxReturn(['code'=>200,'data'=>$data]);
             }else{
