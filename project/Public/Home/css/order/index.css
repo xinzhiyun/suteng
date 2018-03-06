@@ -84,8 +84,8 @@ body {
 	bottom: 0;
 	left: 0;
 	margin-bottom: -1vh;
-	-webkit-transition: left .2s ease-in;
-	transition: left .2s ease-in;
+	-webkit-transition: .2s ease;
+	transition: .2s ease;
 }
 #line>span {
 	width: 50%;
@@ -150,7 +150,23 @@ body {
 	font-weight: 600;
 	/*padding: 0.1rem;*/
 }
-
+#loading {
+	width: 100vw;
+	height: 85vh;
+	display: block;
+	position: fixed;
+	top: 0;
+	margin-top: 15vh;
+	background: #fff;
+}
+#loading>img {
+	width: 50%;
+	height: auto;
+	position: relative;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
 
 #content {
 	width: 500vw;
@@ -158,6 +174,8 @@ body {
 	position: relative;
 	top: 8vh;
 	padding: 1vh 0;
+/*	-webkit-transition: .1s ease;
+	transition: .1s ease;*/
 }
 /*全部订单,待付款，待发货，待收货，待评论*/
 #saleAfter,
@@ -170,8 +188,6 @@ body {
 	padding: 7vh 0 5vh;
 	top: 0;
 	background: #fff;
-	-webkit-transition: left .4s ease-out;
-	transition: left .4s ease-out;
 }
 #dingdanDaifukuan {
 	left: 0vw;
@@ -258,7 +274,12 @@ body {
 	margin: 6px 0;
 	font-size: .6rem;
 	color: #5a5a5a;
-	font-size: 0.68 rem;
+	font-size: 0.68rem;
+	display: -webkit-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
 }
 /*价格*/
 .giDescription>div>b {
