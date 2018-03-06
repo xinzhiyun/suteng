@@ -9,6 +9,12 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<style>
+		.appRight>.changTxt{
+			padding: 2% 0;
+			line-height: 1rem;
+		}
+	</style>
 </head>
 <body>
 	<div class="appContain">
@@ -57,7 +63,7 @@
 								'</div>'+
 								'<div class="appRight">'+
 									'<h4 class="title" text="'+ res.data[i].productname +'">'+ res.data[i].productname +'</h4>'+
-									 '<div class="changTxt">'+ productbrief +'</div>'+
+									 '<p class="changTxt">'+ productbrief +'</p>'+
 									'<p><b>￥'+ res.data[i].price +'</b><span>X'+ res.data[i].productnumber +'</span></p>'+
 								'</div>'+
 							'</div>';

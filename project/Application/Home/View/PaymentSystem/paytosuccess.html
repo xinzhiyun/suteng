@@ -82,6 +82,10 @@
         history.replaceState({}, null, '{{:U("VipCenter/index")}}');
         location.href = "{{:U('Home/Order/index')}}?offset=" + 1;
       })
+      // 点击返回商城首页
+      $("#goHome").click(function(){
+        history.replaceState({}, null, '{{:U("VipCenter/index")}}');
+      })
     </script>
 </body>
 </html>                                                                                                                                                                                                                                                                      

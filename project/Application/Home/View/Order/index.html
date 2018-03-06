@@ -288,14 +288,16 @@
 			// 调用移动函数
 			tabContentMove($(this));
 			if(loadingEnd){		// 加载结束，移除loading
-				$("#loading").fadeOut('fast');
+				setTimeout(function(){
+					$("#loading").fadeOut('fast');
+				},600)
 			}
 		});
 		// 点击tab移动content的函数
 		function tabContentMove(_this){
 
 			// 防止界面下方无东西出现空白，但是可以滚动
-			var _thisHeight = $('#content>div').eq(_this.attr("index"))[0].clientHeight;
+			var _thisHeight = $('#content>div').eq(_this.attr("index"))[0].offsetHeight;
 			$("#content").css({
 				height: _thisHeight + 'px',
 				overflow: 'hidden'
@@ -618,12 +620,8 @@
 						 	dingdanDaishouhuo2='';
 						}
 						$(".waitharvest").html(waitgainlist.length);
-						$('.tab').eq(2).click(function(){
-							if($("#dingdanDaishouhuo>div").length){
-								return false;
-							}
-							$("#dingdanDaishouhuo").html(dingdanDaishouhuo1);
-						})
+						$("#dingdanDaishouhuo").html(dingdanDaishouhuo1);
+						
 						//退货
 						$(".Rejected").click(function(){
 							var order_id=$(this).attr("order_id");
@@ -712,12 +710,7 @@
 						 	dingdanDaipinglun2='';
 						}
 						$(".waitassess").html(waitcommentlist.length);
-						$('.tab').eq(3).click(function(){
-							if($("#dingdanDaipinglun>div").length){
-								return false;
-							}
-							$("#dingdanDaipinglun").html(dingdanDaipinglun1);
-						})
+						$("#dingdanDaipinglun").html(dingdanDaipinglun1);
 						
                     }else{ 
                         // 查询无数据提示
@@ -743,67 +736,63 @@
                 }
             });  
 
- 			// $.ajax({//4：退货/售后
-    //             url:"{{:U('Home/Refund/showGoods')}}",
-    //             data:{
-    //             	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-    //             	// "status":4
-    //             	"refundStatus":1,
-    //         	},
-    //             // dataType:"json",
-    //             type: 'get',
-    //             success:function(res){
-    //             	// alert(123);
-    //                 console.dir(res);
-    //                 if(res.code == 200){
-    //                 	// 查询有数据
-    //                 	// alert(123);
-    //                 	console.log(res);
-    //                 	for(var i=0;i<res.data.length;i++){
-    //                 		if(res.data[i]['status']=='0'){
-    //                 			console.log(res.data[i]['goods'].length);
-    //                 			for(var k=0;k<res.data[i]['goods'].length;k++){
-    //                 				console.log(res.data[i]['goods'][k]['dw_time']);
-    //                 				returned1+='<p>信息更新时间：'+ res.data[i]['goods'][k]['dw_time'] +'</p>'+
-				// 					'<div class="shangpingnei clearfix">'+
-				// 						'<div class="tuikuangLeft ">'+
-				// 							'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
-				// 						'</div>'+
-				// 						'<div class="tuikuangRight">'+
-				// 							'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
-				// 							'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
-				// 						'</div>'+
-				// 					'</div>'+
-				// 					'<p><b>等待商家同意退款</b></p>';
-    //                 			}
-    //                 		}else if(res.data[i]['status']=='3'){
+ 			$.ajax({//4：退货/售后
+                url:"{{:U('Home/Refund/showGoods')}}",
+                data:{
+                	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+                	// "status":4
+                	"refundStatus":1,
+            	},
+                // dataType:"json",
+                type: 'get',
+                success:function(res){
+                	// alert(123);
+                    console.dir(res);
+                    if(res.code == 200){
+                    	// 查询有数据
+                    	// alert(123);
+                    	console.log(res);
+                    	for(var i=0;i<res.data.length;i++){
+                    		if(res.data[i]['status']=='0'){
+                    			console.log(res.data[i]['goods'].length);
+                    			for(var k=0;k<res.data[i]['goods'].length;k++){
+                    				console.log(res.data[i]['goods'][k]['dw_time']);
+                    				returned1+='<p>信息更新时间：'+ res.data[i]['goods'][k]['dw_time'] +'</p>'+
+									'<div class="shangpingnei clearfix">'+
+										'<div class="tuikuangLeft ">'+
+											'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
+										'</div>'+
+										'<div class="tuikuangRight">'+
+											'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+											'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
+										'</div>'+
+									'</div>'+
+									'<p><b>等待商家同意退款</b></p>';
+                    			}
+                    		}else if(res.data[i]['status']=='3'){
 
-    //                 		}else if(res.data[i]['status']=='0'){
+                    		}else if(res.data[i]['status']=='0'){
                     			
-    //                 		}else if(res.data[i]['status']=='0'){
+                    		}else if(res.data[i]['status']=='0'){
                     			
-    //                 		}else if(res.data[i]['status']=='0'){
+                    		}else if(res.data[i]['status']=='0'){
                     			
-    //                 		}
-    //                 	}
-    //                 	$(".returned1").html(returned1);
+                    		}
+                    	}
+                    	$(".returned1").html(returned1);
 
-				// 		$('.tab').eq(2).click(function(){
-				// 			if($(".returned1>div").length){
-				// 				return false;
-				// 			}
-				// 			$(".returned1").html(returned1);
-				// 		})
-    //                 }else{
-    //                     // 查询无数据提示
-    //                     // console.log(res.msg);
-    //                 }
-    //                 // $('waitdrawback').html(res.data.length);
-    //             },
-    //             error:function(res){
-    //             	console.dir(456)
-    //             }
-    //         }); 
+						$(".returned1").html(returned1);
+						
+                    }else{
+                        // 查询无数据提示
+                        // console.log(res.msg);
+                    }
+                    // $('waitdrawback').html(res.data.length);
+                },
+                error:function(res){
+                	console.dir(456)
+                }
+            }); 
 
             $.ajax({//5：已退货
                 url:"{{:U('Home/Order/order_list')}}",
@@ -835,12 +824,14 @@
 		var offsetInt = setInterval(function(){
 			if(location.search){
 				var index = location.search.split('=')[1];
-				// console.log($(".tab").eq(index))
-				tabContentMove($(".tab").eq(index))
+				if(index == 1){
+					// console.log($(".tab").eq(index))
+					tabContentMove($(".tab").eq(index))
 
-				setTimeout(function(){
-					clearInterval(offsetInt)
-				},500)
+					setTimeout(function(){
+						clearInterval(offsetInt)
+					},500)
+				}
 			}
 		},10)
     })();
