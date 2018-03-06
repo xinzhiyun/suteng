@@ -107,6 +107,9 @@
 	<!-- 微信支付支持JS部分代码 -->
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>	                                                                                     
 	<script>
+		if(!location.search){
+			history.pushState({}, null, '{{:U("Order/index")}}?offset=' + 0);
+		}
 		//微信接口
 		wx.config({
 		    debug: false,
@@ -274,23 +277,6 @@
 
 		// 订单状态
 		var dingdanArr = [ '#dingdanDaifukuan','#dingdanDaifahuo','#dingdanDaishouhuo','#dingdanDaipinglun','#saleAfter']
-		// 订单状态
-		var $tab = $(".tab");
-		// 点击顶部导航栏，切换订单状态
-		$tab.on("click",function(){
-			// 防止界面下方无东西出现空白，但是可以滚动
-			var _thisHeight = $('#content>div').eq($(this).attr("index"))[0].clientHeight;
-			$("#content").css({
-				height: _thisHeight + 'px',
-				overflow: 'hidden'
-			})
-			// console.log($('#content>div').eq($(this).attr("index"))[0].clientHeight);
-			
-			$("#content").css({transition:'.3s ease',transform: 'translate(-'+ $(this).attr("index") +'00vw)'});
-			$("#line").css({left: $(this).attr("index")*2 + '0%'});
-			$(".tab").css('color','#5A5A5A');
-			$(this).css('color','#373737');
-		});
 
 		// 寄件点击展开效果
 		var iClass=$('.tuikuangall>p>span>i').attr("class");
@@ -712,60 +698,60 @@
                 }
             });  
 
- 			$.ajax({//4：退货/售后
-                url:"{{:U('Home/Refund/showGoods')}}",
-                data:{
-                	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-                	// "status":4
-                	"refundStatus":1,
-            	},
-                // dataType:"json",
-                type: 'get',
-                success:function(res){
-                	// alert(123);
-                    console.dir(res);
-                    if(res.code == 200){
-                    	// 查询有数据
-                    	// alert(123);
-                    	console.log(res);
-                    	for(var i=0;i<res.data.length;i++){
-                    		if(res.data[i]['status']=='0'){
-                    			console.log(res.data[i]['goods'].length);
-                    			for(var k=0;k<res.data[i]['goods'].length;k++){
-                    				console.log(res.data[i]['goods'][k]['dw_time']);
-                    				returned1+='<p>信息更新时间：'+ res.data[i]['goods'][k]['dw_time'] +'</p>'+
-									'<div class="shangpingnei clearfix">'+
-										'<div class="tuikuangLeft ">'+
-											'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
-										'</div>'+
-										'<div class="tuikuangRight">'+
-											'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
-											'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
-										'</div>'+
-									'</div>'+
-									'<p><b>等待商家同意退款</b></p>';
-                    			}
-                    		}else if(res.data[i]['status']=='3'){
+ 			// $.ajax({//4：退货/售后
+    //             url:"{{:U('Home/Refund/showGoods')}}",
+    //             data:{
+    //             	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+    //             	// "status":4
+    //             	"refundStatus":1,
+    //         	},
+    //             // dataType:"json",
+    //             type: 'get',
+    //             success:function(res){
+    //             	// alert(123);
+    //                 console.dir(res);
+    //                 if(res.code == 200){
+    //                 	// 查询有数据
+    //                 	// alert(123);
+    //                 	console.log(res);
+    //                 	for(var i=0;i<res.data.length;i++){
+    //                 		if(res.data[i]['status']=='0'){
+    //                 			console.log(res.data[i]['goods'].length);
+    //                 			for(var k=0;k<res.data[i]['goods'].length;k++){
+    //                 				console.log(res.data[i]['goods'][k]['dw_time']);
+    //                 				returned1+='<p>信息更新时间：'+ res.data[i]['goods'][k]['dw_time'] +'</p>'+
+				// 					'<div class="shangpingnei clearfix">'+
+				// 						'<div class="tuikuangLeft ">'+
+				// 							'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
+				// 						'</div>'+
+				// 						'<div class="tuikuangRight">'+
+				// 							'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+				// 							'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
+				// 						'</div>'+
+				// 					'</div>'+
+				// 					'<p><b>等待商家同意退款</b></p>';
+    //                 			}
+    //                 		}else if(res.data[i]['status']=='3'){
 
-                    		}else if(res.data[i]['status']=='0'){
+    //                 		}else if(res.data[i]['status']=='0'){
                     			
-                    		}else if(res.data[i]['status']=='0'){
+    //                 		}else if(res.data[i]['status']=='0'){
                     			
-                    		}else if(res.data[i]['status']=='0'){
+    //                 		}else if(res.data[i]['status']=='0'){
                     			
-                    		}
-                    	}
-                    	$(".returned1").html(returned1);
-                    }else{
-                        // 查询无数据提示
-                        // console.log(res.msg);
-                    }
-                    // $('waitdrawback').html(res.data.length);
-                },
-                error:function(res){
-                	console.dir(456)
-                }
-            });  
+    //                 		}
+    //                 	}
+    //                 	$(".returned1").html(returned1);
+    //                 }else{
+    //                     // 查询无数据提示
+    //                     // console.log(res.msg);
+    //                 }
+    //                 // $('waitdrawback').html(res.data.length);
+    //             },
+    //             error:function(res){
+    //             	console.dir(456)
+    //             }
+    //         });  
             $.ajax({//5：已退货
                 url:"{{:U('Home/Order/order_list')}}",
                 data:{
@@ -790,6 +776,45 @@
 	   		// var commentIndex=$(this).attr("name");
 	   		window.location.href="{{:U('Home/Comment/saleServic')}}";
 	   	}); 
+
+		/*
+			点击顶部导航栏，切换订单状态
+		 */ 
+		$(".tab").on("click",function(){
+			// 调用移动函数
+			tabContentMove($(this));
+			history.pushState({}, null, '{{:U("Order/index")}}?offset=' + $(this).attr("index"))
+		});
+		// 点击tab移动content的函数
+		function tabContentMove(_this){
+
+			
+			$("#content").css({transition:'.3s ease',transform: 'translate(-'+ _this.attr("index") +'00vw)'});
+			$("#line").css({left: _this.attr("index")*2 + '0%'});
+			$(".tab").css('color','#5A5A5A');
+			_this.css('color','#373737');
+
+			// 防止界面下方无东西出现空白，但是可以滚动
+			var _thisHeight = $('#content>div').eq(_this.attr("index"))[0].offsetHeight;
+			$("#content").css({
+				height: _thisHeight + 'px',
+				overflow: 'hidden'
+			})
+			console.log(_thisHeight);
+			console.log($('#content>div').eq(_this.attr("index")));
+		}
+
+		/*
+			从支付成功点击查看订单 跳到订单界面 ~~ 待发货
+		 */
+		if(location.search){
+			var index = location.search.split('=')[1];
+			// console.log($(".tab").eq(index))
+			// 待发货
+			if(index != 0){
+				tabContentMove($(".tab").eq(index))
+			}
+		}
     })();
 
 
