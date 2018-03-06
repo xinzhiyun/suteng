@@ -4,9 +4,9 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/index.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<link rel="stylesheet" href="//at.alicdn.com/t/font_574708_lrbbkvcwhcjo47vi.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/index.css">
 	<title>会员中心</title>
 </head>
 <body>
@@ -139,7 +139,7 @@
 			url: '{{:U("Mail/get_announcement")}}',
 			type: 'post',
 			success: function(res){
-				console.log('连接成功! ',res)
+				console.log('请求成功! ',res)
 
 				for(var i=0; i<res.data.length; i++){
 					msgHTML += '<p>'+ res.data[i].content +'</p>'
@@ -156,7 +156,7 @@
 				}
 			},
 			error: function(res){
-				console.log('连接失败! ',res)
+				console.log('请求失败! ',res)
 			}
 		})
 		//	公告轮播函数
