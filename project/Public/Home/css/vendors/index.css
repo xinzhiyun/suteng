@@ -1,0 +1,327 @@
+
+body{
+    width: 100vw;
+    height: 100vh;
+    font-size: 0.7rem;
+    color:#373737;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+}
+.ibox-content{
+    width: 100vw;
+
+}
+ header{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding-top: 0.3rem;
+    height: 7rem;
+    background: -webkit-radial-gradient(top left , #99FCEF, #5291EE);
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+ }
+header>p {
+    -webkit-box-orient:vertical;
+    -webkit-box-direction:normal;
+        -ms-flex-direction:column;
+            flex-direction:column;
+    -webkit-box-pack:center;
+        -ms-flex-pack:center;
+            justify-content:center;
+    padding: 5% 4% 0%;
+    text-align: left;
+    color: #FFF;
+    font-size: 0.72rem;
+    background: none;
+    }
+header>p>b{
+   display: block;
+   width: 3.8rem;
+   height: 3.8rem;
+   border-radius: 4rem; 
+   background: #ccc;
+   float: left;
+   overflow: hidden;
+}
+header>p>b>img{
+    width: 100%;
+}
+header>span{
+   line-height: 2rem;
+   margin-left: 1rem;
+   color: #5a5a5a;
+}
+/*微信分享*/
+.weishare {
+ position: absolute;
+ right: 0.8rem;
+ 
+}
+.weishare>i{
+  font-size: 1.05rem; 
+  color: #fff; 
+}
+.weishare>i:first-child{
+    font-size: 1.4rem;  
+    margin:0.7rem;
+}
+/*列表项*/
+.contain>ul>li{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    border-bottom: 8px solid #F1F1F1;
+
+}
+.contain>ul>li:last-child{
+    border-bottom: 18px solid #F1F1F1;
+}
+.contain>ul>li>span{
+    width: 33.33333%;
+    text-align: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    padding:0.3rem 0 0.2rem;
+}
+.contain>ul>li>span>p:first-child{
+    font-size: 0.84rem;
+    color:#5a5a5a;
+    font-weight: 300;
+}
+.contain>ul>li>span>p{
+line-height: 1.7rem;
+
+
+}
+.contain>ul>li>p{
+    display: inline-block;
+    padding:0.6rem 0rem 0.6rem;
+    width: 55%;
+}
+ .contain>ul>li>p:nth-of-type(1){
+    width: 43%;
+}
+.contain>ul>li>p>i{
+    float: left;
+    margin-top: -0.2rem;
+    padding-right:0.5rem;
+}
+.contain>ul>li>p:nth-of-type(2)>i{
+    float: right;
+    padding-top: 0.28rem;
+    font-style: normal;
+     padding-right:1.2rem;
+}
+.contain>ul>li>p:nth-of-type(2)>i.icon-dayuhao-copy-copy{
+    padding-top: 0.34rem;
+    padding-right:0rem;
+
+}
+.contain>ul>li>p>span{
+    padding: 0.1rem 0.2rem 0;
+    font-size: 0.72rem;
+    float: left;
+}
+.icon-shouyimingxi{
+    color:#E54545;
+    font-size: 1.3rem;
+    padding:0 0.2rem 0 0.8rem;
+}
+.icon-tuandui1{
+    color:#23A0E8;
+    font-size: 1.2rem;
+    padding:0 0.3rem 0 0.8rem;
+}
+
+/*分享*/
+#sharePanel {
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    font-size: .8rem;
+    background: rgba(0,0,0, .5);
+}
+#maskbg {
+    width: 100vw;
+    height: 56vh;
+}
+#sharePart {
+    width: 100vw;
+    height: 44vh;
+    position: absolute;
+    bottom: -44vh;
+    background: #eee;
+}
+#sharePart>div {
+    width: 96%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    margin: 0 auto;
+}
+.shareIcon {
+    width: 24vmin;
+    height: 24vmin;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column;
+            flex-flow: column;
+    margin: 5% 0;
+}
+.shareIcon>.img {
+    width: 80%;
+    height: 80%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    background: #fff;
+    background-size: 80%;
+    background-position: center;
+}
+.shareIcon>.img:active {
+    background: #e1e1e1;
+}
+.shareIcon>.img>img {
+    width: 40%;
+    margin: 10px 0;
+}
+.shareIcon>p {
+    margin-top: 3%;
+    text-align: center;
+    white-space: nowrap;
+}
+/*点击右上角二维码*/
+#myCode {
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column;
+            flex-flow: column;
+    background: #fff;
+
+}
+#qrcode {
+    width: 50vmin;
+    height: 50vmin;
+    margin: 20vmin;
+    background: #e1e1e1;
+}
+#saveCode {
+    width: 86%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 3%;
+    font-size: .8rem;
+    color: #fff;
+    border-radius: 4px;
+    background: #2EB6AA;
+}
+/*二维码*/
+#content {
+    width: 100vw;
+    height:100vh;
+}
+.taocan {
+    padding: 2% 0 10%;
+    text-align: center;
+}
+.taocan>div {
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    padding: 3vmin 1vmin;
+    -ms-flex-line-pack:center;
+        align-content:center;
+    font-size: 0.7rem;
+    text-align: center;
+    border-radius: 4px;
+    border: 1px solid #e8e8e8;
+}
+
+.taocanSelectNow {
+    color: #fff;
+    border: 1px solid #56AAF1;
+    background: #56AAF1;
+}
+
+.money {
+    position: relative;
+}
+.money>div {
+    width: 50%;
+    position: absolute;
+    margin:0 25%;
+    background: #fff;
+    height: 30vh;
+}
+.money>div>p{
+    text-align: center;
+}
+.moneySon>img{
+    width: 100%;
+}
+.money>div>div {
+    width: 70%;
+    position: relative;
+    top: 0;
+    padding: 3vmin 8vmin;
+    margin: 2vh auto;
+    border-radius: 4px;
+    border: 1px solid #e8e8e8;
+    text-align: center;
+}
+.money>div:nth-of-type(2) {
+    left: 100vw;
+}
+.money>div:nth-of-type(3) {
+    left: 200vw;
+}
+.money>div:nth-of-type(4) {
+    left: 300vw;
+}      
