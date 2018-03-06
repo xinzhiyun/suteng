@@ -165,6 +165,15 @@ class OrderController extends CommonController
     }
 
     /**
+     * 报装评论
+     * @return [type] [description]
+     */
+    public function installComment()
+    {
+        
+    }
+
+    /**
      * [paysuccBtn 提交成功]
      * @return [type] [description]
      */

@@ -39,33 +39,67 @@ class RefundController extends CommonController
      */
     public function create()
     {
+        $post = I('post.');
         // 商品
         $data['serial_num'] = $this->getNumber();
         $data['uid']        = $_SESSION['user']['id'];
-        $data['total_amount'] = 999;
-        $data['method']     = 1;
-        $data['reason']     = 0;
-        $data['description'] = '描述';
-        $data['create_time'] = time();
-        $data['goods'] = [
-            0 => [
-                'oid' => 36,
-                'gid' => 66,   
-                'amount' => 33
-            ],
-            1 => [
-                'oid' => 36,
-                'gid' => 67,
-                'amount' => 35
-            ],
-            2 => [
-                'oid' => 36,
-                'gid' => 68,
-                'amount' => 78
-            ]
-        ];
-        $result = D('Refund')->relation(true)->add($data);
-        echo 'success:'.$result;die;
+        $data['total_amount'] = $post['total_amount'];
+        $data['method']     = $post['method'];
+        $data['reason']     = $post['reason'];
+        $data['description'] = $post['description'];
+        $data['create_time'] = time();      
+        foreach ($post['gid'] as $key => $value) {
+            $data['goods'][$key] = ['oid'=>$post['order_id'],'gid'=>$value,'amount'=>$post['price']];
+        }
+
+        try {
+            $refund = D('Refund');
+            $savePath = 'Uploads/pic/';
+            if($data['method'] == 2){            
+                // 二进制文件上传简单处理
+                if (!empty($_FILES["UploadForm"])) {
+                    foreach ($_FILES["UploadForm"]["tmp_name"] as $key => $value) {
+                        $image = $_FILES["UploadForm"]["tmp_name"][$key];
+                        $imageSize = $_FILES["UploadForm"]["size"][$key];
+                        $info[] = $this->upload($image,$imageSize);                        
+                    }
+                }else{
+                    E('没有文件上传', 602);
+                }   
+                
+                if(!$info) {// 上传错误提示错误信息
+                    E('上传错误',606);
+                }
+                if(!(count($info) <= 3)){
+                    E('只能添加三张图片',604);
+                }
+            }
+            foreach ($info as $k => $val) {
+                $path .= $val.'|';
+            }
+            $data['pic'] = $path;
+            $refund->startTrans();
+            // print_r($data);die;
+            // 判断该用户是否已经对这个商品评价过，如果评价过，就不能评价了           
+            $result = D('Refund')->relation(true)->add($data);
+            if($result){
+                $refund->commit();
+                E('申请成功', 200);
+                // $this->success('评论成功');
+            } else {
+                $comment->rollback();
+                E('申请失败', 603);
+                // $this->error('评论失败');
+            }
+        } catch (\Exception $e) {
+            $this->rmfiles($info);
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+            // $this->error('评论失败');                     
+        }
     }
 
     /**
@@ -102,5 +136,48 @@ class RefundController extends CommonController
             return $this->getNumber();
         }
         return $number;
+    }
+
+
+    /**
+     * [删除文件]
+     * @param  Array $files 文件路径数组
+     * @return Boolean        
+     */
+    public function rmfiles($files)
+    {
+        foreach ($files as $key => $value) {
+            return unlink($value);
+        }
+    }
+
+    /**
+     * 二进制流图片上传
+     * @param  [type] $image     二进制图片
+     * @param  [type] $imageSize 图片大小
+     * @return mix            图片路径，false
+     */
+    public function upload($image,$imageSize)
+    {
+        $key = fopen($image, "r");
+        $file = fread($key, $imageSize); //二进制数据流
+        fclose ( $key );
+
+        do{
+             //设置目录+图片完整路径
+            $save_name = md5 (time().mt_rand(100000,9999999)).'.png';
+            $save_dir = './Uploads/pic';
+            ! is_dir ( $save_dir ) && mkdir ( $save_dir,0777,1 );
+            $save_fullpath = $save_dir . '/' . $save_name;
+        }while (file_exists());
+
+        @$fp = fopen ( $save_fullpath, 'w+' );
+        
+        if (fwrite ( $fp, $file ) != false) {
+            return $save_fullpath;
+        } else {
+            return false;
+        }
+        fclose ( $fp );        
     }
 }
