@@ -607,116 +607,116 @@
                 }
             });  
 
- 			$.ajax({//4：退货/售后
-                url:"{{:U('Home/Refund/showGoods')}}",
-                data:{
-                	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-                	// "status":4
-                	"refundStatus":1,
-            	},
-                // dataType:"json",
-                type: 'get',
-                success:function(res){
-                	// alert(123);
-                    // console.dir(res);
-                    if(res.code == 200){
-                    	// 查询有数据
-                    	// alert(123);
-                    	// console.log(res);
-                    	for(var i=0;i<res.data.length;i++){
-                    		if(res.data[i]['status']=='0'){//商家未同意
-                    			// console.log(res.data[i]['goods'].length);
-                    			for(var k=0;k<res.data[i]['goods'].length;k++){
-                    				// console.log(res.data[i]['dw_time']);
-                    				returned1+='<p>信息更新时间：'+ res.data[i]['dw_time'] +'</p>'+
-									'<div class="shangpingnei clearfix">'+
-										'<div class="tuikuangLeft ">'+
-											'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
-										'</div>'+
-										'<div class="tuikuangRight">'+
-											'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
-											'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
-										'</div>'+
-									'</div>'+
-									'<p><b>等待商家同意退款</b></p>';
-                    			}
-                    		}else if(res.data[i]['status']=='1'){//商家已同意
-                    			// console.log(1111);
-                    			for(var k=0;k<res.data[i]['goods'].length;k++){
-                    				returned2+='<p>信息更新时间：'+res.data[i]['dw_time']+'</p>'+
-									'<div class="shangpingnei clearfix">'+
-										'<div class="tuikuangLeft ">'+
-											'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
-										'</div>'+
-										'<div class="tuikuangRight">'+
-											'<span>'+res.data[i]['goods'][k]['productname']+'</span>'+
-											'<p><b>￥'+res.data[i]['goods'][k]['price']+'</b><span>x'+res.data[i]['goods'][k]['productnumber']+'</span></p>'+
-										'</div>'+
-									'</div>'+
-									'<p><b>商家同意退款，请尽早退货</b><span>点击展开<i class="iconfont icon-shuangxiajiantou"></i></span></p>'+
-									'<!-- 隐藏的评论内容 -->'+
-									'<div class="commentHidden">'+
-										'<div class="hidTop">'+
-											'<p><span>收货人： 张三</span>18475698574</p>'+
-											'<p>广东省韶关市</p>'+
-										'</div>'+
-										'<div class="hidBott">'+
-											'<div class="hidbotttxt">'+
-												'<a class="writeOrder">'+
-													'<p>我已寄件</p>'+
-													'<p>点击填写物流单号</p>'+
-												'</a>'+
-											'</div>'+
-										'</div>'+
-									'</div>';
-                    			}
+ 			// $.ajax({//4：退货/售后
+    //             url:"{{:U('Home/Refund/showGoods')}}",
+    //             data:{
+    //             	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+    //             	// "status":4
+    //             	"refundStatus":1,
+    //         	},
+    //             // dataType:"json",
+    //             type: 'get',
+    //             success:function(res){
+    //             	// alert(123);
+    //                 // console.dir(res);
+    //                 if(res.code == 200){
+    //                 	// 查询有数据
+    //                 	// alert(123);
+    //                 	// console.log(res);
+    //                 	for(var i=0;i<res.data.length;i++){
+    //                 		if(res.data[i]['status']=='0'){//商家未同意
+    //                 			// console.log(res.data[i]['goods'].length);
+    //                 			for(var k=0;k<res.data[i]['goods'].length;k++){
+    //                 				// console.log(res.data[i]['dw_time']);
+    //                 				returned1+='<p>信息更新时间：'+ res.data[i]['dw_time'] +'</p>'+
+				// 					'<div class="shangpingnei clearfix">'+
+				// 						'<div class="tuikuangLeft ">'+
+				// 							'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
+				// 						'</div>'+
+				// 						'<div class="tuikuangRight">'+
+				// 							'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+				// 							'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
+				// 						'</div>'+
+				// 					'</div>'+
+				// 					'<p><b>等待商家同意退款</b></p>';
+    //                 			}
+    //                 		}else if(res.data[i]['status']=='1'){//商家已同意
+    //                 			// console.log(1111);
+    //                 			for(var k=0;k<res.data[i]['goods'].length;k++){
+    //                 				returned2+='<p>信息更新时间：'+res.data[i]['dw_time']+'</p>'+
+				// 					'<div class="shangpingnei clearfix">'+
+				// 						'<div class="tuikuangLeft ">'+
+				// 							'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
+				// 						'</div>'+
+				// 						'<div class="tuikuangRight">'+
+				// 							'<span>'+res.data[i]['goods'][k]['productname']+'</span>'+
+				// 							'<p><b>￥'+res.data[i]['goods'][k]['price']+'</b><span>x'+res.data[i]['goods'][k]['productnumber']+'</span></p>'+
+				// 						'</div>'+
+				// 					'</div>'+
+				// 					'<p><b>商家同意退款，请尽早退货</b><span>点击展开<i class="iconfont icon-shuangxiajiantou"></i></span></p>'+
+				// 					'<!-- 隐藏的评论内容 -->'+
+				// 					'<div class="commentHidden">'+
+				// 						'<div class="hidTop">'+
+				// 							'<p><span>收货人： 张三</span>18475698574</p>'+
+				// 							'<p>广东省韶关市</p>'+
+				// 						'</div>'+
+				// 						'<div class="hidBott">'+
+				// 							'<div class="hidbotttxt">'+
+				// 								'<a class="writeOrder">'+
+				// 									'<p>我已寄件</p>'+
+				// 									'<p>点击填写物流单号</p>'+
+				// 								'</a>'+
+				// 							'</div>'+
+				// 						'</div>'+
+				// 					'</div>';
+    //                 			}
 
-                    		}else if(res.data[i]['status']=='6'){//正在退货
+    //                 		}else if(res.data[i]['status']=='6'){//正在退货
                     			
-                    			for(var k=0;k<res.data[i]['goods'].length;k++){
-                    				returned3+='<p>信息更新时间：'+ res.data[i]['dw_time'] +'</p>'+
-									'<div class="shangpingnei clearfix">'+
-										'<div class="tuikuangLeft ">'+
-											'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
-										'</div>'+
-										'<div class="tuikuangRight">'+
-											'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
-											'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
-										'</div>'+
-									'</div>'+
-									'<p><b>商品已寄出，退款退货中</b></p>';
-                    			}
-                    		}else if(res.data[i]['status']=='7'){
-                    			for(var k=0;k<res.data[i]['goods'].length;k++){
-                    				returned4+='<p>信息更新时间：'+ res.data[i]['dw_time'] +'</p>'+
-									'<div class="shangpingnei clearfix">'+
-										'<div class="tuikuangLeft ">'+
-											'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
-										'</div>'+
-										'<div class="tuikuangRight">'+
-											'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
-											'<p><b>￥'+ res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
-										'</div>'+
-									'</div>'+
-									'<p><b>退款退货成功</b></p>';
-                    			}
-                    		}
-                    	}
-                    	$(".returned1").html(returned1);
-                    	$(".returned2").html(returned2);
-                    	$(".returned3").html(returned3);
-                    	$(".returned4").html(returned4);
-                    	$('.waitdrawback').html(res.data.length);
-                    }else{
-                        // 查询无数据提示
-                        // console.log(res.msg);
-                    }
+    //                 			for(var k=0;k<res.data[i]['goods'].length;k++){
+    //                 				returned3+='<p>信息更新时间：'+ res.data[i]['dw_time'] +'</p>'+
+				// 					'<div class="shangpingnei clearfix">'+
+				// 						'<div class="tuikuangLeft ">'+
+				// 							'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
+				// 						'</div>'+
+				// 						'<div class="tuikuangRight">'+
+				// 							'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+				// 							'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
+				// 						'</div>'+
+				// 					'</div>'+
+				// 					'<p><b>商品已寄出，退款退货中</b></p>';
+    //                 			}
+    //                 		}else if(res.data[i]['status']=='7'){
+    //                 			for(var k=0;k<res.data[i]['goods'].length;k++){
+    //                 				returned4+='<p>信息更新时间：'+ res.data[i]['dw_time'] +'</p>'+
+				// 					'<div class="shangpingnei clearfix">'+
+				// 						'<div class="tuikuangLeft ">'+
+				// 							'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
+				// 						'</div>'+
+				// 						'<div class="tuikuangRight">'+
+				// 							'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+				// 							'<p><b>￥'+ res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
+				// 						'</div>'+
+				// 					'</div>'+
+				// 					'<p><b>退款退货成功</b></p>';
+    //                 			}
+    //                 		}
+    //                 	}
+    //                 	$(".returned1").html(returned1);
+    //                 	$(".returned2").html(returned2);
+    //                 	$(".returned3").html(returned3);
+    //                 	$(".returned4").html(returned4);
+    //                 	$('.waitdrawback').html(res.data.length);
+    //                 }else{
+    //                     // 查询无数据提示
+    //                     // console.log(res.msg);
+    //                 }
                     
-                },
-                error:function(res){
+    //             },
+    //             error:function(res){
 
-                }
-            });  
+    //             }
+    //         });  
             $.ajax({//5：报装中
                 url:"{{:U('Home/Order/install')}}",
                 data:{
@@ -795,14 +795,20 @@
 		/*
 			从支付成功点击查看订单 跳到订单界面 ~~ 待发货
 		 */
-		if(location.search){
+		var offsetInt = setInterval(function(){
 			var index = location.search.split('=')[1];
-			// console.log($(".tab").eq(index))
-			// 待发货
-			if(index != 0){
-				tabContentMove($(".tab").eq(index))
+			var _thisHeight = $('#content>div').eq(index)[0].offsetHeight;
+			if(location.search && _thisHeight >= window.innerHeight/2){
+				// console.log($(".tab").eq(index))
+				// 待发货
+				if(index != 0){
+					tabContentMove($(".tab").eq(index))
+				}
+				setTimeout(function(){
+					clearInterval(offsetInt);
+				},100)
 			}
-		}
+		},10)
     })();
 
 
