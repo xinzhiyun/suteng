@@ -24,6 +24,22 @@ function solveCompatible(obj){
     });
 }
 
+// 首页按钮
+(function(){
+	// 创建 a 标签
+	var home = document.createElement('a');
+	home.innerText = '首\n页';
+	home.href = '/suteng/project/index.php/Home/index';
+	home.setAttribute("id", 'back2Home');
+
+	// 添加到页面
+	document.body.appendChild(home);
+	home.onclick = function(){
+		home.style.background = '#aaa'
+	}
+	// console.log(home)
+})()
+
 /**
  * 移动删除函数	 李小摄
  * @param {Object} 选择器

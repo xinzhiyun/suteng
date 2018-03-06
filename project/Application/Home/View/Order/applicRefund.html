@@ -181,7 +181,10 @@
 		 	 			console.log('请求成功！', res);
 		 	 			if(res.code == 200){	//提交成功
 		 	 				parent.layer.msg('提交成功！');
-		 	 				// location.href = '{{:U("")}}';
+		 	 				setTimeout(function(){
+		 	 					history.replaceState({}, null, '{{:U("VipCenter/index")}}');
+		 	 					location.href = '{{:U("Shop/index")}}';
+		 	 				},500)
 		 	 			}
 		 	 		},
 		 	 		error: function(res){

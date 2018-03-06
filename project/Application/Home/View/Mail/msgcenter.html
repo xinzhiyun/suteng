@@ -79,7 +79,7 @@
 
 				one_isOpen = false;
 			}
-			if(one_isOpen == false){
+			if(!one_isOpen){
 				msgList.show();
 				// 显示当前消息列表
 				for(var i=0; i<div.length; i++){
@@ -92,7 +92,7 @@
 				_this.find('.icon-down')
 				.attr('class','iconfont icon-up');
 
-			}else if(one_isOpen == true){
+			}else if(one_isOpen){
 				// 关闭当前消息列表
 				for(var i=0; i<div.length; i++){
 
@@ -171,6 +171,7 @@
 				parent.layer.msg('系统遇到未知问题，请稍后再试！');
 			}
 		})
+		
 		/*
 			获取站内信未读条数
 		 */

@@ -161,7 +161,7 @@ body {
 }
 #loading>img {
 	width: 30vw;
-	height: 30vw;
+	height: auto;
 	position: relative;
 	left: 50%;
 	top: 42%;
