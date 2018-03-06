@@ -79,6 +79,7 @@
     <script>
       // 点击查看订单，跳到订单页面~~待发货
       $("#payagain").click(function(){
+        history.replaceState({}, null, '{{:U("VipCenter/index")}}');
         location.href = "{{:U('Home/Order/index')}}?offset=" + 1;
       })
     </script>

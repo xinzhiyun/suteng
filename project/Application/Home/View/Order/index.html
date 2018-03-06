@@ -107,9 +107,9 @@
 	<!-- 微信支付支持JS部分代码 -->
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>	                                                                                     
 	<script>
-		if(!location.search){
-			history.pushState({}, null, '{{:U("Order/index")}}?offset=' + 0);
-		}
+		// if(!location.search){
+		// 	history.pushState({}, null, '{{:U("Order/index")}}?offset=' + 0);
+		// }
 		//微信接口
 		wx.config({
 		    debug: false,
@@ -771,7 +771,7 @@
 		$(".tab").on("click",function(){
 			// 调用移动函数
 			tabContentMove($(this));
-			history.pushState({}, null, '{{:U("Order/index")}}?offset=' + $(this).attr("index"))
+			// history.pushState({}, null, '{{:U("Order/index")}}?offset=' + $(this).attr("index"))
 		});
 		// 点击tab移动content的函数
 		function tabContentMove(_this){
@@ -796,9 +796,9 @@
 			从支付成功点击查看订单 跳到订单界面 ~~ 待发货
 		 */
 		var offsetInt = setInterval(function(){
-			var index = location.search.split('=')[1];
-			var _thisHeight = $('#content>div').eq(index)[0].offsetHeight;
+			var _thisHeight = $('#content>div').eq(1)[0].offsetHeight;
 			if(location.search && _thisHeight >= window.innerHeight/2){
+				var index = location.search.split('=')[1];
 				// console.log($(".tab").eq(index))
 				// 待发货
 				if(index != 0){
