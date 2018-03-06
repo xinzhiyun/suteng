@@ -1,0 +1,200 @@
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+body {
+	width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    background: #eee;
+	font-size: .7rem;
+	overflow-x: hidden;
+}
+/*个人信息*/
+#info {
+	width: 100vw;
+	background: #fff;
+}
+#info>div {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	padding: 3% 5%;
+	white-space: nowrap;    
+	border-bottom: 1px solid #eee;
+}
+#info>div>span {
+	width: 20vw;
+}
+#info>div>input {
+	width: 80%;
+	padding: 1%;
+	border: none;
+	outline: none;
+}
+#info>div>input:focus {
+	background: #f6f6f6;
+}
+#info>div>span:nth-of-type(2) {
+	width: 80%;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+#info>div>span:nth-of-type(2)>input:nth-of-type(2) {
+	width: 6%;
+	padding: 1%;
+	margin: 0 6px;
+	border: none;
+	outline: none;
+	background: #fff;
+}
+#info>div>span:nth-of-type(2)>label {
+	color: #8b8787;
+}
+.area, .town {   
+	width: 96%;
+	margin-left: 10px;
+	border: none;
+	background: #fff;
+	text-align: right;
+}
+/*地区选择*/
+#areaChoose {
+	width: 100vw;
+	height: 100vh;
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	flex-flow: column;
+	padding: 0;
+	border-bottom: none;
+	z-index: 1000;
+}
+.areaChoosebg {
+	width: 100vw;
+	height: 50vh;
+	background: rgba(0,0,0, .4);
+}
+.areaDiv {
+	height: 36vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: #fff;
+}
+/*弹出地区选择底部的确认按钮*/
+#confirmAreaChoose {
+	height: 14vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: #fff;
+}
+#confirmAreaChoose>div {
+	width: 80%;
+	padding: 2%;
+	text-align: center;
+	color: #fff;
+	border-radius: 4px;
+	background: #2EB6AA;
+}
+.areaDiv>p {
+	width: 80%;
+	display: flex;
+	flex-flow: column;
+}
+.areaDiv>p>select {
+	width: 80%;
+	padding: 1% 2%;
+	margin: 10px auto;
+	border-radius: 4px;
+	background: #fff;
+}
+/*详细地址*/
+textarea {
+	width: 100vw;
+	padding: 2% 5%;
+	border: none;
+}
+
+/*设为默认地址开关一栏*/
+#norAddrDiv {
+	width: 100vw;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 3% 5%;
+}
+
+/*设为默认地址开关*/
+#normalAddrdess {
+	width: 10vmin;
+	height: 6vmin;
+	display: flex;
+	align-items: center;
+	position: relative;
+	float: right;
+	outline: none;
+	-webkit-appearance: none;
+	border-radius: 20px;
+	border: 1px solid #cacaca;
+	background: #c7c7c7;
+}
+/*设为默认地址开关的白点*/
+#normalAddrdess:before {
+	content: '';
+	width: 5vmin;
+	height: 5vmin;
+	position: relative;
+	top: 0;
+	left: 0;
+	margin-left: .17vmin;
+	border-radius: 20px;
+	background: #fff;
+	transition: left .2s ease-in;
+}
+
+#normalAddrdess:after {
+	content: '';
+	clear: both;
+}
+/*设为默认地址开关的开启状态*/
+#normalAddrdess:checked{
+	border: none;
+	outline: none;
+	background: #2EB6AA;
+}
+#normalAddrdess:checked::before {
+	content: '';
+	left: 42%;
+}
+#footer {
+	width: 100vw;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	bottom: 6vmin;
+}
+#footer>input {
+	width: 80vmin;
+	padding: 2% 0;
+	border-radius: 4px;
+    border: none;
+    color: #fff;
+    line-height: 6vmin;
+    vertical-align: middle;
+    font-size: .8rem;
+    background: #2EB6AA;
+}
+#addressDetial{
+	height: 25vh;
+}
+/*#areaID{
+	color: 
+}*/

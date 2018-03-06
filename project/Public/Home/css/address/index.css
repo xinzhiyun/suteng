@@ -1,0 +1,266 @@
+
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td,span 
+{ margin:0; padding:0; -webkit-box-sizing: border-box; box-sizing: border-box;}
+body {
+	width: 100vw;
+    height: 100vh;
+    background: #eee;
+	font-size: .7rem;
+	overflow-x: hidden;
+}
+#content{
+	margin-bottom: 9vh;
+}
+.noaddress {
+	width: 100%;
+	height: 60vh;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	position: relative;
+	top: 20%;
+	text-align: center;
+}
+.address {
+    background: #fff;
+	border-bottom: 8px solid #eee;
+}
+.address>div>p {
+	padding: 6%;
+}
+.address>div:not(:nth-of-type(1)) {
+	border-top: 1px solid #eee;
+}
+.aTop>p>span:nth-of-type(1) {
+	float: left;
+}
+.aTop>p>span:nth-of-type(2) {
+	float: right;
+}
+.aTop>p>span:after {
+	content: '';
+	clear: both;
+}
+.aBottom {
+	padding: 3% 6%;
+}
+.aBottom>div {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+}
+
+.aBottom>div>label {
+	width: 40%;
+	margin: 0 4vw;
+	white-space: nowrap;
+}
+.aBottom>div>p {
+	width: 50%;
+	display: inline-block;
+	float: right;
+	white-space: nowrap;
+}
+.aBottom>div>p:after {
+	content: '';
+	clear: both;
+}
+[id*="setAddress-"] {
+	width: 5vmin;
+	height: 5vmin;
+	border-radius: 3px;
+	border: 1px solid #dfdfdf;
+	-webkit-appearance: none;
+}
+.setAddress[id*="setAddress-"]:checked {
+	border: none;
+	background: url('../../images/check.png') #56AAF1 no-repeat;
+	background-size: 76%;
+	background-position: center;
+}
+/*编辑，删除*/
+.edit, .del {
+	display: inline-block;
+	margin-left: 8vw;
+	padding: 0 6%;
+	font-size: .7rem;
+	border-radius: 6px;
+	border: 1px solid #d0d0d0;
+}
+
+/*点击添加地址弹出的页面*/
+#editAddressPanel {
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,.7);
+    z-index: 999;
+}
+#editAddressPanel>p {
+    width: 100vw;
+    height: 20vh;
+    /*background: rgba(0,0,0,.5);*/
+}
+#editAddressPanel>div {
+    width: 100vw;
+    height: 80vh;
+    min-height: 400px;
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: stretch;
+        -ms-flex-align: stretch;
+            align-items: stretch;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column;
+            flex-flow: column;
+    margin-top: 50vh;
+    background: #fff;
+}
+/*关闭按钮*/
+.closePannel {
+    width: 8vw;
+    height: 8vw;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    position: absolute;
+    top: 8px;
+    left: 6px;
+    padding: 3%;
+    border-radius: 8vw;
+    border: 1px solid #aaa;
+}
+/*填写姓名，电话等的区域*/
+#editAddressPanel>div>div {
+    width: 70%;
+    position: relative;
+    left: 50%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: flex-start;
+        -ms-flex-pack: flex-start;
+            justify-content: flex-start;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin: 1vh 0 1vh -35%;
+}
+
+#editAddressPanel>div>div>label {
+    -ms-flex-item-align: start;
+        align-self: flex-start;
+}
+/*编辑的姓名，电话*/
+.editName, .editPhone {
+	width: 80%;
+    margin: 0 2vw;
+    padding: 1% 2%;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+}
+.editAddress {
+    width: 80%;
+}
+.saveAddress {
+    width: 70%;
+    position: relative;
+    padding: 1vh 0;
+    left: 50%;
+    margin: 5% 5% 5% -35%;
+    text-align: center;
+    color: #fff;
+    border-radius: 4px;
+    background: #2EB6AA;
+}
+#areaDiv {
+	width: 80%;
+    margin: 0 2vw;
+}
+#areaDiv>select {
+	width: 100%;
+	display: block;
+	position: relative;
+    left: 50%;
+    margin-left: -50%;
+	padding: 0 3%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+.pDetail {
+	width: 100%;
+	position: relative;
+}
+.pDetail>p{
+	width: 70%;
+    position: relative;
+    left: 50%;
+    margin-left: -35%;
+}
+.pDetail>textarea {
+	width: 70%;
+    position: relative;
+    padding-left: 5px;
+    left: 50%;
+    margin-left: -35%;
+    border-radius: 4px;
+}
+#footer {
+	width: 100vw;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	position: fixed;
+	padding: 4% 0%;
+	bottom: 0;
+	font-size: .8rem;
+	border-top: 1px solid #ddd;
+    background: #fff;
+}
+#footer>a {
+	width: 100%;
+	display: block;
+    color: #373737;
+}
+#footer>a>input {
+	width: 7vmin;
+	height: 7vmin;
+	margin: 0 20px;
+	left: 0;
+	border-radius: 4px;
+    border: none;
+    color: #fff;
+    line-height: 7.5vmin;
+    vertical-align: middle;
+    font-size: 1.5rem;
+    text-align: center;
+    background: #2EB6AA;
+}

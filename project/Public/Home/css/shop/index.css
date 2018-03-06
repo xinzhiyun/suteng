@@ -48,7 +48,7 @@ body {
     margin: 0 10px;
     text-align: center;
     font-size: 0.72rem;
-    color: #5A5A5A;
+    color: #616161;
     font-weight: 400!important;
 }
 #header>span:nth-child(1){
@@ -58,13 +58,13 @@ body {
 /*顶部标题下面的线*/
 #line {
 	width: 10vw;
-	height: 1vh;
+	height: 4px;
 	position: absolute;
-	top: 0;
+	top: 1px;
 	left: 3vw;
 	margin-bottom: -1vh;
-	-webkit-transition: .2s linear;
-	transition: .2s linear;
+	/*-webkit-transition: .2s linear;*/
+	/*transition: .2s linear;*/
 	border-radius: 10px;
 	background: #2eb6aa;
 }
