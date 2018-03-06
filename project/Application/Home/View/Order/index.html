@@ -200,24 +200,7 @@
 			loadingEnd = true;
 		}
 
-		// 寄件点击展开效果
-		var iClass=$('.tuikuangall>p>span>i').attr("class");
-		// console.dir(iClass);
-		$('.tuikuangall>p>span').click(function(){
-			if(iClass=='iconfont icon-shuangxiajiantou'){
-				$(this).children('i').removeClass('icon-shuangxiajiantou').addClass('icon-xiangshangjiantou');
-				// console.dir($(this).parent().next());
-				var _commentHidden=$(this).parent().next();
-				$(_commentHidden).slideDown();
-				iClass='iconfont icon-xiangshangjiantou';
-			}
-			else{	
-				var _commentHidden=$(this).parent().next();	
-				$(this).children('i').removeClass('icon-xiangshangjiantou').addClass('icon-shuangxiajiantou');
-				$(_commentHidden).slideUp();		
-				iClass='iconfont icon-shuangxiajiantou';
-			}
-		})
+		
 		// 模态框的js
 		
 		$(".start4").on("click",function(){
@@ -721,6 +704,24 @@
                         // 查询无数据提示
                         // console.log(res.msg);
                     }
+                    // 寄件点击展开效果
+					var iClass=$('.tuikuangall>p>span>i').attr("class");
+					// console.dir(iClass);
+					$('.tuikuangall>p>span').click(function(){
+						if(iClass=='iconfont icon-shuangxiajiantou'){
+							$(this).children('i').removeClass('icon-shuangxiajiantou').addClass('icon-xiangshangjiantou');
+							// console.dir($(this).parent().next());
+							var _commentHidden=$(this).parent().next();
+							$(_commentHidden).slideDown();
+							iClass='iconfont icon-xiangshangjiantou';
+						}
+						else{	
+							var _commentHidden=$(this).parent().next();	
+							$(this).children('i').removeClass('icon-xiangshangjiantou').addClass('icon-shuangxiajiantou');
+							$(_commentHidden).slideUp();		
+							iClass='iconfont icon-shuangxiajiantou';
+						}
+					})
                     
                 },
                 error:function(res){
@@ -766,14 +767,15 @@
                         // 查询无数据提示
                         console.log(res.message);
                     }
+                    //售后评论
+				   	$(".commentAfter").on("click",function(){
+				   		var orderid=$(this).attr("orderid");
+				   		var gid=$(this).attr("gid");
+				   		location.href="{{:U('Home/Comment/saleServic')}}?orderid="+orderid+"&gid="+gid;
+				   	}); 	
                 }
             }); 
-            //售后评论
-		   	$(".commentAfter").on("click",function(){
-		   		var orderid=$(this).attr("orderid");
-		   		var gid=$(this).attr("gid");
-		   		location.href="{{:U('Home/Comment/saleServic')}}?orderid="+orderid+"&gid="+gid;
-		   	}); 	
+            
 		/*
 			点击顶部导航栏，切换订单状态
 		 */ 
