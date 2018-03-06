@@ -42,10 +42,10 @@
 				<div class="tuikuangall returned2">
 				</div>
 				<!-- 退款退货中 -->
-				<div class="tuikuangall returned4">
+				<div class="tuikuangall returned3">
 				</div>
 				<!-- 退款成功 -->
-				<div class="tuikuangall returned3">
+				<div class="tuikuangall returned4">
 				</div>
 				<!-- 报装中 -->
 				<div class="tuikuangall clearfix returned5">
@@ -101,6 +101,9 @@
 
   	  <div class="modal-backup3"></div>
   	</div>
+  	<div id="loading">
+  		<img src="__PUBLIC__/Home/images/loading.gif" alt="加载中...">
+  	</div>
 
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
     <script src="__PUBLIC__/Home/js/public.js"></script>
@@ -146,27 +149,6 @@
 		if($('#content>div').length==0){
 			$('.noContain').show();
 		}
-		
-		var returneddata1=[//待商家同意退货数据
-			{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"},
-			{"updatetime":"2018-01-31","orderimg":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"}
-		];
-		var returneddata2=[//商家同意退款，请尽早退货
-			{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8","shouhuoren":"张三","tel":"18475698574","adress":"广东省韶关市"},
-			{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8","shouhuoren":"张三","tel":"18475698574","adress":"广东省韶关市"},
-		];
-		var returneddata3=[//商品已寄出，退款退货中
-			{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"},
-			{"updatetime":"2018-01-31","orderimg":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"}
-		];
-		var returneddata4=[//退货成功
-			{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"},
-			{"updatetime":"2018-01-31","orderimg":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"}
-		];
-		var returneddata5=[//退货成功
-			{"updatetime":"2018-01-31","imgurl":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"},
-			{"updatetime":"2018-01-31","orderimg":"54646545465","productbrief":"尼康（Nikon）D3300 单反套机（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头","price":"120","productnumber":"8"}
-		];
 		var dingdanDaifukuan1='';//待付款页面html
 		var dingdanDaifukuan2='';
 		var dingdanDaifahuo1='';//待发货页面html
@@ -175,119 +157,48 @@
 		var dingdanDaishouhuo2='';	
 		var dingdanDaipinglun1='';//待评论页面html
 		var dingdanDaipinglun2='';	
-		var returned1='';//退货html
-		var returned2='';
-		var returned3='';
-		var returned4='';
-		var returned5='';
-		for(var i=0;i<returneddata1.length;i++){//退货过程1
-			returned1+='<p>信息更新时间：'+ returneddata1[i]['updatetime'] +'</p>'+
-					'<div class="shangpingnei clearfix">'+
-						'<div class="tuikuangLeft ">'+
-							'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
-						'</div>'+
-						'<div class="tuikuangRight">'+
-							'<span>'+ returneddata1[i]['productbrief'] +'</span>'+
-							'<p><b>￥'+returneddata1[i]['price'] +'</b><span>x '+ returneddata1[i]['productnumber'] +'</span></p>'+
-						'</div>'+
-					'</div>'+
-					'<p><b>等待商家同意退款</b></p>';
-		}
-		$(".returned1").html(returned1);
-		for(var i=0;i<returneddata2.length;i++){//退货过程2
-			returned2+='<p>信息更新时间：'+returneddata2[i]['updatetime']+'</p>'+
-					'<div class="shangpingnei clearfix">'+
-						'<div class="tuikuangLeft ">'+
-							'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
-						'</div>'+
-						'<div class="tuikuangRight">'+
-							'<span>'+returneddata2[i]['productbrief']+'</span>'+
-							'<p><b>￥'+returneddata2[i]['price']+'</b><span>x'+returneddata2[i]['productnumber']+'</span></p>'+
-						'</div>'+
-					'</div>'+
-					'<p><b>商家同意退款，请尽早退货</b><span>点击展开<i class="iconfont icon-shuangxiajiantou"></i></span></p>'+
-					'<!-- 隐藏的评论内容 -->'+
-					'<div class="commentHidden">'+
-						'<div class="hidTop">'+
-							'<p><span>收货人： '+returneddata2[i]['shouhuoren']+'</span>'+returneddata2[i]['tel']+'</p>'+
-							'<p>'+returneddata2[i]['adress']+'</p>'+
-						'</div>'+
-						'<div class="hidBott">'+
-							'<div class="hidbotttxt">'+
-								'<a href="#">'+
-									'<p>我已寄件</p>'+
-									'<p>点击填写物流单号</p>'+
-								'</a>'+
-							'</div>'+
-						'</div>'+
-					'</div>';
-		}
-		$(".returned2").html(returned2);
-		for(var i=0;i<returneddata3.length;i++){//退货过程3
-			returned3+='<p>信息更新时间：'+ returneddata3[i]['updatetime'] +'</p>'+
-					'<div class="shangpingnei clearfix">'+
-						'<div class="tuikuangLeft ">'+
-							'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
-						'</div>'+
-						'<div class="tuikuangRight">'+
-							'<span>'+ returneddata3[i]['productbrief'] +'</span>'+
-							'<p><b>￥'+returneddata3[i]['price'] +'</b><span>x '+ returneddata3[i]['productnumber'] +'</span></p>'+
-						'</div>'+
-					'</div>'+
-					'<p><b>商品已寄出，退款退货中</b></p>';
-		}
-		$(".returned3").html(returned3);
-		for(var i=0;i<returneddata4.length;i++){//退货过程4
-			returned4+='<p>信息更新时间：'+ returneddata4[i]['updatetime'] +'</p>'+
-					'<div class="shangpingnei clearfix">'+
-						'<div class="tuikuangLeft ">'+
-							'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
-						'</div>'+
-						'<div class="tuikuangRight">'+
-							'<span>'+ returneddata4[i]['productbrief'] +'</span>'+
-							'<p><b>￥'+returneddata4[i]['price'] +'</b><span>x '+ returneddata4[i]['productnumber'] +'</span></p>'+
-						'</div>'+
-					'</div>'+
-					'<p><b>退款成功</b></p>';
-		}
-		$(".returned4").html(returned4);
-		for(var i=0;i<returneddata5.length;i++){//退货过程5
-			returned5+='<p>信息更新时间：'+ returneddata5[i]['updatetime'] +'</p>'+
-					'<div class="shangpingnei clearfix">'+
-						'<div class="tuikuangLeft ">'+
-							'<img src="__PUBLIC__/Home/images/comm_02.png" alt="">'+
-						'</div>'+
-						'<div class="tuikuangRight">'+
-							'<span>'+ returneddata5[i]['productbrief'] +'</span>'+
-							'<p><b>￥'+returneddata5[i]['price'] +'</b><span>x '+ returneddata5[i]['productnumber'] +'</span></p>'+
-						'</div>'+
-					'</div>'+
-					'<p class="noborder"><b>报装中，客服电话：020-84765556</b></p>'+
-					'<div class="pinglunBtn">'+
-					'<input class="commentAfter" type="submit" value="评论">'+
-					'</div>';
-		}
-		$(".returned5").html(returned5);
-
+		var returned1='';//商家未同意html
+		var returned2='';//商家已经同意html
+		var returned3='';//退款退货中html
+		var returned4='';//退货成功html
+		var returned5='';//报装中与报装完成html
+		
 		// 订单状态
 		var dingdanArr = [ '#dingdanDaifukuan','#dingdanDaifahuo','#dingdanDaishouhuo','#dingdanDaipinglun','#saleAfter']
-		// 订单状态
-		var $tab = $(".tab");
+		// loading 动画
+		$("#loading").fadeOut('slow');
+		var loadingEnd;		//loading 结束标志
 		// 点击顶部导航栏，切换订单状态
-		$tab.on("click",function(){
+		$(".tab").on("click",function(){
+			// 显示loading
+			$("#loading").fadeIn('fast');
+
+			// 调用移动函数
+			tabContentMove($(this));
+			if(loadingEnd){		// 加载结束，移除loading
+				setTimeout(function(){
+					$("#loading").fadeOut('fast');
+				},600)
+			}
+		});
+		// 点击tab移动content的函数
+		function tabContentMove(_this){
+
 			// 防止界面下方无东西出现空白，但是可以滚动
-			var _thisHeight = $('#content>div').eq($(this).attr("index"))[0].clientHeight;
+			var _thisHeight = $('#content>div').eq(_this.attr("index"))[0].offsetHeight;
 			$("#content").css({
 				height: _thisHeight + 'px',
 				overflow: 'hidden'
 			})
-			// console.log($('#content>div').eq($(this).attr("index"))[0].clientHeight);
-
-			$("#content").css({transition:'.3s ease',transform: 'translate(-'+ $(this).attr("index") +'00vw)'});
-			$("#line").css({left: $(this).attr("index")*2 + '0%'});
+			console.log(_thisHeight);
+			
+			$("#content").css({transform: 'translate(-'+ _this.attr("index") +'00vw)'});
+			$("#line").css({left: _this.attr("index")*2 + '0%'});
 			$(".tab").css('color','#5A5A5A');
-			$(this).css('color','#373737');
-		});
+			_this.css('color','#373737');
+			// loading 结束标志
+			loadingEnd = true;
+		}
 
 		// 寄件点击展开效果
 		var iClass=$('.tuikuangall>p>span>i').attr("class");
@@ -314,32 +225,13 @@
 			$(".modal").addClass("in").css('z-index','1001');
 			$(".modal-backup").show();
 		});
-
+		// 取消按钮
 		$(".close").on("click",function(){
 			$(".modal").removeClass('in');
 			$(".modal").css('z-index','-1');
 			$(".modal-backup").fadeOut('slow');
 		});      	
-	    //确认收货 模态框的js
-      	$('#dingdanDaishouhuo').on("click",".start3",function(){
-      		var _thisname=$(this).attr("name");
-      		$(".modelAll3").show();
-       	   	$(".modal").addClass("in").css('z-index','1001');
-       	   	$(".modal-backup3").show();
-       	   	$(".confirm").bind("click").click(function(){
-       	   		$.ajax({
-       	   			url:"",
-       	   			type:"post",
-       	   			datatype:"json",
-       	   			data:{
-       	   				order_id:_thisname
-       	   			},
-       	   			success:function(res){
-       	   				alert("操作成功");
-       	   			}
-       	   		});
-       	   	});
-      	});
+	    
       	
       	//取消按钮操作效果
       	$(".close").on("click",function(){
@@ -348,23 +240,18 @@
        	   $(".modal-backup3").fadeOut('slow');
        	   $(".modelAll").hide();
        });	
-      	// 评论
-      	// $(".commentBtn").click(function(){
-      	// 	var thisid=$(this).attr("name");
-      	// 	window.location.href="__URL__/Comment/index";
-      	// })
       	
 		var item = window.location.href.split("#")[1];
-		// console.dir(item);
 
 
     /**
      * [unpaid_order 查询订单]
-     * @param  {[type]} status 	参数: g_type 订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-        参数：status 订单状态：[0：已下单，1：已取消，2：待收货，3：已收货，4：退货处理中，5：已退货，6：申诉中，7：待评论，8：未支付，9：待发货]
+     * @param  {[type]} status 	[8：未支付，9：待发货，2：待收货，7：待评论 4：退款处理中 5：已退货]
      * @return {[type]}    		[description]
      */
+    // refundStatus   处理进度（0：未处理 1：同意退款 2：不同意退款 3：同意退货 4：不同意退货 5：已退款 6：正在退货 7：已收货 ）
     (function unpaid_order(){
+    		var Rejectednum=0;//退货数量
             $.ajax({//8：未支付
                 url:"{{:U('Home/Order/order_list')}}",
                 data:{
@@ -450,7 +337,6 @@
 				      		});
 				      	});
 			      	});
-
 			      	//点击支付
 			      	$(".payBtn").on("click",function(){
 			      		var _thisname = JSON.parse($(this).siblings().attr("name"));
@@ -466,9 +352,9 @@
 			      				paymoney: price
 			      			},
 			      			success:function(res){
-			      				console.log(res);
+			      				// console.log(res);
 								if(res == -1){
-									console.log('支付错误！');
+									// console.log('支付错误！');
        								parent.layer.msg('支付错误！');
 								}else{
 									
@@ -483,10 +369,9 @@
 			      		});
 
 			      	});
-
                 }
             });
-
+		
  			$.ajax({//9：待发货
                 url:"{{:U('Home/Order/order_list')}}",
                 data:{
@@ -532,7 +417,7 @@
 									'</div>'+
 									'<div>'+
 										'<div class="cancel">'+
-											'<span>已付款</span>'+
+											'<span class="waitRejected" order_id="'+ waitsendlist[i]['orderid'] +'">退货</span>'+
 										'</div>'+
 										'<div class="pay start2">'+
 											'<span>提醒发货</span>'+
@@ -544,6 +429,10 @@
 						}
 						$("#dingdanDaifahuo").html(dingdanDaifahuo1);
 						$(".waitsend").html(waitsendlist.length);//代发货条数
+						$(".waitRejected").click(function(){
+							var order_id = $(this).attr('order_id');
+							location.href = "{{:U('Home/Order/choiceRefund')}}?order_id="+ order_id;
+						});
 						// 提醒发货
 						$(".start2").click(function(){
 							$(".modal").addClass("in").css({'position':'absolute','z-index':'1001'});
@@ -557,7 +446,7 @@
                     }
                 }
             });
-
+ 		
  			$.ajax({//2：待收货
                 url:"{{:U('Home/Order/order_list')}}",
                 data:{
@@ -601,7 +490,7 @@
 									'</div>'+
 									'<div>'+
 										'<div class="cancel">'+
-											'<span>退货</span>'+
+											'<span class="Rejected" order_id="'+waitgainlist[i]['orderid']+'">退货</span>'+
 										'</div>'+
 										'<div class="pay start3" name='+ waitgainlist[i]['orderid'] +' >'+
 											'<span>确认收货</span>'+
@@ -611,8 +500,36 @@
 							'</div>';
 						 	dingdanDaishouhuo2='';
 						}
-						$("#dingdanDaishouhuo").html(dingdanDaishouhuo1);
 						$(".waitharvest").html(waitgainlist.length);
+						$("#dingdanDaishouhuo").html(dingdanDaishouhuo1);
+						
+						//退货
+						$(".Rejected").click(function(){
+							var order_id=$(this).attr("order_id");
+							location.href="{{:U('Home/Order/choiceRefund')}}?order_id="+order_id;
+						});
+						//确认收货 模态框的js
+				      	$('#dingdanDaishouhuo').on("click",".start3",function(){
+				      		var _thisname=$(this).attr("name");
+				      		$(".modelAll3").show();
+				       	   	$(".modal").addClass("in").css('z-index','1001');
+				       	   	$(".modal-backup3").show();
+				       	   	$(".confirm").bind("click").click(function(){
+				       	   		alert(_thisname);
+				       	   		$.ajax({
+				       	   			url:"{{:U('Home/Order/editOrder')}}",
+				       	   			type:"post",
+				       	   			datatype:"json",
+				       	   			data:{
+				       	   				order_id:_thisname
+				       	   			},
+				       	   			success:function(res){
+				       	   				window.location.reload();
+				       	   			}
+				       	   		});
+				       	   	});
+				      	});
+						
                     }else{
                         // 查询无数据提示
                         $("#dingdanDaishouhuo").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
@@ -634,7 +551,7 @@
                     if(res.code == 200){
                     	// 查询有数据
                     	var waitcommentlist=res.data;
-                    	console.dir(waitcommentlist);
+                    	// console.dir(waitcommentlist);
                     	for(var i=0;i<waitcommentlist.length;i++){//待评论数据遍历
 							dingdanDaipinglun1+='<div class="goods">'+
 								'<p>订单编号：'+waitcommentlist[i]['orderid']+'</p>'+
@@ -673,14 +590,14 @@
 							'</div>';
 						 	dingdanDaipinglun2='';
 						}
-						$("#dingdanDaipinglun").html(dingdanDaipinglun1);
 						$(".waitassess").html(waitcommentlist.length);
+						$("#dingdanDaipinglun").html(dingdanDaipinglun1);
+						
                     }else{ 
                         // 查询无数据提示
                         $("#dingdanDaipinglun").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
 						$('.waitassess').text(0);
                     }
-
                     //如果有本地评论数据则清除
                     if(sessionStorage.getItem("pinglunObj")){
                     	sessionStorage.setItem("pinglunObj","");
@@ -696,58 +613,186 @@
                     	//将点击的带评论商品数据存到本地存储中
                     	sessionStorage.setItem("pinglunObj",JSON.stringify(pinglunObj));
                     	location.href = '{{:U("Comment/index")}}';
-                    })
+                    }) 
                 }
             });  
 
- 			$.ajax({//4：退款处理中
-                url:"{{:U('Home/Order/order_list')}}",
+ 			$.ajax({//4：退货/售后
+                url:"{{:U('Home/Refund/showGoods')}}",
                 data:{
                 	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-                	"status":4
+                	// "status":4
+                	"refundStatus":1,
             	},
-                dataType:"json",
-                type: 'post',
+                // dataType:"json",
+                type: 'get',
                 success:function(res){
+                	// alert(123);
                     // console.dir(res);
                     if(res.code == 200){
                     	// 查询有数据
-                    	console.dir(res.data)
-                    	$(".waitdrawback").html(res.data.length?res.data.length:0);
+                    	// alert(123);
+                    	// console.log(res);
+                    	for(var i=0;i<res.data.length;i++){
+                    		if(res.data[i]['status']=='0'){//商家未同意
+                    			// console.log(res.data[i]['goods'].length);
+                    			for(var k=0;k<res.data[i]['goods'].length;k++){
+                    				// console.log(res.data[i]['dw_time']);
+                    				returned1+='<p>信息更新时间：'+ res.data[i]['dw_time'] +'</p>'+
+									'<div class="shangpingnei clearfix">'+
+										'<div class="tuikuangLeft ">'+
+											'<img src="/Uploads/'+res.data[i]['goods'][k]['orderimg']+'" alt="">'+
+										'</div>'+
+										'<div class="tuikuangRight">'+
+											'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+											'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
+										'</div>'+
+									'</div>'+
+									'<p><b>等待商家同意退款</b></p>';
+                    			}
+                    		}else if(res.data[i]['status']=='1'){//商家已同意
+                    			// console.log(1111);
+                    			for(var k=0;k<res.data[i]['goods'].length;k++){
+                    				returned2+='<p>信息更新时间：'+res.data[i]['dw_time']+'</p>'+
+									'<div class="shangpingnei clearfix">'+
+										'<div class="tuikuangLeft ">'+
+											'<img src="/Uploads/'+res.data[i]['goods'][k]['orderimg']+'" alt="">'+
+										'</div>'+
+										'<div class="tuikuangRight">'+
+											'<span>'+res.data[i]['goods'][k]['productname']+'</span>'+
+											'<p><b>￥'+res.data[i]['goods'][k]['price']+'</b><span>x'+res.data[i]['goods'][k]['productnumber']+'</span></p>'+
+										'</div>'+
+									'</div>'+
+									'<p><b>商家同意退款，请尽早退货</b><span>点击展开<i class="iconfont icon-shuangxiajiantou"></i></span></p>'+
+									'<!-- 隐藏的评论内容 -->'+
+									'<div class="commentHidden">'+
+										'<div class="hidTop">'+
+											'<p><span>收货人： 张三</span>18475698574</p>'+
+											'<p>广东省韶关市</p>'+
+										'</div>'+
+										'<div class="hidBott">'+
+											'<div class="hidbotttxt">'+
+												'<a class="writeOrder">'+
+													'<p>我已寄件</p>'+
+													'<p>点击填写物流单号</p>'+
+												'</a>'+
+											'</div>'+
+										'</div>'+
+									'</div>';
+                    			}
+
+                    		}else if(res.data[i]['status']=='6'){//正在退货
+                    			
+                    			for(var k=0;k<res.data[i]['goods'].length;k++){
+                    				returned3+='<p>信息更新时间：'+ res.data[i]['dw_time'] +'</p>'+
+									'<div class="shangpingnei clearfix">'+
+										'<div class="tuikuangLeft ">'+
+											'<img src="/Uploads/'+res.data[i]['goods'][k]['orderimg']+'" alt="">'+
+										'</div>'+
+										'<div class="tuikuangRight">'+
+											'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+											'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
+										'</div>'+
+									'</div>'+
+									'<p><b>商品已寄出，退款退货中</b></p>';
+                    			}
+                    		}else if(res.data[i]['status']=='7'){
+                    			for(var k=0;k<res.data[i]['goods'].length;k++){
+                    				returned4+='<p>信息更新时间：'+ res.data[i]['dw_time'] +'</p>'+
+									'<div class="shangpingnei clearfix">'+
+										'<div class="tuikuangLeft ">'+
+											'<img src="/Uploads/'+ res.data[i]['goods'][k]['orderimg'] +'" alt="">'+
+										'</div>'+
+										'<div class="tuikuangRight">'+
+											'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+											'<p><b>￥'+ res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
+										'</div>'+
+									'</div>'+
+									'<p><b>退款退货成功</b></p>';
+                    			}
+                    		}
+                    	}
+                    	$(".returned1").html(returned1);
+                    	$(".returned2").html(returned2);
+                    	$(".returned3").html(returned3);
+                    	$(".returned4").html(returned4);
+                    	Rejectednum=res.data.length;
+                    }else{
+                        // 查询无数据提示
+                        // console.log(res.msg);
+                    }
+                    
+                },
+                error:function(res){
+
+                }
+            });  
+            $.ajax({//5：报装中
+                url:"{{:U('Home/Order/install')}}",
+                data:{
+                	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+                	"status":5
+                },
+                dataType:"json",
+                type: 'get',
+                success:function(res){
+                    
+                    if(res.code == 200){
+                    	console.dir(res);
+                    	for(var i=0;i<res.data.length;i++){
+            				returned5+='<p>信息更新时间：'+ res.data[i]['addtime'] +'</p>'+
+							'<div class="shangpingnei clearfix">'+
+								'<div class="tuikuangLeft ">'+
+									'<img src="/Uploads/'+res.data[i]['picpath']+'" alt="">'+
+								'</div>'+
+								'<div class="tuikuangRight">'+
+									'<span>'+ res.data[i]['goodname'] +'</span>'+
+									'<p><b>￥'+res.data[i]['price'] +'</b><span>x '+ res.data[i]['num'] +'</span></p>'+
+								'</div>'+
+							'</div>';
+							if(res.data[i].is_installed=="0"){
+								returned5+='<p class="noborder"><b>报装中，客服电话：020-84765556</b></p>';
+							}else if(res.data[i].is_installed=="1"){
+								returned5+='<p class="noborder"><b>报装完成，报装人电话：18475632541</b></p>'+
+								'<div class="pinglunBtn">'+
+								'<input class="commentAfter" type="submit" value="评论" orderid="'+ res.data[i]['order_id'] +'" gid="'+ res.data[i]['gid'] +'">'+
+								'</div>';
+							}
+                    	}
+                    	$(".returned5").html(returned5);
+                    	$(".waitdrawback").html(res.data.length+Rejectednum);//退换货与售后数量显示
 
                     }else{
                         // 查询无数据提示
                         console.log(res.message);
                     }
                 }
-            });  
-            $.ajax({//5：已退货
-                url:"{{:U('Home/Order/order_list')}}",
-                data:{
-                	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-                	"status":5
-                },
-                dataType:"json",
-                type: 'post',
-                success:function(res){
-                    // console.dir(res);
-                    if(res.code == 200){
-                    	// 查询有数据
-                    	// console.dir(res.data)
-                    }else{
-                        // 查询无数据提示
-                        // console.log(res.message);
-                    }
-                }
-            });  
-    	//售后评论
-	   	$(".commentAfter").click(function(){
-	   		// var commentIndex=$(this).attr("name");
-	   		window.location.href="{{:U('Home/Comment/saleServic')}}";
-	   	}); 
+            }); 
+            //售后评论
+		   	$(".commentAfter").on("click",function(){
+		   		var orderid=$(this).attr("orderid");
+		   		var gid=$(this).attr("gid");
+		   		location.href="{{:U('Home/Comment/saleServic')}}?orderid="+orderid+"&gid="+gid;
+		   	}); 	
+		/*
+			点击顶部导航栏，切换订单状态
+		 */ 
+
+		// 从支付成功跳到查看订单界面 ~~ 待发货
+		var offsetInt = setInterval(function(){
+			if(location.search){
+				var index = location.search.split('=')[1];
+				if(index == 1){
+					// console.log($(".tab").eq(index))
+					tabContentMove($(".tab").eq(index))
+
+					setTimeout(function(){
+						clearInterval(offsetInt)
+					},500)
+				}
+			}
+		},10)
     })();
-
-
 
 	</script>
 </body>

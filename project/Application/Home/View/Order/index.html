@@ -768,13 +768,12 @@
                     }
                 }
             }); 
-    	
-                    //售后评论
-				   	$(".commentAfter").on("click",function(){
-				   		var orderid=$(this).attr("orderid");
-				   		var gid=$(this).attr("gid");
-				   		location.href="{{:U('Home/Comment/saleServic')}}?orderid="+orderid+"&gid="+gid;
-				   	}); 	
+            //售后评论
+		   	$(".commentAfter").on("click",function(){
+		   		var orderid=$(this).attr("orderid");
+		   		var gid=$(this).attr("gid");
+		   		location.href="{{:U('Home/Comment/saleServic')}}?orderid="+orderid+"&gid="+gid;
+		   	}); 	
 		/*
 			点击顶部导航栏，切换订单状态
 		 */ 
