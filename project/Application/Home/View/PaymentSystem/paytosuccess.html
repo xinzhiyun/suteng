@@ -40,10 +40,29 @@
       display: block;
       float: right;
     }
+    
+      #more {
+        width: 60vw;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 10%;
+        padding: 2% 0;
+        text-align: center;
+      }
+      #more>a {
+        padding: 1% 6%;
+        border: 1px solid #aaa;
+        border-radius: 4px;
+        color: #797878;
+      }
+      #more>a:nth-of-type(1) {
+        float: left;
+      }
+      #more>a:nth-of-type(2) {
+        float: right;
+      } 
   </style>
-  <script>
-     
-  </script>
 </head>
 <body>
     <div class="manageCard">
@@ -51,9 +70,11 @@
            <p><i class="iconfont icon-chenggong"></i></p>
            <p>支付成功</p>
         </div>
-        <div id="foot">
-            <a id="order" href="{{:U('Home/Order/index')}}">查看订单</a><a id="shop" href="{{:U('Home/Shop/index')}}">返回首页</a>
-        </div>
+    </div>
+
+    <div id="more">
+      <a href="{{:U('Home/Order/index')}}" id="payagain">查看订单</a>
+      <a href="{{:U('Home/Shop/index')}}" id="goHome">回到首页</a>
     </div>
 </body>
 </html>                                                                                                                                                                                                                                                                      
