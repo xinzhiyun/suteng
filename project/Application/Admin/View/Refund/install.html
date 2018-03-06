@@ -1,0 +1,139 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>售后管理 <small>报装列表</small></h5>
+                    <!-- <div class="ibox-tools">
+                        <i class="fa fa-user-plus"></i>
+                        <a href="{{:U('goodsAdd')}}">添加商品</a>
+                    </div> -->
+                </div>
+                <form method="get" action="">
+                    <div class="input-group col-md-3"  style="float: right;margin-right: 60px;">
+                        <select name="key" class="form-control" style="width:30%">
+                            <option value="so.order_id">订单ID</option>
+                            <option value="u.nickname">收货人姓名</option>
+                        </select>
+                        <input type="text" name="keywords" placeholder="输入搜索关键字" class="input form-control"   style="width:60%">
+                        <span class="input-group-btn" style="display: inline-block;">
+                                <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
+                        </span>
+                    </div>
+                </form>
+                <div class="ibox-content">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    用户名
+                                </th>
+                                <th>
+                                    订单ID
+                                </th>
+                                <th>
+                                    商品名称
+                                </th>
+                                <th>
+                                    商品数量
+                                </th>
+                                <th>
+                                    商品单价
+                                </th>
+                                <th>
+                                    商品图片
+                                </th>
+                                <th>
+                                    报装状态
+                                </th>
+                                <th>
+                                    操作
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <empty name="data">
+                                <tr><td colspan="12">暂无数据</td></tr>
+                            <else />
+                                <volist name="data" id="v">
+                                    <tr>
+                                        <td>
+                                            {{$v.nickname}}
+                                        </td>
+                                        <td>
+                                            {{$v.order_id}}
+                                        </td>
+                                        <td>
+                                            {{$v.goodname}}
+                                        </td>
+                                        <td>
+                                            {{$v.num}}
+                                        </td>
+                                        <td>
+                                            {{$v.price}}
+                                        </td>
+                                        <td>
+                                            <img style="width: 80;height: 80px" src="/./Uploads/{{$v.picpath}}">
+                                        </td>
+                                        <td>
+                                            <switch name="v.is_installed">
+                                                <case value="0">未安装</case>
+                                                <case value="1">已安装</case>
+                                            </switch>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <switch name="v.is_installed">
+                                                    <case value="0">
+                                                            <a class="btn btn-outline btn-success edit" href="javascript:;" soId="{{$v['id']}}" status="1">完成安装</a>
+                                                    </case>
+                                                </switch>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </volist>
+                            </empty>
+                        </tbody>
+                    </table>
+                    <div>
+                        {{$data.page}}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script>
+
+        $('.edit').click(function(){
+            status = $(this).attr('status');
+            id = $(this).attr('soId');
+            $.ajax({
+                type : 'GET',
+                url : "{{:U('Admin/Refund/updateInstalled')}}",
+                data : {'id':id,'status':status},
+                success : function(msg){
+                    if (msg.code == 200) {
+                        console.log(msg);
+                        parent.layer.msg(msg.msg);
+                        location.reload();
+                    }
+                    if (msg.code == 400) {
+                        location.reload();
+                        parent.layer.msg(msg.msg);
+                        console.log(msg);
+                    }               
+                }
+            });
+        })
+    </script>
+</block>
