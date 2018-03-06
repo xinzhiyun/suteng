@@ -130,11 +130,11 @@
           	</label>
 		</div>
 		<!-- 中部文本领域结束 -->
-		<a href="{{:U('Home/Comment/commentsucceed')}}">
+		<!-- <a href="{{:U('Home/Comment/commentsucceed')}}?"> -->
 			<div class="saleBott">
 				<input class="submitBtn" type="submit" value="提交">
 			</div>
-		</a>
+		<!-- </a> -->
 	</div>
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
@@ -156,16 +156,56 @@
 			}
 			$(this).siblings("input").val($(this).index());
 		});
+		var grade1,grade2,grade3,grade4,orderid,gid;//变量定义
+		// 提交
 		$(".submitBtn").click(function(){
-			for(var i=0;i<$('.saleTop>p>input').size();i++){
-				if($('.saleTop>p').eq(i).children("input").val()==0){
-					layuiHint("给商品评分再提交呗！");
-					return false;
-				}
+			grade1=$('.saleTop>p').eq(0).children("input").val();
+			grade2=$('.saleTop>p').eq(1).children("input").val();
+			grade3=$('.saleTop>p').eq(2).children("input").val();
+			appraise=$("#sale").val();
+			function GetQueryString(name) {   
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");   
+				var r = window.location.search.substr(1).match(reg); //获取url中"?"符后的字符串并正则匹配  
+				var context = "";   
+				if (r != null)      context = r[2];   
+				reg = null;   
+				r = null;   
+				return context == null || context == "" || context == "undefined" ? "" : context; 
 			}
-			if($("#sale").val()==""){
+			if(grade1==0){
+				layuiHint("给商品评分再提交呗！");
+				return false;
+			}else if(grade1==0){
+				layuiHint("给商品评分再提交呗！");
+				return false;
+				
+			}else if(grade2==0){
+				layuiHint("给商品评分再提交呗！");
+				return false;
+			}else if(appraise==""){
 				layuiHint("给我们的服务做个评价呗");
 				return false;
+			}else{
+				$.ajax({
+					url:"{{:U('Home/Order/installComment')}}",
+					type:"post",
+					dataType:"json",
+					data:{
+						grade1:grade1,
+						grade2:grade2,
+						grade3:grade3,
+						appraise:appraise,
+						orderid:GetQueryString("orderid"),//获取URL中的订单编号
+						gid:GetQueryString("gid"),//获取URL中的商品id
+					},
+					success:function(res){
+						if(res.code==200){
+							location.href="U('Home/VipCenter/mycomment')";
+						}else{
+							layuiHint(res.msg);
+						}
+					}
+				});
 			}
 		});
 	</script>
