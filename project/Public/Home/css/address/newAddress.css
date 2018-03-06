@@ -1,8 +1,7 @@
 
 * {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 body {
 	width: 100vw;
@@ -20,8 +19,12 @@ body {
 }
 #info>div {
 	width: 100%;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	align-items: center;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 	padding: 3% 5%;
 	white-space: nowrap;    
 	border-bottom: 1px solid #eee;
@@ -40,9 +43,15 @@ body {
 }
 #info>div>span:nth-of-type(2) {
 	width: 80%;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	justify-content: flex-end;
-	align-items: center;
+	-webkit-box-pack: end;
+	    -ms-flex-pack: end;
+	        justify-content: flex-end;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 }
 #info>div>span:nth-of-type(2)>input:nth-of-type(2) {
 	width: 6%;
@@ -70,7 +79,10 @@ body {
 	position: fixed;
 	top: 0;
 	left: 0;
-	flex-flow: column;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	    -ms-flex-flow: column;
+	        flex-flow: column;
 	padding: 0;
 	border-bottom: none;
 	z-index: 1000;
@@ -82,17 +94,29 @@ body {
 }
 .areaDiv {
 	height: 36vh;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	justify-content: center;
-	align-items: center;
+	-webkit-box-pack: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 	background: #fff;
 }
 /*弹出地区选择底部的确认按钮*/
 #confirmAreaChoose {
 	height: 14vh;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	justify-content: center;
-	align-items: center;
+	-webkit-box-pack: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 	background: #fff;
 }
 #confirmAreaChoose>div {
@@ -105,8 +129,13 @@ body {
 }
 .areaDiv>p {
 	width: 80%;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	flex-flow: column;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	    -ms-flex-flow: column;
+	        flex-flow: column;
 }
 .areaDiv>p>select {
 	width: 80%;
@@ -125,9 +154,15 @@ textarea {
 /*设为默认地址开关一栏*/
 #norAddrDiv {
 	width: 100vw;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	-webkit-box-pack: justify;
+	    -ms-flex-pack: justify;
+	        justify-content: space-between;
 	padding: 3% 5%;
 }
 
@@ -135,8 +170,12 @@ textarea {
 #normalAddrdess {
 	width: 10vmin;
 	height: 6vmin;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	align-items: center;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 	position: relative;
 	float: right;
 	outline: none;
@@ -156,6 +195,7 @@ textarea {
 	margin-left: .17vmin;
 	border-radius: 20px;
 	background: #fff;
+	-webkit-transition: left .2s ease-in;
 	transition: left .2s ease-in;
 }
 
@@ -175,9 +215,15 @@ textarea {
 }
 #footer {
 	width: 100vw;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	justify-content: center;
-	align-items: center;
+	-webkit-box-pack: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 	position: fixed;
 	bottom: 6vmin;
 }
