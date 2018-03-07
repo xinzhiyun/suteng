@@ -27,26 +27,41 @@
     float: left;
     white-space: pre;
   }
+  /*设备id*/
+  .deviceid {
+    width: 100%;
+    height: 1.3rem;
+    display: block;
+    border-radius: 0.133333rem;
+    border: 1px solid #d4d4d4;
+  }
   .repairTop ul li span:nth-child(4){
     margin-top: 0.1rem;
   }
   .repairTop ul li p{
+    width: 65%;
     display: inline-block;
     font-size: 0.7rem;
-    width: 65%;
+    border-radius: 4px;
+    border: 1px solid #d4d4d4;
   }
   .repairTop ul li p input,.repairTop ul li p select{
     float: right;
-    width: 100%;
-    border-radius: 0.133333rem;
-    border:1px solid #d4d4d4;
-    text-align: center;
     height: 1.3rem;
+    width: 100%;
+    border: none;
+    border-radius: 4px;
+    text-align: left;
     background: #fff;
+    text-indent: 6px;
+  }
+  .device_code>option{
+    padding-left: 2%;
   }
   .repairTop ul li p select{
-    padding-left: 5%;
+    color: #666;
   }
+ 
   .repairMidd{
     padding:0.533333rem 5% 0.933333rem 5%;
     border-bottom: 0.4rem solid #F3F3F3;
@@ -56,6 +71,9 @@
     font-size: 0.8rem;
     line-height: 0.8rem;
     margin-bottom: 0.266667rem;
+  }
+  .repairMidd h3>span {
+    color: red;
   }
   .repairMidd textarea {
     margin-top: 0.133333rem;
@@ -97,25 +115,6 @@
     display: block;
   }
 
-  #picShow {
-    width: 100%;
-    display: inline;    
-    position: absolute;
-    top: 15%;
-  }
-  #picShow>span {
-    width: 18vmin;
-    height: 18vmin;
-    display: inline-block;
-    position: relative;
-    margin: 2vmin 1vmin;
-  }
-  #picShow>span>img {
-    width: 100%;
-    height: 100%;
-    display: inline-block;
-    position: relative;
-  }
   .hide {
     width: 4.5rem;
     height: 4.5rem;
@@ -216,8 +215,8 @@
     letter-spacing: 0.1rem;
   }
   .repairTop ul li p input.devicetype{
-    width: calc(100% - 10px);;
-    padding-left: 10px;
+    width: 100%;
+    /*padding-left: 10px;*/
     text-align: left;
   }
   .layui-laydate, .layui-laydate-main{
@@ -256,4 +255,41 @@
     align-items: center;
     justify-content: center;
     margin: 0 10px !important;
+  }
+
+  /*显示上传的图片*/
+  #picShow { 
+    position: absolute;
+    width: 66%;
+    height: 4rem;
+    bottom: .6rem;
+    right: 0;
+    display: block;
+  }
+  #picShow>span {
+    width: 30%;
+    height: 100%;
+    display: inline-block;
+    position: relative;
+    margin: 0 4px;
+  }
+  #picShow>span>img {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .delPic {
+    position: absolute;
+    width: .8rem;
+    height: .8rem;
+    top: -10px;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    border-radius: 50%;
+    background: red;
   }
