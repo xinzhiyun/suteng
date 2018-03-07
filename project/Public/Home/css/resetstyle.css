@@ -14,7 +14,7 @@ sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
 sup{top:-.5em}
 sub{bottom:-.25em}
 a:hover{text-decoration:underline}
-ins,a{text-decoration:none;}
+ins,a{text-decoration:none;color: #000;}
 a:link{text-decoration:none;}   /* 指正常的未被访问过的链接*/
 a:visited{text-decoration:none;} /*指已经访问过的链接*/
 a:hover{text-decoration:none;}/*指鼠标在链接*/
