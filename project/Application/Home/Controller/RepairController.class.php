@@ -10,28 +10,16 @@ class RepairController extends CommonController
      */
     public function index()
     {   
-        //调用微信JS-SDK类获取签名需要用到的数据
-        $weixin = new WeixinJssdk;
-        $signPackage = $weixin->getSignPackage();
-        // 查询用户微信中的openid
-        //$openId = $weixin->GetOpenid();
+
         // 调试用默认用户
         $openId = $_SESSION['homeuser']['open_id'];
         // 查询绑定设备
         $user_device = D('UserDevice');
         $map['ud.uid'] = session('user.id');
 
-        $bind_device = $user_device->getBindInof($map); //where('uid='.session('user.id'))->select();
-        // 将当前设备的ID存到SESSION中
-        $where['status'] = 1;
-        $where['uid'] = session('user.id');
-        $cur_device = $user_device->where($where)->find();
-        session('device.did',$cur_device['did']);
-        //分配数据        
-        $this->assign('info',$signPackage);
+        $bind_device = $user_device->getBindInof($map); 
         $this->assign('bindInfo',$bind_device);
-        $this->assign('openId',$openId);
-        // dump(session('device.did'));
+
         $this->display();
     }
 
