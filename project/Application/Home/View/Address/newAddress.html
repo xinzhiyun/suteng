@@ -187,10 +187,12 @@
 				    			if(res.code == 200){
 				    				layHint('保存成功！');
 				    				// sessionStorage.setItem("editAddressObj", JSON.stringify(editAddressObj));
-				    				//返回地址管理
-				    				setTimeout(function(){
-				    					location.href = '{{:U("Home/Address/index")}}';
-				    				},500);
+				    				// 如果存在订单号则跳回订单确认界面
+				    				if(sessionStorage.getItem("order_id")){
+					    				setTimeout(function(){
+					    					location.href = '{{:U("Home/PaymentSystem/payConfirm")}}';
+					    				},500);
+									}
 				    			}else{
 				    				console.log('失败！',res);
 				    				layHint('保存失败！');
