@@ -158,10 +158,10 @@
 				location.href = "{{:U('Address/index')}}";
 			})
 			//获取从后台传来的订单号
-			var dangdanID;	
+			var order_id;	
 			if(sessionStorage.getItem('order_id')){
-				dangdanID = sessionStorage.getItem('order_id');	
-				// console.log(dangdanID);
+				order_id = sessionStorage.getItem('order_id');	
+				// console.log(order_id);
 			}
 
 			// 获取后台传来的默认地址
@@ -186,7 +186,7 @@
 			} else{
 				$("#hLeft").html('<p style="text-align:center;">请选择地址或添加新地址</p>');
 			}
-			$("#main").append('<h3 class="dingdanID">订单编号：'+dangdanID+'</h3>')
+			$("#main").append('<h3 class="dingdanID">订单编号：'+order_id+'</h3>')
 			/*
 				订单遍历
 			 */
@@ -388,7 +388,7 @@
 							$.ajax({
 								url: "{{:U('Home/PaymentSystem/orderPay')}}",
 								type: 'post',
-								data: {order: dangdanID},
+								data: {order: order_id},
 								success: function(res){
 									console.log(res);
 									if(res == -1){
