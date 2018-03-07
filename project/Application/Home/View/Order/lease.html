@@ -6,7 +6,7 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_3mgodvjd6sp833di.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/order/consumable.css">
-	<title>耗材订单</title>
+	<title>租赁订单</title>
 </head>
 <body>
 	<header id="header">
@@ -238,7 +238,7 @@
             $.ajax({//8：未支付
                 url:"{{:U('Home/Order/order_list')}}",
                 data:{
-                	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+                	"g_type":0,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
                 	"status":8
                 },
                 dataType:"json",
@@ -358,7 +358,7 @@
  			$.ajax({//9：待发货
                 url:"{{:U('Home/Order/order_list')}}",
                 data:{
-                	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单},
+                	"g_type":0,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单},
                 	"status":9
                 },
                 dataType:"json",
@@ -433,7 +433,7 @@
  			$.ajax({//2：待收货
                 url:"{{:U('Home/Order/order_list')}}",
                 data:{
-                	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+                	"g_type":0,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
                 	"status":2
             	},
                 dataType:"json",
@@ -523,7 +523,7 @@
  			$.ajax({//7：待评论
                 url:"{{:U('Home/Order/order_list')}}",
                 data:{
-                	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+                	"g_type":0,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
                 	"status":7
             	},
                 dataType:"json",
@@ -602,7 +602,7 @@
  			$.ajax({//4：退货/售后
                 url:"{{:U('Home/Refund/showGoods')}}",
                 data:{
-                	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+                	"g_type":0,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
                 	// "status":4
                 	"refundStatus":1,
             	},
@@ -645,7 +645,7 @@
 											'<p><b>￥'+res.data[i]['goods'][k]['price']+'</b><span>x'+res.data[i]['goods'][k]['productnumber']+'</span></p>'+
 										'</div>'+
 									'</div>'+
-									'<p><b>商家同意退款，请尽早退货</b><span>点击展开<i class="iconfont icon-shuangxiajiantou"></i></span></p>'+
+									'<p class="aaaa"><b>商家同意退款，请尽早退货</b><span>点击展开<i class="iconfont icon-shuangxiajiantou"></i></span></p>'+
 									'<!-- 隐藏的评论内容 -->'+
 									'<div class="commentHidden">'+
 										'<div class="hidTop">'+
@@ -694,11 +694,15 @@
                     			}
                     		}
                     	}
+
                     	$(".returned1").html(returned1);
                     	$(".returned2").html(returned2);
                     	$(".returned3").html(returned3);
                     	$(".returned4").html(returned4);
                     	Rejectednum=res.data.length;
+                    	$(".tuikuangRight").click(function(){
+                    	});
+                    	
                     }else{
                         // 查询无数据提示
                         // console.log(res.msg);
@@ -706,7 +710,7 @@
                     // 寄件点击展开效果
 					var iClass=$('.tuikuangall>p>span>i').attr("class");
 					// console.dir(iClass);
-					$('.tuikuangall>p>span').click(function(){
+					$('.tuikuangall>p>span').on("click",function(){
 						if(iClass=='iconfont icon-shuangxiajiantou'){
 							$(this).children('i').removeClass('icon-shuangxiajiantou').addClass('icon-xiangshangjiantou');
 							// console.dir($(this).parent().next());
@@ -721,7 +725,6 @@
 							iClass='iconfont icon-shuangxiajiantou';
 						}
 					})
-                    
                 },
                 error:function(res){
 
@@ -730,7 +733,7 @@
             $.ajax({//5：报装中
                 url:"{{:U('Home/Order/install')}}",
                 data:{
-                	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+                	"g_type":0,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
                 	"status":5
                 },
                 dataType:"json",
