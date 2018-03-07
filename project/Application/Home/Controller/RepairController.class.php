@@ -19,7 +19,7 @@ class RepairController extends CommonController
 
         $bind_device = $user_device->getBindInof($map); 
         $this->assign('bindInfo',$bind_device);
-        
+
         $this->display();
     }
 
@@ -29,16 +29,31 @@ class RepairController extends CommonController
     		$id = $_SESSION['user']['id'];
         	// $device_code = M('devices')->where($id)->find();
 
+            $savePath = 'Uploads/pic/';
+           
+            // 二进制文件上传简单处理
+            if (!empty($_FILES["UploadForm"])) {
+                foreach ($_FILES["UploadForm"]["tmp_name"] as $key => $value) {
+                    $image = $_FILES["UploadForm"]["tmp_name"][$key];
+                    $imageSize = $_FILES["UploadForm"]["size"][$key];
+                    $info[] = $this->upload($image,$imageSize);                        
+                }
+            }else{
+                E('没有文件上传', 602);
+            }   
             
-            $picpath = $this->upload();
-            if ($picpath) {
-                // 接收用户输入数据
-                $repair = D('repair');
-                // $device_code = M('Devices')->where('id='.session('device.did'))->getfield('device_code');
-                if(!$repair->create()){
-                    $this->delPic('./Public/'.$picpath[0]);
-                    return $this->error($repair->getError());
-                };
+            if(!$info) {// 上传错误提示错误信息
+                E('上传错误',606);
+            }
+            if(!(count($info) <= 3)){
+                E('只能添加三张图片',604);
+            }
+             foreach ($info as $k => $val) {
+                $path .= $val.'|';
+            }
+
+
+
                 $arr = array(
                     'device_code' => I('device_code'),
                     'date' => I('date'),
@@ -49,19 +64,16 @@ class RepairController extends CommonController
                     'uid' => $id,
                     'address' => I('address'),
                     'addtime' => time(),
-                    'picpath' => $picpath[0]
+                    'picpath' => $path
                 );
 
-            }else{
-                $this->error('您没有上传图片，请重新上传');
-            }
             // 实例化
             $repair = M('repair');
             if ($repair->add($arr)) {
-                $this->success('感谢您的建议，我们会仔细阅读并做出相应调整，谢谢！',U('Index/index'));
+                $this->ajaxReturn(['code'=>200,'msg'=>'感谢您的建议，我们会仔细阅读并做出相应调整，谢谢！']);
             }else{
-                $this->delPic('./Public/'.$picpath);
-                $this->error('一不小心服务器偷懒了~');
+                $this->rmfiles($path);
+                $this->ajaxReturn(['code'=>400,'msg'=>'一不小心服务器偷懒了~']);
             }
 	        
     	}
@@ -89,10 +101,15 @@ class RepairController extends CommonController
         }
 	}
 
-    public function delPic($file)
+   /**
+     * [删除文件]
+     * @param  Array $files 文件路径数组
+     * @return Boolean        
+     */
+    public function rmfiles($files)
     {
-        if (file_exists($file)) {
-            return unlink($file);
+        foreach ($files as $key => $value) {
+            return unlink($value);
         }
     }
 }
