@@ -112,10 +112,10 @@ class DevicesController extends CommonController
         $filter     = $device->getFilterInfo($map);
         $filterInfo = $device->getFilterDetail($filter);
         $assign = [
-            'statu' => $statu,
+            'statu'      => $statu,
             'filterInfo' => $filterInfo,
-            'filter' => $filter,
-            'vendor' => $vendors,
+            'filter'     => $filter,
+            'vendor'     => $vendors,
         ];
         $this->assign($assign);
         $this->display('devices_detail');

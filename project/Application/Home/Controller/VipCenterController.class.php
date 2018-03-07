@@ -223,6 +223,7 @@ class VipCenterController extends CommonController
         $map['dcode'] = M('devices')->where('id='.$id)->getField('device_code');
         $map['date'] = date("Ym", time());
         $data = M('Tds')->where($map)->select();
+        // dump($data);
         $this->assign('data', $data);
         $this->display();
     }
@@ -231,7 +232,10 @@ class VipCenterController extends CommonController
     public function getTds()
     {
         try {
-            $map = I('post.');
+            $where['id'] = session('device.did');
+
+            $map['dcode'] = M('devices')->where($where)->getField('device_code');
+            $map['date'] = I('post.month');
             $data = M('Tds')->where($map)->select();
             $this->ajaxReturn($data);
         } catch (\Exception $e) {

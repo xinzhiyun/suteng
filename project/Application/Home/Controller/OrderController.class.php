@@ -137,7 +137,17 @@ class OrderController extends CommonController
 
     public function editOrder()
     {
-        
+        try {
+            $map = I('post.');
+            $data['status'] = 3;
+            M('orders')->where($map)->save($data);
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
     }
 
     /**
