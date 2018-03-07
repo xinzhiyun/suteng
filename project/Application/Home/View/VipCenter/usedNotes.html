@@ -100,7 +100,17 @@
         {"flowNumber":"85","time":"2287334455967785"}
       ];
       var liHtml='';
+      var date = new Date(Number(flowList[1].time));
+      console.log(date)
+        Y = date.getFullYear() + '-';
+        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        D = date.getDate() + ' ';
+        h = date.getHours() + ':';
+        m = date.getMinutes() + ':';
+        s = date.getSeconds(); 
+        console.log(Y+M+D+h+m+s);
       for(var i = 0;i<flowList.length;i++){
+
         liHtml += '<li><span class="iconBig">'+ flowList[i].flowNumber +'</span><span>'+ flowList[i].time +'</span></li>';
       }
       $(".flowList").html(liHtml);

@@ -256,13 +256,17 @@
 									'<span>等待买家付款</span>'+
 								'</p>';//<img src="__PUBLIC__/Pic/repair/2018-02-06/5a7975ef16907.png">
 							for(var k=0;k<waitpaylist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
+								var gainBrief = waitpaylist[i]['productList'][k]['productbrief'];
+								var gainName = waitpaylist[i]['productList'][k]['productname'];
+								gainBrief = gainBrief ? gainBrief : "暂无描述";
+								gainName = gainName ? gainName : "暂无标题";
 								dingdanDaifukuan2+='<div class="goodsItem">'+
 									'<div class="giPicture">'+
 										'<img src="/Uploads/'+waitpaylist[i]['productList'][k]['orderimg']+'" alt="">'+
 									'</div>'+
 									'<div class="giDescription">'+
-										'<b>'+waitpaylist[i]['productList'][k]['productname']+'</b>'+
-										'<p>'+waitpaylist[i]['productList'][k]['productbrief']+'</p>'+
+										'<b>'+gainName+'</b>'+
+										'<p>'+gainBrief+'</p>'+
 										'<div>'+
 											'<b>￥'+ waitpaylist[i]['productList'][k]['price'] +'</b>'+
 											'<span>X&nbsp;'+waitpaylist[i]['productList'][k]['productnumber']+'</span>'+
@@ -378,13 +382,17 @@
 								'</p>';
 							for(var k=0;k<waitsendlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
 								// alert(orderList[i]['productList'].length);
+								var sendBrief = waitsendlist[i]['productList'][k]['productbrief'];
+								var sendName = waitsendlist[i]['productList'][k]['productname'];
+								sendBrief = sendBrief ? sendBrief : "暂无描述";
+								sendName = sendName ? sendName : "暂无描述";
 								dingdanDaifahuo2+='<div class="goodsItem">'+
 									'<div class="giPicture">'+
 										'<img src="/Uploads/'+waitsendlist[i]['productList'][k]['orderimg']+'" alt="">'+
 									'</div>'+
 									'<div class="giDescription">'+
-										'<b>'+waitsendlist[i]['productList'][k]['productname']+'</b>'+
-										'<p>'+waitsendlist[i]['productList'][k]['productbrief']+'</p>'+
+										'<b>'+sendName+'</b>'+
+										'<p>'+sendBrief+'</p>'+
 										'<div>'+
 											'<b>￥'+ waitsendlist[i]['productList'][k]['price'] +'</b>'+
 											'<span>X&nbsp;'+waitsendlist[i]['productList'][k]['productnumber']+'</span>'+
@@ -451,13 +459,17 @@
 									'<span>卖家已发货</span>'+
 								'</p>';
 							for(var k=0;k<waitgainlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
+								var productBrief = waitgainlist[i]['productList'][k]['productbrief'];
+								var productName = waitgainlist[i]['productList'][k]['productname'];
+								productBrief = productBrief ? productBrief : "暂无描述";
+								productName = productName ? productName : "暂无标题";
 								dingdanDaishouhuo2+='<div class="goodsItem">'+
 									'<div class="giPicture">'+
 										'<img src="/Uploads/'+waitgainlist[i]['productList'][k]['orderimg']+'" alt="">'+
 									'</div>'+
 									'<div class="giDescription">'+
-										'<b>'+waitgainlist[i]['productList'][k]['productname']+'</b>'+
-										'<p>'+waitgainlist[i]['productList'][k]['productbrief']+'</p>'+
+										'<b>'+productName+'</b>'+
+										'<p>'+productBrief+'</p>'+
 										'<div>'+
 											'<b>￥'+ waitgainlist[i]['productList'][k]['price'] +'</b>'+
 											'<span>X&nbsp;'+waitgainlist[i]['productList'][k]['productnumber']+'</span>'+
@@ -506,7 +518,12 @@
 				       	   				order_id:_thisname
 				       	   			},
 				       	   			success:function(res){
+				       	   				// tabContentMove($(".tab").eq(3))
 				       	   				window.location.reload();
+				       	   				// console.log( res);
+				       	   			},
+				       	   			error: function(res) {
+				       	   				console.log("错误",res);
 				       	   			}
 				       	   		});
 				       	   	});
@@ -520,7 +537,7 @@
                 }
             });  
 
- 			$.ajax({//7：待评论
+ 	$.ajax({//7：待评论
                 url:"{{:U('Home/Order/order_list')}}",
                 data:{
                 	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
@@ -535,46 +552,46 @@
                     	var waitcommentlist=res.data;
                     	// console.dir(waitcommentlist);
                     	for(var i=0;i<waitcommentlist.length;i++){//待评论数据遍历
-							dingdanDaipinglun1+='<div class="goods">'+
-								'<p>订单编号：'+waitcommentlist[i]['orderid']+'</p>'+
-								'<p>下单时间：'+waitcommentlist[i]['ordertime'] +
-									'<span>交易完成</span>'+
-								'</p>';
-							for(var k=0;k<waitcommentlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
-								dingdanDaipinglun2+='<div class="goodsItem">'+
-									'<div class="giPicture">'+
-										'<img src="/Uploads/'+waitcommentlist[i]['productList'][k]['orderimg']+'" alt="">'+
-									'</div>'+
-									'<div class="giDescription">'+
-										'<b>'+waitcommentlist[i]['productList'][k]['productname']+'</b>'+
-										'<p>'+waitcommentlist[i]['productList'][k]['productbrief']+'</p>'+
-										'<div>'+
-											'<b>￥'+ waitcommentlist[i]['productList'][k]['price'] +'</b>'+
-											'<span>X&nbsp;'+waitcommentlist[i]['productList'][k]['productnumber']+'</span>'+
-										'</div>'+
-									'</div>'+
-								'</div>';
-							}
-							dingdanDaipinglun1+=dingdanDaipinglun2+'<div class="calc">'+
-									'<div>'+
-										'共'+ waitcommentlist[i]['totalnumber'] +'件商品&emsp;'+
-										'合计：<b class="price">￥'+waitcommentlist[i]['totalprice']+'</b>'+
-										'<span class="postage">&nbsp;(含邮费￥'+waitcommentlist[i]['postage']+')</span>'+
-									'</div>'+
-									'<div>'+
-										'<div class="cancel">'+
-										'</div>'+
-										'<a href="javascript:;" class="pay commentBtn" name='+ waitcommentlist[i]['orderid'] +' gid='+ waitcommentlist[i].productList[0].gid +'>'+
-											'<span>评&nbsp;价</span>'+
-										'</a>'+
-									'</div>'+
-								'</div>'+
-							'</div>';
-						 	dingdanDaipinglun2='';
-						}
-						$(".waitassess").html(waitcommentlist.length);
-						$("#dingdanDaipinglun").html(dingdanDaipinglun1);
-						
+			dingdanDaipinglun1+='<div class="goods">'+
+				'<p>订单编号：'+waitcommentlist[i]['orderid']+'</p>'+
+				'<p>下单时间：'+waitcommentlist[i]['ordertime'] +
+					'<span>交易完成</span>'+
+				'</p>';
+			for(var k=0;k<waitcommentlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
+				dingdanDaipinglun2+='<div class="goodsItem">'+
+					'<div class="giPicture">'+
+						'<img src="/Uploads/'+waitcommentlist[i]['productList'][k]['orderimg']+'" alt="">'+
+					'</div>'+
+					'<div class="giDescription">'+
+						'<b>'+waitcommentlist[i]['productList'][k]['productname']+'</b>'+
+						'<p>'+waitcommentlist[i]['productList'][k]['productbrief']+'</p>'+
+						'<div>'+
+							'<b>￥'+ waitcommentlist[i]['productList'][k]['price'] +'</b>'+
+							'<span>X&nbsp;'+waitcommentlist[i]['productList'][k]['productnumber']+'</span>'+
+						'</div>'+
+					'</div>'+
+				'</div>';
+			}
+			dingdanDaipinglun1+=dingdanDaipinglun2+'<div class="calc">'+
+					'<div>'+
+						'共'+ waitcommentlist[i]['totalnumber'] +'件商品&emsp;'+
+						'合计：<b class="price">￥'+waitcommentlist[i]['totalprice']+'</b>'+
+						'<span class="postage">&nbsp;(含邮费￥'+waitcommentlist[i]['postage']+')</span>'+
+					'</div>'+
+					'<div>'+
+						'<div class="cancel">'+
+						'</div>'+
+						'<a href="javascript:;" class="pay commentBtn" name='+ waitcommentlist[i]['orderid'] +' gid='+ waitcommentlist[i].productList[0].gid +'>'+
+							'<span>评&nbsp;价</span>'+
+						'</a>'+
+					'</div>'+
+				'</div>'+
+			'</div>';
+		 	dingdanDaipinglun2='';
+		}
+		$(".waitassess").html(waitcommentlist.length);
+		$("#dingdanDaipinglun").html(dingdanDaipinglun1);
+		
                     }else{ 
                         // 查询无数据提示
                         $("#dingdanDaipinglun").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
@@ -704,23 +721,23 @@
                         // console.log(res.msg);
                     }
                     // 寄件点击展开效果
-					var iClass=$('.tuikuangall>p>span>i').attr("class");
-					// console.dir(iClass);
-					$('.tuikuangall>p>span').click(function(){
-						if(iClass=='iconfont icon-shuangxiajiantou'){
-							$(this).children('i').removeClass('icon-shuangxiajiantou').addClass('icon-xiangshangjiantou');
-							// console.dir($(this).parent().next());
-							var _commentHidden=$(this).parent().next();
-							$(_commentHidden).slideDown();
-							iClass='iconfont icon-xiangshangjiantou';
-						}
-						else{	
-							var _commentHidden=$(this).parent().next();	
-							$(this).children('i').removeClass('icon-xiangshangjiantou').addClass('icon-shuangxiajiantou');
-							$(_commentHidden).slideUp();		
-							iClass='iconfont icon-shuangxiajiantou';
-						}
-					})
+		var iClass=$('.tuikuangall>p>span>i').attr("class");
+		// console.dir(iClass);
+		$('.tuikuangall>p>span').click(function(){
+			if(iClass=='iconfont icon-shuangxiajiantou'){
+				$(this).children('i').removeClass('icon-shuangxiajiantou').addClass('icon-xiangshangjiantou');
+				// console.dir($(this).parent().next());
+				var _commentHidden=$(this).parent().next();
+				$(_commentHidden).slideDown();
+				iClass='iconfont icon-xiangshangjiantou';
+			}
+			else{	
+				var _commentHidden=$(this).parent().next();	
+				$(this).children('i').removeClass('icon-xiangshangjiantou').addClass('icon-shuangxiajiantou');
+				$(_commentHidden).slideUp();		
+				iClass='iconfont icon-shuangxiajiantou';
+			}
+		})
                     
                 },
                 error:function(res){

@@ -140,7 +140,7 @@ class OrderController extends CommonController
         try {
             $map = I('post.');
             $data['status'] = 3;
-            M('orders')->where($map)->save($data);
+            M('shop_order')->where($map)->save($data);
         } catch (\Exception $e) {
             $err = [
                 'code' => $e->getCode(),

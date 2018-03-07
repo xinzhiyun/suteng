@@ -204,6 +204,7 @@ class PaymentSystemController extends CommonController
                 $order_id = $orderData['order_id'];
                 // 订单描述
                 $content = '速腾商城商品购买';
+
                 $this->uniformOrderTow($money,$order_id,$content);
             }else{
                 // 订单不存在
