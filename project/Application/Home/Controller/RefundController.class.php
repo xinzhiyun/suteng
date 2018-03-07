@@ -73,11 +73,12 @@ class RefundController extends CommonController
                 if(!(count($info) <= 3)){
                     E('只能添加三张图片',604);
                 }
+                 foreach ($info as $k => $val) {
+                    $path .= $val.'|';
+                }
+                $data['pic'] = $path;
             }
-            foreach ($info as $k => $val) {
-                $path .= $val.'|';
-            }
-            $data['pic'] = $path;
+           
             $refund->startTrans();
             // print_r($data);die;
             // 判断该用户是否已经对这个商品评价过，如果评价过，就不能评价了           
