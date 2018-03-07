@@ -48,6 +48,25 @@
     <script src="__PUBLIC__/Home/js/public.js"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script>
+		$(function(){
+			// 首页按钮
+			!function(){
+				// 创建 a 标签
+				var home = document.createElement('a');
+				home.innerText = '首\n页';
+				
+				home.href = '{{:U("Home/VipCenter/index")}}';
+				home.setAttribute("id", 'back2Home');
+
+				// 添加到页面
+				document.body.appendChild(home);
+				home.onclick = function(){
+					home.style.background = '#aaa';
+				}
+				return
+				// console.log(home)
+			}()
+		})
 		var one_isOpen = false;	//判断消息的开关状态
 		function showMsg(_this){
 			// var _this = $(this);

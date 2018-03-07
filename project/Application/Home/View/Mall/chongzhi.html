@@ -4,225 +4,11 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
-	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_3mgodvjd6sp833di.css">
 	<link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-	<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
-	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/mall/chongzhi.css">
 	<title>会员充值</title>
-	<style>
-		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
-		body {
-			font-size: .7rem;
-			overflow-x: hidden;
-		}
-		#content {
-			width: 100vw;
-			height: 92vh;
-		}
-		/*充值类型*/
-		#content>div>p {
-			padding: 1% 4%;
-			text-align: left;
-		}
-		.taocan {
-			padding: 2% 0;
-			text-align: center;
-		}
-		.taocan>div {
-			/*width: 30%;*/
-			display: inline-block;
-			padding: 3vmin 8vmin;
-			/*margin: 5vmin;*/
-			text-align: center;
-			border-radius: 4px;
-			border: 1px solid #e8e8e8;
-		}
-		
-		.taocanSelectNow {
-			color: #fff;
-			border: 1px solid #56AAF1;
-			background: #56AAF1;
-		}
-		.money {
-			position: relative;
-		}
-		.money>div {
-			width: 100%;
-			position: absolute;
-			background: #fff;
-		}
-		.money>div>div {
-			width: 70%;
-			position: relative;
-			top: 0;
-			padding: 3vmin 8vmin;
-			margin: 2vh auto;
-			border-radius: 4px;
-			border: 1px solid #e8e8e8;
-			text-align: center;
-		}
-		.money>div:nth-of-type(2) {
-			left: 100vw;
-		}
-		.money>div:nth-of-type(3) {
-			left: 200vw;
-		}
-		#footer {
-			width: 100vw;
-			height: 8vh;
-			line-height: 8vh;
-			color: #fff;
-			font-size: .9rem;
-			text-align: center;
-			background: #2EB6AA;
-		}
-		/*付款页面*/
-		.paystyle{
-			position:absolute;
-			top:0;
-			left: 0;
-			width: 100vw;
-			height: 100vh;
-			display: none;
-		}
-		/*付款页面1*/
-		.paystyle1{
-			position:absolute;
-			top:0;
-			left: 0;
-			width: 100vw;
-			height: 100vh;
-			display: none;
-		}
 
-		.paystyleTop{
-			width: 100vw;
-			height: 10vh;
-			background: #000;
-			opacity: 0.3;
-		}
-		.payContain{
-			position: absolute;
-			bottom: 0;
-			height: 90vh;
-			width: 100vw;
-			/*opacity: 0.5;*/
-			z-index: 999;
-			background: #FFF;
-		}
-		.payContain>.paytop{
-			padding:0.5rem;
-    		border-bottom: 1px solid #E5E5E5;
-		}
-		.paytop>.paytopLeft>i{
-			float: left;
-    		padding: 0.6rem 0;
-    		margin-right: 4rem;
-    		font-size: 1.5rem;
-		}
-		/*支付图标的颜色*/
-		.icon-jinbi{
-			color:#FEDA02;
-		}
-		.icon-yingbi{
-			color:#97C3C0;
-			
-		}
-		.icon-z-weixin{
-			color:#149E23;
-			
-		}
-		.icon-zhifubao{
-			color:#22A8FF;
-			
-		}
-		.icon-yinhang-yinlian-{
-			color:#6BB5BB;
-			
-		}
-		.paytop>.paytopRight{
-			float: left;
-    		text-align: center;
-		}
-		.icon-kuang1{
-			color:#ccc;
-		}
-		.paytop>.paytopRight>h3{
-			font-size: 0.9rem;
-    		font-weight: 600;
-    		padding: 0 0 0.5rem;
-		}
-		.paytop>.paytopRight>p{
-			font-size: 0.9rem;
-			font-weight: 600;
-		}
-		.paymidd>h3{
-			padding:0.8rem;
-		}
-		.paymidd>ul>li{
-			padding:0.8rem 0.5rem;
-			border-bottom: 1px  solid #E5E5E5;
-		}
-		.paymidd>ul>li:nth-child(2){
-			border-bottom: 6px  solid #E5E5E5;
-			
-		}
-		.paymidd>ul>li>i{
-			padding-right:0.4rem; 
-			font-size: 1.2rem;
-		}
-		.paymidd>ul>li>span{
-			float: right;
-			font-size: 1rem;
-		}
-		.paymidd>ul>li>span.icon-xuanze{
-			color: #4280EC;
-
-		}
-		/*底部按钮*/
-		.payBott{
-			width: 86vw;
-			margin:5.5vh 7vw 0;
-		}
-		.payBott>input{
-			border:none;
-			padding:1vh  0;
-			width: 86vw;
-			background: #2EB6AA;
-			border-radius:0.2rem;
-			color: #FFF;
-		}
-		/*模态框样式*/
-	  .modelAll{width:100vw;height:100vh;font-family: "mircoft yahei";font-size:14px;font-size: 0.7rem;line-height: 1; display: none;}
-      .modal{position:absolute;left:0;right:0;z-index: -1;}
-      .fade{opacity:0;top:-10%;display:block;-webkit-transition:top 0.3s linear;-o-transition:top 0.3s linear;transition:top 0.3s linear;}
-      .fade.in{opacity:1;top:10%;}
-      .modal-body{width:80%;margin:5rem auto;background-color: #fff;border-radius:0.5rem;}
-      .modal-title{position:relative;height:40px;background-color: #D31145;line-height: 40px;border-bottom:1px solid #ccc;}
-      .modal-backup{position:absolute;top:0;left:0;right:0;width:100%;height:100%;background-color: rgba(0, 0, 0, 0.5);z-index: 1000;display:none;}
-      .modal-content>p{
-      	padding:0.8rem;
-      	text-align: center;
-      	border-bottom:1px solid #E5E5E5;
-      }
-      .modal-content>p>a{
-      	color:#64A0F2;
-      }
-      .modal-content>p>input{
-      	border:none;
-      	background: none;
-      	color:#64A0F2;
-      }
-      .modal-content>p:nth-child(4){
-      	border:none;
-      }
-	
-	</style>
 </head>
 <body>
 	<div id="content">
@@ -342,9 +128,32 @@
 		</div>
 		<div class="modal-backup"></div>
 	</div>
+
+	<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<!-- 微信支付支持JS部分代码 -->
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>	                                                                                     
 	<script>
+		$(function(){
+			// 首页按钮
+			!function(){
+				// 创建 a 标签
+				var home = document.createElement('a');
+				home.innerText = '首\n页';
+				
+				home.href = '{{:U("Home/Index/index")}}';
+				home.setAttribute("id", 'back2Home');
+
+				// 添加到页面
+				document.body.appendChild(home);
+				home.onclick = function(){
+					home.style.background = '#aaa';
+				}
+				return
+				// console.log(home)
+			}()
+		})
 		//微信接口
 		wx.config({
 		    debug: false,

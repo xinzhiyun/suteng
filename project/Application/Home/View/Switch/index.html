@@ -165,6 +165,25 @@
 	<link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 	<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
 	<script>
+		$(function(){
+			// 首页按钮
+		    !function(){
+		      // 创建 a 标签
+		      var home = document.createElement('a');
+		      home.innerText = '首\n页';
+		      
+		      home.href = '{{:U("Home/VipCenter/minepack")}}';
+		      home.setAttribute("id", 'back2Home');
+
+		      // 添加到页面
+		      document.body.appendChild(home);
+		      home.onclick = function(){
+		        home.style.background = '#aaa';
+		      }
+		      return
+		      // console.log(home)
+		    }()
+		})
 	  // 开关效果
     	// window.onload=function(){
      // 	 	$("div[name='two']").click(function(){

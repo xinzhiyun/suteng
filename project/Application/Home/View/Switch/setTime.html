@@ -130,7 +130,25 @@
 		</div>
 	</div>
 	<script>
+		$(function(){
+			// 首页按钮
+		    !function(){
+		      // 创建 a 标签
+		      var home = document.createElement('a');
+		      home.innerText = '首\n页';
+		      
+		      home.href = '{{:U("Home/VipCenter/minepack")}}';
+		      home.setAttribute("id", 'back2Home');
 
+		      // 添加到页面
+		      document.body.appendChild(home);
+		      home.onclick = function(){
+		        home.style.background = '#aaa';
+		      }
+		      return
+		      // console.log(home)
+		    }()
+		})
 		$('.action_type>span').click(function (){
 			$('.action_type>span').removeClass('checked');
 			$(this).addClass('checked');
