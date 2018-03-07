@@ -88,6 +88,25 @@
   <script src="__PUBLIC__/Home/js/upFile.js"></script>
   <script type="text/javascript">
   $(function(){
+
+    // 首页按钮
+    !function(){
+      // 创建 a 标签
+      var home = document.createElement('a');
+      home.innerText = '首\n页';
+      
+      home.href = '{{:U("Home/Index/index")}}';
+      home.setAttribute("id", 'back2Home');
+
+      // 添加到页面
+      document.body.appendChild(home);
+      home.onclick = function(){
+        home.style.background = '#aaa';
+      }
+      return
+      // console.log(home)
+    }()
+
     var device_now = sessionStorage.getItem("device_now");
     $(".deviceid").text(device_now);
     // 选择日期
@@ -104,48 +123,6 @@
 
     })
 
-    // //姓名验证 
-    // $('#Lname').change( function() {
-    //     // 这里可以写些验证代码
-    //     var name = $(this).val();
-
-    //     if(name==name.match(/^[a-zA-Z\u4e00-\u9fa5]{2,30}$/u)){// 纯中文姓名支持支持 /^[\u4e00-\u9fa5]{2,30}$/u
-    //       console.dir('验证通过');
-
-    //     }else{
-    //       layuiHint('请输入真实的姓名！');
-
-    //     }
-    // });
-    // //手机号码验证
-    // $('#Ltel').change( function() {
-    //     // 这里可以写些验证代码
-    //     var phone = $(this).val();
-    //     var rephone = phone.match(/^1((((3[0-35-9])|([5|8][0-9])|(4[5|7|9])|66|(7[3|5-8])|(9[8|9]))\d)|(34[0-8]))\d{7}$/);
-
-    //     if(rephone){
-    //       if(phone==rephone[0]){
-    //         console.dir('验证通过');
-
-    //       }else{
-    //         console.dir('请输入正确的手机号码！');
-
-    //       }
-    //     }else{
-    //       console.dir('请输入正确的手机号码！');
-    //     }
-
-    // });
-    // // 地址验证
-    // $('#Laddr').change( function() {
-    //     // 这里可以写些验证代码
-    //     var addr = $(this).val();
-    //     if(addr==addr.match(/^[\w\-\u4e00-\u9fa5]{6,255}$/u)){// 公司地址，不为空时验证，数字字母下划线横线中文 6-255位
-    //       console.dir('验证通过');
-    //     }else{
-    //       console.dir('地址格式不正确！');
-    //     }
-    // });
     /*
       点击'提交'
      */
@@ -217,10 +194,19 @@
                   contentType: false,
                   success: function(res){
                     console.log('请求成功！', res);
+                    if(res.code == 200){
+                      layuiHint('报修成功，请稍候将有专人处理！');
+
+                      setTimeout(function(){
+                        location.href = '{{:U("VipCenter/minepack")}}';
+                      },500);
+
+                    }
 
                   },
                   error: function(res){
-                    console.log('请求成功！', res);
+                    console.log('请求失败！', res);
+                    layuiHint('系统遇到问题，请稍后重试！');
 
                   }
               })

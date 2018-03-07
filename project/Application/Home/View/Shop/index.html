@@ -91,7 +91,24 @@
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script>
 		$(function(){
+			
+			// 首页按钮
+			!function(){
+				// 创建 a 标签
+				var home = document.createElement('a');
+				home.innerText = '首\n页';
+				
+				home.href = '{{:U("Home/Index/index")}}';
+				home.setAttribute("id", 'back2Home');
 
+				// 添加到页面
+				document.body.appendChild(home);
+				home.onclick = function(){
+					home.style.background = '#aaa';
+				}
+				return
+				// console.log(home)
+			}()
 			//首页显示购物车数量
 			// console.log($("#cartInfo").val())
 			if(JSON.parse($("#cartInfo").val())){
