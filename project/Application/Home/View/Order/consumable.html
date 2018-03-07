@@ -325,17 +325,18 @@
 			      		var _thisname = JSON.parse($(this).siblings().attr("name"));
 			      		// var paymoney = parseFloat($(this).parents(".calc").find(".postage").text().substr(6));	//邮费
 			      		var price = parseInt($(this).parents(".calc").find(".price").text().substr(1)*100)/100;
-			      		// console.log(_thisname,price);
+			      		console.log(_thisname,price);
 			      		$.ajax({
 			      			url:"{{:U('Home/PaymentSystem/orderPay')}}",
 			      			type:"post",
-			      			dataType:"json",
+			      			dataType:"text",
 			      			data:{
 			      				order: _thisname,
 			      				paymoney: price
 			      			},
 			      			success:function(res){
-			      				// console.log(res);
+			      				res = JSON.parse(res);
+			      				console.log(res)
 								if(res == -1){
 									// console.log('支付错误！');
        								parent.layer.msg('支付错误！');
@@ -346,6 +347,9 @@
 									
 								}
 								weixinPay(res);
+			      			},
+			      			error: function(res) {
+			      				console.log("错误", res);
 			      			}
 
 

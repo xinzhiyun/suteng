@@ -49,6 +49,7 @@
 		$.ajax({
 			url: '{{:U("Home/Order/choiceRefund")}}',
 			type: 'post',
+			async: false,
 			data: {orderid: order_id},
 			success: function(res){
 				console.log('请求成功！',res);
@@ -80,10 +81,10 @@
 				console.log('请求失败！',res);
 			}
 		})
+		
 		// 选中框
 		$('.item>.appLeft>i').click(function(){
 			var _class=$(this).attr('class');
-			
 			if(_class=='iconfont icon-xuanze'){
 				$(this).removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 			}else{
