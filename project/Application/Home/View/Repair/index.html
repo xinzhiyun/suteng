@@ -6,344 +6,94 @@
   <title>报修主页</title>
   <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
-  
-  <style>
-      body{
-        min-height: 700px;
-        font-size: 0.7rem;
-        color:#373737;
-        overflow-x: hidden;
-      }
-      ._repair{
-        width: 100%;
-      }
-      .repairTop{
-        width: 90%;
-        padding:0.533333rem 5% 0.933333rem 5%;
-        border-bottom: 0.4rem solid #F3F3F3;
-      }
-      .repairTop ul li{
-        display: block;
-        width: 80%;
-        height: 1.6rem;
-        line-height: 1.6rem;
-        /*background: red;*/
-      }
-      .repairTop ul li span{
-        display: inline-block;
-        width: 30%;
-        font-size: 0.68rem;
-        float: left;
-        white-space: pre;
-      }
-      .repairTop ul li span:nth-child(4){
-        margin-top: 0.1rem;
-      }
-      .repairTop ul li p{
-        display: inline-block;
-        font-size: 0.7rem;
-        width: 65%;
-      }
-      .repairTop ul li p input,.repairTop ul li p select{
-        float: right;
-        width: 100%;
-        border-radius: 0.133333rem;
-        border:1px solid #d4d4d4;
-        text-align: center;
-        height: 1.3rem;
-        background: #fff;
-      }
-      .repairTop ul li p select{
-        padding-left: 5%;
-      }
-      .repairMidd{
-        padding:0.533333rem 5% 0.933333rem 5%;
-        border-bottom: 0.4rem solid #F3F3F3;
-
-      }
-      .repairMidd h3 {
-        font-size: 0.8rem;
-        line-height: 0.8rem;
-        margin-bottom: 0.266667rem;
-      }
-      .repairMidd textarea {
-        margin-top: 0.133333rem;
-        height:5.333333rem;
-        width: calc(100% - 20px);
-        padding:0 10px;
-        display: inline-block;
-        resize: none;
-        overflow: hidden;
-        border: 1px dashed #CCC;
-        font-size: .6rem;
-      }
-      .repairMidd>p {
-        margin:0.933333rem 0 0.4rem;
-        color: #767676;
-        font-size: 0.72rem;
-      }
-      .repairPic {
-        position: relative;
-      }
-      .repairPic i{
-        font-size: 5.0rem;
-        color: #68B1F1;
-        margin-left: -0.2rem;
-      }
-      .repairPic>span:nth-of-type(1){
-        font-size: 0.68rem;
-          position: absolute;
-          left: 1.2rem;
-          bottom: 0.65rem;
-          color: #FFF;
-      }
-      .repairPic>span:nth-of-type(2){
-          width: 20%;
-          position: relative;
-      }
-      .repairPic>span:nth-of-type(2)>img {
-        width: 100%;
-        display: block;
-      }
-
-      #picShow {
-        width: 100%;
-        display: inline;    
-        position: absolute;
-        top: 15%;
-      }
-      #picShow>span {
-        width: 18vmin;
-        height: 18vmin;
-        display: inline-block;
-        position: relative;
-        margin: 2vmin 1vmin;
-      }
-      #picShow>span>img {
-        width: 100%;
-        height: 100%;
-        display: inline-block;
-        position: relative;
-      }
-      .hide {
-        width: 4.5rem;
-        height: 4.5rem;
-        display: none;
-        position: absolute;
-        top: .4rem;
-        z-index: 999;
-      }
-      .delPic {
-        width: 5vmin;
-        height: 5vmin;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin-top: -2vmin;
-        margin-right: -2vmin;
-        border-radius: 5vmin;
-        color: #fff;
-        background: red;
-      }
-      .repairPic>input {
-          opacity: 0;
-          display: block;
-          width: 4.2rem;
-          height: 4.2rem;
-          position: absolute;
-          top: 0.6rem;
-          left: 0.0rem;
-          z-index: 99;
-          font-size: 0.6rem;
-      }
-      .repairFoot{
-        padding:0.533333rem 5% 0.933333rem 5%;
-      }
-      .repairFoot h3{
-        font-size: 0.8rem;
-        line-height: 0.8rem;
-        margin-bottom: 0.266667rem;
-      }
-      .repairFoot li{
-        border:1px solid #ccc;
-        border-radius: 0.2rem;
-        margin-top: 0.533333rem;
-      }
-      .repairFoot li label{
-        height: 0.933333rem;
-        line-height: 0.933333rem;
-      }
-
-      .repairFoot li label span{
-        display: inline-block;
-        width: 24%;
-        text-align: right;
-        font-size: 0.7rem;
-        padding:0.15rem;
-      }
-      .repairFoot li label input{
-        width: 70%;
-        height: 1.8rem;
-        line-height: 0.933333rem;
-        border:none;
-        font-size: 0.7rem;
-      }
-      .repairFoot li p{
-        width: 27%;
-        text-align: right;
-        font-size: 0.68rem;
-        letter-spacing: 0.053333rem;
-      }
-      .repairFoot li textarea{
-        font-size: 0.453333rem;
-        height:4.0rem;
-        width: 100%;
-        line-height: 0.8rem;
-        resize: none;
-        border: none;
-        margin-top: 0;
-        padding: 0.3rem;
-        font-size: 0.6rem;
-        box-sizing: border-box;
-      }
-      .repairBtn{
-        margin: 2.0rem auto 1.0rem;
-        width: 86%;
-      }
-      .repairBtn input{
-        width: 86vw;
-        border:none;
-        background: #2EB6AA;
-        padding: 0.133333rem;
-        border-radius: 0.2rem;
-        color: #fff;
-        font-size: 0.82rem;
-        height: 1.8rem;
-        letter-spacing: 0.1rem;
-      }
-      .repairTop ul li p input.devicetype{
-        width: calc(100% - 10px);;
-        padding-left: 10px;
-        text-align: left;
-      }
-      .layui-laydate, .layui-laydate-main{
-        width: 98vw !important;
-        left: 50%;
-        /*transform: translateX(-49vw);*/
-      }
-      .laydate-footer-btns {
-        width: 50%;
-        display: flex;
-        position: relative !important;
-        right: 0 !important;
-        top: 0 !important;
-        align-items: center;
-      }
-      .laydate-btns-clear,
-      .laydate-btns-now,
-      .laydate-btns-confirm {
-        width: 33.33%;
-        display: inline-block;
-        padding: 10% !important;
-      }
-      .layui-laydate-content table {
-        width: 90%;
-        position: relative;
-        left: 50%;
-        margin-left: -45%;
-      }
-      .layui-laydate-footer {
-        display: flex !important;
-        justify-content: flex-end;
-        height: auto;
-      }
-      .laydate-footer-btns span {
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
-        margin: 0 10px !important;
-      }
-
-  </style>
+  <link rel="stylesheet" href="__PUBLIC__/Home/css/repaire/index.css">
 </head>
 <body>
   <div class="_repair">
     <div class="repairContainer">
-    <form action="add" method="post" enctype="multipart/form-data" id="form">
-      <div class="repairTop">
-        <ul>
-          
-          <li><span>设备编号：</span><p class="deviceid">0120563</p></li>
-          <li><span>日       期：</span><p><input type="text" class="currentdate" id="currentdate" name="date" value="" placeholder="请选择日期"></p></li>
-          <li><span>设备型号：</span><p><input type="text" class="devicetype"></p></li>
-           <li>
-            <span>报修原因：</span><p>
-            <select name="reason">
-                <option value ="volvo">-请选择-</option>
-                <option value ="saab">更换滤芯</option>
-                <option value="opel">微信端无法控制水机</option>
-                <option value="audi">其他</option>
-            </select></p>
+      <form action="" method="post" enctype="multipart/form-data" id="form">
+        <div class="repairTop">
+          <ul>
+            
+            <li>
+              <span>设备编号：</span>
+              <p>
+                <select class="device_code" name="deviceid">
+                    <option value="0">-- 请选择问题设备 --</option>
+                    <option value="213124">213124</option>
+                    <option value="435345">435345</option>
+                    <option value="32323232">32323232</option>
+                </select>
+              </p>
             </li>
-        </ul>
-      </div>
-      <div class="repairMidd">
-          <h3>请写下您对设备的宝贵建议<span>*</span></h3>
-          <textarea name="content" id="suggestTxt" cols="30" rows="10"></textarea>
-          <p>上传截图</p>
-          <div class="repairPic">
-            <i class="iconfont icon-tianjia"></i>
-            <span>限3张内</span>
-            <input name="pic" class="repair-sendpic" multiple="true" type="file" accept="image/png, image/jpeg, image/gif, image/jpg" >
-            <div id="picShow"></div>
-            <div class="hide"></div>
-          </div>
-      </div>
-      <div class="repairFoot">
-        <ul>
-          <h3>联系方式</h3>
-          <li>
-            <label for="Lname">
-              <span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input id="Lname" type="text" name="truename" value="" placeholder="请输入姓名">
-            </label>
-          </li>
-           <li>
-            <label for="Ltel">
-              <span>电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：</span><input id="Ltel" type="text" name="phone" value="" placeholder="请输入电话">
-            </label>
-          </li>
-          <li>
-            <label for="Laddr">
-              <p>维修地址：</p>
-              <textarea name="address" id="Laddr" cols="30" rows="10" placeholder="" ></textarea>
-            </label>
-          </li>
-        </ul>
-      </div>
-      <div class="repairBtn">
-        <input type="submit" value="提交" class="btn">
-      </div>
-    </form>
-
-        
-       
+            <li><span>日&emsp;&emsp;期：</span><p><input type="text" class="currentdate" id="currentdate" name="date" value="" placeholder="-- 请选择服务日期 --"></p></li>
+            <li><span>设备型号：</span><p><input type="text" class="devicetype"></p></li>
+             <li>
+              <span>报修原因：</span>
+              <p>
+                <select name="reason" class="reason">
+                    <option value ="volvo">-- 请选择报修原因 --</option>
+                    <option value ="saab">更换滤芯</option>
+                    <option value="opel">微信端无法控制水机</option>
+                    <option value="audi">其他</option>
+                </select>
+              </p>
+              </li>
+          </ul>
+        </div>
+        <div class="repairMidd">
+            <h3>请写下您对设备的宝贵建议<span>*</span></h3>
+            <textarea name="content" id="suggestTxt" cols="30" rows="10"></textarea>
+            <p>上传截图</p>
+            <div class="repairPic">
+              <i class="iconfont icon-tianjia"></i>
+              <span>限3张内</span>
+              <input name="pic" class="repair-sendpic file_upload" multiple="true" type="file" accept="image/png, image/jpeg, image/gif, image/jpg" >
+              <div id="picShow"></div>
+              <div class="hide"></div>
+            </div>
+        </div>
+        <div class="repairFoot">
+          <ul>
+            <h3>联系方式</h3>
+            <li>
+              <label for="Lname">
+                <span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input id="Lname" type="text" name="truename" value="" placeholder="请输入姓名">
+              </label>
+            </li>
+             <li>
+              <label for="Ltel">
+                <span>电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：</span><input id="Ltel" type="text" name="phone" value="" placeholder="请输入电话">
+              </label>
+            </li>
+            <li>
+              <label for="Laddr">
+                <p>维修地址：</p>
+                <textarea name="address" id="Laddr" cols="30" rows="10" placeholder="" ></textarea>
+              </label>
+            </li>
+          </ul>
+        </div>
+        <div class="repairBtn">
+          <input type="button" value="提交" class="btn">
+        </div>
+      </form>
     </div>
   </div>
+  <link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
   <script src="__PUBLIC__/Home/js/laydate.js"></script>
   <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
   <script src="__PUBLIC__/Home/js/public.js"></script>
   <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
-<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
+  <script src="__PUBLIC__/Home/js/upFile.js"></script>
   <script type="text/javascript">
   $(function(){
     var device_now = sessionStorage.getItem("device_now");
     $(".deviceid").text(device_now);
+    // 选择日期
     $("#currentdate").click(function(){
 
-        //选择服务日期，
+      //选择服务日期，
       laydate.render({
         elem: '#currentdate', //指定元素
         show: true,
@@ -351,124 +101,166 @@
         btns: ['clear', 'confirm'],
         min: 1
       });
+
     })
-    var formdata = new FormData();
-    var file = $(".repair-sendpic").files;
-    var picArr = [];    //存储选择的待上传图片的base64编码格式
-    var i=0;  //formdata存储序号
-      // 上传的图片
-      $(".repair-sendpic").on("change",function(e){
-        var files = this.files;
-        var span = $("<span></span>"),
-          span1 = $("<span>X</span>"),
-          img = $('<img src="" alt="" />');
-        var reader =new FileReader();
 
-        reader.readAsDataURL(files[0]);
-        reader.onload = function(e){
-          i++;
-          picArr.push(this.result);
-          var mb = (e.total/1024)/1024;
-          if(mb>= 4){
-            alert('文件大小大于4M');
-            return;
-          }
-          img[0].src = this.result;
-          img[0].width = "100%";
-          img[0].height = "90%";
-          
-          // console.log(span, span[0]);
-          span1.addClass("delPic");
-          span1.css({zIndex: '999'});
-          span.append(span1);
-          span.append(img[0]);
-          $('#picShow').append(span);
-          // console.log(picArr)
-          //formdata
-          if(picArr.length > 2){
-            for(var i=0; i<picArr.length; i++){
-              formdata.append("picture"+i,picArr[i])
-              // console.group('picture'+i+': ',formdata.get("picture"+i),i)
-            }
-          }
-        }
+    // //姓名验证 
+    // $('#Lname').change( function() {
+    //     // 这里可以写些验证代码
+    //     var name = $(this).val();
 
-        //最多选择三张图片
-        if($("#picShow>span").length >= 2){
-          $(".hide").show();
-        }
+    //     if(name==name.match(/^[a-zA-Z\u4e00-\u9fa5]{2,30}$/u)){// 纯中文姓名支持支持 /^[\u4e00-\u9fa5]{2,30}$/u
+    //       console.dir('验证通过');
 
-      });
+    //     }else{
+    //       layuiHint('请输入真实的姓名！');
 
-      // 点击上传的图片右上角的" x "，删除这张图片
-      $("#picShow").on("click", ".delPic", function(){
-        $(this).parent().remove();
-        //最多选择三张图片
-        if($("#picShow>span").length <= 2){
-          i--;
-          $(".hide").hide();
-        }
-      })
+    //     }
+    // });
+    // //手机号码验证
+    // $('#Ltel').change( function() {
+    //     // 这里可以写些验证代码
+    //     var phone = $(this).val();
+    //     var rephone = phone.match(/^1((((3[0-35-9])|([5|8][0-9])|(4[5|7|9])|66|(7[3|5-8])|(9[8|9]))\d)|(34[0-8]))\d{7}$/);
 
-    //姓名验证 
-    $('#Lname').change( function() {
-        // 这里可以写些验证代码
-        var name = $(this).val();
-        if(name==name.match(/^[a-zA-Z\u4e00-\u9fa5]{2,30}$/u)){// 纯中文姓名支持支持 /^[\u4e00-\u9fa5]{2,30}$/u
-          console.dir('验证通过');
-        }else{
-          layuiHint('请输入真实的姓名！');
-        }
-    });
-    //手机号码验证
-    $('#Ltel').change( function() {
-        // 这里可以写些验证代码
-        var phone = $(this).val();
-        var rephone = phone.match(/^1((((3[0-35-9])|([5|8][0-9])|(4[5|7|9])|66|(7[3|5-8])|(9[8|9]))\d)|(34[0-8]))\d{7}$/);
-        if(rephone){
-          if(phone==rephone[0]){
-            console.dir('验证通过');
-          }else{
-            console.dir('请输入正确的手机号码！');
-          } 
-        }else{
-          console.dir('请输入正确的手机号码！');
-        }
+    //     if(rephone){
+    //       if(phone==rephone[0]){
+    //         console.dir('验证通过');
 
-    });
-    // 地址验证
-    $('#Laddr').change( function() {
-        // 这里可以写些验证代码
-        var addr = $(this).val();
-        if(addr==addr.match(/^[\w\-\u4e00-\u9fa5]{6,255}$/u)){// 公司地址，不为空时验证，数字字母下划线横线中文 6-255位
-          console.dir('验证通过');
-        }else{
-          console.dir('地址格式不正确！');
-        }
-    });
+    //       }else{
+    //         console.dir('请输入正确的手机号码！');
+
+    //       }
+    //     }else{
+    //       console.dir('请输入正确的手机号码！');
+    //     }
+
+    // });
+    // // 地址验证
+    // $('#Laddr').change( function() {
+    //     // 这里可以写些验证代码
+    //     var addr = $(this).val();
+    //     if(addr==addr.match(/^[\w\-\u4e00-\u9fa5]{6,255}$/u)){// 公司地址，不为空时验证，数字字母下划线横线中文 6-255位
+    //       console.dir('验证通过');
+    //     }else{
+    //       console.dir('地址格式不正确！');
+    //     }
+    // });
+    /*
+      点击'提交'
+     */
     $(".btn").click(function(){
-      if($(".currentdate").val()==""){
-        layuiHint("请选择日期");
-        return false;
-      }else if($(".devicetype").val()==""){
-        layuiHint("请输入设备型号");
-        return false;
-      }else if($("select").val()==""){
-        layuiHint("请选择保修原因");
-        return false;
-      }else if($(".suggestTxt").val()==""){
-        layuiHint("请输入报修详情");
-        return false;
-      }else if(!(/^([a-zA-Z0-9_\u4e00-\u9fa5]){2,30}$/).test($("#Lname").val())){
-         layuiHint("请输入真实姓名");
-        return false;
-      }else if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test($('#Ltel').val()))){ 
-        layuiHint("请输入正确的手机号码");
-        return false;
-      }else if(!(/^(?=.*?[\u4E00-\u9FA5])[\dA-Za-z\u4E00-\u9FA5]{6,}/).test($("#Laddr").val())){
-        layuiHint("请输入详细的报修地址");
-        return false;
-      }
+      /*
+          date : 日期,
+          device_code : 设备id,
+          reason : 报修原因,
+          suggestTxt : 建议,
+          truename : 姓名,
+          phone : 电话,
+          address : 报修地址
+       */
+      var nameReg = /^([a-zA-Z0-9_\u4e00-\u9fa5]){2,30}$/;
+      var phoneReg = /^1[3|4|5|8][0-9]\d{4,8}$/;
+      var addressReg = /^(?=.*?[\u4E00-\u9FA5])[\dA-Za-z\u4E00-\u9FA5]{6,}/;
+      var date = $(".currentdate").val().replace(/[年月]/g,'-').replace(/[日]/,''),
+          device_code = $(".device_code>option:selected"),
+          reason = $(".reason>option:selected"),
+          content = $("#suggestTxt").val(),
+          truename = $("#Lname").val(),
+          phone = $("#Ltel").val(),
+          address = $("#Laddr").val();
+
+          console.log('device_code:', device_code[0].innerText + '\n' +
+           'date:',date + '\n' + 'reason:', reason[0].innerText + '\n' + 
+           'content:', content + '\n' + 'truename:', truename + '\n' + 
+           'phone:', phone + '\n' + 'address:', address
+           );
+
+          //清空，防止多次点击提交
+          formData.delete('device_code')
+          formData.delete('date')
+          formData.delete('reason')
+          formData.delete('content')
+          formData.delete('truename')
+          formData.delete('phone')
+          formData.delete('address')
+
+          console.group();
+
+          //重新添加
+          formData.append('device_code', device_code[0].innerText)
+          formData.append('date', date)
+          formData.append('reason', reason[0].innerText)
+          formData.append('content', content)
+          formData.append('truename', truename)
+          formData.append('phone', phone)
+          formData.append('address', address)
+
+          console.log(formData.getAll('device_code') + '\n' + formData.getAll('date') + '\n' +
+           formData.getAll('reason') + '\n' + formData.getAll('content') + '\n' + 
+           formData.getAll('truename') + '\n' + formData.getAll('phone') + '\n' + 
+           formData.getAll('address') + '\n' + formData.getAll('UploadForm[]')
+          );
+
+          if(date && device_code.selectedIndex != 0 && reason.selectedIndex != 0 && content && truename && phone && address){
+              console.log('通过！')
+
+              /*
+                 发送到后台
+               */
+              $.ajax({
+                  url: '{{:U("Home/Repair/add")}}',
+                  type: 'post',
+                  data: formData,
+                  cache: false,
+                  processData: false,
+                  contentType: false,
+                  success: function(res){
+                    console.log('请求成功！', res);
+
+                  },
+                  error: function(res){
+                    console.log('请求成功！', res);
+
+                  }
+              })
+            
+          }else if($('.device_code')[0].selectedIndex == 0){
+              console.log('请选择保修的设备！');
+              layuiHint('请选择保修的设备！');
+              return false;
+              
+          }else if(!date){
+              console.log('请选择日期！');
+              layuiHint('请选择日期！');
+              return false;
+
+          }else if($('.reason')[0].selectedIndex == 0){
+              console.log('请选择报修原因！');
+              layuiHint('请选择报修原因！');
+              return false;
+              
+          }else if(!content){
+              console.log('希望您提供宝贵的建议！');
+              layuiHint('希望您提供宝贵的建议！');
+              return false;
+              
+          }else if(!nameReg.test(truename)){
+              console.log('请输入正确格式的姓名！');
+              layuiHint('请输入正确格式的姓名！');
+              return false;
+              
+          }else if(!phoneReg.test(phone)){
+              console.log('请输入正确格式的手机号码！');
+              layuiHint('请输入正确格式的手机号码！');
+              return false;
+              
+          }else if(!addressReg.test(address)){
+              console.log('请输入正确格式的地址！');
+              layuiHint('请输入正确格式的地址！');
+              return false;
+              
+          }
     });
   })
 

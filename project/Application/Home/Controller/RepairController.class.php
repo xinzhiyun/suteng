@@ -9,8 +9,17 @@ class RepairController extends CommonController
      * @return [type] [description]
      */
     public function index()
-    {
-        // dump(session('device.did'));
+    {   
+
+        // 调试用默认用户
+        $openId = $_SESSION['homeuser']['open_id'];
+        // 查询绑定设备
+        $user_device = D('UserDevice');
+        $map['ud.uid'] = session('user.id');
+
+        $bind_device = $user_device->getBindInof($map); 
+        $this->assign('bindInfo',$bind_device);
+
         $this->display();
     }
 
