@@ -61,6 +61,7 @@ window.onload = function(){
     }
     //页面加载时获取数据
     var getdataList = JSON.parse($(".deviceInfo").val());//滤芯剩余量数据
+    console.log(getdataList)
     var res = JSON.parse($(".res").val());//滤芯详情数据
     var _status=getdataList.devicestause;//获取设备当前状态-> 0:制水 1:冲洗 2:水满 3:缺水 4漏水 5:检修 6:欠费停机 7:关机 8:开机(仅命令)
 

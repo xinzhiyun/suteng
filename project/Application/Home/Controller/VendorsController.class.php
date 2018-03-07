@@ -1091,8 +1091,6 @@ class VendorsController extends Controller
                 }
                 break;
         }
-        echo '<pre>';
-        print_r($message);
         // 返回JSON格式数据
         $this->ajaxReturn($message);
     }

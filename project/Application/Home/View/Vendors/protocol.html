@@ -410,12 +410,10 @@
             if($(".xiePic").attr("index") === "1") {
                 // 获取表单数据
                 var formData = new FormData(document.getElementById("pic"));
-                console.log(formData)
                 $.ajax({
                     url: "{{:U('Home/Vendors/protocol')}}",
                     type: 'post',
                     data: formData,
-                    dataType : "json",
                     async: false,
                     cache: false,
                     contentType: false,

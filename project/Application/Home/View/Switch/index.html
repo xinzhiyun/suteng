@@ -220,6 +220,7 @@
    	 * 		json 数据
      
    	 */
+   	var html = '';
    	$.ajax({
 	    url:"{{:U('Home/Task/get_time')}}",
 	    // data:{type:},
@@ -230,52 +231,49 @@
 	        if(res.code == 200){
 	            // 添加成功
 	            // swal(res.msg,res.msg, "success");
-	            var html = '';
 	            if(res.data.length){
 	            	//console.dir(res.data);
 		            for (var i = res.data.length - 1; i >= 0; i--) {
 		            	
-						html += '<hgroup alt="'+res.data[i].id+'""><div class="hgContain .clearfix"><div class="setLeft .clearfix"><p><span  class="sLeft">';
+				html += '<hgroup alt="'+res.data[i].id+'""><div class="hgContain .clearfix"><div class="setLeft .clearfix"><p><span  class="sLeft">';
+				 switch (res.data[i].type) {
+				     case '0':
+				         html += '开机时间';
+				         break;
+				     case '1':
+				         html += '关机时间';
+				         break;
+				     case '2':
+				         html += '开启加热';
+				         break;
+				     case '3':
+				         html += '关闭加热';
+				         break;
+				 }						
+				
+				html += '</span><span class="sRight"><b>'+res.data[i].hour+'</b>时：<b>'+res.data[i].minute+'</b>分';
 
-						 switch (res.data[i].type) {
-						     case '0':
-						         html += '开机时间';
-						         break;
-						     case '1':
-						         html += '关机时间';
-						         break;
-						     case '2':
-						         html += '开启加热';
-						         break;
-						     case '3':
-						         html += '关闭加热';
-						         break;
-						 }						
-						
-						html += '</span><span class="sRight"><b>'+res.data[i].hour+'</b>时：<b>'+res.data[i].minute+'</b>分';
-
-						if(res.data[i].repeat==1){
-							html+='<b>  每天</b></span></p>';
-						}else{
-							html+='<b>  一次</b></span></p>';
-						}
+				if(res.data[i].repeat==1){
+					html+='<b>  每天</b></span></p>';
+				}else{
+					html+='<b>  一次</b></span></p>';
+				}
 
 
-						if(res.data[i].state==1){
-							html += '</div><div class="setRight"><div class="open1" name="one"><div class="open2" name="two"></div>';
-						}else{
-							html += '</div><div class="setRight"><div class="close1" name="one"><div class="close2" name="two"></div>';
-						}
+				if(res.data[i].state==1){
+					html += '</div><div class="setRight"><div class="open1" name="one"><div class="open2" name="two"></div>';
+				}else{
+					html += '</div><div class="setRight"><div class="close1" name="one"><div class="close2" name="two"></div>';
+				}
 
-						html += '</div></div><div class="delBtn delete" alt="'+res.data[i].id+'"></div></div></hgroup>';	
-										
+				html += '</div></div><div class="delBtn delete" alt="'+res.data[i].id+'"></div></div></hgroup>';
 		            }
-	            }
+	            }//然后
 
 	        }else{
 	            // 添加失败
 	            // swal(res.msg, "请重新提交！", "success");
-	            html += '暂无定时任务！';
+	           html += "<p style='padding:5px 0 0 10px'>暂无定时任务！请添加定时设置</p>";
 	        }
 
 	        $('._setTimecontain').html(html);
@@ -295,6 +293,8 @@
 
 	    }
 	});
+
+
    	// 删除按钮
 	slipDel('._setTimecontain','hgroup','statenum');
 	$('._setTimecontain').on('click','.del',function(e){
@@ -303,21 +303,22 @@
 		var id = $(this).parent('hgroup').attr('alt');
 		var _this = $(this);
 		//console.dir(id);
-        $.ajax({
-            url:"{{:U('Home/Task/del')}}",
-            dataType:"json",
-            data:{'id':id},
-            type: 'post',
-            success:function(res){
-                if(res.code == 200){
-                    // 有数据，数据格式查看 26 行
-                    $(_this).parent('hgroup').remove();
-                }else{
-                    // 无数据，数据格式查看 32 行
-                    swal('删除失败',res.message, "error");
-                }
-            }
-        });
+	        $.ajax({
+	            url:"{{:U('Home/Task/del')}}",
+	            dataType:"json",
+	            data:{'id':id},
+	            type: 'post',
+	            success:function(res){
+	                if(res.code == 200){
+	                    // 有数据，数据格式查看 26 行
+	                    $(_this).parent('hgroup').remove();
+	                }else{
+	                    // 无数据，数据格式查看 32 行
+	                    swal('删除失败',res.message, "error");
+	                }
+	            }
+	        });
+
 	});
 	
 	// var id= 

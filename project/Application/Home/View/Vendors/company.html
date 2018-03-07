@@ -250,7 +250,7 @@
             }
             var reader = new FileReader();
             reader.onload = function (evt) {//reader.onload成功读取
-                var dx =(evt.total/1024)/1024;
+               var dx =(evt.total/1024)/1024;
                var result = this.result;//图片路径加密后信息
                 // 上传图片大小是否符合
                 if(dx>= 3) {
@@ -259,35 +259,6 @@
                     document.getElementById('licence').src = evt.target.result;
                     $("#licence").parent(".xiePic").css("visibility","visible");
                     $(".xiePic").attr("index", "1");
-                
-
-                    // 图片压缩
-                    // var canvas = document.createElement("canvas");
-                    // var cxt = canvas.getContext("2d");
-                    // var img = new Image();
-                    // img.src = result;
-                    // canvas.width = 92;
-                    // canvas.height = 92;
-                    // img.onload = function() {
-                    //     drawImageByScale();
-                    //     // 点击放大上传图片
-                    //     $(".xiePic").on("click", function() {
-                    //         alert(11111)
-                    //         if($(this).attr("index") === "1") {
-                    //             var scale = 0.5;
-                    //             drawImageByScale(scale);
-                    //         }
-                    //     })
-                    //     function drawImageByScale(scale) {
-                    //         var scale = scale || 1;
-                    //         var imgWidth = 92 * scale;
-                    //         var imgHeight = 92 * scale;
-                    //         var dx = (canvas.width - imgWidth)/2;
-                    //         var dy = (canvas.height - imgHeight)/2;
-                    //         cxt.clearRect(0,0,canvas.width,canvas.height);
-                    //         cxt.drawImage(img,dx,dy,imgWidth,imgHeight);
-                    //     }
-                    // }
                 }
                 
             }

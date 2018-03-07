@@ -62,18 +62,20 @@
       }
       .rewardFoot ul li{
         width: 90%;
-        padding: 0 5%;
+        padding:0 5%;
         display: block;
         height: 2rem;
         line-height: 2rem;
         border-bottom: 1px solid #F6F6F6;
         clear: both;
         font-weight: 400;
+        position:relative;
       }
       .rewardFoot ul li span:last-child{
-        float: right;
+        float: left;
         font-size: 0.68rem;
         color: #5a5a5a;
+        margin-left:1.1rem;
       }
        .rewardFoot ul li span{
         float: left;
@@ -88,6 +90,7 @@
         white-space: nowrap;
         overflow: hidden;
         margin-right:6%;
+        text-overflow:ellipsis;
       }
       .rewardFoot ul li  b{
         font-weight: 400;
@@ -100,6 +103,11 @@
         height: 2rem;
         line-height: 2rem;
         text-align: center;
+      }
+      .detailicon{
+        position:absolute;
+        right:0.5rem;
+        top:0rem;
       }
 </style>
 </head>
@@ -128,10 +136,11 @@
                 <foreach name="data" item="vo">
                     <li>
                         <a href="{{:U('Home/Vendors/income_detailed')}}"><!--需要添加连接参数-->
-                            <span class="iconBig">{{$vo.describe}}</span>
+                            <span class="iconBig" style="color:#337DE6">{{$vo.describe}}</span>
                             <span class="countto">{{$vo.abonus}}</span>
                             <span>{{:date("Y-m-d",$vo['addtime'])}}</span>
                         </a>
+                        <i class="iconfont icon-dayuhao-copy-copy detailicon"></i>
                     </li>
                 </foreach>
             </empty> 
@@ -141,4 +150,11 @@
     </div>
   </div>
 </body>
+<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script>
+  $(".iconBig").on("click", function(e) {
+    e.preventDefault();
+    layuiHint($(this).text())
+  })
+</script>
 </html>                                                                                                                                                                                                                                                                      
