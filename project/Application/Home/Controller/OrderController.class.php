@@ -170,7 +170,29 @@ class OrderController extends CommonController
      */
     public function installComment()
     {
-        
+        if (empty(I('post.orderid')) && empty(I('post.gid'))) {
+            return $this->ajaxReturn(['code'=>400,'msg'=>'参数错误']);
+        }
+        $data = [
+            'orderid' => I('post.orderid'),
+            'gid'     => I('post.gid'),
+            'content' => I('post.appraise'),
+            'installer_graded' => I('post.grade1'),
+            'attitude' => I('post.grade2'),
+            'dressing' => I('post.grade3'),
+            'create_at' => time()
+        ];
+        $install_comment = D('install_comment');
+            
+        if ($install_comment->where(['gid'=>I('post.gid'),'orderid'=>I('post.orderid')])->find()) {
+            return $this->ajaxReturn(['code'=>400,'msg'=>'已经评论过了，不能再评论了']);
+        }
+        $res = $install_comment->data($data)->add();
+        if ($res) {
+            return $this->ajaxReturn(['code'=>200,'msg'=>'评论成功']);
+        } else {
+            return $this->ajaxReturn(['code'=>400,'msg'=>'评论失败']);
+        }
     }
 
     /**
