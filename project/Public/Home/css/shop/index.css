@@ -254,6 +254,25 @@ body {
 	padding: 5% 0% 6% 7%;
 	-webkit-box-sizing: border-box;
 	        box-sizing: border-box;
+	        opacity: 0;
+	-webkit-animation: lazyShow 1s ease forwards;
+	        animation: lazyShow 1s ease forwards;
+}
+@-webkit-keyframes lazyShow {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@keyframes lazyShow {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 .allgoods>ul>li>a{
 	height: 7rem;
