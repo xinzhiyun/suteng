@@ -174,8 +174,8 @@
 											'<p class="name">'+ _goods[j].name +'</p>'+
 											'<b class="price">¥'+ _goods[j].price +'</b><span class="iconfont "></span>'+
 										'</a>'+
-										'<i class="iconfont icon-jiarugouwuche"></i>'
-									'</li>';
+										'<i class="iconfont icon-jiarugouwuche"></i>'+
+									'</li>' + '|';
 							}else{
 								_htmlArr[i] += '';
 							}
@@ -199,10 +199,31 @@
 			 */
 			console.log(_htmlArr)
 			if(_htmlArr[0]){
-				$(".allgoods>ul").eq(0).html(_htmlArr[0]);
+				// $(".allgoods>ul").eq(0).html(_htmlArr[0]);
 				// console.log($("#content>div").eq(0).attr("index"))
+				/*
+					懒加载
+				 */ 
+				var lazyArr = _htmlArr[0].substr(0,_htmlArr[0].length-1).split('|');
+				lazyArr += _htmlArr[1].substr(0,_htmlArr[0].length-1).split('|');
+				lazyArr += _htmlArr[2].substr(0,_htmlArr[0].length-1).split('|');
+				$(".allgoods>ul").eq(0).html(lazyArr);
+
+				// $(".allgoods>ul").eq(0).append(lazyArr[0])
+				console.log(_htmlArr[0].substr(0,_htmlArr[0].length-1).split('|'));
 			}else{
 				$(".allgoods>ul").eq(0).html('<h3 style="text-align:center;padding:5% 0;">暂无内容，敬请期待！<div></div></h3>');
+			}
+			$('body').click(function(){
+				$(".allgoods>ul").eq(0).append(lazyArr[1])
+
+			})
+			lazyLoad();
+			function lazyLoad(){
+				// 监听滚动事件
+				window.onscroll = function(){
+					console.log(document.body.scrollTop);
+				}
 			}
 
 			/***************** 数据遍历 -- 结束 ************************/
