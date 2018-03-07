@@ -10,6 +10,7 @@ class RepairController extends CommonController
      */
     public function index()
     {
+        // dump(session('device.did'));
         $this->display();
     }
 
@@ -24,6 +25,7 @@ class RepairController extends CommonController
             if ($picpath) {
                 // 接收用户输入数据
                 $repair = D('repair');
+                // $device_code = M('Devices')->where('id='.session('device.did'))->getfield('device_code');
                 if(!$repair->create()){
                     $this->delPic('./Public/'.$picpath[0]);
                     return $this->error($repair->getError());

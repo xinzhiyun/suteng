@@ -24,21 +24,21 @@ class OrdersController extends CommonController
         $order = M('orders');
 
         $total = $order->where($map)
-                      ->join('pub_devices ON pub_orders.device_id = pub_devices.id')
-                      ->join('pub_users ON pub_orders.user_id = pub_users.id')
-                      ->join('pub_express_information ON pub_orders.express_id = pub_express_information.id')
-                      ->join('pub_wechat ON pub_users.open_id = pub_wechat.open_id')
-                      ->field('pub_orders.*,pub_wechat.nickname,pub_express_information.name,pub_express_information.phone,pub_express_information.addres')
+                      ->join('st_devices ON st_orders.device_id = st_devices.id')
+                      ->join('st_users ON st_orders.user_id = st_users.id')
+                      ->join('st_express_information ON st_orders.express_id = st_express_information.id')
+                      ->join('st_wechat ON st_users.open_id = st_wechat.open_id')
+                      ->field('st_orders.*,st_wechat.nickname,st_express_information.name,st_express_information.phone,st_express_information.addres')
                         ->count();
         $page  = new \Think\Page($total,8);
         $pageButton =$page->show();
 
         $list = $order->where($map)
-                      ->join('pub_devices ON pub_orders.device_id = pub_devices.id')
-                      ->join('pub_users ON pub_orders.user_id = pub_users.id')
-                      ->join('pub_express_information ON pub_orders.express_id = pub_express_information.id')
-                      ->join('pub_wechat ON pub_users.open_id = pub_wechat.open_id')
-                      ->field('pub_orders.*,pub_wechat.nickname,pub_express_information.name,pub_express_information.phone,pub_express_information.addres')
+                      ->join('st_devices ON st_orders.device_id = st_devices.id')
+                      ->join('st_users ON st_orders.user_id = st_users.id')
+                      ->join('st_express_information ON st_orders.express_id = st_express_information.id')
+                      ->join('st_wechat ON st_users.open_id = st_wechat.open_id')
+                      ->field('st_orders.*,st_wechat.nickname,st_express_information.name,st_express_information.phone,st_express_information.addres')
                       ->limit($page->firstRow.','.$page->listRows)
                       ->select();
         // dump($list);
@@ -83,19 +83,19 @@ class OrdersController extends CommonController
     {
 
         $orders = D("orders");
-         $order = $orders->where('pub_orders.order_id='.$order_id)->select();
-        $filter = $orders->where('pub_orders.order_id='.$order_id)->join('LEFT JOIN pub_order_filter ON pub_orders.order_id = pub_order_filter.order_id')
-                      ->field('pub_order_filter.*')
+         $order = $orders->where('st_orders.order_id='.$order_id)->select();
+        $filter = $orders->where('st_orders.order_id='.$order_id)->join('LEFT JOIN st_order_filter ON st_orders.order_id = st_order_filter.order_id')
+                      ->field('st_order_filter.*')
                       ->select();
-        $setmeal = $orders->where('pub_orders.order_id='.$order_id)->join('LEFT JOIN pub_order_setmeal ON pub_orders.order_id = pub_order_setmeal.order_id')
-                      ->field('pub_order_setmeal.*')
+        $setmeal = $orders->where('st_orders.order_id='.$order_id)->join('LEFT JOIN st_order_setmeal ON st_orders.order_id = st_order_setmeal.order_id')
+                      ->field('st_order_setmeal.*')
                       ->select();              
        
         $info['order'] = $order; 
         $info['filter'] = $filter; 
         $info['setmeal'] = $setmeal; 
         
-        // $list = $orders->where('pub_orders.order_id='.$order_id)->getAll();
+        // $list = $orders->where('st_orders.order_id='.$order_id)->getAll();
         // dump($info);
         $this->ajaxReturn($info,'JSON');
 

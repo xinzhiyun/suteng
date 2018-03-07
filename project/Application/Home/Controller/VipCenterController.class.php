@@ -219,7 +219,28 @@ class VipCenterController extends CommonController
     // 净水记录
     public function purificationNotes()
     {
+        $id = session('device.did');
+        $map['dcode'] = M('devices')->where('id='.$id)->getField('device_code');
+        $map['date'] = date("Ym", time());
+        $data = M('Tds')->where($map)->select();
+        $this->assign('data', $data);
         $this->display();
+    }
+
+    // 查询净水记录
+    public function getTds()
+    {
+        try {
+            $map = I('post.');
+            $data = M('Tds')->where($map)->select();
+            $this->ajaxReturn($data);
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
     }
 
     // 用水记录
