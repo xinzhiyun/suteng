@@ -33,7 +33,6 @@ class AddTdsController extends Controller
             if($value['raw'] != null || $value['pure'] != null){
                 $res = M('Tds')->add($arr);
             }
-            dump($arr);
         }
     }
 }
