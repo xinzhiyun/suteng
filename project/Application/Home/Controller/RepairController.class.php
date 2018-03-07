@@ -19,7 +19,7 @@ class RepairController extends CommonController
 
         $bind_device = $user_device->getBindInof($map); 
         $this->assign('bindInfo',$bind_device);
-
+        
         $this->display();
     }
 

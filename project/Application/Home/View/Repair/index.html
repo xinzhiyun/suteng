@@ -20,9 +20,9 @@
               <p>
                 <select class="device_code" name="deviceid">
                     <option value="0">-- 请选择问题设备 --</option>
-                    <option value="213124">213124</option>
-                    <option value="435345">435345</option>
-                    <option value="32323232">32323232</option>
+                    <volist name="bindInfo" id="vo">
+                        <option value="{{$vo.device_code}}">{{$vo.device_code}}</option>
+                    </volist>
                 </select>
               </p>
             </li>
