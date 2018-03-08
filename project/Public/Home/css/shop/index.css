@@ -83,7 +83,6 @@ body {
 	width: 500vw;
 	position: relative;
 	padding: 1vh 0;
-	transform: scale(0);
 }
 /*商品块*/
 .goodsBlock {
@@ -98,6 +97,107 @@ body {
 
 .goods{
 	width: 100%;
+}
+
+/*无更多数据*/
+.nomore {
+	width: 100% !important;
+	position: relative;
+    left: 50%;
+    padding: 5% 0 !important;
+    white-space: nowrap;
+    text-align: center;
+    transform: translateX(-50%);
+}
+.nomore>p {
+	position: relative;
+}
+.nomore>p:after {
+	content: '';
+	width: 6vw;
+	height: 6vw;
+	display: inline-block;
+	position: absolute;
+	top: 320%;
+    left: 47%;
+	border-radius: 30%;
+	background: #eee;
+	animation: ballround1 3s ease infinite;
+}
+.nomore>span {
+	width: 6vw;
+	height: 6vw;
+	display: inline-block;
+	position: relative;
+	left: 0;
+	margin-top: 10vw;
+	border-radius: 30%;
+	transform: translateX(0%);
+}
+.nomore>span:nth-of-type(1) {
+	animation: ballround1 5s ease infinite;
+}
+
+.nomore>span:nth-of-type(2) {
+	animation: ballround2 6s ease infinite;
+}
+.nomore>span:nth-of-type(1):after {
+	content: '';
+	width: 3vw;
+	height: 3vw;
+	display: block;
+	left: -200%;
+	border-radius: 30%;
+	transform: translateX(-50%);
+	background: lightpink;
+}
+.nomore>span:nth-of-type(2):after {
+	content: '';
+	width: 3vw;
+	height: 3vw;
+	display: block;
+	left: 200%;
+	border-radius: 30%;
+	transform: translateX(150%);
+	background: lightblue;
+	animation: ballround2 2.5s ease alternate infinite;
+}
+@keyframes ballround1 {
+	from {
+		transform: translate(-50%) rotate(0turn);
+	}
+	to {
+		transform: translate(-50%) rotate(1turn);
+	}
+}
+
+@keyframes ballround2 {
+	from {
+		transform: translate(-50%) rotate(1turn);
+	}
+	to {
+		transform: translate(-50%) rotate(0turn);
+	}
+}
+#loading {
+	width: 100vw;
+	height: 85vh;
+	display: block;
+	position: fixed;
+	top: 0;
+	margin-top: 15vh;
+	background: rgba(0,0,0,0);
+}
+#loading>img {
+	width: 30vw;
+	height: auto;
+	position: relative;
+	left: 50%;
+	top: 42%;
+	border-radius: 4px;
+	transform: translate(-50%, -50%);
+	opacity: .9;
+	filter: invert(100%);
 }
 
 /*搜索栏 */
@@ -264,8 +364,8 @@ body {
 	-webkit-box-sizing: border-box;
 	        box-sizing: border-box;
 	        opacity: 0;
-	-webkit-animation: lazyShow 1s ease forwards;
-	        animation: lazyShow 1s ease forwards;
+	-webkit-animation: lazyShow 2s ease forwards;
+	        animation: lazyShow 2s ease forwards;
 }
 @-webkit-keyframes lazyShow {
 	from {

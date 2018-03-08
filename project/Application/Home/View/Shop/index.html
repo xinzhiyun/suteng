@@ -87,6 +87,10 @@
 			</div> -->
 		</div>
 	</div>
+  	<div id="loading">
+  		<img src="__PUBLIC__/Home/images/loading.gif" alt="加载中...">
+  	</div>
+
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
   	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
@@ -123,6 +127,7 @@
 			var goodblockHTML = '';		//分栏商品模板
 			var _htmlArr = [];	//存放对应分类数据的数组
 			var searchArr = [];		//存放搜索用数据
+		   	var tab_now = 0;	// 当前点击的 tab
 
 			/***************** 数据遍历 -- 开始 ************************/
 			// 获取商品分类
@@ -193,7 +198,11 @@
 											'<b class="price">¥'+ _goods[j].price +'</b><span class="iconfont "></span>'+
 										'</a>'+
 										'<i class="iconfont icon-jiarugouwuche"></i>'+
-									'</li>' + '|';
+									'</li>';
+								if(i%6 === 1){
+									//每隔6个添加 '|' ，后面懒加载用
+									_htmlArr[i] += '|';
+								}
 							}else{
 								_htmlArr[i] += '';
 							}
@@ -219,18 +228,15 @@
 			if(_htmlArr[0]){
 				// $(".allgoods>ul").eq(0).html(_htmlArr[0]);
 				// console.log($("#content>div").eq(0).attr("index"))
-				/*
-					懒加载
-				 */ 
-				var lazyArr = [];
-				lazyArr.push(_htmlArr[0].substr(0,_htmlArr[0].length-1).split('|'))
+				if(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').length >= 1){
 
-				console.log(lazyArr.join(''));
+					$(".allgoods>ul").eq(0).html(_htmlArr[0] + _htmlArr[1] + _htmlArr[2]);
+				}
 
-				$(".allgoods>ul").eq(0).html(lazyArr.join(''));
+				// lazyArr.push('<li class="nomore"><p>已无更多数据，休息一下吧！</p><span></span><span></span></li>');
 
 				// $(".allgoods>ul").eq(0).append(lazyArr[0])
-				console.log(_htmlArr[0].substr(0,_htmlArr[0].length-1).split('|'));
+				console.log();
 			}else{
 				$(".allgoods>ul").eq(0).html('<h3 style="text-align:center;padding:5% 0;">暂无内容，敬请期待！<div></div></h3>');
 			}
@@ -239,14 +245,49 @@
 				懒加载,
 				监听滚动事件
 			 */ 
-			$('#container').on('scroll', function(){
-				/*
-					300倍数时再加载一次
-				 */
-				console.log($(this)[0].scrollTop);
-				if($(this)[0].scrollTop/300 >= 1){
+		   	// loading 动画
+			$("#loading").fadeOut('slow');
+			var lazyArr = _htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|'), 
+				lazyStr = '';
+				lazyArr.push(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').join(''));
+				lazyArr.push(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').join(''));
+				lazyArr.push(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').join(''));
 
+			console.log('lazyArr: ', lazyArr);
+
+			var num = 1;	//加载次数， 达到当前分类数组长度时，停止滚动
+			$('#container').on('scroll', function(){
+				console.log('++++++++++++++ scroll ++++++++++++++');
+				/*
+					触底加载，直到没有数据
+					tab_now: 当前点击的tab
+				 */
+		   		var scrollH = $(this)[0].scrollHeight;
+		   		var offsetH = $(this)[0].offsetHeight;
+		   		var scrollTop = $(this)[0].scrollTop;
+
+				console.log(scrollTop/(scrollH - offsetH));
+				console.log('scrollHeight - offsetHeight: ', scrollH - offsetH);
+				console.log('scrollTop: ',scrollTop);
+
+				if(scrollTop/(scrollH - offsetH) >= 0.99){	//触底加载，直到没有数据
+					console.group()
+					console.log('scrollAppend: ',lazyArr[num]);
+
+					// if(lazyArr[tab_now]){	//对应分类下有多数据才添加到页面
+						$(".allgoods>ul").eq(tab_now).append(lazyArr[num]);
+						++num;
+					// }
+					// 如果没有数据了， 解绑监听scroll
+					// if(num = lazyArr.length){
+					// 	$('#container').off('scroll');
+					// 	$(".allgoods>ul").eq(tab_now).append('<li class="nomore"><p>已无更多数据，休息一下吧！</p><span></span><span></span></li>');
+					// 	return
+					// }
 				}
+				console.log(tab_now);
+				console.log('num: ', num);
+				console.log('lazyArr.length: ', lazyArr.length);
 			})
 
 			/***************** 数据遍历 -- 结束 ************************/
@@ -319,21 +360,33 @@
 			var len = 10;
 			var ullen;	//记录当前分类的数据状态，有则不用重新生成
 			var tabIndex;
+
 			$("#header").on("click",'.tab',function(){
-				$(".tab").each(function(key, value){
-					// console.log(key, value)
-					value.setAttribute('now', '');
-				})
-				// 用来判断当前所在分类
-				$(this).attr('now', $(this).attr('index'));
+				// 当前点击的tab
+				tab_now = ~~$(this).attr('index');
+				// 调用content 切换函数
 				tabContent($(this));
+
+				$("#loading").fadeIn('fast');
+				for(var i=0; i<$('.goodsBlock').length; i++){
+					$('.goodsBlock').eq(i).fadeOut('fast');
+				}
+				$('.goodsBlock').eq(tab_now).fadeIn('fast');
+				setTimeout(function(){
+					$("#loading").fadeOut('fast');
+				},600);
+				
 				sessionStorage.setItem('shopCid', $(this).attr('cid'));
-				// var _height = $('.goodsBlock').eq($(this).attr('index'))[0].offsetHeight;
-				// $('#content').css({
-				// 	height: _height + 'px',
-				// 	overflowX: 'hidden',
-				// 	overflowY: 'scroll'
-				// })
+				var _height = $('.goodsBlock').eq(tab_now)[0].offsetHeight + $(".shopTop")[0].offsetHeight;
+				// setTimeout(function(){
+					$('#container').css({
+						height: _height + 'px'
+					})
+					$('#content').css({
+						height: $('.goodsBlock').eq(tab_now)[0].offsetHeight + 'px'
+					})
+				// },1000)
+				console.log('tab_now: ',tab_now);
 			});
 			// 切换的函数
 			function tabContent(_this){
@@ -354,7 +407,7 @@
 
 				//切换内容
 				$("#content")
-				.css({transition: '.5s ease',transform: 'translateX(-'+ _this.attr("index") +'00vw)'});
+				.css({transform: 'translateX(-'+ _this.attr("index") +'00vw)'});
 				//横线移动
 				$("#line").css({left: _this[0].offsetLeft+_this[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
 
@@ -374,7 +427,6 @@
 			}
 			// console.log($('.tab')[0].offsetLeft+$('.tab')[0].clientWidth-$("#line")[0].clientWidth/2)
 			// 页面加载时顶部分类横线位置初始化
-			// $("#line").css({transform: 'translateX('+ parseFloat($('.tab')[0].offsetLeft+$('.tab')[0].clientWidth/2-$("#line")[0].clientWidth/2) +'px)'});
 
 			$("#line").css({left: $('.tab')[0].offsetLeft+$('.tab')[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
 			$('#header>span').eq(0).css('color','#373737').css('font-weight','600');
@@ -436,8 +488,10 @@
 				// 	transform: 'translateX(-'+ cid +'00vw)'
 				// })
 				tabContent($('.tab').eq(cid));
+				tab_now = ~~cid;
 				// 初始化
 				// sessionStorage.setItem('shopCid', '');
+				console.log('tab_now: ',tab_now);
 			}
 		})
 
