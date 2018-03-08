@@ -93,6 +93,7 @@
   }
   .repairPic {
     position: relative;
+    height:5rem;
   }
   .repairPic i{
     font-size: 5.0rem;
@@ -103,7 +104,7 @@
     font-size: 0.68rem;
       position: absolute;
       left: 1.2rem;
-      bottom: 0.65rem;
+      bottom: 0.2rem;
       color: #FFF;
   }
   .repairPic>span:nth-of-type(2){
@@ -264,18 +265,19 @@
     height: 4rem;
     bottom: .6rem;
     right: 0;
-    display: block;
+    top:0.7rem;
+    /*display: block;*/
   }
   #picShow>span {
     width: 30%;
     height: 100%;
     display: inline-block;
     position: relative;
-    margin: 0 4px;
+    margin: 0 3px;
   }
   #picShow>span>img {
     width: 100%;
-    height: auto;
+    height: 100%;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -284,7 +286,7 @@
     position: absolute;
     width: .8rem;
     height: .8rem;
-    top: -10px;
+    top: -1px;
     right: 0;
     display: flex;
     justify-content: center;

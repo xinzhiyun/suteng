@@ -116,9 +116,32 @@
     <div class="rewardContainer">
         <div class="rewardTop">
           消费的会员名称
+          <!-- {{}} -->
         </div>
         <!-- 所有商品订单详情 -->
+
+
         <div id="goodsAll">
+          <!-- <foreach name="data" item="vo">
+            <div class="goods">
+                <div class="goodsItem">
+                    <div class="giPicture">
+                      <img src={{}} alt="">
+                    </div>
+                    <div class="giDescription">
+                      <b>{{}}</b>
+                      <p>{{}]</p>
+                      <div>
+                        <b>￥{{}}</b>
+                        <span>{{}}</span>
+                      </div>
+                    </div>
+                </div>
+            </div>
+          </foreach> -->
+
+
+
             <div class="goods">
                 <div class="goodsItem">
                     <div class="giPicture">
@@ -134,6 +157,7 @@
                     </div>
                 </div>
             </div>
+
              <div class="goods">
                 <div class="goodsItem">
                     <div class="giPicture">
@@ -149,14 +173,35 @@
                     </div>
                 </div>
             </div>
+
+
         </div>
         <div class="timenews">
           <p>分成：63</p>
           <p>交易时间：2017-12-26</p>
+
+          <!-- <p>分成：{{}}</p>
+          <p>交易时间：{{:date("Y-m-d", $data)}}</p> -->
         </div>
+        <input type="hidden" value={{$data|json_encode}} />
+        <!-- <span>{{$data}}</span> -->
     </div>
     <script>
-      
+      // $.ajax({
+      //   url: "{{:U('Home/Vendors/income_detailed')}}",
+      //   type: 'post',
+      //   // dataType: "json",
+      //   // contentType: false,
+      //   // processData: false,
+      //   success: function(res) {
+      //     console.log(typeof res)
+      //     // res = JSON.parse(res);
+      //     console.log(res)
+      //   },
+      //   error: function(res) {
+      //     console.log("错误", res);
+      //   }
+      // })
     </script>
 
 
