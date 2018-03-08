@@ -799,6 +799,11 @@ class VendorsController extends Controller
     // 收入详情
     public function income_detailed()
     {
+        $map['order_id'] = I('order_id');
+        $order_detail = D('OrderDetail');
+        $data = $order_detail->getGoodsDetail($map);
+        dump($data);
+
         $this->display();
     }
 
