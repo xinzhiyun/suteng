@@ -339,8 +339,47 @@
 	        });
 
 	});
-	
-	// var id= 
+	$('._setTimecontain').on('click','.close1',function(){
+        var id = $(this).parents('hgroup').attr('alt');
+	    var _this = $(this);
+        $.ajax({
+            url:"{{:U('Home/Task/update')}}",
+            dataType:"json",
+            data:{'id':id},
+            type: 'post',
+            success:function(res){
+                if(res.code == 200){
+                    // 有数据，数据格式查看 26 行
+                    swal('禁用成功',res.message, "success");
+                }else{
+                    // 无数据，数据格式查看 32 行
+                    swal('禁用失败',res.message, "error");
+                }
+            }
+        });
+    });
+      $('._setTimecontain').on('click','.open1',function(){
+          var id = $(this).parents('hgroup').attr('alt');
+          var _this = $(this);
+          $.ajax({
+              url:"{{:U('Home/Task/update')}}",
+              dataType:"json",
+              data:{'id':id},
+              type: 'post',
+              success:function(res){
+                  if(res.code == 200){
+                      // 有数据，数据格式查看 26 行
+                      swal('启用成功',res.message, "success");
+                  }else{
+                      // 无数据，数据格式查看 32 行
+                      swal('启用失败',res.message, "error");
+                  }
+              }
+          });
+      });
+
+
+      // var id=
 	  // $.ajax({
    //              url:"{{:U('Home/Task/del')}}",
    //              dataType:"json",
