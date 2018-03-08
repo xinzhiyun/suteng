@@ -32,7 +32,7 @@ class FeedsController extends CommonController
 
         $userlist = $user->where($map)
                         ->join('st_users ON st_feeds.uid = st_users.id')
-                        ->field('st_feeds.*,st_users.nickname')
+                        ->field('st_feeds.*,st_users.nickname')->order(array('st_feeds.id'=>'desc'))
                         ->limit($page->firstRow.','.$page->listRows)
                         ->select();
         $this->assign('list',$userlist);
