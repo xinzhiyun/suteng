@@ -167,6 +167,16 @@ class OrderController extends CommonController
                                 ->join('st_goods_detail gd ON od.gid = gd.gid','LEFT')
                                 ->field(array('so.uid','so.order_id','od.gid','od.num','od.price','g.name'=>'goodname','pic.path'=>'picpath','so.addtime','od.is_installed'))
                                 ->select();
+            // 判断售后商品是否已经评论过了，然后给个标识状态
+            $install_comment = D('install_comment');
+            foreach ($data as $key => $value) {
+                if ($install_comment->where(['gid'=>$value['gid'],'orderid'=>$value['order_id']])->find()) {
+                    $data[$key]['is_comment'] = 1;
+                } else {
+                    $data[$key]['is_comment'] = 0;
+                }
+            }
+            
             if ($data) {
                 return $this->ajaxReturn(['code'=>200,'data'=>$data]);
             }
@@ -193,7 +203,7 @@ class OrderController extends CommonController
             'create_at' => time()
         ];
         $install_comment = D('install_comment');
-            
+         // 判断售后商品是否已经评论过了   
         if ($install_comment->where(['gid'=>I('post.gid'),'orderid'=>I('post.orderid')])->find()) {
             return $this->ajaxReturn(['code'=>400,'msg'=>'已经评论过了，不能再评论了']);
         }
