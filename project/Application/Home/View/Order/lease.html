@@ -259,7 +259,7 @@
 								var payName = waitpaylist[i]['productList'][k]['productname'];
 								payName = payName ? payName : "暂无标题";
 								var payBrief = waitpaylist[i]['productList'][k]['productbrief'];
-								payBrief = payBrief ? payBrief : "暂无标题";
+								payBrief = payBrief ? payBrief : "暂无描述";
 								dingdanDaifukuan2+='<div class="goodsItem">'+
 									'<div class="giPicture">'+
 										'<img src="/Uploads/'+waitpaylist[i]['productList'][k]['orderimg']+'" alt="">'+
@@ -553,13 +553,15 @@
 									'<span>交易完成</span>'+
 								'</p>';
 							for(var k=0;k<waitcommentlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
+								commentBrief = waitcommentlist[i]['productList'][k]['productbrief'];
+								commentBrief = commentBrief ? commentBrief : "暂无描述";
 								dingdanDaipinglun2+='<div class="goodsItem">'+
 									'<div class="giPicture">'+
 										'<img src="/Uploads/'+waitcommentlist[i]['productList'][k]['orderimg']+'" alt="">'+
 									'</div>'+
 									'<div class="giDescription">'+
 										'<b>'+waitcommentlist[i]['productList'][k]['productname']+'</b>'+
-										'<p>'+waitcommentlist[i]['productList'][k]['productbrief']+'</p>'+
+										'<p>'+commentBrief+'</p>'+
 										'<div>'+
 											'<b>￥'+ waitcommentlist[i]['productList'][k]['price'] +'</b>'+
 											'<span>X&nbsp;'+waitcommentlist[i]['productList'][k]['productnumber']+'</span>'+
