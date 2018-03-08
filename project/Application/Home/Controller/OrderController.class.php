@@ -256,15 +256,20 @@ class OrderController extends CommonController
      */
     public function choiceRefund()
     {
-        if (IS_AJAX) {
+                if (IS_AJAX) {
             $orderid = I('orderid');
+            // $refund = D('refund_goods')->field('oid,gid')->select(false);
+            // echo $refund;die;
             // $data = M('shop_order')->alias('so')->where('order_id='.$orderid)->select();
-            $data = M('order_detail')
+            $data = M('order_detail')                        
                         ->alias('d')
-                        ->where('order_id='.$orderid)
+                        ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'d.gid'=>['NEQ','rg.gid'],'rg.oid'=>['NEQ',$orderid]])
+                        ->join('st_shop_order so ON d.order_id = so.order_id','LEFT')
                         ->join('__GOODS__ g ON g.id = d.gid','LEFT')
                         ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
                         ->join('__PIC__ p ON g.id = p.gid','LEFT')
+                        ->join('st_refund_goods rg ON rg.oid = d.order_id','LEFT')
+                        // ->table($refund.' a')
                         ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire'))
                         ->select();
             if ($data) {
@@ -273,7 +278,7 @@ class OrderController extends CommonController
                 return $this->ajaxReturn(['code'=>400,'msg'=>'没有数据']);
         } else {
             $this->display();
-        }        
+        }         
     }
     
     /**
