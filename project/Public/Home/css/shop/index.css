@@ -10,8 +10,9 @@ body {
 	/*width: 100vw;*/
 	height: 100vh;
 	font-size: .7rem;
-	overflow-x: hidden;
 	background: #fff;
+	overflow-x: hidden;
+	overflow-y: scroll;
 }
 #header {
 	/*width: 200%;*/
@@ -69,11 +70,20 @@ body {
 	border-radius: 10px;
 	background: #2eb6aa;
 }
-
+#container {
+	width: 100vw;
+	height: 90vh;
+	display: block;
+	position: relative;
+	top: 8vh;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
 #content {
 	width: 500vw;
 	position: relative;
 	padding: 1vh 0;
+	transform: scale(0);
 }
 /*商品块*/
 .goodsBlock {
@@ -93,17 +103,16 @@ body {
 /*搜索栏 */
 .shopTop{
 	width: 100%;
-		margin-top: 2rem;
-		margin-bottom: 1rem;
+	margin-bottom: 1rem;
 	position: relative;
-	top:1.0vh;
+	top: 0;
 	z-index: 99;
 }
 .search{
 	width: 90%;
 	height: 1.6rem;
 	line-height: 1.4rem;
-	margin: 2.5rem auto -0.2rem;
+	margin: .5rem auto -0.2rem;
 	border-radius: 0.266667rem;
 	position: relative;
 }
