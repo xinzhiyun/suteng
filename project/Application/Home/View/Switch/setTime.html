@@ -129,6 +129,7 @@
 			<input type="button" value="保存" id="save">
 		</div>
 	</div>
+	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script>
 		$(function(){
 			// 首页按钮
@@ -158,6 +159,12 @@
 			$('.time_type>span').removeClass('checked');
 			$(this).addClass('checked');
 		});
+		$('.switchFoot').click(function() {
+			layuiHint("保存成功!");
+			setTimeout(function() {
+				window.location.href = "{{:U('Home/VipCenter/minepack')}}";
+			}, 1000);
+		})
 
 		$("#save").click(function(){
 			// 获取表单数据
