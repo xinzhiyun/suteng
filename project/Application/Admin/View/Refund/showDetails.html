@@ -20,11 +20,16 @@
                 </div>
                 <div class="ibox-content">
                     <table class="table table-bordered table-hover">
-                        <caption style="text-align: center;"><h1>退款流水号：<span>xxxxxxx0000000</span></h1></caption>
+                        <caption style="text-align: center;"><h1>退款流水号：<span>{{$data.serial_num}}</span></h1></caption>
                         <thead>
                             <tr>
                                 <th style="width: 3%">退款原因：</th>
-                                <td colspan="5" style="width: 30%">{{$data.reason}}</td>
+                                <!-- <td colspan="5" style="width: 30%">{{$data.reason}}</td> -->
+                                <switch name="data['reason']">
+                                    <case value="1"><td colspan="5" style="width: 30%">质量问题退货</td></case>
+                                    <case value="2"><td colspan="5" style="width: 30%">选拍错了</td></case>
+                                    <default /><td colspan="5" style="width: 30%">其他原因</td>
+                                </switch>
                             </tr>
                             <tr>
                                 <th style="width: 3%">描述：</th>

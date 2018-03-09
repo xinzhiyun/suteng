@@ -11,8 +11,8 @@ class RefundController extends CommonController
      * @return [type] 模板渲染
      */
     public function index(){
-        $data = D('Refund')->getPage(D('Refund'),'');
-        // print_r($data);
+        $refund = D('Refund');
+        $data = $refund->getPage($refund,'');
         $this->assign('data',$data);
         $this->display();
     }
@@ -23,8 +23,13 @@ class RefundController extends CommonController
      */
     public function showDetails() 
     {
-        $data = D('Refund')->relation(['logistics','goods'])->find(1);
-        // dump($data);
+        $id = I('get.id');
+        $data = D('Refund')->relation(['logistics','goods'])->find($id);
+        foreach ($data['goods'] as $key => $value) {
+            $goods[] = $value['gid'];
+        }
+        $d = D('goods')->field('id,name,pic')->where('id',['in',$goods])->select();
+        dump($goods);
         $this->assign('data',$data);
         $this->display();
     }
@@ -37,18 +42,38 @@ class RefundController extends CommonController
      */
     public function editStatus($id,$status)
     {
-        if (is_numeric($id) && is_numeric($status)){
-            $res = D('Refund')->where('id='.$id)->setField('status',$status);
-            if ($res) {
-                return $this->ajaxReturn(['code'=>200,'msg'=>'修改成功']);
-            } else{
-                return $this->ajaxReturn(['code'=>400,'msg'=>'修改失败']);
-            }
-            
-        } else{
+        
+        if (!is_numeric($id) || !is_numeric($status)){ 
             return $this->ajaxReturn(['code'=>400,'msg'=>'id和状态必须为数字']);
         }
-        
+        try {
+            $refund = D('Refund');
+            $refund->startTrans();
+            $res = $refund->where('id='.$id)->setField('status',$status);
+            $d = D('Refund_goods')->field('distinct(oid)')->where('rf_id='.$id)->select();
+            foreach ($d as $key => $value) {
+                $ids[] = $value['oid'];
+            }
+            if ($status == 1 || $status == 3) {
+                $statu = 4;
+            } elseif ($status == 5) {
+                $statu = 5;
+            }
+            D('order_detail')->where(['order_id'=>['in',$ids],])->setField('status',$statu);
+            if ($res) {
+                $refund->commit();
+                return $this->ajaxReturn(['code'=>200,'msg'=>'修改成功']);
+            } else{
+                $refund->rollback();
+                return $this->ajaxReturn(['code'=>400,'msg'=>'修改失败']);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            return $this->ajaxReturn($err);
+        }         
     }
 
     public function install()

@@ -103,6 +103,12 @@
                                                         <else /> 
                                                         </if>
                                                     </case>
+                                                    <case value="1">
+                                                            <a class="btn btn-outline btn-success edit" href="javascript:;" rId="{{$v['id']}}" status="5">已退款</a>
+                                                    </case>
+                                                    <case value="3">
+                                                            <a class="btn btn-outline btn-success edit" href="javascript:;" rId="{{$v['id']}}" status="5">已收货</a>
+                                                    </case>
                                                 </switch>
                                             </div>
                                         </td>
@@ -128,7 +134,6 @@
             location.href = "{{:U('showDetails'),'',''}}?id="+rId;      
         })
         
-
         $('.edit').click(function(){
             status = $(this).attr('status');
             id = $(this).attr('rId');
