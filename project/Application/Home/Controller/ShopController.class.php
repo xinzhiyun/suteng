@@ -243,9 +243,12 @@ class ShopController extends CommonController
     // 
     public function shoppingdetail()
     {
+        
+        $sold_num = D('order_detail')->field('count(num) as sum')->where(['gid'=>I('gid')])->select();
         $cartInfo = M('Cart')->where('uid='.session('user.id'))->count();
         $this->assign('cartInfo',$cartInfo);
-
+        $this->assign('sold_num',$sold_num[0]['sum']);
+        $this->assign('postage',8.99);
         $this->display();
     }
 
