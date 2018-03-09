@@ -21,7 +21,7 @@ class FeedsController extends CommonController
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
             $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
         }
-
+        $where['keywords'] =I('get.keywords');
         $user = M('feeds');
         $total = $user->where($map)
                         ->join('st_users ON st_feeds.uid = st_users.id')
@@ -35,7 +35,9 @@ class FeedsController extends CommonController
                         ->field('st_feeds.*,st_users.nickname')->order(array('st_feeds.id'=>'desc'))
                         ->limit($page->firstRow.','.$page->listRows)
                         ->select();
+
         $this->assign('list',$userlist);
+        $this->assign('where',$where);
         $this->assign('button',$pageButton);
         $this->display();
     }
@@ -66,6 +68,7 @@ class FeedsController extends CommonController
         $map = '';
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
             $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
+
         }
         $user = M('repair');
         $total = $user->where($map)
@@ -81,7 +84,11 @@ class FeedsController extends CommonController
                         ->limit($page->firstRow.','.$page->listRows)
                         ->select();
         // dump($userlist);
+        $where['key'] =I('get.key');
+        $where['keywords'] =I('get.keywords');
+
         $this->assign('list',$userlist);
+        $this->assign('where',$where);
         $this->assign('button',$pageButton);
         $this->display(); 
     }
