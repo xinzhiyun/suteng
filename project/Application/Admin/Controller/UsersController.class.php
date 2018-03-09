@@ -20,7 +20,7 @@ class UsersController extends CommonController
         $map = '';
         if(strlen($_GET['nickname'])) $map['nickname'] = array('like',"%{$_GET['nickname']}%");
 
-        strlen(I('get.original_grade')) ? (int)$map['original_grade'] = I('get.original_grade'):'';
+        strlen(I('get.grade')) ? (int)$map['grade'] = I('get.grade'):'';
 
         strlen(I('get.sex')) ? (int)$map['sex'] = I('get.sex'):'';
 
@@ -31,6 +31,7 @@ class UsersController extends CommonController
         $pageButton =$page->show();
 
         $userlist = $user->where($map)->limit($page->firstRow.','.$page->listRows)->select();
+        echo $user->getLastSql();
         $assign = [
             'data' => $userlist,
             'button' => $pageButton,
