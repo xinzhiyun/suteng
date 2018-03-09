@@ -31,13 +31,17 @@ class UsersController extends CommonController
         $pageButton =$page->show();
 
         $userlist = $user->where($map)->limit($page->firstRow.','.$page->listRows)->select();
-        echo $user->getLastSql();
+
         $assign = [
             'data' => $userlist,
             'button' => $pageButton,
         ];
-
+        $where['nickname'] = $_GET['nickname'];
+        $where['grade'] = I('get.grade');
+        $where['sex'] = I('get.sex');
+        dump($where);
         $this->assign($assign);
+        $this->assign('where',$where);
         $this->display();
     }
 
