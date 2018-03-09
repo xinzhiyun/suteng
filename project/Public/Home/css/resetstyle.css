@@ -480,6 +480,8 @@ body{
 #back2Home {
 	width: 2rem;
 	height: 2rem;
+	max-width: 40px;
+	max-height: 40px;
 	min-width: 20px;
 	min-height: 20px;
 	position: fixed;
