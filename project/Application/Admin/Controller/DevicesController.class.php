@@ -27,6 +27,9 @@ class DevicesController extends CommonController
                 $map['t.typename'] = array('like',"%{$_GET['keywords']}%");
             }
         }
+        $where['key'] = $_GET['key'];
+        $where['keywords'] = $_GET['keywords'];
+
         $count = $device                                                            
             ->where($map)
             ->alias('d')
@@ -61,6 +64,7 @@ class DevicesController extends CommonController
             'page'=> $show,
         ];
         $this->assign($assign);
+        $this->assign('where',$where);
         $this->display('devicesList');
     }
 
