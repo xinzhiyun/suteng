@@ -121,15 +121,15 @@
         <!-- 所有商品订单详情 -->
 
 
-        <div id="goodsAll">
-          <!-- <foreach name="data" item="vo">
+       <!--  <div id="goodsAll">
+          <foreach name="data" item="vo">
             <div class="goods">
                 <div class="goodsItem">
                     <div class="giPicture">
                       <img src={{}} alt="">
                     </div>
                     <div class="giDescription">
-                      <b>{{}}</b>
+                      <b>{{$vo.name}}</b>
                       <p>{{}]</p>
                       <div>
                         <b>￥{{}}</b>
@@ -138,44 +138,25 @@
                     </div>
                 </div>
             </div>
-          </foreach> -->
-
-
-
+          </foreach>
+ -->
+      <volist name="data" id="vo">
             <div class="goods">
                 <div class="goodsItem">
                     <div class="giPicture">
-                      <img src="__PUBLIC__/Home/images/1a.jpg" alt="">
+                      <img src="__PUBLIC__/Uploads/{{$vo.path}}" alt="">
                     </div>
                     <div class="giDescription">
-                      <b>RO膜</b>
-                      <p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
+                      <b>{{$vo['name']}}</b>
+                      <p>{{$vo['desc']}}</p>
                       <div>
-                        <b>￥120.00</b>
-                        <span>X1</span>
+                        <b>￥{{$vo.price}}</b>
+                        <span>X{{$vo.num}}</span>
                       </div>
                     </div>
                 </div>
             </div>
-
-             <div class="goods">
-                <div class="goodsItem">
-                    <div class="giPicture">
-                      <img src="__PUBLIC__/Home/images/1a.jpg" alt="">
-                    </div>
-                    <div class="giDescription">
-                      <b>RO膜</b>
-                      <p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
-                      <div>
-                        <b>￥120.00</b>
-                        <span>X1</span>
-                      </div>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
+      </volist>
         <div class="timenews">
           <p>分成：63</p>
           <p>交易时间：2017-12-26</p>
@@ -183,25 +164,8 @@
           <!-- <p>分成：{{}}</p>
           <p>交易时间：{{:date("Y-m-d", $data)}}</p> -->
         </div>
-        <input type="hidden" value={{$data|json_encode}} />
-        <!-- <span>{{$data}}</span> -->
     </div>
     <script>
-      // $.ajax({
-      //   url: "{{:U('Home/Vendors/income_detailed')}}",
-      //   type: 'post',
-      //   // dataType: "json",
-      //   // contentType: false,
-      //   // processData: false,
-      //   success: function(res) {
-      //     console.log(typeof res)
-      //     // res = JSON.parse(res);
-      //     console.log(res)
-      //   },
-      //   error: function(res) {
-      //     console.log("错误", res);
-      //   }
-      // })
     </script>
 
 

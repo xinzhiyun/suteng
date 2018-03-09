@@ -389,7 +389,10 @@
                                         if($('.xiePic').eq(1).attr("index") === "1"){
                                             // 手持身份证是否提交
                                             if($('.xiePic').eq(2).attr("index") === "1") {
-                                                alert("成功");
+
+                                                // 验证成功后跳转
+                                                window.location.href = "{{:U('Home/Vendors/company')}}";
+
                                             }else{
                                                 layuiHint("请提交手持身份证");
                                             }
