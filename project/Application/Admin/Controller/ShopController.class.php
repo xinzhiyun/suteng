@@ -377,7 +377,11 @@ class ShopController extends CommonController
             'data' => $data['data'],
             'show' => $data['show'],
         ];
+        $where['key'] = $_GET['key'];
+        $where['keywords'] = $_GET['keywords'];
+
         $this->assign($assign);
+        $this->assign('where',$where);
         $this->display();
     }
 

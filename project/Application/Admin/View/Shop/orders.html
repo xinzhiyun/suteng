@@ -19,13 +19,14 @@
                 <form method="get" action="">
                     <div class="input-group col-md-3"  style="float: right;margin-right: 60px;">
                         <select name="key" class="form-control" name="account" style="width:30%">
-                            <option value="order_id">订单ID</option>
-                            <option value="name">收货人姓名</option>
-                            <option value="phone">电话</option>
-                            <option value="address">收货地址</option>
+                            <option <?php echo ($where['key']=="order_id")?'selected':''; ?> value="order_id">订单ID</option>
+                            <option <?php echo ($where['key']=="name")?'selected':''; ?> value="name">收货人姓名</option>
+                            <option <?php echo ($where['key']=="phone")?'selected':''; ?> value="phone">电话</option>
+                            <option <?php echo ($where['key']=="address")?'selected':''; ?> value="address">收货地址</option>
                         </select>
                         <input type="hidden" name="p" value="1">
-                        <input type="text" name="keywords" placeholder="输入搜索关键字" class="input form-control"   style="width:60%">
+
+                        <input type="text" name="keywords" placeholder="输入搜索关键字" value="{{$where['keywords']}}" class="input form-control"   style="width:60%">
                         <span class="input-group-btn" style="display: inline-block;">
                                 <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
                         </span>
