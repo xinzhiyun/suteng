@@ -11,8 +11,7 @@ body {
 	height: 100vh;
 	font-size: .7rem;
 	background: #fff;
-	overflow-x: hidden;
-	overflow-y: scroll;
+	overflow: hidden;
 }
 #header {
 	/*width: 200%;*/
@@ -72,10 +71,12 @@ body {
 }
 #container {
 	width: 100vw;
-	height: 90vh;
+	height: 100vh;
+	max-height: 100vh;
 	display: block;
 	position: relative;
-	top: 8vh;
+	top: 0;
+    padding-top: 8vh;
 	overflow-x: hidden;
 	overflow-y: scroll;
 }
