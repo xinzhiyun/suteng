@@ -632,9 +632,14 @@ class VendorsController extends CommonController
         $assign = [
             'data' => $data,
         ];
+        $where['key'] = $_GET['key'];
+        $where['keywords'] = $_GET['keywords'];
+        $where['status'] = I('get.status');
 
+        var_dump($where);
         //echo D('vendors')->getLastSql();
         $this->assign($assign);
+        $this->assign('where',$where);
         $this->display();
     }
 
