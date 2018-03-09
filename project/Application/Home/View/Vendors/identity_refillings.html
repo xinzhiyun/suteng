@@ -304,10 +304,15 @@
             };
             var reader = new FileReader();
             reader.onload = function (evt) {
-                var objId = file.nextSibling.nextSibling.nextSibling.nextSibling;//找到兄弟节点.xiePic
-                objId.firstChild.src = evt.target.result;//找到img对象
-                objId.style.visibility = "visible";
-                objId.setAttribute("index", "1");
+                var total = (evt.total/1024)/1024;
+                if(total >= 3) {
+                    layuiHint("图片超出允许上传文件大小3M");
+                }else{
+                    var objId = file.nextSibling.nextSibling.nextSibling.nextSibling;//找到兄弟节点.xiePic
+                    objId.firstChild.src = evt.target.result;//找到img对象
+                    objId.style.visibility = "visible";
+                    objId.setAttribute("index", "1");
+                }
             };
             reader.readAsDataURL(file.files[0]);
         };
