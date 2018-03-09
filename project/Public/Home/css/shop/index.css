@@ -220,6 +220,7 @@ body {
 	top: 0;
 	margin-top: 15vh;
 	background: rgba(0,0,0,0);
+	z-index: 999;
 }
 #loading>img {
 	width: 30vw;
@@ -242,6 +243,7 @@ body {
 	position: relative;
 	top: 0;
 	z-index: 99;
+	background: #fff;
 }
 .search{
 	width: 90%;
@@ -250,6 +252,7 @@ body {
 	margin: .5rem auto -0.2rem;
 	border-radius: 0.266667rem;
 	position: relative;
+	z-index: 100;
 }
 .search>label>i {    
 	height: 100%;

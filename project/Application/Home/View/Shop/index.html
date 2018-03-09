@@ -233,13 +233,13 @@
 				// console.log($("#content>div").eq(0).attr("index"))
 				if(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').length >= 1){
 
-					$(".allgoods>ul").eq(0).html(_htmlArr[0] + _htmlArr[1] + _htmlArr[2]);
+					$(".allgoods>ul").eq(0).html(_htmlArr[0]);
 				}
 
 				// lazyArr.push('<li class="nomore"><p>已无更多数据，休息一下吧！</p><span></span><span></span></li>');
 
 				// $(".allgoods>ul").eq(0).append(lazyArr[0])
-				console.log();
+				
 			}else{
 				$(".allgoods>ul").eq(0).html('<h3 style="text-align:center;padding:5% 0;">暂无内容，敬请期待！<div></div></h3>');
 				$('#container').off('scroll');
@@ -253,18 +253,18 @@
 			$("#loading").fadeOut('slow');
 			var lazyArr = _htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|'), 
 				lazyStr = '';
-				lazyArr.push(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').join(''));
-				lazyArr.push(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').join(''));
-				lazyArr.push(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').join(''));
+				// lazyArr.push(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').join(''));
+				// lazyArr.push(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').join(''));
+				// lazyArr.push(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').join(''));
 
 			console.log('lazyArr: ', lazyArr);
 
 			var num = 1;	//加载次数， 达到当前分类数组长度时，停止滚动
 		   	var scrollH, offsetH, scrollTop;
 			$('#container').on('scroll', function(){
-				console.log('++++++++++++++ scroll ++++++++++++++');
+				// console.log('++++++++++++++ scroll ++++++++++++++');
 				console.log(isLoad[tab_now][0])
-				if(isLoad[tab_now][0] == false){		//停止懒加载标志
+				if(isLoad[tab_now][0] == false) {		//停止懒加载标志: isLoad[tab_now][0] == true
 					lazyLoad($(this));
 				}
 			})
@@ -287,10 +287,10 @@
 					console.group()
 					console.log('scrollAppend: ',lazyArr[num]);
 
-					// if(lazyArr[tab_now]){	//对应分类下有多数据才添加到页面
+					if(_htmlArr[tab_now]){	//对应分类下有多数据才添加到页面
 						$(".allgoods>ul").eq(tab_now).append(lazyArr[num]);
 						num++;
-					// }
+					}
 					// 如果没有数据了， 解绑监听scroll
 					if(num = lazyArr.length){
 						$('#container').off('scroll');
@@ -377,12 +377,25 @@
 			var tabIndex;
 
 			$("#header").on("click",'.tab',function(){
+				var _this = $(this);
+				//如果当前分类下有商品, 且允许滚动， 否则禁止
+				if(_htmlArr[_this.attr("index")] && ullen < 1){	
+					
+					$('#container').css({
+						overflowY : 'scroll'
+					})
+				}else if(!_htmlArr[_this.attr("index")]){
+
+					$('#container').css({
+						overflowY : 'hidden'
+					})
+				}
 				// 当前点击的tab
 				tab_now = ~~$(this).attr('index');
 				console.log('lazyArr: ',lazyArr)
 				// 调用content 切换函数
 				tabContent($(this));
-
+				// loading
 				$("#loading").fadeIn('fast');
 				for(var i=0; i<$('.goodsBlock').length; i++){
 					$('.goodsBlock').eq(i).fadeOut('fast');
@@ -394,7 +407,7 @@
 				
 				sessionStorage.setItem('shopCid', $(this).attr('cid'));
 				var _height = $('.goodsBlock').eq(tab_now)[0].offsetHeight + $(".shopTop")[0].offsetHeight;
-				
+				// 防止多余滚动
 				$('#container').css({
 					height: _height + 'px'
 				})
@@ -404,8 +417,8 @@
 				console.log('tab_now: ',tab_now);
 				// 监听滚动
 				$('#container').on('scroll', function(){
-					console.log('++++++++++++++ scroll ++++++++++++++');
-					console.log('408 ',isLoad[tab_now][0]);
+					// console.log('++++++++++++++ scroll ++++++++++++++');
+					// console.log('408 ',isLoad[tab_now][0]);
 					if(isLoad[tab_now][0] == false){
 						lazyLoad($(this));
 					}
@@ -440,14 +453,17 @@
 				.css({transform: 'translateX(-'+ _this.attr("index") +'00vw)'});
 				//横线移动
 				$("#line").css({left: _this[0].offsetLeft+_this[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
-
+				
 				// $("#line").css({transform: 'translateX('+ parseFloat(_this[0].offsetLeft+_this[0].clientWidth/2-$("#line")[0].clientWidth/2) +'px)'});
 
 				// 顶部滚动过渡效果
 				// console.log($(this)[0].offsetLeft)
 				var offset = _this[0].offsetLeft/2 - _this[0].offsetWidth/2;
-				offset = Math.abs(offset) > this.offsetLeft/2 ? this.offsetLeft/2 : offset;
-
+				offset = Math.abs(offset) > _this.offsetLeft/2 ? _this.offsetLeft/2 : offset;
+				// 点击的是第一个分类
+				if(_this.attr('index') == 0){
+					offset = 0
+				}
 				// console.log('this.offsetLeft/2: ',_this[0].offsetLeft/2);
 				// console.log('_this[0].offsetWidth/2: ',_this[0].offsetWidth/2);
 				// console.log('offset: ',offset);
