@@ -624,11 +624,16 @@ class VendorsController extends CommonController
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
             $map[I('get.key')] = array('like',"%".trim(I('get.keywords'))."%");
         }
+
         strlen(I('get.status')) ? $map['status'] = I('get.status') : '';
+        strlen(I('get.leavel')) ? $map['leavel'] = I('get.leavel') : '';
         $data = D('vendors')->vendorList($map);
+
         $assign = [
             'data' => $data,
         ];
+
+        //echo D('vendors')->getLastSql();
         $this->assign($assign);
         $this->display();
     }
@@ -645,6 +650,7 @@ class VendorsController extends CommonController
             $map[I('get.key')] = array('like',"%".trim(I('get.keywords'))."%");
         }
         $data = D('vendors')->vendorReviewed($map);
+
         // dump($data);die;
         $assign = [
             'data' => $data,

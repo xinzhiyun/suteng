@@ -290,7 +290,8 @@
                                 if(comAddrReg.test(comAddrVal)) {
                                     // 上传营业执照图片
                                     if($(".xiePic").attr("index") === "1") {
-                                        layuiHint("成功");
+                                        // 验证成功后跳转
+                                        window.location.href = "{{:U('Home/Vendors/protocol')}}";
                                     }else{
                                         layuiHint("营业执照图片必须上传");
                                     }

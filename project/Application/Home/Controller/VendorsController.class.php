@@ -655,6 +655,7 @@ class VendorsController extends Controller
 
             // 上传合同文件
             $info = $this->upload();
+            dump($open_id);
 
             if($info){
                 $info['status'] = 9;
@@ -802,7 +803,7 @@ class VendorsController extends Controller
         $map['od.order_id'] = I('order_id');
         $order_detail = D('OrderDetail');
         $data = $order_detail->getGoodsDetail($map);
-        $this->assign($data);
+        $this->assign('data',$data);
         $this->display();
     }
 
