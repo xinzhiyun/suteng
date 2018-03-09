@@ -419,10 +419,12 @@
                     contentType: false,
                     processData: false,
                     success: function (res) {
+                        console.log(res)
                         if(res.code == 200){
                              // 跳转到微信支付页面 
                              window.location.href="{{:U('Home/Vendors/index')}}";
                         } else {
+                            
                             swal('提交失败',res.msg, "error");
                         }
                     },

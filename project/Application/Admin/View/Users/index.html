@@ -13,21 +13,22 @@
                 <form method="get" action="">
                     <div class="input-group col-md-6"  style="float: right;margin-right: 60px;">
                         <label class="form-control"  style="width:14%">用户昵称</label>
-                        <input type="hidden" name="p" value="0">
-                        <input type="text" name="nickname" placeholder="输入搜索关键字" class="input form-control"   style="width:30%">
-                        <select name="original_grade" class="form-control" name="account" style="width:20%">
-                            <option value="">会员等级</option>
-                            <option value="0">非企业会员</option>
-                            <option value="1">普通会员</option>
-                            <option value="2">VIP会员</option>
-                            <option value="3">标准会员</option>
-                            <option value="4">钻石会员</option>
+                        <input type="hidden" name="p" value="1">
+                        <input type="text" name="nickname" placeholder="输入搜索关键字" value="{{$where['nickname']}}" class="input form-control"   style="width:30%">
+                        <select name="grade" class="form-control" name="account" style="width:20%">
+                            <option     <?php echo ($where['grade']=="")?'selected':''; ?> value="">会员等级</option>
+                            <option   <?php echo ($where['grade']=="0")?'selected':''; ?> value="0">非企业会员</option>
+                            <option <?php echo ($where['grade']==1)?'selected':''; ?> value="1">普通会员</option>
+                            <option <?php echo ($where['grade']==2)?'selected':''; ?> value="2">VIP会员</option>
+                            <option <?php echo ($where['grade']==3)?'selected':''; ?> value="3">标准会员</option>
+                            <option <?php echo ($where['grade']==4)?'selected':''; ?> value="4">钻石会员</option>
                         </select>
                         <select name="sex" class="form-control" name="account" style="width:20%">
-                            <option value="">处理结果</option>
-                            <option value="0">女</option>
-                            <option value="1">男</option>
-                            <option value="2">保密</option>
+                            <option     <?php echo ($where['sex']==="")?'selected':''; ?> value="">性别</option>
+
+                            <option   <?php echo ($where['sex']==="0")?'selected':''; ?> value="0">女</option>
+                            <option <?php echo ($where['sex']==1)?'selected':''; ?> value="1">男</option>
+                            <option <?php echo ($where['sex']==2)?'selected':''; ?> value="2">保密</option>
                         </select>
                         <span class="input-group-btn" style="display: inline-block;">
                                 <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>

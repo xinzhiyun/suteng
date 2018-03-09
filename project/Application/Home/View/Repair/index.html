@@ -16,19 +16,13 @@
           <ul>
             
             <li>
-              <span>设备编号：</span>
+              <span>设备型号：</span>
               <p>
-                <select class="device_code" name="deviceid">
-                    <option value="0">-- 请选择问题设备 --</option>
-                    <volist name="bindInfo" id="vo">
-                        <option value="{{$vo.device_code}}">{{$vo.device_code}}</option>
-                    </volist>
-                </select>
+                <span class="device_code"></span>
               </p>
             </li>
             <li><span>日&emsp;&emsp;期：</span><p><input type="text" class="currentdate" id="currentdate" name="date" value="" placeholder="-- 请选择服务日期 --" readonly="readonly"></p></li>
-            <li><span>设备型号：</span><p><input type="text" class="devicetype"></p></li>
-             <li>
+            <li>
               <span>报修原因：</span>
               <p>
                 <select name="reason" class="reason">
@@ -38,7 +32,7 @@
                     <option value="audi">其他</option>
                 </select>
               </p>
-              </li>
+            </li>
           </ul>
         </div>
         <div class="repairMidd">
@@ -108,7 +102,7 @@
     }()
 
     var device_now = sessionStorage.getItem("device_now");
-    $(".deviceid").text(device_now);
+    $(".device_code").text(device_now);
     // 选择日期
     $("#currentdate").click(function(){
 
@@ -140,14 +134,14 @@
       var phoneReg = /^1[3|4|5|8][0-9]\d{4,8}$/;
       var addressReg = /^(?=.*?[\u4E00-\u9FA5])[\dA-Za-z\u4E00-\u9FA5]{6,}/;
       var date = $(".currentdate").val().replace(/[年月]/g,'-').replace(/[日]/,''),
-          device_code = $(".device_code>option:selected"),
+          device_code = $(".device_code").text(),
           reason = $(".reason>option:selected"),
           content = $("#suggestTxt").val(),
           truename = $("#Lname").val(),
           phone = $("#Ltel").val(),
           address = $("#Laddr").val();
 
-          console.log('device_code:', device_code[0].innerText + '\n' +
+          console.log('device_code:', device_code + '\n' +
            'date:',date + '\n' + 'reason:', reason[0].innerText + '\n' + 
            'content:', content + '\n' + 'truename:', truename + '\n' + 
            'phone:', phone + '\n' + 'address:', address
@@ -165,7 +159,7 @@
           console.group();
 
           //重新添加
-          formData.append('device_code', device_code[0].innerText)
+          formData.append('device_code', device_code)
           formData.append('date', date)
           formData.append('reason', reason[0].innerText)
           formData.append('content', content)
@@ -196,10 +190,11 @@
                     console.log('请求成功！', res);
                     if(res.code == 200){
                       layuiHint('报修成功，请稍候将有专人处理！');
-
+                      // 将当前历史记录替换为水机首页
+                      history.pushState({}, null, '{{:U("Home/Index/index")}}');
                       setTimeout(function(){
                         location.href = '{{:U("VipCenter/minepack")}}';
-                      },500);
+                      },900);
 
                     }
 
@@ -243,7 +238,7 @@
               
           }else if(!addressReg.test(address)){
               console.log('请输入正确格式的地址！');
-              layuiHint('请输入正确格式的地址！');
+              layuiHint('请输入正确格式的地址！\n只含有中文英文数字下划线等，不能有特殊字符');
               return false;
               
           }

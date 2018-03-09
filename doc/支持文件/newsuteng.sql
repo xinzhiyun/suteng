@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 120.27.12.1
+Source Server         : xiaojuan
 Source Server Version : 50636
 Source Host           : localhost:3306
 Source Database       : newsuteng
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50636
 File Encoding         : 65001
 
-Date: 2018-03-05 14:20:09
+Date: 2018-03-08 16:15:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,7 +31,7 @@ CREATE TABLE `st_address` (
   `address` varchar(255) NOT NULL COMMENT '收货人地址',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '地址状态，默认为0，设为默认地址，否则为1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_address
@@ -220,6 +220,11 @@ INSERT INTO `st_attr_val` VALUES ('89', '11', '30W');
 INSERT INTO `st_attr_val` VALUES ('90', '9', 'IPO-RO-100');
 INSERT INTO `st_attr_val` VALUES ('90', '11', '830W');
 INSERT INTO `st_attr_val` VALUES ('90', '17', '50加仑/75加仑/100加仑');
+INSERT INTO `st_attr_val` VALUES ('91', '9', 'IPO-RO-75');
+INSERT INTO `st_attr_val` VALUES ('91', '10', '100-220V~');
+INSERT INTO `st_attr_val` VALUES ('91', '11', '30W');
+INSERT INTO `st_attr_val` VALUES ('91', '16', 'PP棉+前置活性炭+PP棉+RO膜+后置');
+INSERT INTO `st_attr_val` VALUES ('92', '9', '012451');
 
 -- ----------------------------
 -- Table structure for st_auth_group
@@ -399,17 +404,14 @@ CREATE TABLE `st_cart` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '购物车状态0未结算，1已结算',
   `addtime` varchar(12) NOT NULL COMMENT '添加购物时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=149 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_cart
 -- ----------------------------
 INSERT INTO `st_cart` VALUES ('72', '57', '1', '49', '0', '1518166344');
 INSERT INTO `st_cart` VALUES ('141', '74', '1', '949', '0', '1519953394');
-INSERT INTO `st_cart` VALUES ('145', '72', '10', '833', '0', '1520217470');
-INSERT INTO `st_cart` VALUES ('146', '73', '6', '833', '0', '1520217473');
 INSERT INTO `st_cart` VALUES ('147', '78', '5', '833', '0', '1520217480');
-INSERT INTO `st_cart` VALUES ('148', '77', '5', '833', '0', '1520217494');
 
 -- ----------------------------
 -- Table structure for st_category
@@ -421,7 +423,7 @@ CREATE TABLE `st_category` (
   `name` varchar(12) NOT NULL COMMENT '分类名',
   `leavel` int(11) NOT NULL DEFAULT '1' COMMENT '分类级别',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_category
@@ -441,7 +443,7 @@ CREATE TABLE `st_com_pic` (
   `cid` int(11) NOT NULL COMMENT '评论ID',
   `path` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '图片地址',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of st_com_pic
@@ -462,7 +464,7 @@ CREATE TABLE `st_comment` (
   `addtime` varchar(12) NOT NULL COMMENT '评论时间',
   `status` tinyint(1) NOT NULL COMMENT '1好评2中评3差评',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_comment
@@ -485,7 +487,7 @@ CREATE TABLE `st_commission` (
   `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '分配类型{0：按比例分配，1：固定金额分配}',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态{0：启用，1：禁用}',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_commission
@@ -554,37 +556,29 @@ CREATE TABLE `st_devices` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '设备状态，备用字段',
   PRIMARY KEY (`id`),
   KEY `id` (`id`,`device_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=236 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=240 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_devices
 -- ----------------------------
 INSERT INTO `st_devices` VALUES ('210', '888855555555555', '1', '1', '1', '1519803569', '62', '1');
-INSERT INTO `st_devices` VALUES ('211', '323333222222222', '1', '1', '1', '1519803569', '63', '1');
 INSERT INTO `st_devices` VALUES ('212', '888888888877777', '1', '1', '18', '1519803569', '62', '1');
-INSERT INTO `st_devices` VALUES ('213', '878787878787878', '1', '1', '2', '1519803569', '63', '1');
-INSERT INTO `st_devices` VALUES ('214', '666666667777777', '1', '0', null, '1519803569', '62', '1');
-INSERT INTO `st_devices` VALUES ('215', '666666668888888', '1', '0', null, '1519803569', '63', '1');
+INSERT INTO `st_devices` VALUES ('214', '666666667777777', '1', '1', '1', '1519803569', '62', '1');
 INSERT INTO `st_devices` VALUES ('216', '778899001122334', '1', '0', null, '1520047242', '62', '1');
-INSERT INTO `st_devices` VALUES ('217', '889900112233445', '1', '0', null, '1520047242', '63', '1');
 INSERT INTO `st_devices` VALUES ('218', '990011223344556', '1', '0', null, '1520047242', '62', '1');
-INSERT INTO `st_devices` VALUES ('219', '001122334455667', '1', '0', null, '1520047242', '63', '1');
 INSERT INTO `st_devices` VALUES ('220', '998877445566332', '1', '0', null, '1520047242', '62', '1');
-INSERT INTO `st_devices` VALUES ('221', '887744556611223', '1', '0', null, '1520047242', '63', '1');
 INSERT INTO `st_devices` VALUES ('222', '775522002200220', '1', '0', null, '1520047242', '62', '1');
-INSERT INTO `st_devices` VALUES ('223', '112233445566778', '1', '0', null, '1520047242', '63', '1');
 INSERT INTO `st_devices` VALUES ('224', '223344556677889', '1', '0', null, '1520047242', '62', '1');
-INSERT INTO `st_devices` VALUES ('225', '334455667788990', '1', '0', null, '1520047242', '63', '1');
 INSERT INTO `st_devices` VALUES ('226', '445566778899001', '1', '0', null, '1520047242', '62', '1');
-INSERT INTO `st_devices` VALUES ('227', '556677889900112', '1', '0', null, '1520047242', '63', '1');
 INSERT INTO `st_devices` VALUES ('228', '552233665522223', '1', '0', null, '1520047345', '62', '1');
-INSERT INTO `st_devices` VALUES ('229', '555555222223333', '1', '0', null, '1520047345', '63', '1');
-INSERT INTO `st_devices` VALUES ('230', '333333322222211', '1', '0', null, '1520047345', '62', '1');
-INSERT INTO `st_devices` VALUES ('231', '333322222000000', '1', '0', null, '1520047345', '63', '1');
+INSERT INTO `st_devices` VALUES ('230', '333333322222211', '1', '1', '1', '1520047345', '62', '1');
 INSERT INTO `st_devices` VALUES ('232', '000011122222211', '1', '0', null, '1520047345', '62', '1');
-INSERT INTO `st_devices` VALUES ('233', '112221000000000', '1', '0', null, '1520047345', '63', '1');
 INSERT INTO `st_devices` VALUES ('234', '000022222555555', '1', '0', null, '1520047345', '62', '1');
-INSERT INTO `st_devices` VALUES ('235', '111122222000020', '1', '0', null, '1520047345', '63', '1');
+INSERT INTO `st_devices` VALUES ('235', '222222555555555', '1', '0', null, '1520409767', '62', '1');
+INSERT INTO `st_devices` VALUES ('236', '666666662222222', '1', '1', '1', '1520409767', '89', '1');
+INSERT INTO `st_devices` VALUES ('237', '111111111111111', '1', '0', null, '1520413516', '62', '1');
+INSERT INTO `st_devices` VALUES ('238', '999999888888870', '1', '0', null, '1520413620', '89', '1');
+INSERT INTO `st_devices` VALUES ('239', '333333333300000', '1', '1', '1', '1520491979', '62', '1');
 
 -- ----------------------------
 -- Table structure for st_devices_statu
@@ -628,7 +622,7 @@ CREATE TABLE `st_devices_statu` (
   `updatetime` varchar(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`,`DeviceID`,`DeviceStause`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_devices_statu
@@ -647,7 +641,7 @@ CREATE TABLE `st_dimension` (
   `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1288 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1314 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_dimension
@@ -1939,6 +1933,32 @@ INSERT INTO `st_dimension` VALUES ('1284', 'gQFi8DwAAAAAAAAAAS5odHRwOi8vd2VpeGlu
 INSERT INTO `st_dimension` VALUES ('1285', 'gQFY8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyOFZhSGtyMmJkOTAxUUFxNGhxMVAAAgT01JxaAwQwhScA', '1', null, '1', '1520227572', '1520227572');
 INSERT INTO `st_dimension` VALUES ('1286', 'gQFe8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyaGxmOGxqMmJkOTAxVEpzNDFxMXMAAgS915xaAwQwhScA', '1', null, '1', '1520228285', '1520228285');
 INSERT INTO `st_dimension` VALUES ('1287', 'gQEP8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyeDdMSGtTMmJkOTAxUktBNHhxMWwAAgQ_35xaAwQwhScA', '1', null, '1', '1520230206', '1520230206');
+INSERT INTO `st_dimension` VALUES ('1288', 'gQEY8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyY3VaNWxBMmJkOTAxMDAwME0wM3cAAgSgFnRaAwQAAAAA', '4', '0', '0', '1520232857', '1520232857');
+INSERT INTO `st_dimension` VALUES ('1289', 'gQH08DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybE9uWGxKMmJkOTAxMDAwME0wM3cAAgShFnRaAwQAAAAA', '4', '1', '0', '1520232857', '1520232857');
+INSERT INTO `st_dimension` VALUES ('1290', 'gQGe8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyeFZpRGxYMmJkOTAxMDAwME0wM3EAAgTWNHVaAwQAAAAA', '4', '2', '0', '1520232857', '1520232857');
+INSERT INTO `st_dimension` VALUES ('1291', 'gQHE8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAya1hXY2tIMmJkOTAxMDAwMDAwM3cAAgTWNHVaAwQAAAAA', '3', null, '0', '1520232857', '1520232857');
+INSERT INTO `st_dimension` VALUES ('1292', 'gQGU8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyY21MdGswMmJkOTAxVGFLNE5xMV8AAgSa6ZxaAwQwhScA', '1', null, '1', '1520232859', '1520232859');
+INSERT INTO `st_dimension` VALUES ('1293', 'gQGd8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAycHJaUmtIMmJkOTAxMDAwMGcwM1YAAgTWNHVaAwQAAAAA', '4', '0', '0', '1520232963', '1520232963');
+INSERT INTO `st_dimension` VALUES ('1294', 'gQEh8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySUNUSWw3MmJkOTAxMDAwMGcwM0cAAgTWNHVaAwQAAAAA', '4', '1', '0', '1520232963', '1520232963');
+INSERT INTO `st_dimension` VALUES ('1295', 'gQGr8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydTdVMGtkMmJkOTAxMDAwME0wM24AAgT0S3VaAwQAAAAA', '4', '2', '0', '1520232963', '1520232963');
+INSERT INTO `st_dimension` VALUES ('1296', 'gQFo8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyY2JZRmxrMmJkOTAxMDAwME0wM3YAAgT0S3VaAwQAAAAA', '3', null, '0', '1520232963', '1520232963');
+INSERT INTO `st_dimension` VALUES ('1297', 'gQHx8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNktaRmxTMmJkOTAxMDAwMDAwM2UAAgT0S3VaAwQAAAAA', '4', '0', '0', '1520233718', '1520233718');
+INSERT INTO `st_dimension` VALUES ('1298', 'gQFW8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyY05oemx0MmJkOTAxMDAwMDAwM20AAgT0S3VaAwQAAAAA', '4', '1', '0', '1520233718', '1520233718');
+INSERT INTO `st_dimension` VALUES ('1299', 'gQHY8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyVWRFUWxRMmJkOTAxMDAwMDAwM0oAAgTca3VaAwQAAAAA', '4', '2', '0', '1520233718', '1520233718');
+INSERT INTO `st_dimension` VALUES ('1300', 'gQFd8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySXprZms3MmJkOTAxMDAwMGcwM2QAAgTca3VaAwQAAAAA', '3', null, '0', '1520233718', '1520233718');
+INSERT INTO `st_dimension` VALUES ('1301', 'gQFQ8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNVR0U2xjMmJkOTAxVFpPNGhxMWEAAgTN7ZxaAwQwhScA', '1', null, '1', '1520233933', '1520233933');
+INSERT INTO `st_dimension` VALUES ('1302', 'gQFJ8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTDBEOGw4MmJkOTAxMDAwMDAwM0kAAgTca3VaAwQAAAAA', '4', '0', '0', '1520234073', '1520234073');
+INSERT INTO `st_dimension` VALUES ('1303', 'gQFn8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyeWIxc2xPMmJkOTAxMDAwMGcwM1UAAgTda3VaAwQAAAAA', '4', '1', '0', '1520234073', '1520234073');
+INSERT INTO `st_dimension` VALUES ('1304', 'gQGn8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyYi1YM2s2MmJkOTAxMDAwME0wM2gAAgQibHVaAwQAAAAA', '4', '2', '0', '1520234073', '1520234073');
+INSERT INTO `st_dimension` VALUES ('1305', 'gQFN8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyLVlIbmxIMmJkOTAxMDAwMHcwM2MAAgQibHVaAwQAAAAA', '3', null, '0', '1520234073', '1520234073');
+INSERT INTO `st_dimension` VALUES ('1306', 'gQFZ8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAycWNwZGtBMmJkOTAxUThRNE5xMVQAAgTY7pxaAwQwhScA', '1', null, '1', '1520234200', '1520234200');
+INSERT INTO `st_dimension` VALUES ('1307', 'gQHC8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySTg4aGw5MmJkOTAxVG5TNHhxMUIAAgSn8ZxaAwQwhScA', '1', null, '1', '1520234919', '1520234919');
+INSERT INTO `st_dimension` VALUES ('1308', 'gQEx8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyMEpIdGtvMmJkOTAxUXZXNE5xMV8AAgTv9JxaAwQwhScA', '1', null, '1', '1520235759', '1520235759');
+INSERT INTO `st_dimension` VALUES ('1309', 'gQFD8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyaDlNWmtLMmJkOTAxUWpZNE5xMXMAAgTj9pxaAwQwhScA', '1', null, '1', '1520236259', '1520236259');
+INSERT INTO `st_dimension` VALUES ('1310', 'gQEM8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZmlPSmtuMmJkOTAxMDAwMHcwM1MAAgQibHVaAwQAAAAA', '4', '0', '0', '1520403059', '1520403059');
+INSERT INTO `st_dimension` VALUES ('1311', 'gQEy8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydjRkdms4MmJkOTAxMDAwME0wM3EAAgQibHVaAwQAAAAA', '4', '1', '0', '1520403059', '1520403059');
+INSERT INTO `st_dimension` VALUES ('1312', 'gQEf8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyYWVkMmw3MmJkOTAxMDAwME0wM28AAgTc7XdaAwQAAAAA', '4', '2', '0', '1520403059', '1520403059');
+INSERT INTO `st_dimension` VALUES ('1313', 'gQHo8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNW5uYWx6MmJkOTAxMDAwMDAwM2kAAgTd7XdaAwQAAAAA', '3', null, '0', '1520403059', '1520403059');
 
 -- ----------------------------
 -- Table structure for st_dimension_num
@@ -1954,7 +1974,7 @@ CREATE TABLE `st_dimension_num` (
 -- ----------------------------
 -- Records of st_dimension_num
 -- ----------------------------
-INSERT INTO `st_dimension_num` VALUES ('1186', '103', '1');
+INSERT INTO `st_dimension_num` VALUES ('1192', '123', '1');
 
 -- ----------------------------
 -- Table structure for st_exchange_record
@@ -2000,12 +2020,11 @@ CREATE TABLE `st_feeds` (
   `uid` int(11) NOT NULL COMMENT '用户ID',
   `addtime` int(11) NOT NULL COMMENT '反馈时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=58 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_feeds
 -- ----------------------------
-INSERT INTO `st_feeds` VALUES ('39', '06', '833', '1520218325');
 INSERT INTO `st_feeds` VALUES ('38', '05', '833', '1520218318');
 INSERT INTO `st_feeds` VALUES ('37', '04', '833', '1520218308');
 INSERT INTO `st_feeds` VALUES ('36', '03', '833', '1520218303');
@@ -2015,15 +2034,20 @@ INSERT INTO `st_feeds` VALUES ('30', '01', '32', '1519546754');
 INSERT INTO `st_feeds` VALUES ('29', '微信端\n', '32', '1519546717');
 INSERT INTO `st_feeds` VALUES ('28', '拟好', '32', '1519544569');
 INSERT INTO `st_feeds` VALUES ('34', '01', '833', '1520218244');
-INSERT INTO `st_feeds` VALUES ('32', '设备微信\n', '833', '1519962561');
-INSERT INTO `st_feeds` VALUES ('20', '好咯啦', '58', '1518241777');
+INSERT INTO `st_feeds` VALUES ('43', '心里', '35', '1520403602');
 INSERT INTO `st_feeds` VALUES ('21', '还没', '32', '1518252717');
 INSERT INTO `st_feeds` VALUES ('22', '设备管理器', '32', '1519352759');
 INSERT INTO `st_feeds` VALUES ('23', '哦希希', '759', '1519441029');
 INSERT INTO `st_feeds` VALUES ('24', '设备', '759', '1519441420');
-INSERT INTO `st_feeds` VALUES ('40', '07', '833', '1520218333');
-INSERT INTO `st_feeds` VALUES ('41', '08', '833', '1520218338');
-INSERT INTO `st_feeds` VALUES ('42', '010', '833', '1520219364');
+INSERT INTO `st_feeds` VALUES ('46', '05', '35', '1520491399');
+INSERT INTO `st_feeds` VALUES ('47', '06', '35', '1520491406');
+INSERT INTO `st_feeds` VALUES ('48', '07', '35', '1520491414');
+INSERT INTO `st_feeds` VALUES ('49', '08', '35', '1520491420');
+INSERT INTO `st_feeds` VALUES ('50', '21', '35', '1520491451');
+INSERT INTO `st_feeds` VALUES ('51', '22', '35', '1520491458');
+INSERT INTO `st_feeds` VALUES ('52', '23', '35', '1520491464');
+INSERT INTO `st_feeds` VALUES ('53', '24', '35', '1520491470');
+INSERT INTO `st_feeds` VALUES ('54', '25', '35', '1520491477');
 
 -- ----------------------------
 -- Table structure for st_filters
@@ -2047,14 +2071,14 @@ CREATE TABLE `st_filters` (
   `updatetime` int(11) NOT NULL COMMENT '滤芯更新时间',
   PRIMARY KEY (`id`),
   KEY `device_id` (`filtername`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_filters
 -- ----------------------------
-INSERT INTO `st_filters` VALUES ('48', 'RO膜', 'A型', '2018-03-05/5a9cb9a0d6df4.jpg', '100.00', '80.00', '100', '100', null, null, 'SADFSDGSDFJLLSGFJSLFSDF', '0', '', '1519802834', '1520220576');
-INSERT INTO `st_filters` VALUES ('49', 'PP棉', 'B型', '2018-02-28/5a9662490bebc.jpg', '200.00', '150.00', '200', '200', null, null, 'ASFASDFGASGASFASGAS', '0', '', '1519802895', '1519805001');
-INSERT INTO `st_filters` VALUES ('50', 'PDF', 'A型', '2018-02-28/5a965a30d7b0d.jpg', '300.00', '180.00', '300', '300', null, null, 'ASGASFGASGSA', '0', '', '1519802928', '1519802928');
+INSERT INTO `st_filters` VALUES ('48', 'RO膜', 'A型', '2018-03-07/5a9f79d8b7993.jpg', '100.00', '80.00', '100', '100', null, null, 'SADFSDGSDFJLLSGFJSLFSDF', '0', '', '1519802834', '1520490926');
+INSERT INTO `st_filters` VALUES ('49', 'PP棉', 'B型', '2018-03-07/5a9f79e3a9e2a.jpg', '200.00', '150.00', '200', '200', null, null, 'ASFASDFGASGASFASGAS', '0', '', '1519802895', '1520400867');
+INSERT INTO `st_filters` VALUES ('50', 'PDF', 'A型', '2018-03-07/5a9f79f028b35.jpg', '300.00', '180.00', '300', '300', null, null, 'ASGASFGASGSA', '0', '', '1519802928', '1520400880');
 INSERT INTO `st_filters` VALUES ('51', '01', '01', '2018-03-05/5a9cbf835a6f9.png', '10.00', '1.00', '1', '1', null, null, '', '1', '', '1520221824', '1520222083');
 INSERT INTO `st_filters` VALUES ('52', '02', '02', '2018-03-05/5a9cbf74c28b7.png', '2.00', '2.00', '2', '2', null, null, '2ed', '1', '', '1520221846', '1520222068');
 INSERT INTO `st_filters` VALUES ('53', '03', '03', '2018-03-05/5a9cbeae8a5f2.png', '3.00', '3.00', '2', '3', null, null, '', '1', '', '1520221870', '1520221870');
@@ -2065,6 +2089,8 @@ INSERT INTO `st_filters` VALUES ('57', '07', '07', '2018-03-05/5a9cbefc58b1b.png
 INSERT INTO `st_filters` VALUES ('58', '08', '08', '2018-03-05/5a9cbf14da4f6.png', '8.00', '8.00', '8', '8', null, null, '', '1', '', '1520221972', '1520221972');
 INSERT INTO `st_filters` VALUES ('59', '09', '09', '2018-03-05/5a9cbf2aa4e06.png', '8.00', '8.00', '8', '8', null, null, '', '1', '', '1520221994', '1520221994');
 INSERT INTO `st_filters` VALUES ('60', '10', '10', '2018-03-05/5a9cbf5a843e9.png', '10.00', '10.00', '10', '10', null, null, '', '1', '', '1520222042', '1520222042');
+INSERT INTO `st_filters` VALUES ('61', 'RO膜', 'B型', '2018-03-07/5a9f8009c8a0e.jpg', '500.00', '380.00', '200', '200', null, null, 'FGSDF SDFASFSDC SAFASDFASDF SAFDDASASDASD ASFSADFAF ', '0', '', '1520402385', '1520402441');
+INSERT INTO `st_filters` VALUES ('62', 'PP棉', 'A型', '2018-03-08/5aa0dee9ed83b.jpg', '666.00', '380.00', '200', '200', null, null, 'FSFF  DFSFASF JFJDNDJ KJJNASF  DAJJ JOISFJSDLAF SWEC', '0', '', '1520492230', '1520492265');
 
 -- ----------------------------
 -- Table structure for st_flow
@@ -2113,15 +2139,15 @@ CREATE TABLE `st_gold` (
   `addtime` int(11) NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_gold
 -- ----------------------------
-INSERT INTO `st_gold` VALUES ('19', '100.00', '100', '100元充值100个金币', '1', '1517908579', '1519355990');
+INSERT INTO `st_gold` VALUES ('19', '500.00', '500', '500元充值500个金币', '1', '1517908579', '1520316336');
 INSERT INTO `st_gold` VALUES ('20', '200.00', '200', '200元充值200个金币', '1', '1517908610', '1519353502');
-INSERT INTO `st_gold` VALUES ('22', '300.00', '300', '300元充值300个金币', '1', '1518057021', '1519356018');
 INSERT INTO `st_gold` VALUES ('39', '400.00', '400', '400元充值400个金币', '1', '1519443435', '1519443467');
+INSERT INTO `st_gold` VALUES ('42', '888.00', '888', '888元充值888个金币', '1', '1520403237', '1520403263');
 
 -- ----------------------------
 -- Table structure for st_gold_silver
@@ -2136,7 +2162,7 @@ CREATE TABLE `st_gold_silver` (
   `addtime` int(11) NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_gold_silver
@@ -2145,6 +2171,7 @@ INSERT INTO `st_gold_silver` VALUES ('20', '100', '200', '100个金币兑换200�
 INSERT INTO `st_gold_silver` VALUES ('22', '200', '400', '200个金币兑换400个银币', '1', '1518057156', '1519353536');
 INSERT INTO `st_gold_silver` VALUES ('23', '300', '600', '300个金币兑换600个银币', '1', '1518057193', '1519443194');
 INSERT INTO `st_gold_silver` VALUES ('26', '400', '800', '400个金币兑换800个银币', '1', '1519786299', '1519786299');
+INSERT INTO `st_gold_silver` VALUES ('27', '500', '1000', '500个金币兑换1000个银币', '0', '1520403386', '1520403386');
 
 -- ----------------------------
 -- Table structure for st_goods
@@ -2165,7 +2192,7 @@ CREATE TABLE `st_goods` (
   `updatetime` int(12) NOT NULL COMMENT '商品更新时间',
   PRIMARY KEY (`id`),
   KEY `id` (`id`,`cid`)
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_goods
@@ -2179,9 +2206,11 @@ INSERT INTO `st_goods` VALUES ('75', '25', null, '即热式', null, null, null, 
 INSERT INTO `st_goods` VALUES ('76', '25', null, '速热式', null, null, null, null, '0', '0', '1518227278', '1518227278');
 INSERT INTO `st_goods` VALUES ('77', '26', null, '空气净化器', null, null, null, null, '0', '0', '1518227391', '1518227391');
 INSERT INTO `st_goods` VALUES ('78', '26', null, '空气净化器', null, null, null, null, '0', '0', '1518246849', '1518246849');
-INSERT INTO `st_goods` VALUES ('79', '24', null, '养生瓦胆煲', null, null, null, null, '0', '0', '1519454548', '1519454548');
-INSERT INTO `st_goods` VALUES ('89', '23', null, 'RO反渗透净水器', null, null, null, null, '0', '0', '1520228910', '1520228910');
+INSERT INTO `st_goods` VALUES ('79', '24', null, '养生瓦胆煲', null, null, null, null, '0', '2', '1519454548', '1519454548');
+INSERT INTO `st_goods` VALUES ('89', '23', null, 'RO反渗透净水器', null, null, null, null, '0', '2', '1520228910', '1520228910');
 INSERT INTO `st_goods` VALUES ('90', '23', null, '加热一体直饮机', null, null, null, null, '0', '2', '1520229118', '1520229118');
+INSERT INTO `st_goods` VALUES ('91', '23', null, 'RO反渗透净水器', null, null, null, null, '0', '2', '1520231670', '1520231670');
+INSERT INTO `st_goods` VALUES ('92', '24', null, '12', null, null, null, null, '0', '2', '1520402866', '1520402866');
 
 -- ----------------------------
 -- Table structure for st_goods_detail
@@ -2199,7 +2228,7 @@ CREATE TABLE `st_goods_detail` (
   `is_hire` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否租赁 0不租赁1租赁',
   PRIMARY KEY (`id`),
   KEY `id` (`id`,`gid`,`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of st_goods_detail
@@ -2214,14 +2243,16 @@ INSERT INTO `st_goods_detail` VALUES ('46', '70', null, '200.00', '265', null, '
 INSERT INTO `st_goods_detail` VALUES ('47', '71', null, '3500.00', '12', null, '0', '0', '0');
 INSERT INTO `st_goods_detail` VALUES ('48', '72', null, '4500.00', '65', null, '0', '0', '0');
 INSERT INTO `st_goods_detail` VALUES ('49', '73', null, '4500.00', '15', null, '0', '0', '0');
-INSERT INTO `st_goods_detail` VALUES ('50', '74', null, '4000.00', '25', null, '0', '0', '0');
+INSERT INTO `st_goods_detail` VALUES ('50', '74', null, '4000.00', '25', '&lt;p&gt;&lt;br&gt;&lt;/p&gt;', '0', '0', '0');
 INSERT INTO `st_goods_detail` VALUES ('51', '75', null, '5000.00', '23', null, '0', '0', '0');
-INSERT INTO `st_goods_detail` VALUES ('52', '76', null, '5000.00', '56', null, '0', '0', '0');
+INSERT INTO `st_goods_detail` VALUES ('52', '76', null, '5000.00', '56', '&lt;p&gt;&lt;br&gt;&lt;/p&gt;', '0', '0', '0');
 INSERT INTO `st_goods_detail` VALUES ('53', '77', null, '6500.00', '23', null, '0', '0', '0');
 INSERT INTO `st_goods_detail` VALUES ('54', '78', null, '5000.00', '12', null, '0', '0', '0');
 INSERT INTO `st_goods_detail` VALUES ('55', '79', null, '1000.00', '20', null, '0', '0', '0');
-INSERT INTO `st_goods_detail` VALUES ('64', '89', null, '3500.00', '25', null, '0', '0', '0');
+INSERT INTO `st_goods_detail` VALUES ('64', '89', null, '3500.00', '25', '&lt;p&gt;&lt;br&gt;&lt;/p&gt;', '0', '0', '0');
 INSERT INTO `st_goods_detail` VALUES ('65', '90', null, '1000.00', '10', null, '1', '0', '0');
+INSERT INTO `st_goods_detail` VALUES ('66', '91', null, '100.00', '21', null, '1', '0', '0');
+INSERT INTO `st_goods_detail` VALUES ('67', '92', null, '600.00', '12', null, '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for st_mail
@@ -2245,14 +2276,13 @@ CREATE TABLE `st_mail` (
 -- ----------------------------
 -- Records of st_mail
 -- ----------------------------
-INSERT INTO `st_mail` VALUES ('9', 'admin', '', '所有人', '所有人', '特朗普：教师可以带枪上班', '美国总统唐纳德·特朗普连续两天在白宫召集人员讨论本月发生在佛罗里达州的校园枪击案，听取应对之道。他22日建议把突击步枪购买年龄限制提高至21岁，同时再次倡议让一些有条件的教师“带枪上班”。', '0', '0', '1519457923', '1519545763');
+INSERT INTO `st_mail` VALUES ('9', 'admin', '', '所有人', '所有人', '特朗普：教师可以带枪上班', '美国总统唐纳德·特朗普连续两天在白宫召集人员讨论本月发生在佛罗里达州的校园枪击案，听取应对之道。他22日建议把突击步枪购买年龄限制提高至21岁，同时再次倡议让一些有条件的教师“带枪上班”。', '0', '1', '1519457923', '1520403694');
 INSERT INTO `st_mail` VALUES ('11', 'admin', '000000', '辉煌LXW', '78FC673B301', 'dewdew', 'dewdwe', '1', '2', '1519529802', '1519529802');
 INSERT INTO `st_mail` VALUES ('14', 'admin', '000000', '吴智彬-13425492760', '5BBED4D4B5F', '测试', '的地区', '1', '4', '1519534390', '1519534390');
 INSERT INTO `st_mail` VALUES ('15', 'admin', '000000', '吴智彬-13425492760', '5BBED4D4B5F', '非无所谓', '我饿废物分为非', '1', '3', '1519536418', '1519536418');
 INSERT INTO `st_mail` VALUES ('16', 'admin', '000000', '吴智彬-13425492760', '5BBED4D4B5F', '测试用的呢', '这是测试用的站内信', '1', '2', '1519539979', '1519539979');
-INSERT INTO `st_mail` VALUES ('18', 'admin', '000000', '吴智彬-13425492760', '5BBED4D4B5F', '你收到一个红包', '扫码活动，你活动一个红包，有效时间100年！', '1', '2', '1519540264', '1519540264');
 INSERT INTO `st_mail` VALUES ('19', 'admin', '000000', '所有人', '所有人', '发到去潍坊人请问', '分地区违法区分度请 ', '0', '1', '1519540343', '1519545260');
-INSERT INTO `st_mail` VALUES ('20', 'admin', null, '所有人', '所有人', '软件功能新增', '为了方便客户的使用，现在增加了一些新的功能，往大家使用，在使用的过程中可以提交建议', '0', '1', '1519540803', '1519545692');
+INSERT INTO `st_mail` VALUES ('20', 'admin', null, '所有人', '所有人', '软件功能新增', '为了方便客户的使用，现在增加了一些新的功能，往大家使用，在使用的过程中可以提交建议', '0', '0', '1519540803', '1520403701');
 INSERT INTO `st_mail` VALUES ('22', 'admin', '000000', '吴智彬-13425492760', '5BBED4D4B5F', '的违法的威锋网', '供热个人工业园核桃仁', '1', '2', '1519541399', '1519541399');
 INSERT INTO `st_mail` VALUES ('24', 'admin', null, '快乐翱翔', '96B1944669C', '水电费', '顺丰大法撒旦发生的发生', '1', '2', '1519541433', '1519541433');
 INSERT INTO `st_mail` VALUES ('25', 'admin', '000000', '所有人', '所有人', '公布1', '电位器若付翁群若翁', '0', '1', '1519545113', '1519545695');
@@ -2273,7 +2303,7 @@ CREATE TABLE `st_order_detail` (
   `status` tinyint(1) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL COMMENT '订单生成时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=477 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=484 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of st_order_detail
@@ -2576,6 +2606,13 @@ INSERT INTO `st_order_detail` VALUES ('473', '145358043450011', '48', '1', '80.0
 INSERT INTO `st_order_detail` VALUES ('474', '145016772450122', '72', '1', '4500.00', '5500.00', '0', '1520213279');
 INSERT INTO `st_order_detail` VALUES ('475', '304347820983436', '73', '1', '4500.00', '6388.00', '0', '1520213318');
 INSERT INTO `st_order_detail` VALUES ('476', '703673339598179', '49', '1', '150.00', '200.00', '0', '1520216548');
+INSERT INTO `st_order_detail` VALUES ('477', '699665856018044', '73', '1', '4500.00', '6500.00', '0', '1520405169');
+INSERT INTO `st_order_detail` VALUES ('478', '263342286187550', '73', '1', '4500.00', '6500.00', '0', '1520406649');
+INSERT INTO `st_order_detail` VALUES ('479', '385904670599076', '74', '1', '4000.00', '4500.00', '0', '1520407340');
+INSERT INTO `st_order_detail` VALUES ('480', '257185320888292', '73', '3', '4500.00', '6500.00', '0', '1520407386');
+INSERT INTO `st_order_detail` VALUES ('481', '903377753929552', '72', '1', '4500.00', '5500.00', '0', '1520411944');
+INSERT INTO `st_order_detail` VALUES ('482', '903377753929552', '73', '1', '4500.00', '6388.00', '0', '1520411944');
+INSERT INTO `st_order_detail` VALUES ('483', '288841115953125', '73', '1', '4500.00', '6388.00', '0', '1520490136');
 
 -- ----------------------------
 -- Table structure for st_order_setmeal
@@ -2598,7 +2635,7 @@ CREATE TABLE `st_order_setmeal` (
   `updated_at` int(11) unsigned DEFAULT NULL COMMENT '订单修改时间',
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`(11))
-) ENGINE=InnoDB AUTO_INCREMENT=260 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=267 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_order_setmeal
@@ -2671,6 +2708,13 @@ INSERT INTO `st_order_setmeal` VALUES ('256', '833', '498709263877876', '19', '6
 INSERT INTO `st_order_setmeal` VALUES ('257', '35', '746089500656750', '18', '62', '1', '300.00', '300', '300元充值300流量', '1', '300.00', '0', '1519989093', null);
 INSERT INTO `st_order_setmeal` VALUES ('258', '35', '641164777187972', '17', '63', '0', '200.00', '20', '200元充值20天', '1', '200.00', '0', '1519989128', null);
 INSERT INTO `st_order_setmeal` VALUES ('259', '833', '740815718521627', '19', '63', '1', '400.00', '400', '400元充值400流量', '1', '400.00', '0', '1520212839', null);
+INSERT INTO `st_order_setmeal` VALUES ('260', '35', '279235147797699', '23', '62', '0', '800.00', '80', '800元充值80天', '1', '800.00', '0', '1520404447', null);
+INSERT INTO `st_order_setmeal` VALUES ('261', '35', '255231692545838', '21', '89', '0', '500.00', '50', '500元充值50天', '1', '500.00', '0', '1520410338', null);
+INSERT INTO `st_order_setmeal` VALUES ('262', '35', '310129024998660', '21', '89', '0', '500.00', '50', '500元充值50天', '1', '500.00', '0', '1520411569', null);
+INSERT INTO `st_order_setmeal` VALUES ('263', '35', '121766024186156', '21', '89', '0', '500.00', '50', '500元充值50天', '1', '500.00', '0', '1520411817', null);
+INSERT INTO `st_order_setmeal` VALUES ('264', '35', '406201084829196', '21', '89', '0', '500.00', '50', '500元充值50天', '1', '500.00', '0', '1520411851', null);
+INSERT INTO `st_order_setmeal` VALUES ('265', '35', '690511947743676', '21', '89', '0', '500.00', '50', '500元充值50天', '1', '500.00', '0', '1520415937', null);
+INSERT INTO `st_order_setmeal` VALUES ('266', '35', '989074887972580', '18', '62', '1', '300.00', '300', '300元充值300流量', '1', '300.00', '0', '1520496521', null);
 
 -- ----------------------------
 -- Table structure for st_orders
@@ -2711,7 +2755,7 @@ CREATE TABLE `st_pic` (
   `path` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '图片地址',
   PRIMARY KEY (`id`),
   KEY `id` (`id`,`gid`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of st_pic
@@ -2733,6 +2777,7 @@ INSERT INTO `st_pic` VALUES ('24', '77', '5a7e4fcdbcd37.png', '2018-02-10/5a7e4f
 INSERT INTO `st_pic` VALUES ('25', '78', '5a7e9bda9317d.png', '2018-02-10/5a7e9bda9317d.png');
 INSERT INTO `st_pic` VALUES ('26', '79', '5a91097cba2a3.png', '2018-02-24/5a91097cba2a3.png');
 INSERT INTO `st_pic` VALUES ('27', '89', '5a9cda447159a.png', '2018-03-05/5a9cda447159a.png');
+INSERT INTO `st_pic` VALUES ('28', '92', '5a9f81c5af586.jpg', '2018-03-07/5a9f81c5af586.jpg');
 
 -- ----------------------------
 -- Table structure for st_price
@@ -2744,7 +2789,7 @@ CREATE TABLE `st_price` (
   `price` double(12,2) NOT NULL COMMENT '商品单价',
   `grade` tinyint(1) NOT NULL COMMENT '会员级别',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_price
@@ -2809,6 +2854,16 @@ INSERT INTO `st_price` VALUES ('57', '90', '1000.00', '2');
 INSERT INTO `st_price` VALUES ('58', '90', '1000.00', '3');
 INSERT INTO `st_price` VALUES ('59', '90', '1000.00', '4');
 INSERT INTO `st_price` VALUES ('60', '90', '1000.00', '1');
+INSERT INTO `st_price` VALUES ('61', '91', '100.00', '0');
+INSERT INTO `st_price` VALUES ('62', '91', '100.00', '2');
+INSERT INTO `st_price` VALUES ('63', '91', '100.00', '3');
+INSERT INTO `st_price` VALUES ('64', '91', '100.00', '4');
+INSERT INTO `st_price` VALUES ('65', '91', '100.00', '1');
+INSERT INTO `st_price` VALUES ('66', '92', '100.00', '0');
+INSERT INTO `st_price` VALUES ('67', '92', '200.00', '2');
+INSERT INTO `st_price` VALUES ('68', '92', '300.00', '3');
+INSERT INTO `st_price` VALUES ('69', '92', '400.00', '4');
+INSERT INTO `st_price` VALUES ('70', '92', '500.00', '1');
 
 -- ----------------------------
 -- Table structure for st_repair
@@ -2828,14 +2883,14 @@ CREATE TABLE `st_repair` (
   `addtime` int(11) NOT NULL COMMENT '报修时间',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态0：未处理 1：已处理',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_repair
 -- ----------------------------
 INSERT INTO `st_repair` VALUES ('8', '小小', '13580809632', 'opel', '', '偷空', '/Pic/repair/2018-02-06/5a79ba8787a86.jpg', '360', '扣扣', '02/06', '1517927047', '1');
 INSERT INTO `st_repair` VALUES ('9', '一一', '15890909963', 'opel', '', '空军建军节', '/Pic/repair/2018-02-06/5a79c00deef69.jpg', '360', '可立克', '0806', '1517928461', '1');
-INSERT INTO `st_repair` VALUES ('10', '依稀', '13580809632', 'saab', '', '是咯啤酒', '/Pic/repair/2018-02-07/5a7a67ad70ed5.png', '360', '广州市番禺区钟村街道办事处', '2018年02月23日', '1517971373', '0');
+INSERT INTO `st_repair` VALUES ('10', '依稀', '13580809632', 'saab', '', '是咯啤酒', '/Pic/repair/2018-02-07/5a7a67ad70ed5.png', '360', '广州市番禺区钟村街道办事处', '2018年02月23日', '1517971373', '1');
 INSERT INTO `st_repair` VALUES ('11', '彭龙召', '15920569139', 'saab', '', '我去开来保修的', '/Pic/repair/2018-02-07/5a7a9eb4143d2.png', '372', '看空间看里面', '2018年02月28日', '1517985460', '1');
 INSERT INTO `st_repair` VALUES ('12', '七七', '14000089085', 'opel', '', '扣扣', '/Pic/repair/2018-02-08/5a7bbc622ee9f.jpg', '360', '广州市番禺区天番禺广场', '2018年02月21日', '1518058594', '1');
 INSERT INTO `st_repair` VALUES ('13', '西西', '14789098809', 'opel', '', '糊弄倪敏妮', '/Pic/repair/2018-02-08/5a7bbd55986c7.png', '360', '广州市番禺区钟村街道', '2018年02月19日', '1518058837', '1');
@@ -2855,6 +2910,8 @@ INSERT INTO `st_repair` VALUES ('26', '小燕子', '13800809908', 'saab', '', '�
 INSERT INTO `st_repair` VALUES ('27', 'MSNpoor', '14400855580', 'volvo', '', 'hb', '/Pic/repair/2018-03-02/5a98f9be9c034.png', '833', '广州市番禺区钟村街道办事处', '2018年03月15日', '1519974846', '0');
 INSERT INTO `st_repair` VALUES ('28', 'xiaoyu', '13800895568', 'opel', '', '环游', '/Pic/repair/2018-03-05/5a9ca1655b892.png', '833', '广州市番禺区钟村街道办事处', '2018年03月06日', '1520214373', '0');
 INSERT INTO `st_repair` VALUES ('29', 'yuyu', '13758096698', 'saab', '', '来来来', '/Pic/repair/2018-03-05/5a9ca28a8bbf1.jpg', '833', '广州市番禺区钟村街道办事处', '2018年03月06日', '1520214666', '0');
+INSERT INTO `st_repair` VALUES ('30', '依稀', '15800985589', 'opel', '', 'nxnxnxn', '/Pic/repair/2018-03-07/5a9f83ff9f777.png', '35', '广州市番禺区钟村街道', '2018年03月22日', '1520403455', '1');
+INSERT INTO `st_repair` VALUES ('31', '笑笑', '15800980856', 'opel', '', '行模式', '/Pic/repair/2018-03-08/5aa0e3f6a199a.png', '35', '广州市番禺区钟村', '2018年03月21日', '1520493558', '0');
 
 -- ----------------------------
 -- Table structure for st_setmeal
@@ -2869,14 +2926,16 @@ CREATE TABLE `st_setmeal` (
   `describe` varchar(255) NOT NULL COMMENT '套餐描述',
   `addtime` int(11) NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_setmeal
 -- ----------------------------
+INSERT INTO `st_setmeal` VALUES ('23', '62', '800.00', '80', '0', '800元充值80天', '1520404317');
 INSERT INTO `st_setmeal` VALUES ('16', '62', '100.00', '10', '0', '100元充值10天', '1519867537');
-INSERT INTO `st_setmeal` VALUES ('17', '63', '200.00', '20', '0', '200元充值20天', '1519867574');
+INSERT INTO `st_setmeal` VALUES ('20', '89', '100.00', '10', '0', '100元充值10天', '1520234904');
 INSERT INTO `st_setmeal` VALUES ('18', '62', '300.00', '300', '1', '300元充值300流量', '1519867611');
+INSERT INTO `st_setmeal` VALUES ('21', '89', '500.00', '50', '0', '500元充值50天', '1520404225');
 
 -- ----------------------------
 -- Table structure for st_shop_order
@@ -2898,7 +2957,7 @@ CREATE TABLE `st_shop_order` (
   `express_name` varchar(30) DEFAULT NULL COMMENT '快递单号',
   `express` varchar(32) DEFAULT NULL COMMENT '快递单号',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=370 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=376 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_shop_order
@@ -3119,6 +3178,12 @@ INSERT INTO `st_shop_order` VALUES ('366', '145358043450011', '833', '61', null,
 INSERT INTO `st_shop_order` VALUES ('367', '145016772450122', '833', null, null, '4500.00', '5500.00', '1', '1520213279', '8', '1', null, null, null);
 INSERT INTO `st_shop_order` VALUES ('368', '304347820983436', '833', null, null, '4500.00', '6388.00', '1', '1520213318', '8', '1', null, null, null);
 INSERT INTO `st_shop_order` VALUES ('369', '703673339598179', '833', null, null, '150.00', '200.00', '1', '1520216548', '8', '2', null, null, null);
+INSERT INTO `st_shop_order` VALUES ('370', '699665856018044', '35', null, null, '4500.00', '6500.00', '1', '1520405169', '8', '1', null, null, null);
+INSERT INTO `st_shop_order` VALUES ('371', '263342286187550', '35', null, null, '4500.00', '6500.00', '1', '1520406649', '8', '1', null, null, null);
+INSERT INTO `st_shop_order` VALUES ('372', '385904670599076', '35', null, null, '4000.00', '4500.00', '1', '1520407340', '8', '1', null, null, null);
+INSERT INTO `st_shop_order` VALUES ('373', '257185320888292', '35', null, null, '13500.00', '19500.00', '3', '1520407386', '8', '1', null, null, null);
+INSERT INTO `st_shop_order` VALUES ('374', '903377753929552', '35', null, null, '9000.00', '11888.00', '2', '1520411944', '8', '1', null, null, null);
+INSERT INTO `st_shop_order` VALUES ('375', '288841115953125', '35', null, null, '4500.00', '6388.00', '1', '1520490136', '8', '1', null, null, null);
 
 -- ----------------------------
 -- Table structure for st_silver
@@ -3133,7 +3198,7 @@ CREATE TABLE `st_silver` (
   `addtime` int(11) NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_silver
@@ -3141,6 +3206,7 @@ CREATE TABLE `st_silver` (
 INSERT INTO `st_silver` VALUES ('12', '100.00', '200', '100元充值200个银币', '1', '1517908810', '1519353525');
 INSERT INTO `st_silver` VALUES ('13', '200.00', '400', '200元充值400个银币', '1', '1517908847', '1518232645');
 INSERT INTO `st_silver` VALUES ('18', '300.00', '600', '300元充值600个银币', '1', '1518057127', '1519443237');
+INSERT INTO `st_silver` VALUES ('19', '80.00', '160', '80元充值160个银币', '0', '1520403348', '1520403348');
 
 -- ----------------------------
 -- Table structure for st_task
@@ -3158,7 +3224,7 @@ CREATE TABLE `st_task` (
   `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_task
@@ -3206,6 +3272,24 @@ INSERT INTO `st_task` VALUES ('73', '833', '208', '17', '25', '0', '0', '1', '15
 INSERT INTO `st_task` VALUES ('81', '833', '211', '0', '0', '2', '0', '1', '1520213864', '1520213864');
 
 -- ----------------------------
+-- Table structure for st_tds
+-- ----------------------------
+DROP TABLE IF EXISTS `st_tds`;
+CREATE TABLE `st_tds` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `dcode` varchar(15) NOT NULL COMMENT '设备编码',
+  `raw` int(11) NOT NULL COMMENT '纯水值',
+  `pure` int(11) NOT NULL COMMENT '原水值',
+  `day` varchar(2) NOT NULL COMMENT '日期',
+  `date` int(11) NOT NULL COMMENT '添加时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of st_tds
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for st_type
 -- ----------------------------
 DROP TABLE IF EXISTS `st_type`;
@@ -3225,13 +3309,16 @@ CREATE TABLE `st_type` (
   `addtime` int(11) NOT NULL,
   `updatetime` int(11) NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=90 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=99 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_type
 -- ----------------------------
-INSERT INTO `st_type` VALUES ('62', '滤芯', 'RO膜-A型', 'PP棉-B型', 'PDF-A型', null, null, null, null, null, '1', '0', '1519803475', '1520220604');
+INSERT INTO `st_type` VALUES ('62', '滤芯', 'RO膜-A型', 'PP棉-B型', 'PDF-A型', 'RO膜-B型', null, null, null, null, '1', '0', '1519803475', '1520402497');
+INSERT INTO `st_type` VALUES ('98', '04', 'RO膜-B型', 'PP棉-A型', null, null, null, null, null, null, '1', '0', '1520492316', '1520492316');
 INSERT INTO `st_type` VALUES ('89', '产品', 'PDF-A型', 'PP棉-B型', 'RO膜-A型', null, null, null, null, null, '0', '0', '1520222196', '1520222202');
+INSERT INTO `st_type` VALUES ('97', '03', 'RO膜-B型', 'PDF-A型', null, null, null, null, null, null, '1', '0', '1520492306', '1520492306');
+INSERT INTO `st_type` VALUES ('96', '02', 'RO膜-A型', 'PP棉-B型', null, null, null, null, null, null, '1', '0', '1520492299', '1520492299');
 
 -- ----------------------------
 -- Table structure for st_user_device
@@ -3250,7 +3337,7 @@ CREATE TABLE `st_user_device` (
   `addtime` varchar(12) CHARACTER SET utf8 NOT NULL COMMENT '绑定时间',
   `updatetime` varchar(12) CHARACTER SET utf8 NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of st_user_device
@@ -3263,12 +3350,14 @@ INSERT INTO `st_user_device` VALUES ('42', '58', '189', '1', '2018-02-09', '小�
 INSERT INTO `st_user_device` VALUES ('43', '81', '179', '0', '1987-07-28', '陈昌平', '18918008889', '广东省广州市番禺区', '0', '1518230051', '1518230051');
 INSERT INTO `st_user_device` VALUES ('44', '81', '175', '0', '1998-06-03', '二愣子', '13838384380', '北京市西城区东路', '0', '1518230398', '1518230398');
 INSERT INTO `st_user_device` VALUES ('48', '35', '195', '0', '2018-02-09', '退件看看', '13425492760', '来咯咯弄家图有客人', '0', '1518240990', '1518240990');
-INSERT INTO `st_user_device` VALUES ('60', '35', '196', '1', '2018-02-05', '瑶瑶', '15600890258', '广州市番禺区钟村街道办事处', '1', '1518247557', '1518247557');
+INSERT INTO `st_user_device` VALUES ('60', '35', '196', '1', '2018-02-05', '瑶瑶', '15600890258', '广州市番禺区钟村街道办事处', '0', '1518247557', '1518247557');
 INSERT INTO `st_user_device` VALUES ('61', '35', '169', '0', '2018-02-10', '王诗平', '18475039192', '广东省韶关市南雄市', '0', '1518248077', '1518248077');
 INSERT INTO `st_user_device` VALUES ('63', '109', '194', '0', '2018-02-10', 'yi', '13060815601', '广州市白云区灬三', '1', '1518250163', '1518250163');
 INSERT INTO `st_user_device` VALUES ('65', '32', '199', '1', '2018-02-04', '娜娜', '13580809963', '广州市番禺区钟村街道办事处', '1', '1519374788', '1519374788');
 INSERT INTO `st_user_device` VALUES ('68', '759', '205', '1', '2004-11-17', '张怡宁', '13208900085', '广州市番禺区钟村街道办事处', '1', '1519540261', '1519540261');
 INSERT INTO `st_user_device` VALUES ('75', '833', '210', '1', '2005-05-10', '小敏', '18099086589', '广州市番禺区钟村街道办事处', '1', '1519804021', '1519804021');
+INSERT INTO `st_user_device` VALUES ('77', '35', '230', '0', '2018-03-01', '小钢炮', '13800138000', '计算了就好多了没事的都没', '0', '1520243840', '1520243840');
+INSERT INTO `st_user_device` VALUES ('78', '35', '236', '0', '2018-03-07', '慕寒', '15900890758', '广州市番禺区钟村街道办事处', '1', '1520411756', '1520411756');
 
 -- ----------------------------
 -- Table structure for st_users
@@ -3302,7 +3391,7 @@ CREATE TABLE `st_users` (
   `addtime` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1048 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1054 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_users
@@ -3333,7 +3422,7 @@ INSERT INTO `st_users` VALUES ('29', 'oQktJwIYUT9AmQpDQWZW1ikpkihM', null, null,
 INSERT INTO `st_users` VALUES ('30', 'oQktJwEVhcg7PiMGCORH-0cnajM0', null, null, null, null, null, null, 'F080F10C636', '5', 'gQGC7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAycFhlZGtFMmJkOTAxR2ZvQWhxMUgAAgRfE31aAwQwhScA', '26', '1520736399', '一米阳光13933154445', 'http://thirdwx.qlogo.cn/mmopen/tW8icv6f6mGMeqVcpPr3yMI0hQs0rrWwm3xHBtznMJjW0ouEWaSPhf7Gx0ZdPu5jKiavk6azxNRibTL4dBmc6IbyA78Fpp9lh38/132', '0', '河北', '中国 河北 石家庄', '0', '0', '0.00', '0', '0.00', '0', '1518146398', '1518146398');
 INSERT INTO `st_users` VALUES ('33', 'oQktJwHD4-XSlfoFVVxdXl0z0Vuk', null, null, null, null, null, null, '8790B97AB31', '5', 'gQEQ8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyYWU3dGtEMmJkOTAxRXBHQXhxMVAAAgTpJH1aAwQwhScA', '28', '1520740889', '老马', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmU9hmtqEUSkESZic8JOZ4IywrBRK14JxRrYdSUzFZbQnxldPoLfUibWuicEuNnsMRbPIXsLMwLbUJdejDMCibU8CvO0G/132', '2', '', '  ', '0', '0', '0.00', '0', '0.00', '0', '1518150888', '1518150888');
 INSERT INTO `st_users` VALUES ('34', 'oQktJwGbjfA516PlpW0M4jwZKyHk', null, null, null, null, null, null, '49466542E6E', '5', 'gQFa8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyeVNTLWtVMmJkOTAxSG1KQWhxMWYAAgSmKH1aAwQwhScA', '29', '1520741847', '山水资本', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmU9hmtqEUSkESRml1DVQWBZJiblXhiafd2jScgrWuy7m2zySyd2VvZwDkMOFYmuq336o5MT0o0h4ciaR9zzNmZjiaFMI/132', '1', '广东', '中国 广东 深圳', '0', '0', '0.00', '0', '0.00', '0', '1518151846', '1518151846');
-INSERT INTO `st_users` VALUES ('35', 'oQktJwL8ioR4DoxSQmikdzekbUyU', '67037D', null, null, 'E95CF6', null, 'E95CF6', '5BBED4D4B5F', '3', 'gQEQ8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAya291LWtuMmJkOTAxRUJLQWhxMUUAAgT1KH1aAwQwhScA', '30', '1520741925', '吴智彬-13425492760', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132', '1', '广东', '中国 广东 广州', '1000', '6617', '0.00', '0', '200.00', '2', '1518151924', '1519442351');
+INSERT INTO `st_users` VALUES ('35', 'oQktJwL8ioR4DoxSQmikdzekbUyU', '291C84', null, null, 'E95CF6', null, 'E95CF6', '5BBED4D4B5F', '3', 'gQEQ8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAya291LWtuMmJkOTAxRUJLQWhxMUUAAgT1KH1aAwQwhScA', '30', '1520741925', '吴智彬-13425492760', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132', '1', '广东', '中国 广东 广州', '1000', '6617', '0.00', '0', '200.00', '2', '1518151924', '1519442351');
 INSERT INTO `st_users` VALUES ('36', 'oQktJwMuGEFL87gFbHL3HnQ70H0s', null, null, null, null, null, null, '47863293886', '5', 'gQEr8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyaHB6OGtXMmJkOTAxR1VLQXhxMXoAAgSIKX1aAwQwhScA', '31', '1520742072', 'LOL坑货', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUib4U1uAY0AzlnRj27gVpXO4bxNnNlHhibTrGPYTH3GBTzr5r7HrT0HZlxlcge1ewfZrzMv1CVf8xVIDhH7Ev19XQ/132', '1', '四川', '中国 四川 广元', '0', '0', '0.00', '0', '0.00', '0', '1518152072', '1518152072');
 INSERT INTO `st_users` VALUES ('37', 'oQktJwHUF9TdBKv-140a1b_hvBFI', null, null, null, null, null, null, '6D927C64C57', '5', 'gQF_8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAycjE5bWtfMmJkOTAxSFJMQU5xMU0AAgTFKn1aAwQwhScA', '32', '1520742389', '＆安静＆', 'http://thirdwx.qlogo.cn/mmopen/tW8icv6f6mGOAdZXcK6W4icwKCNOHVDc12p7KQd0iabBEq9MbSeUh7Sc2gCfzmuTDa9M4EzbbynibI9gO18REF9iblX2890hQZJeT/132', '0', '江苏', '中国 江苏 苏州', '0', '0', '0.00', '0', '0.00', '0', '1518152388', '1518152388');
 INSERT INTO `st_users` VALUES ('38', 'oQktJwMQxOTQoqWe2h8Y1PHcsujk', null, null, null, null, null, null, 'DE449B43807', '5', 'gQHc7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyMEJuaGtqMmJkOTAxRm5UQTFxMXYAAgQnMn1aAwQwhScA', '33', '1520744279', '宁姐', 'http://thirdwx.qlogo.cn/mmopen/PCxWjnicpibLNb3drqLYdAmzvuJGlNVBMG4SYvL4WDoJoockOMlHBxcn5DPjQXfw8ibuIlHLiajKgbAKZTQBYQBnPJ32qhsC6Mjp/132', '0', '重庆', '中国 重庆 江北', '0', '0', '0.00', '0', '0.00', '0', '1518154279', '1518154279');
@@ -3348,7 +3437,7 @@ INSERT INTO `st_users` VALUES ('46', 'oQktJwA1ygqGhfFomr0DuhZtEHok', null, null,
 INSERT INTO `st_users` VALUES ('47', 'oQktJwG5XM54354iUUA2tZFraR-E', null, null, null, null, null, null, '08B16127644', '5', 'gQFB8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyMjRqUWxmMmJkOTAxTFN2QTFxMWcAAgTGWn1aAwQwhScA', '48', '1520754678', '。', 'http://thirdwx.qlogo.cn/mmopen/tW8icv6f6mGPZpqV3j8V3lUYWJPoXJfiaIEooe9IsAEdb3EH3XNzgd2mmj5oEYgAl0Quial2gibYwHoArDgCs1bsWJWRSCkCn0yv/132', '1', '广东', '中国 广东 中山', '0', '0', '0.00', '0', '0.00', '0', '1518164677', '1518164677');
 INSERT INTO `st_users` VALUES ('48', 'oQktJwGoBmpwOFcTr3jdEr1Dc9AE', null, null, null, null, null, null, 'FD3B60D5BB4', '5', 'gQF-7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyVmxxcWxUMmJkOTAxSmR6QTFxMUoAAgQdXn1aAwQwhScA', '49', '1520755533', '何小兵', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmU9hmtqEUSkESaGkezypzeOZ9WlHKBZwfoQ6Va1O3Ribm5t7QSmLB1Kj2N6ibiaLys95DBicDhibNIHr2dwTBFETIjXmg/132', '1', '云南', '中国 云南 曲靖', '0', '0', '0.00', '0', '0.00', '0', '1518165532', '1518165532');
 INSERT INTO `st_users` VALUES ('49', 'oQktJwKSymWcMPo5od1y7_TdbW78', null, null, null, null, null, null, '5F5A14BA564', '5', 'gQFQ8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZGtpQWw1MmJkOTAxS196QTFxMVUAAgSPXn1aAwQwhScA', '50', '1520755647', '！', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEIsgMdq31lqucaC4m5dBlxlnH5pAKlTaoHviaRibbgFMvHy5KzGWLg1CD4r9rFyJGUyjLSFac7Vsvsg/132', '1', '四川', '中国 四川 内江', '0', '0', '0.00', '0', '0.00', '0', '1518165646', '1518165646');
-INSERT INTO `st_users` VALUES ('50', 'oQktJwDDuHrIkA_k2PdJeM0TWU90', '67037D', null, null, 'E95CF6', null, 'E95CF6', '787AB1EC332', '3', 'gQGN7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUXFoa2xVMmJkOTAxTHR6QXhxMWEAAgStXn1aAwQwhScA', '51', '1520755677', '彭龙召', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM5VjjXHNKqeyiablic6fiaFfbtibYoADh8dyaTSuWkfz88GNJmZJicqzdJYUKBLMHlKdBaj90cSNaYPDvg/132', '1', '河北', '中国 河北 石家庄', '103', '6', '0.00', '0', '100.00', '4', '1518165676', '1518260984');
+INSERT INTO `st_users` VALUES ('50', 'oQktJwDDuHrIkA_k2PdJeM0TWU90', '291C84', null, null, 'E95CF6', null, 'E95CF6', '787AB1EC332', '3', 'gQGN7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUXFoa2xVMmJkOTAxTHR6QXhxMWEAAgStXn1aAwQwhScA', '51', '1520755677', '彭龙召', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM5VjjXHNKqeyiablic6fiaFfbtibYoADh8dyaTSuWkfz88GNJmZJicqzdJYUKBLMHlKdBaj90cSNaYPDvg/132', '1', '河北', '中国 河北 石家庄', '103', '6', '0.00', '0', '100.00', '4', '1518165676', '1518260984');
 INSERT INTO `st_users` VALUES ('51', 'oQktJwJwsN9GQgXlG4UH9OYuUpgk', null, null, null, null, null, null, 'AC0512352EB', '5', 'gQHk8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUHMwV2tHMmJkOTAxTDlBQTFxMTIAAgSZX31aAwQwhScA', '52', '1520755913', '隆哥', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEIM0pS7eo4rmyFFQzPAgKXsSB32JPcu1opjEYHfotOURjmrqX8w9g1cCyJHg1ZOibMTaQiaAR9SUyRA/132', '0', '', '捷克共和国  ', '0', '0', '0.00', '0', '0.00', '0', '1518165912', '1518165912');
 INSERT INTO `st_users` VALUES ('52', 'oQktJwBNlTFDfodYagO53QPlf0Rs', null, null, null, null, null, null, '68893B4464B', '5', 'gQHu7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyVnpYQ2x2MmJkOTAxSVRCQTFxMU8AAgQHYH1aAwQwhScA', '53', '1520756023', '有你真好', 'http://thirdwx.qlogo.cn/mmopen/PCxWjnicpibLPvBkEAoIzHcOPZRanXLf4l3K3PMDiaQqfrrE6dDhY9X20SHI7Q8KOhFMUxFS3mFNRzs9tZYhmM8YBI6iaKUjAGRT/132', '1', '河南', '中国 河南 许昌', '0', '0', '0.00', '0', '0.00', '0', '1518166022', '1518166022');
 INSERT INTO `st_users` VALUES ('53', 'oQktJwGHsOvxDqirxLddHXdLGfx0', null, null, null, null, null, null, '3B863AE714D', '5', 'gQFT8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyX1BXbmwzMmJkOTAxTHREQTFxMVcAAgStYn1aAwQwhScA', '54', '1520756701', '李梦川', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmU9hmtqEUSkESY6OUVl5C0cyhl1nibSWMo4JbVao9U1qnIxYHMj8P24oNuN1dG5lByluxJRONmX3QBHBdIMTlfodB/132', '1', '', '中国  ', '0', '0', '0.00', '0', '0.00', '0', '1518166700', '1518166700');
@@ -3356,7 +3445,7 @@ INSERT INTO `st_users` VALUES ('54', 'oQktJwKb7UDd_al6ZsQcHyOStIBY', null, null,
 INSERT INTO `st_users` VALUES ('55', 'oQktJwPK4F41ptPfTlgSUmR6xBs4', null, null, null, null, null, null, 'DFA7D0EB070', '5', 'gQHa7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyWnJEZmw5MmJkOTAxSS1FQWhxMXgAAgQOY31aAwQwhScA', '56', '1520756798', '李文兴', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEKibnxrltwj2n7dhgJvxfFFG9pibKpwtQedxOkcNPfpib5LNxNedOHnhMJsMbVwWejcRdkvVsicBSHhoA/132', '1', '', '波兰  ', '0', '0', '0.00', '0', '0.00', '0', '1518166797', '1518166797');
 INSERT INTO `st_users` VALUES ('56', 'oQktJwFLSeUiXLkmf2ESJh8v_aC4', null, null, null, null, null, null, 'B4B9C5A288F', '5', 'gQHP7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZmdGTmtkMmJkOTAxSkRFQTFxMWQAAgQ3Y31aAwQwhScA', '57', '1520756839', '春天', 'http://thirdwx.qlogo.cn/mmopen/PCxWjnicpibLPvBkEAoIzHcK3zsZsicxCrOuwc0ccnxOicwj6py5pPKswfnrX1NU0HkZicARf6PfyyXkWQrNzLlVsunibYcn2PRCNK/132', '1', '', '中非共和国  ', '0', '0', '0.00', '0', '0.00', '0', '1518166839', '1518166839');
 INSERT INTO `st_users` VALUES ('57', 'oQktJwFlSlK5tq66sZ1wJxmawq3w', null, null, null, null, null, null, '9AF1D813728', '5', 'gQGf7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUXhfb2s2MmJkOTAxSmpGQTFxMXgAAgQjZH1aAwQwhScA', '58', '1520757075', '哲哥', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUibM3PA8PQKCuyLgC3MUTwiaiaXHsK2lfUETvWnTxxU4XA7YVY0TU6Z80AUm8Ll1wujPKhaVDSPLQxvwNKjnkfG3Js/132', '1', '河北', '中国 河北 秦皇岛', '0', '0', '0.00', '0', '0.00', '0', '1518167074', '1518167074');
-INSERT INTO `st_users` VALUES ('58', 'tingtingdeyonghu', '67037D', '0', null, null, '0', null, '789961', '0', '0', '0', '0', '分公司1_B_B', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM79dMEUWicXibcGksRHbVOYb4xKBak4ZlnLIeiakLrJIXLmGANadYHcLZbcFAv89dEYicr4R9icfibjk4xO26kZicUEuJmjKVoUquvsKs/132', '2', null, null, '6', '12', '0.00', '0', '0.00', '2', '1518167929', '1518242044');
+INSERT INTO `st_users` VALUES ('58', 'tingtingdeyonghu', '291C84', '0', null, null, '0', null, '789961', '0', '0', '0', '0', '分公司1_B_B', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM79dMEUWicXibcGksRHbVOYb4xKBak4ZlnLIeiakLrJIXLmGANadYHcLZbcFAv89dEYicr4R9icfibjk4xO26kZicUEuJmjKVoUquvsKs/132', '2', null, null, '6', '12', '0.00', '0', '0.00', '2', '1518167929', '1518242044');
 INSERT INTO `st_users` VALUES ('59', 'oQktJwD98c5ri1xkMYGoDEpu7-wc', null, null, null, null, null, null, '4ED9653165B', '5', 'gQGj7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyVkhsbmw4MmJkOTAxSk5KQU5xMWkAAgRBaH1aAwQwhScA', '59', '1520758130', '断线的风筝', 'http://thirdwx.qlogo.cn/mmopen/AOZ4NvXYl2OlThaHYnRjrTuGz5ZhRaLd4eQc4LHceex8psVQJBeAFR8o1FDOO2LBAEbWlNxpdfMQFNJzoDbSVTrx6ycfBMGj/132', '1', '天津', '中国 天津 ', '0', '0', '0.00', '0', '0.00', '0', '1518168129', '1518168129');
 INSERT INTO `st_users` VALUES ('60', 'oQktJwAJqlylJUEjjU8wsar4psKI', null, null, null, null, null, null, 'BCFBF693BEE', '5', 'gQHW7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyWDdqNWtMMmJkOTAxSzZTQTFxMXoAAgRWcX1aAwQwhScA', '60', '1520760455', 'Hope', 'http://thirdwx.qlogo.cn/mmopen/AOZ4NvXYl2OlThaHYnRjrauVAticNiajBa1SeLdTEM8hPYlhmB4HHNaaq70DUU0w4LFfiayI0e95ySq7LxBqEE5fwOEQmwzWqJy/132', '0', '黑龙江', '中国 黑龙江 哈尔滨', '0', '0', '0.00', '0', '0.00', '0', '1518170454', '1518170454');
 INSERT INTO `st_users` VALUES ('61', 'oQktJwHOMCjqTOEQx0e-2aWz6g50', null, null, null, null, null, null, '2225F448553', '5', 'gQHK7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAycFlxQ2tnMmJkOTAxSUhUQU5xMUkAAgT7cX1aAwQwhScA', '61', '1520760619', '平安人', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmU8U9tibFKb6RwJXJLRqG5TVg4QuhWOPpn03NTd5liahHl7llm7TS6h46icg4jNGXv95FFuWGqIABbSTVBiclo9bic48W/132', '1', '黑龙江', '中国 黑龙江 伊春', '0', '0', '0.00', '0', '0.00', '0', '1518170619', '1518170619');
@@ -3379,7 +3468,7 @@ INSERT INTO `st_users` VALUES ('77', 'oQktJwIAjOcmKbV49WP1EjmRikcc', null, null,
 INSERT INTO `st_users` VALUES ('78', 'oQktJwGdGdyrt_7-NVWc4z66ixMk', null, null, null, null, null, null, '78FC673B301', '5', 'gQHH7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydG1YOGxqMmJkOTAxSzMzQnhxMTcAAgRTPn5aAwQwhScA', '78', '1520812931', '辉煌LXW', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmU9hmtqEUSkESWU744pvSrmEqh9fGcIWf9ElzwCZk79ES6EibiaM4KVqaNfbpRFRibfbfqEicD9FHW4kgxkXE6uHeDk8/132', '1', '', '中国  ', '0', '0', '0.00', '0', '0.00', '0', '1518222930', '1518222930');
 INSERT INTO `st_users` VALUES ('79', 'oQktJwJFhofFOIZb-l5MjurGo3VA', null, null, null, null, null, null, '47F387C4036', '5', 'gQE98DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAycC10LWsyMmJkOTAxSk9hQjFxMTUAAgRCRX5aAwQwhScA', '79', '1520814706', '付英杰', 'http://thirdwx.qlogo.cn/mmopen/kBh8JPy1NVCYdCT0tG1DOKWRnEicNBITBy9COKPzrQhaKR0vciaLiaTmOVvFZ2Pcy7q0Bs4QPajDxZqF0bYib3Zc7oMXgrhicGyVj/132', '1', '', '中国  ', '0', '0', '0.00', '0', '0.00', '0', '1518224705', '1518224705');
 INSERT INTO `st_users` VALUES ('80', 'oQktJwCbUUF55YuII5OaxUOoDobc', null, null, null, null, null, null, 'E9EAD03CAB2', '5', 'gQFb7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZ1R4RGs3MmJkOTAxS2hhQnhxMVkAAgRhRX5aAwQwhScA', '80', '1520814737', '幻雨.', 'http://thirdwx.qlogo.cn/mmopen/tW8icv6f6mGPZpqV3j8V3lamiaRGicSIz3uWscDZznzvQvibYEw3UWIBibPmGr1dvCjFdaTvuxxAx58JicdctaTpeNORJibSibicxpECh/132', '1', '广东', '中国 广东 东莞', '0', '0', '0.00', '0', '0.00', '0', '1518224737', '1518224737');
-INSERT INTO `st_users` VALUES ('81', 'oQktJwI8cu9_dU7_kenwyhhYduwA', '67037D', null, '789961', '789961', '604D8C', '789961', 'C11A46BAD7F', '2', 'gQHp7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyenBxQWxyMmJkOTAxTE5kQk5xMUcAAgTBSH5aAwQwhScA', '81', '1520815601', '平常心', 'http://thirdwx.qlogo.cn/mmopen/PCxWjnicpibLPVzGtsFP7ufqHhHbsyyTbGEYrIY4VwjHolVYjbunDm8e81IpiaAUtdbYxkiaYelYvjgjPgTRSGbKoXxxylibfiaib9U/132', '1', '广西', '中国 广西 桂林', '0', '0', '0.00', '0', '0.00', '3', '1518225600', '1518225600');
+INSERT INTO `st_users` VALUES ('81', 'oQktJwI8cu9_dU7_kenwyhhYduwA', '291C84', null, '789961', '789961', '604D8C', '789961', 'C11A46BAD7F', '2', 'gQHp7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyenBxQWxyMmJkOTAxTE5kQk5xMUcAAgTBSH5aAwQwhScA', '81', '1520815601', '平常心', 'http://thirdwx.qlogo.cn/mmopen/PCxWjnicpibLPVzGtsFP7ufqHhHbsyyTbGEYrIY4VwjHolVYjbunDm8e81IpiaAUtdbYxkiaYelYvjgjPgTRSGbKoXxxylibfiaib9U/132', '1', '广西', '中国 广西 桂林', '0', '0', '0.00', '0', '0.00', '3', '1518225600', '1518225600');
 INSERT INTO `st_users` VALUES ('82', 'oQktJwINRtqLnyrvsmIeWVcodBds', null, null, null, null, null, null, 'E3A318168FD', '5', 'gQFf8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyMTRHcmxKMmJkOTAxSUtwQjFxMUYAAgT_U35aAwQwhScA', '82', '1520818478', 'Ares', 'http://thirdwx.qlogo.cn/mmopen/PCxWjnicpibLORgugUE0qQGvQvrZp0EM2LsIxcrmkeUl5IK54280kibs2FrNxrzsQ9CIVmRicAwgHUaDjEhibDZjoAz8icldIibNadj/132', '1', '辽宁', '中国 辽宁 丹东', '0', '0', '0.00', '0', '0.00', '0', '1518228478', '1518228478');
 INSERT INTO `st_users` VALUES ('83', 'oQktJwAY9FfO6tbrRXoOc8N_ZscU', null, null, null, null, null, null, '728665F7135', '5', 'gQHD7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydWNxWWtZMmJkOTAxSTdzQk5xMWgAAgTXVn5aAwQwhScA', '83', '1520819207', 'Star light 夏生', 'http://thirdwx.qlogo.cn/mmopen/zP1DEicFslBYaaric4iclpSjiafkiaF3dIHvZxeKGqHoXhnYN6mRx5QMkD9kLtaqFJJrrGbZRXYnDguL1ZkaZ7nCtdPx1ic8W7ZYRS/132', '1', '广东', '中国 广东 中山', '0', '0', '0.00', '0', '0.00', '0', '1518229207', '1518229207');
 INSERT INTO `st_users` VALUES ('84', 'oQktJwOeaOBukrXm9wpkDmECaO5E', null, null, null, null, null, null, '9434ED82FBB', '5', 'gQFc7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU050cmxqMmJkOTAxSkR2QnhxMTkAAgQ3Wn5aAwQwhScA', '84', '1520820071', '我非良人', 'http://thirdwx.qlogo.cn/mmopen/lJStl0O1IJIvesyEMd0spiaXEYy6peWsa2WX64f61DvNM2CgFTYN60mR2Ss81LNb6sqNDBQsWva0dpT8sIkssXFXEDjTMxzY1/132', '0', '山西', '中国 山西 ', '0', '0', '0.00', '0', '0.00', '0', '1518230070', '1518230070');
@@ -3407,7 +3496,7 @@ INSERT INTO `st_users` VALUES ('105', 'oQktJwCao2YsYAZdf7LREaTR8L1k', null, null
 INSERT INTO `st_users` VALUES ('106', 'oQktJwLkxCelqbZY3Uu2N97XasgA', null, null, null, null, null, null, '3B9A5531BB9', '5', 'gQGv8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZUVWLWtoMmJkOTAxelpHQ05xMXQAAgTNpX5aAwQwhScA', '115', '1520839422', '大佬', 'http://thirdwx.qlogo.cn/mmopen/PCxWjnicpibLPWSmZWe4Zgps6sfu7jycXrn6WGpAzxhagK94OysebnmaribXvVH4eIodRABVXBFWBk1o56LDce5IonIC8hg5U67/132', '2', '', '  ', '0', '0', '0.00', '0', '0.00', '0', '1518249421', '1518249421');
 INSERT INTO `st_users` VALUES ('107', 'oQktJwL7c7RfX9ixF9DHXhjZ0oTk', null, null, null, null, null, null, '3061F5DCDF6', '5', 'gQH78DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTzhzOWt5MmJkOTAxejBJQ3hxMUoAAgSQp35aAwQwhScA', '116', '1520839872', '冰红茶', 'http://thirdwx.qlogo.cn/mmopen/PCxWjnicpibLPvBkEAoIzHcFiaicvXUAWdu76IY13HLFJlThbM1icZJZxUxxAklb2S831syWm4O3ibW4CUNX19VicibXibbfTnH5syxAC/132', '0', '', '摩洛哥  ', '0', '0', '0.00', '0', '0.00', '0', '1518249872', '1518249872');
 INSERT INTO `st_users` VALUES ('108', 'oQktJwOZY_OeyyjLzsjxEGhDpgcc', null, null, null, null, null, null, 'E42A6DBC9D0', '5', 'gQHn7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUFF5dWxhMmJkOTAxeWFKQ05xMUcAAgRaqH5aAwQwhScA', '117', '1520840074', '钱', 'http://thirdwx.qlogo.cn/mmopen/SQd7RF5caa3xA7jwwoF3t8RgDib64z7tsMzuCKvdQPJjl3uCXibgicccibrIWRr2uyzbNLDvCISc9mOrzsnLqYcwLg/132', '2', '', '  ', '0', '0', '0.00', '0', '0.00', '0', '1518250074', '1518250074');
-INSERT INTO `st_users` VALUES ('109', 'oQktJwNYcoQhNn5sIWLWCE28YH-4', '67037D', null, '789961', '789961', '604D8C', '789961', 'F0E00746683', '2', 'gQGn7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyaHNSdGxyMmJkOTAxeUFKQ2hxMVAAAgR0qH5aAwQwhScA', '118', '1520840101', '。。', '', '1', '广东', '中国 广东 广州', '12', '24', '0.00', '0', '0.00', '3', '1518250100', '1519711713');
+INSERT INTO `st_users` VALUES ('109', 'oQktJwNYcoQhNn5sIWLWCE28YH-4', '291C84', null, '789961', '789961', '604D8C', '789961', 'F0E00746683', '2', 'gQGn7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyaHNSdGxyMmJkOTAxeUFKQ2hxMVAAAgR0qH5aAwQwhScA', '118', '1520840101', '。。', '', '1', '广东', '中国 广东 广州', '12', '24', '0.00', '0', '0.00', '3', '1518250100', '1519711713');
 INSERT INTO `st_users` VALUES ('110', 'oQktJwFgJRhEuNAAqtP1fAQ7EPGE', null, null, null, null, null, null, '4E7880813CF', '5', 'gQGj8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZmVScWthMmJkOTAxemtNQ05xMTIAAgSkq35aAwQwhScA', '119', '1520840916', '朦胧', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmU9hmtqEUSkESVH7LbCQltjP6xBViagNV8iczZelSWg0VOSOkpn2Ff3A43LOkI5kw1UlxMckDxeBmUFjfic6pYIEiaPK/132', '0', '吉林', '中国 吉林 长春', '0', '0', '0.00', '0', '0.00', '0', '1518250916', '1518250916');
 INSERT INTO `st_users` VALUES ('111', 'oQktJwEwFUPrbijntTtqR9_iJD5E', null, null, null, null, null, null, '15CDC6DB898', '5', 'gQFH8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyY2VVRmtQMmJkOTAxeEhQQzFxMW8AAgQ7rn5aAwQwhScA', '120', '1520841579', '平安杨瑞利', 'http://thirdwx.qlogo.cn/mmopen/tW8icv6f6mGOTq8NNpmibhsEGiaibNzHPef5VoIHhyqVsqWJMULibGPM6B671oshDMuIj4NMta7ibYibsOfgg6z4GqIQJleeqbG8IKc/132', '0', '广东', '中国 广东 珠海', '0', '0', '0.00', '0', '0.00', '0', '1518251578', '1518251578');
 INSERT INTO `st_users` VALUES ('112', 'oQktJwNdwvNC4hJvngzqFmIN2cC0', null, null, null, null, null, null, '014D59992C4', '5', 'gQG_7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybnVObWxPMmJkOTAxeEhTQ3hxMXAAAgQ7sX5aAwQwhScA', '121', '1520842347', '油田 小状元课外辅导班15036286010', 'http://thirdwx.qlogo.cn/mmopen/tW8icv6f6mGMaibOzOHbRqhjk7BuFic1qS0ME9OicdHJnKjXL5sLSOhjRicD7rQrbdiayERqLmgsRaYZibK4EAjTCVLibVQn0fwxR5Jd/132', '0', '河南', '中国 河南 南阳', '0', '0', '0.00', '0', '0.00', '0', '1518252346', '1518252346');
@@ -4130,9 +4219,9 @@ INSERT INTO `st_users` VALUES ('829', 'oQktJwMYRWFhWSNKeVVeZDk5NKM4', null, null
 INSERT INTO `st_users` VALUES ('830', 'oQktJwORim0JAuqTP-9-h1ch2dBw', null, null, null, null, null, null, '4476B3BBBB2', '5', 'gQGR8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZmo3SGtMMmJkOTAxRHBkV2hxMU4AAgSpyJJaAwQwhScA', '944', '1522159065', 'neo', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmU9hmtqEUSkESRoHFRYIWfvBHsgcF5ZakQryVjp3oiaHlJehPeicJyBjOGJCOB4q0V3v1CzlIuZQjzf5eJn1JRcZ3X/132', '1', '上海', '中国 上海 徐汇', '0', '0', '0.00', '0', '0.00', '0', '1519569065', '1519569065');
 INSERT INTO `st_users` VALUES ('831', 'oQktJwCJBcVMN_Sk89AVpbB_6bD8', null, null, null, null, null, null, '1C58C3EF292', '5', 'gQGN8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydTNVaGwwMmJkOTAxS2d0VzFxMTgAAgRgWJNaAwQwhScA', '945', '1522195857', '一帆风顺', 'http://thirdwx.qlogo.cn/mmopen/tW8icv6f6mGOXicbepTcoML5oqlPicGuic0xk5mekWic4twcE6kMaVU8UiaiaE9yjnribUAlWiaOOEsdeFniboibYm8IvZ67OicDZQFOREKw/132', '1', '湖南', '中国 湖南 怀化', '0', '0', '0.00', '0', '0.00', '0', '1519605856', '1519605856');
 INSERT INTO `st_users` VALUES ('832', 'oQktJwKBv08yquvz53Kw-MFb6sOQ', null, null, null, null, null, null, 'AE812FC121D', '5', 'gQEV8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU3dBZ2xwMmJkOTAxSlZGV2hxMXcAAgRJZJNaAwQwhScA', '946', '1522198905', '虎虎', 'http://thirdwx.qlogo.cn/mmopen/SQd7RF5caa3ePTbWVLVb9VDibxF0eCaYicPjpdZJXTwI11hs1hhPP7WI2rCmYcdYDu3RGuYtxwEp6RH5ofSCRCw5g2DLzcUnt1/132', '1', '内蒙古', '中国 内蒙古 乌兰察布', '0', '0', '0.00', '0', '0.00', '0', '1519608904', '1519608904');
-INSERT INTO `st_users` VALUES ('833', 'oQktJwGB2hfmNSaNkjTTF4kt2fEw', '2EFC28', '0', null, null, '0', null, '33F5AE', '0', '0', '0', '0', '分公司4_A', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUicB78UOvFu61ibbk8DRhmMnRK79oAKfibo9ficu1aVSzaFEjHoYD7oYHrRlw5K4S9zEnkL0TsfpvvibGf5cwURvpKVJ/132', '2', null, null, '99', '1000', '0.00', '0', '400.00', '2', '1519610276', '1520212668');
+INSERT INTO `st_users` VALUES ('833', 'oQktJwGB2hfmNSaNkjTTF4kt2fEw', '653A61', '0', null, null, '0', null, '33F5AE', '0', '0', '0', '0', '分公司4_A', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUicB78UOvFu61ibbk8DRhmMnRK79oAKfibo9ficu1aVSzaFEjHoYD7oYHrRlw5K4S9zEnkL0TsfpvvibGf5cwURvpKVJ/132', '2', null, null, '99', '1000', '0.00', '0', '400.00', '2', '1519610276', '1520212668');
 INSERT INTO `st_users` VALUES ('834', 'oQktJwDu4acR-sodTtdBWUjAyNL8', null, null, null, null, null, null, 'B4B6B3E1D31', '5', 'gQGo8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyOTNJa2t0MmJkOTAxSzhTV05xMUEAAgRYcZNaAwQwhScA', '947', '1522202248', '狼的诱惑', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmU9uWg0vlKWeo32WgyIBwPSA8GULxS5uJiceNaCib94hglGqukY2GHALc2ueGNULgyTl8A9aKrJD2C5riahRcnWtX5V/132', '1', '四川', '中国 四川 德阳', '0', '0', '0.00', '0', '0.00', '0', '1519612247', '1519612247');
-INSERT INTO `st_users` VALUES ('835', 'oQktJwGB2hfmNSaNkjTTF4kt2fEw', '2EFC28', '0', null, null, '0', null, '33F5AE', '0', '0', '0', '0', '分公司4_A', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUicB78UOvFu61ibbk8DRhmMnRK79oAKfibo9ficu1aVSzaFEjHoYD7oYHrRlw5K4S9zEnkL0TsfpvvibGf5cwURvpKVJ/132', '2', null, null, '445', '0', '0.00', '0', '400.00', '2', '1519629155', '1519629155');
+INSERT INTO `st_users` VALUES ('835', 'oQktJwGB2hfmNSaNkjTTF4kt2fEw', '653A61', '0', null, null, '0', null, '33F5AE', '0', '0', '0', '0', '分公司4_A', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUicB78UOvFu61ibbk8DRhmMnRK79oAKfibo9ficu1aVSzaFEjHoYD7oYHrRlw5K4S9zEnkL0TsfpvvibGf5cwURvpKVJ/132', '2', null, null, '445', '0', '0.00', '0', '400.00', '2', '1519629155', '1519629155');
 INSERT INTO `st_users` VALUES ('836', 'oQktJwBvxgAlnb1TrVksiinHp18o', null, null, null, null, null, null, '9A065021C5A', '5', 'gQFR8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUEFMaGtQMmJkOTAxelRZWGhxMXYAAgTHt5NaAwQwhScA', '951', '1522220279', '沈敬存', 'http://thirdwx.qlogo.cn/mmopen/PCxWjnicpibLOYvommIMicPWAVXanvVS1nbtwwvN7GGCz11Gewk69O62lHiaia4k2Xbiam7swxS2ibhDuFjY1HLBSO0plPfzmZxDbvp/132', '2', '', '  ', '0', '0', '0.00', '0', '0.00', '0', '1519630279', '1519630279');
 INSERT INTO `st_users` VALUES ('837', 'oQktJwPaH6ny8aBLJAbY_6Dl5YQE', null, null, null, null, null, null, '89A540358E5', '5', 'gQG08TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZjc2Y2w1MmJkOTAxQXYxWGhxMU8AAgTvu5NaAwQwhScA', '952', '1522221343', 'A空格', 'http://thirdwx.qlogo.cn/mmopen/PCxWjnicpibLPvBkEAoIzHcEDdq8ic8AVEO9uTLmOhtggZV4dTjYlvf1M1fI9RyApTFRYiaQz4NOmlTUcERvHmr1pFvoOeDjEWkt/132', '1', '陕西', '中国 陕西 宝鸡', '0', '0', '0.00', '0', '0.00', '0', '1519631342', '1519631342');
 INSERT INTO `st_users` VALUES ('838', 'oQktJwHGq8glK8OaMBNPHx0SWjMY', null, null, null, null, null, null, 'DDB3CAABC50', '5', 'gQHz8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU3E4TGwyMmJkOTAxQ3YyWHhxMWwAAgRvvZNaAwQwhScA', '953', '1522221727', '李春', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLCp2ImTVNOEmv9xU6iaSianhSBT4NXicPPe8CjLE2KSb2HTibt98M67Ric8fCa9PXXic6EOicS3kBkb7pw9A5UGtPRibQ2MZtiasYKFsBcY/132', '1', '广东', '中国 广东 东莞', '0', '0', '0.00', '0', '0.00', '0', '1519631726', '1519631726');
@@ -4201,7 +4290,7 @@ INSERT INTO `st_users` VALUES ('900', 'oQktJwIDFK0MQtWX6_Y2_9X828qQ', null, null
 INSERT INTO `st_users` VALUES ('901', 'oQktJwGigD-nRy-9nNSGOxb20jn8', null, null, null, null, null, null, 'AE9A06141B2', '5', 'gQE78DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU09iS2xkMmJkOTAxSkxYWmhxMWoAAgQ-dpZaAwQwhScA', '1022', '1522400111', '笑看人生', 'http://thirdwx.qlogo.cn/mmopen/PCxWjnicpibLPvBkEAoIzHcGM5bKPrrtBPM2WFU9mGIYLlVObETbGuF8BB53WOVq9pbbkZVCMudx0UIGU4CKZSibNIYApXOAT1T/132', '1', '湖北', '中国 湖北 荆门', '0', '0', '0.00', '0', '0.00', '0', '1519810110', '1519810110');
 INSERT INTO `st_users` VALUES ('902', 'oQktJwLEY8NN0vClwVvdKf6Vg1R0', null, null, null, null, null, null, '3C34CC52C82', '5', 'gQEp8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUkVVZmxvMmJkOTAxTDktWmhxMU0AAgSZeZZaAwQwhScA', '1023', '1522400969', '鑫鑫', 'http://thirdwx.qlogo.cn/mmopen/tW8icv6f6mGNeicewqnHBhUCicJ6keO646U896g9Q2E1cB6XbiaPeliaAPrd8iaUYqAov9S8DiaapXDY9jGENSMe6ZJcGdJdldIFf6Q/132', '1', '辽宁', '中国 辽宁 盘锦', '0', '0', '0.00', '0', '0.00', '0', '1519810968', '1519810968');
 INSERT INTO `st_users` VALUES ('903', 'oQktJwJVylJKhJodOUfYp1PbKWQA', null, null, null, null, null, null, '38ACE650FCF', '5', 'gQEt8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySUd0b2tMMmJkOTAxeVoxLWhxMTAAAgSNfJZaAwQwhScA', '1024', '1522401725', '『蓶ζ怡』', 'http://thirdwx.qlogo.cn/mmopen/SQd7RF5caa3ePTbWVLVb9SmY17xXNI0kForDVDmicyrV3g2ZBPxQ1Hia6ecwPagWA23Yzz9VrpfzVBVfb90JyxHqDFiaNaZ5nEE/132', '0', '广东', '中国 广东 东莞', '0', '0', '0.00', '0', '0.00', '0', '1519811724', '1519811724');
-INSERT INTO `st_users` VALUES ('904', 'oQktJwLHOoB7RGa1Jcjyj_jeq7nw', '67037D', '0', null, null, '0', null, '8A2F25', '0', '0', '0', '0', '在一起吧', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM79dMEUWicXibcGksRHbVOYb4xKBak4ZlnLIeiakLrJIXLmGANadYHcLZby05rZBR9D6Hax0LToIcbTq6qlRQ1KMzZ43q40ongypA/132', '2', null, null, '0', '0', '0.00', '0', '0.00', '4', '1519812137', '1519812137');
+INSERT INTO `st_users` VALUES ('904', 'oQktJwLHOoB7RGa1Jcjyj_jeq7nw', '291C84', '0', null, null, '0', null, '8A2F25', '0', '0', '0', '0', '在一起吧', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM79dMEUWicXibcGksRHbVOYb4xKBak4ZlnLIeiakLrJIXLmGANadYHcLZby05rZBR9D6Hax0LToIcbTq6qlRQ1KMzZ43q40ongypA/132', '2', null, null, '0', '0', '0.00', '0', '0.00', '4', '1519812137', '1519812137');
 INSERT INTO `st_users` VALUES ('905', 'oQktJwDYXO8sFEK3rO3fdMGK487Q', null, null, null, null, null, null, '288DBABBA24', '5', 'gQHe8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAycTJWUGxBMmJkOTAxeDA1LU5xMW0AAgQQgJZaAwQwhScA', '1025', '1522402624', '海的颜色', 'http://thirdwx.qlogo.cn/mmopen/SQd7RF5caa34TZiawNAu3GibPibibGNg7pZBspdE34Nfy7pN2TNUTicaKjhnPjEC9b46QIn16QgyibqMIAHtfVWcB8ag/132', '2', '', '  ', '0', '0', '0.00', '0', '0.00', '0', '1519812623', '1519812623');
 INSERT INTO `st_users` VALUES ('906', 'oQktJwED9YfPEX7PwLTTZzzt5Rcc', null, null, null, null, null, null, '036D273C60E', '5', 'gQG58TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNk0xZ2tMMmJkOTAxeFk2LWhxMTUAAgRMgZZaAwQwhScA', '1026', '1522402940', '加注', 'http://thirdwx.qlogo.cn/mmopen/tW8icv6f6mGPZpqV3j8V3lR5KWAxxibkew191qCm3knbefHw93UXJFQNO77cYHMNUqKxrnw8icVw2tKWnkLHf4GccwxTmTRFIDW/132', '1', '', '中国  ', '0', '0', '0.00', '0', '0.00', '0', '1519812939', '1519812939');
 INSERT INTO `st_users` VALUES ('907', 'oQktJwPcT0SVxQp5Gj-2TWHiz7OM', null, null, null, null, null, null, '637FD8EB5F8', '5', 'gQEm8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZnJHTWxVMmJkOTAxeWxjLTFxMUQAAgRlh5ZaAwQwhScA', '1030', '1522404501', '陈志平', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmU9hmtqEUSkESTRicSlLicT9pP4OUD6r5NaaUnrrLZFrrDcCOwIkUeBVx1xfuW4NbgJrbeAa8XIRic2J6gHt6tBNQ0ib/132', '1', '福建', '中国 福建 厦门', '0', '0', '0.00', '0', '0.00', '0', '1519814501', '1519814501');
@@ -4344,6 +4433,12 @@ INSERT INTO `st_users` VALUES ('1044', 'oQktJwCsDWF21t5IR1TURzlnnB4U', null, nul
 INSERT INTO `st_users` VALUES ('1045', 'oQktJwABf5FY1DpYY-Pv2KIlRS5U', null, null, null, null, null, null, '43569543AB2', '5', 'gQFY8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyOFZhSGtyMmJkOTAxUUFxNGhxMVAAAgT01JxaAwQwhScA', '1183', '1522817572', '柳红华', 'http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLAKu4cziaovdqDu7gk92CXuIEHiaicrECrda8Ivhwib7txXNtCiaWL5f55N0GiaYoGo91r6GzLY98sea5ibw/132', '0', '山东', '中国 山东 德州', '0', '0', '0.00', '0', '0.00', '0', '1520227571', '1520227571');
 INSERT INTO `st_users` VALUES ('1046', 'oQktJwGDceRCjwbE1mnkCpPA6bzM', null, null, null, null, null, null, 'F55B606AAF0', '5', 'gQFe8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyaGxmOGxqMmJkOTAxVEpzNDFxMXMAAgS915xaAwQwhScA', '1184', '1522818285', '笑对人生', 'http://thirdwx.qlogo.cn/mmopen/GB58cfpy0hJyv1ic5FKXibE9n3CtmiaPicNsaVPYArWIvicVj9V3PT6Ku6faBKlibeibtQl1ibNVNAg9D03Y05wMaNtPfBO2IEe4IJbb/132', '1', '', '冰岛  ', '0', '0', '0.00', '0', '0.00', '0', '1520228285', '1520228285');
 INSERT INTO `st_users` VALUES ('1047', 'oQktJwJc4HFnW3tIO--lqrT7b7FI', null, null, null, null, null, null, '67A36135FEF', '5', 'gQEP8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyeDdMSGtTMmJkOTAxUktBNHhxMWwAAgQ_35xaAwQwhScA', '1185', '1522820206', '彭进', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmU9hmtqEUSkESYskrSqKIyUWkicvew87FavQ9e4vXiclAkuibTSDwpEs8A4ZDJiaVwCWWjmpFU6wNENeTrciaNdWbspht/132', '1', '湖南', '中国 湖南 邵阳', '0', '0', '0.00', '0', '0.00', '0', '1520230206', '1520230206');
+INSERT INTO `st_users` VALUES ('1048', 'oQktJwPgDHYEmHshKn4lDIe7NdCE', null, null, null, null, null, null, 'C86C0440B7D', '5', 'gQGU8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyY21MdGswMmJkOTAxVGFLNE5xMV8AAgSa6ZxaAwQwhScA', '1186', '1522822859', '速腾集团－王继平', 'http://thirdwx.qlogo.cn/mmopen/SQd7RF5caa3ePTbWVLVb9dnKb7Qm9uOvD6hHstsyuuXG2E97tyStLyibZic9MTichGmQeDySC7XXyzOyjgGOgoC6nIXHPIAtyBa/132', '1', '澳门', '中国 澳门 ', '0', '0', '0.00', '0', '0.00', '0', '1520232858', '1520232858');
+INSERT INTO `st_users` VALUES ('1049', 'oQktJwI-Lly8hdfGi9IJc0DtUgTQ', null, null, null, null, null, null, '6639727E3FD', '5', 'gQFQ8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNVR0U2xjMmJkOTAxVFpPNGhxMWEAAgTN7ZxaAwQwhScA', '1187', '1522823933', '网站售后', 'http://thirdwx.qlogo.cn/mmopen/SQd7RF5caa2mxjoqYhVYN0HdWCB3ZoVZyw3DSSTehbT8dwdRgmYicqkjQiaTvQ31D89ohSCy6UnibttfDueiapkicGeFKrkXxRVXU/132', '2', '', '  ', '0', '0', '0.00', '0', '0.00', '0', '1520233932', '1520233932');
+INSERT INTO `st_users` VALUES ('1050', 'oQktJwNfGAaW7EHM-19nO_dnmA_Y', null, null, null, null, null, null, '583A918A186', '5', 'gQFZ8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAycWNwZGtBMmJkOTAxUThRNE5xMVQAAgTY7pxaAwQwhScA', '1188', '1522824200', '康瑞', 'http://thirdwx.qlogo.cn/mmopen/tW8icv6f6mGPZpqV3j8V3lXCl3z4cU2DtbTSwE8MuTeFdIiava23G1ibcnxywtCuOEELGUQFKHCGMqOxuOTucnjDmvMK1P22J0S/132', '0', '', '海地  ', '0', '0', '0.00', '0', '0.00', '0', '1520234199', '1520234199');
+INSERT INTO `st_users` VALUES ('1051', 'oQktJwF8b-cS0LmObEjSaXLE47FE', null, null, null, null, null, null, 'BE419AC55FF', '5', 'gQHC8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySTg4aGw5MmJkOTAxVG5TNHhxMUIAAgSn8ZxaAwQwhScA', '1189', '1522824919', '长夜如歌', 'http://thirdwx.qlogo.cn/mmopen/SQd7RF5caa22ibUSgedx8oACOHibZqfSmQsiaOBOUY5KKezsaQUbMYUH0EKOOm940xlJfZKmf6MldDWUCPWbcc9KQ/132', '0', '陕西', '中国 陕西 咸阳', '0', '0', '0.00', '0', '0.00', '0', '1520234918', '1520234918');
+INSERT INTO `st_users` VALUES ('1052', 'oQktJwEGInxWvrzhm7OThUSZlFpw', null, null, null, null, null, null, '050F720EC05', '5', 'gQEx8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyMEpIdGtvMmJkOTAxUXZXNE5xMV8AAgTv9JxaAwQwhScA', '1190', '1522825759', 'Super 伟', 'http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaELAAuD9U75ubwFbRhPMKrWn8TSbZ7jFl3x6E6OgYGbMGE85DmibCMPHG1ibWftpWNjQE0lUEqjjVoL57SbTBzibeHUiaFfDDEsr3qk/132', '1', '湖北', '中国 湖北 十堰', '0', '0', '0.00', '0', '0.00', '0', '1520235758', '1520235758');
+INSERT INTO `st_users` VALUES ('1053', 'oQktJwBIpxZlp2ToYG9IX79-LCmY', null, null, null, null, null, null, '9A84E9B5C5C', '5', 'gQFD8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyaDlNWmtLMmJkOTAxUWpZNE5xMXMAAgTj9pxaAwQwhScA', '1191', '1522826259', '瑞麟', 'http://thirdwx.qlogo.cn/mmopen/SQd7RF5caa1AKObXYM6NaPgaEmDXGSOIWbJmQMa1c8Y9ibdRC5auRziaKwtgUyfiauIbapssDEaDOlxlt9VgQvXibQ/132', '1', '黑龙江', '中国 黑龙江 齐齐哈尔', '0', '0', '0.00', '0', '0.00', '0', '1520236258', '1520236258');
 
 -- ----------------------------
 -- Table structure for st_users_commission
@@ -4419,7 +4514,7 @@ CREATE TABLE `st_vendor_fee` (
 -- ----------------------------
 -- Records of st_vendor_fee
 -- ----------------------------
-INSERT INTO `st_vendor_fee` VALUES ('1', '20000.00', '15000.00', '10000.00', '1', 'admin', '1517905602', '1519544124');
+INSERT INTO `st_vendor_fee` VALUES ('1', '10000.00', '8000.00', '50000.00', '1', 'admin', '1517905602', '1520402014');
 
 -- ----------------------------
 -- Table structure for st_vendors
@@ -4468,25 +4563,25 @@ CREATE TABLE `st_vendors` (
 -- Records of st_vendors
 -- ----------------------------
 INSERT INTO `st_vendors` VALUES ('1', null, 'admin', '202cb962ac59075b964b07152d234b70', '13425492760', '超级管理员', null, null, null, null, null, null, null, null, null, '0', '000000', null, null, null, null, null, null, '', null, '0.00', null, null, null, '0', '0.00', null, '7', '1513872000', '1513872000');
-INSERT INTO `st_vendors` VALUES ('2', 'fengongsi1', 'fengongsi1', 'e10adc3949ba59abbe56e057f20f883e', '13524216254', '分公司1', '442589199302058965', '/Vendors/2018-02-08/5a7c119301b3d.png', '/Vendors/2018-02-08/5a7c1193020c1.png', '/Vendors/2018-02-08/5a7c1193021f2.jpg', '广州移动公司', '020-89562365', '广州市天河区天河路', '/Vendors/2018-02-08/5a7c1193024dc.jpg', '/Vendors/2018-02-08/5a7c1193025f8.docx', '1', '67037D', null, null, 'gQE38DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTlBFd2tHMmJkOTAxMDAwMGcwM00AAgRVdlhaAwQAAAAA', 'gQHx8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQThuOWszMmJkOTAxMDAwMHcwM3AAAgS2dlhaAwQAAAAA', 'gQEm8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyOEZwamx3MmJkOTAxMDAwMGcwM2kAAgTmp1xaAwQAAAAA', 'gQE_8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyem5MZGw0MmJkOTAxMDAwME0wM2wAAgTop1xaAwQAAAAA', null, null, '0.00', null, 'admin', null, '3', '0.00', null, '8', '1518080403', '1518080403');
-INSERT INTO `st_vendors` VALUES ('7', 'fengongsi1_A', 'fengongsi1_A', 'e10adc3949ba59abbe56e057f20f883e', '13580803306', '小小', '440852198908059632', '/Vendors/2018-02-23/5a8fc3ba69b82.jpg', '/Vendors/2018-02-23/5a8fc3ba69e46.jpg', '/Vendors/2018-02-23/5a8fc3ba6a095.jpg', '蓝翔有限公司', '020-85236985', '广州市东城国际贸易公司', '/Vendors/2018-02-09/5a7d0aaaa9834.jpg', '/Vendors/2018-02-09/5a7d0ac03fc22.png', '2', '93A4F9', null, null, 'gQEq8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZjdGMGtZMmJkOTAxMDAwMHcwMzIAAgQk7l5aAwQAAAAA', 'gQE-8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyVVJuSGtDMmJkOTAxMDAwME0wM18AAgTY7l5aAwQAAAAA', 'gQEY8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybHZSTWwtMmJkOTAxMDAwME0wM3cAAgTY7l5aAwQAAAAA', 'gQHX8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydTJiYWtHMmJkOTAxMDAwMGcwMzUAAgQ98F5aAwQAAAAA', null, '67037D', '100000.00', 'admin', null, null, '3', '0.00', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUicB78UOvFu61ibbk8DRhmMnRK79oAKfibo9ficu1aVSzaFEjHoYD7oYHrRlw5K4S9zEnkL0TsfpvvibGf5cwURvpKVJ/132', '7', '1518144071', '1518144071');
-INSERT INTO `st_vendors` VALUES ('8', 'fengongsi1_B', 'fengongsi1_B', 'e10adc3949ba59abbe56e057f20f883e', '13580809874', '分公司1_B', '458236198908090856', '/Vendors/2018-02-09/5a7d0db10e34f.jpg', '/Vendors/2018-02-09/5a7d0db10e4c1.jpg', '/Vendors/2018-02-09/5a7d0db10e602.jpg', '洋洋得意有限公司', '020-85236985', '广州市番禺区钟村街道', '/Vendors/2018-02-09/5a7d0fc4b0112.png', '/Vendors/2018-02-09/5a7d3043afac1.jpg', '3', '604D8C', null, null, null, 'gQGa8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQW5ScGwwMmJkOTAxMDAwMHcwM3AAAgQ_8F5aAwQAAAAA', 'gQGK8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySml2TmtHMmJkOTAxMDAwMHcwM04AAgRU8F5aAwQAAAAA', 'gQF78DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV3h0VmxYMmJkOTAxMDAwMDAwM3AAAgRU8F5aAwQAAAAA', null, '67037D', '50000.00', 'admin', null, null, '3', '6.00', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUicB78UOvFu61ibbk8DRhmMnRK79oAKfibo9ficu1aVSzaFEjHoYD7oYHrRlw5K4S9zEnkL0TsfpvvibGf5cwURvpKVJ/132', '7', '1518144564', '1519711713');
-INSERT INTO `st_vendors` VALUES ('9', 'fengongsi1_C', 'fengongsi1_C', 'e10adc3949ba59abbe56e057f20f883e', '13908909963', '分公司1_C', '452896198908059632', '/Vendors/2018-02-09/5a7d12fb38413.jpg', '/Vendors/2018-02-09/5a7d12fb38583.jpg', '/Vendors/2018-02-09/5a7d12fb386c1.jpg', '分公司1_C', '020-85236985', '广州市番禺区钟村街道', '/Vendors/2018-02-09/5a7d132d07a33.png', '/Vendors/2018-02-09/5a7d1339ce39c.jpg', '4', 'E95CF6', null, null, null, null, 'gQGW8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyWFlZeWxJMmJkOTAxMDAwMGcwMzUAAgRf815aAwQAAAAA', 'gQG28DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUk10WmswMmJkOTAxMDAwMHcwMzUAAgRf815aAwQAAAAA', null, '67037D', '50000.00', 'admin', null, null, '3', '63.00', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUicB78UOvFu61ibbk8DRhmMnRK79oAKfibo9ficu1aVSzaFEjHoYD7oYHrRlw5K4S9zEnkL0TsfpvvibGf5cwURvpKVJ/132', '7', '1518146239', '1519442351');
+INSERT INTO `st_vendors` VALUES ('2', 'fengongsi1', 'fengongsi1', 'e10adc3949ba59abbe56e057f20f883e', '13524216254', '分公司1', '442589199302058965', '/Vendors/2018-02-08/5a7c119301b3d.png', '/Vendors/2018-02-08/5a7c1193020c1.png', '/Vendors/2018-02-08/5a7c1193021f2.jpg', '广州移动公司', '020-89562365', '广州市天河区天河路', '/Vendors/2018-02-08/5a7c1193024dc.jpg', '/Vendors/2018-02-08/5a7c1193025f8.docx', '1', '67037D', null, null, 'gQE38DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTlBFd2tHMmJkOTAxMDAwMGcwM00AAgRVdlhaAwQAAAAA', 'gQHx8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQThuOWszMmJkOTAxMDAwMHcwM3AAAgS2dlhaAwQAAAAA', 'gQEm8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyOEZwamx3MmJkOTAxMDAwMGcwM2kAAgTmp1xaAwQAAAAA', 'gQE_8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyem5MZGw0MmJkOTAxMDAwME0wM2wAAgTop1xaAwQAAAAA', null, null, '0.00', null, 'admin', null, '3', '0.00', null, '7', '1518080403', '1518080403');
+INSERT INTO `st_vendors` VALUES ('7', 'fengongsi1_A', 'fengongsi1_A', 'e10adc3949ba59abbe56e057f20f883e', '13580803306', '小小', '440852198908059632', '/Vendors/2018-02-23/5a8fc3ba69b82.jpg', '/Vendors/2018-02-23/5a8fc3ba69e46.jpg', '/Vendors/2018-02-23/5a8fc3ba6a095.jpg', '蓝翔有限公司', '020-85236985', '广州市东城国际贸易公司', '/Vendors/2018-02-09/5a7d0aaaa9834.jpg', '/Vendors/2018-02-09/5a7d0ac03fc22.png', '2', '93A4F9', null, null, 'gQEq8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZjdGMGtZMmJkOTAxMDAwMHcwMzIAAgQk7l5aAwQAAAAA', 'gQE-8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyVVJuSGtDMmJkOTAxMDAwME0wM18AAgTY7l5aAwQAAAAA', 'gQEY8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybHZSTWwtMmJkOTAxMDAwME0wM3cAAgTY7l5aAwQAAAAA', 'gQHX8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydTJiYWtHMmJkOTAxMDAwMGcwMzUAAgQ98F5aAwQAAAAA', null, '291C84', '100000.00', 'admin', null, null, '3', '0.00', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUicB78UOvFu61ibbk8DRhmMnRK79oAKfibo9ficu1aVSzaFEjHoYD7oYHrRlw5K4S9zEnkL0TsfpvvibGf5cwURvpKVJ/132', '7', '1518144071', '1518144071');
+INSERT INTO `st_vendors` VALUES ('8', 'fengongsi1_B', 'fengongsi1_B', 'e10adc3949ba59abbe56e057f20f883e', '13580809874', '分公司1_B', '458236198908090856', '/Vendors/2018-02-09/5a7d0db10e34f.jpg', '/Vendors/2018-02-09/5a7d0db10e4c1.jpg', '/Vendors/2018-02-09/5a7d0db10e602.jpg', '洋洋得意有限公司', '020-85236985', '广州市番禺区钟村街道', '/Vendors/2018-02-09/5a7d0fc4b0112.png', '/Vendors/2018-02-09/5a7d3043afac1.jpg', '3', '604D8C', null, null, null, 'gQGa8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQW5ScGwwMmJkOTAxMDAwMHcwM3AAAgQ_8F5aAwQAAAAA', 'gQGK8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySml2TmtHMmJkOTAxMDAwMHcwM04AAgRU8F5aAwQAAAAA', 'gQF78DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV3h0VmxYMmJkOTAxMDAwMDAwM3AAAgRU8F5aAwQAAAAA', null, '291C84', '50000.00', 'admin', null, null, '3', '6.00', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUicB78UOvFu61ibbk8DRhmMnRK79oAKfibo9ficu1aVSzaFEjHoYD7oYHrRlw5K4S9zEnkL0TsfpvvibGf5cwURvpKVJ/132', '7', '1518144564', '1519711713');
+INSERT INTO `st_vendors` VALUES ('9', 'fengongsi1_C', 'fengongsi1_C', 'e10adc3949ba59abbe56e057f20f883e', '13908909963', '分公司1_C', '452896198908059632', '/Vendors/2018-02-09/5a7d12fb38413.jpg', '/Vendors/2018-02-09/5a7d12fb38583.jpg', '/Vendors/2018-02-09/5a7d12fb386c1.jpg', '分公司1_C', '020-85236985', '广州市番禺区钟村街道', '/Vendors/2018-02-09/5a7d132d07a33.png', '/Vendors/2018-02-09/5a7d1339ce39c.jpg', '4', 'E95CF6', null, null, null, null, 'gQGW8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyWFlZeWxJMmJkOTAxMDAwMGcwMzUAAgRf815aAwQAAAAA', 'gQG28DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUk10WmswMmJkOTAxMDAwMHcwMzUAAgRf815aAwQAAAAA', null, '291C84', '50000.00', 'admin', null, null, '3', '63.00', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUicB78UOvFu61ibbk8DRhmMnRK79oAKfibo9ficu1aVSzaFEjHoYD7oYHrRlw5K4S9zEnkL0TsfpvvibGf5cwURvpKVJ/132', '7', '1518146239', '1519442351');
 INSERT INTO `st_vendors` VALUES ('10', null, 'fengongsi2', 'e10adc3949ba59abbe56e057f20f883e', '14520362302', '分公司2', '425632198906052365', '/Vendors/2018-02-09/5a7d368d04e9b.png', '/Vendors/2018-02-09/5a7d368d053d0.png', '/Vendors/2018-02-09/5a7d368d054fe.jpg', '蓝天祥有限公司', '020-89522352', '广州市海珠区海珠客运站', '/Vendors/2018-02-09/5a7d368d057f8.jpg', '/Vendors/2018-02-09/5a7d368d05912.docx', '1', 'FB3CA7', null, null, 'gQHu8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyRl8ySmxCMmJkOTAxMDAwMDAwM2wAAgRw815aAwQAAAAA', 'gQEZ8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAya2tEWGxzMmJkOTAxMDAwMHcwM3cAAgRx815aAwQAAAAA', 'gQE28TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyNXNldGw4MmJkOTAxMDAwMHcwM0YAAgSx815aAwQAAAAA', 'gQGL8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyOU1NNGtBMmJkOTAxMDAwMHcwM2MAAgSx815aAwQAAAAA', null, null, '0.00', null, 'admin', null, '3', '0.00', null, '7', '1518155405', '1518155405');
-INSERT INTO `st_vendors` VALUES ('11', null, 'fengongsi3', 'e10adc3949ba59abbe56e057f20f883e', '17702589632', '分公司3', '425125198902062365', '/Vendors/2018-02-09/5a7d36ef083d0.png', '/Vendors/2018-02-09/5a7d36ef0891f.png', '/Vendors/2018-02-09/5a7d36ef08a5a.jpg', '海洋有限公司', '020-32653265', '广州市天河区天河路', '/Vendors/2018-02-09/5a7d36ef08d63.jpg', '/Vendors/2018-02-09/5a7d36ef08e8a.docx', '1', '653A61', null, null, 'gQFA8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyVU9aa2swMmJkOTAxMDAwME0wMzUAAgQC9F5aAwQAAAAA', 'gQHL8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyR2l1Y2t0MmJkOTAxMDAwMDAwM2QAAgQC9F5aAwQAAAAA', 'gQFS8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU21rZWw2MmJkOTAxMDAwMGcwM3MAAgRq9F5aAwQAAAAA', 'gQEZ8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyemNUZWx4MmJkOTAxMDAwMHcwM1QAAgRq9F5aAwQAAAAA', null, null, '0.00', null, 'admin', null, '3', '0.00', null, '8', '1518155503', '1518155503');
-INSERT INTO `st_vendors` VALUES ('12', 'tingtingdeyonghu', 'fengongsi1_B_C', 'e10adc3949ba59abbe56e057f20f883e', '14500988907', '分公司1_B_B', '456789198909089876', '/Vendors/2018-02-09/5a7d4b4ed9644.PNG', '/Vendors/2018-02-09/5a7d4b4eda611.PNG', '/Vendors/2018-02-09/5a7d4b4edc872.jpg', '清乾有限公司', '020-98765432', '广州市番禺区市桥汽车站', '/Vendors/2018-02-09/5a7d4bbfa52b2.jpg', '/Vendors/2018-02-10/5a7e5db414a30.jpg', '3', '789961', null, null, null, 'gQFz8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUWNHN2xMMmJkOTAxMDAwMGcwM1MAAgSXDGBaAwQAAAAA', 'gQHC8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQ2NFUmtLMmJkOTAxMDAwMDAwMzIAAgSXDGBaAwQAAAAA', 'gQFq8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySkh1bGtRMmJkOTAxMDAwMDAwM0oAAgSaDWBaAwQAAAAA', '604D8C', '67037D', '50000.00', 'admin', null, null, '3', '54.00', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM79dMEUWicXibcGksRHbVOYb4xKBak4ZlnLIeiakLrJIXLmGANadYHcLZbcFAv89dEYicr4R9icfibjk4xO26kZicUEuJmjKVoUquvsKs/132', '7', '1518160625', '1519711713');
+INSERT INTO `st_vendors` VALUES ('11', null, 'fengongsi3', 'e10adc3949ba59abbe56e057f20f883e', '17702589632', '分公司3', '425125198902062365', '/Vendors/2018-02-09/5a7d36ef083d0.png', '/Vendors/2018-02-09/5a7d36ef0891f.png', '/Vendors/2018-02-09/5a7d36ef08a5a.jpg', '海洋有限公司', '020-32653265', '广州市天河区天河路', '/Vendors/2018-02-09/5a7d36ef08d63.jpg', '/Vendors/2018-02-09/5a7d36ef08e8a.docx', '1', '653A61', null, null, 'gQFA8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyVU9aa2swMmJkOTAxMDAwME0wMzUAAgQC9F5aAwQAAAAA', 'gQHL8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyR2l1Y2t0MmJkOTAxMDAwMDAwM2QAAgQC9F5aAwQAAAAA', 'gQFS8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU21rZWw2MmJkOTAxMDAwMGcwM3MAAgRq9F5aAwQAAAAA', 'gQEZ8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyemNUZWx4MmJkOTAxMDAwMHcwM1QAAgRq9F5aAwQAAAAA', null, null, '0.00', null, 'admin', null, '3', '0.00', null, '7', '1518155503', '1518155503');
+INSERT INTO `st_vendors` VALUES ('12', 'tingtingdeyonghu', 'fengongsi1_B_C', 'e10adc3949ba59abbe56e057f20f883e', '14500988907', '分公司1_B_B', '456789198909089876', '/Vendors/2018-02-09/5a7d4b4ed9644.PNG', '/Vendors/2018-02-09/5a7d4b4eda611.PNG', '/Vendors/2018-02-09/5a7d4b4edc872.jpg', '清乾有限公司', '020-98765432', '广州市番禺区市桥汽车站', '/Vendors/2018-02-09/5a7d4bbfa52b2.jpg', '/Vendors/2018-02-10/5a7e5db414a30.jpg', '3', '789961', null, null, null, 'gQFz8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUWNHN2xMMmJkOTAxMDAwMGcwM1MAAgSXDGBaAwQAAAAA', 'gQHC8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQ2NFUmtLMmJkOTAxMDAwMDAwMzIAAgSXDGBaAwQAAAAA', 'gQFq8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySkh1bGtRMmJkOTAxMDAwMDAwM0oAAgSaDWBaAwQAAAAA', '604D8C', '291C84', '50000.00', 'admin', null, null, '3', '54.00', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM79dMEUWicXibcGksRHbVOYb4xKBak4ZlnLIeiakLrJIXLmGANadYHcLZbcFAv89dEYicr4R9icfibjk4xO26kZicUEuJmjKVoUquvsKs/132', '7', '1518160625', '1519711713');
 INSERT INTO `st_vendors` VALUES ('13', null, 'fengongsi11', 'e10adc3949ba59abbe56e057f20f883e', '14702589632', '分公司11', '452152198902053265', '/Vendors/2018-02-10/5a7e5a27b2a32.png', '/Vendors/2018-02-10/5a7e5a27b2fe4.png', '/Vendors/2018-02-10/5a7e5a27b3121.jpg', '广州技术有限公司', '020-98956236', '广州市海珠区海珠广场', '/Vendors/2018-02-10/5a7e5a27b344e.jpg', '/Vendors/2018-02-10/5a7e5a27b3543.docx', '1', '38EC4D', null, null, 'gQHz8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydVNxUmttMmJkOTAxMDAwMGcwM1YAAgSaDWBaAwQAAAAA', 'gQEk8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyazV0X2xyMmJkOTAxMDAwMDAwM1oAAgSuDWBaAwQAAAAA', 'gQH28DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyMlV3Z2xpMmJkOTAxMDAwMGcwM2gAAgSuDWBaAwQAAAAA', 'gQGP8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyYjRpYmxxMmJkOTAxMDAwMDAwM3oAAgQ1DmBaAwQAAAAA', null, null, '0.00', null, 'admin', null, '3', '0.00', null, '7', '1518230055', '1518230055');
 INSERT INTO `st_vendors` VALUES ('14', null, 'fengongsi4', 'e10adc3949ba59abbe56e057f20f883e', '18500230258', '分公司4', '425125198902063265', '/Vendors/2018-02-24/5a90cba1a189b.png', '/Vendors/2018-02-24/5a90cba1a5099.png', '/Vendors/2018-02-24/5a90cba1a51b8.jpg', '广州德祥有限公司', '020-98655862', '广州市番禺区番禺广场', '/Vendors/2018-02-24/5a90cba1a54b5.jpg', '/Vendors/2018-02-24/5a90cba1a560a.docx', '1', '2EFC28', null, null, 'gQE_8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV2xWZmtuMmJkOTAxMDAwMHcwM08AAgSOymZaAwQAAAAA', 'gQEE8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQXo2TWtFMmJkOTAxMDAwMDAwM3gAAgRPy2ZaAwQAAAAA', 'gQEK8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyMEFLVmxyMmJkOTAxMDAwMGcwMzgAAgRQy2ZaAwQAAAAA', 'gQGu8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyRUVmX2t2MmJkOTAxMDAwME0wM24AAgRQy2ZaAwQAAAAA', null, null, '0.00', null, 'admin', null, '3', '0.00', null, '7', '1519438753', '1519438753');
-INSERT INTO `st_vendors` VALUES ('15', 'fengongsi4_B', 'fengongsi4_B', 'e10adc3949ba59abbe56e057f20f883e', '18908508963', '分公司4_B', '485236198906095698', '/Vendors/2018-02-24/5a90d04a4ec07.jpg', '/Vendors/2018-02-24/5a90d04a4ed4f.jpg', '/Vendors/2018-02-24/5a90d04a4efa0.jpg', '广州晏城有限公司', '020-88569809', '广州市番禺区钟村街道办事处', '/Vendors/2018-02-24/5a90d08d31cbe.jpg', '/Vendors/2018-02-24/5a90d0c0f1ca7.jpg', '3', 'DDDC4B', null, null, null, 'gQFl8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyM3lGeGx0MmJkOTAxMDAwMHcwM3MAAgRQy2ZaAwQAAAAA', 'gQGZ8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyMEN2N2wxMmJkOTAxMDAwMHcwM3IAAgSV4GZaAwQAAAAA', 'gQGQ8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUHFEQmwtMmJkOTAxMDAwMGcwM2gAAgSV4GZaAwQAAAAA', null, '2EFC28', '50000.00', 'admin', null, null, '3', '0.00', 'http://thirdwx.qlogo.cn/mmopen/tW8icv6f6mGPZpqV3j8V3lc0Fzw49m8OWIZ3WRjS3c9EcIicCMlzPevJJAsj5Q5JQO7xiaaD7m0vDkVkic8Cj8xEZa0tvUGicn0Vz/132', '7', '1519438970', '1519438970');
-INSERT INTO `st_vendors` VALUES ('17', 'oQktJwGB2hfmNSaNkjTTF4kt2fEw', 'fengongsi4_A', 'e10adc3949ba59abbe56e057f20f883e', '15600890056', '分公司4_A', '458965198905068965', '/Vendors/2018-02-26/5a9368fcc2bf8.jpg', '/Vendors/2018-02-26/5a9368fcc2ebe.jpg', '/Vendors/2018-02-26/5a9368fcc30cc.jpg', '友谊有限公司', '020-88569980', '广州市番禺区钟村街道办事处', '/Vendors/2018-02-26/5a9369284a4cd.jpg', '/Vendors/2018-02-26/5a93693442379.jpg', '2', '33F5AE', null, null, 'gQEj8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyWWVGRmxjMmJkOTAxMDAwMDAwM0EAAgSDeHJaAwQAAAAA', 'gQF98TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZTA0TWxLMmJkOTAxMDAwMDAwMzIAAgSEeHJaAwQAAAAA', 'gQEQ8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAya18yQWtTMmJkOTAxMDAwMDAwM3EAAgSEeHJaAwQAAAAA', 'gQGo8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyd1l5LWtkMmJkOTAxMDAwMHcwM0gAAgSEeHJaAwQAAAAA', null, '2EFC28', '20000.00', 'admin', null, null, '3', '0.00', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUicB78UOvFu61ibbk8DRhmMnRK79oAKfibo9ficu1aVSzaFEjHoYD7oYHrRlw5K4S9zEnkL0TsfpvvibGf5cwURvpKVJ/132', '7', '1519610031', '1519610031');
-INSERT INTO `st_vendors` VALUES ('18', 'fengongsi1_A_A', 'A_A', 'e10adc3949ba59abbe56e057f20f883e', null, 'A_A', null, null, null, null, null, null, null, null, null, '2', '04F013', null, null, 'gQFo8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV2hCWmtTMmJkOTAxMDAwMHcwM3gAAgSLrXJaAwQAAAAA', 'gQHl8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUGhFaGwyMmJkOTAxMDAwMDAwM1cAAgSMrXJaAwQAAAAA', 'gQHf8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU3FhMmtNMmJkOTAxMDAwME0wMzQAAgSMrXJaAwQAAAAA', 'gQE68TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybXFMcmtmMmJkOTAxMDAwMGcwM2EAAgSMrXJaAwQAAAAA', '93A4F9', '67037D', '0.00', null, null, null, '0', '0.00', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132', '0', '1519620717', '1519620717');
-INSERT INTO `st_vendors` VALUES ('19', 'fengongsi1_A_B', 'A_B', 'e10adc3949ba59abbe56e057f20f883e', null, 'A_B', null, null, null, null, null, null, null, null, null, '3', '04F014', '93A4F9', '93A4F9', 'gQFo8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV2hCWmtTMmJkOTAxMDAwMHcwM3gAAgSLrXJaAwQAAAAA', 'gQHl8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUGhFaGwyMmJkOTAxMDAwMDAwM1cAAgSMrXJaAwQAAAAA', 'gQHf8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU3FhMmtNMmJkOTAxMDAwME0wMzQAAgSMrXJaAwQAAAAA', 'gQE68TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybXFMcmtmMmJkOTAxMDAwMGcwM2EAAgSMrXJaAwQAAAAA', '93A4F9', '67037D', '0.00', null, null, null, '0', '0.00', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132', '0', '1519620717', '1519620717');
-INSERT INTO `st_vendors` VALUES ('20', 'fengongsi1_A_C', 'A_C', 'e10adc3949ba59abbe56e057f20f883e', null, 'A_C', null, null, null, null, null, null, null, null, null, '4', '04F015', '93A4F9', '93A4F9', 'gQFo8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV2hCWmtTMmJkOTAxMDAwMHcwM3gAAgSLrXJaAwQAAAAA', 'gQHl8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUGhFaGwyMmJkOTAxMDAwMDAwM1cAAgSMrXJaAwQAAAAA', 'gQHf8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU3FhMmtNMmJkOTAxMDAwME0wMzQAAgSMrXJaAwQAAAAA', 'gQE68TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybXFMcmtmMmJkOTAxMDAwMGcwM2EAAgSMrXJaAwQAAAAA', '93A4F9', '67037D', '0.00', null, null, null, '0', '0.00', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132', '0', '1519620717', '1519620717');
-INSERT INTO `st_vendors` VALUES ('21', 'fengongsi1_B_B', 'B_B', 'e10adc3949ba59abbe56e057f20f883e', null, 'B_B', null, null, null, null, null, null, null, null, null, '3', '04F016', '', '', 'gQFo8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV2hCWmtTMmJkOTAxMDAwMHcwM3gAAgSLrXJaAwQAAAAA', 'gQHl8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUGhFaGwyMmJkOTAxMDAwMDAwM1cAAgSMrXJaAwQAAAAA', 'gQHf8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU3FhMmtNMmJkOTAxMDAwME0wMzQAAgSMrXJaAwQAAAAA', 'gQE68TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybXFMcmtmMmJkOTAxMDAwMGcwM2EAAgSMrXJaAwQAAAAA', '604D8C', '67037D', '0.00', null, null, null, '0', '0.00', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132', '0', '1519620717', '1519620717');
-INSERT INTO `st_vendors` VALUES ('22', 'fengongsi1_B_C', 'B_C', 'e10adc3949ba59abbe56e057f20f883e', null, 'B_C', null, null, null, null, null, null, null, null, null, '4', '04F017', '604D8C', '', 'gQFo8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV2hCWmtTMmJkOTAxMDAwMHcwM3gAAgSLrXJaAwQAAAAA', 'gQHl8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUGhFaGwyMmJkOTAxMDAwMDAwM1cAAgSMrXJaAwQAAAAA', 'gQHf8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU3FhMmtNMmJkOTAxMDAwME0wMzQAAgSMrXJaAwQAAAAA', 'gQE68TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybXFMcmtmMmJkOTAxMDAwMGcwM2EAAgSMrXJaAwQAAAAA', '604D8C', '67037D', '0.00', null, null, null, '0', '0.00', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132', '0', '1519620717', '1519620717');
-INSERT INTO `st_vendors` VALUES ('23', 'fengongsi1_C_C', 'C_C', 'e10adc3949ba59abbe56e057f20f883e', null, 'C_C', null, null, null, null, null, null, null, null, null, '4', '04F018', '', '', 'gQFo8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV2hCWmtTMmJkOTAxMDAwMHcwM3gAAgSLrXJaAwQAAAAA', 'gQHl8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUGhFaGwyMmJkOTAxMDAwMDAwM1cAAgSMrXJaAwQAAAAA', 'gQHf8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU3FhMmtNMmJkOTAxMDAwME0wMzQAAgSMrXJaAwQAAAAA', 'gQE68TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybXFMcmtmMmJkOTAxMDAwMGcwM2EAAgSMrXJaAwQAAAAA', 'E95CF6', '67037D', '0.00', null, null, null, '0', '0.00', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132', '0', '1519620717', '1519620717');
+INSERT INTO `st_vendors` VALUES ('15', 'fengongsi4_B', 'fengongsi4_B', 'e10adc3949ba59abbe56e057f20f883e', '18908508963', '分公司4_B', '485236198906095698', '/Vendors/2018-02-24/5a90d04a4ec07.jpg', '/Vendors/2018-02-24/5a90d04a4ed4f.jpg', '/Vendors/2018-02-24/5a90d04a4efa0.jpg', '广州晏城有限公司', '020-88569809', '广州市番禺区钟村街道办事处', '/Vendors/2018-02-24/5a90d08d31cbe.jpg', '/Vendors/2018-02-24/5a90d0c0f1ca7.jpg', '3', 'DDDC4B', null, null, null, 'gQFl8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyM3lGeGx0MmJkOTAxMDAwMHcwM3MAAgRQy2ZaAwQAAAAA', 'gQGZ8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyMEN2N2wxMmJkOTAxMDAwMHcwM3IAAgSV4GZaAwQAAAAA', 'gQGQ8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUHFEQmwtMmJkOTAxMDAwMGcwM2gAAgSV4GZaAwQAAAAA', null, '653A61', '50000.00', 'admin', null, null, '3', '0.00', 'http://thirdwx.qlogo.cn/mmopen/tW8icv6f6mGPZpqV3j8V3lc0Fzw49m8OWIZ3WRjS3c9EcIicCMlzPevJJAsj5Q5JQO7xiaaD7m0vDkVkic8Cj8xEZa0tvUGicn0Vz/132', '7', '1519438970', '1519438970');
+INSERT INTO `st_vendors` VALUES ('17', 'oQktJwGB2hfmNSaNkjTTF4kt2fEw', 'fengongsi4_A', 'e10adc3949ba59abbe56e057f20f883e', '15600890056', '分公司4_A', '458965198905068965', '/Vendors/2018-02-26/5a9368fcc2bf8.jpg', '/Vendors/2018-02-26/5a9368fcc2ebe.jpg', '/Vendors/2018-02-26/5a9368fcc30cc.jpg', '友谊有限公司', '020-88569980', '广州市番禺区钟村街道办事处', '/Vendors/2018-02-26/5a9369284a4cd.jpg', '/Vendors/2018-02-26/5a93693442379.jpg', '2', '33F5AE', null, null, 'gQEj8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyWWVGRmxjMmJkOTAxMDAwMDAwM0EAAgSDeHJaAwQAAAAA', 'gQF98TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZTA0TWxLMmJkOTAxMDAwMDAwMzIAAgSEeHJaAwQAAAAA', 'gQEQ8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAya18yQWtTMmJkOTAxMDAwMDAwM3EAAgSEeHJaAwQAAAAA', 'gQGo8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyd1l5LWtkMmJkOTAxMDAwMHcwM0gAAgSEeHJaAwQAAAAA', null, '653A61', '20000.00', 'admin', null, null, '3', '0.00', 'http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUicB78UOvFu61ibbk8DRhmMnRK79oAKfibo9ficu1aVSzaFEjHoYD7oYHrRlw5K4S9zEnkL0TsfpvvibGf5cwURvpKVJ/132', '7', '1519610031', '1519610031');
+INSERT INTO `st_vendors` VALUES ('18', 'fengongsi1_A_A', 'A_A', 'e10adc3949ba59abbe56e057f20f883e', null, 'A_A', null, null, null, null, null, null, null, null, null, '2', '04F013', null, null, 'gQFo8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV2hCWmtTMmJkOTAxMDAwMHcwM3gAAgSLrXJaAwQAAAAA', 'gQHl8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUGhFaGwyMmJkOTAxMDAwMDAwM1cAAgSMrXJaAwQAAAAA', 'gQHf8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU3FhMmtNMmJkOTAxMDAwME0wMzQAAgSMrXJaAwQAAAAA', 'gQE68TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybXFMcmtmMmJkOTAxMDAwMGcwM2EAAgSMrXJaAwQAAAAA', '93A4F9', '291C84', '0.00', null, null, null, '0', '0.00', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132', '0', '1519620717', '1519620717');
+INSERT INTO `st_vendors` VALUES ('19', 'fengongsi1_A_B', 'A_B', 'e10adc3949ba59abbe56e057f20f883e', null, 'A_B', null, null, null, null, null, null, null, null, null, '3', '04F014', '93A4F9', '93A4F9', 'gQFo8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV2hCWmtTMmJkOTAxMDAwMHcwM3gAAgSLrXJaAwQAAAAA', 'gQHl8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUGhFaGwyMmJkOTAxMDAwMDAwM1cAAgSMrXJaAwQAAAAA', 'gQHf8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU3FhMmtNMmJkOTAxMDAwME0wMzQAAgSMrXJaAwQAAAAA', 'gQE68TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybXFMcmtmMmJkOTAxMDAwMGcwM2EAAgSMrXJaAwQAAAAA', '93A4F9', '291C84', '0.00', null, null, null, '0', '0.00', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132', '0', '1519620717', '1519620717');
+INSERT INTO `st_vendors` VALUES ('20', 'fengongsi1_A_C', 'A_C', 'e10adc3949ba59abbe56e057f20f883e', null, 'A_C', null, null, null, null, null, null, null, null, null, '4', '04F015', '93A4F9', '93A4F9', 'gQFo8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV2hCWmtTMmJkOTAxMDAwMHcwM3gAAgSLrXJaAwQAAAAA', 'gQHl8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUGhFaGwyMmJkOTAxMDAwMDAwM1cAAgSMrXJaAwQAAAAA', 'gQHf8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU3FhMmtNMmJkOTAxMDAwME0wMzQAAgSMrXJaAwQAAAAA', 'gQE68TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybXFMcmtmMmJkOTAxMDAwMGcwM2EAAgSMrXJaAwQAAAAA', '93A4F9', '291C84', '0.00', null, null, null, '0', '0.00', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132', '0', '1519620717', '1519620717');
+INSERT INTO `st_vendors` VALUES ('21', 'fengongsi1_B_B', 'B_B', 'e10adc3949ba59abbe56e057f20f883e', null, 'B_B', null, null, null, null, null, null, null, null, null, '3', '04F016', '', '', 'gQFo8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV2hCWmtTMmJkOTAxMDAwMHcwM3gAAgSLrXJaAwQAAAAA', 'gQHl8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUGhFaGwyMmJkOTAxMDAwMDAwM1cAAgSMrXJaAwQAAAAA', 'gQHf8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU3FhMmtNMmJkOTAxMDAwME0wMzQAAgSMrXJaAwQAAAAA', 'gQE68TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybXFMcmtmMmJkOTAxMDAwMGcwM2EAAgSMrXJaAwQAAAAA', '604D8C', '291C84', '0.00', null, null, null, '0', '0.00', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132', '0', '1519620717', '1519620717');
+INSERT INTO `st_vendors` VALUES ('22', 'fengongsi1_B_C', 'B_C', 'e10adc3949ba59abbe56e057f20f883e', null, 'B_C', null, null, null, null, null, null, null, null, null, '4', '04F017', '604D8C', '', 'gQFo8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV2hCWmtTMmJkOTAxMDAwMHcwM3gAAgSLrXJaAwQAAAAA', 'gQHl8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUGhFaGwyMmJkOTAxMDAwMDAwM1cAAgSMrXJaAwQAAAAA', 'gQHf8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU3FhMmtNMmJkOTAxMDAwME0wMzQAAgSMrXJaAwQAAAAA', 'gQE68TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybXFMcmtmMmJkOTAxMDAwMGcwM2EAAgSMrXJaAwQAAAAA', '604D8C', '291C84', '0.00', null, null, null, '0', '0.00', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132', '0', '1519620717', '1519620717');
+INSERT INTO `st_vendors` VALUES ('23', 'fengongsi1_C_C', 'C_C', 'e10adc3949ba59abbe56e057f20f883e', null, 'C_C', null, null, null, null, null, null, null, null, null, '4', '04F018', '', '', 'gQFo8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV2hCWmtTMmJkOTAxMDAwMHcwM3gAAgSLrXJaAwQAAAAA', 'gQHl8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyUGhFaGwyMmJkOTAxMDAwMDAwM1cAAgSMrXJaAwQAAAAA', 'gQHf8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyU3FhMmtNMmJkOTAxMDAwME0wMzQAAgSMrXJaAwQAAAAA', 'gQE68TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybXFMcmtmMmJkOTAxMDAwMGcwM2EAAgSMrXJaAwQAAAAA', 'E95CF6', '291C84', '0.00', null, null, null, '0', '0.00', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM4IUw4vejmKA64ib5YEGDyFzrOkCVqa7EasmHUxvGDb5dA9nfjQ7x0zffsF5hCiaEvZgnt7WHjpeEPjAB7ibq9nZu0Ep2fcqtaH84/132', '0', '1519620717', '1519620717');
 INSERT INTO `st_vendors` VALUES ('24', null, 'fengongsi8', 'e10adc3949ba59abbe56e057f20f883e', '17702300025', '分公司8', '421251198902030256', '/Vendors/2018-02-26/5a93b6ef812dc.png', '/Vendors/2018-02-26/5a93b6ef81840.png', '/Vendors/2018-02-26/5a93b6ef81979.jpg', '速腾有限公司', '020-59862232', '广州市海珠区海珠广场', '/Vendors/2018-02-26/5a93b6ef81cc7.jpg', '/Vendors/2018-02-26/5a93b6ef81dee.docx', '1', '291C84', null, null, 'gQGW8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyXy1nOWs4MmJkOTAxMDAwMDAwM3kAAgTtrXJaAwQAAAAA', 'gQGH8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyQjQ2amxLMmJkOTAxMDAwMHcwM0IAAgTurXJaAwQAAAAA', 'gQGI8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyMTN5d2tPMmJkOTAxMDAwMDAwM0cAAgTurXJaAwQAAAAA', 'gQEj8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyV1dxX2x6MmJkOTAxMDAwMDAwM1YAAgTurXJaAwQAAAAA', null, null, '0.00', null, 'admin', null, '3', '0.00', null, '7', '1519630063', '1519630063');
-INSERT INTO `st_vendors` VALUES ('25', 'oQktJwLHOoB7RGa1Jcjyj_jeq7nw', 'xiaoxiao', 'e10adc3949ba59abbe56e057f20f883e', '13556536651', '在一起吧', '423456198909086789', '/Vendors/2018-02-28/5a967d7bd409e.JPG', '/Vendors/2018-02-28/5a967d7bd519d.JPG', '/Vendors/2018-02-28/5a967d7bd5a75.JPG', '一定是我', '020-84734566', '广州市人民政府', '/Vendors/2018-02-28/5a967e01534dc.JPG', '/Vendors/2018-03-01/5a9753c329639.png', '4', '8A2F25', '604D8C', null, null, null, 'gQHo8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybDlBT2trMmJkOTAxMDAwMDAwM20AAgRpr3JaAwQAAAAA', 'gQFu8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAycEppZ2xlMmJkOTAxMDAwME0wM3oAAgRpr3JaAwQAAAAA', '604D8C', '67037D', '10000.00', 'admin', null, null, '1', '0.00', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM79dMEUWicXibcGksRHbVOYb4xKBak4ZlnLIeiakLrJIXLmGANadYHcLZby05rZBR9D6Hax0LToIcbTq6qlRQ1KMzZ43q40ongypA/132', '9', '1519811211', '1519811211');
+INSERT INTO `st_vendors` VALUES ('25', 'oQktJwLHOoB7RGa1Jcjyj_jeq7nw', 'xiaoxiao', 'e10adc3949ba59abbe56e057f20f883e', '13556536651', '在一起吧', '423456198909086789', '/Vendors/2018-02-28/5a967d7bd409e.JPG', '/Vendors/2018-02-28/5a967d7bd519d.JPG', '/Vendors/2018-02-28/5a967d7bd5a75.JPG', '一定是我', '020-84734566', '广州市人民政府', '/Vendors/2018-02-28/5a967e01534dc.JPG', '/Vendors/2018-03-01/5a9753c329639.png', '4', '8A2F25', '604D8C', null, null, null, 'gQHo8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAybDlBT2trMmJkOTAxMDAwMDAwM20AAgRpr3JaAwQAAAAA', 'gQFu8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAycEppZ2xlMmJkOTAxMDAwME0wM3oAAgRpr3JaAwQAAAAA', '604D8C', '291C84', '10000.00', 'admin', null, null, '1', '0.00', 'http://thirdwx.qlogo.cn/mmopen/Q3auHgzwzM79dMEUWicXibcGksRHbVOYb4xKBak4ZlnLIeiakLrJIXLmGANadYHcLZby05rZBR9D6Hax0LToIcbTq6qlRQ1KMzZ43q40ongypA/132', '9', '1519811211', '1519811211');
 
 -- ----------------------------
 -- Table structure for st_vendors_commission
@@ -4535,7 +4630,7 @@ CREATE TABLE `st_wechat` (
   `updatetime` int(11) unsigned NOT NULL COMMENT '更新时间',
   `recommend` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员 4:分公司邀请分销商 5:分销商邀请分销商}',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1664 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1676 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_wechat
@@ -6167,6 +6262,18 @@ INSERT INTO `st_wechat` VALUES ('1660', 'oQktJwMeNnwwepYxQAmTlbTuMJRA', null, '0
 INSERT INTO `st_wechat` VALUES ('1661', 'oQktJwKhmUrqjV3dZJweKIehW_A8', 'gQF08DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydkFWamxqMmJkOTAxMDAwMDAwM3EAAgRt7V5aAwQAAAAA', '1', '2', '0', '1520228917', '1520228917', '5');
 INSERT INTO `st_wechat` VALUES ('1662', 'oQktJwJc4HFnW3tIO--lqrT7b7FI', null, '0', null, '1', '1520230197', '1520230197', '0');
 INSERT INTO `st_wechat` VALUES ('1663', 'oQktJwJQKBZOjF4XtD3e3Ci3BuYM', null, '0', null, '0', '1520230408', '1520230408', '0');
+INSERT INTO `st_wechat` VALUES ('1664', 'oQktJwPgDHYEmHshKn4lDIe7NdCE', null, '0', null, '1', '1520232855', '1520232855', '0');
+INSERT INTO `st_wechat` VALUES ('1665', 'oQktJwNTzihqTOhrlgd38cqP3pYA', 'gQF08DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydkFWamxqMmJkOTAxMDAwMDAwM3EAAgRt7V5aAwQAAAAA', '1', '2', '0', '1520233580', '1520233580', '5');
+INSERT INTO `st_wechat` VALUES ('1666', 'oQktJwI-Lly8hdfGi9IJc0DtUgTQ', null, '0', null, '1', '1520233925', '1520233925', '0');
+INSERT INTO `st_wechat` VALUES ('1667', 'oQktJwNfGAaW7EHM-19nO_dnmA_Y', null, '0', null, '1', '1520234190', '1520234190', '0');
+INSERT INTO `st_wechat` VALUES ('1668', 'oQktJwF8b-cS0LmObEjSaXLE47FE', null, '0', null, '1', '1520234905', '1520234905', '0');
+INSERT INTO `st_wechat` VALUES ('1669', 'oQktJwEGInxWvrzhm7OThUSZlFpw', null, '0', null, '1', '1520235751', '1520235751', '0');
+INSERT INTO `st_wechat` VALUES ('1670', 'oQktJwM1xAi6eUaN-6c_Vfl6BaJA', 'gQF08DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydkFWamxqMmJkOTAxMDAwMDAwM3EAAgRt7V5aAwQAAAAA', '1', '2', '0', '1520235801', '1520235801', '5');
+INSERT INTO `st_wechat` VALUES ('1671', 'oQktJwBIpxZlp2ToYG9IX79-LCmY', null, '0', null, '1', '1520236236', '1520236236', '0');
+INSERT INTO `st_wechat` VALUES ('1672', 'oQktJwMCeYpK__Tzci-h58ItBUfw', 'gQF08DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydkFWamxqMmJkOTAxMDAwMDAwM3EAAgRt7V5aAwQAAAAA', '1', '2', '0', '1520236754', '1520236754', '5');
+INSERT INTO `st_wechat` VALUES ('1673', 'oQktJwKonArYXhGxlolh7NqiQ6JA', 'gQF08DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydkFWamxqMmJkOTAxMDAwMDAwM3EAAgRt7V5aAwQAAAAA', '1', '2', '0', '1520237083', '1520237083', '5');
+INSERT INTO `st_wechat` VALUES ('1674', 'oQktJwMCeYpK__Tzci-h58ItBUfw', null, '0', null, '0', '1520237218', '1520237218', '0');
+INSERT INTO `st_wechat` VALUES ('1675', 'oQktJwNX4aqM5Dpyw9slxrENIGsg', null, '0', null, '0', '1520237479', '1520237479', '0');
 
 -- ----------------------------
 -- Table structure for st_work
@@ -6193,14 +6300,14 @@ CREATE TABLE `st_work` (
   PRIMARY KEY (`id`,`result`),
   KEY `uid` (`uid`),
   KEY `dw_uid` (`dw_uid`)
-) ENGINE=MyISAM AUTO_INCREMENT=24147 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=24148 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_work
 -- ----------------------------
 INSERT INTO `st_work` VALUES ('24136', '1', null, '点球科技', 'sOH20180226170474039', null, '', '0', '净水器安装', '广东省', '广州市', '番禺区', '中村人民路流水街道32号', '0', '', '1519635874', '');
 INSERT INTO `st_work` VALUES ('24137', '1', null, '维修', 'BLp20180227114559906', null, '', '1', '维修', '河北省', '唐山市', '路南区', '河北省唐山市路南区南北路', '0', '', '1519703154', '');
-INSERT INTO `st_work` VALUES ('24138', '1', null, '01', 'Onw20180228105329598', null, '', '0', '安装', '广东省', '广州市', '荔湾区', '广东省广州市荔湾区十字路口', '0', '', '1519786427', '');
+INSERT INTO `st_work` VALUES ('24138', '1', '1', '01', 'Onw20180228105329598', '姚师傅', '13302030231', '0', '安装', '广东省', '广州市', '荔湾区', '广东省广州市荔湾区十字路口', '1', '1520402699', '1519786427', '');
 INSERT INTO `st_work` VALUES ('24139', '1', '1', 'ST001', 'HBM20180302150235946', '夏师傅', '18902036520', '0', '何小姐家安装饮水机', '天津市', '天津市市辖区', '河北区', '金华路商品店', '2', '1520218881', '1519974138', '');
 INSERT INTO `st_work` VALUES ('24140', '1', null, '01', 'uSM20180305132848579', null, '', '1', '维修', '北京市', '北京市市辖区', '东城区', '东城街道办事处', '0', '', '1520227694', '');
 INSERT INTO `st_work` VALUES ('24141', '1', null, '02', 'Fcw20180305132881757', null, '', '0', '安装', '内蒙古自治区', '鄂尔多斯市', '东胜区', '十字路口', '0', '', '1520227733', '');
@@ -6208,4 +6315,5 @@ INSERT INTO `st_work` VALUES ('24142', '1', null, '03', 'LEU20180305132937469', 
 INSERT INTO `st_work` VALUES ('24143', '1', null, '04', 'Eyv20180305132955720', null, '', '2', '维护', '黑龙江省', '哈尔滨市', '道里区', '道里区街道办事处', '0', '', '1520227789', '');
 INSERT INTO `st_work` VALUES ('24144', '1', null, '05', 'uet20180305133054249', null, '', '0', '安装', '天津市', '天津市市辖区', '和平区', '和平街道办事处', '0', '', '1520227827', '');
 INSERT INTO `st_work` VALUES ('24145', '1', null, '06', 'uMS20180305133035721', null, '', '2', '维护', '山西省', '太原市', '小店区', '小店街道办事处', '0', '', '1520227858', '');
-INSERT INTO `st_work` VALUES ('24146', '1', null, '07', 'Nga20180305133148425', null, '', '0', '07', '北京市', '北京市市辖区', '西城区', '西城街道办事处', '0', '', '1520227885', '');
+INSERT INTO `st_work` VALUES ('24146', '1', '1', '07', 'Nga20180305133148425', '蓝师傅', '15622030025', '0', '07', '北京市', '北京市市辖区', '西城区', '西城街道办事处', '2', '1520400447', '1520227885', '');
+INSERT INTO `st_work` VALUES ('24147', '1', null, '058', 'wUZ20180307140329475', null, '', '0', '安装', '江西省', '南昌市', '东湖区', '江西省南昌市东湖区东湖路', '0', '', '1520402586', '');
