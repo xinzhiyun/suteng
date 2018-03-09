@@ -41,30 +41,9 @@ class TaskController extends CommonController
             $addRes = M('task')->add($data);
             // 判断是否添加成功
             if($addRes){
-                // 设置成功
-                
-                // 查询设备码
-                $code = M('Devices')->where('id='.$data['did'])->getField('device_code');
+                //设置成功
+                $this->timer_add($addRes);//加入定时
 
-                // 实例化redis
-                $redis = new \Redis();
-                // redis连接
-                $redis->connect('127.0.0.1',6379);
-                // 查询当前设备下的设置状态是否存在
-                $res = $redis->exists($code[$data['type']]);
-
-                // 判断当前设备的设置状态
-                if($res){
-                    // 获取
-                    $value = $redis->get($code[$data['type']]);
-                    var_dump($value);exit;
-                    $arr[] = json_decode($value);
-                    $arr[] = $data;
-                }
-                var_dump($code[$data['type']]);
-                $redis->set($code[$data['type']],json_encode($data));
-
-                 var_dump($redis->get($code[$data['type']]));die;
                 // 设置返回提示码
                 $data['code'] = 200;
                 // 设置返回提示信息
@@ -135,12 +114,16 @@ class TaskController extends CommonController
         if ($info == '1') {
            $update_info = M('task')->where($where)->setField('state',0);
            if ($update_info) {
+                $this->timer_del($where['id']);
+
                $message    = ['code' => 200, 'message' => '禁用成功!'];
            } else {
                $message    = ['code' => 403, 'message' => '禁用失败!'];
            }
         } else {
             $update_info = M('task')->where($where)->setField('state',1);
+
+            $this->timer_add($where['id']);//加入定时
             if ($update_info) {
                 $message    = ['code' => 200, 'message' => '启用成功!'];
             } else {
@@ -159,6 +142,8 @@ class TaskController extends CommonController
         $delData['id'] = I('post.id');
         // $delData['id'] = 67;
         if($delData['id']){
+            $this->timer_del($delData['id']);
+
             $res = M('task')->where($delData)->delete();
             if($res){
                 $message    = ['code' => 200, 'message' => '删除成功!'];
@@ -172,4 +157,32 @@ class TaskController extends CommonController
         // 返回数据
         $this->ajaxReturn($message);
     }
+
+    //添加定时的缓存
+    public function timer_add($key='')
+    {
+        if(!empty($key)){
+            $data = M('task')->where('id='.$key)->find();
+            $data['device_code'] = M('Devices')->where('id='.$data['did'])->getField('device_code');// 查询设备码
+         
+            //redis连接
+            $redis = new \Redis();
+            $redis->connect('127.0.0.1',6379);
+
+            $key = "Timer_".$key;
+            $res=$redis->set($key,json_encode($data));
+        }
+    }
+
+    //删除定时缓存
+    public function timer_del($key='')
+    {
+        if(!empty($key)){
+            $key = "Timer_".$key;
+            $redis = new \Redis();
+            $redis->connect('127.0.0.1',6379);
+            $redis->delete($key);
+        }
+    }
+    
 }
