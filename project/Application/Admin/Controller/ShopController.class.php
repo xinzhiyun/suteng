@@ -249,12 +249,23 @@ class ShopController extends CommonController
             if(!$info) E($upload->getError(),603);
             $data['picname'] = $info['pic']['savename'];
             $data['path'] = $info['pic']['savepath'].$info['pic']['savename'];
-            $res = $pic->add($data);
+            $res = $pic->where('gid='.$data['gid'])->find();
             if($res){
-                E('添加成功',200);
+                $status_res = $pic->where('gid='.$data['gid'])->save($data);
+                if($status_res){
+                    E('更新成功',200);
+                } else {
+                    E('更新失败',604);
+                }
             } else {
-                E('添加失败',604);
+                $status_res = $pic->add($data);
+                if($status_res){
+                    E('添加成功',200);
+                } else {
+                    E('添加失败',604);
+                }
             }
+            
         } catch (\Exception $e) {
             $err = [
                 'code' => $e->getCode(),

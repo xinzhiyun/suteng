@@ -82,6 +82,7 @@ class DevicesController extends CommonController
         try {
             $devices = D('devices');
             $code = I('post.');
+            if($code['type_id'] == '--') E('请选择滤芯', 204);
             if(!$devices->create()){
                 E($devices->getError(), 202);
             }
@@ -111,6 +112,7 @@ class DevicesController extends CommonController
         // 滤芯信息
         $filter     = $device->getFilterInfo($map);
         $filterInfo = $device->getFilterDetail($filter);
+        dump($statu);
         $assign = [
             'statu'      => $statu,
             'filterInfo' => $filterInfo,
@@ -342,6 +344,28 @@ class DevicesController extends CommonController
         }
 
     }
+
+    // 设备经销商解除绑定
+    public function ubind()
+    {
+        try {
+            $map = I('post.');
+            $data['vid'] = null;
+            $res = M('devices')->where($map)->save($data);
+            if($res){
+                E('经销商解除绑定成功',200);
+            } else {
+                E('经销商解除绑定失败',203);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
     // 滤芯显示
     public function filterList()
     {

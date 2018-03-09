@@ -29,7 +29,6 @@ class WorkController extends CommonController
 
         $work = D('work');
         $workList = $work->getPage($work,$map,'create_at desc');
-
         $this->assign('pageList',$workList);
         $this->display();
     }

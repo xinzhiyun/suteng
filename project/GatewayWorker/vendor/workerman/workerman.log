@@ -929,3 +929,4 @@ Stack trace:
 2018-03-07 14:23:20 pid:31463 Workerman[start.php] start in DEBUG mode
 2018-03-07 14:29:55 pid:31463 Workerman[start.php] stopping ...
 2018-03-07 14:29:55 pid:31463 Workerman[start.php] has been stopped
+2018-03-08 17:55:55 pid:14821 Workerman[start.php] start in DAEMON mode
