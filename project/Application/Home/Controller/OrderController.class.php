@@ -288,7 +288,7 @@ class OrderController extends CommonController
                 return $this->ajaxReturn(['code'=>400,'msg'=>'没有数据']);
         } else {
             $this->display();
-        }         
+        }
     }
     
     /**

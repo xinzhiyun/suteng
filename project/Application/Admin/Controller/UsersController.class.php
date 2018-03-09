@@ -39,7 +39,6 @@ class UsersController extends CommonController
         $where['nickname'] = $_GET['nickname'];
         $where['grade'] = I('get.grade');
         $where['sex'] = I('get.sex');
-        dump($where);
         $this->assign($assign);
         $this->assign('where',$where);
         $this->display();

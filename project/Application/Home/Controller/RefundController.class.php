@@ -80,9 +80,10 @@ class RefundController extends CommonController
             }
            
             $refund->startTrans();
-            // print_r($data);die;
-            // 判断该用户是否已经对这个商品评价过，如果评价过，就不能评价了           
+            // print_r($data);die;                    
             $result = D('Refund')->relation(true)->add($data);
+            // 将订单状态更改为退货处理中
+            D('order_detail')->where(['order_id'=>$post['order_id'],'uid'=>$data['uid']])->setField(['status'=>6]);
             if($result){
                 $refund->commit();
                 E('申请成功', 200);

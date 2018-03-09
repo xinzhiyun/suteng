@@ -29,7 +29,12 @@ class WorkController extends CommonController
 
         $work = D('work');
         $workList = $work->getPage($work,$map,'create_at desc');
+        $where['number'] = $_GET['number'];
+        $where['type'] = I('get.type');
+        $where['result'] = I('get.result');
+
         $this->assign('pageList',$workList);
+        $this->assign('where',$where);
         $this->display();
     }
 

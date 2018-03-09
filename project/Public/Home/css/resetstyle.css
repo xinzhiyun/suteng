@@ -478,17 +478,21 @@ body{
 
 /*首页键*/
 #back2Home {
-	width: 40px;
-	height: 40px;
+	width: 2rem;
+	height: 2rem;
+	max-width: 40px;
+	max-height: 40px;
+	min-width: 20px;
+	min-height: 20px;
 	position: fixed;
 	top: 36px;
 	right: 10px;
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
-	-webkit-box-pack: center;
-	    -ms-flex-pack: center;
-	        justify-content: center;
+   	-webkit-box-pack: flex-start;
+	-ms-flex-pack: flex-start;
+    justify-content: flex-start;
 	-webkit-box-align: center;
 	    -ms-flex-align: center;
 	        align-items: center;
@@ -510,11 +514,8 @@ body{
 		        transform: translateX(0);*/
 	}
 	to {
-		-webkit-transform: translateX(30px);
-		        transform: translateX(30px);
-		 -webkit-box-pack: flex-start;
-	    	-ms-flex-pack: flex-start;
-	      justify-content: flex-start;
+		-webkit-transform: translateX(1.6rem);
+		        transform: translateX(1.6rem);
 	      padding-left: 6px;
 	    
 	}
@@ -526,11 +527,8 @@ body{
 		        transform: translateX(0);*/
 	}
 	to {
-		-webkit-transform: translateX(30px);
-		        transform: translateX(30px);
-		 -webkit-box-pack: flex-start;
-	    	-ms-flex-pack: flex-start;
-	      justify-content: flex-start;
+		-webkit-transform: translateX(1.6rem);
+		        transform: translateX(1.6rem);
 	      padding-left: 6px;
 	}
 }

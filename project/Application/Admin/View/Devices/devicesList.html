@@ -20,11 +20,11 @@
                 <form method="get" action="">
                     <div class="input-group col-md-6"  style="float: right;margin-right: 60px;">
                         <select name="key" class="form-control" name="account" style="width:20%">
-                            <option value="device_code">设备编码</option>
-                            <option value="typename">设备类型</option>
+                            <option <?php echo ($where['key']=="device_code")?'selected':''; ?> value="device_code">设备编码</option>
+                            <option <?php echo ($where['key']=="typename")?'selected':''; ?> value="typename">设备类型</option>
                         </select>
                         <input type="hidden" name="p" value="1">
-                        <input type="text" name="keywords" placeholder="输入搜索关键字" class="input form-control"   style="width:50%">
+                        <input type="text" name="keywords"  placeholder="输入搜索关键字" value="{{$where['keywords']}}"class="input form-control"   style="width:50%">
 <!--                          <select name="AliveStause" class="form-control" name="account" style="width:20%">
                             <option value="">激活状态</option>
                             <option value="0">未激活</option>

@@ -4856,20 +4856,21 @@ body.modal-open {
 .loginDiv:nth-of-type(3) {
     padding: 0;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
     border: none;
     border-radius: 9px;
     background: none;
 }
 .loginDiv:nth-of-type(3)>input {
-    height: 100%;
+    height: auto;
+    min-height: 40px;
     padding: 4%;
     border: 2px solid #8BAFD0;
     border-radius: 9px;
     background: #DFF3FE;
 }
 .loginDiv:nth-of-type(3)>img {
-    height: 100%;
+    height: auto;
     width: 44%;
     margin-left: 5%;
 }
@@ -4879,6 +4880,7 @@ body.modal-open {
     border-left: 1px solid #aaaaaa;
     background: none;
 }
+
 .logo-name {
     width: 100%;
     height: 100px;
