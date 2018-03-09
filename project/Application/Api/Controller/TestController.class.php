@@ -108,7 +108,7 @@ class TestController extends Controller
                 $msg = $msgs[$li->type];
                 $msg['DeviceID'] = $li->device_code;
 
-                // $sc->sendMsg($li->device_code,json_encode($msg));
+                $sc->sendMsg($li->device_code,json_encode($msg));
             }
             unset($ftime);
             unset($msg);
