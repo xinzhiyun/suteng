@@ -213,13 +213,32 @@
   	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/echarts.simple.min.js"></script>
 	<script>
-	var mustDate=0;//当前月份最大天数
+	var mustDate=0;//默认当前月份最大天数
+	var year = new Date().getFullYear();
+	var month = new Date().getMonth() + 1;
+	console.log(year, month)
+ 	mustDate = new Date(year, month, 0).getDate();
+ 	var datalist=JSON.parse($(".datalist").val());//表中所有的数据集
+ 	var yAxisData = [[200],[2000]];//设置y轴最大值
+ 	// 选中月份获取净水记录
+	$.ajax({
+		url:"getTds",
+		dataType:"json",
+		type:"post",
+		async: false,
+		data:{
+			"month":year+"0"+month
+		},
+		success:function(res){
+			datalist = res;
+			getAvg(datalist);
+		},
+		error: function(res) {
+			conosle.log("错误", res);
+		}
+	});
 	$(function(){
-		var year = new Date().getFullYear();
-		var month = new Date().getMonth();
-	 	mustDate = new Date(year, month, 0).getDate();
-		var datalist=JSON.parse($(".datalist").val());//数据集
-		$("#dateSelect").text(year+'-'+month);//显示当前年月
+		$("#dateSelect").text(year+'-'+ month);//显示当前年月
 		//选择年月
 		$("#dateSelect").click(function(){
 			var _this=$(this);
@@ -229,18 +248,24 @@
 				show: true,
 				type: 'month',
 				max: new Date().getTime(),
-				done: function(){
+				done: function(datas){
 					// 获取年月数值如：201802
-					var data = $(".layui-this").text().substring(1);
+					data = $(".layui-this").text().substring(1);
 					var num=["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"];
 					var monthstring = -1;
-					var yearstring=String(parseInt($(".laydate-set-ym span").html()));
 					$(".layui-this").attr("lay-ym");
-					for(var i=0;i<num.length;i++){
-						if(num[i]==data){
-							monthstring=parseInt(i+1)<10?"0"+(i+1):i;
+					if(data) {
+						var yearstring=String(parseInt($(".laydate-set-ym span").html()));
+						for(var i=0;i<num.length;i++){
+							if(num[i]==data){
+								monthstring=parseInt(i+1)<10?"0"+(i+1):i;
+							}
 						}
+					}else{
+						var yearstring=datas.substr(0, 4);
+						monthstring = datas.substr(5, 2);
 					}
+					mustDate = new Date(yearstring, monthstring, 0).getDate();
 					console.log(yearstring+monthstring);
 					// 选中月份获取净水记录
 					$.ajax({
@@ -251,9 +276,14 @@
 							"month":yearstring+monthstring
 						},
 						success:function(res){
-							console.log(res);
+							datalist = res;
+							getAvg(datalist);
+						},
+						error: function(res) {
+							conosle.log("错误", res);
 						}
 					});
+
 				}
 			});
 		})
@@ -265,6 +295,27 @@
 		// 	$(".month").val(date.value.split('-')[1]);
 		// 	console.log(date);
 		// })
+		// var rawArray=[];//原水数据集
+		// var pureArray=[];//净水数据集
+		// var rawSum=0,pureSum=0;
+		// for(var i=0;i<datalist.length;i++){//遍历原水值与净水值的数据
+		// 	rawArray[i]=parseInt(datalist[i].raw);
+		// 	pureArray[i]=parseInt(datalist[i].pure);
+		// 	rawSum+=rawArray[i];
+		// 	pureSum+=pureArray[i];
+		// }
+		// // 求平均值
+		// $(".rawMean").html("(平均值："+(rawSum/rawArray.length).toFixed(2)+"ppm)");
+		// $(".pureMean").html("(平均值："+(pureSum/pureArray.length).toFixed(2)+"ppm)");
+		// var pureMean = (pureSum/pureArray.length).toFixed(2);
+		// var lineChart1 = echarts.init(byId('barChart1'));
+		// lineChart1.setOption(getOption(yAxisData[0], 100, rawArray, '#2EB6AA', mustDate));
+		
+		// var lineChart2 = echarts.init(byId('barChart2'));
+		// lineChart2.setOption(getOption(yAxisData[1], 500, pureArray, '#FD3959', mustDate));
+		
+	});
+	function getAvg(datalist) {
 		var rawArray=[];//原水数据集
 		var pureArray=[];//净水数据集
 		var rawSum=0,pureSum=0;
@@ -279,13 +330,13 @@
 		$(".pureMean").html("(平均值："+(pureSum/pureArray.length).toFixed(2)+"ppm)");
 		var pureMean = (pureSum/pureArray.length).toFixed(2);
 		var lineChart1 = echarts.init(byId('barChart1'));
-		lineChart1.setOption(getOption(yAxisData[0], 100, rawArray, '#2EB6AA'));
+		lineChart1.setOption(getOption(yAxisData[0], 100, rawArray, '#2EB6AA', mustDate));
 		
 		var lineChart2 = echarts.init(byId('barChart2'));
-		lineChart2.setOption(getOption(yAxisData[1], 500, pureArray, '#FD3959'));
-		
-	});
-	var getOption = function(_yAxisData, _minInterval, _seriesData, _lineColor) {
+		lineChart2.setOption(getOption(yAxisData[1], 500, pureArray, '#FD3959', mustDate));
+	}
+	getAvg(datalist);
+	function getOption(_yAxisData, _minInterval, _seriesData, _lineColor, mustDate) {
 		var chartOption = {
 		    color: [_lineColor],
 		    tooltip : {
@@ -339,15 +390,9 @@
 		};
 		return chartOption;
 	};
-	var byId = function(id) {
+	function byId(id) {
 		return document.getElementById(id);
 	};
-	var yAxisData = [[200],[2000]];//设置y轴最大值
-
-	
-
-	
-
 	</script>
 </body>
 </html>
