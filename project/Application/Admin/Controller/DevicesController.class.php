@@ -493,8 +493,8 @@ class DevicesController extends CommonController
         }
         $type = D('Type');
         $filters = D('Filters');
-        $data = $type->where($map)->select();
-        $filter = $filters->where(['status'=>0])->select();
+        $data = $type->where($map)->order('id desc')->select();
+        $filter = $filters->where(['status'=>0])->order('id desc')->select();
         $assign = [
             'data' => $data,
             'filter' => $filter,
