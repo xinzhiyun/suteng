@@ -10,6 +10,8 @@
 	<title>商品详情</title>
 </head>
 <body>
+	<input type="hidden" value='{{$sold_num}}' id="sold_num">
+	<input type="hidden" value='{{$postage}}' id="postage">
 	<div class="shopdetailContain">
 		<div class="detailTop">
 			<!-- /*商品信息*/ -->
@@ -79,6 +81,8 @@
 			return
 			// console.log(home)
 		}()
+		var postage = $("#postage").val();
+		var sold_num = $('#sold_num').val();
 		//清除历史发票信息sessionStorage
 		sessionStorage.setItem("voiceArr", '');
 		//显示购物车数量
@@ -115,7 +119,7 @@
 					'</div>'+
 					'<!-- /*商品说明*/ -->'+
 					'<div class="detailTxt">'+
-						'<span><b>￥'+ goodsDetail.price +'</b><em>已售： 210</em></span>'+
+						'<span><b>￥'+ goodsDetail.price +'</b><em>已售： '+ sold_num +'</em></span>'+
 						'<b>'+ goodsDetail.name +'</b>'+
 						'<p></p>'+
 						'<em>'+ goodsDetail.attr +'</em>'+
@@ -130,7 +134,7 @@
 								'<input type="button" value="+" class="plus">'+
 							'</span>'+
 						'</p>'+
-						'<p><span>邮费</span><span><b class="expressMoney">￥<span>8.88</span></b></span></p>'+
+						'<p><span>邮费</span><span><b class="expressMoney">￥<span>'+ postage +'</span></b></span></p>'+
 					'</div>'; 
 				console.log(res.commentInfo[0])
 				// 如果有评价则遍历出来		
@@ -269,6 +273,7 @@
 					console.log('成功！ ', res)
 					//更新购物车数量
 					$('.icon-gouwuche>span').text(res);
+					sessionStorage.setItem('cartnum', res);
 	       			parent.layer.msg('添加成功！');
 				},
 				error: function(res){

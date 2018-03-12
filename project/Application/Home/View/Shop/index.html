@@ -96,7 +96,7 @@
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script>
 		$(function(){
-			
+
 			// 首页按钮
 			!function(){
 				// 创建 a 标签
@@ -121,6 +121,13 @@
 			}else {
 				// 如果购物车没有商品
 				$(".cartnum>span").text(0);
+			}
+			
+			// 浏览器后退更新购物车数量
+			if(sessionStorage.getItem('cartnum')){
+				console.log('1221')
+				$('.cartnum>span').text(sessionStorage.getItem('cartnum'));
+				
 			}
 			//存放分栏的商品信息
 			var CategoryHTML = '', categoryArr = [];
@@ -446,7 +453,7 @@
 			 */
 			$(".searchBtn").click(function(){
 				_search($(this).siblings('input').val());
-
+				
 			})
 			// 点击搜索内容存储 商品id 到地址栏URL 给 商品详情页面用
 			$("#searchPanel").on('click', 'a', function(){
