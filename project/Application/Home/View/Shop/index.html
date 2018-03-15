@@ -98,7 +98,24 @@
 	<script type="text/javascript" src="__PUBLIC__/Home/js/slide.js"></script>
 	<script>
 		$(function(){
+			
+			// 首页按钮
+			!function(){
+				// 创建 a 标签
+				var home = document.createElement('a');
+				home.innerText = '首\n页';
+				
+				home.href = '{{:U("Home/Index/index")}}';
+				home.setAttribute("id", 'back2Home');
 
+				// 添加到页面
+				document.body.appendChild(home);
+				home.onclick = function(){
+					home.style.background = '#aaa';
+				}
+				return
+				// console.log(home)
+			}()
 		/***************** 页面跳转 -- 开始 ************************/
 			/*
 				点击的时候记录当前点击的商品gid，传给商品详情页面
