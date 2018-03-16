@@ -278,6 +278,7 @@
 							"month":yearstring+monthstring
 						},
 						success:function(res){
+							console.log(res)
 							datalist = res;
 							getAvg(datalist);
 						},
@@ -318,6 +319,7 @@
 		
 	});
 	function getAvg(datalist) {
+		console.log(typeof datalist);
 		var rawArray=[];//原水数据集
 		var pureArray=[];//净水数据集
 		var rawSum=0,pureSum=0;
@@ -327,15 +329,22 @@
 			rawSum+=rawArray[i];
 			pureSum+=pureArray[i];
 		}
-		// 求平均值
-		$(".rawMean").html("(平均值："+(rawSum/rawArray.length).toFixed(2)+"ppm)");
-		$(".pureMean").html("(平均值："+(pureSum/pureArray.length).toFixed(2)+"ppm)");
 		var pureMean = (pureSum/pureArray.length).toFixed(2);
 		var lineChart1 = echarts.init(byId('barChart1'));
 		lineChart1.setOption(getOption(yAxisData[0], 100, rawArray, '#2EB6AA', mustDate));
 		
 		var lineChart2 = echarts.init(byId('barChart2'));
 		lineChart2.setOption(getOption(yAxisData[1], 500, pureArray, '#FD3959', mustDate));
+		if(datalist.length !== 0) {
+			// 求平均值
+			$(".rawMean").html("(平均值："+(rawSum/rawArray.length).toFixed(2)+"ppm)");
+			$(".pureMean").html("(平均值："+(pureSum/pureArray.length).toFixed(2)+"ppm)");
+		}else{
+			$(".rawMean").html("(平均值："+0+"ppm)");
+			$(".pureMean").html("(平均值："+0+"ppm)");
+		}
+
+		
 	}
 	getAvg(datalist);
 	function getOption(_yAxisData, _minInterval, _seriesData, _lineColor, mustDate) {
