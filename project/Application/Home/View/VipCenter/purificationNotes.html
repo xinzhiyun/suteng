@@ -73,18 +73,6 @@
 			text-align: center;
 			background: #9E9E9F;
 		}
-		/*#dateSelect:before {
-			content: '';
-			width: 0;
-			height: 0;
-			display: block;
-			position: absolute;
-			left: 38%;
-			bottom: 16%;
-			border: 10px solid;
-			border-color: #fff transparent transparent transparent;
-			z-index: 11;
-		}*/
 		#dateSelect:after {
 			content: '';
 			width: 0;
@@ -194,19 +182,15 @@
 	<div>
 		<h3 class="eChartTitle">纯水 <span class="rawMean"></span></h3>
 		<div class="chart" id="barChart1" _echarts_instance_="1513755345537" >
-			<div>
-				<div data-zr-dom-id="bg"></div>
-				<canvas data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas>
-			</div>
+			<div data-zr-dom-id="bg"></div>
+			<canvas data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas>
 		</div>
 	</div>
 	<div>
 		<h3 class="eChartTitle">原水 <span class="pureMean"></span></h3>
 		<div class="chart" id="barChart2" _echarts_instance_="1513755345537" >
-			<div>
-				<div data-zr-dom-id="bg" ></div>
-				<canvas data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas>
-			</div>
+			<div data-zr-dom-id="bg" ></div>
+			<canvas data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas>
 		</div>
 	</div>
   	<script src="__PUBLIC__/Home/js/laydate.js"></script>
@@ -294,8 +278,6 @@
 			$(".rawMean").html("(平均值："+0+"ppm)");
 			$(".pureMean").html("(平均值："+0+"ppm)");
 		}
-
-		
 	}
 	getAvg(datalist);
 	function getOption(_yAxisData, _minInterval, _seriesData, _lineColor, mustDate) {
