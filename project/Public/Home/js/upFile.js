@@ -14,10 +14,12 @@
 	/*
 		图片压缩上传
 	 */
+	filePic = false;
 	$(".file_upload").on('change',function(e){
 		var fileList = e.target.files;
 		console.log('原始： ',fileList)
 		if(fileList.length == 1){
+			filePic = true;
 			var reader =new FileReader();
 				
 			//图片显示
@@ -206,6 +208,9 @@
 			formData.append('UploadForm[]', imgUpload[i])
 		}
 		console.log('after: ',formData.getAll('UploadForm[]'));
+		if(imgUpload.length == 0) {
+			filePic = false;
+		}
 
 	})
 	/*

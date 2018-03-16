@@ -172,8 +172,7 @@
            formData.getAll('truename') + '\n' + formData.getAll('phone') + '\n' + 
            formData.getAll('address') + '\n' + formData.getAll('UploadForm[]')
           );
-
-          if(date && device_code.selectedIndex != 0 && reason.selectedIndex != 0 && content && truename && phone && address){
+          if(date && device_code.selectedIndex != 0 && reason.selectedIndex != 0 && content && truename && phone && address && filePic){
               console.log('通过！')
 
               /*
@@ -224,6 +223,11 @@
           }else if(!content){
               console.log('希望您提供宝贵的建议！');
               layuiHint('希望您提供宝贵的建议！');
+              return false;
+              
+          }else if(!filePic){
+              console.log('请上传保修图片！');
+              layuiHint('请上传保修图片！');
               return false;
               
           }else if(!nameReg.test(truename)){
