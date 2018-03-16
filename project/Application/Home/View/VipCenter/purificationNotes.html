@@ -213,11 +213,11 @@
   	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/echarts.simple.min.js"></script>
 	<script>
-	var mustDate=0;//默认当前月份最大天数
-	var year = new Date().getFullYear();
-	var month = new Date().getMonth() + 1;
-	console.log(year, month)
- 	mustDate = new Date(year, month, 0).getDate();
+	var year = new Date().getFullYear();//年份
+	var month = ((new Date().getMonth()+1)+'').length == 1
+					? '0' + (new Date().getMonth()+1)
+					: (new Date().getMonth()+1);//获取月份
+ 	var mustDate = new Date(year, month, 0).getDate();//默认当前月份最大天数
  	var datalist=JSON.parse($(".datalist").val());//表中所有的数据集
  	var yAxisData = [[200],[2000]];//设置y轴最大值
  	// 选中月份获取净水记录
@@ -230,8 +230,7 @@
 			"month":year+"0"+month
 		},
 		success:function(res){
-			datalist = res;
-			getAvg(datalist);
+			getAvg(res);
 		},
 		error: function(res) {
 			conosle.log("错误", res);
@@ -249,27 +248,9 @@
 				type: 'month',
 				max: new Date().getTime(),
 				done: function(datas){
-					console.log(datas)
-					// 获取年月数值如：201802
-					// data = $(".layui-this").text().substring(2);
-					// console.log("lli" + data)
-					// var num=["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"];
-					// var monthstring = -1;
-					// $(".layui-this").attr("lay-ym");
-					// if(data) {
-						// var yearstring=String(parseInt($(".laydate-set-ym span").html()));
-						// for(var i=0;i<num.length;i++){
-							// if(num[i]==data){
-								// monthstring=parseInt(i+1)<10?"0"+(i+1):i;
-							// }
-						// }
-					// }else{
 					var yearstring=datas.substr(0, 4);
 					var monthstring = datas.substr(5, 2);
-					// }
 					mustDate = new Date(yearstring, monthstring, 0).getDate();
-					console.log(yearstring , monthstring);
-					// 选中月份获取净水记录
 					$.ajax({
 						url:"getTds",
 						dataType:"json",
@@ -278,9 +259,7 @@
 							"month":yearstring+monthstring
 						},
 						success:function(res){
-							console.log(res)
-							datalist = res;
-							getAvg(datalist);
+							getAvg(res);
 						},
 						error: function(res) {
 							conosle.log("错误", res);
@@ -289,37 +268,9 @@
 
 				}
 			});
-		})
-
-		// $("body").on("click",'.laydate-btns-confirm',function(){	//日期选择
-		// 	var date = $(".dateDiv").text();
-		// 	console.log(date)
-		// 	$(".year").val(date.value.split('-')[0]);
-		// 	$(".month").val(date.value.split('-')[1]);
-		// 	console.log(date);
-		// })
-		// var rawArray=[];//原水数据集
-		// var pureArray=[];//净水数据集
-		// var rawSum=0,pureSum=0;
-		// for(var i=0;i<datalist.length;i++){//遍历原水值与净水值的数据
-		// 	rawArray[i]=parseInt(datalist[i].raw);
-		// 	pureArray[i]=parseInt(datalist[i].pure);
-		// 	rawSum+=rawArray[i];
-		// 	pureSum+=pureArray[i];
-		// }
-		// // 求平均值
-		// $(".rawMean").html("(平均值："+(rawSum/rawArray.length).toFixed(2)+"ppm)");
-		// $(".pureMean").html("(平均值："+(pureSum/pureArray.length).toFixed(2)+"ppm)");
-		// var pureMean = (pureSum/pureArray.length).toFixed(2);
-		// var lineChart1 = echarts.init(byId('barChart1'));
-		// lineChart1.setOption(getOption(yAxisData[0], 100, rawArray, '#2EB6AA', mustDate));
-		
-		// var lineChart2 = echarts.init(byId('barChart2'));
-		// lineChart2.setOption(getOption(yAxisData[1], 500, pureArray, '#FD3959', mustDate));
-		
+		})		
 	});
 	function getAvg(datalist) {
-		console.log(typeof datalist);
 		var rawArray=[];//原水数据集
 		var pureArray=[];//净水数据集
 		var rawSum=0,pureSum=0;
