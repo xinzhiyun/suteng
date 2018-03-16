@@ -249,24 +249,26 @@
 				type: 'month',
 				max: new Date().getTime(),
 				done: function(datas){
+					console.log(datas)
 					// 获取年月数值如：201802
-					data = $(".layui-this").text().substring(1);
-					var num=["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"];
-					var monthstring = -1;
-					$(".layui-this").attr("lay-ym");
-					if(data) {
-						var yearstring=String(parseInt($(".laydate-set-ym span").html()));
-						for(var i=0;i<num.length;i++){
-							if(num[i]==data){
-								monthstring=parseInt(i+1)<10?"0"+(i+1):i;
-							}
-						}
-					}else{
-						var yearstring=datas.substr(0, 4);
-						monthstring = datas.substr(5, 2);
-					}
+					// data = $(".layui-this").text().substring(2);
+					// console.log("lli" + data)
+					// var num=["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"];
+					// var monthstring = -1;
+					// $(".layui-this").attr("lay-ym");
+					// if(data) {
+						// var yearstring=String(parseInt($(".laydate-set-ym span").html()));
+						// for(var i=0;i<num.length;i++){
+							// if(num[i]==data){
+								// monthstring=parseInt(i+1)<10?"0"+(i+1):i;
+							// }
+						// }
+					// }else{
+					var yearstring=datas.substr(0, 4);
+					var monthstring = datas.substr(5, 2);
+					// }
 					mustDate = new Date(yearstring, monthstring, 0).getDate();
-					console.log(yearstring+monthstring);
+					console.log(yearstring , monthstring);
 					// 选中月份获取净水记录
 					$.ajax({
 						url:"getTds",
