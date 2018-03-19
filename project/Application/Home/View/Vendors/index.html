@@ -14,7 +14,7 @@
         <header>
             <div class="weishare">
                 <i class="iconfont icon-erweima"></i>
-                <i class="iconfont icon-zhixiang share"></i>
+                <!-- <i class="iconfont icon-zhixiang share"></i> -->
             </div>
             <p><b><img src="{{$vendor.head}}" alt="" width="100%"></b></p>
             <p><span>{{$vendor.name}}</span></p>
@@ -54,7 +54,7 @@
             <div class="weishare">
                 <i class="iconfont icon-cuohao" id="out"></i>
                 <!-- <i class="iconfont icon-erweima"></i> -->
-                <i class="iconfont icon-zhixiang share" id="share"></i>
+                <!-- <i class="iconfont icon-zhixiang share" id="share"></i> -->
 
             </div>
             <p><b><img src="{{$vendor.head}}" alt="" width="100%"></b></p>
@@ -138,18 +138,18 @@
         })
 
         // 点击右上角分享
-        $(".share").on("click", function(){
+        // $(".share").on("click", function(){
 
-            $("#sharePanel").css({display: 'block'});
-            $("#sharePart").animate({bottom: '0'})
-        })
+        //     $("#sharePanel").css({display: 'block'});
+        //     $("#sharePart").animate({bottom: '0'})
+        // })
 
         // 分享界面点击上部分退出分享
-        $("#maskbg").on("click", function(){
+        // $("#maskbg").on("click", function(){
 
-            $("#sharePanel").css({display: 'none'});
-            $("#sharePart").css({bottom: '-44vh'})
-        })
+        //     $("#sharePanel").css({display: 'none'});
+        //     $("#sharePart").css({bottom: '-44vh'})
+        // })
 
         // 二维码分享效果
         $(".taocan div").on("click", function(){
