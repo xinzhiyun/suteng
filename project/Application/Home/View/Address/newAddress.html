@@ -178,6 +178,10 @@
 	    				},1000);
 			    		return;
 			    	}else{
+			    		if(addressChange && $('#areaID').val().indexOf('请选择') > -1){
+			    			layHint('请重新选择地址！');
+			    			return false;
+			    		}
 				    	$.ajax({
 				    		url: '{{:U("Home/Address/save_address")}}',
 				    		type: 'post',
