@@ -183,7 +183,7 @@
 				    		type: 'post',
 				    		data: editAddressObj,
 				    		success: function(res){
-				    			console.log('成功！',res);
+				    			// console.log('成功！',res);
 				    			if(res.code == 200){
 				    				layHint('保存成功！');
 				    				// sessionStorage.setItem("editAddressObj", JSON.stringify(editAddressObj));
@@ -192,9 +192,14 @@
 					    				setTimeout(function(){
 					    					location.href = '{{:U("Home/PaymentSystem/payConfirm")}}';
 					    				},500);
+									}else{
+										// 没有订单号则返回地址管理界面
+										setTimeout(function(){
+					    					location.href = '{{:U("Home/Address/index")}}';
+					    				},500);
 									}
 				    			}else{
-				    				console.log('失败！',res);
+				    				// console.log('失败！',res);
 				    				layHint('保存失败！');
 				    			}
 				    		},
@@ -206,23 +211,23 @@
 			    	}
 				}else if(!nameRes){
 		    		// 验证姓名
-		    		console.log('请输入符合规范的姓名！');
+		    		// console.log('请输入符合规范的姓名！');
 		    		layHint('请输入合法的姓名！')
 
 		    	}else if(!phoneRes){
-		    		console.log('请输入正确的电话号码！');
+		    		// console.log('请输入正确的电话号码！');
 		    		layHint('请输入正确的电话号码！')
 
 		    	}else if(!areaIDRes){
-		    		console.log('请选择地区！');
+		    		// console.log('请选择地区！');
 		    		layHint('请选择地区！')
 		    		
 		    	}else if(!townRes || !$(".town").val()){
-		    		console.log('请选择街道！');
+		    		// console.log('请选择街道！');
 		    		layHint('请选择街道！')
 		    		
 		    	}else if(!addressDetialRes){
-		    		console.log('请输入详细地址！');
+		    		// console.log('请输入详细地址！');
 		    		layHint('请输入详细地址！')
 		    		
 		    	}
