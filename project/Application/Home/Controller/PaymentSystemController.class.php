@@ -93,7 +93,8 @@ class PaymentSystemController extends CommonController
         $this->assign('openId',$openId);
 
 
-
+        $postage = 999.99;
+        $this->assign('postage',$postage);
         $this->assign($assign);
         $this->display();
     }
