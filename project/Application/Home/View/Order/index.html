@@ -302,7 +302,7 @@
 							dingdanDaifukuan1+=dingdanDaifukuan2+'<div class="calc">'+
 									'<div>'+
 										'共'+ waitpaylist[i]['totalnumber'] +'件商品&emsp;'+
-										'合计：<b class="price">￥'+waitpaylist[i]['totalprice']+'</b>'+
+										'合计：<b class="price">￥'+(Number(waitpaylist[i]['totalprice'])+Number(waitpaylist[i]['postage']))+'</b>'+
 										'<span class="postage">&nbsp;(含邮费￥'+waitpaylist[i]['postage']+')</span>'+
 									'</div>'+
 									'<div>'+
@@ -432,7 +432,7 @@
 							dingdanDaifahuo1+=dingdanDaifahuo2+'<div class="calc">'+
 									'<div>'+
 										'共'+ waitsendlist[i]['totalnumber'] +'件商品&emsp;'+
-										'合计：<b class="price">￥'+waitsendlist[i]['totalprice']+'</b>'+
+										'合计：<b class="price">￥'+(Number(waitsendlist[i]['totalprice']) + Number(waitsendlist[i]['postage']))+'</b>'+
 										'<span class="postage">&nbsp;(含邮费￥'+waitsendlist[i]['postage']+')</span>'+
 									'</div>'+
 									'<div>'+
@@ -516,7 +516,7 @@
 							dingdanDaishouhuo1+=dingdanDaishouhuo2+'<div class="calc">'+
 									'<div>'+
 										'共'+ waitgainlist[i]['totalnumber'] +'件商品&emsp;'+
-										'合计：<b class="price">￥'+waitgainlist[i]['totalprice']+'</b>'+
+										'合计：<b class="price">￥'+(Number(waitgainlist[i]['totalprice'])+Number(waitgainlist[i]['postage']))+'</b>'+
 										'<span class="postage">&nbsp;(含邮费￥'+waitgainlist[i]['postage']+')</span>'+
 									'</div>'+
 									'<div>'+
@@ -617,7 +617,7 @@
 							dingdanDaipinglun1+=dingdanDaipinglun2+'<div class="calc">'+
 									'<div>'+
 										'共'+ waitcommentlist[i]['totalnumber'] +'件商品&emsp;'+
-										'合计：<b class="price">￥'+waitcommentlist[i]['totalprice']+'</b>'+
+										'合计：<b class="price">￥'+(Number(waitcommentlist[i]['totalprice'])+Number(waitcommentlist[i]['postage']))+'</b>'+
 										'<span class="postage">&nbsp;(含邮费￥'+waitcommentlist[i]['postage']+')</span>'+
 									'</div>'+
 									'<div>'+
