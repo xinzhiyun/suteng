@@ -30,9 +30,10 @@
 		<div id="msg">
 			<i class="iconfont icon-laba"></i>
 			<div>
-				<div id="msgDiv">
-					<!-- <p>哈哈哈有系统消息</p> -->
-				</div>
+				<ul id="msgDiv">
+					<li></li>
+					<!-- <li>哈哈哈有系统消息</li> -->
+				</ul>
 			</div>
 		</div>
 	</header>
@@ -152,10 +153,7 @@
 		/*
 			公告信息
 		 */
-		var len;	//存放公告条数
-		var num = 1;	//公告轮播记录
 		var msgHTML = '';	//公告信息
-		var offset;		//轮播长度
 		$.ajax({
 			url: '{{:U("Mail/get_announcement")}}',
 			type: 'post',
@@ -163,41 +161,33 @@
 				console.log('请求成功! ',res)
 
 				for(var i=0; i<res.data.length; i++){
-					msgHTML += '<p>'+ res.data[i].content +'</p>'
+					msgHTML += i+1 + '、' + res.data[i].content + '<i>&emsp;</i>';
 				}
-				$('#msgDiv').html(msgHTML+'<p>'+ res.data[0].content +'</p>');
-				if($('#msgDiv').find('p')){
-					len = $('#msgDiv').find('p').length;
-					if(len > 2){
-						// 公告轮播
-						setInterval(function(){
-							msgGo();
-						},2000);
-					}
+				$('#msgDiv>li').html(msgHTML);
+				if($('#msgDiv').find('li')){
+					var oldtext = $('#msgDiv>li').text();
+					// 公告信息滚动
+					var textint = setInterval(function(){
+						var newtext = $('#msgDiv>li').text();
+						var wlen = $('#msgDiv>li').text().length;
+						console.log('wlen: ',wlen);
+						if(wlen >= 8){
+							console.log(newtext.substr(1));
+							$('#msgDiv>li').text(newtext.substr(1));
+
+							if(wlen <= 8){
+								$('#msgDiv>li').text('\t\t\t\t' + oldtext);
+
+							}
+						}
+					},300)
+
 				}
 			},
 			error: function(res){
 				console.log('请求失败! ',res)
 			}
 		})
-		//	公告轮播函数
-		function msgGo(){
-			offset = (100/len)*100/100;
-			$("#msgDiv").css({
-				transform: 'translateY(-'+ offset*num +'%)'
-			})
-			// console.log(num*offset);
-			if(num*offset >= (100-offset)){
-				num = 0;
-				setTimeout(function(){
-					$("#msgDiv").css({transition: 'none'})
-				},2000)
-				
-			}else{
-				num++;
-				$("#msgDiv").css({transition: 'ease .5s'})
-			}
-		}
 		
 	</script>
 	<script>
