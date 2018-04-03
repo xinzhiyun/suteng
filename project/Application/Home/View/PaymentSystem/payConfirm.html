@@ -10,6 +10,7 @@
 </head>
 <body>
 	<input type="hidden" value='{{$data}}' id="addressInfo">
+	<input type="hidden" value='{{$postage}}' id='postage'>
 	<div id="content">
 		<header id="header">
 			<div id="hLeft">
@@ -173,6 +174,9 @@
 		    ]
 		});
 		$(function(){
+			// 快递费
+			var postage = $("#postage").val();
+			// console.log(postage);
 			$("#hLeft").click(function(){
 				location.href = "{{:U('Address/index')}}";
 			})
@@ -250,9 +254,9 @@
 					numAll += parseInt(lvxinData[i].num);
 					priceAll += parseInt(lvxinData[i].priceAll);
 				}
-				priceAll += 8;	//加上快递费价格
+				priceAll += Number(postage);	//加上快递费价格
 				//快递费
-				// $("#calc>p>span").text(lvxinData.expressMoney);
+				$("#calc>p>span").text(postage);
 				$("#main").append(goodsHTML);	//滤芯订单的信息
 				$(".numAll").text(numAll);		//滤芯订单的总数量
 				$(".priceAll").text('￥'+priceAll);	//滤芯订单的总价格
@@ -279,12 +283,12 @@
 				numAll = parseInt(goods_data.num);
 				priceAll = parseInt(goods_data.goodsDetail.price);
 				//快递费
-				$("#calc>p>span").text(goods_data.expressMoney);
+				$("#calc>p>span").text(postage);
 				$("#main").append(goodsHTML);	//订单的信息
 				$(".numAll").text(numAll);		//订单的总数量
-				$(".priceAll").text('￥'+ (parseFloat(numAll*priceAll) + parseFloat(goods_data.expressMoney)).toFixed(2));	//订单的总价格
+				$(".priceAll").text('￥'+ (parseFloat(numAll*priceAll) + parseFloat(postage)).toFixed(2));	//订单的总价格
 				$("#footerContain>div>span").text('￥'+(parseFloat(numAll*priceAll) + parseFloat(goods_data.expressMoney)).toFixed(2));	//订单的总价格
-				$(".paytopRight>p").text('￥'+(parseFloat(numAll*priceAll) + parseFloat(goods_data.expressMoney)).toFixed(2));	//订单的总价格
+				$(".paytopRight>p").text('￥'+(parseFloat(numAll*priceAll) + parseFloat(postage)).toFixed(2));	//订单的总价格
 
 			}else if(shopCar_data){	// 如果有商品购买，从购物车’结算‘过来
 				for(var i=0; i<shopCar_data.length; i++){
@@ -309,9 +313,9 @@
 					numAll += parseInt(shopCar_data[i].num);
 					priceAll += parseInt(shopCar_data[i].money);
 				}
-				priceAll += 8;	//加上快递费
+				priceAll += Number(postage);	//加上快递费
 				//快递费
-				// $("#calc>p>span").text(shopCar_data.expressMoney);
+				$("#calc>p>span").text(postage);
 				$("#main").append(goodsHTML);	//订单的信息
 				$(".numAll").text(numAll);		//订单的总数量
 				$(".priceAll").text('￥'+ priceAll);	//订单的总价格

@@ -30,12 +30,13 @@ class FeedsController extends CommonController
         $page  = new \Think\Page($total,8);
         $pageButton =$page->show();
 
-        $userlist = $user->where($map)
-                        ->join('st_users ON st_feeds.uid = st_users.id')
-                        ->field('st_feeds.*,st_users.nickname')->order(array('st_feeds.id'=>'desc'))
-                        ->limit($page->firstRow.','.$page->listRows)
-                        ->select();
+        $userlist = $user
+                        // ->join('st_users ON st_feeds.uid = st_users.id','LEFT')
+                        // ->field('st_feeds.*,st_users.nickname')->order(array('st_feeds.id'=>'desc'))
+                        // ->limit($page->firstRow.','.$page->listRows)
+                        ->select(false);
 
+        dump($userlist);
         $this->assign('list',$userlist);
         $this->assign('where',$where);
         $this->assign('button',$pageButton);

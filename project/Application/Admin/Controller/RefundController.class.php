@@ -79,9 +79,9 @@ class RefundController extends CommonController
     public function install()
     {
         $map = '';
-        if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
-            $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
-        }
+        // if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
+        //     $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
+        // }
         $data = D('shop_order')->alias('so')
                             ->where(['gd.is_install'=>1])
                             ->where($map)
