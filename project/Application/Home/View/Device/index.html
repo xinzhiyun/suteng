@@ -126,12 +126,14 @@
 		      home.href = '{{:U("Home/VipCenter/minepack")}}';
 		      home.setAttribute("id", 'back2Home');
 
-		      // 添加到页面
-		      document.body.appendChild(home);
-		      home.onclick = function(){
-		        home.style.background = '#aaa';
-		      }
-		      return
+		      if($('.deviceItem>div').length){
+			      // 添加到页面
+			      document.body.appendChild(home);
+			      home.onclick = function(){
+			        home.style.background = '#aaa';
+			      }
+			      return
+			   }
 		      // console.log(home)
 		    }()
 		})

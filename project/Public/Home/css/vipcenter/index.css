@@ -100,8 +100,10 @@ body {
 	/*transition: ease .5s;
 	transform: translateY(-0%);*/
 }
-#msgDiv>p {
+#msgDiv>li {
 	height: 100%;
+	float: left;
+	list-style: normal;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
