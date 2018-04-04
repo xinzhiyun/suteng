@@ -1,0 +1,361 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/switchery.min.css" rel="stylesheet">
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>商城管理 <small>商品添加</small></h5>
+                </div>
+                <div class="ibox-content no-padding">
+                    <form id="form" onsubmit="false" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品类别：</label>
+
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="firscate">
+                                    <option value="--">--请选择--</option>
+                                    <volist name="cateInfo" id="vo">
+                                        <option value="{{$vo.id}}">{{$vo.name}}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <div class="col-sm-2" style="display:none">
+                                <select class="form-control m-b" name="seccate">
+                                    <option value="--">--请选择--</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2" style="display:none">
+                                <select class="form-control m-b" name="thirdcate">
+                                    <option value="--">--请选择--</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品名称：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="name" placeholder="定义商品的名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label _attr">商品属性：</label>
+                            <div class="col-sm-10">
+                                <div class="checkbox i-checks">
+                                    <volist name="attrInfo" id="vo">
+                                        <label class="attr">
+                                            <input type="checkbox" data-name={{$vo.attr}} data-id="{{$vo.id}}"> <i></i> {{$vo.attr}}
+                                        </label>
+                                    </volist>
+                                    <label class="attrList">
+                                        <button type="button" class="btn btn-outline btn-primary" onclick="add()">添加属性</button>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品规格：</label>
+                            <div class="col-sm-6 attr_val">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">普通会员销售单价：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="price[0]" placeholder="标准价钱格式，例如：2.00">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">VIP会员销售单价：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="price[2]" placeholder="标准价钱格式，例如：2.00">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">标准会员销售单价：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="price[3]" placeholder="标准价钱格式，例如：2.00">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">钻石会员销售单价：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="price[4]" placeholder="标准价钱格式，例如：2.00">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">非企业会员销售单价：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="price[1]" placeholder="标准价钱格式，例如：2.00">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品成本：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="cost" placeholder="标准价钱格式，例如：2.00，只在管理页面可见">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品库存：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="stock" placeholder="至少为1，不可负数">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">是否安装</label>
+                            <div class="col-md-2">
+                                <input type="checkbox" name="is_install" class="is_install" checked/>
+                            </div>
+                            <label class="col-sm-2 control-label">是否租赁</label>
+                            <div class="col-md-2">
+                                <input type="checkbox" name="is_hire" class="is_hire" checked/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button type="button" class="btn btn-primary goodsAdd">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹窗 -->
+    <div class="modal inmodal" id="st-attr_add" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        添加属性
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-bordered table-hover table-condensed">
+                        <tr>
+                            <th width=15%>
+                                属性名称
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <input class="input-medium form-control" type="text" name="attrname">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                            </th>
+                            <td>
+                                <input class="btn btn-success add-attr" type="submit" value="添加">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script>
+        $("select[name='firscate']").change(function(){
+            var firscateId = $(this).children('option:selected').val();
+            var html = "";
+            $("select[name='seccate']").html('<option value="--">--请选择--</option>');
+            $("select[name='thirdcate']").html('<option value="--">--请选择--</option>');
+            $("select[name='seccate']").parent().css('display','none');
+            $("select[name='thirdcate']").parent().css('display','none');
+            if(/^[0-9]*$/.test(firscateId)){
+                $.ajax({
+                    url:'getCate',
+                    data:{'pid':firscateId},
+                    type:'post',
+                    dataType:'json',
+                    success:function(res){
+                        if(res.length!=0){
+                            $("select[name='seccate']").parent().css('display','inline');
+                            for(var i=0;i<res.length;i++){
+                                html += '<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
+                            }
+                            $("select[name='seccate']").html('<option value="--">--请选择--</option>');
+                            $("select[name='seccate']").append(html);
+                        }
+                    }
+                })
+            }
+        })
+        $("select[name='seccate']").change(function(){
+            var seccateId = $(this).children('option:selected').val();
+            var html = "";
+            $("select[name='thirdcate']").html('<option value="--">--请选择--</option>');
+            $("select[name='thirdcate']").parent().css('display','none');
+            if(/^[0-9]*$/.test(seccateId)){
+                $.ajax({
+                    url:'getCate',
+                    data:{'pid':seccateId},
+                    type:'post',
+                    dataType:'json',
+                    success:function(res){
+                        if(res.length!=0){
+                            $("select[name='thirdcate']").parent().css('display','inline');
+                            for(var i=0;i<res.length;i++){
+                                html += '<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
+                            }
+                            $("select[name='thirdcate']").html('<option value="--">--请选择--</option>');
+                            $("select[name='thirdcate']").append(html);
+                        }
+                    }
+                })
+            }
+        })
+
+        // 添加属性
+        function add() {
+            $("input[name='attrname']").val('');
+            $('#st-attr_add').modal('show');
+        }
+        // 添加功能
+        $('.add-attr').click(function(){
+            $('#st-attr_add').modal('hide');
+            var name = $("input[name='attrname']").val();
+            $.ajax({
+                url:"attrAdd",
+                data:{"attr":name},
+                dataType:"json",
+                type: 'post',
+                success:function(res){
+                    if(res.code != 203 && res.code != 204){
+                        location.reload();
+                        $(".attrList").before('<label><input type="checkbox" name="attr[]" value="'+res.code+'" class="attr"> <i></i> '+name+'</label>');
+                        recheck();
+                        parent.layer.msg(res.msg);
+                    } else {
+                        parent.layer.msg(res.msg);
+                    }
+                }
+            })
+        });
+
+    </script>
+    <script src="__PUBLIC__/Admin/js/plugins/iCheck/icheck.min.js"></script>
+    <!-- SUMMERNOTE -->
+    <script src="__PUBLIC__/Admin/js/plugins/summernote/summernote.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/plugins/summernote/summernote-zh-CN.js"></script>
+    <script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/switchery.min.js"></script>
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script>
+        function recheck(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        }
+        // 富文本
+        $(document).ready(function () {
+            recheck();
+            $('.summernote').summernote({
+                lang: 'zh-CN'
+            });
+            $("#form .attr").on("click", function(e){
+                bindClick();
+            });
+            $("#form .iCheck-helper").on("click", function(e){
+                bindClick();
+            });
+
+            // 按钮初始化
+            var elem = document.querySelector('.is_install');
+            var init = new Switchery(elem);
+            defaults = {
+                color             : '#64bd63', 
+                secondaryColor    : '#dfdfdf', 
+                jackColor         : '#fff', 
+                jackSecondaryColor: null, 
+                className         : 'switchery', 
+                disabled          : false, 
+                disabledOpacity   : 0.5, 
+                speed             : '0.1s', 
+                size              : 'default'
+            }
+
+            var elem = document.querySelector('.is_hire');
+            var init = new Switchery(elem);
+            defaults = {
+                color             : '#64bd63', 
+                secondaryColor    : '#dfdfdf', 
+                jackColor         : '#fff', 
+                jackSecondaryColor: null, 
+                className         : 'switchery', 
+                disabled          : false, 
+                disabledOpacity   : 0.5, 
+                speed             : '0.1s', 
+                size              : 'default'
+            }
+
+        });
+        function bindClick(){
+            var attrId,attrName;
+            var arr = new Array();
+
+            $('.attr').each(function(i,item){
+                var aa = $(item).children('div').hasClass('checked');
+                var obj = $(this).find('input');
+                if(aa){
+                    attrName = obj.data('name');
+                    attrId = obj.data('id');
+                    arr.push({
+                        attrId:attrId,
+                        attrName:attrName,
+                    })
+                }
+            })
+            $('.attr_val').empty();
+            for(var i=0;i<arr.length;i++){
+                $('.attr_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].attrName+'</span><input type="text" placeholder="请输入'+arr[i].attrName+'的规格" name="attr['+arr[i].attrId+']" value="" class="form-control"></div>');
+            }
+        }
+
+
+        var edit = function () {
+            $("#eg").addClass("no-padding");
+            $('.click2edit').summernote({
+                lang: 'zh-CN',
+                focus: true
+            });
+        };
+        var save = function () {
+            $("#eg").removeClass("no-padding");
+            var aHTML = $('.click2edit').code(); //save HTML If you need(aHTML: array).
+            $('.click2edit').destroy();
+        };
+
+        $(".goodsAdd").click(function(){
+            var data = $("#form").serializeArray();
+            $.ajax({
+                url:'goodsAction',
+                type:'post',
+                data:data,
+                success:function(res){
+                    if(res.code == 200){
+                        location.reload();
+                        parent.layer.msg(res.msg);
+                    } else {
+                        parent.layer.msg(res.msg);
+                    }
+                }
+            });
+        });
+    </script>
+</block>

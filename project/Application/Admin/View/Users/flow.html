@@ -1,0 +1,90 @@
+
+<extend name="Public/base" />
+<block name="mylink">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/layui/css/layui.css">
+</block>
+<block name="content">
+    <div class="content">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>用户管理 <small>充值记录</small></h5>
+                </div>
+                <form method="get" action="">
+                    <div class="input-group col-md-6"  style="float: right;margin-right: 60px;">
+                        <span class="input-group-btn" style="display: inline-block;">
+                                <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
+                        </span>
+                    </div>
+                </form>
+                <div class="ibox-content">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th width="5%">充值流水ID</th>
+                                <th>用户昵称</th>
+                                <th>订单编号</th>
+                                <th>充值金额（元）</th>
+                                <th>订单金额（元）</th>
+                                <th>充值方式</th>
+                                <th>金币</th>
+                                <th>银币</th>
+                                <th>充值描述</th>
+                                <th>当前金币</th>
+                                <th>当前银币</th>
+                                <th>充值时间</th>
+                                <!-- <th>操作</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <empty name="list">
+                                <tr><td colspan="6">暂无充值记录</td></tr>
+                            <else />
+                                <volist name="list" id="vo">
+                                    <tr>
+                                        <td>{{$vo.id}}</td>
+                                        <td>{{$vo.nickname}}</td>
+                                        <th>{{$vo.order_id}}</th>
+                                        <th>{{$vo.money}}</th>
+                                        <th>{{$vo.total_money}}</th>
+                                        <td>
+                                            <!-- 会员等级{0：非企业会员，1：普通会员，2：VIP会员，3：标准会员，4：钻石会员} -->
+                                            <switch name="vo.mode">
+                                                <case value="0">金币</case>
+                                                <case value="1">银币</case>
+                                                <case value="2">微信</case>
+                                                <case value="3">支付宝</case>
+                                                <case value="4">银联</case>
+                                            </switch>
+                                        </td>
+                                        <th>{{$vo.gold_num}}</th>
+                                        <th>{{$vo.silver_num}}</th>
+                                        <th>{{$vo.describe}}</th>
+                                        <th>{{$vo.current_gold_num]}}</th>
+                                        <th>{{$vo.current_silver}}</th>
+                                        <th>{{$vo.addtime|date="Y-m-d H:i:s",###}}</th>
+                                        <!-- <td>
+                                            <a class="btn btn-success " userId="{{$vo.id}}">查看</a>
+                                        </td> -->
+                                    </tr>
+                                </volist>
+                            </empty>
+                        </tbody>
+                    </table>
+                    <div>
+                        {{$button}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script>
+        $("td").on('click', '.cx', function(e){
+            var id = $(this).attr('userId');
+            location.href = "{{:U('user_detail','','')}}?id="+id;
+        });
+    </script>    
+</block>

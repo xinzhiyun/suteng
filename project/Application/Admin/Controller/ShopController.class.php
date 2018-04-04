@@ -299,9 +299,21 @@ class ShopController extends CommonController
     }
 
     // 修改商品
-    public function goodsEdit()
-    {
-        
+    public function goodEdit()
+    {   
+        dump(I(''));
+        $cate = D('Category');
+        $cateInfo = $cate->where('pid=0')->select();
+        $goods = D('Goods');
+        $attr = D('Attr');
+        $attrInfo = $attr->select();
+        $goodsList = $goods->select();  //暂时无用
+        $assign = [
+            'cateInfo' => $cateInfo,
+            'attrInfo' => $attrInfo,
+        ];
+        $this->assign($assign);
+        $this->display();
     }
 
     // 根据pid获取分类

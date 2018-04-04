@@ -97,6 +97,7 @@ class VendorsController extends CommonController
      */
     public function company_add(){
         if(IS_POST){
+            // dump(I('post.'));die;
             // 没有上传图片报错信息组
             $emptyError = array(
                 'positive' =>  '身份证正面图片必须上传',
@@ -193,7 +194,7 @@ class VendorsController extends CommonController
                 $data = $vendors->create();
                 if (!$data){ // 创建数据对象
                      // 如果创建失败 表示验证没有通过 输出错误提示信息
-                     $this->success($vendors->getError());
+                     $this->error($vendors->getError());
                      return false;
                 }else{
                     // 实例化二维码信息类
@@ -214,7 +215,7 @@ class VendorsController extends CommonController
                         $data['add_liable'] = $_SESSION['adminInfo']['user'];
                         // 将图片合并入数据中
                         $newData            = array_merge($data,$info,$ticket); 
-                        //dump($newData);die;
+                        dump($newData);die;
                         // 验证通过 写入新增数据
                         if($vendors->add($newData)){
                             // 执行事务
