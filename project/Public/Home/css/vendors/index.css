@@ -60,7 +60,7 @@ header>span{
 /*微信分享*/
 .weishare {
  position: absolute;
- right: 0.8rem;
+ right: -0.2rem;
  
 }
 .weishare>i{

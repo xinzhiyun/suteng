@@ -56,57 +56,57 @@
 	</div>
 	<!-- 没有相关订单 -->
 	<div class="manageCard">
-        <div class="noContain">
-          <p>暂没有绑定的银行卡</p>
-          <p><a href="#">去绑定 》</a></p>
-        </div>
-    </div>
-    <!-- 待付款 模态框的内容 -->
- 	<div class="modelAll">
- 	  <div class="modal fade">
- 	    <div class="modal-body">
- 	      <div class="modal-content">
- 	        <p class="dianyuan">确认取消订单？</p>
- 	        <p>
- 	        	<input class="close cancelOrder" type="submit" value="是">
- 	        	<input class="close" type="submit" value="否">
- 	        </p>
- 	      </div>
- 	    </div>
- 	  </div>
- 	  <div class="modal-backup3"></div>
- 	</div> 
- 	<!-- 待发货 模态框的内容 -->
-  	<div class="modelAll2">
-  	  <div class="modal fade">
-      <div class="modal-body">
-        <div class="modal-content">
-          <p class="dianyuan"><i class="iconfont icon-zhengque"></i></p>
-          <p class="fahuola">亲~已提醒商家发货啦</p>
-        </div>
-      </div>
-  	  </div>
-  	  <div class="modal-backup"></div>
-  	</div>		
+		<div class="noContain">
+			<p>暂没有绑定的银行卡</p>
+			<p><a href="#">去绑定 》</a></p>
+		</div>
+	</div>
+	<!-- 待付款 模态框的内容 -->
+	<div class="modelAll">
+		<div class="modal fade">
+			<div class="modal-body">
+				<div class="modal-content">
+					<p class="dianyuan">确认取消订单？</p>
+					<p>
+						<input class="close cancelOrder" type="submit" value="是">
+						<input class="close" type="submit" value="否">
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="modal-backup3"></div>
+	</div> 
+	<!-- 待发货 模态框的内容 -->
+	<div class="modelAll2">
+		<div class="modal fade">
+			<div class="modal-body">
+				<div class="modal-content">
+					<p class="dianyuan"><i class="iconfont icon-zhengque"></i></p>
+					<p class="fahuola">亲~已提醒商家发货啦</p>
+				</div>
+			</div>
+		</div>
+		<div class="modal-backup"></div>
+	</div>		
 	<!-- 待收货 模态框的内容 -->
-  	<div class="modelAll3">
-  	  <div class="modal fade">
-  	    <div class="modal-body">
-  	      <div class="modal-content">
-  	        <p class="dianyuan">确认已经收到货物？</p>
-  	        <p><input class="close confirm" type="submit" value="是"><input class="close" type="submit" value="否"></p>
-  	      </div>
-  	    </div>
-  	  </div>
+	<div class="modelAll3">
+		<div class="modal fade">
+			<div class="modal-body">
+				<div class="modal-content">
+					<p class="dianyuan">确认已经收到货物？</p>
+					<p><input class="close confirm" type="submit" value="是"><input class="close" type="submit" value="否"></p>
+				</div>
+			</div>
+		</div>
 
-  	  <div class="modal-backup3"></div>
-  	</div>
-  	<div id="loading">
-  		<img src="__PUBLIC__/Home/images/loading.gif" alt="加载中...">
-  	</div>
+		<div class="modal-backup3"></div>
+	</div>
+	<div id="loading">
+		<img src="__PUBLIC__/Home/images/loading.gif" alt="加载中...">
+	</div>
 
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
-    <script src="__PUBLIC__/Home/js/public.js"></script>
+	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<!-- 微信支付支持JS部分代码 -->
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>	                                                                                     
 	<script>
@@ -131,37 +131,37 @@
 		})
 		//微信接口
 		wx.config({
-		    debug: false,
-		    appId: '{{$info["appId"]}}',
-		    timestamp: '{{$info["timestamp"]}}',
-		    nonceStr: '{{$info["nonceStr"]}}',
-		    signature: '{{$info["signature"]}}',
-		    jsApiList: [
+			debug: false,
+			appId: '{{$info["appId"]}}',
+			timestamp: '{{$info["timestamp"]}}',
+			nonceStr: '{{$info["nonceStr"]}}',
+			signature: '{{$info["signature"]}}',
+			jsApiList: [
 		      // 所有要调用的 API 都要加到这个列表中
 		      'chooseWXPay'
-		    ]
-		});
+		      ]
+		  });
 
 		// 微信支付方法
 		function weixinPay(res){
-		    WeixinJSBridge.invoke(
-		        'getBrandWCPayRequest',
-		        JSON.parse(res),
-		        function(res){
-		            if (res.err_msg.substr(-2) == 'ok') {
+			WeixinJSBridge.invoke(
+				'getBrandWCPayRequest',
+				JSON.parse(res),
+				function(res){
+					if (res.err_msg.substr(-2) == 'ok') {
 		                // 付款成功，跳转前台主页
 		                location.href = "{{:U('Home/PaymentSystem/paytosuccess_cz')}}";
 		            } else if (res.err_msg.substr(-6) == 'cancel') {
 		                    // 取消付款
 		                    // 跳转到待付款订单页面
 		                    location.href = "{{:U('Home/PaymentSystem/paytofailed')}}";
-		            }else{
+		                }else{
 		                    // 付款失败
 		                    // 跳转到待付款订单页面
 		                    location.href = "{{:U('Home/PaymentSystem/paytofailed')}}";
+		                }
 		            }
-		        }
-		    );
+		            );
 		};
 
 
@@ -233,17 +233,17 @@
 			$(".modal").css('z-index','-1');
 			$(".modal-backup").fadeOut('slow');
 		});      	
-	    
-      	
+		
+		
       	//取消按钮操作效果
       	$(".close").on("click",function(){
-       	   $(".modal").removeClass('in');
-       	   $(".modal").css('z-index','-1');
-       	   $(".modal-backup3").fadeOut('slow');
-       	   $(".modelAll").hide();
-       });	
+      		$(".modal").removeClass('in');
+      		$(".modal").css('z-index','-1');
+      		$(".modal-backup3").fadeOut('slow');
+      		$(".modelAll").hide();
+      	});	
       	
-		var item = window.location.href.split("#")[1];
+      	var item = window.location.href.split("#")[1];
 
 
     /**
@@ -255,24 +255,23 @@
     (function unpaid_order(){
     		var Rejectednum=0;//退货数量
             $.ajax({//8：未支付
-                url:"{{:U('Home/Order/order_list')}}",
-                data:{
+            	url:"{{:U('Home/Order/order_list')}}",
+            	data:{
                 	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
                 	"status":8
                 },
                 dataType:"json",
                 type: 'post',
                 success:function(res){
-                	// console.dir(res)
-                    if(res.code == 200){
+                	if(res.code == 200){
                     	// 查询有数据
                     	// console.dir(res.data)
                     	var waitpaylist=res.data;
                     	for(var i=0;i<waitpaylist.length;i++){//待付款数据遍历
-							dingdanDaifukuan1+='<div class="goods">'+
-								'<p>订单编号：'+waitpaylist[i]['orderid']+'</p>'+
-								'<p>下单时间：'+waitpaylist[i]['ordertime'] +
-									'<span>等待买家付款</span>'+
+                    		dingdanDaifukuan1+='<div class="goods">'+
+                    		'<p>订单编号：'+waitpaylist[i]['orderid']+'</p>'+
+                    		'<p>下单时间：'+waitpaylist[i]['ordertime'] +
+                    		'<span>等待买家付款</span>'+
 								'</p>';//<img src="__PUBLIC__/Pic/repair/2018-02-06/5a7975ef16907.png">
 							for(var k=0;k<waitpaylist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
 								var payName = waitpaylist[i]['productList'][k]['productname'];
@@ -280,69 +279,69 @@
 								var payBrief = waitpaylist[i]['productList'][k]['productbrief'];
 								payBrief = payBrief ? payBrief : "暂无描述";
 								dingdanDaifukuan2+='<div class="goodsItem">'+
-									'<div class="giPicture">'+
-										'<img src="/Uploads/'+waitpaylist[i]['productList'][k]['orderimg']+'" alt="">'+
-									'</div>'+
-									'<div class="giDescription">'+
-										'<b>'+payName+'</b>'+
-										'<p>'+payBrief+'</p>'+
-										'<div>'+
-											'<b>￥'+ waitpaylist[i]['productList'][k]['price'] +'</b>'+
-											'<span>X&nbsp;'+waitpaylist[i]['productList'][k]['productnumber']+'</span>'+
-										'</div>'+
-									'</div>'+
+								'<div class="giPicture">'+
+								'<img src="/Uploads/'+waitpaylist[i]['productList'][k]['orderimg']+'" alt="">'+
+								'</div>'+
+								'<div class="giDescription">'+
+								'<b>'+payName+'</b>'+
+								'<p>'+payBrief+'</p>'+
+								'<div>'+
+								'<b>￥'+ waitpaylist[i]['productList'][k]['price'] +'</b>'+
+								'<span>X&nbsp;'+waitpaylist[i]['productList'][k]['productnumber']+'</span>'+
+								'</div>'+
+								'</div>'+
 								'</div>'; 
 							}
 							dingdanDaifukuan1+=dingdanDaifukuan2+'<div class="calc">'+
-									'<div>'+
-										'共'+ waitpaylist[i]['totalnumber'] +'件商品&emsp;'+
-										'合计：<b class="price">￥'+waitpaylist[i]['totalprice']+'</b>'+
-										'<span class="postage">&nbsp;(含邮费￥'+waitpaylist[i]['postage']+')</span>'+
-									'</div>'+
-									'<div>'+
-										'<div class="cancel start1" name='+waitpaylist[i]['orderid']+'>'+
-											'<span>取消订单</span>'+
-										'</div>'+
-										'<div class="pay payBtn" >'+
-											'<span>&nbsp;付&nbsp;&nbsp;款&nbsp;</span>'+
-										'</div>'+
-									'</div>'+
-								'</div>'+
+							'<div>'+
+							'共'+ waitpaylist[i]['totalnumber'] +'件商品&emsp;'+
+							'合计：<b class="price">￥'+(parseInt(waitpaylist[i]['totalprice']) + parseInt(waitpaylist[i]['postage']) )+'</b>'+
+							'<span class="postage">&nbsp;(含邮费￥'+waitpaylist[i]['postage']+')</span>'+
+							'</div>'+
+							'<div>'+
+							'<div class="cancel start1" name='+waitpaylist[i]['orderid']+'>'+
+							'<span>取消订单</span>'+
+							'</div>'+
+							'<div class="pay payBtn" >'+
+							'<span>&nbsp;付&nbsp;&nbsp;款&nbsp;</span>'+
+							'</div>'+
+							'</div>'+
+							'</div>'+
 							'</div>';
-						 	dingdanDaifukuan2='';
+							dingdanDaifukuan2='';
 						}
 						$("#dingdanDaifukuan").html(dingdanDaifukuan1);
 						$(".waitpay").html(waitpaylist.length);
-                    }else{
+					}else{
                         // 查询无数据提示
                         $("#dingdanDaifukuan").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
-						$('.waitpay').text(0);
+                        $('.waitpay').text(0);
                     }
                     // 取消订单弹框
-			      	$(".start1").on("click",function(){
-			      		var _thisname=$(this).attr("name");
-			      		$(".modelAll").show();
-			       	    $(".modal").addClass("in").css('z-index','1001');
-			       	   	$(".modal-backup3").show();
+                    $(".start1").on("click",function(){
+                    	var _thisname=$(this).attr("name");
+                    	$(".modelAll").show();
+                    	$(".modal").addClass("in").css('z-index','1001');
+                    	$(".modal-backup3").show();
 			       	    // 取消订单ajax请求
-				      	$(".cancelOrder").bind("click").click(function(){
-				      		$.ajax({
-				      			url:"{{:U('Home/Order/cancellation_of_order')}}",
-				      			type:"post",
-				      			datatype:"json",
-				      			data:{
-				      				order_id:_thisname
-				      			},
-				      			success:function(res){
-				      				
-				      				window.location.reload();
-				      			}
+			       	    $(".cancelOrder").bind("click").click(function(){
+			       	    	$.ajax({
+			       	    		url:"{{:U('Home/Order/cancellation_of_order')}}",
+			       	    		type:"post",
+			       	    		datatype:"json",
+			       	    		data:{
+			       	    			order_id:_thisname
+			       	    		},
+			       	    		success:function(res){
+			       	    			
+			       	    			window.location.reload();
+			       	    		}
 				      			// error:function(res){
 				      			// 	alert("取消失败");
 				      			// }
 				      		});
-				      	});
-			      	});
+			       	    });
+			       	});
 			      	//点击支付
 			      	$(".payBtn").on("click",function(){
 			      		var _thisname = JSON.parse($(this).siblings().attr("name"));
@@ -359,9 +358,9 @@
 			      			},
 			      			success:function(res){
 			      				// console.log(res);
-								if(res == -1){
+			      				if(res == -1){
 									// console.log('支付错误！');
-       								parent.layer.msg('支付错误！');
+									parent.layer.msg('支付错误！');
 								}else{
 									
 									// 调用微信支付方法
@@ -369,18 +368,18 @@
 									
 								}
 								weixinPay(res);
-			      			}
+							}
 
 
-			      		});
+						});
 
 			      	});
-                }
-            });
-		
+			      }
+			  });
+
  			$.ajax({//9：待发货
-                url:"{{:U('Home/Order/order_list')}}",
-                data:{
+ 				url:"{{:U('Home/Order/order_list')}}",
+ 				data:{
                 	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单},
                 	"status":9
                 },
@@ -392,13 +391,14 @@
                     	// 查询有数据
                     	
                     	var waitsendlist=res.data;
+                    	
                     	// console.log(waitsendlist.length);
                     	for(var i=0;i<waitsendlist.length;i++){//待发货数据遍历
-							dingdanDaifahuo1+='<div class="goods">'+
-								'<p>订单编号：'+waitsendlist[i]['orderid']+'</p>'+
-								'<p>下单时间：'+waitsendlist[i]['ordertime'] +
-									'<span>等待卖家发货</span>'+
-								'</p>';
+                    		dingdanDaifahuo1+='<div class="goods">'+
+                    		'<p>订单编号：'+waitsendlist[i]['orderid']+'</p>'+
+                    		'<p>下单时间：'+waitsendlist[i]['ordertime'] +
+                    		'<span>等待卖家发货</span>'+
+                    		'</p>';
 							for(var k=0;k<waitsendlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
 								// alert(orderList[i]['productList'].length);
 								var sendName = waitsendlist[i]['productList'][k]['productname'];
@@ -406,36 +406,36 @@
 								sendName = sendName ? sendName : "暂无标题";
 								sendBrief = sendBrief ? sendBrief : "暂无描述";
 								dingdanDaifahuo2+='<div class="goodsItem">'+
-									'<div class="giPicture">'+
-										'<img src="/Uploads/'+waitsendlist[i]['productList'][k]['orderimg']+'" alt="">'+
-									'</div>'+
-									'<div class="giDescription">'+
-										'<b>'+sendName+'</b>'+
-										'<p>'+sendBrief+'</p>'+
-										'<div>'+
-											'<b>￥'+ waitsendlist[i]['productList'][k]['price'] +'</b>'+
-											'<span>X&nbsp;'+waitsendlist[i]['productList'][k]['productnumber']+'</span>'+
-										'</div>'+
-									'</div>'+
+								'<div class="giPicture">'+
+								'<img src="/Uploads/'+waitsendlist[i]['productList'][k]['orderimg']+'" alt="">'+
+								'</div>'+
+								'<div class="giDescription">'+
+								'<b>'+sendName+'</b>'+
+								'<p>'+sendBrief+'</p>'+
+								'<div>'+
+								'<b>￥'+ waitsendlist[i]['productList'][k]['price'] +'</b>'+
+								'<span>X&nbsp;'+waitsendlist[i]['productList'][k]['productnumber']+'</span>'+
+								'</div>'+
+								'</div>'+
 								'</div>';
 							}
 							dingdanDaifahuo1+=dingdanDaifahuo2+'<div class="calc">'+
-									'<div>'+
-										'共'+ waitsendlist[i]['totalnumber'] +'件商品&emsp;'+
-										'合计：<b class="price">￥'+waitsendlist[i]['totalprice']+'</b>'+
-										'<span class="postage">&nbsp;(含邮费￥'+waitsendlist[i]['postage']+')</span>'+
-									'</div>'+
-									'<div>'+
-										'<div class="cancel">'+
-											'<span class="waitRejected" order_id="'+ waitsendlist[i]['orderid'] +'">退货</span>'+
-										'</div>'+
-										'<div class="pay start2">'+
-											'<span>提醒发货</span>'+
-										'</div>'+
-									'</div>'+
-								'</div>'+
+							'<div>'+
+							'共'+ waitsendlist[i]['totalnumber'] +'件商品&emsp;'+
+							'合计：<b class="price">￥'+ (parseInt(waitsendlist[i]['totalprice']) + parseInt(waitsendlist[i]['postage'])) +'</b>'+
+							'<span class="postage">&nbsp;(含邮费￥'+waitsendlist[i]['postage']+')</span>'+
+							'</div>'+
+							'<div>'+
+							'<div class="cancel">'+
+							'<span class="waitRejected" order_id="'+ waitsendlist[i]['orderid'] +'">退货</span>'+
+							'</div>'+
+							'<div class="pay start2">'+
+							'<span>提醒发货</span>'+
+							'</div>'+
+							'</div>'+
+							'</div>'+
 							'</div>';
-						 	dingdanDaifahuo2='';
+							dingdanDaifahuo2='';
 						}
 						$("#dingdanDaifahuo").html(dingdanDaifahuo1);
 						$(".waitsend").html(waitsendlist.length);//代发货条数
@@ -448,71 +448,70 @@
 							$(".modal").addClass("in").css({'position':'absolute','z-index':'1001'});
 							$(".modal-backup").show().fadeOut(6000);
 							$(".modelAll2").show().fadeOut(6000);
-				        });
-                    }else{
+						});
+					}else{
                         // 查询无数据提示
                         $("#dingdanDaifahuo").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
-						$('.waitsend').text(0);
+                        $('.waitsend').text(0);
                     }
                 }
             });
- 		
+ 			
  			$.ajax({//2：待收货
-                url:"{{:U('Home/Order/order_list')}}",
-                data:{
+ 				url:"{{:U('Home/Order/order_list')}}",
+ 				data:{
                 	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
                 	"status":2
-            	},
+                },
                 dataType:"json",
                 type: 'post',
                 success:function(res){
-                    // console.dir(res);
-                    if(res.code == 200){
+                	if(res.code == 200){
                     	// 查询有数据
                     	var waitgainlist=res.data;
-                    	// console.log(waitgainlist.length);
+                    	// console.log(waitgainlist);
                     	for(var i=0;i<waitgainlist.length;i++){//待收货数据遍历
-							dingdanDaishouhuo1+='<div class="goods">'+
-								'<p>订单编号：'+waitgainlist[i]['orderid']+'</p>'+
-								'<p>下单时间：'+waitgainlist[i]['ordertime'] +
-									'<span>卖家已发货</span>'+
-								'</p>';
+                    		dingdanDaishouhuo1+='<div class="goods">'+
+                    		'<p>订单编号：'+waitgainlist[i]['orderid']+'</p>'+
+                    		'<p>下单时间：'+waitgainlist[i]['ordertime'] +
+                    		'<span>卖家已发货</span>'+
+                    		'</p>';
 							for(var k=0;k<waitgainlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
-								var gainBrief = waitpaylist[i]['productList'][k]['productbrief'];
-								var gainName = waitpaylist[i]['productList'][k]['productname'];
+								var gainBrief = waitgainlist[i]['productList'][k]['productbrief'];
+								var gainName = waitgainlist[i]['productList'][k]['productname'];
 								gainBrief = gainBrief ? gainBrief : "暂无描述";
 								gainName = gainName ? gainName : "暂无标题";
 								dingdanDaishouhuo2+='<div class="goodsItem">'+
-									'<div class="giPicture">'+
-										'<img src="/Uploads/'+waitgainlist[i]['productList'][k]['orderimg']+'" alt="">'+
-									'</div>'+
-									'<div class="giDescription">'+
-										'<b>'+gainBrief+'</b>'+
-										'<p>'+gainName+'</p>'+
-										'<div>'+
-											'<b>￥'+ waitgainlist[i]['productList'][k]['price'] +'</b>'+
-											'<span>X&nbsp;'+waitgainlist[i]['productList'][k]['productnumber']+'</span>'+
-										'</div>'+
-									'</div>'+
+								'<div class="giPicture">'+
+								'<img src="/Uploads/'+waitgainlist[i]['productList'][k]['orderimg']+'" alt="">'+
+								'</div>'+
+								'<div class="giDescription">'+
+								'<b>'+gainBrief+'</b>'+
+								'<p>'+gainName+'</p>'+
+								'<div>'+
+								'<b>￥'+ waitgainlist[i]['productList'][k]['price'] +'</b>'+
+								'<span>X&nbsp;'+waitgainlist[i]['productList'][k]['productnumber']+'</span>'+
+								'</div>'+
+								'</div>'+
 								'</div>';
 							}
 							dingdanDaishouhuo1+=dingdanDaishouhuo2+'<div class="calc">'+
-									'<div>'+
-										'共'+ waitgainlist[i]['totalnumber'] +'件商品&emsp;'+
-										'合计：<b class="price">￥'+waitgainlist[i]['totalprice']+'</b>'+
-										'<span class="postage">&nbsp;(含邮费￥'+waitgainlist[i]['postage']+')</span>'+
-									'</div>'+
-									'<div>'+
-										'<div class="cancel">'+
-											'<span class="Rejected" order_id="'+waitgainlist[i]['orderid']+'">退货</span>'+
-										'</div>'+
-										'<div class="pay start3" name='+ waitgainlist[i]['orderid'] +' >'+
-											'<span>确认收货</span>'+
-										'</div>'+
-									'</div>'+
-								'</div>'+
+							'<div>'+
+							'共'+ waitgainlist[i]['totalnumber'] +'件商品&emsp;'+
+							'合计：<b class="price">￥'+(parseInt(waitgainlist[i]['totalprice']) + parseInt(waitgainlist[i]['postage']))+'</b>'+
+							'<span class="postage">&nbsp;(含邮费￥'+waitgainlist[i]['postage']+')</span>'+
+							'</div>'+
+							'<div>'+
+							'<div class="cancel">'+
+							'<span class="Rejected" order_id="'+waitgainlist[i]['orderid']+'">退货</span>'+
+							'</div>'+
+							'<div class="pay start3" name='+ waitgainlist[i]['orderid'] +' >'+
+							'<span>确认收货</span>'+
+							'</div>'+
+							'</div>'+
+							'</div>'+
 							'</div>';
-						 	dingdanDaishouhuo2='';
+							dingdanDaishouhuo2='';
 						}
 						$(".waitharvest").html(waitgainlist.length);
 						$("#dingdanDaishouhuo").html(dingdanDaishouhuo1);
@@ -523,40 +522,40 @@
 							location.href="{{:U('Home/Order/choiceRefund')}}?order_id="+order_id;
 						});
 						//确认收货 模态框的js
-				      	$('#dingdanDaishouhuo').on("click",".start3",function(){
-				      		var _thisname=$(this).attr("name");
-				      		$(".modelAll3").show();
-				       	   	$(".modal").addClass("in").css('z-index','1001');
-				       	   	$(".modal-backup3").show();
-				       	   	$(".confirm").bind("click").click(function(){
-				       	   		$.ajax({
-				       	   			url:"{{:U('Home/Order/editOrder')}}",
-				       	   			type:"post",
-				       	   			datatype:"json",
-				       	   			data:{
-				       	   				order_id:_thisname
-				       	   			},
-				       	   			success:function(res){
-				       	   				window.location.reload();
-				       	   			}
-				       	   		});
-				       	   	});
-				      	});
+						$('#dingdanDaishouhuo').on("click",".start3",function(){
+							var _thisname=$(this).attr("name");
+							$(".modelAll3").show();
+							$(".modal").addClass("in").css('z-index','1001');
+							$(".modal-backup3").show();
+							$(".confirm").bind("click").click(function(){
+								$.ajax({
+									url:"{{:U('Home/Order/editOrder')}}",
+									type:"post",
+									datatype:"json",
+									data:{
+										order_id:_thisname
+									},
+									success:function(res){
+										window.location.reload();
+									}
+								});
+							});
+						});
 						
-                    }else{
+					}else{
                         // 查询无数据提示
                         $("#dingdanDaishouhuo").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
-						$('.waitharvest').text(0);
+                        $('.waitharvest').text(0);
                     }
                 }
             });  
 
  			$.ajax({//7：待评论
-                url:"{{:U('Home/Order/order_list')}}",
-                data:{
+ 				url:"{{:U('Home/Order/order_list')}}",
+ 				data:{
                 	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
                 	"status":7
-            	},
+                },
                 dataType:"json",
                 type: 'post',
                 success:function(res){
@@ -566,50 +565,50 @@
                     	var waitcommentlist=res.data;
                     	// console.dir(waitcommentlist);
                     	for(var i=0;i<waitcommentlist.length;i++){//待评论数据遍历
-							dingdanDaipinglun1+='<div class="goods">'+
-								'<p>订单编号：'+waitcommentlist[i]['orderid']+'</p>'+
-								'<p>下单时间：'+waitcommentlist[i]['ordertime'] +
-									'<span>交易完成</span>'+
-								'</p>';
+                    		dingdanDaipinglun1+='<div class="goods">'+
+                    		'<p>订单编号：'+waitcommentlist[i]['orderid']+'</p>'+
+                    		'<p>下单时间：'+waitcommentlist[i]['ordertime'] +
+                    		'<span>交易完成</span>'+
+                    		'</p>';
 							for(var k=0;k<waitcommentlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
 								dingdanDaipinglun2+='<div class="goodsItem">'+
-									'<div class="giPicture">'+
-										'<img src="/Uploads/'+waitcommentlist[i]['productList'][k]['orderimg']+'" alt="">'+
-									'</div>'+
-									'<div class="giDescription">'+
-										'<b>'+waitcommentlist[i]['productList'][k]['productname']+'</b>'+
-										'<p>'+waitcommentlist[i]['productList'][k]['productbrief']+'</p>'+
-										'<div>'+
-											'<b>￥'+ waitcommentlist[i]['productList'][k]['price'] +'</b>'+
-											'<span>X&nbsp;'+waitcommentlist[i]['productList'][k]['productnumber']+'</span>'+
-										'</div>'+
-									'</div>'+
+								'<div class="giPicture">'+
+								'<img src="/Uploads/'+waitcommentlist[i]['productList'][k]['orderimg']+'" alt="">'+
+								'</div>'+
+								'<div class="giDescription">'+
+								'<b>'+waitcommentlist[i]['productList'][k]['productname']+'</b>'+
+								'<p>'+waitcommentlist[i]['productList'][k]['productbrief']+'</p>'+
+								'<div>'+
+								'<b>￥'+ waitcommentlist[i]['productList'][k]['price'] +'</b>'+
+								'<span>X&nbsp;'+waitcommentlist[i]['productList'][k]['productnumber']+'</span>'+
+								'</div>'+
+								'</div>'+
 								'</div>';
 							}
 							dingdanDaipinglun1+=dingdanDaipinglun2+'<div class="calc">'+
-									'<div>'+
-										'共'+ waitcommentlist[i]['totalnumber'] +'件商品&emsp;'+
-										'合计：<b class="price">￥'+waitcommentlist[i]['totalprice']+'</b>'+
-										'<span class="postage">&nbsp;(含邮费￥'+waitcommentlist[i]['postage']+')</span>'+
-									'</div>'+
-									'<div>'+
-										'<div class="cancel">'+
-										'</div>'+
-										'<a href="javascript:;" class="pay commentBtn" name='+ waitcommentlist[i]['orderid'] +' gid='+ waitcommentlist[i].productList[0].gid +'>'+
-											'<span>评&nbsp;价</span>'+
-										'</a>'+
-									'</div>'+
-								'</div>'+
+							'<div>'+
+							'共'+ waitcommentlist[i]['totalnumber'] +'件商品&emsp;'+
+							'合计：<b class="price">￥'+(parseInt(waitcommentlist[i]['totalprice']) + parseInt(waitcommentlist[i]['postage']))+'</b>'+
+							'<span class="postage">&nbsp;(含邮费￥'+waitcommentlist[i]['postage']+')</span>'+
+							'</div>'+
+							'<div>'+
+							'<div class="cancel">'+
+							'</div>'+
+							'<a href="javascript:;" class="pay commentBtn" name='+ waitcommentlist[i]['orderid'] +' gid='+ waitcommentlist[i].productList[0].gid +'>'+
+							'<span>评&nbsp;价</span>'+
+							'</a>'+
+							'</div>'+
+							'</div>'+
 							'</div>';
-						 	dingdanDaipinglun2='';
+							dingdanDaipinglun2='';
 						}
 						$(".waitassess").html(waitcommentlist.length);
 						$("#dingdanDaipinglun").html(dingdanDaipinglun1);
 						
-                    }else{ 
+					}else{ 
                         // 查询无数据提示
                         $("#dingdanDaipinglun").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
-						$('.waitassess').text(0);
+                        $('.waitassess').text(0);
                     }
                     //如果有本地评论数据则清除
                     if(sessionStorage.getItem("pinglunObj")){
@@ -617,8 +616,8 @@
                     }
                     /*
                     	点击评论
-                     */
-                    $('#dingdanDaipinglun').on('click',".commentBtn",function(){
+                    	*/
+                    	$('#dingdanDaipinglun').on('click',".commentBtn",function(){
                     	var pinglunObj = {};	//存储带评论的订单编号
                     	pinglunObj['order_id'] = $(this).attr("name");
                     	pinglunObj['gid'] = $(this).attr("gid");
@@ -627,16 +626,16 @@
                     	sessionStorage.setItem("pinglunObj",JSON.stringify(pinglunObj));
                     	location.href = '{{:U("Comment/index")}}';
                     }) 
-                }
-            });  
+                    }
+                });  
 
  			$.ajax({//4：退货/售后
-                url:"{{:U('Home/Refund/showGoods')}}",
-                data:{
+ 				url:"{{:U('Home/Refund/showGoods')}}",
+ 				data:{
                 	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
                 	// "status":4
                 	"refundStatus":1,
-            	},
+                },
                 // dataType:"json",
                 type: 'get',
                 success:function(res){
@@ -652,76 +651,76 @@
                     			for(var k=0;k<res.data[i]['goods'].length;k++){
                     				// console.log(res.data[i]['dw_time']);
                     				returned1+='<p>信息更新时间：'+ res.data[i]['dw_time'] +'</p>'+
-									'<div class="shangpingnei clearfix">'+
-										'<div class="tuikuangLeft ">'+
-											'<img src="/Uploads/'+res.data[i]['goods'][k]['orderimg']+'" alt="">'+
-										'</div>'+
-										'<div class="tuikuangRight">'+
-											'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
-											'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
-										'</div>'+
-									'</div>'+
-									'<p><b>等待商家同意退款</b></p>';
+                    				'<div class="shangpingnei clearfix">'+
+                    				'<div class="tuikuangLeft ">'+
+                    				'<img src="/Uploads/'+res.data[i]['goods'][k]['orderimg']+'" alt="">'+
+                    				'</div>'+
+                    				'<div class="tuikuangRight">'+
+                    				'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+                    				'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
+                    				'</div>'+
+                    				'</div>'+
+                    				'<p><b>等待商家同意退款</b></p>';
                     			}
                     		}else if(res.data[i]['status']=='1'){//商家已同意
                     			// console.log(1111);
                     			for(var k=0;k<res.data[i]['goods'].length;k++){
                     				returned2+='<p>信息更新时间：'+res.data[i]['dw_time']+'</p>'+
-									'<div class="shangpingnei clearfix">'+
-										'<div class="tuikuangLeft ">'+
-											'<img src="/Uploads/'+res.data[i]['goods'][k]['orderimg']+'" alt="">'+
-										'</div>'+
-										'<div class="tuikuangRight">'+
-											'<span>'+res.data[i]['goods'][k]['productname']+'</span>'+
-											'<p><b>￥'+res.data[i]['goods'][k]['price']+'</b><span>x'+res.data[i]['goods'][k]['productnumber']+'</span></p>'+
-										'</div>'+
-									'</div>'+
-									'<p><b>商家同意退款，请尽早退货</b><span>点击展开<i class="iconfont icon-shuangxiajiantou"></i></span></p>'+
-									'<!-- 隐藏的评论内容 -->'+
-									'<div class="commentHidden">'+
-										'<div class="hidTop">'+
-											'<p><span>收货人： 张三</span>18475698574</p>'+
-											'<p>广东省韶关市</p>'+
-										'</div>'+
-										'<div class="hidBott">'+
-											'<div class="hidbotttxt">'+
-												'<a class="writeOrder">'+
-													'<p>我已寄件</p>'+
-													'<p>点击填写物流单号</p>'+
-												'</a>'+
-											'</div>'+
-										'</div>'+
-									'</div>';
+                    				'<div class="shangpingnei clearfix">'+
+                    				'<div class="tuikuangLeft ">'+
+                    				'<img src="/Uploads/'+res.data[i]['goods'][k]['orderimg']+'" alt="">'+
+                    				'</div>'+
+                    				'<div class="tuikuangRight">'+
+                    				'<span>'+res.data[i]['goods'][k]['productname']+'</span>'+
+                    				'<p><b>￥'+res.data[i]['goods'][k]['price']+'</b><span>x'+res.data[i]['goods'][k]['productnumber']+'</span></p>'+
+                    				'</div>'+
+                    				'</div>'+
+                    				'<p><b>商家同意退款，请尽早退货</b><span>点击展开<i class="iconfont icon-shuangxiajiantou"></i></span></p>'+
+                    				'<!-- 隐藏的评论内容 -->'+
+                    				'<div class="commentHidden">'+
+                    				'<div class="hidTop">'+
+                    				'<p><span>收货人： 张三</span>18475698574</p>'+
+                    				'<p>广东省韶关市</p>'+
+                    				'</div>'+
+                    				'<div class="hidBott">'+
+                    				'<div class="hidbotttxt">'+
+                    				'<a class="writeOrder">'+
+                    				'<p>我已寄件</p>'+
+                    				'<p>点击填写物流单号</p>'+
+                    				'</a>'+
+                    				'</div>'+
+                    				'</div>'+
+                    				'</div>';
                     			}
 
                     		}else if(res.data[i]['status']=='6'){//正在退货
                     			
                     			for(var k=0;k<res.data[i]['goods'].length;k++){
                     				returned3+='<p>信息更新时间：'+ res.data[i]['dw_time'] +'</p>'+
-									'<div class="shangpingnei clearfix">'+
-										'<div class="tuikuangLeft ">'+
-											'<img src="/Uploads/'+res.data[i]['goods'][k]['orderimg']+'" alt="">'+
-										'</div>'+
-										'<div class="tuikuangRight">'+
-											'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
-											'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
-										'</div>'+
-									'</div>'+
-									'<p><b>商品已寄出，退款退货中</b></p>';
+                    				'<div class="shangpingnei clearfix">'+
+                    				'<div class="tuikuangLeft ">'+
+                    				'<img src="/Uploads/'+res.data[i]['goods'][k]['orderimg']+'" alt="">'+
+                    				'</div>'+
+                    				'<div class="tuikuangRight">'+
+                    				'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+                    				'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
+                    				'</div>'+
+                    				'</div>'+
+                    				'<p><b>商品已寄出，退款退货中</b></p>';
                     			}
                     		}else if(res.data[i]['status']=='7'){
                     			for(var k=0;k<res.data[i]['goods'].length;k++){
                     				returned4+='<p>信息更新时间：'+ res.data[i]['dw_time'] +'</p>'+
-									'<div class="shangpingnei clearfix">'+
-										'<div class="tuikuangLeft ">'+
-											'<img src="/Uploads/'+ res.data[i]['goods'][k]['orderimg'] +'" alt="">'+
-										'</div>'+
-										'<div class="tuikuangRight">'+
-											'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
-											'<p><b>￥'+ res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
-										'</div>'+
-									'</div>'+
-									'<p><b>退款退货成功</b></p>';
+                    				'<div class="shangpingnei clearfix">'+
+                    				'<div class="tuikuangLeft ">'+
+                    				'<img src="/Uploads/'+ res.data[i]['goods'][k]['orderimg'] +'" alt="">'+
+                    				'</div>'+
+                    				'<div class="tuikuangRight">'+
+                    				'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+                    				'<p><b>￥'+ res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
+                    				'</div>'+
+                    				'</div>'+
+                    				'<p><b>退款退货成功</b></p>';
                     			}
                     		}
                     	}
@@ -735,7 +734,7 @@
                         // console.log(res.msg);
                     }
                     // 寄件点击展开效果
-					var iClass=$('.tuikuangall>p>span>i').attr("class");
+                    var iClass=$('.tuikuangall>p>span>i').attr("class");
 					// console.dir(iClass);
 					$('.tuikuangall>p>span').click(function(){
 						if(iClass=='iconfont icon-shuangxiajiantou'){
@@ -752,63 +751,64 @@
 							iClass='iconfont icon-shuangxiajiantou';
 						}
 					})
-                    
-                },
-                error:function(res){
+					
+				},
+				error:function(res){
 
-                }
-            });  
+				}
+			});  
             $.ajax({//5：报装中
-                url:"{{:U('Home/Order/install')}}",
-                data:{
+            	url:"{{:U('Home/Order/install')}}",
+            	data:{
                 	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
                 	"status":5
                 },
                 dataType:"json",
                 type: 'get',
                 success:function(res){
-                    
-                    if(res.code == 200){
-                    	console.dir(res);
-                    	for(var i=0;i<res.data.length;i++){
-            				returned5+='<p>信息更新时间：'+ res.data[i]['addtime'] +'</p>'+
-							'<div class="shangpingnei clearfix">'+
-								'<div class="tuikuangLeft ">'+
-									'<img src="/Uploads/'+res.data[i]['picpath']+'" alt="">'+
-								'</div>'+
-								'<div class="tuikuangRight">'+
-									'<span>'+ res.data[i]['goodname'] +'</span>'+
-									'<p><b>￥'+res.data[i]['price'] +'</b><span>x '+ res.data[i]['num'] +'</span></p>'+
-								'</div>'+
-							'</div>';
-							if(res.data[i].is_installed=="0"){
-								returned5+='<p class="noborder"><b>报装中，客服电话：020-84765556</b></p>';
-							}else if(res.data[i].is_installed=="1"){
-								returned5+='<p class="noborder"><b>报装完成，报装人电话：18475632541</b></p>'+
-								'<div class="pinglunBtn">'+
-								'<input class="commentAfter" type="submit" value="评论" orderid="'+ res.data[i]['order_id'] +'" gid="'+ res.data[i]['gid'] +'">'+
-								'</div>';
-							}
-                    	}
-                    	$(".returned5").html(returned5);
+                	console.log(res)
+                	if(res.code == 200){
+                		console.dir(res);
+                		for(var i=0;i<res.data.length;i++){
+                			returned5+='<p>信息更新时间：'+ res.data[i]['addtime'] +'</p>'+
+                			'<div class="shangpingnei clearfix">'+
+                			'<div class="tuikuangLeft ">'+
+                			'<img src="/Uploads/'+res.data[i]['picpath']+'" alt="">'+
+                			'</div>'+
+                			'<div class="tuikuangRight">'+
+                			'<span>'+ res.data[i]['goodname'] +'</span>'+
+                			'<p><b>￥'+res.data[i]['price'] +'</b><span>x '+ res.data[i]['num'] +'</span></p>'+
+                			'</div>'+
+                			'</div>';
+                			if(res.data[i].is_installed=="0"){
+                				returned5+='<p class="noborder"><b>报装中，客服电话：020-84765556</b></p>';
+                			}else if(res.data[i].is_installed=="1"){
+                				returned5+='<p class="noborder"><b>报装完成，报装人电话：18475632541</b></p>'+
+                				'<div class="pinglunBtn">'+
+                				'<input class="commentAfter" type="submit" value="评论" orderid="'+ res.data[i]['order_id'] +'" gid="'+ res.data[i]['gid'] +'">'+
+                				'</div>';
+                			}
+                		}
+                		$(".returned5").html(returned5);
                     	$(".waitdrawback").html(res.data.length+Rejectednum);//退换货与售后数量显示
 
                     }else{
                         // 查询无数据提示
                         console.log(res.message);
+                        $(".waitdrawback").text(0);
                     }
                     //售后评论
-				   	$(".commentAfter").on("click",function(){
-				   		var orderid=$(this).attr("orderid");
-				   		var gid=$(this).attr("gid");
-				   		location.href="{{:U('Home/Comment/saleServic')}}?orderid="+orderid+"&gid="+gid;
-				   	}); 
+                    $(".commentAfter").on("click",function(){
+                    	var orderid=$(this).attr("orderid");
+                    	var gid=$(this).attr("gid");
+                    	location.href="{{:U('Home/Comment/saleServic')}}?orderid="+orderid+"&gid="+gid;
+                    }); 
                 }
             }); 
-            	
+            
 		/*
 			点击顶部导航栏，切换订单状态
-		 */ 
+			*/ 
 
 		// 从支付成功跳到查看订单界面 ~~ 待发货
 		var offsetInt = setInterval(function(){
@@ -824,8 +824,8 @@
 				}
 			}
 		},10)
-    })();
+	})();
 
-	</script>
+</script>
 </body>
 </html>
