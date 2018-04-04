@@ -215,7 +215,6 @@ class VendorsController extends CommonController
                         $data['add_liable'] = $_SESSION['adminInfo']['user'];
                         // 将图片合并入数据中
                         $newData            = array_merge($data,$info,$ticket); 
-                        dump($newData);die;
                         // 验证通过 写入新增数据
                         if($vendors->add($newData)){
                             // 执行事务

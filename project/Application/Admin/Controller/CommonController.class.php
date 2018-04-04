@@ -42,6 +42,7 @@ class CommonController extends Controller
         }
 
         $name = MODULE_NAME."/".CONTROLLER_NAME."/".ACTION_NAME;
+        // echo $name;die;
         return $auth->check($name, $uid);
     }
 }

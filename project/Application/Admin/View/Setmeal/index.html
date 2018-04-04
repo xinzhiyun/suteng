@@ -109,7 +109,7 @@
                 shade: false //不显示遮罩
             }, function(){
                 $.ajax({
-                    url:'del',
+                    url:"{{:U('admin/Setmeal/del')}}",
                     type:'post',
                     dataType:'json',
                     data:{'id':sId},
@@ -117,6 +117,9 @@
                         if(res.code == 200){
                             location.reload();
                             parent.layer.msg(res.msg);
+                        }else if(res.status == 0){
+                            // location.reload();
+                            parent.layer.msg( '删除失败：' + res.info);
                         }
                     }
                 });

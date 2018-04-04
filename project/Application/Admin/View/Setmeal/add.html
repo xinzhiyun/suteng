@@ -12,7 +12,7 @@
                     <h5>时长套餐管理 <small>添加套餐</small></h5>
                 </div>
                     <div class="ibox-content">
-                        <form action="javascript:false;" method="post" class="form-horizontal" enctype="multipart/form-data" id="form">
+                        <form action="javascript: return false;" method="post" class="form-horizontal" enctype="multipart/form-data" id="form">
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">产品类型</label>
                                 <div class="col-md-3">
@@ -97,7 +97,6 @@
             'remodel' : $("input:checked").val(),
             'flow' : $("input[name=flow]").val()
         };
-
         // console.dir(data);
         //  异不请求
         $.ajax({
@@ -109,13 +108,18 @@
                 if(res.code == 200){
                     // 添加成功
                     parent.layer.msg(res.msg);
-                    window.location.href="{{:U('Admin/setmeal/index')}}";
+                    window.location.href="{{:U('/Admin/setmeal/index')}}";
                 }else{
                     // 添加失败
                     parent.layer.msg(res.msg);
                 }
+            },
+            error: function(res) {
+                console.log(res)
             }
         });
+        
+
     });
 
 </script>

@@ -49,7 +49,7 @@ class LoginController extends Controller
     public function logout()
     {
         unset($_SESSION['adminInfo']);
-        $this->success('正在退出登录......','Login/index');
+        $this->success('正在退出登录......','index');
     }
 
 }
