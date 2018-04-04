@@ -59,6 +59,9 @@
                                     <label class="attrList">
                                         <button type="button" class="btn btn-outline btn-primary" onclick="add()">添加属性</button>
                                     </label>
+                                    <label class="attrDel">
+                                        <button type="button" class="btn btn-outline btn-primary" onclick="del()">删除属性</button>
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -166,6 +169,41 @@
             </div>
         </div>
     </div>
+
+    <!-- 删除属性弹窗 -->
+    <div class="modal inmodal" id="st-attr_del" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        删除属性
+                    </h4>
+                </div>
+
+                <div class="modal-body">
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                   <tr>
+                       <th>属性名称</th>
+                       <th>操作</th>
+                   </tr>
+                <volist name="attrInfo" id="vo">
+
+                   <tr>
+                        <label class="attr">
+                        <td data-name={{$vo.attr}} data-id="{{$vo.id}}"> <i></i> {{$vo.attr}}</td>
+                        </label>
+                        <td><div class="deldiv"><a class="attrdel" aid="{{$vo.id}}">删除属性</a></div></td>
+                   </tr>     
+                </volist>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
 </block>
 <block name="myjs">
     <script>
@@ -246,6 +284,35 @@
                 }
             })
         });
+
+        // 删除属性
+        function del() {
+            $("input[name='attrname']").val('');
+            $('#st-attr_del').modal('show');
+        }
+
+        $('.deldiv').on('click','.attrdel',function(e){
+            
+            var aid = $(this).attr('aid');
+            // console.log(aid);
+            parent.layer.confirm('确认删除这个属性吗？', {
+                btn: ['确认','取消'], //按钮
+                shade: true //不显示遮罩
+            }, function(){
+                $.ajax({
+                    url:'attrDel',
+                    type:'post',
+                    dataType:'json',
+                    data:{'aid':aid},
+                    success:function(res){
+                        location.reload();
+                        parent.layer.msg(res.msg);
+                    }
+                });
+            }, function(){
+                parent.layer.msg('已取消', {shift: 6});
+            });
+        })
 
     </script>
     <script src="__PUBLIC__/Admin/js/plugins/iCheck/icheck.min.js"></script>
