@@ -22,12 +22,8 @@
                             <option  <?php echo ($where['key']=="device_code")?'selected':''; ?> value="device_code">设备编码</option>
                             <option <?php echo ($where['key']=="st_repair.address")?'selected':''; ?>  value="st_repair.address">报修地址</option>
                         </select>
-<<<<<<< HEAD
-                        <input type="text" name="keywords" placeholder="输入搜索关键字" class="input form-control"   style="width:60%">
-=======
                         <input type="hidden" name="p" value="1">
                         <input type="text" name="keywords" placeholder="输入搜索关键字" value="{{$where['keywords']}}" class="input form-control"   style="width:60%">
->>>>>>> bdf4495e4bb9954f79929c49f3a77a6315f64b1a
                         <span class="input-group-btn" style="display: inline-block;">
                                 <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
                         </span>

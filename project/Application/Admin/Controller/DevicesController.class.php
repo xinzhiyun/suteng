@@ -53,7 +53,7 @@ class DevicesController extends CommonController
             ->join('__USER_DEVICE__ ud ON d.id=ud.did', 'LEFT')
             ->join('__USERS__ u ON ud.uid=u.id', 'LEFT')
             ->limit($Page->firstRow.','.$Page->listRows)
-            ->field('d.device_code,d.type_id,d.addtime,v.user,d.device_statu,t.typename,ds.AliveStause,u.nickname')
+            ->field('d.device_code,d.type_id,d.vid,d.addtime,v.user,d.device_statu,t.typename,ds.AliveStause,u.nickname')
             ->order('d.id desc')
             ->select();
         $filterType = M('type')->where(['status'=>0])->select();
@@ -61,7 +61,7 @@ class DevicesController extends CommonController
         $assign = [
             'deviceInfo' => $devices,
             'deviceType' => $filterType,
-            'page'=> $show,
+            'page'=> bootstrap_page_style($show),
         ];
         $this->assign($assign);
         $this->assign('where',$where);
@@ -109,6 +109,7 @@ class DevicesController extends CommonController
     public function deviceDetail()
     {
         $map['device_code'] = I('get.code');
+
         $device     = D('Devices');
         // 状态信息
         $statu      = $device->getDeviceInfo($map);
@@ -116,13 +117,13 @@ class DevicesController extends CommonController
         // 滤芯信息
         $filter     = $device->getFilterInfo($map);
         $filterInfo = $device->getFilterDetail($filter);
-        dump($statu);
         $assign = [
             'statu'      => $statu,
             'filterInfo' => $filterInfo,
             'filter'     => $filter,
             'vendor'     => $vendors,
         ];
+        // print_r($assign);
         $this->assign($assign);
         $this->display('devices_detail');
     }
@@ -315,7 +316,7 @@ class DevicesController extends CommonController
     public function bind()
     {
         $vendors = M('vendors')->field('id,user,leavel')->select();
-        $devices = M('devices')->where('bind_status=0')->select();
+        $devices = M('devices')->where('vid IS NULL')->select();
         $assign = [
             'user' => $vendors,
             'devices' => $devices,

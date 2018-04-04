@@ -93,7 +93,12 @@
                                                     <default />未激活
                                                 </switch>
                                             </td>
-                                            <td><a class="btn ubind btn-success" code="{{$vo.device_code}}">解绑</a></td>
+                                            <td>
+                                                <if condition="$vo.vid neq NULL">
+                                                    <a class="btn ubind btn-success" code="{{$vo.device_code}}">解绑</a>
+                                                    <else />
+                                                </if>
+                                            </td>
                                         </tr>
                                     </volist>
                                 </empty>
@@ -285,8 +290,9 @@
                     success:function(res){
                         if(res.code == 200){
                             swal(res.msg,'需要重新刷新页面', "success");
+                            parent.layer.msg('设备解绑成功');
                             // sleep(3000);
-                            // location.reload();
+                            location.reload();
                         }else{
                             swal(res.msg, '请确认是否绑定了经销商！', "error");
                         }

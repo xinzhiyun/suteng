@@ -190,13 +190,21 @@ class UsersController extends CommonController
         $map['u.id'] = $where['id'] = I('get.id');
 
         // 当前用户信息
-        $userInfo = $user->where($where)->find();
+
+        $dev = D('UserDevice')
+            ->where(['st_user_device.uid'=>I('get.id')])
+            ->join('st_devices ON st_user_device.did = st_devices.id','LEFT')
+            ->select();
+        $flow = D('flow')
+            ->where(['st_flow.user_id'=>I('get.id')])
+            ->join('st_orders ON st_flow.order_id = st_orders.device_id','LEFT')
+            ->field('st_flow.*,st_orders.device_id')
+            ->select();
 
         // 用户绑定信息
-        $bindDeviceInfo = $user->getBindInfo($map);
         $assign = [
-            'uInfo' => $userInfo,
-            'bInfo' => $bindDeviceInfo,
+            'uInfo' => $dev,
+            'bInfo' => $flow,
         ];
         $this->assign($assign);
         $this->display('userDetail');

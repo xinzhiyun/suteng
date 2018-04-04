@@ -24,19 +24,17 @@ class FeedsController extends CommonController
         $where['keywords'] =I('get.keywords');
         $user = M('feeds');
         $total = $user->where($map)
-                        ->join('st_users ON st_feeds.uid = st_users.id')
+                        ->join('st_users ON st_feeds.uid = st_users.id','LEFT')
                         ->field('st_feeds.*,st_users.nickname')
                         ->count();
         $page  = new \Think\Page($total,8);
         $pageButton =$page->show();
 
         $userlist = $user
-                        // ->join('st_users ON st_feeds.uid = st_users.id','LEFT')
-                        // ->field('st_feeds.*,st_users.nickname')->order(array('st_feeds.id'=>'desc'))
-                        // ->limit($page->firstRow.','.$page->listRows)
-                        ->select(false);
-
-        dump($userlist);
+                        ->join('st_users ON st_feeds.uid = st_users.id','LEFT')
+                        ->field('st_feeds.*,st_users.nickname')->order(array('st_feeds.id'=>'desc'))
+                        ->limit($page->firstRow.','.$page->listRows)
+                        ->select();
         $this->assign('list',$userlist);
         $this->assign('where',$where);
         $this->assign('button',$pageButton);
@@ -73,14 +71,14 @@ class FeedsController extends CommonController
         }
         $user = M('repair');
         $total = $user->where($map)
-                        ->join('st_users ON st_repair.uid = st_users.id')
+                        ->join('st_users ON st_repair.uid = st_users.id','LEFT')
                         ->field('st_repair.*,st_users.nickname')
                         ->count();
         $page  = new \Think\Page($total,8);
         $pageButton =$page->show();
 
         $userlist = $user->where($map)
-                        ->join('st_users ON st_repair.uid = st_users.id')
+                        ->join('st_users ON st_repair.uid = st_users.id','LEFT')
                         ->field('st_repair.*,st_users.nickname')
                         ->limit($page->firstRow.','.$page->listRows)
                         ->select();
