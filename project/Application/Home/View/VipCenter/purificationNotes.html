@@ -196,6 +196,7 @@
   	<script src="__PUBLIC__/Home/js/laydate.js"></script>
   	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/echarts.simple.min.js"></script>
+	<script src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script>
 	var year = new Date().getFullYear();//年份
 	var month = ((new Date().getMonth()+1)+'').length == 1
@@ -204,22 +205,28 @@
  	var mustDate = new Date(year, month, 0).getDate();//默认当前月份最大天数
  	var datalist=JSON.parse($(".datalist").val());//表中所有的数据集
  	var yAxisData = [[200],[2000]];//设置y轴最大值
+	 console.log(month, year)
  	// 选中月份获取净水记录
+	//  当月净水数据记录
 	$.ajax({
-		url:"getTds",
+		url:"getTds", 
 		dataType:"json",
 		type:"post",
 		async: false,
 		data:{
-			"month":year+"0"+month
+			"month":year+month
 		},
 		success:function(res){
+			if(!res.length) {
+				layuiHint("本月无数据");
+			}
 			getAvg(res);
 		},
 		error: function(res) {
 			conosle.log("错误", res);
 		}
 	});
+
 	$(function(){
 		$("#dateSelect").text(year+'-'+ month);//显示当前年月
 		//选择年月
@@ -243,7 +250,12 @@
 							"month":yearstring+monthstring
 						},
 						success:function(res){
+							console.log(res.length)
+							if(!res.length) {
+								layuiHint("本月无数据");
+							}
 							getAvg(res);
+							
 						},
 						error: function(res) {
 							conosle.log("错误", res);
@@ -279,7 +291,6 @@
 			$(".pureMean").html("(平均值："+0+"ppm)");
 		}
 	}
-	getAvg(datalist);
 	function getOption(_yAxisData, _minInterval, _seriesData, _lineColor, mustDate) {
 		var chartOption = {
 		    color: [_lineColor],
@@ -337,6 +348,13 @@
 	function byId(id) {
 		return document.getElementById(id);
 	};
+	//layuiHint弹框提示封装
+	function layuiHint(text){
+    	layui.use('layer', function(){
+        	var layer = layui.layer;
+        	layer.msg(text);
+    	});  
+	}
 	</script>
 </body>
 </html>

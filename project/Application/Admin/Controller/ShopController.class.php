@@ -374,6 +374,38 @@ class ShopController extends CommonController
 
     }
 
+    // 删除产品属性
+    public function attrDel()
+    {
+        try {
+            $attrVal = D('AttrVal');
+            $attr = D('Attr');
+            $id = I('post.aid');
+            $where = ['aid' => $id];
+            $res = $attrVal->where($where)->select();
+            if ($res) {
+                E('该属性下有商品，不能删除',204);
+            }else{
+                // 去做删除
+                // 重新定义条件
+                $where = ['id' => $id];                
+                $info = $attr->where($where)->delete();
+                if ($info) {
+                    E('删除成功',$info);
+                }else{
+                    E('删除失败',203);
+                }
+            }
+            
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
     /**
      * 订单管理
      */

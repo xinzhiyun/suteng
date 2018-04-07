@@ -56,6 +56,7 @@
                                     <th>序号</th>
                                     <th>姓名</th>
                                     <th>级别</th>
+                                    <th>所属分公司</th>
                                     <th>A级分销商邀请</th>
                                     <th>B级分销商邀请</th>
                                     <th>C级分销商邀请</th>
@@ -77,6 +78,7 @@
                                             <td>{{$i}}</td>
                                             <td>{{$val.name}}</td>
                                             <td>{{$val.leavel}}</td>
+                                            <td>{{$vo.company}}</td>
                                             <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_a}}" alt="A级邀请"></td>
                                             <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_b}}" alt="B级邀请"></td>
                                             <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_c}}" alt="C级邀请"></td>

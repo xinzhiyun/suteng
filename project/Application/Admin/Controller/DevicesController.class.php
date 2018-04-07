@@ -381,9 +381,12 @@ class DevicesController extends CommonController
             }
         }
         $filters = D('Filters');
-        $data = $filters->where($map)->select();
+        $count = $filters->where($map)->count();
+        $Page       = new \Think\Page($count,10);
+        $data = $filters->where($map)->limit($Page->firstRow.','.$Page->listRows)->select();
         $assign = [
             'data' => $data,
+            'page' => page_config($Page)
         ];
         $this->assign($assign);
         $this->display();
