@@ -34,7 +34,7 @@ class UsersController extends CommonController
 
         $assign = [
             'data' => $userlist,
-            'button' => $pageButton,
+            'button' => bootstrap_page_style($pageButton),
         ];
         $where['nickname'] = $_GET['nickname'];
         $where['grade'] = I('get.grade');
@@ -140,8 +140,8 @@ class UsersController extends CommonController
                                 ->join('st_users ON st_flow.user_id = st_users.id')
                                 ->field('st_flow.*,st_users.nickname,st_users.balance')
                                 ->count();
-        $page  = new \Think\Page($total,8);
-        $pageButton =$page->show();
+        $page  = new \Think\Page($total,10);
+//        $pageButton =$page->show();
 
         $list = $flow->where($map)->limit($page->firstRow.','.$page->listRows)
                                 ->join('st_users ON st_flow.user_id = st_users.id')
@@ -149,7 +149,7 @@ class UsersController extends CommonController
                                 ->select();
         // dump($list);die;
         $this->assign('list',$list);
-        $this->assign('button',$pageButton);
+        $this->assign('button',page_style($page));
         $this->display();        
     }
 

@@ -15,8 +15,9 @@ class ShopOrderModel extends BaseModel
             ->field('a.address,a.phone,a.name,o.order_id,o.g_cost,o.g_price,o.g_num,o.addtime,o.status,o.mode,o.g_type')
             ->count();
         $Page       = new \Think\Page($count,10);
-        page_config($Page);
-        $show       = $Page->show();
+        $show = page_style($Page);
+//        page_config($Page);
+//        $show       = $Page->show();
         $data = $this
             ->where($where)
             ->alias('o')

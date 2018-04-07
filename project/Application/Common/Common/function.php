@@ -449,6 +449,13 @@ function page_config($page){
     $page -> setConfig('theme','%HEADER% %FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%');
 }
 
+function page_style($page){
+
+    page_config($page);
+    $show       = $page->show();
+    return bootstrap_page_style($show);
+}
+
 /**
  * 处理post上传的文件；并返回路径
  * @param  string $path    字符串 保存文件路径示例： /Upload/image/
