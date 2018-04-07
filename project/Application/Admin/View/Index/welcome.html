@@ -9,153 +9,11 @@
 
     <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/index/welcome.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/style.css?v=4.1.0" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-	<style>
-		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
-		a:link {
-			color: #fff;
-		}
-		a:visited {
-			color: #aaa;
-		}
-		a:hover {
-			color: #ddd;
-		}
-		a:active {
-			color: #999;
-		}
-		.content {
-			background: #ecf0f5;
-		}
-		.content .welcomePage {
-			width: auto;
-		    height: auto;
-		    margin: auto auto;
-		    font-size: 40px;
-		}
-		/*内容头部*/
-		#hTop {
-			width: 100%;
-			display: inline-flex;
-			position: relative;
-			left: 0;
-			margin-top: 2%;
-		}
-		/*数字*/
-		.h1 {
-			font-size: 3rem;
-			padding: 0 4%;
-			font-weight: bold;
-		}
-		#hTop>div {
-			width: 24%;
-			display: inline-block;
-			padding-top: 1%;
-			margin: 0 2%;
-			color: #FFF;    
-			border-radius: 3px;
-		}
-		#hTop>div:nth-of-type(1) {
-			background: #00C0EF;
-		}
-		#hTop>div:nth-of-type(2) {
-			background: #00A65A;
-		}
-		#hTop>div:nth-of-type(3) {
-			background: #F39C12;
-		}
-		#hTop>div:nth-of-type(4) {
-			background: #DD4B39;
-		}
-		/*描述*/
-		#hTop>div>p {
-			padding: 0 4%;
-			margin: 10px 0;
-			font-size: 1.4rem;
-		}
-		/*更多*/
-		#hTop>div>a {
-			width: 100%;
-			display: block;
-			margin-top: 6px;
-			text-align: center;
-			background: rgba(0,0,0,.1);
-			border-radius: 3px;
-		}
-		/*底部统计图、地图*/
-		#hBottom {
-			width: 100%;
-			height: 75vh;
-			position: relative;
-			top: 0;
-			left: 0;
-			padding-top: 2%;
-		}
-	 
-		#hBottom>div {
-			width: 46%;
-			height: 100%;
-			display: inline-block;
-			position: relative;
-			margin: 0 2%;
-		}
-		/*左侧折线图*/
-		#bottomLeft {
-			float: left;
-		}
-		#bottomLeft:after {
-			content: '';
-			display: block;
-			clear: both;
-			line-height: 1;
-			visibility: hidden;
-		}
-		#bottomLeft>div {
-			width: 100%;
-			height: 48%;
-			position: relative;
-			background: #fff !important
-		}
-		#bottomLeft>div:nth-of-type(2){
-			position: absolute;
-			left: 0;
-			bottom: 0;
-		}
-		
-		/*右侧地图*/
-		#map {
-			float: right;
-			background: #fff;
-		}
-
-		#map:after {
-			content: '';
-			display: block;
-			clear: both;
-			line-height: 1;
-			visibility: hidden;
-		}
-		/*标题*/
-		#map>h5 {
-			width: 100%;
-			padding: 0% 2%;
-		}
-		/*百度地图*/
-		#allmap {
-			width: 100%;
-			height: 95%;
-			overflow: hidden;
-			margin: 0;
-			font-family:"微软雅黑";
-		}
-	</style>
 </head>
 <body>
 	<div class="content">
@@ -173,12 +31,12 @@
 				<a href="{{:U('Admin/Shop/orders')}}">更多</a>
 			</div>
 			<div>
-				<span class="h1" id="repaire">0</span>
+				<span class="h1" id="repaire">0</span>条
 				<p>客户报修</p>
 				<a href="{{:U('Admin//Feeds/repairlist')}}">更多</a>
 			</div>
 			<div>
-				<span class="h1" id="feeds">0</span>
+				<span class="h1" id="feeds">0</span>条
 				<p>客户建议</p>
 				<a href="{{:U('Admin/Feeds/feedslist')}}">更多</a>
 			</div>
@@ -361,9 +219,9 @@
 		if(series_data[0].length){
 
 			//收入 折线图显示
-	        income.setOption(getOption('金额','收入',yAxis_data[0],series_data[0], '收入'));
+	        income.setOption(getOption('金额','收入',yAxis_data[0],series_data[0], legend_data[0]));
 			//新增设备 折线图显示
-	        newMoreDevice.setOption(getOption('设备数量','新增设备',yAxis_data[1],series_data[1], '新增数量'));
+	        newMoreDevice.setOption(getOption('设备数量','新增设备',yAxis_data[1],series_data[1], legend_data[1]));
 		}else{
 			
 			//这里是没数据时显示0
@@ -371,9 +229,9 @@
 			series_data = [[0],[0]];
 
 			//收入 折线图显示
-	        income.setOption(getOption('金额','收入',yAxis_data[0],series_data[0], '收入'));
+	        income.setOption(getOption('金额','收入',yAxis_data[0],series_data[0], legend_data[0]));
 			//新增设备 折线图显示
-	        newMoreDevice.setOption(getOption('设备数量','新增设备',yAxis_data[1],series_data[1], '新增数量'));
+	        newMoreDevice.setOption(getOption('设备数量','新增设备',yAxis_data[1],series_data[1], legend_data[1]));
 		}
 		/*************************  地图  **************************/
         // 百度地图API功能

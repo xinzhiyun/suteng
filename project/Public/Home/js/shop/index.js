@@ -57,7 +57,7 @@ if($("#_cate").val()){
 
 }else{
 	$("#header").html('暂无分类');
-	console.log('暂无分类');
+	// console.log('暂无分类');
 }
 // 顶部滚动过渡效果
 // $("#header").css({width: ($("#header>span").length+2)*20 + 'vw'});
@@ -108,7 +108,7 @@ if($("#_goods").val() != 'null'){
 }else{
 	//无数据
 	$(".allgoods>ul").html('<h3 style="text-align:center;padding:5% 0;">暂无内容，敬请期待！<div></div></h3>');
-	console.log('暂无商品');
+	// console.log('暂无商品');
 }
 
 // 遍历偏移量
@@ -141,67 +141,6 @@ if(_htmlArr[0]){
 
 /***************** 数据遍历 -- 结束 ************************/
 
-/***************** 页面跳转 -- 开始 ************************/
-/*
-	点击的时候记录当前点击的商品gid，传给商品详情页面
- */
-$(".goodsBlock").on('click','.pic',function(){
-	// 将当前商品id拼接到地址URL
-	$(this).attr("href", "{{:U('Shop/shoppingdetail')}}?gid=" + $(this).attr("goods_gid"));
-	// console.log($(this).attr('href'));
-	// 跳转到商品详情页面
-	location.href = $(this).attr('href');
-
-	// 记录当前分类位置
-	sessionStorage.setItem('shopCid', $(this).attr('cid'));
-})
-//点击轮播图片
-$("#slider").on('click','.pic',function(){
-
-	// 将当前商品id拼接到地址URL
-	$(this).attr("href", "{{:U('Shop/shoppingdetail')}}?gid=" + $(this).attr("goods_gid"));
-	// 跳转到商品详情页面
-	location.href = $(this).attr("href");
-})
-/*
-	点击商品旁边的购物车图标
- */
-$(".allgoods").on("click",".icon-jiarugouwuche",function(){
-	var _this = $(this);
-	// 获取商品id
-	var gid = $(this).siblings(".pic").attr("goods_gid");
-	console.log(gid);
-	//添加点击效果
-	$(this).addClass("numShow");
-	$(".cartnum>span").addClass("numShow");
-	setTimeout(function(){
-		//移除点击效果
-		_this.removeClass("numShow");
-		$(".cartnum>span").removeClass("numShow");
-	},500)
-	//告诉后台添加到数据库
-	$.ajax({
-		url: '{{:U("ShoppingCart/shopAdd")}}',
-		type: 'post',
-		data: {'gid': gid,'num': 1},
-		success: function(res){
-			console.log('成功！ ',res);
-			//更新购物车商品数量
-				$(".cartnum>span").text(res);
-				parent.layer.msg('已加入购物车！');
-		},
-		error: function(res){
-			console.log('失败！ ',res);
-				parent.layer.msg('加入购物车失败，请稍后再试！');
-		}
-	})
-})
-//点击搜索框旁的购物车图标跳转到购物车
-$('.cartnum').click(function(){
-	location.href = '{{:U("ShoppingCart/index")}}';
-})
-
-/***************** 页面跳转 -- 结束 ************************/
 
 /*
 	点击顶部导航栏，切换订单状态
@@ -213,7 +152,7 @@ $("#header").on("click",'.tab',function(){
 	// 回到顶部
 	document.body.scrollTop = -10000;
 	$("#container")[0].scrollTop = -10000;
-	console.log(document.body.scrollTop, $("#container")[0].scrollTop)
+	// console.log(document.body.scrollTop, $("#container")[0].scrollTop)
 	var _this = $(this);
 	//如果当前分类下有商品, 且允许滚动， 否则禁止
 	if(_htmlArr[_this.attr("index")] && ullen < 1){	
@@ -228,7 +167,7 @@ $("#header").on("click",'.tab',function(){
 		})
 	}
 	// 当前点击的tab
-	tab_now = ~~$(this).attr('index');
+	tab_now = Number($(this).attr('index'));
 	// 调用content 切换函数
 	tabContent($(this));
 	// loading
@@ -250,7 +189,7 @@ $("#header").on("click",'.tab',function(){
 	$('#content').css({
 		height: $('.goodsBlock').eq(tab_now)[0].offsetHeight + 'px'
 	})
-	console.log('tab_now: ',tab_now);
+	// console.log('tab_now: ',tab_now);
 	lazyArr = _htmlArr[tab_now].split('|');
 	// 监听滚动
 	$('#container').on('scroll', function(){
@@ -282,8 +221,8 @@ function tabContent(_this){
 		})
 	}
 	// console.log('ullen: ',ullen)
-	$('#header>span').css('color','#5A5A5A').css('font-weight','400');
-	_this.css('color','#373737').css('font-weight','400');
+	$('#header>span').removeClass('tabnow');
+	_this.addClass('tabnow');
 
 	/******* 切换联动 *******/
 
@@ -293,10 +232,8 @@ function tabContent(_this){
 	//横线移动
 	$("#line").css({left: _this[0].offsetLeft+_this[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
 	
-	// $("#line").css({transform: 'translateX('+ parseFloat(_this[0].offsetLeft+_this[0].clientWidth/2-$("#line")[0].clientWidth/2) +'px)'});
-
 	// 顶部滚动过渡效果
-	// console.log($(this)[0].offsetLeft)
+	// console.log('_this[0].offsetLeft: ',_this[0].offsetLeft);
 	var offset = _this[0].offsetLeft/2 - _this[0].offsetWidth/2;
 	offset = Math.abs(offset) > _this.offsetLeft/2 ? _this.offsetLeft/2 : offset;
 	// 点击的是第一个分类
@@ -306,7 +243,8 @@ function tabContent(_this){
 	// console.log('this.offsetLeft/2: ',_this[0].offsetLeft/2);
 	// console.log('_this[0].offsetWidth/2: ',_this[0].offsetWidth/2);
 	// console.log('offset: ',offset);
-	// _this.parents('#header')[0].style.transform = 'translateX(-'+ offset +'px)';
+	// console.log("_this.parents('#header'): ",_this.parents('#header'));
+	_this.parents('#header')[0].scrollLeft = offset;
 
 	/******* 切换联动 *******/
 	if(!_htmlArr[tab_now]){
@@ -317,68 +255,19 @@ function tabContent(_this){
 // 页面加载时顶部分类横线位置初始化
 
 $("#line").css({left: $('.tab')[0].offsetLeft+$('.tab')[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
-$('#header>span').eq(0).css('color','#373737').css('font-weight','600');
+$('#header>span').eq(0).addClass('tabnow');
 
-
-/**************************** 搜索 -- 开始 ******************************/
-/*
-	监听input内容实时搜索
- */
-$(".search input").on('keyup', function(){
-	_search($(this).val());
-})
-/*
-	点击搜索
- */
-$(".searchBtn").click(function(){
-	_search($(this).siblings('input').val());
-	
-})
-// 点击搜索内容存储 商品id 到地址栏URL 给 商品详情页面用
-$("#searchPanel").on('click', 'a', function(){
-
-	// 将当前商品id拼接到地址URL
-	$(this).attr("href", "{{:U('Shop/shoppingdetail')}}?gid=" + $(this).attr("goods_gid"));
-	// 跳转到商品详情页面
-	location.href = $(this).attr("href");
-})
-//搜索函数
-function _search(word){
-	//searchArr: 所有商品的数据, 遍历商品的时候存进去的
-	// console.log(word);
-	if(word){
-		// console.log(searchArr);
-		$("#searchPanel").html('');	//每次输入都重新搜索
-		//遍历适配的数据
-		for(var i=0; i<searchArr.length; i++){
-			if(searchArr[i].indexOf(word) > -1){
-				$("#searchPanel").html(searchArr[i]);
-			}
-		}
-		$("#searchPanel").fadeIn('fast');
-		// console.log($("#searchPanel>a").length)
-		// 没有匹配到商品
-		if($("#searchPanel>a").length < 1){
-
-			$("#searchPanel").html('没有找到你搜索的商品！');
-		}
-	}else{
-		$("#searchPanel").html('^^换个姿势搜索看看^^');
-		console.log('没有输入内容!')
-	}
-}
-/******************************* 搜索 -- 结束 ************************************/
 
 // 状态恢复(点击过去商品详情后，后退回来商城首页)
 if(sessionStorage.getItem('shopCid')){
 	var cid = Number(sessionStorage.getItem('shopCid'));
 	tabContent($('.tab').eq(cid));
-	tab_now = ~~cid;
+	tab_now = +cid;
 	$('#header').offset().left = $('.tab').eq(tab_now)[0].offsetLeft;
-	console.log($('#header')[0].scrollLeft)
+	// console.log($('#header')[0].scrollLeft)
 	// 初始化
 	// sessionStorage.setItem('shopCid', '');
-	console.log('tab_now: ',tab_now);
+	// console.log('tab_now: ',tab_now);
 }
 
 /*********************** 懒加载 -- 开始 ***********************/
@@ -388,17 +277,17 @@ if(sessionStorage.getItem('shopCid')){
 	// loading 动画
 $("#loading").fadeOut('slow');
 // '|' 每6个li 添加一次，所以超过6个商品时，每次拉倒底部，再加载6个
-lazyArr = _htmlArr[tab_now].split('|'), 
+lazyArr = _htmlArr[tab_now].split('|');
 	
 	// lazyArr = lazyArr.substr(0,_htmlArr[0].length-1)
 	// lazyArr.push(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').join(''));
 	// lazyArr.push(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').join(''));
 	// lazyArr.push(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').join(''));
 
-console.log('lazyArr: ', lazyArr);
+// console.log('lazyArr: ', lazyArr);
 
 var num = 1;	//加载次数， 达到当前分类数组长度时，停止滚动
-	var scrollH, offsetH, scrollTop;
+var scrollH, offsetH, scrollTop;
 $('#container').on('scroll', function(){
 	// console.log('++++++++++++++ scroll ++++++++++++++');
 	console.log(isLoad[tab_now][0])
@@ -407,7 +296,7 @@ $('#container').on('scroll', function(){
 	}
 })
 // 懒加载函数
-lazyLoad = (_this) => {
+function lazyLoad(_this){
 
 	/*
 		触底加载，直到没有数据
@@ -422,8 +311,8 @@ lazyLoad = (_this) => {
 	// console.log('scrollTop: ',scrollTop);
 
 	if(scrollTop/(scrollH - offsetH) >= 0.99){	//触底加载，直到没有数据
-		console.group()
-		console.log('scrollAppend: ',lazyArr[num]);
+		// console.group()
+		// console.log('scrollAppend: ',lazyArr[num]);
 
 		if(_htmlArr[tab_now]){	//对应分类下有多数据才添加到页面
 			$(".allgoods>ul").eq(tab_now).append(lazyArr[num]);
@@ -438,9 +327,10 @@ lazyLoad = (_this) => {
 			// return
 		}
 	}
-	console.log('tab_now: ', tab_now);
-	console.log('num: ', num);
-	console.log('lazyArr.length: ', lazyArr.length);
+	// console.log('tab_now: ', tab_now);
+	// console.log('num: ', num);
+	// console.log('lazyArr.length: ', lazyArr.length);
+	// console.groupEnd()
 }
 
 /*********************** 懒加载 -- 结束 ***********************/

@@ -50,12 +50,12 @@ body {
     text-align: center;
     font-size: 0.72rem;
     color: #616161;
-    font-weight: 400!important;
-}
-#header>span:nth-child(1){
-	color: #373737;
 }
 
+#header>.tabnow {
+	color: #373737;
+	font-weight: 500;
+}
 /*顶部标题下面的线*/
 #line {
 	width: 10vw;

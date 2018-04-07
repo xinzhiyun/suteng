@@ -120,7 +120,7 @@
     /*
       点击'提交'
      */
-    $(".btn").click(function(){
+    $(".btn").on('touchend', function(){
       /*
           date : 日期,
           device_code : 设备id,
@@ -133,13 +133,13 @@
       var nameReg = /^([a-zA-Z0-9_\u4e00-\u9fa5]){2,30}$/;
       var phoneReg = /^1[3|4|5|8][0-9]\d{4,8}$/;
       var addressReg = /^(?=.*?[\u4E00-\u9FA5])[\dA-Za-z\u4E00-\u9FA5]{6,}/;
-      var date = $(".currentdate").val().replace(/[年月]/g,'-').replace(/[日]/,''),
-          device_code = $(".device_code").text(),
-          reason = $(".reason>option:selected"),
-          content = $("#suggestTxt").val(),
-          truename = $("#Lname").val(),
-          phone = $("#Ltel").val(),
-          address = $("#Laddr").val();
+      var date = $(".currentdate").val().replace(/[年月]/g,'-').replace(/[日]/,'');
+      var device_code = $(".device_code").text();
+      var reason = $(".reason>option:selected");
+      var content = $("#suggestTxt").val();
+      var truename = $("#Lname").val();
+      var phone = $("#Ltel").val();
+      var address = $("#Laddr").val();
 
           console.log('device_code:', device_code + '\n' +
            'date:',date + '\n' + 'reason:', reason[0].innerText + '\n' + 
@@ -148,30 +148,33 @@
            );
 
           //清空，防止多次点击提交
-          formData.delete('device_code')
-          formData.delete('date')
-          formData.delete('reason')
-          formData.delete('content')
-          formData.delete('truename')
-          formData.delete('phone')
-          formData.delete('address')
+          formData.delete('device_code');
+      alert(1231223);
+          formData.delete('date');
+          formData.delete('reason');
+          formData.delete('content');
+          formData.delete('truename');
+          formData.delete('phone');
+          formData.delete('address');
 
           console.group();
 
           //重新添加
-          formData.append('device_code', device_code)
-          formData.append('date', date)
-          formData.append('reason', reason[0].innerText)
-          formData.append('content', content)
-          formData.append('truename', truename)
-          formData.append('phone', phone)
-          formData.append('address', address)
-
+          formData.append('device_code', device_code);
+          formData.append('date', date);
+          formData.append('reason', reason[0].innerText);
+          formData.append('content', content);
+          formData.append('truename', truename);
+          formData.append('phone', phone);
+          formData.append('address', address);
+          
           console.log(formData.getAll('device_code') + '\n' + formData.getAll('date') + '\n' +
            formData.getAll('reason') + '\n' + formData.getAll('content') + '\n' + 
            formData.getAll('truename') + '\n' + formData.getAll('phone') + '\n' + 
            formData.getAll('address') + '\n' + formData.getAll('UploadForm[]')
           );
+
+          console.groupEnd();
           if(date && device_code.selectedIndex != 0 && reason.selectedIndex != 0 && content && truename && phone && address && filePic){
               console.log('通过！')
 
