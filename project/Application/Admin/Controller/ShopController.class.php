@@ -301,19 +301,128 @@ class ShopController extends CommonController
     // 修改商品
     public function goodEdit()
     {   
-        dump(I(''));
+
+        $gid = $_GET['gid'];
+        $where['st_goods.id'] = $gid;
+        $goods = D(Goods);
+        $price = M(Price);
+       
+        $goodsInfo = $goods->where($where)
+                  ->join('st_goods_detail ON st_goods.id = st_goods_detail.gid')
+                  ->field('st_goods.id,st_goods.name,st_goods_detail.cost,st_goods_detail.stock,st_goods_detail.cost')
+                  ->select();
+        // 查价格
+        // 重新定义条件
+        $wheres['gid'] = $gid;
+        $prices = $price->where($wheres)->select();
+
+        $pre = array();
+        foreach ($prices as $key => $value) {
+            $pre[0][$value['grade']] = $value['price'];
+
+        }
+        // 分类
         $cate = D('Category');
         $cateInfo = $cate->where('pid=0')->select();
-        $goods = D('Goods');
+        // 商品属性
         $attr = D('Attr');
         $attrInfo = $attr->select();
-        $goodsList = $goods->select();  //暂时无用
         $assign = [
-            'cateInfo' => $cateInfo,
-            'attrInfo' => $attrInfo,
+            'cateInfo'  => $cateInfo,
+            'attrInfo'  => $attrInfo,
+            'goodsInfo' => $goodsInfo,
+            'pre'       => $pre,
         ];
+        // dump($assign);
         $this->assign($assign);
         $this->display();
+        
+    }
+
+    // 商品编辑处理
+    public function goodsEditAction()
+    {
+        try{
+            $goods_add = D('Goods');
+            $attr_val = D('AttrVal');
+            $attr = D('Attr');
+            $goods_detail = D('GoodsDetail');
+            $cate = D('Category');
+            $data = I('post.');
+            // 准备两个条件，给多个表更新用
+            $where['id'] = $data['gid'];
+            $wheres['gid'] = $data['gid'];
+
+            $price = $data['price'];
+            $goods['cid'] = $cate->sureCate();
+            if(!$goods['cid']) E('请选择分类', 605);
+            $goods['name'] = $data['name'];
+            $goods['updatetime'] = time();
+            // 事务开启
+            $goods_add->startTrans();
+            if(!$goods_add->create($goods)) {
+                E($goods_add->getError(),406);
+            }
+            // 商品添加
+            $goods_status = $goods_add->where($where)->save($goods);
+
+            $goodsDetail['gid'] = $data['gid'];
+            $goodsDetail['cost'] = $data['cost'];
+            $goodsDetail['stock'] = $data['stock'];
+            if($data['is_install'] == 'on'){
+                $goodsDetail['is_install'] = 1;
+            } else {
+                $goodsDetail['is_install'] = 0;
+            }
+            if($data['is_hire'] == 'on'){
+                $goodsDetail['is_hire'] = 1;
+            } else {
+                $goodsDetail['is_hire'] = 0;
+            }
+            if(!$goods_detail->create($goodsDetail)) E($goods_detail->getError(),408);
+            // 商品详情添加
+            $goodsDetail_status = $goods_detail->where($wheres)->save($goodsDetail);
+
+            $attrVal['gid'] = $data['gid'];
+            // 添加之前先干掉原来的属性
+            $attrdel = $attr_val->where($wheres)->delete();
+            foreach ($data['attr'] as $key => $val) {
+                if($attr->where('id='.$key)->field('id')){
+
+                    $attrVal['aid'] = $key;
+                    $attrVal['val'] = $val;
+                    if(!$attr_val->create($attrVal)) E($attr_val->getError(),407);
+                    // 属性值添加                   
+                    $attr_val_status = $attr_val->add($attrVal);                    
+
+                } else {
+                    E('属性缺失，请刷新页面', 506);
+                }
+            }
+
+            // 商品单价添加
+            // dump($price);
+            foreach ($price as $key => $value) {
+
+                $p['price'] = $value;
+                $wheres['grade'] = $key;
+                $price_status = M('Price')->where($wheres)->save($p);
+            }
+          
+            if($goods_status && $attr_val_status){
+                $goods_add->commit();
+                E('商品编辑成功！',200);
+            } else {
+                $goods_add->rollback();
+                E('商品编辑失败，请添加属性后重新提交',407);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
     }
 
     // 根据pid获取分类
