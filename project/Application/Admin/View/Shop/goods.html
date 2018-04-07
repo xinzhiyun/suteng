@@ -145,7 +145,7 @@
                                                 <a id="del" class="btn btn-outline btn-success deletBnt" goodsName="{{$v['name']}}" goodsId="{{$v['gid']}}">
                                                     删除
                                                 </a>
-                                                <a href="addDesc?gid={{$v['gid']}}" class="btn btn-outline btn-success">
+                                                <a href="javascript:;" onclick="edit({{$v['gid']}})" class="btn btn-outline btn-success">
                                                     商品描述
                                                 </a>
                                                 <a href="goodEdit?gid={{$v['gid']}}" class="btn btn-outline btn-success">
@@ -162,6 +162,7 @@
                         {{$show}}
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>
@@ -203,6 +204,25 @@
                 </div>
             </div>
         </div>
+
+    </div>
+    <div class="modal inmodal bs-example-modal-lg" id="st-edit" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content animated bounceInRight">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>`
+                        <h4 class="modal-title" id="myModalLabel">
+                            添加描述
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <textarea name="content" id="description" cols="63" rows="10"></textarea>
+                        <button id='edit_submit' class="btn btn-primary">提交</button>
+                    </div>
+                </div>
+            </div>
     </div>
     <div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog"  aria-hidden="true">
         <div class="modal-dialog modal-sm">
@@ -223,6 +243,32 @@
             $("input[name='gid']").val(gid);
             $('#st-pic-add').modal('show');
         }
+
+
+        function edit(id)
+        {   
+            gid = id;
+            $('#st-edit').modal('show');         
+        }
+        $('#edit_submit').click(function(){
+            var aHTML = $('#description').val();
+            $.ajax({
+                url:'{{:U("admin/shop/addDescAction")}}',
+                type:'post',
+                data:{'desc':aHTML,'gid':gid},
+                success:function(res){
+                    console.log(res);
+                    if(res.code == 200){
+                        $('#st-edit').modal('hide');
+                        location.reload();
+                        parent.layer.msg('修改成功');
+                    } else{
+                        $('#st-edit').modal('hide');
+                        parent.layer.msg(res.msg);
+                    }
+                }
+            });
+        })
 
         $(".add-pic").click(function(){
             $("#st-pic-add").modal('hide');

@@ -200,10 +200,10 @@ class RuleController extends CommonController{
      * 将用户移除用户组
      */
     public function delete_user_from_group(){
-        $map=I('get.');
+        $map=I('get.uid');
         $result=D('AuthGroupAccess')->deleteData($map);
         if ($result) {
-            $this->success('操作成功',U('Admin/Rule/group_list'));
+            $this->success('操作成功');
         }else{
             $this->error('操作失败');
         }

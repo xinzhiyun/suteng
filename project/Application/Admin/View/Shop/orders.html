@@ -22,7 +22,7 @@
                             <option <?php echo ($where['key']=="order_id")?'selected':''; ?> value="order_id">订单ID</option>
                             <option <?php echo ($where['key']=="name")?'selected':''; ?> value="name">收货人姓名</option>
                             <option <?php echo ($where['key']=="phone")?'selected':''; ?> value="phone">电话</option>
-                            <option <?php echo ($where['key']=="address")?'selected':''; ?> value="address">收货地址</option>
+                            <option <?php echo ($where['key']=="a.address")?'selected':''; ?> value="a.address">收货地址</option>
                         </select>
                         <input type="hidden" name="p" value="1">
 
@@ -172,6 +172,14 @@
                             method="post">
                                 <input class="input-medium" type="text" id="edit_id" name="id" class="form-control" value="" readonly="" hidden="">
                                 <table class="table table-striped table-bordered table-hover table-condensed">
+                                        <tr>
+                                                <th>
+                                                    快递名称：
+                                                </th>
+                                                <td>
+                                                    <input class="input-medium" type="text" name="express_name" id="express_name" class="form-control" value="">
+                                                </td>
+                                            </tr>
                                      <tr>
                                         <th>
                                             快递单号：
@@ -231,6 +239,7 @@
     $('#edit_submit').click(function(){
         var data = {
                 'orderid' : $('#edit_id').val(),
+                'express_name' : $('#express_name').val(),
                 'express' : $('#express').val(),
             }
         $.ajax({

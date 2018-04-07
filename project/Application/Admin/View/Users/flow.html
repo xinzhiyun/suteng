@@ -12,6 +12,19 @@
                 </div>
                 <form method="get" action="">
                     <div class="input-group col-md-6"  style="float: right;margin-right: 60px;">
+                        <label class="form-control"  style="width:10%">用户昵称</label>
+                        <input type="text" name="nickname" placeholder="输入搜索关键字" value="" class="input form-control"   style="width:20%">
+                        <label class="form-control"  style="width:10%">订单编号</label>
+                        <input type="text" name="order_id" placeholder="输入搜索关键字" value="" class="input form-control"   style="width:20%">
+                        <label class="form-control"  style="width:10%">充值方式</label>
+                        <select class="form-control" name="mode" style="width:20%">
+                            <option value="">-- 充值方式 --</option>
+                            <option value="0">金币</option>
+                            <option value="1">银币</option>
+                            <option value="2">微信</option>
+                            <option value="3">支付宝</option>
+                            <option value="4">银联</option>
+                        </select>
                         <span class="input-group-btn" style="display: inline-block;">
                                 <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
                         </span>
