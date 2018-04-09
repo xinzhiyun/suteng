@@ -43,21 +43,26 @@ body{
 .deviceItem{
 	margin-top: 0.5rem;
 	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 .deviceitemLeft{
-	width: 15%;
+	width: 12%;
 	padding:0;
-	height: 2rem;
+	height: 1.6rem;
 	overflow: hidden;
 	border-radius: 1rem;
-	float: left;
+	/*float: left;*/
+	background-color: rgb(104,177,241);
+
 }
-.deviceitemLeft>img{
+/*.deviceitemLeft>img{
 	width: 100%;
-}
+}*/
 .deviceitemRight{
 	width: 82%;
-    float: right;
+    /*float: right;*/
     border-bottom: 1px solid #f3f3f3;
    /* padding: 0.5rem 0;*/
 }
@@ -65,7 +70,7 @@ body{
 
 	display: inline-block;
 	width: 88%;
-	padding: 0.5rem 0;
+	padding: 0.3rem 0;
 	color: #5a5a5a;
 }
 .deviceitemRight>i{
