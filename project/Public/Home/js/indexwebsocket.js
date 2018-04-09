@@ -100,7 +100,7 @@ window.onload = function(){
     var PackNum=0;//包数据
     var CmdList=[];//命令队列
     var numAdd=0;
-    var deviceId=getdataList.deviceid;
+    var deviceId=getdataList.device_code;
     // 获取设备id
     // var deviceId=228733445596778;
     websoket.onopen=function(){
