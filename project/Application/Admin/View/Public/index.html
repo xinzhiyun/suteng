@@ -177,7 +177,7 @@
                 </nav>
             </div>
             <div class="row J_mainContent" id="content-main">
-                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{{:U('Admin/Index/welcome')}}" frameborder="0" data-id="welcome" seamless></iframe>
+                <iframe id="J_iframe" class="J_iframe" name="iframe0" width="100%" height="100%" src="{{:U('Admin/Index/welcome')}}" frameborder="0" data-id="welcome" seamless></iframe>
             </div>
             <div class="footer">
                 <div class="pull-right">&copy; 2018-2019 <a target="_blank">速腾电器</a>
@@ -516,6 +516,12 @@
 
     <!-- 第三方插件 -->
     <script src="__PUBLIC__/Admin/js/plugins/pace/pace.min.js"></script>
+
+    <script>
+        window.onresize = function() {
+            document.getElementById("J_iframe").contentWindow.location.reload(true);
+        }
+    </script>
 
 </body>
 
