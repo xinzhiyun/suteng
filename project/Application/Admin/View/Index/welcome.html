@@ -193,10 +193,11 @@
 			async: false,
 			dataType: 'json',
 			success: function(res){
+				console.log(res)
 				// 当月收入
 				for(var i in res.flows){
 					if(res.flows[i]){
-						series_data[0].push(parseInt(res.flows[i].money))
+						series_data[0].push(+res.flows[i].money);
 					}else {
 						series_data[0].push(0);
 					}
@@ -205,34 +206,47 @@
 				for(var i in res.devices){
 					// 遍历新增设备数量
 					if(res.devices[i]){
-						series_data[1].push(parseInt(res.devices[i].count));
+						series_data[1].push(+res.devices[i].count);
 					}else {
 						series_data[1].push(0);
 					}
 				}
+
+
+				if(series_data[0].length){
+
+					//收入 折线图显示
+			        income.setOption(getOption('金额','收入',yAxis_data[0],series_data[0], legend_data[0]));
+					
+				}else{
+					
+					//这里是没数据时显示0
+					yAxis_data[0] = [0];
+					series_data[0] = [0];
+
+					//收入 折线图显示
+			        income.setOption(getOption('金额','收入',yAxis_data[0],series_data[0], legend_data[0]));
+					
+				}
+				if(series_data[1].length){
+					//新增设备 折线图显示
+			        newMoreDevice.setOption(getOption('设备数量','新增设备',yAxis_data[1],series_data[1], legend_data[1]));
+				}else{
+
+					//这里是没数据时显示0
+					yAxis_data[1] = [0];
+					series_data[1] = [0];
+
+					//新增设备 折线图显示
+			        newMoreDevice.setOption(getOption('设备数量','新增设备',yAxis_data[1],series_data[1], legend_data[1]));
+				}
+
 			},
 			error: function(res){
-				console.log('错误 ',res)
+				console.log('错误 ',res);
 			}
 		})
-		
-		if(series_data[0].length){
 
-			//收入 折线图显示
-	        income.setOption(getOption('金额','收入',yAxis_data[0],series_data[0], legend_data[0]));
-			//新增设备 折线图显示
-	        newMoreDevice.setOption(getOption('设备数量','新增设备',yAxis_data[1],series_data[1], legend_data[1]));
-		}else{
-			
-			//这里是没数据时显示0
-			yAxis_data = [[0],[0]];
-			series_data = [[0],[0]];
-
-			//收入 折线图显示
-	        income.setOption(getOption('金额','收入',yAxis_data[0],series_data[0], legend_data[0]));
-			//新增设备 折线图显示
-	        newMoreDevice.setOption(getOption('设备数量','新增设备',yAxis_data[1],series_data[1], legend_data[1]));
-		}
 		/*************************  地图  **************************/
         // 百度地图API功能
 		var map = new BMap.Map("allmap");    // 创建Map实例

@@ -18,8 +18,8 @@
                     </div>
                 </div>
                 <form method="get" action="">
-                    <div class="input-group col-md-6"  style="float: right;margin-right: 60px;">
-                        <select name="key" class="form-control" name="account" style="width:20%">
+                    <div class="input-group col-md-6" id='searchdiv'>
+                        <select name="key" class="form-control" name="account">
                             <option <?php echo ($where['key']=="device_code")?'selected':''; ?> value="device_code">设备编码</option>
                             <option <?php echo ($where['key']=="typename")?'selected':''; ?> value="typename">设备类型</option>
                         </select>

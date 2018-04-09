@@ -157,11 +157,11 @@
                             <a href="index_v1.html" class="J_menuItem" data-index="0"><i class="fa fa-cart-arrow-down"></i> 购买</a>
                         </li> -->
 
-                            <li>
-                                <a aria-expanded="false" class='home' href="{{:U('admin/index/index')}}">
-                                    <i class="fa fa-home"></i> 返回首页
-                                </a>
-                            </li>
+                        <li>
+                            <a aria-expanded="false" class='home' href="{{:U('admin/index/index')}}">
+                                <i class="fa fa-home"></i> 首页
+                            </a>
+                        </li>
 
                         <li class="dropdown hidden-xs">
                             <a class="right-sidebar-toggle" aria-expanded="false">
@@ -527,7 +527,7 @@
         // 恢复刷新前的记录(如果不是在首页);
         if(sessionStorage.getItem('ind')){
             var ind = +sessionStorage.getItem('ind');
-            console.log($('#side-menu>li').eq(ind));
+            // console.log($('#side-menu>li').eq(ind));
             $('#side-menu>li').eq(ind).attr('class', 'active');
         }
         if(sessionStorage.getItem('iframe_src')){

@@ -15,8 +15,8 @@
                         </div>
                     </div>
                 <form method="get" action="">
-                    <div class="input-group col-md-3"  style="float: right;margin-right: 60px;">
-                        <select name="key" class="form-control" name="account" style="width:30%">
+                    <div class="input-group col-md-4" id='searchdiv'>
+                        <select name="key" class="form-control" name="account" >
                             <option  <?php echo ($where['key']=="truename")?'selected':''; ?> value="truename" >报修人</option>
                             <option <?php echo ($where['key']=="phone")?'selected':''; ?> value="phone">联系电话</option>
                             <option  <?php echo ($where['key']=="device_code")?'selected':''; ?> value="device_code">设备编码</option>

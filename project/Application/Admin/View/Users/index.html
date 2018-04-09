@@ -11,8 +11,8 @@
                     <h5>用户管理 <small>用户列表</small></h5>
                 </div>
                 <form method="get" action="">
-                    <div class="input-group col-md-6"  style="margin-left:20px;">
-                        <label class="form-control"  style="width:14%">用户昵称</label>
+                    <div class="input-group col-md-6" id='searchdiv'>
+                        <label class="form-control" style="width:20%">用户昵称</label>
                         <input type="hidden" name="p" value="1">
                         <input type="text" name="nickname" placeholder="输入搜索关键字" value="{{$where['nickname']}}" class="input form-control"   style="width:30%">
                         <select name="grade" class="form-control" name="account" style="width:20%">

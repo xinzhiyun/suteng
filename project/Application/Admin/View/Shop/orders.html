@@ -17,8 +17,8 @@
                     </div> -->
                 </div>
                 <form method="get" action="">
-                    <div class="input-group col-md-3"  style="float: right;margin-right: 60px;">
-                        <select name="key" class="form-control" name="account" style="width:30%">
+                    <div class="input-group col-md-3" id='searchdiv'>
+                        <select name="key" class="form-control" name="account">
                             <option <?php echo ($where['key']=="order_id")?'selected':''; ?> value="order_id">订单ID</option>
                             <option <?php echo ($where['key']=="name")?'selected':''; ?> value="name">收货人姓名</option>
                             <option <?php echo ($where['key']=="phone")?'selected':''; ?> value="phone">电话</option>

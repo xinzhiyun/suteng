@@ -1,0 +1,35 @@
+/*
+    后台公告css
+*/
+.pagination .active a{
+    background-color: #1c84c6;
+    color: #f3f3f4;
+}
+.pagination .active a:hover{
+    background-color: #1c84c6;
+    color: #f3f3f4;
+}
+
+/*搜索栏*/
+#searchdiv {
+	display: block;
+	float: right;
+	margin-right: 60px;
+}
+
+#searchdiv::after {
+	content: '';
+	display: block;
+	visibility: hidden;
+	clear: both;
+}
+#searchdiv>select:first-child,
+#searchdiv>label:first-child,
+#searchdiv>input:first-child {
+    width: 26%;
+    padding: 6px 2px;
+    text-align: center;
+}
+#searchdiv .btn {
+    margin-bottom: 0;
+}

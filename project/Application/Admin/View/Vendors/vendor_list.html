@@ -15,8 +15,8 @@
                         </div> -->
                     </div>
                 <form method="get" action="">
-                    <div class="input-group col-md-4"  style="float: right;margin-right: 60px;">
-                        <select name="key" class="form-control acc" name="account" style="width:20%">
+                    <div class="input-group col-md-4" id='searchdiv'>
+                        <select name="key" class="form-control acc" name="account">
                             <option <?php echo ($where['key']=="name")?'selected':''; ?> value="name">姓名</option>
                             <option <?php echo ($where['key']=="leavel")?'selected':''; ?> value="leavel">级别</option>
                             <option <?php echo ($where['key']=="user")?'selected':''; ?> value="user">分配用户名</option>
