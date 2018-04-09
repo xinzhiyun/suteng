@@ -158,7 +158,7 @@
                         </li> -->
 
                             <li>
-                                <a aria-expanded="false" href="{{:U('admin/index/index')}}">
+                                <a aria-expanded="false" class='home' href="{{:U('admin/index/index')}}">
                                     <i class="fa fa-home"></i> 返回首页
                                 </a>
                             </li>
@@ -521,6 +521,31 @@
         window.onresize = function() {
             document.getElementById("J_iframe").contentWindow.location.reload(true);
         }
+
+        var locahref = '{{:U("Admin/Index/index")}}';       //首页地址
+        var J_iframe = $('.J_iframe');
+        if(sessionStorage.getItem('iframe_src')){
+            // 恢复iframe的内容
+            J_iframe.attr('src',sessionStorage.getItem('iframe_src'));
+        }
+        // 点击左边导航栏
+        $(".J_menuItem").click(function(){
+            var thishref = $(this).attr('href');
+            var html_index = thishref.indexOf('.html');
+            var module = thishref.substring(0, thishref.lastIndexOf('/'));
+            module = module.substring(module.lastIndexOf('/')+1,);
+            var addr = thishref.substring(thishref.lastIndexOf('/')+1, html_index);
+            // console.log('thishref: ', thishref);
+            // console.log('module: ', module);
+            // console.log('addr: ', addr);
+            // 存储iframe的src
+            sessionStorage.setItem('iframe_src', thishref);
+            history.replaceState({},null, locahref + '?' + module + '&' + addr);
+        })
+        // 点击首页
+        $(".home").click(function(){
+            sessionStorage.setItem('iframe_src', '');
+        })
     </script>
 
 </body>
