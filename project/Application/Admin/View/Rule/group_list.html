@@ -41,9 +41,9 @@
                                             {{$v['user']}}
                                         </td>
                                         <td>
-                                            <if condition="$vo['id'] eq 1 && $vo['user'] eq 'admin'">
+                                            <if condition="$v['id'] eq 1 && $v['user'] eq 'admin'">
                                                 <span>超级管理员</span>
-                                            <esle />
+                                            <else />
                                                 <div class="btn-group">
                                                     <a ruleId="{{$v['id']}}" class="btn btn-outline btn-success deleteBtn" href="javascript:;">
                                                     删除
@@ -70,7 +70,7 @@
             layui.use('layer', function(){
                 var layer = layui.layer;
                 layer.confirm('确定删除?', {icon: 3, title:'温馨提示'}, function(index){
-                    window.location.href='delete_user_from_group?id='+id;                
+                    window.location.href='{{:U("admin/rule/delete_user_from_group")}}'+'?uid='+id;                
                 });
             });
         });

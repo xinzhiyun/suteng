@@ -91,13 +91,25 @@ class VendorsModel extends BaseModel
         // 查询分公司数据
 
         if (!empty($map)) {
-            $list = $this->where('`leavel`>1')->where($map)->order('updatetime desc')->select();
+            $total = $this->where('`leavel`>1')
+            ->where($map)
+            ->count();
+            $page  = new \Think\Page($total,8);
+            $pageButton =$page->show();
+            $list = $this->limit($page->firstRow.','.$page->listRows)->where('`leavel`>1')->where($map)->order('updatetime desc')->select();
         } else {
-            $list = $this->where('`leavel`>1')->order('updatetime desc')->select();
+            $total = $this->where('`leavel`>1')
+            ->count();
+            $page  = new \Think\Page($total,8);
+            $pageButton =$page->show();
+            $list = $this->limit($page->firstRow.','.$page->listRows)->where('`leavel`>1')->order('updatetime desc')->select();
         }
         // 返回格式化后数据
-        return $this->formatData($list);
-
+        $data = [
+            'list' => $this->formatData($list),
+            'page' =>$pageButton
+        ];
+        return $data;
     }
 
     public function formatData($list){

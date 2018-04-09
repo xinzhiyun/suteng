@@ -630,7 +630,7 @@ class VendorsController extends CommonController
         $data = D('vendors')->vendorList($map);
 
         $assign = [
-            'data' => $data,
+            'data' => $data['list'],
         ];
         $where['key'] = $_GET['key'];
         $where['keywords'] = $_GET['keywords'];
@@ -639,6 +639,7 @@ class VendorsController extends CommonController
 
         //echo D('vendors')->getLastSql();
         $this->assign($assign);
+        $this->assign('page',bootstrap_page_style($data['page']));
         $this->assign('where',$where);
         $this->display();
     }
