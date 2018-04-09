@@ -59,15 +59,15 @@
     var elem = document.querySelector('.js-switch');
     var init = new Switchery(elem);
     defaults = {
-        color             : '#64bd63'
-      , secondaryColor    : '#dfdfdf'
-      , jackColor         : '#fff'
-      , jackSecondaryColor: null
-      , className         : 'switchery'
-      , disabled          : false
-      , disabledOpacity   : 0.5
-      , speed             : '0.1s'
-      , size              : 'default'
+        color: '#64bd63', 
+        secondaryColor: '#dfdfdf', 
+        jackColor: '#fff', 
+        jackSecondaryColor: null, 
+        className: 'switchery', 
+        disabled: false, 
+        disabledOpacity: 0.5, 
+        speed: '0.1s', 
+        size: 'default'
     }
 
     /**
@@ -81,11 +81,11 @@
         // console.dir(data);
         //  异不请求
         $.ajax({
-            url:"{{:U('Admin/Recharge/add_gold')}}",
-            data:data,
-            dataType:"json",
+            url: "{{:U('Admin/Recharge/add_gold')}}",
+            data: data,
+            dataType: "json",
             type: 'post',
-            success:function(res){
+            success: function(res){
                 console.dir(res);
                 if(res.code == 200){
                     // 添加成功
