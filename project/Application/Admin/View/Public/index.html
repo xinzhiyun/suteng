@@ -523,8 +523,15 @@
         }
 
         var locahref = '{{:U("Admin/Index/index")}}';       //首页地址
-        var J_iframe = $('.J_iframe');
+        var J_iframe = $('.J_iframe');      // iframe
+        // 恢复刷新前的记录(如果不是在首页);
+        if(sessionStorage.getItem('ind')){
+            var ind = +sessionStorage.getItem('ind');
+            console.log($('#side-menu>li').eq(ind));
+            $('#side-menu>li').eq(ind).attr('class', 'active');
+        }
         if(sessionStorage.getItem('iframe_src')){
+
             // 恢复iframe的内容
             J_iframe.attr('src',sessionStorage.getItem('iframe_src'));
         }
@@ -538,14 +545,27 @@
             // console.log('thishref: ', thishref);
             // console.log('module: ', module);
             // console.log('addr: ', addr);
+            
             // 存储iframe的src
             sessionStorage.setItem('iframe_src', thishref);
-            history.replaceState({},null, locahref + '?' + module + '&' + addr);
+            // 添加历史记录
+            history.replaceState({}, null, locahref + '?' + module + '&' + addr);
         })
         // 点击首页
         $(".home").click(function(){
+            // 清空数据
+            sessionStorage.setItem('ind', '');
             sessionStorage.setItem('iframe_src', '');
         })
+
+        // 记录导航位置(刷新后恢复)
+        var sideLi = $('#side-menu>li');
+        sideLi.click(function(){
+            var ind = sideLi.index(this);   // 当前元素在父元素的下标
+            // console.log(ind);
+            sessionStorage.setItem('ind', ind);
+        })
+
     </script>
 
 </body>
