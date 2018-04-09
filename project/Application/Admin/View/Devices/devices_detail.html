@@ -103,10 +103,6 @@
         }
     </style>
     <div class="content">
-        <input type="hidden" value={{$statu|json_encode}} class="statu" >
-        <input type="hidden" value={{$filterInfo|json_encode}} class="filterInfo" >
-        <input type="hidden" value={{$filter|json_encode}} class="filter" >
-        <input type="hidden" value={{$vendor|json_encode}} class="vendor" >
         <div class="row-fluid fl" id="main">
             <div class="ibox-title">
                 <h5 class='col-md-12 col-sm-12 col-xs-12 clearfix'>
@@ -187,11 +183,11 @@
                 </table>
             </div>
             <script>
-                var statu = JSON.parse($(".statu").val());
-                var filterInfo = JSON.parse($(".filterInfo").val());
-                var filter = JSON.parse($(".filter").val());
+                var statu = {{$statu|json_encode}};
+                var filterInfo = {{$filterInfo|json_encode}};
+                var filter = {{$filter|json_encode}};
                 // 经销商数据
-                var vendor=JSON.parse($(".vendor").val());
+                var vendor = {{$vendor|json_encode}};
                 var vendorHtml='<tr>'+
                                 '<td>'+vendor.user+'</td>'+
                                 '<td>'+vendor.name+'</td>'+
