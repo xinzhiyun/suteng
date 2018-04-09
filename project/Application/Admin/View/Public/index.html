@@ -158,7 +158,7 @@
                         </li> -->
 
                             <li>
-                                <a aria-expanded="false" href="{{:U('admin/index/index')}}">
+                                <a aria-expanded="false" class='home' href="{{:U('admin/index/index')}}">
                                     <i class="fa fa-home"></i> 返回首页
                                 </a>
                             </li>
@@ -177,7 +177,7 @@
                 </nav>
             </div>
             <div class="row J_mainContent" id="content-main">
-                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{{:U('Admin/Index/welcome')}}" frameborder="0" data-id="welcome" seamless></iframe>
+                <iframe id="J_iframe" class="J_iframe" name="iframe0" width="100%" height="100%" src="{{:U('Admin/Index/welcome')}}" frameborder="0" data-id="welcome" seamless></iframe>
             </div>
             <div class="footer">
                 <div class="pull-right">&copy; 2018-2019 <a target="_blank">速腾电器</a>
@@ -516,6 +516,57 @@
 
     <!-- 第三方插件 -->
     <script src="__PUBLIC__/Admin/js/plugins/pace/pace.min.js"></script>
+
+    <script>
+        window.onresize = function() {
+            document.getElementById("J_iframe").contentWindow.location.reload(true);
+        }
+
+        var locahref = '{{:U("Admin/Index/index")}}';       //首页地址
+        var J_iframe = $('.J_iframe');      // iframe
+        // 恢复刷新前的记录(如果不是在首页);
+        if(sessionStorage.getItem('ind')){
+            var ind = +sessionStorage.getItem('ind');
+            console.log($('#side-menu>li').eq(ind));
+            $('#side-menu>li').eq(ind).attr('class', 'active');
+        }
+        if(sessionStorage.getItem('iframe_src')){
+
+            // 恢复iframe的内容
+            J_iframe.attr('src',sessionStorage.getItem('iframe_src'));
+        }
+        // 点击左边导航栏
+        $(".J_menuItem").click(function(){
+            var thishref = $(this).attr('href');
+            var html_index = thishref.indexOf('.html');
+            var module = thishref.substring(0, thishref.lastIndexOf('/'));
+            module = module.substring(module.lastIndexOf('/')+1,);
+            var addr = thishref.substring(thishref.lastIndexOf('/')+1, html_index);
+            // console.log('thishref: ', thishref);
+            // console.log('module: ', module);
+            // console.log('addr: ', addr);
+            
+            // 存储iframe的src
+            sessionStorage.setItem('iframe_src', thishref);
+            // 添加历史记录
+            history.replaceState({}, null, locahref + '?' + module + '&' + addr);
+        })
+        // 点击首页
+        $(".home").click(function(){
+            // 清空数据
+            sessionStorage.setItem('ind', '');
+            sessionStorage.setItem('iframe_src', '');
+        })
+
+        // 记录导航位置(刷新后恢复)
+        var sideLi = $('#side-menu>li');
+        sideLi.click(function(){
+            var ind = sideLi.index(this);   // 当前元素在父元素的下标
+            // console.log(ind);
+            sessionStorage.setItem('ind', ind);
+        })
+
+    </script>
 
 </body>
 
