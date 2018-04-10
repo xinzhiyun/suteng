@@ -120,7 +120,7 @@
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-primary" type="submit" id="save">修改</button>
+                                    <button class="btn btn-primary" type="button" id="save">修改</button>
                                     <button class="btn btn-white" type="reset">重置</button>
                                 </div>
                             </div>
@@ -248,19 +248,17 @@
         var data = $("#saveForm").serialize();
         //  异步请求
         $.ajax({
-            url:"{{:U('Admin/Recharge/update_gold')}}",
-            data:data,
-            dataType:"json",
+            url: "{{:U('Admin/Recharge/update_gold')}}",
+            data: data,
+            dataType: "json",
             type: 'post',
             success:function(res){
                 console.dir(res);
                 if(res.code == 200){
                     // 添加成功
                     swal(res.msg,res.msg, "success");
-                    // 两秒后刷新
-                    setTimeout(function(){
-                        window.location.reload();
-                    },500);
+                    location.reload();
+                    
                 }else{
                     // 添加失败
                     swal(res.msg, "请重新提交！", "success");
@@ -293,7 +291,7 @@
                         if(res.code==200){
                             // 套餐删除成功
                             swal('删除成功',res.msg, "success");
-                            location.reload();
+                            $('.J_iframe').attr('src',$('.J_iframe').attr('src'));
                         }else{
                             // 套餐删除失败
                             swal("删除失败",res.msg, "error");
