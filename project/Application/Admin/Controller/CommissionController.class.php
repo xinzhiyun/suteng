@@ -6,7 +6,7 @@ class CommissionController extends CommonController
 {
     public function index()
     {
-        $this->display();
+          $this->display();
     }
 
     /**
