@@ -167,6 +167,7 @@
       var address = $("#Laddr").val();
       var filePic = $('#picShow>span').length;
 
+      var formData = new FormData($('#form')[0]);
       console.log('device_code:', device_code + '\n' +
        'date:',date + '\n' + 'reason:', reason[0].innerText + '\n' + 
        'content:', content + '\n' + 'truename:', truename + '\n' + 
@@ -193,7 +194,7 @@
       formData.append('truename', truename);
       formData.append('phone', phone);
       formData.append('address', address);
-      formData.append('address', $('input[name="pic"]').val());
+      formData.append('pic', $('input[name="pic"]').val());
 
       // console.log(formData.getAll('device_code') )
       // console.log(formData.getAll('date'))
