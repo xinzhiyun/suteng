@@ -16,11 +16,15 @@ class FeedsController extends CommonController
      */
     public function feedslist()
     {	
+
+        // echo 111;die;
         // 根据用户昵称进行搜索
-        $map = '';
+        // $map = '';
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
             $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
         }
+
+        // dump($map);
         $where['keywords'] =I('get.keywords');
         $user = M('feeds');
         $total = $user->where($map)
@@ -30,11 +34,15 @@ class FeedsController extends CommonController
         $page  = new \Think\Page($total,8);
         $pageButton =$page->show();
 
+
         $userlist = $user
+                        ->where($map)
                         ->join('st_users ON st_feeds.uid = st_users.id','LEFT')
                         ->field('st_feeds.*,st_users.nickname')->order(array('st_feeds.id'=>'desc'))
                         ->limit($page->firstRow.','.$page->listRows)
                         ->select();
+        // echo M()->getLastSql();
+
         $this->assign('list',$userlist);
         $this->assign('where',$where);
         $this->assign('button',$pageButton);
