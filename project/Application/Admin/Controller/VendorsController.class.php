@@ -789,4 +789,41 @@ class VendorsController extends CommonController
         // 绝对唯一的32位订单ID号
         return $code;
     }
+
+    /**
+     * 修改经销商密码
+     */
+    public function updateMima($id)
+    {
+        if (IS_POST) {
+            //密码加密
+            $data['password'] = md5($_POST['password']);
+
+            //判断两次密码是否一致
+            if ($_POST['password'] == $_POST['repassword']) {
+
+                $info = D("Vendors")->where('id='.$_POST['id'])->save($data);
+
+                if ($info) {
+                    $this->success('密码修改成功','vendor_list');
+                } else {
+                    $this->error('密码修改失败');
+                }
+            } else {
+                $this->error('两次输入的密码不一致！');
+            }
+
+        } else {
+            $vlist = D("Vendors")->field('id,name')->find($id);
+            $this->assign('vlist',$vlist);
+            $this->display();
+        }
+        
+    }
+
+
+
+
+
+
 }

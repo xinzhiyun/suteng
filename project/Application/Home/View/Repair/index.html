@@ -42,7 +42,8 @@
             <div class="repairPic">
               <i class="iconfont icon-tianjia"></i>
               <span>限3张内</span>
-              <input name="pic" class="repair-sendpic file_upload" multiple="true" type="file" accept="image/png, image/jpeg, image/gif, image/jpg" >
+              <input class="repair-sendpic file_upload" multiple="true" type="button" accept="image/png, image/jpeg, image/gif, image/jpg" >
+              <input type="hidden" name='pic'>
               <div id="picShow"></div>
               <div class="hide"></div>
             </div>
@@ -78,11 +79,27 @@
   <script src="__PUBLIC__/Home/js/laydate.js"></script>
   <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
   <script src="__PUBLIC__/Home/js/public.js"></script>
+  <script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
   <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
-  <script src="__PUBLIC__/Home/js/upFile.js"></script>
+  <script src="__PUBLIC__/Home/js/wx_uploadImg.js"></script>
   <script type="text/javascript">
   $(function(){
 
+    //微信接口
+    wx.config({
+        debug: false,
+        appId: '{{$info["appId"]}}',
+        timestamp: '{{$info["timestamp"]}}',
+        nonceStr: '{{$info["nonceStr"]}}',
+        signature: '{{$info["signature"]}}',
+        jsApiList: [
+          // 所有要调用的 API 都要加到这个列表中
+          'chooseImage',
+            'uploadImage',
+            'getLocalImgData',
+            'downloadImage'
+        ]
+    });
     // 首页按钮
     !function(){
       // 创建 a 标签
@@ -115,6 +132,15 @@
       });
 
     })
+    // 点击上传图片
+    $(".file_upload").click(function(){
+      var len = $("#picShow>span").length;
+      if(len == 1){
+        layuiHint("暂时只支持一张图片！");
+        return
+      }
+      takePicture(1);
+    })
 
     /*
       点击'提交'
@@ -139,7 +165,9 @@
       var truename = $("#Lname").val();
       var phone = $("#Ltel").val();
       var address = $("#Laddr").val();
+      var filePic = $('#picShow>span').length;
 
+      var formData = new FormData($('#form')[0]);
       console.log('device_code:', device_code + '\n' +
        'date:',date + '\n' + 'reason:', reason[0].innerText + '\n' + 
        'content:', content + '\n' + 'truename:', truename + '\n' + 
@@ -154,6 +182,7 @@
       formData.append('truename', '');
       formData.append('phone', '');
       formData.append('address', '');
+      formData.append('pic', '');
 
       console.group();
 
@@ -165,6 +194,7 @@
       formData.append('truename', truename);
       formData.append('phone', phone);
       formData.append('address', address);
+      formData.append('pic', $('input[name="pic"]').val());
 
       // console.log(formData.getAll('device_code') )
       // console.log(formData.getAll('date'))
@@ -200,8 +230,8 @@
           
       }
       if(!filePic){
-          console.log('请上传保修图片！');
-          layuiHint('请上传保修图片！');
+          console.log('请上传报修图片！');
+          layuiHint('请上传报修图片！');
           return
           
       }
