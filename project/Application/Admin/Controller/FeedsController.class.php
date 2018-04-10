@@ -21,7 +21,6 @@ class FeedsController extends CommonController
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
             $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
         }
-        dump($_GET);
         $where['keywords'] =I('get.keywords');
         $user = M('feeds');
         $total = $user->where($map)
