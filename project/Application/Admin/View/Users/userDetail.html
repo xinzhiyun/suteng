@@ -14,7 +14,7 @@
                 </div>
                 <div class="ibox-content">
                     <table id="t1" class="table table-bordered table-hover">
-                        <caption style="text-align: center;"><h1>当前用户：{{$uInfo['nickname']}}</h1></caption>
+                        <caption style="text-align: center;"><h1>当前用户：{{$vinfo['nickname']}}</h1></caption>
                         <thead>
                             <tr><th colspan="9">用户基础信息</th></tr>
                             <tr>
@@ -48,10 +48,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <empty name="bInfo">
+                            <empty name="uInfo">
                                 <tr><td colspan="9">暂无绑定设备</td></tr>
                             <else />
-                                <volist name="bInfo" id="vo">
+                                <volist name="uInfo" id="vo">
                                     <tr>
                                         <td>{{$i}}</td>
                                         <td>{{$vo.device_code}}</td>

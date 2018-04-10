@@ -140,14 +140,14 @@
 			jsApiList: [
 		      // 所有要调用的 API 都要加到这个列表中
 		      'chooseWXPay'
-		      ]
-		  });
+		    ]
+		});
 
 		// 微信支付方法
 		function weixinPay(res){
 			WeixinJSBridge.invoke(
 				'getBrandWCPayRequest',
-				JSON.pars(res),
+				JSON.parse(res),
 				function(res){
 					if (res.err_msg.substr(-2) == 'ok') {
 		                // 付款成功，跳转前台主页
@@ -156,13 +156,13 @@
 		                    // 取消付款
 		                    // 跳转到待付款e订单页面
 		                    location.href = "{{:U('Home/PaymentSystem/paytofailed')}}";
-		                }else{
-		                    // 付款失败
-		                    // 跳转到待付款订单页面
-		                    location.href = "{{:U('Home/PaymentSystem/paytofailed')}}";
-		                }
-		            }
-		            );
+	                }else{
+	                    // 付款失败
+	                    // 跳转到待付款订单页面
+	                    location.href = "{{:U('Home/PaymentSystem/paytofailed')}}";
+	                }
+	            }
+	        );
 		};
 
 

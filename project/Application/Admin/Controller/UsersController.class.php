@@ -184,17 +184,25 @@ class UsersController extends CommonController
     }   
 
     // 用户详情
-    public function user_detail()
+    public function user_detail($id)
     {
         $user = D('Users');
         $map['u.id'] = $where['id'] = I('get.id');
+
+        $vinfo = $user->field('nickname')->find($id);
 
         // 当前用户信息
 
         $dev = D('UserDevice')
             ->where(['st_user_device.uid'=>I('get.id')])
             ->join('st_devices ON st_user_device.did = st_devices.id','LEFT')
+            ->join('st_type on st_type.id = st_devices.type_id','LEFT')
+            ->field('st_type.typename,st_devices.* ,st_user_device.*')
             ->select();
+
+
+
+
         $flow = D('flow')
             ->where(['st_flow.user_id'=>I('get.id')])
             ->join('st_orders ON st_flow.order_id = st_orders.device_id','LEFT')
@@ -206,7 +214,10 @@ class UsersController extends CommonController
             'uInfo' => $dev,
             'bInfo' => $flow,
         ];
+
+
         $this->assign($assign);
+        $this->assign('vinfo', $vinfo);
         $this->display('userDetail');
     }
 

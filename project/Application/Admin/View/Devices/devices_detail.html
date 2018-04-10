@@ -198,13 +198,13 @@
                 vendor.company = vendor.company ? vendor.company : '--';
                 vendor.address = vendor.address ? vendor.address : '--';
                 vendor.leavel = vendor.leavel ? vendor.leavel : '--';
-                var vendorHtml='<tr>'+
-                                '<td>'+vendor.user+'</td>'+
-                                '<td>'+vendor.name+'</td>'+
-                                '<td>'+vendor.phone+'</td>'+
-                                '<td>'+vendor.company+'</td>'+
-                                '<td>'+vendor.address+'</td>'+
-                                '<td>'+vendor.leavel+'</td>'+
+                var vendorHtml = '<tr>'+
+                                '<td>'+ vendor.user +'</td>'+
+                                '<td>'+ vendor.name +'</td>'+
+                                '<td>'+ vendor.phone +'</td>'+
+                                '<td>'+ vendor.company +'</td>'+
+                                '<td>'+ vendor.address +'</td>'+
+                                '<td>'+ vendor.leavel +'</td>'+
                             '</tr>';
                 $(".vendorList").children("tbody").html(vendorHtml);
                     var devicestause = {'0':'制水','1':'冲洗','2':'水满','3':'缺水','4':'漏水','5':'检修','6':'欠费停机','7':'关机','8':'开机(仅命令)'};
@@ -217,31 +217,31 @@
                     $('._dive div h1').eq(2).html(statu.rawtds?statu.rawtds:'--');
                     $('._dive div h1').eq(3).html(statu.leasingmode?leasingmode[statu.leasingmode]:'--');
 
-                    var html='';//滤芯剩余显示
+                    var html = '';//滤芯剩余显示
                     if(filterInfo){
-                        for(var i = 0;i<filterInfo.length;i++){
+                        for(var i=0; i<filterInfo.length; i++){
                             if(filterInfo[i]){
                                //按流量计算百分比值
-                                var persent1 = Number(statu[('reflowfilter'+(i+1))])/Number(filterInfo[i].flowlife?filterInfo[i].flowlife:0)*100;
+                                var persent1 = Number(statu[('reflowfilter'+(i+1))])/Number(filterInfo[i].flowlife ? filterInfo[i].flowlife : 0)*100;
                                 //按时间计算百分比值
-                                var persent2 = Number(statu[('redayfilter'+(i+1))])/Number(filterInfo[i].timelife?filterInfo[i].timelife:0)*100;
-                                if(persent1>100){
-                                    persent1=100; 
+                                var persent2 = Number(statu[('redayfilter'+(i+1))])/Number(filterInfo[i].timelife ? filterInfo[i].timelife : 0)*100;
+                                if(persent1 > 100){
+                                    persent1 = 100; 
                                 }else{
-                                    persent1=persent1;
+                                    persent1 = persent1;
                                 };
-                                if(persent2>100){
-                                    persent2=100;
+                                if(persent2 > 100){
+                                    persent2 = 100;
                                 }else{
-                                    persent2=persent2;
+                                    persent2 = persent2;
                                 }
                                 var persent = Math.min(persent1,persent2);
                                 //比较大小
                                 var _bool = persent == persent1?true:false;
                                 var width = Math.min(persent,100);
                                 
-                                if(statu.filtermode=="0"){//按时间
-                                    html+='<tr>'+
+                                if(statu.filtermode == "0"){//按时间
+                                    html += '<tr>'+
                                         '<td>'+filterInfo[i].filtername+'</td>'+
                                         '<td style="width:50%">'+
                                             '<div class="text-center">'+
@@ -255,7 +255,7 @@
                                         '<td>'+Number(statu[('redayfilter'+(i+1))])+'/'+filterInfo[i].timelife+'</td>'+
                                         '<td>'+'<tutton class="btn btn-info clickBtn resetBtn" name="'+ filterInfo[i].filtername+'">复位</button>'+'</td>'+
                                         '</tr>';
-                                }else if(statu.filtermode=="1"){//按流量
+                                }else if(statu.filtermode == "1"){//按流量
                                     html+= '<tr>'+
                                         '<td style="width:10%;">'+filterInfo[i].filtername+'</td>'+
                                         '<td style="width:70%">'+
@@ -268,7 +268,7 @@
                                         '<td>'+Number(statu[('reflowfilter'+(i+1))])+'/'+filterInfo[i].flowlife+'</td>'+
                                         '<td>'+'<button class="btn btn-info clickBtn resetBtn" name="'+ filterInfo[i].filtername+'">复位</button><input type="hidden" value='+i+'></td>'+
                                         '</tr>';
-                                }else if(statu.filtermode=="2"){
+                                }else if(statu.filtermode == "2"){
                                     //按流量&流量
                                     html+= '<tr>'+
                                         '<td style="width:10%;">'+filterInfo[i].filtername+'</td>'+
@@ -344,24 +344,24 @@
                     $('._table2').append(html2);
 
                     //1.建立连接
-                    var timer=null;
-                    var numAdd=0;
-                    var identify=0;
-                    var websoket=new WebSocket("ws://192.168.37.76:16001");
-                    var PackNum=0;//包数据
-                    var CmdList=[];//命令队列
+                    var timer = null;
+                    var numAdd = 0;
+                    var identify = 0;
+                    var websoket = new WebSocket("ws://192.168.37.76:16001");
+                    var PackNum = 0;//包数据
+                    var CmdList = [];//命令队列
                     // var deviceId=228733445596778;
                     var deviceId = statu.deviceid;
                     websoket.onopen=function(){
                         //包数据
-                        ajson={
+                        ajson = {
                             "DeviceID":deviceId,
                             "PackType":"login",
                             "Vison":0,
                         };
                         websoket.send(JSON.stringify(ajson));
                         setTimeout(function(){
-                            ajson.PackType="Select";
+                            ajson.PackType = "Select";
                             websoket.send(JSON.stringify(ajson));
                             setInterval(function(){
                                 websoket.send(JSON.stringify(ajson));
@@ -369,7 +369,7 @@
                         },1000);
                     }
                     //实时接收数据
-                    websoket.onmessage=function(res){
+                    websoket.onmessage = function(res){
                         numAdd=0;
                         var dataList=JSON.parse(res.data);
 
@@ -516,10 +516,10 @@
                     }
                     //按钮操作
                 $(".btnBox").on("click",".clickBtn",function(){
-                    var thisT=$(this);
-                    var _this=$(this).html();//获取按钮文本
+                    var thisT = $(this);
+                    var _this = $(this).html();//获取按钮文本
                     
-                    var thisIndex=parseInt($(this).siblings("input").val());
+                    var thisIndex = parseInt($(this).siblings("input").val());
                     var filterN = $(this).attr('name');
                     var ajson;//数据对象
                     var ajsonSelect;
@@ -534,36 +534,36 @@
                         var layer = layui.layer;
                         layer.confirm(tipsText, {icon: 3, title:'温馨提示'}, function(index){
                             layer.close(index);
-                            ajson={
-                                "DeviceID":deviceId,
-                                "PackType":"SetData",
-                                "Vison":0,
-                                "PackNum":PackNum,
-                                "curTime":0,
+                            ajson = {
+                                "DeviceID": deviceId,
+                                "PackType": "SetData",
+                                "Vison": 0,
+                                "PackNum": PackNum,
+                                "curTime": 0,
                             };
                             //根据当前设备状态设置按钮文本
-                            var type=0;
-                            if(_this=="开机"){
+                            var type = 0;
+                            if(_this == "开机"){
                                 ajson['DeviceStause']=8;
                                 thisT.html("开机中");
-                                type="开机中";
+                                type = "开机中";
 
-                            }else if(_this=="关机"){
+                            }else if(_this == "关机"){
                                 ajson['DeviceStause']=7;
                                 thisT.html("关机中");
-                                type="关机中";
+                                type = "关机中";
 
-                            }else if(_this=="复位"){
-                                ajson['ReFlowFilter'+(thisIndex+1)]=filterInfo[thisIndex].flowlife;
-                                ajson['ReDayFilter'+(thisIndex+1)]=filterInfo[thisIndex].timelife;
-                                ajson['FlowLifeFilter'+(thisIndex+1)]=filterInfo[thisIndex].flowlife;
-                                ajson['DayLifeFiter'+(thisIndex+1)]=filterInfo[thisIndex].timelife;
-                                ajson['type']='复位中';
+                            }else if(_this == "复位"){
+                                ajson['ReFlowFilter'+(thisIndex+1)] = filterInfo[thisIndex].flowlife;
+                                ajson['ReDayFilter'+(thisIndex+1)] = filterInfo[thisIndex].timelife;
+                                ajson['FlowLifeFilter'+(thisIndex+1)] = filterInfo[thisIndex].flowlife;
+                                ajson['DayLifeFiter'+(thisIndex+1)] = filterInfo[thisIndex].timelife;
+                                ajson['type'] = '复位中';
                                 thisT.html("复位中");
-                                type=filterN;
+                                type = filterN;
                             }
                             //发送数据
-                            ajsonSelect={
+                            ajsonSelect = {
                                 "DeviceID":deviceId,
                                 "PackType":"Select",
                                 "Vison":0,
@@ -571,12 +571,12 @@
                             websoket.send(JSON.stringify(ajson));
                             websoket.send(JSON.stringify(ajsonSelect));
                             CmdList.push({
-                                cmd:ajson,
-                                type:type
+                                cmd: ajson,
+                                type: type
                             });
-                            identify=1;
-                            timer=setTimeout(function(){
-                                if(identify==1){
+                            identify = 1;
+                            timer = setTimeout(function(){
+                                if(identify == 1){
                                     layui.use('layer', function(){
                                         var layer = layui.layer;
 
@@ -589,7 +589,7 @@
                                             thisT.html('复位')
                                         }
                                     });
-                                    identify=0;
+                                    identify = 0;
                                 }
                             },5000)
                         });
