@@ -16,14 +16,14 @@ class WorkModel extends RelationModel
         array('uid','require','uID不能为空'),
         array('dw_uid','require','处理人ID不能为空'),
         array('title','require','标题不能为空'),
-        array('title',"/^[\w\x{4e00}-\x{9fa5}]{2,50}$/u",'标题不能有特殊符号'),
+//        array('title',"/^[\w\x{4e00}-\x{9fa5}]{2,50}$/u",'标题不能有特殊符号'),
         array('type','require','类型不能为空'),
         array('number','require','工单号不能为空'),
         array('name','require','name不能为空'),
-        array('name',"/^[\w\x{4e00}-\x{9fa5}]{2,50}$/u",'name不能有特殊符号'),
+//        array('name',"/^[\w\x{4e00}-\x{9fa5}]{2,50}$/u",'name不能有特殊符号'),
         array('phone','/^1[34578]\d{9}$/','电话号码格式不对'),
         array('content','require','工作内容不能为空'),
-        array('content',"/^[\w\x{4e00}-\x{9fa5}]{2,50}$/u",'工作内容不能有特殊符号'),
+//        array('content',"/^[\w\x{4e00}-\x{9fa5}]{2,50}$/u",'工作内容不能有特殊符号'),
         array('address','require','地址不能为空'),
     );
 
