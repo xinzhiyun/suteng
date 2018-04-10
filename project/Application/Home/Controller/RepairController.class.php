@@ -88,25 +88,38 @@ class RepairController extends CommonController
     public function downloadPic($paths)
     {
 
-        $path_info = '/Pic/repair/'.date('Y-m-d',time())."/".md5($paths).".jpg";
-        $path = './Public'.$path_info;
+        if(!empty($paths)){
+            $path_info = '/Pic/repair/'.date('Y-m-d',time());
 
-        $weixin = new WeixinJssdk;
-        $ACCESS_TOKEN = $weixin->getAccessToken();
+            $file=md5($paths).".jpg";
 
-        $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=$ACCESS_TOKEN&media_id=$paths";
-        // $url = "http://img.taopic.com/uploads/allimg/140729/240450-140HZP45790.jpg";
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
-        $file = curl_exec($ch);
-        curl_close($ch);
 
-        $resource = fopen($path, 'a');
-        fwrite($resource, $file);
-        fclose($resource);
-        return $path_info;
+            $dir =rtrim(THINK_PATH,"ThinkPHP/").'/Public'.$path_info;
+            if(!is_dir($dir)){
+                mkdir($dir);
+            }
+            $path_info = $path_info.'/'.$file;
+
+            $path = './Public'.$path_info;
+
+            $weixin = new WeixinJssdk;
+            $ACCESS_TOKEN = $weixin->getAccessToken();
+
+            $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=$ACCESS_TOKEN&media_id=$paths";
+            // $url = "http://img.taopic.com/uploads/allimg/140729/240450-140HZP45790.jpg";
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+            $file = curl_exec($ch);
+            curl_close($ch);
+
+            $resource = fopen($path, 'a');
+            fwrite($resource, $file);
+            fclose($resource);
+            return $path_info;
+        }
+        return '';
 
     }
 

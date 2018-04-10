@@ -18,7 +18,7 @@ use \GatewayWorker\BusinessWorker;
 use \Workerman\Autoloader;
 
 // gateway 进程，这里使用Text协议，可以用telnet测试
-$gateway = new Gateway("XZCloudStandard://0.0.0.0:20016");
+$gateway = new Gateway("XZCloudStandard://0.0.0.0:10017");
 // gateway名称，status方便查看
 $gateway->name = '设备';
 // gateway进程数
