@@ -107,8 +107,8 @@
             <div class="ibox-title">
                 <h5 class='col-md-12 col-sm-12 col-xs-12 clearfix'>
                     设备管理 
-                    <small> 设备详情</small>
-                    <a class='back pull-right' onclick='history.go(-1)'>
+                    <small> 设备详情&emsp;</small>
+                    <a class='back pull-right' onclick='history.go(-1)' style='color: #337ab7;font-weight: 600;'>
                         <i class="fa fa-chevron-left"></i> 返回上一级
                     </a>
                 </h5>
@@ -188,6 +188,16 @@
                 var filter = {{$filter|json_encode}};
                 // 经销商数据
                 var vendor = {{$vendor|json_encode}};
+                console.log('statu: ', statu);
+                console.log('filterInfo: ',filterInfo);
+                console.log('filter: ',filter);
+                console.log('vendor: ',vendor);
+                vendor.user = vendor.user ? vendor.user : '--';
+                vendor.name = vendor.name ? vendor.name : '--';
+                vendor.phone = vendor.phone ? vendor.phone : '--';
+                vendor.company = vendor.company ? vendor.company : '--';
+                vendor.address = vendor.address ? vendor.address : '--';
+                vendor.leavel = vendor.leavel ? vendor.leavel : '--';
                 var vendorHtml='<tr>'+
                                 '<td>'+vendor.user+'</td>'+
                                 '<td>'+vendor.name+'</td>'+
