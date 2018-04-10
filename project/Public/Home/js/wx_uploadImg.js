@@ -1,19 +1,4 @@
 
-//微信接口
-wx.config({
-    debug: false,
-    appId: '{{$info["appId"]}}',
-    timestamp: '{{$info["timestamp"]}}',
-    nonceStr: '{{$info["nonceStr"]}}',
-    signature: '{{$info["signature"]}}',
-    jsApiList: [
-      // 所有要调用的 API 都要加到这个列表中
-	    'chooseImage',
-        'uploadImage',
-        'getLocalImgData',
-        'downloadImage'
-    ]
-});
 
 function takePicture(nums) {  
 	
