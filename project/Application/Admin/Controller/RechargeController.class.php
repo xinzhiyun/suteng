@@ -457,10 +457,14 @@ class RechargeController extends CommonController
                     
             }
         }
-
-        $data = M('gold')->where($map)->select();
+		$total = M('gold')->where($map)->count();
+        $page  = new \Think\Page($total,8);
+        page_config($page);
+        $pageButton =$page->show();
+        $data = M('gold')->where($map)->limit($page->firstRow.','.$page->listRows)->select();
         $assign = [
-            'data' => $data,
+			'data' => $data,
+			'page' =>bootstrap_page_style($pageButton)
         ];
         $this->assign($assign);
         $this->display();
@@ -487,9 +491,14 @@ class RechargeController extends CommonController
                     break;
             }
         }
-        $data = M('silver')->where($map)->select();
+        $total = M('silver')->where($map)->count();
+        $page  = new \Think\Page($total,8);
+        page_config($page);
+        $pageButton =$page->show();
+        $data = M('silver')->where($map)->limit($page->firstRow.','.$page->listRows)->select();
         $assign = [
-            'data' => $data,
+			'data' => $data,
+			'page' =>bootstrap_page_style($pageButton)
         ];
         $this->assign($assign);
         $this->display();
@@ -515,9 +524,14 @@ class RechargeController extends CommonController
                     break;
             }
         }
-        $data = M('gold_silver')->where($map)->select();
+        $total = M('gold_silver')->where($map)->count();
+        $page  = new \Think\Page($total,8);
+        page_config($page);
+        $pageButton =$page->show();
+        $data = M('gold_silver')->where($map)->limit($page->firstRow.','.$page->listRows)->select();
         $assign = [
-            'data' => $data,
+			'data' => $data,
+			'page' =>bootstrap_page_style($pageButton)
         ];
         $this->assign($assign);
         $this->display();
