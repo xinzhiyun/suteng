@@ -147,7 +147,7 @@
 		function weixinPay(res){
 			WeixinJSBridge.invoke(
 				'getBrandWCPayRequest',
-				JSON.pars(res),
+				JSON.parse(res),
 				function(res){
 					if (res.err_msg.substr(-2) == 'ok') {
 		                // 付款成功，跳转前台主页
