@@ -69,8 +69,8 @@
         点击继续支付
        */
       $("#payagain").click(function(){
-        // 跳到订单确认
-        location.href = '{{:U("PaymentSystem/payConfirm")}}';
+        // 后退回之前的页面
+        history.back();
       })
     </script>
 </body>
