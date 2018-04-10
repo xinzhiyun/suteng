@@ -114,8 +114,14 @@ class MallController extends CommonController
 
     public function chooseMeal()
     {
+        
+        $map=[
+            'ud.status'=>1,
+            'ud.uid'=>$_SESSION['user']['id'],
+        ];
+        $type=D('UserDevice')->getBindType($map);
 
-        $meal = D('setmeal')->select();
+        $meal = M('setmeal')->where($type)->select();
 
         //调用微信JS-SDK类获取签名需要用到的数据
         $weixin = new WeixinJssdk;
