@@ -41,7 +41,7 @@
             <p>上传截图</p>
             <div class="repairPic">
               <i class="iconfont icon-tianjia"></i>
-              <span>限3张内</span>
+              <span></span>
               <input class="repair-sendpic file_upload" multiple="true" type="button" accept="image/png, image/jpeg, image/gif, image/jpg" >
               <input type="hidden" name='pic'>
               <div id="picShow"></div>
@@ -141,7 +141,13 @@
       }
       takePicture(1);
     })
-
+    var formData = new FormData($('#form')[0]);
+    // 删除图片
+    $("#picShow").on("click", ".delPic", function(){
+      // console.log($(this).parent());
+      $(this).parent().remove();
+      formData.delete('pic');
+    })
     /*
       点击'提交'
      */
@@ -167,7 +173,6 @@
       var address = $("#Laddr").val();
       var filePic = $('#picShow>span').length;
 
-      var formData = new FormData($('#form')[0]);
       console.log('device_code:', device_code + '\n' +
        'date:',date + '\n' + 'reason:', reason[0].innerText + '\n' + 
        'content:', content + '\n' + 'truename:', truename + '\n' + 
@@ -175,14 +180,14 @@
        );
 
       //清空，防止多次点击提交
-      formData.append('device_code', '');
-      formData.append('date', '');
-      formData.append('reason', '');
-      formData.append('content', '');
-      formData.append('truename', '');
-      formData.append('phone', '');
-      formData.append('address', '');
-      formData.append('pic', '');
+      formData.delete('device_code');
+      formData.delete('date');
+      formData.delete('reason');
+      formData.delete('content');
+      formData.delete('truename');
+      formData.delete('phone');
+      formData.delete('address');
+      formData.delete('pic');
 
       console.group();
 
@@ -260,11 +265,13 @@
       $.ajax({
           url: '{{:U("Home/Repair/add")}}',
           type: 'post',
+          async: false,
           data: formData,
           cache: false,
           processData: false,
           contentType: false,
           success: function(res){
+            $(".btn").off('touchend');    // 解绑事件
             console.log('请求成功！', res);
             if(res.code == 200){
               layuiHint('报修成功，请稍候将有专人处理！');
