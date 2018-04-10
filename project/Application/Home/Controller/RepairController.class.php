@@ -1,6 +1,6 @@
 <?php
 namespace Home\Controller;
-
+use \Org\Util\WeixinJssdk;
 class RepairController extends CommonController
 {
 
@@ -20,6 +20,11 @@ class RepairController extends CommonController
         $bind_device = $user_device->getBindInof($map); 
         $this->assign('bindInfo',$bind_device);
 
+        $weixin = new WeixinJssdk;
+        $signPackage = $weixin->getSignPackage();
+        $this->assign('info',$signPackage);
+
+
         $this->display();
     }
 
@@ -31,27 +36,27 @@ class RepairController extends CommonController
 
             $savePath = 'Uploads/pic/';
            
-            // 二进制文件上传简单处理
-            if (!empty($_FILES["UploadForm"])) {
-                foreach ($_FILES["UploadForm"]["tmp_name"] as $key => $value) {
-                    $image = $_FILES["UploadForm"]["tmp_name"][$key];
-                    $imageSize = $_FILES["UploadForm"]["size"][$key];
-                    $info[] = $this->upload($image,$imageSize);                        
-                }
-            }else{
-                E('没有文件上传', 602);
-            }   
-            
-            if(!$info) {// 上传错误提示错误信息
-                E('上传错误',606);
-            }
-            if(!(count($info) <= 3)){
-                E('只能添加三张图片',604);
-            }
-             foreach ($info as $k => $val) {
-                $path .= $val.'|';
-            }
-
+//            // 二进制文件上传简单处理
+//            if (!empty($_FILES["UploadForm"])) {
+//                foreach ($_FILES["UploadForm"]["tmp_name"] as $key => $value) {
+//                    $image = $_FILES["UploadForm"]["tmp_name"][$key];
+//                    $imageSize = $_FILES["UploadForm"]["size"][$key];
+//                    $info[] = $this->upload($image,$imageSize);
+//                }
+//            }else{
+//                E('没有文件上传', 602);
+//            }
+//
+//            if(!$info) {// 上传错误提示错误信息
+//                E('上传错误',606);
+//            }
+//            if(!(count($info) <= 3)){
+//                E('只能添加三张图片',604);
+//            }
+//             foreach ($info as $k => $val) {
+//                $path .= $val.'|';
+//            }
+                $path = $this->downloadPic($_POST['pic']);
 
 
                 $arr = array(
@@ -77,6 +82,32 @@ class RepairController extends CommonController
             }
 	        
     	}
+    }
+
+    //下载图片
+    public function downloadPic($paths)
+    {
+
+        $path_info = '/Pic/repair/'.date('Y-m-d',time())."/".md5($paths).".jpg";
+        $path = './Public'.$path_info;
+
+        $weixin = new WeixinJssdk;
+        $ACCESS_TOKEN = $weixin->getAccessToken();
+
+        $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=$ACCESS_TOKEN&media_id=$paths";
+        // $url = "http://img.taopic.com/uploads/allimg/140729/240450-140HZP45790.jpg";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+        $file = curl_exec($ch);
+        curl_close($ch);
+
+        $resource = fopen($path, 'a');
+        fwrite($resource, $file);
+        fclose($resource);
+        return $path_info;
+
     }
 
     public function upload(){
