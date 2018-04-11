@@ -1,12 +1,6 @@
  <!DOCTYPE html>
 <html>
 <head>
-    <script>
-      if(window.parent.location.href!=window.location.href){
-          window.parent.location.href=window.location.href;
-      }
-        // alert(1)
-    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><block name="title">页面</block></title>
@@ -20,6 +14,40 @@
     <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/style.css?v=4.1.0" rel="stylesheet">
     <block name="mylink"></block> 
+    <style>
+        .loginDiv:nth-of-type(3) {
+            padding: 0;
+            -webkit-box-pack: justify;
+                -ms-flex-pack: justify;
+                    justify-content: space-between;
+            -webkit-box-align: stretch;
+                -ms-flex-align: stretch;
+                    align-items: stretch;
+            border: none;
+            border-radius: 9px;
+            background: none;
+        }
+        .loginDiv:nth-of-type(3)>input, 
+        .loginDiv:nth-of-type(3)>img {
+            -webkit-box-flex: 1;
+                -ms-flex: 1 0;
+                    flex: 1 0;
+            width: 50%;
+            height: auto;
+            min-height: 50px;
+            max-height: 50px;
+        }
+        .loginDiv:nth-of-type(3)>input {
+            max-width: 120px;
+            padding: 4%;
+            border: 2px solid #8BAFD0;
+            border-radius: 9px;
+            background: #DFF3FE;
+        }
+        .loginDiv:nth-of-type(3)>img {
+            margin-left: 5%;
+        }
+    </style>
 </head>
 
 <body class="gray-bg">
@@ -27,12 +55,9 @@
     <div class="middle-box text-center loginscreen  animated fadeInDown">
         <div>
             <div>
-
                 <h1 class="logo-name"></h1>
-
             </div>
             <!-- <h3>欢迎回来</h3> -->
-
             <form class="m-t" role="form" action="index" method="post">
                 <div class="form-group loginDiv">
                     <span></span>
@@ -59,7 +84,9 @@
     <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
     <!--统计代码，可删除-->
     <script>
-        
+        if(window.parent.location.href!=window.location.href){
+            window.parent.location.href=window.location.href;
+        }
         function IEVersion() {
             var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串  
             var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; //判断是否IE<11浏览器  
