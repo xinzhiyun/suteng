@@ -231,20 +231,6 @@ function tabContent(_this){
 	.css({transform: 'translateX(-'+ _this.attr("index") +'00vw)'});
 	//横线移动
 	$("#line").css({left: _this[0].offsetLeft+_this[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
-	
-	// 顶部滚动过渡效果
-	// console.log('_this[0].offsetLeft: ',_this[0].offsetLeft);
-	var offset = _this[0].offsetLeft/2 - _this[0].offsetWidth/2;
-	offset = Math.abs(offset) > _this.offsetLeft/2 ? _this.offsetLeft/2 : offset;
-	// 点击的是第一个分类
-	if(_this.attr('index') == 0){
-		offset = 0;
-	}
-	// console.log('this.offsetLeft/2: ',_this[0].offsetLeft/2);
-	// console.log('_this[0].offsetWidth/2: ',_this[0].offsetWidth/2);
-	// console.log('offset: ',offset);
-	// console.log("_this.parents('#header'): ",_this.parents('#header'));
-	_this.parents('#header')[0].scrollLeft = offset;
 
 	/******* 切换联动 *******/
 	if(!_htmlArr[tab_now]){
@@ -263,7 +249,7 @@ if(sessionStorage.getItem('shopCid')){
 	var cid = Number(sessionStorage.getItem('shopCid'));
 	tabContent($('.tab').eq(cid));
 	tab_now = +cid;
-	$('#header').offset().left = $('.tab').eq(tab_now)[0].offsetLeft;
+	$('#header')[0].scrollLeft = $('.tab').eq(tab_now-1)[0].offsetLeft;
 	// console.log($('#header')[0].scrollLeft)
 	// 初始化
 	// sessionStorage.setItem('shopCid', '');
@@ -278,11 +264,6 @@ if(sessionStorage.getItem('shopCid')){
 $("#loading").fadeOut('slow');
 // '|' 每6个li 添加一次，所以超过6个商品时，每次拉倒底部，再加载6个
 lazyArr = _htmlArr[tab_now].split('|');
-	
-	// lazyArr = lazyArr.substr(0,_htmlArr[0].length-1)
-	// lazyArr.push(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').join(''));
-	// lazyArr.push(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').join(''));
-	// lazyArr.push(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').join(''));
 
 // console.log('lazyArr: ', lazyArr);
 
