@@ -1,7 +1,64 @@
 <extend name="Public/base" />
 <block name="mylink">
     <style type="text/css">
-
+        /*报修图片*/
+        #showImg {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            display: none;
+            top: 0;
+            background: rgba(0,0,0,.5);
+            overflow-x: hidden;
+            overflow-y: scroll;
+            z-index: 9999;
+        }
+        #showImg>.closepic {
+            width: 40px;
+            height: 40px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+            color: red;
+            font-size: 20px;
+            background: #eee;
+            box-shadow: 0 0 10px rgba(0,0,0,.6);
+        }
+        #showImg>.closepic:hover {
+            cursor: pointer;
+            background: #ddd;
+        }
+        #showImg>.closepic:hover::before {
+            content: '';
+            position: fixed;
+            top: 18px;
+            right: 62px;
+            border-width: 16px;
+            border-style: solid;
+            border-color: transparent transparent #ddd #ddd;
+            z-index: 9;
+        }
+        #showImg>.closepic:hover::after {
+            content: '关闭图片';
+            position: fixed;
+            padding: 0 6px;
+            top: 10px;
+            right: 80px;
+            border-radius: 4px;
+            background: #ddd;
+            z-index: 10;
+        }
+        #showImg>div {
+            padding: 10px;
+            text-align: center;
+        }
+        #showImg>div>img {
+            width: 100%;
+            height: auto;
+        }
     </style>
 </block>
 <block name="content">
@@ -58,7 +115,7 @@
                                         <td>{{$vo.device_code}}</td>
                                         <td>{{$vo.reason}}</td>
                                         <td>{{$vo.content}}</td>
-                                        <td><img width="40" src="__PUBLIC__{{$vo.picpath}}" alt=""></td>
+                                        <td><img class='picture' width="40" src="__PUBLIC__{{$vo.picpath}}" alt=""></td>
                                         <td>{{$vo.address}}</td>
                                         <td>{{$vo.date}}</td>
                                         <td>
@@ -93,6 +150,10 @@
             </div>
         </div>
     </div>
+    <div id='showImg'>
+        <span class='closepic'>X</span>
+        <div></div>
+    </div>
 </block>
 
 <block name="myjs">
@@ -103,11 +164,9 @@
     $('.page').remove();
     $('ul.pagination').html(pageHtml);
 
-    function edit(id)
-    {
+    function edit(id){
         var r=confirm("确认处理？");
-        if (r==true)
-        {
+        if (r==true) {
             $.ajax({
                 type : 'GET',
                 url : "{{:U('Admin/Feeds/edit')}}",
@@ -126,6 +185,20 @@
             });
         }     
     }
+
+    // 点击图片放大查看
+    $('.picture').click(function(){
+        var img = new Image();
+        img.src = $(this).attr('src');
+        $("#showImg>div").html(img);
+        $("#showImg").fadeIn();
+
+    })
+
+    // 关闭图片
+    $('.closepic').click(function(){
+        $("#showImg").fadeOut();
+    })
 
     </script>
 </block>
