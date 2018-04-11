@@ -16,7 +16,7 @@ class FeedsController extends CommonController
      */
     public function feedslist()
     {	
-
+        //伦哥
         // echo 111;die;
         // 根据用户昵称进行搜索
         // $map = '';
