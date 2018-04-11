@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
     <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
     <script src="__PUBLIC__/Home/js/public.js"></script>
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
 </head>
     <style>
 
@@ -104,18 +105,18 @@
             </div>
             <h3>欢迎加入！</h3>
 
-            <form class="m-t" role="form" action="{{:U('Home/RegisteredVendor/index')}}" method="post">
+            <form class="m-t" role="form" method="post" id="form1">
                 <div class="form-group loginDiv">
                     <span></span>
-                    <input name="user" type="text" class="form-control" placeholder="账户" required="">
+                    <input name="user" type="text" class="form-control " placeholder="账户">
                 </div>
                 <div class="form-group loginDiv">
                     <span></span>
-                    <input name="password" type="password" class="form-control" placeholder="密码" required="">
+                    <input name="password" type="password" class="form-control" placeholder="密码">
                 </div>
                 <div class="form-group loginDiv">
                     <span></span>
-                    <input name="repassword" type="password" class="form-control" placeholder="密码" required="">
+                    <input name="repassword" type="password" class="form-control" placeholder="确认密码">
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b loginbtn">申 请</button>
             </form>
@@ -130,3 +131,35 @@
     <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
     <!--统计代码，可删除-->
 </block>
+
+<script>
+    $("#form1").submit(function() {
+        // 用户名和密码和确认密码值
+        var userInfo = $("input[name='user']").val(),
+            userPassword = $("input[name='password']").val(),
+            userRepassword = $("input[name='repassword']").val();
+        // 判断
+        if(userInfo) {
+            if(nameReg.test(userInfo)) {
+                if(userPassword) {
+                    if(userRepassword) {
+                        if(userPassword === userRepassword) {
+                           window.location.href = "{{:U('Home/RegisteredVendor/index')}}"; 
+                        }else {
+                            layuiHint("密码与确认密码不一致");
+                        }
+                    }else {
+                        layuiHint("请输入确认密码");
+                    }
+                }else {
+                    layuiHint("请输入密码");
+                }
+            }else {
+                layuiHint("用户名由两位以上的数字，字母，中文组成");
+            }
+            
+        }else {
+            layuiHint("请输入用户名！");
+        }
+    })
+</script>
