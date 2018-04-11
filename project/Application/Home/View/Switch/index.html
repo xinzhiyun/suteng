@@ -192,24 +192,26 @@
 	$('._setTimecontain').on('click','.del',function(e){
 		// console.dir($(this).parent());
 		// $(this).parent().remove();
-		var id = $(this).parent('hgroup').attr('alt');
+		var id = $(this).parents('hgroup').attr('alt');
 		var _this = $(this);
-		//console.dir(id);
-	        $.ajax({
-	            url:"{{:U('Home/Task/del')}}",
-	            dataType:"json",
-	            data:{'id':id},
-	            type: 'post',
-	            success:function(res){
-	                if(res.code == 200){
-	                    // 有数据，数据格式查看 26 行
-	                    $(_this).parent('hgroup').remove();
-	                }else{
-	                    // 无数据，数据格式查看 32 行
-	                    swal('删除失败',res.message, "error");
-	                }
-	            }
-	        });
+		// console.dir(id);
+        $.ajax({ 
+            url: "{{:U('Home/Task/del')}}",
+            type: 'post',
+            data: {'id': id},
+            success: function(res){
+                if(res.code == 200){
+                    // 有数据，数据格式查看 26 行
+                    $(_this).parents('hgroup').remove();
+                }else{
+                    // 无数据，数据格式查看 32 行
+                    swal('删除失败',res.message, "error");
+                }
+            },
+            error: function(err){
+            	console.log('错误：',err);
+            }
+        });
 
 	});
 	$('._setTimecontain').on('click','.close1',function(){
