@@ -292,6 +292,8 @@
                         if(res.code==200){
                             // 套餐删除成功
                             swal('删除成功',res.msg, "success");
+                            // 刷新iframe
+                            parent.$('.J_iframe').attr('src',parent.$('.J_iframe').attr('src'));
 
                         }else{
                             // 套餐删除失败
