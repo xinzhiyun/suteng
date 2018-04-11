@@ -382,11 +382,13 @@ class DevicesController extends CommonController
         }
         $filters = D('Filters');
         $count = $filters->where($map)->count();
-        $Page       = new \Think\Page($count,10);
+        $page  = new \Think\Page($count,8);
+        page_config($page);
+        $pageButton =$page->show();
         $data = $filters->where($map)->limit($Page->firstRow.','.$Page->listRows)->select();
         $assign = [
             'data' => $data,
-            'page' => page_config($Page)
+            'page' =>bootstrap_page_style($pageButton)
         ];
         $this->assign($assign);
         $this->display();
@@ -497,11 +499,16 @@ class DevicesController extends CommonController
         }
         $type = D('Type');
         $filters = D('Filters');
-        $data = $type->where($map)->order('id desc')->select();
+        $total = $type->where($map)->count();
+        $page  = new \Think\Page($total,8);
+        page_config($page);
+        $pageButton =$page->show();
+        $data = $type->where($map)->limit($page->firstRow.','.$page->listRows)->order('id desc')->select();
         $filter = $filters->where(['status'=>0])->order('id desc')->select();
         $assign = [
             'data' => $data,
             'filter' => $filter,
+            'page' =>bootstrap_page_style($pageButton)
         ];
         $this->assign($assign);
         $this->display();
