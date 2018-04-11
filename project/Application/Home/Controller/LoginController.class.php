@@ -31,7 +31,7 @@ class LoginController extends Controller
 
         }else{
             // 如果用户已经登录
-            if(!empty($_SESSION['vendorInfo'])){
+            if(!empty($_SESSION['vendorInfo']['open_id'])){
                 // 分销商主页
                 $this->redirect('Vendors/index');    
             }else{
