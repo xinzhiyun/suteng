@@ -252,9 +252,10 @@ class VendorsController extends CommonController
             $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
         }
 
-        $data = D('vendors')->companyList($map);
+        $data = D('vendors')->companyListPage($map);
         $assign = [
-            'data' => $data,
+            'data' => $data['list'],
+            'page' => bootstrap_page_style($data['page'])
         ];
         $this->assign($assign);
         $this->display();
