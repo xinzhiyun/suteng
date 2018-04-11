@@ -96,7 +96,7 @@ window.onload = function(){
 
 
     //websoket
-    var websoket=new WebSocket("ws://120.27.12.1:6001");
+    var websoket=new WebSocket("ws://120.78.184.0:6001");
     var PackNum=0;//包数据
     var CmdList=[];//命令队列
     var numAdd=0;
