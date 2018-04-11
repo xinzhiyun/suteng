@@ -4914,7 +4914,17 @@ body.modal-open {
     background: url('../img/passw.png') no-repeat;
     background-size: contain;
 }
-.loginDiv:nth-of-type(3) {
+.loginDiv:nth-of-type(3)>span {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1 0;
+    height: 26px;
+    display: inline-block;
+    margin: 0 4%;
+    background: url('../img/passw.png') no-repeat;
+    background-size: contain;
+}
+/*.loginDiv:nth-of-type(3) {
     padding: 0;
     -webkit-box-pack: justify;
         -ms-flex-pack: justify;
@@ -4925,8 +4935,8 @@ body.modal-open {
     border: none;
     border-radius: 9px;
     background: none;
-}
-.loginDiv:nth-of-type(3)>input, 
+}*/
+/*.loginDiv:nth-of-type(3)>input, 
 .loginDiv:nth-of-type(3)>img {
     -webkit-box-flex: 1;
         -ms-flex: 1 0;
@@ -4945,7 +4955,7 @@ body.modal-open {
 }
 .loginDiv:nth-of-type(3)>img {
     margin-left: 5%;
-}
+}*/
 
 .logo-name {
     width: 100%;
