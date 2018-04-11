@@ -133,8 +133,9 @@ class UsersController extends CommonController
     {
         // 根据用户昵称进行搜索
         $map = '';
-        if(!empty($_GET['name'])) $map['name'] = array('like',"%{$_GET['name']}%");
-
+        if(!empty($_GET['nickname'])) $map['st_users.nickname'] = array('like',"%".trim($_GET['nickname'])."%");
+        if(!empty($_GET['order_id'])) $map['st_flow.order_id'] = array('like',"%".trim($_GET['order_id'])."%");
+        if(strlen($_GET['mode'])) $map['st_flow.mode'] = I('get.mode');
         $flow = M('flow');
         $total = $flow->where($map)
                                 ->join('st_users ON st_flow.user_id = st_users.id')

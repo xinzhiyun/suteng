@@ -6,134 +6,7 @@
 	<title>定时开关</title>
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
-	<style>
-		body{
-			font-size: 0.8rem;
-			color:#373737;
-		}
-		._setTime{
-			width: 100%;
-			margin-bottom: 2rem;
-		}
-		._setTimecontain hgroup{
-			width:100%;
-			border-bottom: 1px solid #ccc;
-		}
-		.hgContain{
-			width: 94%;
-			height: 3.5rem;
-			padding:1.0rem 3% 0rem;
-		}
-		/*删除*/
-		hgroup>span{
-			line-height: 5rem;
-			font-size: 0.8rem;
-			height: 120%;
-		}
-		.setLeft{
-			width: 70%;
-			display: inline-block;
-		}
-		.setLeft p{
-			padding:0.2rem;
-			display: block;
-			height: 1.4rem;
-		}
-		.setLeft span{
-			font-size:0.8rem;
-		}
-		.setLeft span.sLeft{
-			float: left;
-		}
-		.setLeft span.sRight{
-			float: right;
-		}
-		.setLeft span.sLeft,.setLeft span.sRight{
-			/*line-height:  1.6rem;*/
-		}
-		.setRight{
-			display: inline-block;
-			width: 20%;
-			height: 2.3rem;
-			margin-left: 0.5rem;
-		}
-
-		/*开关*/
-		.setRight div[name="one"] {
-			width: 2.266667rem;
-		     height: 1.333333rem;
-		     border-radius: 0.666667rem;
-		     position: relative;
-		     margin:0.666667rem auto;
-		}
-		.setRight div[name="two"] {
-			width: 1.22rem;
-		    height:1.22rem;
-		    border-radius: 0.64rem;
-		    position: absolute;
-		    background: white;
-		    box-shadow: 0px 2px 4px rgba(0,0,0,0.4);
-		}
-		.open1{
-		    background: rgba(0,184,0,0.8);
-		}
-		.open2{
-		    top: 0.026667rem;
-		    right: 0.013333rem;
-		}
-		.close1{
-		    background: rgba(255,255,255,0.4);
-		    border:0.04rem solid rgba(0,0,0,0.15);
-		    border-left: transparent;
-		}
-		.close2{
-		    left: 0px;
-		    top: 0px;
-		    border:0.026667rem solid rgba(0,0,0,0.1);
-		}
-		/*删除*/
-		.delBtn{
-			display: inline-block;
-			position: absolute;
-			left: 84%;
-			top: -22%;
-			display: none;
-		}
-		.delBtn input{
-			height:5.55rem;
-			background: #FA4343;
-			width: 3.0rem;
-			border:none;
-			color:#fff;
-		}
-		.settimeFoot{
-		  width: 90%;
-	      padding: 2% 5%;
-	      height: 1.6rem;
-	      line-height:1.6rem;
-	      position: fixed;
-	      bottom: 0;
-	      border-top: 1px solid #F6F6F6;
-	      background: #fff;
-	  }
-		.settimeFoot p i{
-			color: #41BDB1;
-		    padding-bottom:0.2rem;
-		    padding-right: 0.6rem;
-		    float: left;
-		    font-size: 1.2rem;
-		}
-		.settimeFoot span{
-			line-height:1.4rem;
-      		font-size: 0.72rem;
-      		font-weight: 500;
-		}
-		hgroup>span{
-			line-height: 4.5rem;
-		}
-		
-	</style>
-
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/switch/index.css">
 </head>
 <body>
 	<div class="_setTime">
@@ -319,24 +192,26 @@
 	$('._setTimecontain').on('click','.del',function(e){
 		// console.dir($(this).parent());
 		// $(this).parent().remove();
-		var id = $(this).parent('hgroup').attr('alt');
+		var id = $(this).parents('hgroup').attr('alt');
 		var _this = $(this);
-		//console.dir(id);
-	        $.ajax({
-	            url:"{{:U('Home/Task/del')}}",
-	            dataType:"json",
-	            data:{'id':id},
-	            type: 'post',
-	            success:function(res){
-	                if(res.code == 200){
-	                    // 有数据，数据格式查看 26 行
-	                    $(_this).parent('hgroup').remove();
-	                }else{
-	                    // 无数据，数据格式查看 32 行
-	                    swal('删除失败',res.message, "error");
-	                }
-	            }
-	        });
+		// console.dir(id);
+        $.ajax({ 
+            url: "{{:U('Home/Task/del')}}",
+            type: 'post',
+            data: {'id': id},
+            success: function(res){
+                if(res.code == 200){
+                    // 有数据，数据格式查看 26 行
+                    $(_this).parents('hgroup').remove();
+                }else{
+                    // 无数据，数据格式查看 32 行
+                    swal('删除失败',res.message, "error");
+                }
+            },
+            error: function(err){
+            	console.log('错误：',err);
+            }
+        });
 
 	});
 	$('._setTimecontain').on('click','.close1',function(){

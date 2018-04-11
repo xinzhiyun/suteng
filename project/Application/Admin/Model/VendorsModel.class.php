@@ -66,6 +66,23 @@ class VendorsModel extends BaseModel
 
     }
 
+    public function companyListPage()
+    {
+         // 查询分公司数据
+         $map['leavel'] = 1;
+         $total = $this->where($map)->count();
+         $page  = new \Think\Page($total,8);
+         page_config($page);
+         $pageButton =$page->show();
+         $list = $this->where($map)->limit($page->firstRow.','.$page->listRows)->order('updatetime desc')->select();
+         // 返回格式化后数据
+         $data = [
+             'list' => $this->formatData($list),
+             'page' => $pageButton
+         ];
+         return $data;
+    }
+
     /**
      * [vendorReviewed 分销商待审核列表]
      * @return [type] [description]

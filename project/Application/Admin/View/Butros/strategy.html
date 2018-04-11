@@ -1,0 +1,113 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                    <h5>分销商管理 <small>策略设置</small></h5>
+                </div>
+                    <div class="ibox-content">
+                        <form action="javascript:false;" method="post" class="form-horizontal" enctype="multipart/form-data">
+                            <input type="hidden" name="id" value="{{$data.id}}">
+                            <h3>加盟商升级次略 <small style="color: red">N个加盟商升级成B级</small></h3>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">位数</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="user_y" class="form-control" value="{{$data.trader_a}}">
+                                </div>
+                            </div>
+
+                            <h3>加盟商升级次略 <small style="color: red">M个加盟商升级成A级</small></h3>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">位数</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="user_j" class="form-control" value="{{$data.trader_b}}">
+                                </div>
+                            </div>
+                            <h3>佣金分配 <small>佣金合计：100%，A、B、C级分销+分销商邀请人=100</small></h3>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">A级分销商分配占比</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="vendor_a" class="form-control" value="{{$data.com_a}}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">B级分销商分配占比</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="vendor_b" class="form-control" value="{{$data.com_b}}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">C级分销商分配占比</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="vendor_c" class="form-control" value="{{$data.com_c}}">
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" id="proportion" type="submit">保存</button>
+                                    <button class="btn btn-white" type="reset">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+<script src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+<script>
+    /**
+     * [ajaxData 设置佣金分配]
+     * @return {[type]}    [json数据]
+     */
+    $('#proportion').click(function(){
+        var id      = $("input[name='id']").val();
+        var user_y      = $("input[name='user_y']").val();
+        var inviter_y   = $("input[name='inviter_y']").val();
+        var user_j      = $("input[name='user_j']").val();
+        var inviter_j   = $("input[name='inviter_j']").val();
+        var vendor_a    = $("input[name='vendor_a']").val();
+        var vendor_b    = $("input[name='vendor_b']").val();
+        var vendor_c    = $("input[name='vendor_c']").val();
+
+
+        $.ajax({
+            url:"{{:U('Admin/Butros/strategy')}}",
+            data:{
+                "id":id,
+                "trader_a":user_y,
+                "trader_b":user_j,
+                "com_a":vendor_a,
+                "com_b":vendor_b,
+                "com_c":vendor_c,
+
+            },
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                console.dir(res);
+                if(res.code==200){
+                    swal("设置成功！", res.message, "success");
+                    window.setTimeout(function() {
+                        location.href="{{:U('Admin/Butros/strategy')}}";
+                    },1000);
+                }else{
+                    swal("设置失败！", res.message, "error");
+                }
+
+            }
+        });
+
+    });
+</script>
+</block>

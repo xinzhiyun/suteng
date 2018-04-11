@@ -44,7 +44,7 @@
                             </thead>
                             <tbody>
                                 <empty name="data">
-                                    <tr><td><h3>暂无消息</h3></td></tr>
+                                    <tr><td><h3>暂无数据</h3></td></tr>
                                 <else />
                                     <volist name="data" id="val">
                                         <tr>
@@ -268,7 +268,6 @@
         });
     });
 
-
     // 删除银币套餐
     function del(id){
         swal({
@@ -293,7 +292,8 @@
                         if(res.code==200){
                             // 套餐删除成功
                             swal('删除成功',res.msg, "success");
-                            location.reload();
+                            // 刷新iframe
+                            parent.$('.J_iframe').attr('src',parent.$('.J_iframe').attr('src'));
                         }else{
                             // 套餐删除失败
                             swal("删除失败",res.msg, "error");

@@ -435,7 +435,8 @@ class WeiXinPayController extends Controller
         $string_a=urldecode($string_a);
         //签名步骤二：在string后加入KEY
         $config=$this->config;
-        $string_sign_temp=$string_a."&key=".C('KEY');
+//        $string_sign_temp=$string_a."&key=".C('KEY');
+        $string_sign_temp=$string_a."&key=c5fb60622163f8341b970dfad4031edc";
         //签名步骤三：MD5加密
         $sign = md5($string_sign_temp);
         // 签名步骤四：所有字符转为大写

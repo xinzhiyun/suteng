@@ -1,5 +1,5 @@
 $(function(){
-	var lvxinArr = ['#lvxinDetail', '#lvxinReset' ,'#lvxinBuy'];
+	var lvxinArr = ['#lvxinDetail', '#lvxinReset_base' ,'#lvxinBuy'];
 	var filterName='';
 	var filterNumber=0;
 	//页面加载时获取滤芯数据
@@ -43,16 +43,13 @@ $(function(){
 	}
 	// 点击顶部tab切换内容
 	$(".tabTitle").click(function(){
-		// 判断内容是否超出
-		if($("#content>div").length != 0){
-			$("#content")
-			.css({height: lvxinArr[$(this).attr("index")]
-				.height, 
-				overflowY: $(lvxinArr[$(this).attr("index")])[0].offsetHeight > $("#content")[0].offsetHeight 
-				? 'visible'
-				: 'hidden'
-			});
+		// 隐藏其他模块
+		for(var i=0; i<lvxinArr.length; i++){
+			$(lvxinArr[i]).fadeOut();
 		}
+		// 显示当前模块
+		$(lvxinArr[$(this).attr("index")]).fadeIn();
+
 		if($(this).html()=="滤芯购买"){
 			$("#footer").show();
 			$("button").hide().siblings().show();

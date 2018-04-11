@@ -4,18 +4,18 @@ use Think\Controller;
 
 /**
  * 客户建议及报修控制器
- * 
+ *
  * @author 潘宏钢 <619328391@qq.com>
  */
 
-class FeedsController extends CommonController 
+class FeedsController extends CommonController
 {
 	/**
      * 建议列表
      * @author 潘宏钢 <619328391@qq.com>
      */
     public function feedslist()
-    {	
+    {
 
         // echo 111;die;
         // 根据用户昵称进行搜索
@@ -55,14 +55,14 @@ class FeedsController extends CommonController
      */
     public function feedsdel($id)
     {
-        
+
         $res = M('feeds')->delete($id);
         if($res){
             return $this->ajaxReturn(['state'=>true,'msg'=>'删除成功']);
         }else{
             return $this->ajaxReturn(['state'=>false,'msg'=>'删除失败']);
         }
-    
+
     }
 
     /**
@@ -89,6 +89,7 @@ class FeedsController extends CommonController
                         ->join('st_users ON st_repair.uid = st_users.id','LEFT')
                         ->field('st_repair.*,st_users.nickname')
                         ->limit($page->firstRow.','.$page->listRows)
+                        ->order('id desc')
                         ->select();
         // dump($userlist);
         $where['key'] =I('get.key');
@@ -97,7 +98,7 @@ class FeedsController extends CommonController
         $this->assign('list',$userlist);
         $this->assign('where',$where);
         $this->assign('button',$pageButton);
-        $this->display(); 
+        $this->display();
     }
 
     /**
@@ -107,12 +108,12 @@ class FeedsController extends CommonController
     public function edit($id,$status)
     {
         $work = M("repair");
-        $res = $work->where('id='.$id)->setField('status',$status); 
+        $res = $work->where('id='.$id)->setField('status',$status);
         if($res){
             return $this->ajaxReturn(['state'=>true,'msg'=>'修改成功']);
         }else{
             return $this->ajaxReturn(['state'=>false,'msg'=>'修改失败']);
         }
     }
-    
+
 }
