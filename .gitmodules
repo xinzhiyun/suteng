@@ -1,0 +1,3 @@
+[submodule "project/vendor/doctrine/instantiatorhttps:/github.com/xinzhiyun/suteng.git"]
+	path = project/vendor/doctrine/instantiatorhttps:/github.com/xinzhiyun/suteng.git
+	url = git://github.com/korin/open_flash_chart_2_plugin.git
