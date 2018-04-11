@@ -385,7 +385,7 @@ class DevicesController extends CommonController
         $page  = new \Think\Page($count,8);
         page_config($page);
         $pageButton =$page->show();
-        $data = $filters->where($map)->limit($Page->firstRow.','.$Page->listRows)->select();
+        $data = $filters->where($map)->limit($page->firstRow.','.$page->listRows)->select();
         $assign = [
             'data' => $data,
             'page' =>bootstrap_page_style($pageButton)

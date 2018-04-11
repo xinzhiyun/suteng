@@ -21,7 +21,7 @@
                             <option <?php echo ($where['key']=="leavel")?'selected':''; ?> value="leavel">级别</option>
                             <option <?php echo ($where['key']=="user")?'selected':''; ?> value="user">分配用户名</option>
                         </select>
-                        <input type="text" name="keywords" placeholder="输入搜索关键字"  value="{{$where['keywords']}}"class="input form-control keywordscc"   style="width:40%">
+                        <input type="text" name="keywords" placeholder="输入搜索关键字"  value="{{$where['keywords']}}" class="input form-control keywordscc"   style="width:40%">
                         <select name="leavel" class="form-control abb"   style="width:30%">
                             <option   value="">-- 级别 --</option>
                             <option  value="0">超级管理员</option>
@@ -31,7 +31,8 @@
                             <option value="4">C级分销商</option>
                         </select>
                         <select name="status" class="form-control" name="account" style="width:30%">
-                            <option     <?php echo ($where['status']=="")?'selected':''; ?> value="">会员等级</option>
+                            <option     <?php echo ($where['status']=="")?'selected':''; ?> value="">-- 状态 --</option>
+                            <!-- <option     <?php echo ($where['status']=="")?'selected':''; ?> value="">会员等级</option> -->
                             <option   <?php echo ($where['status']=="0")?'selected':''; ?> value="0">非企业会员</option>
                             <option  <?php echo ($where['status']==1)?'selected':''; ?> value="1">公司信息填写</option>
                             <option  <?php echo ($where['status']==2)?'selected':''; ?> value="2">签协议</option>
