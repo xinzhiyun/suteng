@@ -1,0 +1,175 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                    <h5>分销商管理 <small>年费设置</small></h5>
+                </div>
+                    <div class="ibox-content">
+                        <form action="javascript:false;" method="post" class="form-horizontal" enctype="multipart/form-data">
+                            <input type="hidden" name="id" value="{{$data.id}}">
+                            <h3>钻石年费设置 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">年费</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="annual_money" class="form-control"  value="{{$data.annual_money}}" placeholder="标准价钱格式，例如：2.00">
+
+                                </div>
+                            </div>
+
+                            <h3>钻石年费成本 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">成本价</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="cost_money" class="form-control"  value="{{$data.cost_money}}" placeholder="标准价钱格式，例如：2.00">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">钻石年费套餐描述</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="dia_describe" class="form-control" value="{{$data.dia_describe}}" placeholder="套餐简要描述50个字以内">
+                                </div>
+                            </div>
+                            <h3>金牌年费设置 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">年费</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="medal_money" class="form-control"  value="{{$data.medal_money}}" placeholder="标准价钱格式，例如：2.00">
+
+                                </div>
+                            </div>
+
+                            <h3>金牌年费成本 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">成本价</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="gold_money" class="form-control"  value="{{$data.gold_money}}" placeholder="标准价钱格式，例如：2.00">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">金牌年费套餐描述</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="gold_describe" class="form-control"   value="{{$data.gold_describe}}" placeholder="套餐简要描述50个字以内">
+                                </div>
+                            </div>
+                            <h3>个人VIP年费设置 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">年费</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="personal_money" class="form-control"  value="{{$data.personal_money}}" placeholder="标准价钱格式，例如：2.00">
+
+                                </div>
+                            </div>
+
+                            <h3>个人VIP年费成本 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">成本价</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="per_money" class="form-control"  value="{{$data.per_money}}" placeholder="标准价钱格式，例如：2.00">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">个人年费套餐描述</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="per_describe" class="form-control" value="{{$data.per_describe}}"  placeholder="套餐简要描述50个字以内">
+                                </div>
+                            </div>
+                            <h3>金牌会员单次充值 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">年费</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="single_money" class="form-control"  value="{{$data.single_money}}" placeholder="标准价钱格式，例如：2.00">
+
+                                </div>
+                            </div>
+
+                            <h3>个人VIP会员单次充值 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">成本价</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="members_money" class="form-control"  value="{{$data.members_money}}" placeholder="标准价钱格式，例如：2.00">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" id="proportion" type="submit">保存</button>
+                                    <button class="btn btn-white" type="reset">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/switchery.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/Admin/js/plugins/iCheck/icheck.min.js"></script>
+<script>
+    /**
+     * [ajaxData 设置佣金分配]
+     * @return {[type]}    [json数据]
+     */
+    $('#proportion').click(function(){
+        var id      = $("input[name='id']").val();
+        var annual_money      = $("input[name='annual_money']").val();
+        var cost_money      = $("input[name='cost_money']").val();
+        var medal_money      = $("input[name='medal_money']").val();
+        var gold_money      = $("input[name='gold_money']").val();
+        var personal_money      = $("input[name='personal_money']").val();
+        var per_money      = $("input[name='per_money']").val();
+        var single_money      = $("input[name='single_money']").val();
+        var members_money      = $("input[name='members_money']").val();
+        var dia_describe      = $("input[name='dia_describe']").val();
+        var gold_describe      = $("input[name='gold_describe']").val();
+        var per_describe      = $("input[name='per_describe']").val();
+
+
+
+        $.ajax({
+
+            url:"{{:U('Admin/Butros/annual')}}",
+            data:{
+                "id":id,
+                "annual_money":annual_money,
+                "cost_money":cost_money,
+                "medal_money":medal_money,
+                "gold_money":gold_money,
+                "personal_money":personal_money,
+                "per_money":per_money,
+                "single_money":single_money,
+                "members_money":members_money,
+                "dia_describe":  encodeURIComponent(dia_describe),
+                "gold_describe":encodeURIComponent(gold_describe),
+                "per_describe":encodeURIComponent(per_describe)
+            },
+            dataType:"json",
+            type: 'post',
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            success:function(res){
+                console.dir(res);
+                if(res.code==200){
+                    swal("设置成功！", res.message, "success");
+                    window.setTimeout(function() {
+                        location.href="{{:U('Admin/Butros/annual')}}";
+                    },1000);
+                }else{
+                    swal("设置失败！", res.message, "error");
+                }
+
+            }
+        });
+
+    });
+</script>
+</block>

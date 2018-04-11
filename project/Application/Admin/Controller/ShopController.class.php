@@ -178,6 +178,7 @@ class ShopController extends CommonController
             }
             // 商品添加
             $goods_status = $goods_add->add();
+            $goods_add->where(['id'=>$goods_status])->save(['vid'=>$_SESSION['adminInfo']['id']]);
             $goodsDetail['gid'] = $goods_status;
             $goodsDetail['cost'] = $data['cost'];
             $goodsDetail['stock'] = $data['stock'];
