@@ -2,6 +2,43 @@
 <block name="mylink">
     <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/switchery.min.css" rel="stylesheet">
+    <style>
+        #goodsPanel {
+            width: 90%;
+            height: auto;
+            display: none;
+            position: absolute;
+            padding: 10px 20px;
+            border-radius: 4px;
+            background: #fff;
+            border: 1px solid;
+            z-index: 999;
+        }
+        .gli {
+            position: relative;
+            padding: 10px 0;
+        }
+        .gli:hover {
+            cursor: pointer;
+        }
+        .gli:hover::before {
+            position: absolute;
+            top: -10px;
+            left: -50px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent transparent #fff;
+        }
+        .gli:hover::after {
+            content: attr(text);
+            position: absolute;
+            top: -10px;
+            left: -50px;
+            padding: 1px 12px;
+            background: #fff;
+            border: 1px solid;
+        }
+    </style>
 </block>
 <block name="content">
     <div class="wrapper wrapper-content animated fadeInRight">
@@ -12,29 +49,32 @@
                     <h5>库存管理 <small>添加库存</small></h5>
                 </div>
                     <div class="ibox-content">
-                        <form method="post" class="form-horizontal" enctype="multipart/form-data">
+                        <form method="post" id='form' class="form-horizontal" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">商品名</label>
-                                <div class="col-md-3">
+                                <div class="col-md-3" style='position: relative;'>
                                     <input type="text" name="goods" class="form-control" placeholder="请输入商品名">
+                                    <ol id='goodsPanel'>
+                                        <!-- <li gid=''>gid.name</li> -->
+                                    </ol>
                                     <input type="hidden" name="id" class="form-control" value="">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">总库存</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="allNum" class="form-control" placeholder="请输入总库存">
+                                    <input type="text" name="allnum" class="form-control" placeholder="请输入总库存">
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-primary" type="button">添加</button>
+                                    <button class="btn btn-primary addbtn" type="button">添加</button>
                                     <button class="btn btn-white" type="reset">重置</button>
                                 </div>
                             </div>
                         </form>
-                    </div>             
+                    </div>
                 </div>
             </div>
         </div>
@@ -43,50 +83,65 @@
 <block name="myjs">
 <script src="__PUBLIC__/Admin/layui/layui.js"></script>
 <script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
-<script src="__PUBLIC__/Admin/js/switchery.min.js"></script>
 <script>
-    var elem = document.querySelector('.js-switch');
-    var init = new Switchery(elem);
-    defaults = {
-        color: '#64bd63', 
-        secondaryColor: '#dfdfdf', 
-        jackColor: '#fff', 
-        jackSecondaryColor: null, 
-        className: 'switchery', 
-        disabled: false, 
-        disabledOpacity: 0.5, 
-        speed: '0.1s', 
-        size: 'default'
-    }
+    // 获取商品数据
+    var gdata = {{$glist|json_encode}};
+    console.log('商品数据: ',gdata);
+    // 输入商品实时搜索
+    $("input[name='goods']").on('keyup', function(){
+        // 显示搜索结果
+        $('#goodsPanel').show();
+        // console.log($(this).val());
+        var html = '';  // 存放搜索结果
+        for(var i=0; i<gdata.length; i++){
+
+            if(gdata[i].name.indexOf($(this).val()) > -1){
+                html += "<li class='gli' text='"+ gdata[i].name +"' gid='"+ gdata[i].id +"'>"+ gdata[i].name +"</li>";
+
+            }
+        }
+        if(!$(this).val().length){
+            html = '请输入关键字查询！';
+        }
+        // 添加到查询列表
+        $('#goodsPanel').html(html);
+
+        if(!$('#goodsPanel').html()){
+            $('#goodsPanel').html('查无数据！');
+        }
+    })
+
+    // 点击搜索出来的结果项
+    $('#goodsPanel').on('click','.gli', function(){
+        // 隐藏搜索结果
+        $('#goodsPanel').hide();
+        $("input[name='goods']").val($(this).text());
+        $("input[name='id']").val($(this).attr('gid'));
+    })
 
     /**
-     * [获取表单数据]
-     * @param  {[type]} )
-     * @return {[type]}     [description]
+     * 添加库存
      */
-    $('.btn-primary').click(function(){
-        // 获取表单数据
-        var data = $("form").serialize();
-        // console.dir(data);
-        //  异不请求
-        $.ajax({
-            url: "{{:U('Admin/Recharge/add_gold')}}",
-            data: data,
-            dataType: "json",
-            type: 'post',
-            success: function(res){
-                console.dir(res);
-                if(res.code == 200){
-                    // 添加成功
-                    location.reload();
-                    swal(res.msg,res.msg, "success");
-                    // window.location.reload();
-                }else{
-                    // 添加失败
-                    swal(res.msg, "请重新提交！", "success");
-                }
-            }
-        });
+    $('.addbtn').click(function(){
+        var numReg = /[0-9]/;
+        var num = $("input[name='allnum']").val();
+
+        if(!$("input[name='id']").val()){
+            parent.layer.msg('请输入真实商品名！');
+            return
+        }
+        if(!num){
+            parent.layer.msg('请输入库存！');
+            return
+
+        }else if(!numReg.test(num)){
+            parent.layer.msg('请输入阿拉伯数字(0-9)库存！');
+            return
+        }
+        parent.layer.msg('添加成功！');
+
+        // 提交数据
+        $('#form').submit();
     });
 
 </script>
