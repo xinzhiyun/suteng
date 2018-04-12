@@ -679,9 +679,10 @@ class ShopController extends CommonController
         //查询所有商品
         $glist = D('goods')->field('id,name')->select();;
         // dump($glist);
-        $this->display('inventory_add');
         
-        $this->ajaxReturn($glist);
+        $this->assign('glist',$glist);
+        $this->display('inventory_add');
+
     }
 
 
