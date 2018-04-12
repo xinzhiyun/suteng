@@ -110,7 +110,7 @@
                                             <span goods="{{$v.gid}}" class="btn btn-success select">查看单价</span>
                                         </td>
                                         <td>
-                                            {{$v['stock']}}
+                                            {{$v['allnum']-$v['abnormalnum']}}
                                         </td>
                                         <td>
                                             <switch name="v.is_install">
