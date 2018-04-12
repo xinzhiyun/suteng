@@ -47,7 +47,8 @@ class GoodsModel extends BaseModel
             ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
             ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
             ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
-            ->field('p.*,g.*,c.name cname,av.val,a.attr,gd.*,p.path')
+            ->join('__INVENTORY__ i on i.gid=g.id' , 'LEFT')
+            ->field('p.*,g.*,c.name cname,av.val,a.attr,gd.*,p.path,i.allnum,i.abnormalnum')
             ->order(' addtime desc')
             ->limit($Page->firstRow.','.$Page->listRows)
             ->select();

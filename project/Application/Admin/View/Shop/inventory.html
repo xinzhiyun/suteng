@@ -1,0 +1,131 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+    <style type="text/css">
+        img{
+            width: 60px;
+            height: 60px;
+        }
+    </style>
+</block>
+
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>商城管理 <small>库存管理</small></h5>
+                    <div class="ibox-tools">
+                        <i class="fa fa-user-plus"></i>
+                        <a href="{{:U('inventoryAddList')}}">添加库存</a>
+                    </div>
+                </div>
+                <form method="get" action="">
+                    <div class="input-group col-md-4" id='searchdiv'>
+                        <input type="text" name="keywords" placeholder="请输入商品名" class="input form-control"   style="width:95%">
+                        <span class="input-group-btn" style="display: inline-block;">
+                                <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
+                        </span>
+                    </div>
+                </form>
+                <div class="ibox-content">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    商品编号
+                                </th>
+                                <th>
+                                    商品分类
+                                </th>
+                                <th>
+                                    商品名称
+                                </th>
+                                <th>
+                                    图片
+                                </th>
+                                <th>
+                                    总库存
+                                </th>
+                                <th>
+                                    正常库存
+                                </th>
+                                <th>
+                                    异常库存
+                                </th>
+                                <th>
+                                    操作
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <empty name="data">
+                                <tr><td colspan="12">暂无库存数据</td></tr>
+                            <else />
+                                <volist name="data" id="v">
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" class="fd" name="{{$v['gid']}}">
+                                            {{$i}}
+                                        </td>
+                                        <td>
+                                            {{$v['cname']}}
+                                        </td>
+                                        <td>
+                                            {{$v['name']}}
+                                        </td>
+                                        <td>
+                                            <img src="/Uploads/{{$v['path']}}"></a>
+                                        </td>
+                                        <td>
+                                            {{$v['stock']}}
+                                        </td>
+                                        <td>
+                                            {{$v['stock']}}
+                                        </td>
+                                        <td>
+                                            {{$v['stock']}}
+                                        </td>
+                                        
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="inventoryEdidList?gid={{$v['gid']}}" class="btn btn-outline btn-success">
+                                                    异常库存修改
+                                                </a>
+                                                <a href="ainventoryEdidList?gid={{$v['gid']}}" class="btn btn-outline btn-success">
+                                                    总库存修改
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </volist>
+                            </empty>
+                        </tbody>
+                    </table>
+                    <div>
+                        {{$show}}
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body my_content">
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script>
+        
+
+    </script>
+</block>
