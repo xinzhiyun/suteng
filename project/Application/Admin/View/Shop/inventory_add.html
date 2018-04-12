@@ -57,7 +57,7 @@
                                     <ol id='goodsPanel'>
                                         <!-- <li gid=''>gid.name</li> -->
                                     </ol>
-                                    <input type="hidden" name="id" class="form-control" value="">
+                                    <input type="hidden" name="id" value="">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -69,7 +69,7 @@
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-primary addbtn" type="button">添加</button>
+                                    <button class="btn btn-primary addbtn" type="submit">添加</button>
                                     <button class="btn btn-white" type="reset">重置</button>
                                 </div>
                             </div>
@@ -125,6 +125,10 @@
     $('.addbtn').click(function(){
         var numReg = /[0-9]/;
         var num = $("input[name='allnum']").val();
+        var gid = $("input[name='id']").val();
+
+
+        console.log(gid);
 
         if(!$("input[name='id']").val()){
             parent.layer.msg('请输入真实商品名！');
@@ -138,10 +142,23 @@
             parent.layer.msg('请输入阿拉伯数字(0-9)库存！');
             return
         }
-        parent.layer.msg('添加成功！');
 
-        // 提交数据
-        $('#form').submit();
+
+        $.ajax({
+                url:"inventoryAdd",
+                data:{"gid":gid,"allnum":num},
+                dataType:"json",
+                type: 'post',
+                success:function(res){
+                    if(res.code == 200){
+                        location.reload();
+                        parent.layer.msg(res.msg);
+                    } else {
+                        parent.layer.msg(res.msg);
+                    }
+                }
+            })
+
     });
 
 </script>

@@ -667,7 +667,38 @@ class ShopController extends CommonController
      */
     public function inventoryAdd()
     {
-        
+        try {
+                
+            //接受POST数据
+            $data['allnum'] = I('post.allnum');
+            $data['gid'] = I('post.gid');
+
+            // dump($data);die;
+            $inventory = M('inventory');
+
+            //添加库存前先判断该商品是否已经存在于库存表
+            if ($inventory->where('gid='.$data['gid'])->find()) {
+
+                E('该商品已存在于库存表，请前往更改页面更改','203');
+
+            } else {
+                //添加商品库存数据
+                $info = $inventory->add($data);
+
+                if ($info) {
+                        E('添加成功',$info);
+                    }else{
+                        E('添加失败',203);
+                }      
+            }
+                    
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
     }
 
     /**
