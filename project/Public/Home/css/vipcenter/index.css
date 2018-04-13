@@ -55,7 +55,7 @@ body {
 }
 .member > span:nth-child(1) {
 	white-space: wrap;
-	width: 6rem;
+	/* width: 6rem; */
 }
 img {
 	width:100%;
