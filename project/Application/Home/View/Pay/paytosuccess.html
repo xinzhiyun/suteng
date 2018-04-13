@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+  <meta charset="UTF-8">
+  <title>支付成功</title>
+  <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+  <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+  <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+  <script src="__PUBLIC__/Home/js/public.js"></script>
+  <style>
+    body{
+      font-size: 0.7rem;
+    }
+    .manageCard{
+      position: relative;
+    }
+    .noContain{
+      width: 45%;
+      height:6rem;
+      margin:9rem auto 0;
+      text-align: center;
+    }
+  
+    .noContain p{
+      line-height: 3rem;
+    }
+     .noContain p i{
+      font-size: 3rem;
+      color: #32C97C;
+     }
+    #foot{
+      padding:40px 20px 20px 20px;
+    }
+    #order{
+      display: block;
+      float: left;
+    }
+    #shop{
+      display: block;
+      float: right;
+    }
+    
+      #more {
+        width: 60vw;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 10%;
+        padding: 2% 0;
+        text-align: center;
+      }
+      #more>a {
+        padding: 1% 6%;
+        border: 1px solid #aaa;
+        border-radius: 4px;
+        color: #797878;
+      }
+      #more>a:nth-of-type(1) {
+        float: left;
+      }
+      #more>a:nth-of-type(2) {
+        float: right;
+      } 
+  </style>
+</head>
+<body>
+    <div class="manageCard">
+        <div class="noContain">
+           <p><i class="iconfont icon-chenggong"></i></p>
+           <p>支付成功</p>
+        </div>
+    </div>
+
+    <div id="more">
+      <a href="javascript:;" id="payagain">查看订单</a>
+      <a href="{{:U('Home/Shop/index')}}" id="goHome">回到首页</a>
+    </div>
+    <script>
+      // 点击查看订单，跳到订单页面~~待发货
+      $("#payagain").click(function(){
+
+        if(sessionStorage.getItem('lvxinData')){    // 滤芯订单跳转到耗材订单界面
+          location.href = "{{:U('Home/Order/consumable')}}?offset=" + 1;
+
+        }else{    // 商品订单跳转到商品订单界面
+          location.href = "{{:U('Home/Order/index')}}?offset=" + 1;
+
+        }
+        history.replaceState({}, null, '{{:U("VipCenter/index")}}');
+      })
+      // 点击返回商城首页
+      $("#goHome").click(function(){
+        history.replaceState({}, null, '{{:U("VipCenter/index")}}');
+      })
+    </script>
+</body>
+</html>

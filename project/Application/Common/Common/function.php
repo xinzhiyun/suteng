@@ -1228,6 +1228,30 @@ function gerOrderId()
   return $orderId;
 }
 
+/**
+ * 订单ID
+ * @return string   绝对唯一的32位订单ID号
+ */
+function getOrderId()
+{
+    do {
+        $orderId = onlyOrderId();
+        //查询订单号是否存在
+        $oid = M('shop_order')->where("`order_id`='{$orderId}'")->field('id')->find();
+        $osid = D('OrderSetmeal')->where("`order_id`='{$orderId}'")->field('id')->find();
+        $flow = M('flow')->where("`order_id`='{$orderId}'")->field('id')->find();
+
+        if ($oid || $osid || $flow) {
+            $res = true;
+        } else {
+            $res = false;
+        }
+        // 如果订单号已存在再重新获取一次
+    } while ($res);
+
+    return $orderId;
+}
+
 function onlyOrderId(){
   // $str = date('Ymd').time().mt_rand(1111111111, 9999999999).mt_rand(1111111111, 9999999999);
   $str = mt_rand(1111111111, 9999999999).mt_rand(1111111111, 9999999999).time();
@@ -1235,19 +1259,19 @@ function onlyOrderId(){
   return $yCode;
 }
 
-/**
- * 生产唯一的充值订单ID
- */
-function getOrderId()
-{
-  do {
-    // 生成唯一订单号
-    $orderId = onlyOrderId();
-    //查询订单号是否存在
-    $oid = M('flow')->where("`order_id`='{$orderId}'")->field('id')->find();
-    // 如果订单号已存在再重新获取一次
-  } while ($oid);
-
-  // 绝对唯一的32位订单ID号
-  return $orderId;
-}
+///**
+// * 生产唯一的充值订单ID
+// */
+//function getOrderId()
+//{
+//  do {
+//    // 生成唯一订单号
+//    $orderId = onlyOrderId();
+//    //查询订单号是否存在
+//    $oid = M('flow')->where("`order_id`='{$orderId}'")->field('id')->find();
+//    // 如果订单号已存在再重新获取一次
+//  } while ($oid);
+//
+//  // 绝对唯一的32位订单ID号
+//  return $orderId;
+//}

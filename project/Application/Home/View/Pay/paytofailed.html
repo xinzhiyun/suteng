@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+    <meta charset="UTF-8">
+    <title>支付失败</title>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+    <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+    <script src="__PUBLIC__/Home/js/public.js"></script>
+    <style>
+      body{
+        font-size: 0.7rem;
+      }
+      .manageCard{
+        position: relative;
+      }
+      .noContain{
+        width: 45%;
+        height:6rem;
+        margin:9rem auto 0;
+        text-align: center;
+      }
+
+      .noContain p{
+        line-height: 3rem;
+      }
+      .noContain p i{
+        font-size: 3rem;
+        color: #F9586B;
+      }
+
+      #more {
+        width: 60vw;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 10%;
+        padding: 2% 0;
+        text-align: center;
+      }
+      #more>a {
+        padding: 1% 6%;
+        border: 1px solid #aaa;
+        border-radius: 4px;
+        color: #797878;
+      }
+      #more>a:nth-of-type(1) {
+        float: left;
+      }
+      #more>a:nth-of-type(2) {
+        float: right;
+      }  
+    </style>
+</head>
+<body>
+    <div class="manageCard">
+      <div class="noContain">
+         <p><i class="iconfont icon-shibai"></i></p>
+         <p>支付失败</p>
+      </div>
+    </div>
+    <div id="more">
+      <a href="javascript:;" id="payagain">再次支付</a>
+      <a href="{{:U('Home/Shop/index')}}" id="goHome">回到首页</a>
+    </div>
+    <script>
+      /*
+        点击继续支付
+       */
+      $("#payagain").click(function(){
+        // 后退回之前的页面
+        history.back();
+      })
+    </script>
+</body>
+</html>

@@ -4,16 +4,16 @@ use \Org\Util\WeixinJssdk;
 
 class OrderController extends CommonController
 {
+
     /**
      * [index 订单首页]
      * @return [type] [description]
      */
     public function index()
-    {   
-        $weixin = new WeixinJssdk;
-        $signPackage = $weixin->getSignPackage();
-        //分配数据        
-        $this->assign('info',$signPackage);
+    {
+
+        $openId = $_SESSION['open_id'];
+        $this->wx_info();
         $this->assign('openId',$openId);
 
     	$this->display();
@@ -297,6 +297,7 @@ class OrderController extends CommonController
      */
     public function consumable()
     {
+        $this->wx_info();
         $this->display();
     }
     /**
@@ -305,6 +306,7 @@ class OrderController extends CommonController
      */
     public function lease()
     {
+        $this->wx_info();
         $this->display();
     }
 
@@ -314,10 +316,13 @@ class OrderController extends CommonController
      */
     public function exchangeNotes()
     {
+        $this->wx_info();
         $this->display();
     }
     //填写物流单号页面
-    public function expressOrder(){
+    public function expressOrder()
+    {
+        $this->wx_info();
         $this->display();
     }
 
