@@ -62,7 +62,12 @@ class MailController extends CommonController
         	    $map['content'] = array('like',"%{$_GET['keywords']}%");
         	}
         }
-
+        // ---- 解决非第一页搜索条件$_GET['p']不等于1的情况【start】
+        if(I('sou')){
+            $_GET['p'] = 1;
+            unset($_GET['sou']);
+        }
+        // ---- 【end】
 		$total = M('mail')->where($map)->count();
         $page  = new \Think\Page($total,8);
         page_config($page);
@@ -228,7 +233,13 @@ class MailController extends CommonController
         	// if($_GET['key'] == 'content'){
         	//     $map['content'] = array('like',"%{$_GET['keywords']}%");
         	// }
+		}
+        // ---- 解决非第一页搜索条件$_GET['p']不等于1的情况【start】
+        if(I('sou')){
+            $_GET['p'] = 1;
+            unset($_GET['sou']);
         }
+        // ---- 【end】
 		$total = M('mail')->where($map)->count();
         $page  = new \Think\Page($total,8);
         page_config($page);

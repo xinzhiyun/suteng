@@ -29,7 +29,12 @@ class DevicesController extends CommonController
         }
         $where['key'] = $_GET['key'];
         $where['keywords'] = $_GET['keywords'];
-
+        // ---- 解决非第一页搜索条件$_GET['p']不等于1的情况【start】
+        if(I('sou')){
+            $_GET['p'] = 1;
+            unset($_GET['sou']);
+        }
+        // ---- 【end】
         $count = $device                                                            
             ->where($map)
             ->alias('d')
@@ -378,6 +383,12 @@ class DevicesController extends CommonController
                 $map['filtername'] = array('like',"%{$_GET['filtername']}%");
             }
         }
+        // ---- 解决非第一页搜索条件$_GET['p']不等于1的情况【start】
+        if(I('sou')){
+            $_GET['p'] = 1;
+            unset($_GET['sou']);
+        }
+        // ---- 【end】
         $filters = D('Filters');
         $count = $filters->where($map)->count();
         $page  = new \Think\Page($count,8);
@@ -495,10 +506,18 @@ class DevicesController extends CommonController
         if(!empty($_GET['typename'])){
             $map['typename'] = array('like',"%{$_GET['typename']}%");
         }
+
+        // ---- 解决非第一页搜索条件$_GET['p']不等于1的情况【start】
+        if(I('sou')){
+            $_GET['p'] = 1;
+            unset($_GET['sou']);
+        }
+        // ---- 【end】
         $type = D('Type');
         $filters = D('Filters');
         $total = $type->where($map)->count();
         $page  = new \Think\Page($total,10);
+
         page_config($page);
         $pageButton =$page->show();
        

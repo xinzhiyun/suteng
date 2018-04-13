@@ -23,7 +23,12 @@ class SetmealController extends CommonController
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
             $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
         }
-
+        // ---- 解决非第一页搜索条件$_GET['p']不等于1的情况【start】
+        if(I('sou')){
+            $_GET['p'] = 1;
+            unset($_GET['sou']);
+        }
+        // ---- 【end】
         $type = M('setmeal');
         
         $total =$type->where($map)
@@ -41,7 +46,7 @@ class SetmealController extends CommonController
                     ->select();
         // dump($list);die;
         $this->assign('list',$list);
-        $this->assign('button',$pageButton);
+        $this->assign('button',bootstrap_page_style($pageButton));
         $this->display();
     }
 
