@@ -1,0 +1,101 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/switchery.min.css" rel="stylesheet">
+    <style>
+        #goodsPanel {
+            width: 90%;
+            height: auto;
+            display: none;
+            position: absolute;
+            padding: 10px 20px;
+            border-radius: 4px;
+            background: #fff;
+            border: 1px solid;
+            z-index: 999;
+        }
+        .gli {
+            position: relative;
+            padding: 10px 0;
+        }
+        .gli:hover {
+            cursor: pointer;
+        }
+        .gli:hover::before {
+            position: absolute;
+            top: -10px;
+            left: -50px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent transparent #fff;
+        }
+        .gli:hover::after {
+            content: attr(text);
+            position: absolute;
+            top: -10px;
+            left: -50px;
+            padding: 1px 12px;
+            background: #fff;
+            border: 1px solid;
+        }
+    </style>
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                    <h5>快递公司管理 <small>添加快递公司</small></h5>
+                </div>
+                    <div class="ibox-content">
+                        <form method="post" id='form' class="form-horizontal" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">快递公司名</label>
+                                <div class="col-md-3" style='position: relative;'>
+                                    <input type="text" name="name" class="form-control" placeholder="请输入快递公司名">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary addbtn" type="submit">添加</button>
+                                    <button class="btn btn-white" type="reset">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+<script src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+<script>
+    
+    /**
+     * 添加快递公司
+     */
+    $('.addbtn').click(function(){
+        var name = $("input[name='name']").val();
+        $.ajax({
+                url:"courierAdd",
+                data:{"name":name},
+                dataType:"json",
+                type: 'post',
+                success:function(res){
+                    if(res.code == 200){
+                        location.reload();
+                        parent.layer.msg(res.msg);
+                    } else {
+                        parent.layer.msg(res.msg);
+                    }
+                }
+            })
+
+    });
+
+</script>
+</block>

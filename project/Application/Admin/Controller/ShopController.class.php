@@ -716,10 +716,6 @@ class ShopController extends CommonController
 
     }
 
-
-
-
-
     /**
      * [inventoryEdid 异常库存编辑]
      * @param  [type] $gid [description]
@@ -818,6 +814,147 @@ class ShopController extends CommonController
 
         $this->assign('ginfo', $ginfo);
         $this->display('ainventory_edit');
+    }
+
+
+
+
+    /* 快递公司模块添加 */
+
+    /**
+     * [courier 快递公司显示]
+     * @return [type] [description]
+     */
+    public function courier()
+    {   
+        //接受处理搜索条件
+        if (!empty(I('get.keywords'))) {
+            $map['name'] = array('like',"%".I('get.keywords')."%");
+        }
+
+        $courier = D('courier');
+        $clist = $courier->where($map)->select();
+
+        $this->assign('clist', $clist);
+        $this->display();
+    }   
+
+    /**
+     * [courierAdd 执行快递公司添加]
+     * @return [type] [description]
+     */
+    public function courierAdd()
+    {
+        try {      
+            //接受POST数据
+            $data['name'] = I('post.name');
+          
+            // dump($data);die;
+            $courier = M('courier');
+
+            //添加快递公司前先判断快递公司是否已经存在于表中
+            if ($courier->where("name = '{$data['name']}'")->find()) {
+
+                E('该快递公司已存在，如需改名请前往更改页面更改','203');
+
+            } else {
+                //添加快递公司
+                $info = $courier->add($data);
+
+                if ($info) {
+                        E('添加成功',$info);
+                    }else{
+                        E('添加失败',203);
+                }      
+            }
+                    
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [courierAddList 加载快递公司添加页面]
+     * @return [type] [description]
+     */
+    public function courierAddList()
+    {
+        $this->display('courier_add');
+    }
+
+    /**
+     * [courierEdit 执行修改快递公司]
+     * @return [type] [description]
+     */
+    public function courierEdit()
+    {
+        try {
+                
+            //接受POST数据
+            $data['name'] = $_POST['name'];
+            $id = $_POST['id'];
+            $data['status'] = $_POST['status'];
+
+            $courier = M('courier');
+            //修改库存数据
+            $info = $courier->where('id='.$id)->save($data);
+
+            if ($info) {
+                    E('修改成功',$info);
+                }else{
+                    E('修改失败',203);
+            }         
+            
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [courierEditList 快递公司编辑页面加载]
+     * @return [type] [description]
+     */
+    public function courierEditList($id)
+    {
+        $cinfo = M('courier')->find($id);
+
+        $this->assign('cinfo', $cinfo);
+        $this->display('courier_edit');
+    }
+
+    public function courierDel()
+    {
+        try {
+                
+            //接收要删除数据的id
+            $id = $_GET['id'];
+
+            $courier = M('courier');
+            
+            //删除
+            $info = $courier->where('id='.$id)->delete();
+
+            if ($info) {
+                    E('删除成功',$info);
+                }else{
+                    E('删除失败',203);
+            }         
+            
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
     }
 
 

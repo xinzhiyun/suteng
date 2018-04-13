@@ -10,194 +10,201 @@
   <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
   <script src="__PUBLIC__/Home/js/public.js"></script>
   <style>
-      body{
-        font-size: .7rem;
-        color:#373737;
-      }
-      .tuandui{
-        width: 100vw;
-      }
-      /*列表项：经销商级别*/
-      .list{
-         width:100vw;
-      }
-      .list>li{
-        box-sizing: border-box;
-        display: block;
-        padding:0 4vw;
-        width: 100vw;
-        height: 8vh;
-        line-height: 8vh;
-        border-bottom: 1px solid #f1f1f1;
-        
-      }
-      .list>li:nth-of-type(1){
-        background: #E7FBF9;
-      }
-      .list>li>span.grade{
-        float: left;
-      }
-      .list>li>span.count{
-        float: right;
-      }
-       .list>li>i{
-        float: right;
-        padding-left: 3vw;
-      }
-      /*经销商对员*/
-      .allbox>div{
-        width: 100vw;
-        display: none;
-      }
-      .allbox>div>ul>li{
-        display: block;
-        height: 10vh;
-        width: 100vw;
-        box-sizing: border-box;
-        padding:0 4vw;
-        line-height: 10vh;
-        overflow: hidden;
-        border-bottom: 4px solid #f1f1f1;
-        clear:both;
-      }
-      .allbox>div>ul>li>b{
-        display: inline-block;
-        width: 8vh;
-        height: 8vh;
-        margin:1vw 4vw 1vw 0 ;
-        border-radius: 20vw;
-        float: left;
-        overflow: hidden;
-      }
-      .allbox>div>ul>li>b>img{
-        width: 100%;
-      }
-    
+    body{
+      font-size: .7rem;
+      color:#373737;
+    }
+    .tuandui{
+      width: 100vw;
+    }
+    /*列表项：经销商级别*/
+    .list{
+      width:100vw;
+    }
+    .list>li{
+      box-sizing: border-box;
+      display: block;
+      padding:0 4vw;
+      width: 100vw;
+      height: 8vh;
+      line-height: 8vh;
+      border-bottom: 1px solid #f1f1f1;
+
+    }
+    .list>li:nth-of-type(1){
+      background: #E7FBF9;
+    }
+    .list>li>span.grade{
+      float: left;
+    }
+    .list>li>span.count{
+      float: right;
+    }
+    .list>li>i{
+      float: right;
+      padding-left: 3vw;
+    }
+    /*经销商对员*/
+    .allbox>div{
+      width: 100vw;
+      display: none;
+    }
+    .allbox>div>ul>li{
+      display: block;
+      height: 10vh;
+      width: 100vw;
+      box-sizing: border-box;
+      padding:0 4vw;
+      line-height: 10vh;
+      overflow: hidden;
+      border-bottom: 4px solid #f1f1f1;
+      clear:both;
+    }
+    .allbox>div>ul>li>b{
+      display: inline-block;
+      width: 8vh;
+      height: 8vh;
+      margin:1vw 4vw 1vw 0 ;
+      border-radius: 20vw;
+      float: left;
+      overflow: hidden;
+    }
+    .allbox>div>ul>li>b>img{
+      width: 100%;
+    }
+
   </style>
 </head>
 <body>
-    <div class="tuandui">
-      <ul class="list">
-        <li index='1' alt="0"><span class="grade">A级经销商</span><i class="iconfont icon-jiantouxiangshang1"></i><span class="count">86</span></li>
-        <div class="allbox">
-          <div class="listA">
-            <ul></ul>
-          </div>
-        </div>
-        <li index='2' alt="0"><span class="grade">B级经销商</span><i class="iconfont icon-jiantouxiangxia"></i><span class="count">86</span></li>
-        <div class="allbox">
-          <div class="listB">
-             <ul></ul>
-          </div>
-        </div>
-        <li index='3' alt="0"><span class="grade">C级经销商</span><i class="iconfont icon-jiantouxiangxia"></i><span class="count">86</span></li>
-        <div class="allbox">
-          <div class="listC">
-             <ul></ul>
-          </div>
-        </div>
-      </ul>
+<div class="tuandui">
+  <ul class="list">
+    <li index='1' alt="0"><span class="grade">A级经销商</span><i class="iconfont icon-jiantouxiangshang1"></i><span class="count">0</span></li>
+    <div class="allbox">
+      <div class="listA" style="display: none;">
+        <ul></ul>
+      </div>
     </div>
+    <li index='2' alt="0"><span class="grade">B级经销商</span><i class="iconfont icon-jiantouxiangxia"></i><span class="count">0</span></li>
+    <div class="allbox">
+      <div class="listB" style="display: none;">
+        <ul></ul>
+      </div>
+    </div>
+    <li index='3' alt="0"><span class="grade">C级经销商</span><i class="iconfont icon-jiantouxiangxia"></i><span class="count">0</span></li>
+    <div class="allbox">
+      <div class="listC" style="display: none;">
+        <ul></ul>
+      </div>
+    </div>
+  </ul>
+</div>
 </body>
 <script>
     // 页面的选项卡效果
     $('.list>li').click(function(){
-      var alt = $(this).attr("alt");
-      var _index=$(this).attr("index")-1;
-      if(alt==1){ 
-          $(this).children('i').removeClass('icon-jiantouxiangshang1').addClass('icon-jiantouxiangxia');
-          $(this).attr({"alt":0}).css('background','#fff');
-          $('.allbox>div').eq( _index).slideUp();
-      }else{
-          $(this).children('div').css({'display':'block'});
-          for(var i = 0; i < $('.allbox>div').length; i++) {
-            $('.allbox>div').eq( i).slideUp();
-            $('.list>li').eq(i).attr({"alt" : 0}).css("background", "#fff");
-            $('.list>li').children('i').addClass('icon-jiantouxiangxia').removeClass('icon-jiantouxiangshang1');
-          }
-          $('.allbox>div').eq( _index).slideDown();
-          $(this).attr({"alt":1}).css('background','#E7FBF9');
-          $(this).children('i').addClass('icon-jiantouxiangshang1').removeClass('icon-jiantouxiangxia');
-      }
-      })
-      // 1分销商级别获取接口
-      $.ajax({
-          url: "{{:U('Home/Vendors/get_leavel')}}",
-          dataType: "json",
-          type: 'post',
-          async : false,//同步处理
-          success: function(res) {
-            if(res.code == 200) {
-              // 参数：type {A :获取A级分销商，B ：获取B级分销商，C ：获取C级分销商}
-              var traderLeavel = res.leavel;//拿到分销商级别赋予变量
-              switch(traderLeavel) {
-                case "A级分销商":
-                  traderLeavelNum = "A";
-                  break;
-                case "B级分销商":
-                  traderLeavelNum = "B";
-                  break;
-                case "C级分销商":
-                  traderLeavelNum = "C";
-                  break;
-              }
-            }else{
-              console.log('失败', res);
+        var alt = $(this).attr("alt");
+        var _index=$(this).attr("index")-1;
+        if(alt==1){
+            $(this).children('i').removeClass('icon-jiantouxiangshang1').addClass('icon-jiantouxiangxia');
+            $(this).attr({"alt":0}).css('background','#fff');
+            $('.allbox>div').eq( _index).slideUp();
+        }else{
+            $(this).children('div').css({'display':'block'});
+            for(var i = 0; i < $('.allbox>div').length; i++) {
+                $('.allbox>div').eq( i).slideUp();
+                $('.list>li').eq(i).attr({"alt" : 0}).css("background", "#fff");
+                $('.list>li').children('i').addClass('icon-jiantouxiangxia').removeClass('icon-jiantouxiangshang1');
             }
-          },
-          error: function(res) {
-            console.log("出错123" , res);
-          }
-      });
-      //2. 请求分销商团队的数据
-      $.ajax({
-          url:"{{:U('Home/Vendors/get_vendor_team')}}",
-          dataType: "text",//数据类型为text
-          data: {'type' : traderLeavelNum},//传入分销级别
-          type: 'post',
-          success: function(res) {
+            $('.allbox>div').eq( _index).slideDown();
+            $(this).attr({"alt":1}).css('background','#E7FBF9');
+            $(this).children('i').addClass('icon-jiantouxiangshang1').removeClass('icon-jiantouxiangxia');
+        }
+    })
+
+    var tradeName;//包容分销商内容的块
+    // 请求分销商团队的数据
+    $.ajax({
+        url:"{{:U('Home/Vendors/get_vendor_team')}}",
+        dataType: "text",//数据类型为text
+        type: 'post',
+        success: function(res) {
             res = $.parseJSON(res);//转成json格式
+            console.log(res);
             if(res.code == 200) {
-              // 获取经销商信息 res.data[i].head分销商头像  res.data[i].name 分销商名字
-              var list = "";//要放入的分销商
-              var num = 0;//分销商的个数
-              for(var i in res.data) {
-                list = list + "<li><b><img src=' "+res.data[i].head+"' alt=''></b><span>" + res.data[i].name + "</span></li>";
-                      num++;
-              }
-              listNull = "<li><span>暂无分销商</span></li>";
-              var tradeName;//包容分销商内容的块
-              switch(traderLeavelNum) {
-                case "A":
-                  tradeName = $('.listA>ul');
-                  $('.allbox>div').eq(0).css('display','block');
-                  $('.list>li').eq(0).attr({"alt":1}).css('background','#fff');
-                  $('.count').eq(0).html(num);
-                  break;
-                case "B":
-                  tradeName = $('.listB>ul')
-                  $('.allbox>div').eq(1).css('display','block');
-                  $('.list>li').eq(1).attr({"alt":1}).css('background','#fff');
-                  $('.count').eq(1).html(num);
-                  break;
-                case "C":
-                  tradeName = $('.listC>ul')
-                  $('.allbox>div').eq(2).css('display','block');
-                  $('.list>li').eq(2).attr({"alt":1}).css('background','#fff');
-                  $('.count').eq(2).html(num);
-                  break;
-              }
-              tradeName.append(list);//将内容添入分销块
-              // 暂无经销商
-              $('.allbox').not(tradeName.parent().parent()).children().children().append(listNull);
-              $('.list>li').not(tradeName.parent().parent().prev()).children('.count').html(0);
+                // 获取经销商信息 res.data[i].head分销商头像  res.data[i].name 分销商名字
+                var list1 = "";//要放入的分销商
+                var list2 = "";//要放入的分销商
+                var list3 = "";//要放入的分销商
+                var num1 = 0;//分销商的个数
+                var num2 = 0;//分销商的个数
+                var num3 = 0;//分销商的个数
+                for(var i in res.data) {
+                    list1 = '';
+                    list2 = '';
+                    list3 = '';
+                    switch(res.data[i].leavel) {
+                        case "2":
+                            // A级分销商
+                            ++num1;
+                            tradeName = $('.listA>ul');
+                            $('.allbox>div').eq(0).css('display','block');
+                            $('.list>li').eq(0).attr({"alt":1}).css('background','#fff');
+                            $('.count').eq(0).html(num1);
+
+                            list1 += "<li><b><img src=' "+res.data[i].head+"' alt=''></b><span>" + res.data[i].name + "</span></li>";
+                            tradeName.append(list1);//将内容添入分销块
+                            break;
+
+                        case "3":
+                            // B级分销商
+                            ++num2;
+
+                            tradeName = $('.listB>ul');
+                            $('.allbox>div').eq(1).css('display','block');
+                            $('.list>li').eq(1).attr({"alt":1}).css('background','#fff');
+                            $('.count').eq(1).html(num2);
+
+                            list2 += "<li><b><img src=' "+res.data[i].head+"' alt=''></b><span>" + res.data[i].name + "</span></li>";
+                            tradeName.append(list2);//将内容添入分销块
+                            break;
+
+                        case "4":
+                            // C级分销商
+                            ++num3;
+                            tradeName = $('.listC>ul');
+                            $('.allbox>div').eq(2).css('display','block');
+                            $('.list>li').eq(2).attr({"alt":1}).css('background','#fff');
+                            $('.count').eq(2).html(num3);
+
+                            list3 += "<li><b><img src=' "+res.data[i].head+"' alt=''></b><span>" + res.data[i].name + "</span></li>";
+                            tradeName.append(list3);//将内容添入分销块
+                            break;
+
+                    }
+                }
+                listNull = "<li><span>暂无分销商</span></li>";
+                if(num1 == 0){
+                    $('.listA>ul').append(listNull);
+
+                }
+                if(num2 == 0){
+
+                    $('.listB>ul').append(listNull);
+
+                }
+                if(num3 == 0){
+                    $('.listC>ul').append(listNull);
+
+                }
+
             }else{
-              console.log('失败', res);
+                console.log('失败', res);
             }
-          },
-          error: function(res) {
+        },
+        error: function(res) {
             console.log("出错" , res);
-          }
-      });
+        }
+    });
+
 </script>
 </html>                                                                                                                       

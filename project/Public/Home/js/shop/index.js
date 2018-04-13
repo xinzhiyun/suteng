@@ -315,9 +315,3 @@ function lazyLoad(_this){
 }
 
 /*********************** 懒加载 -- 结束 ***********************/
-if(window.name != 'isrefreshed'){
-	window.name = 'isrefreshed';
-	location.reload();
-}else{
-	window.name = '';
-}

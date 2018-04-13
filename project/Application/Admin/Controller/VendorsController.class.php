@@ -97,7 +97,7 @@ class VendorsController extends CommonController
      */
     public function company_add(){
         if(IS_POST){
-            // dump(I('post.'));die;
+
             // 没有上传图片报错信息组
             $emptyError = array(
                 'positive' =>  '身份证正面图片必须上传',
@@ -199,8 +199,11 @@ class VendorsController extends CommonController
                 }else{
                     // 实例化二维码信息类
                     $getCode            = new DimensionController;
+
                     // 获取分公司永久二维码
                     $ticket             = $getCode->office();
+
+
                     // 二维码获取成功
                     if($ticket){
                         // 将分公司唯一标识加人数组中
@@ -731,10 +734,45 @@ class VendorsController extends CommonController
     {
         // 接收查询的ID号
         $showData['id'] = I('post.id');
+
         // 根据ID查询分公司详细信息
         $data = M('vendors')->where($showData)->find();
+
         // 判断信息是否查询成功
         if($data){
+//            $where['id'] = I('post.id');
+//            $info = M('vendors')->field('invitation_code,id')->where($showData)->find();
+            $path = M('vendors')->field('path,id,leavel')->where(['code'=>$data['invitation_code']])->find();
+
+            if ($path['path']==null) {
+                //当他推荐人是最大的时候
+                $path = $path['id'];
+
+            } else{
+                //当他推荐人还有推荐人的时候
+                $path = $path['path'].'-'.$path['id'];
+            }
+
+            $buros_info = M('butros')->field('trader_a,trader_b')->find();
+            //多少个儿子
+            $count = M('vendors')->where(['invitation_code'=>$data['invitation_code']])->count();
+            $save_path = M('vendors')->where($showData)->save(['path'=>$path,'status'=>7]);
+            if ($save_path) {
+                //查找多少个他下面多少个C级
+                $count_c = M('vendors')->where(['invitation_code'=>$data['invitation_code'],'leavel'=>4])->count();
+                if ($count_c >= $buros_info['trader_a']) {
+                    M('vendors')->where(['code'=>$data['invitation_code']])->save(['leavel'=>3]);
+                }
+                if ($path['leavel'] == 3) {
+                    $count_b = M('vendors')->where(['invitation_code'=>$data['invitation_code'],'leavel'=>3])->count();
+                    if ($count_b >=$buros_info['trader_b'] ) {
+                        M('vendors')->where(['code'=>$data['invitation_code']])->save(['leavel'=>2]);
+                    }
+                }
+                $this->ajaxReturn(['code'=>200,'msg'=>'审核成功']);
+            } else {
+                $this->ajaxReturn(['code'=>400,'msg'=>'审核失败']);
+            }
             // 查询成功，设置返回前端的数据
             $message['res']     = ['code' => 200, 'message' => 'OK'];
             $message['data']    = $data;

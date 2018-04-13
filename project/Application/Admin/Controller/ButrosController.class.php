@@ -93,8 +93,6 @@ class ButrosController extends CommonController
             //市场推广奖(定义 卖商品的经销商推荐人) 只查询存在的
             if ($v['invitation_code']!=null){
                 $info = M('vendors')->where(['code'=>$v['invitation_code']])->setInc('abonus',$com_d);
-
-
             }
 
             //查找直系推荐关系中的最近B级加盟商(包括自己)
@@ -114,8 +112,6 @@ class ButrosController extends CommonController
                     $in_B['leavel'] = 3;
                     //查找最近的B级经销商
                     $path_info_B = M('vendors')->field('id,leavel,code,path')->order('id desc')->where($in_B)->find();
-
-
                     if ($path_info_B) {
                         M('vendors')->where(['id'=>$path_info_B['id']])->save(['updatetime'=>time()]);
                         M('vendors')->where(['id'=>$path_info_B['id']])->setInc('abonus',$com_p);

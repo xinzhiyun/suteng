@@ -383,14 +383,36 @@ img {
 	margin: 20vmin;
 }
 #saveCode {
-	width: 86%;
+	position: relative;
 	margin: 0 auto;
 	text-align: center;
 	padding: 3%;
 	font-size: .8rem;
-	color: #fff;
+	color: #000;
 	border-radius: 4px;
-	background: #2EB6AA;
+	border: 1px solid;
+}
+#saveCode::before {
+	content: '';
+	position: absolute;
+	width: 0;
+	height: 0;
+	top: -24px;
+	left: 20px;
+	border-style: solid; 
+	border-width: 12px;
+	border-color: transparent transparent #000 transparent;
+}
+#saveCode::after {
+	content: '';
+	position: absolute;
+	width: 0;
+	height: 0;
+	top: -20px;
+	left: 22px;
+	border-style: solid; 
+	border-width: 10px;
+	border-color: transparent transparent #fff transparent;
 }
 .icon-msgcenter {
 	color: #028760;
