@@ -175,7 +175,7 @@
 		});
 		$(function(){
 			// 快递费
-			var postage = $("#postage").val();
+			var postage = $("#postage").val() || 20;
 			// console.log(postage);
 			$("#hLeft").click(function(){
 				location.href = "{{:U('Address/index')}}";
