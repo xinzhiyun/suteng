@@ -126,9 +126,16 @@ class ShopController extends CommonController
         $attr = D('Attr');
         $attrInfo = $attr->select();
         $goodsList = $goods->select();  //暂时无用
+
+        /* 添加快递公司选择 */
+        $courier = M('courier');
+        $courierList = $courier->where('status=1')->field('id,name')->select();
+        /* 结束 */
+
         $assign = [
             'cateInfo' => $cateInfo,
             'attrInfo' => $attrInfo,
+            'courierList' => $courierList,
         ];
         $this->assign($assign);
         $this->display();
@@ -160,6 +167,8 @@ class ShopController extends CommonController
     // 商品添加处理
     public function goodsAction()
     {
+
+       
         try{
             $goods_add = D('Goods');
             $attr_val = D('AttrVal');
@@ -181,7 +190,7 @@ class ShopController extends CommonController
             $goods_add->where(['id'=>$goods_status])->save(['vid'=>$_SESSION['adminInfo']['id']]);
             $goodsDetail['gid'] = $goods_status;
             $goodsDetail['cost'] = $data['cost'];
-            $goodsDetail['stock'] = $data['stock'];
+            // $goodsDetail['stock'] = $data['stock'];
             if($data['is_install'] == 'on'){
                 $goodsDetail['is_install'] = 1;
             } else {
@@ -197,6 +206,7 @@ class ShopController extends CommonController
             $goodsDetail_status = $goods_detail->add($goodsDetail);
             // $attrVal['val'] = $data['attr_val'];
 
+            //商品属性添加
             $attrVal['gid'] = $goods_status;
             foreach ($data['attr'] as $key => $val) {
                 if($attr->where('id='.$key)->field('id')){
@@ -210,6 +220,30 @@ class ShopController extends CommonController
                     E('属性缺失，请刷新页面', 506);
                 }
             }
+
+            /* 商品快递费添加 */
+            foreach ($data['courier'] as $key => $value) {
+                $data['gid'] = $goods_status;
+                $data['cid'] = $key;
+                $data['cprice'] = $value;
+
+                //插入数据前先查询同一个商品是否有同一个快递
+                $info = M('GoodsCourier')->where('gid='.$data['gid'].' AND cid='.$data['cid'])->select();
+
+                if ($info) {
+                    E('此商品已经有设置了这个快递的价格，请前往更改',203);
+                } else {
+                    //进行添加
+                    $list = M('GoodsCourier')->add($data);
+
+                    if (!$list) {
+                        E('快递价格设置失败，请刷新页面', 506);
+                    } 
+                }
+            }
+            /* 商品快递费添加 */
+            
+
 
             // 商品单价添加
             foreach ($price as $key => $value) {
@@ -225,6 +259,8 @@ class ShopController extends CommonController
                 $goods_add->rollback();
                 E('商品添加失败，请重新添加',407);
             }
+
+
         } catch (\Exception $e) {
             $err = [
                 'code' => $e->getCode(),
@@ -935,16 +971,22 @@ class ShopController extends CommonController
         try {
                 
             //接收要删除数据的id
-            $id = $_GET['id'];
+            $id = $_POST['id'];
 
             $courier = M('courier');
-            
-            //删除
+            //删除快递表信息
             $info = $courier->where('id='.$id)->delete();
-
+            
             if ($info) {
-                    E('删除成功',$info);
-                }else{
+                //查看关联表中是否存在这个快递公司
+                if (M('GoodsCourier')->where('cid='.$id)->select()) {
+                    //存在
+                    //删除快递公司的同时也要删除关联表的信息
+                    $gc = M('GoodsCourier')->where('cid='.$id)->delete();
+                }
+
+                E('删除成功',$info);
+            } else {
                     E('删除失败',203);
             }         
             
