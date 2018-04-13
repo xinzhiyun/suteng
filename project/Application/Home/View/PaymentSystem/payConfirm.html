@@ -287,7 +287,7 @@
 				$("#main").append(goodsHTML);	//订单的信息
 				$(".numAll").text(numAll);		//订单的总数量
 				$(".priceAll").text('￥'+ (parseFloat(numAll*priceAll) + parseFloat(postage)).toFixed(2));	//订单的总价格
-				$("#footerContain>div>span").text('￥'+(parseFloat(numAll*priceAll) + parseFloat(goods_data.expressMoney)).toFixed(2));	//订单的总价格
+				$("#footerContain>div>span").text('￥'+(parseFloat(numAll*priceAll) + parseFloat(postage)).toFixed(2));	//订单的总价格
 				$(".paytopRight>p").text('￥'+(parseFloat(numAll*priceAll) + parseFloat(postage)).toFixed(2));	//订单的总价格
 
 			}else if(shopCar_data){	// 如果有商品购买，从购物车’结算‘过来
