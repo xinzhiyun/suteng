@@ -99,7 +99,7 @@ class ShopController extends CommonController
      */
     public function goods()
     {
-        $map = '';
+        // $map = '';
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
             $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
         }
@@ -628,4 +628,197 @@ class ShopController extends CommonController
             $this->ajaxReturn($err);
         }
     }
+
+
+    /* 新增功能 -- 库存单独管理 */
+
+    /**
+     * [inventory 库存列表]
+     * @return [type] [description]
+     */
+    public function inventory()
+    {
+        //查询出所有商品的库存量
+        // $map = '';
+        if (!empty(I('get.keywords'))) {
+            $map['g.name'] = array('like',"%".I('get.keywords')."%");
+        }
+
+        $cate = D('Category');
+        $cateInfo = $cate->getAllCate();
+        $goods = D('Goods');
+        $map['g.status'] = array('neq',2);
+        $goodsList = $goods->getGoodsList($map);
+        $assign = [
+            'data' => $goodsList['goodsData'],
+            'cateInfo'=>$cateInfo,
+            'show' => $goodsList['show'],
+        ];
+
+        // dump($assign);
+        $this->assign($assign);
+        $this->display();
+
+    }
+
+    /**
+     * [inventoryAdd 库存添加处理]
+     * @return [type] [description]
+     */
+    public function inventoryAdd()
+    {
+        try {
+                
+            //接受POST数据
+            $data['allnum'] = I('post.allnum');
+            $data['gid'] = I('post.gid');
+
+            // dump($data);die;
+            $inventory = M('inventory');
+
+            //添加库存前先判断该商品是否已经存在于库存表
+            if ($inventory->where('gid='.$data['gid'])->find()) {
+
+                E('该商品已存在于库存表，请前往更改页面更改','203');
+
+            } else {
+                //添加商品库存数据
+                $info = $inventory->add($data);
+
+                if ($info) {
+                        E('添加成功',$info);
+                    }else{
+                        E('添加失败',203);
+                }      
+            }
+                    
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [inventoryAddList 库存添加页面显示]
+     * @return [type] [description]
+     */
+    public function inventoryAddList()
+    {
+        //查询所有商品
+        $glist = D('goods')->field('id,name')->select();;
+        // dump($glist);
+        
+        $this->assign('glist',$glist);
+        $this->display('inventory_add');
+
+    }
+
+
+
+
+
+    /**
+     * [inventoryEdid 异常库存编辑]
+     * @param  [type] $gid [description]
+     * @return [type]      [description]
+     */
+    public function inventoryEdid()
+    {
+
+        try {
+                
+            //接受POST数据
+            $data['abnormalnum'] = I('post.abnormalnum');
+            $id = $_POST['id'];
+
+            $inventory = M('inventory');
+            //修改库存数据
+            $info = $inventory->where('gid='.$id)->save($data);
+
+            if ($info) {
+                    E('修改成功',$info);
+                }else{
+                    E('修改失败',203);
+            }         
+            
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+
+        
+    }
+
+    /**
+     * [inventoryEdidList 异常库存编辑页面]
+     * @return [type] [description]
+     */
+    public function inventoryEdidList()
+    {
+        // echo $gid;
+        //查询商品
+        $ginfo = D('goods')->field('id,name')->find($_GET['gid']);
+        // dump($ginfo);
+
+        $this->assign('ginfo', $ginfo);
+        $this->display('inventory_edit');
+    }
+
+    /**
+     * [ainventoryEdid 总库存编辑]
+     * @param  [type] $gid [description]
+     * @return [type]      [description]
+     */
+    public function ainventoryEdid()
+    {
+
+        try {
+                
+            //接受POST数据
+            $data['allnum'] = I('post.allnum');
+            $id = $_POST['id'];
+
+            $inventory = M('inventory');
+            //修改库存数据
+            $info = $inventory->where('gid='.$id)->save($data);
+
+            if ($info) {
+                    E('修改成功',$info);
+                }else{
+                    E('修改失败',203);
+            }         
+            
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+
+        
+    }
+
+    /**
+     * [ainventoryEdidList 总库存编辑页面]
+     * @return [type] [description]
+     */
+    public function ainventoryEdidList()
+    {
+        // echo $gid;
+        //查询商品
+        $ginfo = D('goods')->field('id,name')->find($_GET['gid']);
+        // dump($ginfo);
+
+        $this->assign('ginfo', $ginfo);
+        $this->display('ainventory_edit');
+    }
+
+
 }

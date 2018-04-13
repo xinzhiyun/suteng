@@ -64,7 +64,7 @@
             <li>
               <label for="Laddr">
                 <p>维修地址：</p>
-                <textarea name="address" id="Laddr" cols="30" rows="10" placeholder="" ></textarea>
+                <textarea name="address" id="Laddr" cols="30" rows="10" placeholder="请输入详情地址" ></textarea>
               </label>
             </li>
           </ul>
@@ -254,7 +254,7 @@
       }
       if(!addressReg.test(address)){
           console.log('请输入正确格式的地址！');
-          layuiHint('请输入正确格式的地址！\n只含有中文英文数字下划线等，不能有特殊字符');
+          layuiHint('请输入详细地址含: 省市区县路和号');
           return
           
       }
