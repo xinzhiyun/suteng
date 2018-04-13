@@ -221,7 +221,7 @@ class MailController extends CommonController
     {	
     	$map['type'] = 1;
 
-        if(!empty($_GET)){
+        if(!empty($_GET['key'])){
 
         	$map[$_GET['key']] = array('like',"%{$_GET['keywords']}%");
 
@@ -229,7 +229,6 @@ class MailController extends CommonController
         	//     $map['content'] = array('like',"%{$_GET['keywords']}%");
         	// }
         }
-
 		$total = M('mail')->where($map)->count();
         $page  = new \Think\Page($total,8);
         page_config($page);

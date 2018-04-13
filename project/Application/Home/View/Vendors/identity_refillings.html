@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>注册经销商</title>
-    <link href="/Public/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <!-- <link href="__PUBLIC__/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet"> -->
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
     <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
     <script src="__PUBLIC__/Home/js/public.js"></script>
@@ -11,6 +11,8 @@
    <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
     <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
+    <!-- <script src="__PUBLIC__/Home/js/wx_uploadImg.js"></script> -->
 </head>
 <style>
     * {
@@ -112,6 +114,8 @@
     }
     .col-md-3{
         display: inline-block;
+        width: 55%;
+        box-sizing: border-box;
     }
     form>.form-group1>label{
         line-height: 2.5rem;
@@ -121,6 +125,7 @@
         height: 1.2rem;
         border:none;
         padding-left: 1vw;
+        width: 100%;
      }
      /*重置样式和申请*/
       form>.form-group{
@@ -270,25 +275,26 @@
              <div class="form-group  form-group1">
                 <label class="col-sm-2 control-label" >上传身份证正面</label>
                 <div class="col-md-5">
-                    <input type="file" id="comLicen" name="positive" class="form-control" onchange="imageCommen(this);">
+                    <input id="comLicen" name="positive" class="form-control" type="button">
+                    <input type="hidden" name="pic">
                     <i class="iconfont icon-tianjiajingdian"></i>
-                    <div class="xiePic" index="0"><img src="" id="positive" style="width: 100%;"><i class="iconfont icon-cuohao" onclick="removePic(this)"></i></div>
+                    <div class="xiePic" index="0"><img src="" id="positive" style="width: 100%;"><i class="iconfont icon-cuohao"></i></div>
                 </div>
             </div> 
             <div class="form-group form-group1">
                 <label class="col-sm-2 control-label">上传身份证反面</label>
                 <div class="col-md-5">
-                    <input type="file" id="comLicen1" name="opposite" class="form-control" onchange="imageCommen(this);">
+                    <input type="button" id="comLicen1" name="opposite" class="form-control">
                     <i class="iconfont icon-tianjiajingdian"></i>
-                    <div class="xiePic" index="0"><img src="" id="opposite" style="width: 100%;"><i class="iconfont icon-cuohao" onclick="removePic(this)"></i></div>
+                    <div class="xiePic" index="0"><img src="" id="opposite" style="width: 100%;"><i class="iconfont icon-cuohao" ></i></div>
                 </div>
             </div> 
             <div class="form-group form-group1">
                 <label class="col-sm-2 control-label">上传手持身份证</label>
                 <div class="col-md-5">
-                    <input type="file" id="comLicen2" name="handheld" class="form-control" onchange="imageCommen(this);">
+                    <input type="button" id="comLicen2" name="handheld" class="form-control">
                     <i class="iconfont icon-tianjiajingdian"></i>
-                    <div class="xiePic" index="0"><img src="" id="handheld" style="width: 100%;"><i class="iconfont icon-cuohao" onclick="removePic(this)"></i></div>
+                    <div class="xiePic" index="0"><img src="" id="handheld" style="width: 100%;"><i class="iconfont icon-cuohao" ></i></div>
                 </div>
             </div> 
             <div class="xieBtn">
@@ -298,71 +304,48 @@
     </div>
     <script>
         // 上传图片 file文件对象
-        function imageCommen(file) {
-            if (!file.files || !file.files[0]) {
-                return;
-            };
-            var reader = new FileReader();
-            reader.onload = function (evt) {
-                var total = (evt.total/1024)/1024;
-                if(total >= 3) {
-                    layuiHint("图片超出允许上传文件大小3M");
-                }else{
-                    var objId = file.nextSibling.nextSibling.nextSibling.nextSibling;//找到兄弟节点.xiePic
-                    objId.firstChild.src = evt.target.result;//找到img对象
-                    objId.style.visibility = "visible";
-                    objId.setAttribute("index", "1");
-                }
-            };
-            reader.readAsDataURL(file.files[0]);
-        };
+        // function imageCommen(file) {
+        //     if (!file.files || !file.files[0]) {
+        //         return;
+        //     };
+        //     var reader = new FileReader();
+        //     reader.onload = function (evt) {
+        //         var total = (evt.total/1024)/1024;
+        //         if(total >= 3) {
+        //             layuiHint("图片超出允许上传文件大小3M");
+        //         }else{
+        //             var objId = file.nextSibling.nextSibling.nextSibling.nextSibling;//找到兄弟节点.xiePic
+        //             objId.firstChild.src = evt.target.result;//找到img对象
+        //             objId.style.visibility = "visible";
+        //             objId.setAttribute("index", "1");
+        //         }
+        //     };
+        //     reader.readAsDataURL(file.files[0]);
+        // };
         // 点击叉叉隐藏div
-        function removePic(removeObj) {
-            removeObj.previousSibling.src = "";//将图片路径删除
-            removeObj.parentNode.style.visibility = "hidden";//隐藏div
-            removeObj.parentNode.setAttribute("index", "0");//设置index为0
-        }
+        // function removePic(removeObj) {
+        //     removeObj.previousSibling.src = "";//将图片路径删除
+        //     removeObj.parentNode.style.visibility = "hidden";//隐藏div
+        //     removeObj.parentNode.setAttribute("index", "0");//设置index为0
+        // }
+        $("input[type=button]").on("click", function() {
+            console.log($(this).siblings(".xiepic").is(":visible"));
+            var ren;
+            if($(this).siblings(".xiepic").is(":visible")) {
+                ren = 1;
+            }
+            if(ren == 1) {
+                layuiHint("暂时只支持一张图片!");
+                return;
+            }
+            takePicture(1, $(this));
+        })
+        var formData = new FormData($("#form")[0]);
+        // 删除图片
+        $(".icon-cuohao").on("click", function() {
+            $(this).parent().css("visibility", "hidden").attr("index", "0").siblings("img").attr("src", "");
+        })
 
-        // 正面图片
-        // function positiveImage(file) {
-        //     if (!file.files || !file.files[0]) {
-        //         return;
-        //     }
-        //     var reader = new FileReader();
-        //     reader.onload = function (evt) {
-        //         console.log(evt,"正面")
-        //         document.getElementById('positive').src = evt.target.result;
-        //         $("#positive").parent().css("visibility","visible");
-        //     }
-        //     reader.readAsDataURL(file.files[0]);
-        // }
-        // 反面图片
-        // function oppositeImage(file) {
-        //     console.log(456);
-        //     if (!file.files || !file.files[0]) {
-        //         return;
-        //     };
-        //     var reader = new FileReader();
-        //     reader.onload = function (evt) {
-        //         console.log(evt,"反面")
-        //         document.getElementById('opposite').src = evt.target.result;
-        //         $("#opposite").parent().css("visibility","visible");
-        //     };
-        //     reader.readAsDataURL(file.files[0]);
-        // }
-        // 手持身份证图片
-        // function handheldImage(file) {
-        //     console.log(789);
-        //     if (!file.files || !file.files[0]) {
-        //         return;
-        //     };
-        //     var reader = new FileReader();
-        //     reader.onload = function (evt) {
-        //         document.getElementById('handheld').src = evt.target.result;
-        //         $("#handheld").parent().css("visibility","visible");
-        //     };
-        //     reader.readAsDataURL(file.files[0]);
-        // }
         // 表单提交
         $("form").submit(function(e) {
             var tradeObj = {};// 要传入后台的数据对象
@@ -421,6 +404,79 @@
             }
             return false;
         })
+
+function takePicture(nums, obj) {  
+	
+    wx.chooseImage({  
+        count: 1,  
+        needResult: 1,  
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有  
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有  
+        success: function (data) {                  
+            localIds = data.localIds[0];   // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片        
+                              
+            var num1 = nums;
+            var objs = obj;
+            wxuploadImage(localIds,num1, objs);
+            wxgetLocalImgData(localIds,num1, objs);
+        },  
+        fail: function (res) {  
+            console.log('失败：',JSON.stringify(res));
+        }    
+    });  
+
+}
+function wxuploadImage(e,num, objs) {
+
+ wx.uploadImage({  
+     localId: e, // 需要上传的图片的本地ID，由chooseImage接口获得  
+     isShowProgressTips: 1, // 默认为1，显示进度提示  
+     success: function (res) {                                        
+         mediaId = res.serverId;                     
+         $(objs).siblings('input[name="pic"]').val(mediaId);
+     },  
+     fail: function (error) {  
+         picPath = '';  
+         localIds = '';  
+     }          
+ });
+}
+// var $span = $("<span></span>");
+// var $span1 = $("<span>X</span>");
+// var $img = $('<img src="" alt="" />');
+// var $img = $(".xiePic>img").eq(0);
+// console.log($img)
+function wxgetLocalImgData(e,num, objs){
+
+//    $img[0].width = "100%";
+//    $img[0].height = "90%";
+
+   if(window.__wxjs_is_wkwebview){
+       wx.getLocalImgData({
+           localId: e, // 图片的localID
+           success: function (res) {                    
+           var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+           localData = localData.replace('jgp', 'jpeg');//iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下                                
+                $(objs).siblings(".xiePic").children("img").attr("src", localData).end().css("visibility", "visible");
+
+                // $img[0].src = localData;
+           },
+           fail:function(res){
+                alert("显示失败");
+           }
+       });
+   }else{
+    $(objs).siblings(".xiePic").children("img").attr("src", "").end().css("visibility", "hidden");
+       
+   }
+
+//    $span1.addClass("delPic");
+//    $span1.css({zIndex: '999'});
+//    $span.append($span1);
+//    $span.append($img[0]);
+//    $('#picShow').append($span);
+   
+}
     </script>
 </body>
 </html>

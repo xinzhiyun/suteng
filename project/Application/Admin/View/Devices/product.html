@@ -210,7 +210,7 @@
                 shade: false //不显示遮罩
             }, function(){
                 $.ajax({
-                    url:'productAction',
+                    url:"{{:U('admin/devices/productAction')}}",
                     type:'post',
                     dataType:'json',
                     data:form,
@@ -319,7 +319,7 @@
                 shade: true //不显示遮罩
             }, function(){
                 $.ajax({
-                    url:'productEdit',
+                    url:"{{:U('admin/devices/productEdit')}}",
                     type:'post',
                     dataType:'json',
                     data:form,
@@ -348,7 +348,7 @@
                 shade: true //不显示遮罩
             }, function(){
                 $.ajax({
-                    url:"productDel",
+                    url:"{{:U('admin/devices/productDel')}}",
                     data:{'id':id},
                     type:"post",
                     dataType:'json',
