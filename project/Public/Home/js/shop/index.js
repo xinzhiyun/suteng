@@ -85,13 +85,13 @@ if($("#_goods").val() != 'null'){
 					_htmlArr[i] += 
 						'<li>'+
 							'<a class="pic" goods_gid="'+_goods[j].gid+'" href="javasctipt:;" cid="'+ i +'">'+
-								'<img src="/Uploads/'+_goods[j].path+'" alt="正在加载中...">'+
+								'<span ><img src="/Uploads/'+_goods[j].path+'" alt="正在加载中..."></span>'+
 								'<p class="name">'+ _goods[j].name +'</p>'+
-								'<b class="price">¥'+ _goods[j].price +'</b><span class="iconfont "></span>'+
+								'<b class="price">¥'+ _goods[j].price +'</b>'+
 							'</a>'+
 							'<i class="iconfont icon-jiarugouwuche"></i>'+
 						'</li>';
-					if(lazyNum > 0 && (lazyNum+1)%4 == 0){
+					if(lazyNum > 4 && (lazyNum+1)%4 == 0){
 						console.log('lazyNum: ', lazyNum);
 						console.log('(lazyNum+1)%6: ',(lazyNum+1)%4);
 						//每隔6个添加 '|' ，后面懒加载用
