@@ -72,8 +72,9 @@ class PaymentSystemController extends CommonController
      * [payConfirm 确认支付]  已迁移
      * @return [type] [description]
      */
-//    public function payConfirm()
-//    {
+    public function payConfirm()
+    {
+        echo '已停用,迁移至pay';exit;
 //        $address = D('Address');
 //        $where['uid'] = session('user.id');
 //        $where['status'] = 0;
@@ -97,7 +98,7 @@ class PaymentSystemController extends CommonController
 //        $this->assign('postage',$postage);
 //        $this->assign($assign);
 //        $this->display();
-//    }
+    }
 
     // 信息确认并生成订单
     public function information()
