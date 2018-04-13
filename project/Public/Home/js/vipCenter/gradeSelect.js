@@ -22,7 +22,7 @@ $(".goldGrade").on("touchstart", function() {
 $(".goldInfo").on("touchstart", function(e) {
     e.stopPropagation();
 });
-// 点击叉叉小图标
+// 点击叉叉小图标 
 $(".icon-shibai").on("touchstart", function() {
     $(this).parent().css("display", "none");
 });
