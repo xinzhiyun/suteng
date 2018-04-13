@@ -370,9 +370,10 @@ body {
 #slider>li>a{
 	display: block;
 	width: 100%;
+	text-align: center;
 }
 #slider>li>a>img{
-	width: 90vw;
+	width: auto;
 	height: 180px;
 }
 
@@ -462,12 +463,17 @@ body {
 	color: #ff3232;
 	font-weight: 400;
 }
-.allgoods>ul>li>a>img{
+.allgoods>ul>li>a>span{
 	width: 130%;
 	height: 66%;
 	display: inline-block;
 	border: 1px solid #ddd;
 	border-radius: 6px;
+	text-align: center;
+}
+.allgoods>ul>li>a>span>img{
+	width: auto;
+	height: 100%;
 }
 .numShow {
 	-webkit-animation: numshow .5s ease;
