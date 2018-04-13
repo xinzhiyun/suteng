@@ -37,6 +37,7 @@
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 	<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+	<script src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script>
 		$(function(){
 			// 首页按钮
@@ -57,51 +58,6 @@
 		      // console.log(home)
 		    }()
 		})
-	  // 开关效果
-    	// window.onload=function(){
-     // 	 	$("div[name='two']").click(function(){
-     // 	 		var divone=$(this).parent().attr('class');
-     // 	        var divtwo=$(this).attr('class');
-     // 	        // console.dir(divone);
-     // 	 		if(divtwo=='close2'){
-     // 	 			$(this).removeClass('close2').addClass('open2');
-     // 	 			$(this).parent().removeClass('close1').addClass('open1');
-     // 	 		}else if(divtwo=='open2'){
-     // 	 			$(this).removeClass('open2').addClass('close2');
-     // 	 			$(this).parent().removeClass('open1').addClass('close1');
-     // 	 		}
-     // 	 	});
-    	// }
-    	// // 删除的样式
-    	// slipDel('hgroup','i')
-    // 	var timeObj, timeHTML = '';
-    // 	if(sessionStorage.getItem("timeObj")){
-    // 		timeObj = JSON.parse(sessionStorage.getItem("timeObj"));
-    // 		console.log(timeObj);
-    // 		for(var i=0; i<timeObj.length; i++){
-    // 			console.log(timeObj[i])
-    // 			timeHTML += '<hgroup>'+
-				// 	'<div class="hgContain .clearfix" i="1">'+
-				// 		'<div class="setLeft .clearfix">'+
-				// 			'<p><span  class="sLeft">关机时间</span><span class="sRight"><b>'+ timeObj[i].shutdown.slice(0,2) +'</b>时：<b>'+ timeObj[i].shutdown.slice(-2) +'</b>分</span>	</p>'+
-				// 			'<p><span>开机时间</span><span class="sRight"><b>'+ timeObj[i].poweroff.slice(0,2) +'</b>时：<b>'+ timeObj[i].poweroff.slice(-2) +'</b>分</span></p>'+
-				// 		'</div><div class="setRight">'+
-				// 			'<div class="open1" name="one"><!-- id="divone" -->'+
-	   //     				 		'<div class="open2" name="two"></div><!-- id="divtwo" -->'+
-	   //  					'</div>'+
-				// 		'</div>'+
-				// 		'<div class="delBtn">'+
-				// 		'<input type="submit" value="删除">'+
-				// 		'</div>'+
-				// 	'</div>'+
-				// '</hgroup>';
-    // 		}
-    // 		console.log(timeHTML)
-    // 		$("._setTimecontain").html(timeHTML)
-    // 	}else{
-    // 		timeHTML = '<div style="width: 100vw;height:50vh;display:flex;align-items:center;justify-content:center">暂无数据</div>';
-    // 		$("._setTimecontain").html(timeHTML)
-    // 	}
 
 
    	/**
@@ -190,30 +146,39 @@
    	// 删除按钮
 	slipDel('._setTimecontain','hgroup','statenum');
 	$('._setTimecontain').on('click','.del',function(e){
-		// console.dir($(this).parent());
-		// $(this).parent().remove();
-		var id = $(this).parents('hgroup').attr('alt');
-		var _this = $(this);
-		// console.dir(id);
-        $.ajax({ 
-            url: "{{:U('Home/Task/del')}}",
-            type: 'post',
-            data: {'id': id},
-            success: function(res){
-                if(res.code == 200){
-                    // 有数据，数据格式查看 26 行
-                    $(_this).parents('hgroup').remove();
-                }else{
-                    // 无数据，数据格式查看 32 行
-                    swal('删除失败',res.message, "error");
-                }
-            },
-            error: function(err){
-            	console.log('错误：',err);
-            }
-        });
+		// 询问是否删除
+		layer.confirm("确认删除?", {icon: 3, title:''}, function(index) {
+			// console.dir($(this).parent());
+			// $(this).parent().remove();
+			var id = $(this).parents('hgroup').attr('alt');
+			var _this = $(this);
+			// console.dir(id);
+			$.ajax({ 
+				url: "{{:U('Home/Task/del')}}",
+				type: 'post',
+				data: {'id': id},
+				success: function(res){
+					if(res.code == 200){
+						// 有数据，数据格式查看 26 行
+						$(_this).parents('hgroup').remove();
+					}else{
+						// 无数据，数据格式查看 32 行
+						swal('删除失败',res.message, "error");
+					}
+				},
+				error: function(err){
+					console.log('错误：',err);
+				}
+			});
+
+
+			layer.close(index)
+		});
+		
 
 	});
+
+
 	$('._setTimecontain').on('click','.close1',function(){
         var id = $(this).parents('hgroup').attr('alt');
 	    var _this = $(this);
@@ -251,61 +216,11 @@
                   }
               }
           });
-      });
-
-
-      // var id=
-	  // $.ajax({
-   //              url:"{{:U('Home/Task/del')}}",
-   //              dataType:"json",
-   //              data:{'id':id},
-   //              type: 'post',
-   //              success:function(res){
-
-   //                  if(res.code == 200){
-
-   //                     $('._setTimecontain').on('click','.del',function(e){
-
-			// 			// console.dir($(this).parent());
-						
-			// 			$(this).parent().remove();
-
-			// 			// "message":"\u5220\u9664\u6210\u529f!",  
-			// 			console.dir(res);  
-
-			// 		   });
-
-   // //                  }else{
-
-   //                      // 无数据，数据格式查看 32 行
-   //                      // "code":403,                                                                                  
-   //             			// "message":"\u5220\u9664\u5931\u8d25\uff0c\u8bf7\u6307\u5b9a\u5220\u9664\u6761\u4ef6!"    
-
-   //                  }
-   //              }
-   //          });
-
-            // 成功，返回数据格式：
-            // {
-            //     "code":200,                                                                        
-            //     "message":"\u5220\u9664\u6210\u529f!",                                              
-            // }
-
-            // 失败，返回数据格式：
-            // {
-            //     "code":403,                                                                                  
-            //     "message":"\u5220\u9664\u5931\u8d25\uff0c\u8bf7\u6307\u5b9a\u5220\u9664\u6761\u4ef6!"             
-            // }
-
-
-
-
-
-
-
-
-
-
+	  });
+	//   弹框
+	layui.use("layer", function() {
+		var layer = layui.layer;
+	})
 
     </script>
 </body>
