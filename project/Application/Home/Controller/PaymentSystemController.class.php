@@ -119,6 +119,8 @@ class PaymentSystemController extends CommonController
                 $where['pr.grade'] = session('user.grade');
                 $order['g_price'] += $value['money'];
                 $order['g_num'] += $value['num'];
+                $order['gid']  =  $value['gid'];
+
                 $arr = $goods
                     ->alias('g')
                     ->where($where)
@@ -134,10 +136,12 @@ class PaymentSystemController extends CommonController
                 $detail['price'] = $arr['price'];
                 $detail['addtime'] = time();
                 $detail_statut = $order_detail->add($detail);
+
                 if(!$detail_statut) E('请重新结算',603);
             }
 
             $res = $orders->add($order);
+
             if($res){
                 M('Cart')->where('uid='.session('user.id'))->delete();
                 $orders->commit();
