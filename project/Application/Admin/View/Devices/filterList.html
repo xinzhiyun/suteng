@@ -300,7 +300,7 @@
                 shade: false //不显示遮罩
             }, function(){
                 $.ajax({
-                    url:'filterAction',
+                    url:"{{:U('admin/devices/filterAction')}}",
                     type:'post',
                     dataType:'json',
                     cache: false,
