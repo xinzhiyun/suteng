@@ -45,7 +45,7 @@ body {
 #qrCode_share>i{
 	font-size: 1.2rem;
 }
-#qrCode_share>i:nth-of-type(2){
+#qrCode_share>i:nth-of-type(2){ 
 	font-size: 1.0rem;
 }
 /*会员*/
