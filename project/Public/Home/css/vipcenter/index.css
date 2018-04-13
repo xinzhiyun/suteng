@@ -16,7 +16,7 @@ body {
 	background: -webkit-radial-gradient(top left, #99FCEF 35%, #5B97EF);
 }
 #header>#hLeft {
-	flex: 1;
+	flex: 2;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -32,7 +32,7 @@ body {
 	background: #eee;
 }
 #header>#hRight {
-	flex: 2;
+	flex: 5;
 	height: 84%;
 }
 #qrCode_share {
@@ -48,6 +48,30 @@ body {
 #qrCode_share>i:nth-of-type(2){
 	font-size: 1.0rem;
 }
+/*会员*/
+.member {
+	display:flex;
+	align-items : center;
+}
+.member > span:nth-child(1) {
+	white-space: wrap;
+	width: 6rem;
+}
+img {
+	width:100%;
+	height: 100%;
+}
+.member > span:nth-child(2) {
+	width: 1rem;
+	height: .8rem;
+	margin-right: .2rem;
+}
+/* .member > i{
+	font-size: 1rem;
+	color: rgb(255,211,47);
+	margin-right: .2rem;
+} */
+
 /*我的钱包*/
 #package {
 	display: flex;
@@ -208,6 +232,9 @@ body {
 }
 .icon-duihuan-{
 	color:#BD032B;
+}
+.icon-huiyuan {
+	color : #FFC337;
 }
 /*会员充值下面的四个图标颜色*/
 .icon-chongzhi1{
