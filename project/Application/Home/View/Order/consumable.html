@@ -132,10 +132,10 @@
 		//微信接口
 		wx.config({
 			debug: false,
-			appId: '{{$info["appId"]}}',
-			timestamp: '{{$info["timestamp"]}}',
-			nonceStr: '{{$info["nonceStr"]}}',
-			signature: '{{$info["signature"]}}',
+			appId: '{{$wxinfo["appId"]}}',
+			timestamp: '{{$wxinfo["timestamp"]}}',
+			nonceStr: '{{$wxinfo["nonceStr"]}}',
+			signature: '{{$wxinfo["signature"]}}',
 			jsApiList: [
 		      // 所有要调用的 API 都要加到这个列表中
 		      'chooseWXPay'
