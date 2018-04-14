@@ -228,9 +228,9 @@ class UsersController extends CommonController
     {
         try {
             $user = D("Users");
-            $where['device_code'] = I('post.device_code');
-            $data['uid'] = I('post.uid');
-            $res = $user->unBind($where,$data);
+            $device_code = I('post.device_code');
+            $uid = I('post.uid');
+            $res = $user->unBind($uid,$device_code);
             if($res){
                 E('解绑成功',200);
             } else {

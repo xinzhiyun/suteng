@@ -336,7 +336,7 @@
                 closeOnConfirm: false
             }, function () {
                 $.ajax({
-                    url:'filtersDel',
+                    url:"{{:U('Admin/devices/filtersDel')}}",
                     type:'post',
                     dataType:'json',
                     data:{'id':id},
@@ -374,7 +374,7 @@
                 shade: true //不显示遮罩
             }, function(){
                 $.ajax({
-                    url:'filterEdit',
+                    url:"{{:U('Admin/devices/filterEdit')}}",
                     type:'post',
                     dataType:'json',
                     cache: false,
