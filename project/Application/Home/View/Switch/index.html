@@ -158,9 +158,9 @@
 				type: 'post',
 				data: {'id': id},
 				success: function(res){
-					console.log(res);
 					if(res.code == 200){
 						// 有数据，数据格式查看 26 行
+						swal('删除失败',res.message, "success");
 						$(_this).parents('hgroup').remove();
 					}else{
 						// 无数据，数据格式查看 32 行
