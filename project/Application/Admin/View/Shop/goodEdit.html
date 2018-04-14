@@ -31,8 +31,8 @@
                             <div class="col-sm-2">
                                 <select class="form-control m-b" name="firscate">
                                     <option value="--">--请选择--</option>
-                                    <volist name="cateInfo" id="vo">
-                                        <option value="{{$vo.id}}">{{$vo.name}}</option>
+                                    <volist name="categoryList" id="vo">
+                                        <option value="{{$vo.id}}" {{$goodsInfo['category']['id']==$vo['id'] ? 'selected':''}}>{{$vo.name}}</option>
                                     </volist>
                                 </select>
                             </div>
@@ -50,17 +50,15 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">商品名称：</label>
                             <div class="col-sm-10">
-                                <volist name="goodsInfo" id="vo">
-                                <input type="text" class="form-control" name="name" value="{{$vo.name}}" placeholder="定义商品的名称">
-                                <input type="hidden" class="form-control" name="gid" value="{{$vo.id}}">
-                                </volist>
+                                <input type="text" class="form-control" name="name" value="{{$goodsInfo.name}}" placeholder="定义商品的名称">
+                                <input type="hidden" class="form-control" name="gid" value="{{$goodsInfo.id}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label _attr">商品属性：</label>
                             <div class="col-sm-10">
                                 <div class="checkbox i-checks">
-                                    <volist name="attrInfo" id="vo">
+                                    <volist name="arrtList" id="vo">
                                         <label class="attr">
                                             <input type="checkbox" data-name={{$vo.attr}} data-id="{{$vo.id}}"> <i></i> {{$vo.attr}}
                                         </label>
@@ -80,60 +78,84 @@
                             </div>
                         </div>
 
-                    <volist name="pre" id="vo">
+                        <!-- 快递运费新添加开始 -->
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">快递公司：</label>
+                            <div class="col-sm-10">
+                                <div class="checkbox i-checks">
+                                    <volist name="courierList" id="vo">
+                                        <label class="courier">
+                                            <input type="checkbox" data-name={{$vo.name}} data-id="{{$vo.id}}"> <i></i> {{$vo.name}}
+                                        </label>
+                                    </volist>
+                                    <label class="courierList">
+                                        <button type="button" class="btn btn-outline btn-primary" onclick="addcourier()">添加快递公司</button>
+                                    </label>
+                                    <label class="attrDel">
+                                        <button type="button" class="btn btn-outline btn-primary" onclick="delcourier()">删除快递公司</button>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">快递费：</label>
+                            <div class="col-sm-6 courier_val">
+                            </div>
+                        </div>
+                        <!-- 快递运费新添加结束 -->
+
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">普通会员销售单价：</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="price[0]" placeholder="标准价钱格式，例如：2.00" value="{{$vo.0}}">
+                                <input type="text" class="form-control" name="price[0]" placeholder="标准价钱格式，例如：2.00" value="{{$price.0.price}}">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">VIP会员销售单价：</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="price[2]" placeholder="标准价钱格式，例如：2.00" value="{{$vo.2}}">
+                                <input type="text" class="form-control" name="price[2]" placeholder="标准价钱格式，例如：2.00" value="{{$price.1.price}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">标准会员销售单价：</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="price[3]" placeholder="标准价钱格式，例如：2.00" value="{{$vo.3}}">
+                                <input type="text" class="form-control" name="price[3]" placeholder="标准价钱格式，例如：2.00" value="{{$price.2.price}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">钻石会员销售单价：</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="price[4]" placeholder="标准价钱格式，例如：2.00" value="{{$vo.4}}">
+                                <input type="text" class="form-control" name="price[4]" placeholder="标准价钱格式，例如：2.00" value="{{$price.3.price}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">非企业会员销售单价：</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="price[1]" placeholder="标准价钱格式，例如：2.00" value="{{$vo.1}}">
+                                <input type="text" class="form-control" name="price[1]" placeholder="标准价钱格式，例如：2.00" value="{{$price.4.price}}">
                             </div>
                         </div>
-                    </volist>
-
-                    <volist name="goodsInfo" id="vo">
                     
+
+        
                         <div class="form-group">
                             <label class="col-sm-2 control-label">商品成本：</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="cost" placeholder="标准价钱格式，例如：2.00，只在管理页面可见" value="{{$vo.cost}}">
+                                <input type="text" class="form-control" name="cost" placeholder="标准价钱格式，例如：2.00，只在管理页面可见" value="{{$goodsDetail.0.cost}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">是否安装</label>
                             <div class="col-md-2">
-                                <input type="checkbox" name="is_install" class="is_install" checked/>
+                                <input type="checkbox" name="is_install" class="is_install" {{$goodsDetail[0][is_install] == 1 ? 'checked':''}}/>
                             </div>
                             <label class="col-sm-2 control-label">是否租赁</label>
                             <div class="col-md-2">
-                                <input type="checkbox" name="is_hire" class="is_hire" checked/>
+                                <input type="checkbox" name="is_hire" class="is_hire" {{$goodsDetail[0][is_hire] == 1 ? 'checked':''}}/>
                             </div>
                         </div>
-                    </volist>
+    
 
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">
@@ -213,6 +235,80 @@
                 </volist>
 
                 </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 弹窗添加快递公司 -->
+    <div class="modal inmodal" id="st_courier_add" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        添加快递公司
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-bordered table-hover table-condensed">
+                        <tr>
+                            <th width=15%>
+                                快递公司名
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <input class="input-medium form-control" type="text" name="couriername" value="">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                            </th>
+                            <td>
+                                <input class="btn btn-success add-courier" type="submit" value="添加">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除快递 -->
+    <div class="modal inmodal" id="st-courier_del" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        删除快递公司
+                    </h4>
+                </div>
+
+                <div class="modal-body">
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                   <tr>
+                       <th>快递公司名称</th>
+                       <th>操作</th>
+                   </tr>
+                <volist name="courierList" id="vo">
+
+                   <tr>
+                        <label class="courier">
+                        <td data-name={{$vo.name}} data-id="{{$vo.id}}"> <i></i> {{$vo.name}}</td>
+                        </label>
+                        <td><div class="cdeldiv"><a class="courierdel" cid="{{$vo.id}}">删除快递公司</a></div></td>
+                   </tr>     
+                </volist>
+
+                </table>
+                </div>
             </div>
         </div>
     </div>
@@ -327,6 +423,64 @@
             });
         })
 
+
+        // 添加快递公司
+        function addcourier() {
+            $("input[name='couriername']").val('');
+            $('#st_courier_add').modal('show');
+        }
+        // 添加功能
+        $('.add-courier').click(function(){
+            $('#st_courier_add').modal('hide');
+            var name = $("input[name='couriername']").val();
+            $.ajax({
+                url:"courierAdd",
+                data:{"name":name},
+                dataType:"json",
+                type: 'post',
+                success:function(res){
+                    if(res.code != 203 && res.code != 204){
+                        location.reload();
+                        $(".courierList").before('<label><input type="checkbox" name="courier[]" value="'+res.code+'" class="courier"> <i></i> '+name+'</label>');
+                        recheck();
+                        parent.layer.msg(res.msg);
+                    } else {
+                        parent.layer.msg(res.msg);
+                    }
+                }
+            })
+        });
+
+        // 删除快递公司
+        function delcourier() {
+            $("input[name='couriername']").val('');
+            $('#st-courier_del').modal('show');
+        }
+
+        //确认删除
+        $('.cdeldiv').on('click','.courierdel',function(e){
+            
+            var cid = $(this).attr('cid');
+            // console.log(aid);
+            parent.layer.confirm('确认删除这个快递公司吗？', {
+                btn: ['确认','取消'], //按钮
+                shade: true //不显示遮罩
+            }, function(){
+                $.ajax({
+                    url:'courierDel',
+                    type:'post',
+                    dataType:'json',
+                    data:{'id':cid},
+                    success:function(res){
+                        location.reload();
+                        parent.layer.msg(res.msg);
+                    }
+                });
+            }, function(){
+                parent.layer.msg('已取消', {shift: 6});
+            });
+        })
+
     </script>
     <script src="__PUBLIC__/Admin/js/plugins/iCheck/icheck.min.js"></script>
     <!-- SUMMERNOTE -->
@@ -354,6 +508,17 @@
             $("#form .iCheck-helper").on("click", function(e){
                 bindClick();
             });
+
+
+            /* 快递费设置 */
+            $("#form .courier").on("click", function(e){
+                cbindClick();
+            });
+
+            $("#form .iCheck-helper").on("click", function(e){
+                cbindClick();
+            });
+            /* 快递费设置 */
 
             // 按钮初始化
             var elem = document.querySelector('.is_install');
@@ -385,6 +550,9 @@
             }
 
         });
+
+
+        //属性值设置
         function bindClick(){
             var attrId,attrName;
             var arr = new Array();
@@ -406,6 +574,30 @@
                 $('.attr_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].attrName+'</span><input type="text" placeholder="请输入'+arr[i].attrName+'的规格" name="attr['+arr[i].attrId+']" value="" class="form-control"></div>');
             }
         }
+
+        /* 快递费设置页面 */
+        function cbindClick(){
+            var courierId,courierName;
+            var arr = new Array();
+
+            $('.courier').each(function(i,item){
+                var aa = $(item).children('div').hasClass('checked');
+                var obj = $(this).find('input');
+                if(aa){
+                    courierName = obj.data('name');
+                    courierId = obj.data('id');
+                    arr.push({
+                        courierId:courierId,
+                        courierName:courierName,
+                    })
+                }
+            })
+            $('.courier_val').empty();
+            for(var i=0;i<arr.length;i++){
+                $('.courier_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].courierName+'</span><input type="text" placeholder="请输入'+arr[i].courierName+'的费用" name="courier['+arr[i].courierId+']"  class="form-control"></div>');
+            }
+        }
+        /* 快递 */
 
 
         var edit = function () {

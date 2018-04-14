@@ -167,7 +167,7 @@ class ShopController extends CommonController
     // 商品添加处理
     public function goodsAction()
     {
-
+        // dump($_POST);die;
        
         try{
             $goods_add = D('Goods');
@@ -221,6 +221,16 @@ class ShopController extends CommonController
                 }
             }
 
+
+            //属性值添加完成后，将属性名字也写入库
+            foreach ($data['attrName'] as $key => $value) {
+                $gid = $goods_status;
+                $aid = $key;
+                $ainfo['aname'] = $value;
+                //进行添加
+                M('AttrVal')->where('gid='.$gid .' AND aid='.$aid)->save($ainfo);   
+            }
+
             /* 商品快递费添加 */
             foreach ($data['courier'] as $key => $value) {
                 $data['gid'] = $goods_status;
@@ -241,6 +251,17 @@ class ShopController extends CommonController
                     } 
                 }
             }
+
+            //商品快递费添加完成后，将快递公司名字也写入库
+            foreach ($data['courierName'] as $key => $value) {
+                $gid = $goods_status;
+                $cid = $key;
+                $info['cname'] = $value;
+                //进行添加
+                M('GoodsCourier')->where('gid='.$gid .' AND cid='.$cid)->save($info);   
+            }
+
+
             /* 商品快递费添加 */
             
 
@@ -339,6 +360,41 @@ class ShopController extends CommonController
     public function goodEdit()
     {   
 
+        //修改商品之前先查询出所有的快递公司
+        $courierList = M('courier')->where('status = 1')->select();
+
+        //查询出所有分类
+        $categoryList = M('category')->field('id, name')->select();
+
+        //查询出所有属性
+        $arrtList = M('attr')->select();
+        
+        //获取商品id
+        $id = $_GET['gid'];
+        //实例化商品对象
+        $goods = M('goods');
+
+        $goodsInfo=D('goods')->getGoodInfo($id);
+        
+        // dump($goodsInfo);
+        $price = $goodsInfo['price'];
+        $attrVal = $goodsInfo['attr_val'];
+        $goodsCourier = $goodsInfo['goods_courier'];
+        $goodsDetail = $goodsInfo['goods_detail'];
+
+
+        $this->assign('courierList', $courierList);
+        $this->assign('categoryList', $categoryList);
+        $this->assign('arrtList', $arrtList);
+        $this->assign('goodsInfo', $goodsInfo);
+        $this->assign('price', $price);
+        $this->assign('attrVal', $attrVal);
+        $this->assign('goodsCourier', $goodsCourier);
+        $this->assign('goodsDetail', $goodsDetail);
+        $this->display();
+
+        die;
+
         $gid = $_GET['gid'];
         $where['st_goods.id'] = $gid;
         $goods = D(Goods);
@@ -364,13 +420,21 @@ class ShopController extends CommonController
         // 商品属性
         $attr = D('Attr');
         $attrInfo = $attr->select();
+
+        /* 新增--查询商品快递运费信息 */
+        $gc = M('GoodsCourier');
+        $gcInfo = $gc->alias('gc')->where('gc.gid='.$gid)->join('__COURIER__ c ON gc.cid = c.id')->select();
+
         $assign = [
             'cateInfo'  => $cateInfo,
             'attrInfo'  => $attrInfo,
             'goodsInfo' => $goodsInfo,
             'pre'       => $pre,
+            //商品快递运费信息
+            'gcInfo'    => $gcInfo,
         ];
-        // dump($assign);
+        dump($assign);
+
         $this->assign($assign);
         $this->display();
         

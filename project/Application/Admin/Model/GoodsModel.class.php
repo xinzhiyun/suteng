@@ -1,12 +1,77 @@
 <?php
 namespace Admin\Model;
-use Think\Model;
-
+// use Think\Model;
+use Think\Model\RelationModel;
+// use Org\Util\Date;
 /**
  * 分类
  */
-class GoodsModel extends BaseModel
+class GoodsModel extends RelationModel
 {
+
+    protected $_link = array(
+        'category'=>array(
+                'mapping_type'  => self::BELONGS_TO,
+                'class_name'    => 'category',
+                'foreign_key'   => 'cid',
+                'mapping_name'  => 'category',
+                'mapping_fields' => 'id,name'
+        ),
+
+        'price'=>array(
+                'mapping_type'  => self::HAS_MANY,
+                'class_name'    => 'price',
+                'foreign_key'   => 'gid',
+                'mapping_name'  => 'price',
+                'mapping_fields' => 'id,price,grade'
+        ),
+
+        'attr_val'=>array(
+                'mapping_type'  => self::HAS_MANY,
+                'class_name'    => 'attr_val',
+                'foreign_key'   => 'gid',
+                'mapping_name'  => 'attr_val',
+                'mapping_fields' => 'aid,aname,val'
+        ),
+
+        'goods_courier'=>array(
+                'mapping_type'  => self::HAS_MANY,
+                'class_name'    => 'goods_courier',
+                'foreign_key'   => 'gid',
+                'mapping_name'  => 'goods_courier',
+                'mapping_fields' => 'id,cid,cprice,cname'
+        ),
+
+        'goods_detail'=>array(
+                'mapping_type'  => self::HAS_MANY,
+                'class_name'    => 'goods_detail',
+                'foreign_key'   => 'gid',
+                'mapping_name'  => 'goods_detail',
+                'mapping_fields' => 'id,cost,is_install,is_hire'
+        ),
+
+    );
+
+    /**
+     * 获取商品详细信息
+     * @param  int $id 主键id
+     * @return array     查询的数组数据
+     */
+    public function getGoodInfo($id)
+    {
+         $data = $this
+            ->relation(['category','price','attr_val','goods_courier','goods_detail'])
+            ->where('id='.$id)
+            ->find();
+        return $data;
+    }
+
+
+
+
+
+
+
     // 自动验证
     protected $_validate = array(
         array('cid','/^[\d]{0,10}$/', '请选择分类','regex'),
