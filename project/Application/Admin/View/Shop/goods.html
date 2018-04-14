@@ -57,6 +57,9 @@
                                     单价
                                 </th>
                                 <th>
+                                    运费
+                                </th>
+                                <th>
                                     库存
                                 </th>
                                 <th>
@@ -108,6 +111,9 @@
                                         </td>
                                         <td>
                                             <span goods="{{$v.gid}}" class="btn btn-success select">查看单价</span>
+                                        </td>
+                                        <td>
+                                            <span cgoods="{{$v.gid}}" class="btn btn-success cselect">查看运费</span>
                                         </td>
                                         <td>
                                             {{$v['allnum']-$v['abnormalnum']}}
@@ -224,10 +230,22 @@
                 </div>
             </div>
     </div>
+
+    <!-- 显示详情价格页面 -->
     <div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog"  aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-body my_content">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增内容：显示快递运费详情 -->
+    <div class="modal inmodal fade" id="myCourier" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body gContent">
                 </div>
             </div>
         </div>
@@ -345,6 +363,7 @@
             });
         })
 
+        //显示单价详细
         $("td").on('click','.select', function(e){
             $('#myModal6').modal('show');
             var gid = $(this).attr('goods');
@@ -380,5 +399,31 @@
             });
         });
 
+
+        //显示运费详细
+        $("td").on('click','.cselect', function(e){
+            $('#myCourier').modal('show');
+            var gid = $(this).attr('cgoods');
+            var html = "";
+            $.ajax({
+                url:'goodsCourierList',
+                type:'post',
+                data:{'gid':gid},
+                success:function(res){
+                    // console.dir(res);
+                    if (res.length == 0) {
+                        html += "还没设置快递运费";
+                    } else {
+                        for (var i = res.length - 1; i >= 0; i--) {
+                            html+="<span>"+res[i]['name']+"</span>:<span>"+res[i]['cprice']+"</span><br><br>"
+                        }
+                    }
+                    
+                    $(".gContent").html(html);
+                }
+            });
+        });
+
     </script>
+
 </block>

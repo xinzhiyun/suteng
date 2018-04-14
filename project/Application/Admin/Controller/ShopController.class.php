@@ -966,6 +966,10 @@ class ShopController extends CommonController
         $this->display('courier_edit');
     }
 
+    /**
+     * [courierDel 快递公司删除]
+     * @return [type] [description]
+     */
     public function courierDel()
     {
         try {
@@ -990,6 +994,36 @@ class ShopController extends CommonController
                     E('删除失败',203);
             }         
             
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [goodsCourier 修改商品对应的快递价格]
+     * @return [type] [description]
+     */
+    public function goodsCourierEdit($gid)
+    {
+        echo $gid;
+    }
+
+    /**
+     * [goodsCourierList 查询商品对应的运费]
+     * @return [type] [description]
+     */
+    public function goodsCourierList()
+    {
+        try {
+            $gid = I('post.gid');
+            $gc = M('GoodsCourier');
+            $data = $gc->alias('gc')->where('gc.gid='.$gid)->join('__COURIER__ c ON gc.cid = c.id')->select();
+
+            $this->ajaxReturn($data);
         } catch (\Exception $e) {
             $err = [
                 'code' => $e->getCode(),
