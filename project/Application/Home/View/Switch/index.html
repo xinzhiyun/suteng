@@ -158,6 +158,7 @@
 				type: 'post',
 				data: {'id': id},
 				success: function(res){
+					console.log(res);
 					if(res.code == 200){
 						// 有数据，数据格式查看 26 行
 						$(_this).parents('hgroup').remove();

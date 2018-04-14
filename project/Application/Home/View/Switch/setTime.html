@@ -94,7 +94,7 @@
 
 		$("#save").click(function(){
 			// 获取表单数据
-        	var time = $('input[name="text"]').val();//时间
+        	var time = $('input[name="appTime"]').val();//时间
         	var action_type = $('.shezhi>p.checked').attr('alt');//功能选择 
 			var time_type = $('.repeat>div>p.checked').attr('alt');//重复方式选择	
 	        $.ajax({
@@ -102,17 +102,19 @@
 	            data:{time:time,type:action_type,repeat:time_type},
 	            type: 'post',
 	            success:function(res){
-	                console.dir(res);
+	                console.dir("返回消息",res);
+					return;
 	                if(res.code == 200){
 	                    // 添加成功
 	                    swal(res.msg,res.msg, "success");
 	                    // 两秒后刷新
 	                    setTimeout(function(){
 	                        window.location.href = "{{:U('Home/VipCenter/minepack')}}";
-	                    },1000);
+						},1000);
 	                }else{
 	                    // 添加失败
-	                    swal(res.msg, "请重新提交！", "success");
+						swal(res.msg, "请重新提交！", "success");
+						layuiHint("添加失败");
 	                }
 	            },
 				error: function(res) {
