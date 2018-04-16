@@ -25,9 +25,11 @@ class VendorsController extends Controller
         }
         
         // 获取用户open_id
-        $showData['open_id'] = $_SESSION['vendorInfo']['open_id'];
+//        $showData['open_id'] = $_SESSION['vendorInfo']['open_id'];
         // 查询分销商
+        $showData['id'] = $_SESSION['vendorInfo']['id'];
         $vendor = M('vendors')->where($showData)->find();
+
 
         // 分销商级别
         $vendor_leavel = $vendor['leavel'];
@@ -971,7 +973,7 @@ class VendorsController extends Controller
     {
         // 用户级别2:A级分销商 3:B级分销商 4:C级分销商
         $leavel = $_SESSION['vendorInfo']['leavel'];
-       
+
         // 分销商标识
         $code = $_SESSION['vendorInfo']['code'];
 

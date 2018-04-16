@@ -554,11 +554,11 @@
             })
             $('.attr_val').empty();
             for(var i=0;i<arr.length;i++){
-                $('.attr_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].attrName+'</span><input type="text" placeholder="请输入'+arr[i].attrName+'的规格" name="attr['+arr[i].attrId+']" value="" class="form-control"></div>');
+                $('.attr_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].attrName+'</span><input type="text" placeholder="请输入'+arr[i].attrName+'的规格" name="attr['+arr[i].attrId+']" value="" class="form-control"><input type="hidden" name="attrName['+arr[i].attrId+']" value=' + arr[i].attrName + ' class="form-control"></div>');
             }
         }
 
-        /* 快递 */
+        /* 快递费设置页面 */
         function cbindClick(){
             var courierId,courierName;
             var arr = new Array();
@@ -577,7 +577,7 @@
             })
             $('.courier_val').empty();
             for(var i=0;i<arr.length;i++){
-                $('.courier_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].courierName+'</span><input type="text" placeholder="请输入'+arr[i].courierName+'的费用" name="courier['+arr[i].courierId+']"  class="form-control"></div>');
+                $('.courier_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].courierName+'</span><input type="text" placeholder="请输入'+arr[i].courierName+'的费用" name="courier['+arr[i].courierId+']"  class="form-control"><input type="hidden" name="courierName['+arr[i].courierId+']" value=' + arr[i].courierName + ' class="form-control"></div>');
             }
         }
         /* 快递 */
