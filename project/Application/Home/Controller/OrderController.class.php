@@ -140,131 +140,155 @@ class OrderController extends CommonController
     public function editOrder()
     {
         try {
+
             $map = I('post.');
 
-            $map['order_id'] = $map['order_id'];
-            $data['status'] = 3;
+//            $map['order_id'] = $map['order_id'];
+            $map['order_id'] = '500985865733851';
+//            $data['status'] = 3;
 //            $data['addtime'] = '12';
-            $info = M('shop_order')->where($map)->save($data);
+            $info = M('shop_order')->where($map)->find();
 
 
             if ($info) {
-                  $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.g_cost,a.g_price,a.g_num,b.vid,c.id ccid,c.code,c.invitation_code,c.superiors_code,c.superior_code,c.abonus,b.name')->join
-                  ('st_goods b on a.gid = b.id')->join('st_vendors c on b.vid = c.id')->where(['a
+//                  $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.g_cost,a.g_price,a.g_num,b.vid,c.id ccid,c.code,c.invitation_code,c.superiors_code,c.superior_code,c.abonus,b.name')->join
+//                  ('st_goods b on a.gid = b.id')->join('st_vendors c on b.vid = c.id')->where(['a
+//                .g_type'=>1,'a.status'=>3,'a.order_id'=>$map['order_id']])->find();
+                $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.g_cost,a.g_price,a.g_num,b.name,d.invitation_code,d.id')
+                   ->join('st_users d on d.id = a.uid')->join
+                  ('st_goods b on a.gid = b.id')->where(['a
                 .g_type'=>1,'a.status'=>3,'a.order_id'=>$map['order_id']])->find();
 
-                if ($list['g_price'] < $list['g_cost']) {
-                    $money = 0;
-                } else {
-                    $money = $list['g_price']-$list['g_cost'];
-                }
+                if ($list['invitation_code'] != null) {
 
-                //查询分配比例
-                $butros = M('butros')->find();
-                //销售奖(定义 卖商品的经销商)
-                $com_c = $money*($butros['com_c']/ 100);
-                //市场推广奖
-                $com_d = $money*(($butros['com_b']/ 100)*(50/ 100));
-                //市场培育将
-                $com_p = $money*(($butros['com_b']/100)*((50/100)));
+                    if ($list['g_price'] < $list['g_cost']) {
+                        $money = 0;
+                    } else {
+                        $money = $list['g_price']-$list['g_cost'];
+                    }
+
+
+                    //查询分配比例
+                    $butros = M('butros')->find();
+                    //销售奖(定义 卖商品的经销商)
+                    $com_c = $money*($butros['com_c']/ 100);
+                    //市场推广奖
+                    $com_d = $money*(($butros['com_b']/ 100)*(50/ 100));
+                    //市场培育将
+                    $com_p = $money*(($butros['com_b']/100)*((50/100)));
 //                     //团队管理奖 B级加盟商
-                $com_t =  $money*(($butros['com_a']/ 100)*(50/ 100));
-                //团队管理奖 A级加盟商
-                $com_ta =  $money*(($butros['com_a']/100)*((100-50)/100));
+                    $com_t =  $money*(($butros['com_a']/ 100)*(50/ 100));
+                    //团队管理奖 A级加盟商
+                    $com_ta =  $money*(($butros['com_a']/100)*((100-50)/100));
 //                dump($com_c);
 //                dump($com_d);
 //                dump($com_p);
 //                dump($com_t);
 //                dump($com_ta);
 //                dump($money);exit;
-                //销售奖(卖商品的经销商)
-                $earnings_comc = M('vendors')->where(['id'=>$list['ccid']])->setInc('abonus',$com_c);
+                    //查出当前推荐商人
+                    $c_info = M('vendors')->where(['code'=>$list['invitation_code']])->find();
+                    //查出推荐人的推荐人
+                    $f_info = M('vendors')->where(['code'=>$c_info['office_code']])->find();
+                    //销售奖(卖商品的经销商)
+                    if ($f_info) {
+                        $earnings_comc = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_c);
+                        //销售奖收益记录
+                        if ($earnings_comc) {
+                            M('earnings')->add(['name'=>$list['name'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
+                        }
+                    }
 
-                    //销售奖收益记录
-                if ($earnings_comc) {
-                    M('earnings')->add(['name'=>$list['name'],'vid'=>$list['vid'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
-                }
-                //市场推广奖(定义 卖商品的经销商推荐人) 只查询存在的
-                if ($list['invitation_code']!=null){
+//                $earnings_comc = M('vendors')->where(['id'=>$list['ccid']])->setInc('abonus',$com_c);
 
-                    $info = M('vendors')->where(['code'=>$list['invitation_code']])->setInc('abonus',$com_d);
-                }
-                //查找直系推荐关系中的最近B级加盟商(包括自己)
-                $my_level_info = M('vendors')->field('id,leavel,code,path,updatetime')->where(['id'=>$list['ccid']])->find();
-                //如果自己是B级 利润给自己 不是的话 给最近的加盟商呢( 市场培育将)
-                if ($my_level_info['leavel'] == 3) {
+                    //市场推广奖(定义 卖商品的经销商推荐人) 只查询存在的
+                    if ($c_info){
+
+                        $earnings_comd = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_d);
+                        //销售奖收益记录
+                        if ($earnings_comd) {
+                            M('earnings')->add(['name'=>$list['name'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+                        }
+                    }
+                    //查找直系推荐关系中的最近B级加盟商(包括自己)
+//                    $my_level_info = M('vendors')->field('id,leavel,code,path,updatetime')->where(['id'=>$list['ccid']])->find();
+                    //如果自己是B级 利润给自己 不是的话 给最近的加盟商呢( 市场培育将)
+                    if ($c_info['leavel'] == 3) {
 
 //                         //市场培育奖励
 //                    M('vendors')->where(['id'=>$my_level_info['id']])->save(['updatetime'=>time()]);
-                    $earnings_comp = M('vendors')->where(['id'=>$my_level_info['id']])->setInc('abonus',$com_p);
-                    //市场培育收益记录
-                    if ($earnings_comp) {
-                        M('earnings')->add(['name'=>$list['name'],'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
-                    }
+                        $earnings_comp = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_p);
+                        //市场培育收益记录
+                        if ($earnings_comp) {
+                            M('earnings')->add(['name'=>$list['name'],'vid'=>$c_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
+                        }
 
-                } else {
-                    if ($my_level_info['path'] != null) {
+                    } else {
+                        if ($c_info['path'] != null) {
+
+                            //查找直系推荐关系中的最近B级经销商(包括自己)
+                            $path = explode('-',$c_info['path']);
+                            $in_B['id']  = array('in',$path);
+                            $in_B['leavel'] = 3;
+                            //查找最近的B级经销商
+                            $my_level_info = M('vendors')->field('id,leavel,code,path,updatetime')->order('id desc')->where($in_B)->find();
+                            if ($my_level_info) {
+//                            M('vendors')->where(['id'=>$my_level_info['id']])->save(['updatetime'=>time()]);
+                                M('vendors')->where(['id'=>$my_level_info['id']])->setInc('abonus',$com_p);
+//
+                                if ($earnings_comc) {
+                                    M('earnings')->add(['name'=>$list['name'],'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
+                                }
+                            }
+                        }
+                    }
+                    //查找团队管理奖收益人
+                    if ($c_info['path'] != null) {
 
                         //查找直系推荐关系中的最近B级经销商(包括自己)
-                        $path = explode('-',$my_level_info['path']);
+                        $path = explode('-',$c_info['path']);
                         $in_B['id']  = array('in',$path);
                         $in_B['leavel'] = 3;
-                        //查找最近的B级经销商
-                        $my_level_info = M('vendors')->field('id,leavel,code,path,updatetime')->order('id desc')->where($in_B)->find();
-                        if ($my_level_info) {
-//                            M('vendors')->where(['id'=>$my_level_info['id']])->save(['updatetime'=>time()]);
-                            M('vendors')->where(['id'=>$my_level_info['id']])->setInc('abonus',$com_p);
-//
-                            if ($earnings_comc) {
-                                M('earnings')->add(['name'=>$list['name'],'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
-                            }
+                        $in_B['updatetime'] = array('lt',$c_info['updatetime']);
+                        $in_info = M('vendors')->where($in_B)->find();
+                        $earnings_ta = M('vendors')->where(['id'=>$in_info['id']])->setInc('abonus',$com_t);
+                        //市场培育收益记录
+                        if ($earnings_ta) {
+                            M('earnings')->add(['name'=>$list['name'],'vid'=>$in_info['id'],'abonus'=>$com_t,'create_time'=>date('Y-m-d H:i:s')]);
                         }
                     }
-                }
-                //查找团队管理奖收益人
-                if ($my_level_info['path'] != null) {
+                    //B级加盟商受益人
+                    //如果自己是A级 利润给自己 不是的话 给最近的加盟商呢
+                    if ($c_info['leavel'] == 2) {
+                        //团队管理奖 A级加盟商
+                        M('vendors')->where(['id'=>$c_info['id']])->save(['updatetime'=>time()]);
+                        $earnings_ta = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_ta);
 
-                    //查找直系推荐关系中的最近B级经销商(包括自己)
-                    $path = explode('-',$my_level_info['path']);
-                    $in_B['id']  = array('in',$path);
-                    $in_B['leavel'] = 3;
-                    $in_B['updatetime'] = array('lt',$my_level_info['updatetime']);
-                    $in_info = M('vendors')->where($in_B)->find();
-                    $earnings_ta = M('vendors')->where(['id'=>$in_info['id']])->setInc('abonus',$com_t);
-                    //市场培育收益记录
-                    if ($earnings_ta) {
-                        M('earnings')->add(['name'=>$list['name'],'vid'=>$in_info['id'],'abonus'=>$com_t,'create_time'=>date('Y-m-d H:i:s')]);
-                    }
-                }
-                //B级加盟商受益人
-                //如果自己是A级 利润给自己 不是的话 给最近的加盟商呢
-                if ($my_level_info['leavel'] == 2) {
-                    //团队管理奖 A级加盟商
-                    M('vendors')->where(['id'=>$my_level_info['id']])->save(['updatetime'=>time()]);
-                    $earnings_ta = M('vendors')->where(['id'=>$my_level_info['id']])->setInc('abonus',$com_ta);
+                        //市场培育收益记录
+                        if ($earnings_ta) {
+                            M('earnings')->add(['name'=>$list['name'],'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                        }
 
-                    //市场培育收益记录
-                    if ($earnings_ta) {
-                        M('earnings')->add(['name'=>$list['name'],'vid'=>$my_level_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
-                    }
+                    } else {
+                        if ($c_info['path'] != null) {
 
-                } else {
-                    if ($my_level_info['path'] != null) {
-                        //查找直系推荐关系中的最近B级加盟商(包括自己)
-                        $path = explode('-',$my_level_info['path']);
-                        $in_A['id']  = array('in',$path);
-                        $in_A['leavel'] = 2;
-                        $path_info_A = M('vendors')->field('id,leavel,code,path')->order('id desc')->where($in_A)->find();
+                            //查找直系推荐关系中的最近B级加盟商(包括自己)
+                            $path = explode('-',$c_info['path']);
+                            $in_A['id']  = array('in',$path);
+                            $in_A['leavel'] = 2;
+                            $path_info_A = M('vendors')->field('id,leavel,code,path')->order('id desc')->where($in_A)->find();
 
-                        if ($path_info_A) {
+                            if ($path_info_A) {
 //                            M('vendors')->where(['id'=>$path_info_A['id']])->save(['updatetime'=>time()]);
-                            $earnings_ta = M('vendors')->where(['id'=>$path_info_A['id']])->setInc('abonus',$com_ta);
-                            if ($earnings_ta) {
-                                M('earnings')->add(['name'=>$list['name'],'vid'=>$list['vid'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                                $earnings_ta = M('vendors')->where(['id'=>$path_info_A['id']])->setInc('abonus',$com_ta);
+                                if ($earnings_ta) {
+                                    M('earnings')->add(['name'=>$list['name'],'vid'=>$path_info_A['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                                }
                             }
                         }
                     }
                 }
+
 
             }
         } catch (\Exception $e) {
