@@ -13,9 +13,7 @@
 	<title>商城首页</title>
 </head>
 <body>
-	<input type="hidden" value='{{$cate}}' id="_cate">
-	<input type='hidden' value='{{$goods}}' id='_goods'>
-	<input type="hidden" value='{{$cartInfo}}' id="cartInfo">
+
 	<header id="header">
 		<!-- <span class="tab" index='0'>净水器</span>
 		<span class="tab" index='1'>净化器</span>
@@ -90,7 +88,11 @@
   	<div id="loading">
   		<img src="__PUBLIC__/Home/images/loading.gif" alt="加载中...">
   	</div>
-
+	  <script>
+		  var ThinkPHP = {
+			  shopIndexUrl : "{{:U('home/shop/index')}}"
+		  }
+	  </script>
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
   	<script src="__PUBLIC__/Home/js/public.js"></script>
   	<script src="__PUBLIC__/Home/js/shop/index.js"></script>
@@ -98,7 +100,6 @@
 	<script type="text/javascript" src="__PUBLIC__/Home/js/slide.js"></script>
 	<script>
 		$(function(){
-			
 			// 首页按钮
 			!function(){
 				// 创建 a 标签
