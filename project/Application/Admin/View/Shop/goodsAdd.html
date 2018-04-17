@@ -53,7 +53,7 @@
                                 <div class="checkbox i-checks">
                                     <volist name="attrInfo" id="vo">
                                         <label class="attr">
-                                            <input type="checkbox" data-name={{$vo.attr}} data-id="{{$vo.id}}"> <i></i> {{$vo.attr}}
+                                            <input type="checkbox"  data-name={{$vo.attr}} data-id="{{$vo.id}}"> <i></i> {{$vo.attr}}
                                         </label>
                                     </volist>
                                     <label class="attrList">
@@ -78,7 +78,7 @@
                                 <div class="checkbox i-checks">
                                     <volist name="courierList" id="vo">
                                         <label class="courier">
-                                            <input type="checkbox" data-name={{$vo.name}} data-id="{{$vo.id}}"> <i></i> {{$vo.name}}
+                                            <input type="checkbox" class="courierCheck" data-name={{$vo.name}} data-id="{{$vo.id}}"> <i></i> {{$vo.name}}
                                         </label>
                                     </volist>
                                     <label class="courierList">
@@ -489,7 +489,7 @@
             $("#form .attr").on("click", function(e){
                 bindClick();
             });
-            $("#form .iCheck-helper").on("click", function(e){
+            $(".attr .iCheck-helper").on("click", function(e){
                 bindClick();
             });
 
@@ -499,7 +499,7 @@
                 cbindClick();
             });
 
-            $("#form .iCheck-helper").on("click", function(e){
+            $(".courier .iCheck-helper").on("click", function(e){
                 cbindClick();
             });
             /* 快递费设置 */
