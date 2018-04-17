@@ -1,0 +1,61 @@
+body{
+    background-color: #F3F3F3;
+    width:100vw;
+    height: 100vh;
+}
+/* 加热时间 */
+.hotTime, .funOption, .repeat {
+    background-color: white;
+    padding: .8rem .5rem;
+    margin-bottom: 10px;
+}
+.hotTime > p:nth-child(1), .funOption > div:nth-child(1),
+.repeat > p {
+    font-size: .8rem;
+    color: #343434;
+    border-left: 7px solid #2EB6AA;
+    padding-left: .4rem;
+    margin-bottom: 1rem;
+}
+.hotTime > p:nth-child(2) > input[type="text"] {
+    width:100%;
+    border: 1px solid #2EB6AA;
+    border-radius: 7px;
+    height: 1.5rem;
+    padding-left: .2rem;
+}
+
+/* 功能选项 */
+.funOption {
+    background:white;
+}
+.funOption > div:nth-child(2), .funOption > div:nth-child(3), .repeat > div {
+    display: flex;
+    margin-bottom: 1rem;
+    justify-content: space-between;
+}
+.funOption > div:nth-child(2) > p, .funOption > div:nth-child(3) > p ,.repeat > div > p{
+    width: 46%;
+    height: 2rem;
+    text-align: center;
+    line-height: 2rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    color:white;
+    background-color: #B3B3B3;
+}
+
+.switchFoot > p {
+    width: 90%;
+    height: 2rem;
+    text-align: center;
+    line-height: 2rem;
+    font-size: 1rem;
+    color: white;
+    border-radius: 5px;
+    margin: 1rem auto;
+    background-color: #2EB6AA;
+}
+.checked {
+    background-color: #2EB6AA !important;
+}

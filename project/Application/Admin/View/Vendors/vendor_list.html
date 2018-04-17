@@ -21,7 +21,7 @@
                             <option <?php echo ($where['key']=="leavel")?'selected':''; ?> value="leavel">级别</option>
                             <option <?php echo ($where['key']=="user")?'selected':''; ?> value="user">分配用户名</option>
                         </select>
-                        <input type="text" name="keywords" placeholder="输入搜索关键字"  value="{{$where['keywords']}}"class="input form-control keywordscc"   style="width:40%">
+                        <input type="text" name="keywords" placeholder="输入搜索关键字"  value="{{$where['keywords']}}" class="input form-control keywordscc"   style="width:40%">
                         <select name="leavel" class="form-control abb"   style="width:30%">
                             <option   value="">-- 级别 --</option>
                             <option  value="0">超级管理员</option>
@@ -31,8 +31,9 @@
                             <option value="4">C级分销商</option>
                         </select>
                         <select name="status" class="form-control" name="account" style="width:30%">
-                            <option     <?php echo ($where['status']=="")?'selected':''; ?> value="">会员等级</option>
-                            <option   <?php echo ($where['status']=="0")?'selected':''; ?> value="0">非企业会员</option>
+                            <option     <?php echo ($where['status']=="")?'selected':''; ?> value="">-- 状态 --</option>
+                            <!-- <option     <?php echo ($where['status']=="")?'selected':''; ?> value="">会员等级</option> -->
+                            <option   <?php echo ($where['status']=="0")?'selected':''; ?> value="0">身份信息填写</option>
                             <option  <?php echo ($where['status']==1)?'selected':''; ?> value="1">公司信息填写</option>
                             <option  <?php echo ($where['status']==2)?'selected':''; ?> value="2">签协议</option>
                             <option <?php echo ($where['status']==3)?'selected':''; ?> value="3">待审批</option>
@@ -45,7 +46,7 @@
                         </select>
 
                         <span class="input-group-btn" style="display: inline-block;">
-                                <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
+                                <input type="submit" class="btn btn btn-primary submitbtn" name="sou"> <i class="fa fa-search"></i> 搜索</button>
                         </span>
                     </div>
                 </form>
@@ -120,11 +121,25 @@
             if (key =='leavel' ) {
                 $(".keywordscc").hide();
                 $(".abb").show();
+                level = true;
             } else {
                 $(".keywordscc").show();
                 $(".abb").hide();
             }
 
         });
+        var level = null;  //是否选中级别的标志符号
+        // 点击提交搜索
+        $('.submitbtn').click(function(){
+            if(level){
+                sessionStorage.setItem('level', level);
+            }else{
+                sessionStorage.setItem('level', '');
+            }
+        })
+        if(sessionStorage.getItem('level')){
+            $(".abb").show();
+            $(".keywordscc").hide();
+        }
     </script>
 </block>

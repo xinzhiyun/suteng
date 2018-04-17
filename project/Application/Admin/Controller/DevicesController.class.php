@@ -29,7 +29,12 @@ class DevicesController extends CommonController
         }
         $where['key'] = $_GET['key'];
         $where['keywords'] = $_GET['keywords'];
-
+        // ---- 解决非第一页搜索条件$_GET['p']不等于1的情况【start】
+        if(I('sou')){
+            $_GET['p'] = 1;
+            unset($_GET['sou']);
+        }
+        // ---- 【end】
         $count = $device                                                            
             ->where($map)
             ->alias('d')
@@ -169,7 +174,6 @@ class DevicesController extends CommonController
             ); // 设置附件上传类
             $upload->savePath = '/'; // 设置附件上传目录
             $info = $upload->uploadOne($_FILES['batch']);
-            dump($info);die;
             $filename = './Uploads' . $info['savepath'] . $info['savename'];
             $exts = $info['ext'];
             if (!$info) {
@@ -200,7 +204,6 @@ class DevicesController extends CommonController
             $devices = D('Devices');
             $data = $_POST;
             $res = $devices->getCate();
-            // dump($res);
             // dump((string)$data['type_id']);die;
             if(!in_array((string)$data['type_id'],$res)) E('第'.$i.'条'.$data['device_code'].'设备类型不存在！', 206);
             $info = $devices->create();
@@ -380,12 +383,18 @@ class DevicesController extends CommonController
                 $map['filtername'] = array('like',"%{$_GET['filtername']}%");
             }
         }
+        // ---- 解决非第一页搜索条件$_GET['p']不等于1的情况【start】
+        if(I('sou')){
+            $_GET['p'] = 1;
+            unset($_GET['sou']);
+        }
+        // ---- 【end】
         $filters = D('Filters');
         $count = $filters->where($map)->count();
         $page  = new \Think\Page($count,8);
         page_config($page);
         $pageButton =$page->show();
-        $data = $filters->where($map)->limit($Page->firstRow.','.$Page->listRows)->select();
+        $data = $filters->where($map)->limit($page->firstRow.','.$page->listRows)->order('updatetime desc')->select();
         $assign = [
             'data' => $data,
             'page' =>bootstrap_page_style($pageButton)
@@ -497,12 +506,21 @@ class DevicesController extends CommonController
         if(!empty($_GET['typename'])){
             $map['typename'] = array('like',"%{$_GET['typename']}%");
         }
+
+        // ---- 解决非第一页搜索条件$_GET['p']不等于1的情况【start】
+        if(I('sou')){
+            $_GET['p'] = 1;
+            unset($_GET['sou']);
+        }
+        // ---- 【end】
         $type = D('Type');
         $filters = D('Filters');
         $total = $type->where($map)->count();
-        $page  = new \Think\Page($total,8);
+        $page  = new \Think\Page($total,10);
+
         page_config($page);
         $pageButton =$page->show();
+       
         $data = $type->where($map)->limit($page->firstRow.','.$page->listRows)->order('id desc')->select();
         $filter = $filters->where(['status'=>0])->order('id desc')->select();
         $assign = [

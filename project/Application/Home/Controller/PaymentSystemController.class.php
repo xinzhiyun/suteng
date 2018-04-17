@@ -69,34 +69,35 @@ class PaymentSystemController extends CommonController
 
 
     /**
-     * [payConfirm 确认支付]
+     * [payConfirm 确认支付]  已迁移
      * @return [type] [description]
      */
     public function payConfirm()
     {
-        $address = D('Address');
-        $where['uid'] = session('user.id');
-        $where['status'] = 0;
-        $data = $address->where($where)->find();
-        $assign = [
-            'data' => json_encode($data),
-        ];
-
-        //调用微信JS-SDK类获取签名需要用到的数据
-        $weixin = new WeixinJssdk;
-        $signPackage = $weixin->getSignPackage();
-        // 查询用户微信中的openid
-        // $openId = $weixin->GetOpenid();
-        $openId = $_SESSION['open_id'];
-        //分配数据        
-        $this->assign('info',$signPackage);
-        $this->assign('openId',$openId);
-
-
-        $postage = 8.99;
-        $this->assign('postage',$postage);
-        $this->assign($assign);
-        $this->display();
+        echo '已停用,迁移至pay';exit;
+//        $address = D('Address');
+//        $where['uid'] = session('user.id');
+//        $where['status'] = 0;
+//        $data = $address->where($where)->find();
+//        $assign = [
+//            'data' => json_encode($data),
+//        ];
+//
+//        //调用微信JS-SDK类获取签名需要用到的数据
+//        $weixin = new WeixinJssdk;
+//        $signPackage = $weixin->getSignPackage();
+//        // 查询用户微信中的openid
+//        // $openId = $weixin->GetOpenid();
+//        $openId = $_SESSION['open_id'];
+//        //分配数据
+//        $this->assign('info',$signPackage);
+//        $this->assign('openId',$openId);
+//
+//
+//        $postage = 8.99;
+//        $this->assign('postage',$postage);
+//        $this->assign($assign);
+//        $this->display();
     }
 
     // 信息确认并生成订单
@@ -209,8 +210,11 @@ class PaymentSystemController extends CommonController
                 $order_id = $orderData['order_id'];
                 // 订单描述
                 $content = '速腾商城商品购买';
+                $openId = $_SESSION['open_id'];
+                $url = 'http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/notify');
+                A('Pay')->uniformOrder($openId,$money,$order_id,$content,$url);
 
-                $this->uniformOrderTow($money,$order_id,$content);
+//                $this->uniformOrderTow($money,$order_id,$content);
             }else{
                 // 订单不存在
                 echo -1;

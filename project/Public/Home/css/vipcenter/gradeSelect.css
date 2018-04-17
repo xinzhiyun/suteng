@@ -1,0 +1,215 @@
+body {
+	width: 100vw;
+	height: 100vh;
+}
+/* 内容 */
+.selectInfo{
+	padding: .6rem;
+}
+/* 标题 */
+.selectInfo > p {
+	font-size: 1rem;
+	color: rgb(55, 55, 55);
+	margin-bottom: 1rem;
+}
+/* 会员选择 */
+.gradeSelect {
+	display: flex;
+	justify-content: space-between;
+}
+
+/* 黄金会员 普通会员 */
+.goldGrade {
+	padding: .5rem .3rem 1.8rem .3rem;
+	position:relative;
+	border: 3px solid rgb(117, 183, 253);
+	border-radius: 7px;
+	width: 40vw;
+	text-align: center;
+}
+.goldGrade > p:nth-child(1){
+	color: rgb(56, 56, 56);
+	font-size: 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.goldGrade > p > span:nth-child(1){
+	width:1.5rem;
+	height: 1.3rem;
+	margin-right: .5rem;
+}
+img {
+	width: 100%;
+	height: 100%;
+}
+.goldGrade > p:nth-child(2){
+	font-size: 1.2rem;
+	margin-top: .5rem;
+}
+
+/* 确认 */
+.confirmBtn > p {
+	width: 85vw;
+	height: 8vh;
+	/* background-color: rgb(46, 182, 170); */
+	background-color: rgba(69, 69, 69, .5);
+	border-radius: 6px;
+	color: white;
+	text-align:center;
+	margin:8rem auto 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1rem;
+}
+
+/* 提醒信息 */
+.goldInfo {
+	display: none;
+	position: absolute;
+	width: 40vw;
+	background-color: white;
+	border-radius: 4px;
+	/* box-shadow: 0px 0px 10px #a0a0a0; */
+	top:6.5rem;
+	left: -.2rem;
+	padding: .6rem .4rem;
+	background: rgb(234, 235, 236);
+}
+.goldInfo:after {
+	content: "";
+	height: "";
+	width: "";
+	border: 10px solid transparent;
+	border-bottom-color: rgb(234, 235, 236);
+	left: 3.5rem;
+	top: -1.2rem;
+	position:absolute;
+}
+.goldInfo > p:nth-child(1) {
+	margin-bottom: .4rem;
+}
+.icon-shibai {
+	position: absolute;
+	top:.1rem;
+	right:.1rem;
+	color: rgb(201,201,201);
+}
+/* 选中变色 */
+.selectChange {
+	background: -webkit-linear-gradient(left top, rgb(117, 183, 253), rgb(153, 252, 239)); /* Safari 5.1 - 6.0 */
+	background: -o-linear-gradient(bottom right, rgb(117, 183, 253), rgb(153, 252, 239)); /* Opera 11.1 - 12.0 */
+	background: -moz-linear-gradient(bottom right, rgb(117, 183, 253), rgb(153, 252, 239)); /* Firefox 3.6 - 15 */
+	background: linear-gradient(to bottom right, rgb(117, 183, 253), rgb(153, 252, 239)); /* 标准的语法（必须放在最后） */
+	
+}
+.selectChange > p > span:nth-child(2){
+	color: white;
+}
+.selectChange > p {
+	color: white;
+}
+
+/* 付款 */
+.payKuan {
+	display: none;
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.2);
+}
+body .main .payKuan ul {
+	position: fixed;
+	bottom: 0;
+	height: 55%;
+	width: 100%;
+	margin: 0;
+	background-color: white;
+	display: flex;
+	flex-direction: column;
+	font-size: 1rem;
+	color: #4d4d4d;
+}
+body .main .payKuan ul li {
+	flex: 1;
+	display: flex;
+}
+body .main .payKuan ul li p {
+	margin: 0;
+	padding: 0;
+}
+body .main .payKuan ul li:nth-child(1) {
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: .3rem 0;
+	position: relative;
+}
+.icon-chacha{
+	position: absolute;
+	top: .7rem;
+	left: .7rem;
+	font-size: 1.5rem;
+}
+body .main .payKuan ul li:nth-child(1) p:nth-child(2) {
+	color: #f43030;
+}
+body .main .payKuan ul li:nth-child(2) {
+	align-items: center;
+	border-top: 1px solid #ededed;
+	padding-left:.5rem;
+	/* border-bottom: 1px solid #ededed; */
+}
+body .main .payKuan ul li:last-child {
+	flex: 4;
+	padding: 0.8rem 0.8rem 1rem 0.8rem;
+	display: flex;
+	flex-direction: column;
+}
+body .main .payKuan ul li:last-child div .xuanzhong {
+	font-size: 1.49333333rem;
+	margin-right: 0.85333333rem;
+}
+.payWay {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding:.5rem 0;
+	border-bottom: 1px solid #ededed;
+}
+.payWay:nth-child(1) {
+	padding-top: 0;
+}
+.payWay:nth-child(3) {
+	border-bottom: none;
+}
+.payWay > p {
+	display: flex;
+	align-items: center;
+}
+.payWay > p > span {
+	font-size: 2rem;
+	margin-right: .5rem;
+}
+img {
+	width: 1.7rem;
+	height: 1.4rem;
+	margin: 0 .7rem 0 .2rem;
+}
+body .main .payKuan ul li:last-child .payConfirm {
+	margin-top: 0.8rem;
+	display: flex;
+	justify-content: center;
+}
+body .main .payKuan ul li:last-child .payConfirm p {
+	width: 85vw;
+	height: 2.1rem;
+	background-color: #2EB6AA;
+	border-radius: 3px;
+	text-align: center;
+	line-height: 2.1rem;
+	color: white;
+}

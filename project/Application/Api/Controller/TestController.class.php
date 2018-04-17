@@ -91,8 +91,8 @@ class TestController extends Controller
         $msgs = [
             '0'=>['DeviceID'=>'', 'PackType'=>'SetData','Vison'=>'0','DeviceStause'=>'8'],//开机
             '1'=>['DeviceID'=>'', 'PackType'=>'SetData','Vison'=>'0','DeviceStause'=>'7'],//关机
-//            '2'=>['DeviceID'=>'', 'PackType'=>'SetData','Vison'=>'0','DeviceStause'=>'8'],//开启加热
-//            '3'=>['DeviceID'=>'', 'PackType'=>'SetData','Vison'=>'0','DeviceStause'=>'8'],//关闭加热
+            '2'=>['DeviceID'=>'', 'PackType'=>'SetData','Vison'=>'0','DeviceStause'=>'8'],//开启加热
+            '3'=>['DeviceID'=>'', 'PackType'=>'SetData','Vison'=>'0','DeviceStause'=>'8'],//关闭加热
         ];
 
         $time = time();

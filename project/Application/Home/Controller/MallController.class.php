@@ -5,38 +5,39 @@ use \Org\Util\WeixinJssdk;
 class MallController extends CommonController
 {
 
-    /**
-     * [chongzhi 充值]
-     * @return [type] [description]
-     */
-    public function chongzhi()
-    {   
-        // 查询条件
-        $showData['status'] = 1;
-        // 金币套餐
-        $data['gold'] = M('gold')->where($showData)->select();
-        // 银币套餐
-        $data['silver'] = M('silver')->where($showData)->select();
-        // 银币兑换套餐
-        $data['gold_silver'] = M('gold_silver')->where($showData)->select();
-        // 获取用户微信唯一标识
-        // $showUser['open_id'] = $_SESSION['user']['open_id'];
-        // // 查询用户信息
-        // $userData = M('users')->where($showUser)->find();
-        //调用微信JS-SDK类获取签名需要用到的数据
-        $weixin = new WeixinJssdk;
-        $signPackage = $weixin->getSignPackage();
-        // 查询用户微信中的openid
-        // $openId = $weixin->GetOpenid();
-        $openId = $_SESSION['open_id'];
-        // dump($data);die;
-        //分配数据        
-        $this->assign('info',$signPackage);
-        $this->assign('openId',$openId);
-        $this->assign('data',$data);
-        // dump($userData);die;
-        $this->display();
-    }
+//    /**
+//     * [chongzhi 充值]
+//     * @return [type] [description]
+//     */
+//    public function chongzhi()
+//    {
+//        // 查询条件
+//        $showData['status'] = 1;
+//        // 金币套餐
+//        $data['gold'] = M('gold')->where($showData)->select();
+//        // 银币套餐
+//        $data['silver'] = M('silver')->where($showData)->select();
+//        // 银币兑换套餐
+//        $data['gold_silver'] = M('gold_silver')->where($showData)->select();
+//        // 获取用户微信唯一标识
+//        // $showUser['open_id'] = $_SESSION['user']['open_id'];
+//        // // 查询用户信息
+//        // $userData = M('users')->where($showUser)->find();
+//        //调用微信JS-SDK类获取签名需要用到的数据
+//        $weixin = new WeixinJssdk;
+//        $signPackage = $weixin->getSignPackage();
+//        // 查询用户微信中的openid
+//        // $openId = $weixin->GetOpenid();
+//        $openId = $_SESSION['open_id'];
+//        // dump($data);die;
+//        //分配数据
+//        $this->assign('info',$signPackage);
+//        $sss=A('Pay')->wx_info();
+//        $this->assign('openId',$openId);
+//        $this->assign('data',$data);
+//        // dump($userData);die;
+//        $this->display();
+//    }
 
 
 
@@ -57,28 +58,27 @@ class MallController extends CommonController
             ->where($devices)
             ->join('__DEVICES_STATU__ ds ON d.device_code=ds.DeviceID', 'LEFT')
             ->find();
-        // echo '<pre>';
-        // print_r($devices['d.id']);die;
-        // print_r($data);
-        // print_r($res);die;
+
         $assign = [
             'res' => json_encode($res),
             'data' => json_encode($data),
         ];
         $this->assign('data',$assign);
         $this->display();
-    } 
+    }
 
-    // 信息确认并生成订单
+    /**
+     * 设备充值--信息确认并生成订单
+     */
     public function information()
     {
         // 获取用户uid
 //        $uid = $_SESSION['open_id'];
         $user_device = D('UserDevice');
         $map['ud.uid'] = session('user.id');
-        $bind_device = $user_device->getBindInof($map);
 
-        $bind_device_info = M('devices')->where(['device_code'=>$bind_device[0]['device_code']])->find();
+
+        $bind_device_info = M('devices')->where(['id'=> $_SESSION['device']['did']])->find();
 
         // 实例化订单模型
         $orders = M('orders');
@@ -199,6 +199,8 @@ class MallController extends CommonController
 //        }
     }
 
+
+    /*  已迁移至 Pay 控制器 李振东
     public function chooseMeal()
     {
         
@@ -224,25 +226,29 @@ class MallController extends CommonController
         $this->assign('list',json_encode($meal));
         $this->display();
     }
+    */
 
-    function getOrderId()
-    {
-      $orderId = onlyOrderId();
-
-      do {
-        //查询订单号是否存在
-        $oid = M('shop_order')->where("`order_id`='{$orderId}'")->field('id')->find();
-        $osid = D('OrderSetmeal')->where("`order_id`='{$orderId}'")->field('id')->find();
-        if ($oid || $osid) {
-            $res = true;
-        } else {
-            $res = false;
-        }
-        // 如果订单号已存在再重新获取一次
-      } while ($oid);
-      // 绝对唯一的32位订单ID号
-      return $orderId;
-    }
+//    /**
+//     * 订单ID
+//     * @return string   绝对唯一的32位订单ID号
+//     */
+//    function getOrderId()
+//    {
+//        do {
+//            $orderId = onlyOrderId();
+//            //查询订单号是否存在
+//            $oid = M('shop_order')->where("`order_id`='{$orderId}'")->field('id')->find();
+//            $osid = D('OrderSetmeal')->where("`order_id`='{$orderId}'")->field('id')->find();
+//            if ($oid || $osid) {
+//                $res = true;
+//            } else {
+//                $res = false;
+//            }
+//            // 如果订单号已存在再重新获取一次
+//        } while ($res);
+//
+//        return $orderId;
+//    }
 }
 
 

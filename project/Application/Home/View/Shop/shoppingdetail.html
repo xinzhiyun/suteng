@@ -320,7 +320,7 @@
 					if(typeof JSON.parse(res) == 'number'){
 
 						// 跳转到订单确认页面
-						location.href = '{{:U("PaymentSystem/payConfirm")}}';
+						location.href = '{{:U("Pay/payConfirm")}}';
 					}else{
 						//支付发生错误，无法生成订单号
 						parent.layer.msg('系统发生错误，请稍后再试！');

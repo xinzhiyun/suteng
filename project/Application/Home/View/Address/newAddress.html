@@ -71,7 +71,7 @@
 	<script>
 		// 如果存在订单id，则返回订单确认界面；否则回到‘我的’界面
 		if(sessionStorage.getItem("order_id")){
-			history.replaceState({}, null, '{{:U("PaymentSystem/payConfirm")}}');
+			history.replaceState({}, null, '{{:U("Pay/payConfirm")}}');
 
 		}else{
 			history.replaceState({}, null, '{{:U("VipCenter/index")}}');
@@ -194,7 +194,7 @@
 				    				// 如果存在订单号则跳回订单确认界面
 				    				if(sessionStorage.getItem("order_id")){
 					    				setTimeout(function(){
-					    					location.href = '{{:U("Home/PaymentSystem/payConfirm")}}';
+					    					location.href = '{{:U("Home/Pay/payConfirm")}}';
 					    				},500);
 									}else{
 										// 没有订单号则返回地址管理界面
@@ -282,7 +282,7 @@
 				    			if(sessionStorage.getItem("order_id")){
 				    				// 如果有商品数据
 				    				if(goods_data || lvxinData || shopCar_data){
-				    					location.href = "{{:U('PaymentSystem/payConfirm')}}";
+				    					location.href = "{{:U('Pay/payConfirm')}}";
 				    				}
 				    			}else{
 				    				//调回地址列表界面

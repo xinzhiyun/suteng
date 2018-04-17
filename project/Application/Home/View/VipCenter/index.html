@@ -5,8 +5,9 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
 	<link rel="stylesheet" href="//at.alicdn.com/t/font_574708_lrbbkvcwhcjo47vi.css">
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/index.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/index.css"> 
 	<title>会员中心</title>
 </head>
 <body>
@@ -17,8 +18,14 @@
 		<div id="hRight">
 			<div id="qrCode_share">
 				<i class="iconfont icon-erweima"></i>
+				<!-- <i class="iconfont icon-iconfontfenxiang2"></i> -->
 			</div>
-			<p>{{$user['nickname']}}</p>
+			<p class="member">
+				<span>{{$user['nickname']}}</span>&nbsp;&nbsp;
+				<!-- <i class="iconfont icon-wodehuiyuan0101"></i> -->
+				<span><img src="__PUBLIC__/Home/images/hj.png" alt=""></span>
+				<span>黄金会员</span> 
+			</p>
 			<div id="package">
 				<span>我的钱包：</span>
 				<div>
@@ -69,7 +76,7 @@
 					<i class="iconfont icon-dayuhao-copy-copy"></i>
 				</a>
 
-			</p>
+			</p> 
 			<div>
 				<a href="{{:U('Home/VipCenter/reward')}}">
 					<span>金币{{$comData['gold_num']}}</span>
@@ -84,7 +91,7 @@
 		</div>
 		<div id="more">
 			<div id="pay">
-				<a  href="{{:U('Home/Mall/chongzhi')}}">
+				<a  href="{{:U('Home/Pay/chongzhi')}}">
 					<i class="iconfont icon-duihuan"></i><!-- icon-duihuan- -->
 					<p>兑换金银币</p>
 					<i class="iconfont icon-dayuhao-copy-copy"></i>
@@ -115,6 +122,13 @@
 				<a href="{{:U('Home/Mail/msgcenter')}}">
 					<i class="iconfont icon-msgcenter"></i>
 					<p>站内信</p>
+					<i class="iconfont icon-dayuhao-copy-copy"></i>
+				</a>
+			</div>
+			<div id="member">
+				<a href="####">
+					<i class="iconfont icon-huiyuan"></i>
+					<p>会员升级</p>
 					<i class="iconfont icon-dayuhao-copy-copy"></i>
 				</a>
 			</div>

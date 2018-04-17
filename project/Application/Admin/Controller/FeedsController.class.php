@@ -89,6 +89,7 @@ class FeedsController extends CommonController
                         ->join('st_users ON st_repair.uid = st_users.id','LEFT')
                         ->field('st_repair.*,st_users.nickname')
                         ->limit($page->firstRow.','.$page->listRows)
+                        ->order('id desc')
                         ->select();
         // dump($userlist);
         $where['key'] =I('get.key');

@@ -6,134 +6,7 @@
 	<title>定时开关</title>
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
-	<style>
-		body{
-			font-size: 0.8rem;
-			color:#373737;
-		}
-		._setTime{
-			width: 100%;
-			margin-bottom: 2rem;
-		}
-		._setTimecontain hgroup{
-			width:100%;
-			border-bottom: 1px solid #ccc;
-		}
-		.hgContain{
-			width: 94%;
-			height: 3.5rem;
-			padding:1.0rem 3% 0rem;
-		}
-		/*删除*/
-		hgroup>span{
-			line-height: 5rem;
-			font-size: 0.8rem;
-			height: 120%;
-		}
-		.setLeft{
-			width: 70%;
-			display: inline-block;
-		}
-		.setLeft p{
-			padding:0.2rem;
-			display: block;
-			height: 1.4rem;
-		}
-		.setLeft span{
-			font-size:0.8rem;
-		}
-		.setLeft span.sLeft{
-			float: left;
-		}
-		.setLeft span.sRight{
-			float: right;
-		}
-		.setLeft span.sLeft,.setLeft span.sRight{
-			/*line-height:  1.6rem;*/
-		}
-		.setRight{
-			display: inline-block;
-			width: 20%;
-			height: 2.3rem;
-			margin-left: 0.5rem;
-		}
-
-		/*开关*/
-		.setRight div[name="one"] {
-			width: 2.266667rem;
-		     height: 1.333333rem;
-		     border-radius: 0.666667rem;
-		     position: relative;
-		     margin:0.666667rem auto;
-		}
-		.setRight div[name="two"] {
-			width: 1.22rem;
-		    height:1.22rem;
-		    border-radius: 0.64rem;
-		    position: absolute;
-		    background: white;
-		    box-shadow: 0px 2px 4px rgba(0,0,0,0.4);
-		}
-		.open1{
-		    background: rgba(0,184,0,0.8);
-		}
-		.open2{
-		    top: 0.026667rem;
-		    right: 0.013333rem;
-		}
-		.close1{
-		    background: rgba(255,255,255,0.4);
-		    border:0.04rem solid rgba(0,0,0,0.15);
-		    border-left: transparent;
-		}
-		.close2{
-		    left: 0px;
-		    top: 0px;
-		    border:0.026667rem solid rgba(0,0,0,0.1);
-		}
-		/*删除*/
-		.delBtn{
-			display: inline-block;
-			position: absolute;
-			left: 84%;
-			top: -22%;
-			display: none;
-		}
-		.delBtn input{
-			height:5.55rem;
-			background: #FA4343;
-			width: 3.0rem;
-			border:none;
-			color:#fff;
-		}
-		.settimeFoot{
-		  width: 90%;
-	      padding: 2% 5%;
-	      height: 1.6rem;
-	      line-height:1.6rem;
-	      position: fixed;
-	      bottom: 0;
-	      border-top: 1px solid #F6F6F6;
-	      background: #fff;
-	  }
-		.settimeFoot p i{
-			color: #41BDB1;
-		    padding-bottom:0.2rem;
-		    padding-right: 0.6rem;
-		    float: left;
-		    font-size: 1.2rem;
-		}
-		.settimeFoot span{
-			line-height:1.4rem;
-      		font-size: 0.72rem;
-      		font-weight: 500;
-		}
-		hgroup>span{
-			line-height: 4.5rem;
-		}
-		
-	</style>
-
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/switch/index.css">
 </head>
 <body>
 	<div class="_setTime">
@@ -164,6 +37,7 @@
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 	<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+	<script src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script>
 		$(function(){
 			// 首页按钮
@@ -184,51 +58,6 @@
 		      // console.log(home)
 		    }()
 		})
-	  // 开关效果
-    	// window.onload=function(){
-     // 	 	$("div[name='two']").click(function(){
-     // 	 		var divone=$(this).parent().attr('class');
-     // 	        var divtwo=$(this).attr('class');
-     // 	        // console.dir(divone);
-     // 	 		if(divtwo=='close2'){
-     // 	 			$(this).removeClass('close2').addClass('open2');
-     // 	 			$(this).parent().removeClass('close1').addClass('open1');
-     // 	 		}else if(divtwo=='open2'){
-     // 	 			$(this).removeClass('open2').addClass('close2');
-     // 	 			$(this).parent().removeClass('open1').addClass('close1');
-     // 	 		}
-     // 	 	});
-    	// }
-    	// // 删除的样式
-    	// slipDel('hgroup','i')
-    // 	var timeObj, timeHTML = '';
-    // 	if(sessionStorage.getItem("timeObj")){
-    // 		timeObj = JSON.parse(sessionStorage.getItem("timeObj"));
-    // 		console.log(timeObj);
-    // 		for(var i=0; i<timeObj.length; i++){
-    // 			console.log(timeObj[i])
-    // 			timeHTML += '<hgroup>'+
-				// 	'<div class="hgContain .clearfix" i="1">'+
-				// 		'<div class="setLeft .clearfix">'+
-				// 			'<p><span  class="sLeft">关机时间</span><span class="sRight"><b>'+ timeObj[i].shutdown.slice(0,2) +'</b>时：<b>'+ timeObj[i].shutdown.slice(-2) +'</b>分</span>	</p>'+
-				// 			'<p><span>开机时间</span><span class="sRight"><b>'+ timeObj[i].poweroff.slice(0,2) +'</b>时：<b>'+ timeObj[i].poweroff.slice(-2) +'</b>分</span></p>'+
-				// 		'</div><div class="setRight">'+
-				// 			'<div class="open1" name="one"><!-- id="divone" -->'+
-	   //     				 		'<div class="open2" name="two"></div><!-- id="divtwo" -->'+
-	   //  					'</div>'+
-				// 		'</div>'+
-				// 		'<div class="delBtn">'+
-				// 		'<input type="submit" value="删除">'+
-				// 		'</div>'+
-				// 	'</div>'+
-				// '</hgroup>';
-    // 		}
-    // 		console.log(timeHTML)
-    // 		$("._setTimecontain").html(timeHTML)
-    // 	}else{
-    // 		timeHTML = '<div style="width: 100vw;height:50vh;display:flex;align-items:center;justify-content:center">暂无数据</div>';
-    // 		$("._setTimecontain").html(timeHTML)
-    // 	}
 
 
    	/**
@@ -317,28 +146,40 @@
    	// 删除按钮
 	slipDel('._setTimecontain','hgroup','statenum');
 	$('._setTimecontain').on('click','.del',function(e){
-		// console.dir($(this).parent());
-		// $(this).parent().remove();
-		var id = $(this).parent('hgroup').attr('alt');
-		var _this = $(this);
-		//console.dir(id);
-	        $.ajax({
-	            url:"{{:U('Home/Task/del')}}",
-	            dataType:"json",
-	            data:{'id':id},
-	            type: 'post',
-	            success:function(res){
-	                if(res.code == 200){
-	                    // 有数据，数据格式查看 26 行
-	                    $(_this).parent('hgroup').remove();
-	                }else{
-	                    // 无数据，数据格式查看 32 行
-	                    swal('删除失败',res.message, "error");
-	                }
-	            }
-	        });
+		// 询问是否删除
+		layer.confirm("确认删除?", {icon: 3, title:''}, function(index) {
+			// console.dir($(this).parent());
+			// $(this).parent().remove();
+			var id = $(this).parents('hgroup').attr('alt');
+			var _this = $(this);
+			// console.dir(id);
+			$.ajax({ 
+				url: "{{:U('Home/Task/del')}}",
+				type: 'post',
+				data: {'id': id},
+				success: function(res){
+					if(res.code == 200){
+						// 有数据，数据格式查看 26 行
+						swal('删除失败',res.message, "success");
+						$(_this).parents('hgroup').remove();
+					}else{
+						// 无数据，数据格式查看 32 行
+						swal('删除失败',res.message, "error");
+					}
+				},
+				error: function(err){
+					console.log('错误：',err);
+				}
+			});
+
+
+			layer.close(index)
+		});
+		
 
 	});
+
+
 	$('._setTimecontain').on('click','.close1',function(){
         var id = $(this).parents('hgroup').attr('alt');
 	    var _this = $(this);
@@ -376,61 +217,11 @@
                   }
               }
           });
-      });
-
-
-      // var id=
-	  // $.ajax({
-   //              url:"{{:U('Home/Task/del')}}",
-   //              dataType:"json",
-   //              data:{'id':id},
-   //              type: 'post',
-   //              success:function(res){
-
-   //                  if(res.code == 200){
-
-   //                     $('._setTimecontain').on('click','.del',function(e){
-
-			// 			// console.dir($(this).parent());
-						
-			// 			$(this).parent().remove();
-
-			// 			// "message":"\u5220\u9664\u6210\u529f!",  
-			// 			console.dir(res);  
-
-			// 		   });
-
-   // //                  }else{
-
-   //                      // 无数据，数据格式查看 32 行
-   //                      // "code":403,                                                                                  
-   //             			// "message":"\u5220\u9664\u5931\u8d25\uff0c\u8bf7\u6307\u5b9a\u5220\u9664\u6761\u4ef6!"    
-
-   //                  }
-   //              }
-   //          });
-
-            // 成功，返回数据格式：
-            // {
-            //     "code":200,                                                                        
-            //     "message":"\u5220\u9664\u6210\u529f!",                                              
-            // }
-
-            // 失败，返回数据格式：
-            // {
-            //     "code":403,                                                                                  
-            //     "message":"\u5220\u9664\u5931\u8d25\uff0c\u8bf7\u6307\u5b9a\u5220\u9664\u6761\u4ef6!"             
-            // }
-
-
-
-
-
-
-
-
-
-
+	  });
+	//   弹框
+	layui.use("layer", function() {
+		var layer = layui.layer;
+	})
 
     </script>
 </body>

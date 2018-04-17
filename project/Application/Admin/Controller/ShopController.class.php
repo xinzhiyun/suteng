@@ -99,7 +99,7 @@ class ShopController extends CommonController
      */
     public function goods()
     {
-        $map = '';
+        // $map = '';
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
             $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
         }
@@ -126,9 +126,16 @@ class ShopController extends CommonController
         $attr = D('Attr');
         $attrInfo = $attr->select();
         $goodsList = $goods->select();  //暂时无用
+
+        /* 添加快递公司选择 */
+        $courier = M('courier');
+        $courierList = $courier->where('status=1')->field('id,name')->select();
+        /* 结束 */
+
         $assign = [
             'cateInfo' => $cateInfo,
             'attrInfo' => $attrInfo,
+            'courierList' => $courierList,
         ];
         $this->assign($assign);
         $this->display();
@@ -160,6 +167,8 @@ class ShopController extends CommonController
     // 商品添加处理
     public function goodsAction()
     {
+        // dump($_POST);die;
+       
         try{
             $goods_add = D('Goods');
             $attr_val = D('AttrVal');
@@ -181,7 +190,7 @@ class ShopController extends CommonController
             $goods_add->where(['id'=>$goods_status])->save(['vid'=>$_SESSION['adminInfo']['id']]);
             $goodsDetail['gid'] = $goods_status;
             $goodsDetail['cost'] = $data['cost'];
-            $goodsDetail['stock'] = $data['stock'];
+            // $goodsDetail['stock'] = $data['stock'];
             if($data['is_install'] == 'on'){
                 $goodsDetail['is_install'] = 1;
             } else {
@@ -197,6 +206,7 @@ class ShopController extends CommonController
             $goodsDetail_status = $goods_detail->add($goodsDetail);
             // $attrVal['val'] = $data['attr_val'];
 
+            //商品属性添加
             $attrVal['gid'] = $goods_status;
             foreach ($data['attr'] as $key => $val) {
                 if($attr->where('id='.$key)->field('id')){
@@ -210,6 +220,51 @@ class ShopController extends CommonController
                     E('属性缺失，请刷新页面', 506);
                 }
             }
+
+
+            //属性值添加完成后，将属性名字也写入库
+            foreach ($data['attrName'] as $key => $value) {
+                $gid = $goods_status;
+                $aid = $key;
+                $ainfo['aname'] = $value;
+                //进行添加
+                M('AttrVal')->where('gid='.$gid .' AND aid='.$aid)->save($ainfo);   
+            }
+
+            /* 商品快递费添加 */
+            foreach ($data['courier'] as $key => $value) {
+                $data['gid'] = $goods_status;
+                $data['cid'] = $key;
+                $data['cprice'] = $value;
+
+                //插入数据前先查询同一个商品是否有同一个快递
+                $info = M('GoodsCourier')->where('gid='.$data['gid'].' AND cid='.$data['cid'])->select();
+
+                if ($info) {
+                    E('此商品已经有设置了这个快递的价格，请前往更改',203);
+                } else {
+                    //进行添加
+                    $list = M('GoodsCourier')->add($data);
+
+                    if (!$list) {
+                        E('快递价格设置失败，请刷新页面', 506);
+                    } 
+                }
+            }
+
+            //商品快递费添加完成后，将快递公司名字也写入库
+            foreach ($data['courierName'] as $key => $value) {
+                $gid = $goods_status;
+                $cid = $key;
+                $info['cname'] = $value;
+                //进行添加
+                M('GoodsCourier')->where('gid='.$gid .' AND cid='.$cid)->save($info);   
+            }
+
+
+            /* 商品快递费添加 */
+            
+
 
             // 商品单价添加
             foreach ($price as $key => $value) {
@@ -225,6 +280,8 @@ class ShopController extends CommonController
                 $goods_add->rollback();
                 E('商品添加失败，请重新添加',407);
             }
+
+
         } catch (\Exception $e) {
             $err = [
                 'code' => $e->getCode(),
@@ -303,6 +360,41 @@ class ShopController extends CommonController
     public function goodEdit()
     {   
 
+        //修改商品之前先查询出所有的快递公司
+        $courierList = M('courier')->where('status = 1')->select();
+
+        //查询出所有分类
+        $categoryList = M('category')->field('id, name')->select();
+
+        //查询出所有属性
+        $arrtList = M('attr')->select();
+        
+        //获取商品id
+        $id = $_GET['gid'];
+        //实例化商品对象
+        $goods = M('goods');
+
+        $goodsInfo=D('goods')->getGoodInfo($id);
+        
+        // dump($goodsInfo);
+        $price = $goodsInfo['price'];
+        $attrVal = $goodsInfo['attr_val'];
+        $goodsCourier = $goodsInfo['goods_courier'];
+        $goodsDetail = $goodsInfo['goods_detail'];
+
+
+        $this->assign('courierList', $courierList);
+        $this->assign('categoryList', $categoryList);
+        $this->assign('arrtList', $arrtList);
+        $this->assign('goodsInfo', $goodsInfo);
+        $this->assign('price', $price);
+        $this->assign('attrVal', $attrVal);
+        $this->assign('goodsCourier', $goodsCourier);
+        $this->assign('goodsDetail', $goodsDetail);
+        $this->display();
+
+        die;
+
         $gid = $_GET['gid'];
         $where['st_goods.id'] = $gid;
         $goods = D(Goods);
@@ -328,13 +420,21 @@ class ShopController extends CommonController
         // 商品属性
         $attr = D('Attr');
         $attrInfo = $attr->select();
+
+        /* 新增--查询商品快递运费信息 */
+        $gc = M('GoodsCourier');
+        $gcInfo = $gc->alias('gc')->where('gc.gid='.$gid)->join('__COURIER__ c ON gc.cid = c.id')->select();
+
         $assign = [
             'cateInfo'  => $cateInfo,
             'attrInfo'  => $attrInfo,
             'goodsInfo' => $goodsInfo,
             'pre'       => $pre,
+            //商品快递运费信息
+            'gcInfo'    => $gcInfo,
         ];
-        // dump($assign);
+        dump($assign);
+
         $this->assign($assign);
         $this->display();
         
@@ -628,4 +728,374 @@ class ShopController extends CommonController
             $this->ajaxReturn($err);
         }
     }
+
+
+    /* 新增功能 -- 库存单独管理 */
+
+    /**
+     * [inventory 库存列表]
+     * @return [type] [description]
+     */
+    public function inventory()
+    {
+        //查询出所有商品的库存量
+        // $map = '';
+        if (!empty(I('get.keywords'))) {
+            $map['g.name'] = array('like',"%".I('get.keywords')."%");
+        }
+
+        $cate = D('Category');
+        $cateInfo = $cate->getAllCate();
+        $goods = D('Goods');
+        $map['g.status'] = array('neq',2);
+        $goodsList = $goods->getGoodsList($map);
+        $assign = [
+            'data' => $goodsList['goodsData'],
+            'cateInfo'=>$cateInfo,
+            'show' => $goodsList['show'],
+        ];
+
+        // dump($assign);
+        $this->assign($assign);
+        $this->display();
+
+    }
+
+    /**
+     * [inventoryAdd 库存添加处理]
+     * @return [type] [description]
+     */
+    public function inventoryAdd()
+    {
+        try {
+                
+            //接受POST数据
+            $data['allnum'] = I('post.allnum');
+            $data['gid'] = I('post.gid');
+
+            // dump($data);die;
+            $inventory = M('inventory');
+
+            //添加库存前先判断该商品是否已经存在于库存表
+            if ($inventory->where('gid='.$data['gid'])->find()) {
+
+                E('该商品已存在于库存表，请前往更改页面更改','203');
+
+            } else {
+                //添加商品库存数据
+                $info = $inventory->add($data);
+
+                if ($info) {
+                        E('添加成功',$info);
+                    }else{
+                        E('添加失败',203);
+                }      
+            }
+                    
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [inventoryAddList 库存添加页面显示]
+     * @return [type] [description]
+     */
+    public function inventoryAddList()
+    {
+        //查询所有商品
+        $glist = D('goods')->field('id,name')->select();;
+        // dump($glist);
+        
+        $this->assign('glist',$glist);
+        $this->display('inventory_add');
+
+    }
+
+    /**
+     * [inventoryEdid 异常库存编辑]
+     * @param  [type] $gid [description]
+     * @return [type]      [description]
+     */
+    public function inventoryEdid()
+    {
+
+        try {
+                
+            //接受POST数据
+            $data['abnormalnum'] = I('post.abnormalnum');
+            $id = $_POST['id'];
+
+            $inventory = M('inventory');
+            //修改库存数据
+            $info = $inventory->where('gid='.$id)->save($data);
+
+            if ($info) {
+                    E('修改成功',$info);
+                }else{
+                    E('修改失败',203);
+            }         
+            
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+
+        
+    }
+
+    /**
+     * [inventoryEdidList 异常库存编辑页面]
+     * @return [type] [description]
+     */
+    public function inventoryEdidList()
+    {
+        // echo $gid;
+        //查询商品
+        $ginfo = D('goods')->field('id,name')->find($_GET['gid']);
+        // dump($ginfo);
+
+        $this->assign('ginfo', $ginfo);
+        $this->display('inventory_edit');
+    }
+
+    /**
+     * [ainventoryEdid 总库存编辑]
+     * @param  [type] $gid [description]
+     * @return [type]      [description]
+     */
+    public function ainventoryEdid()
+    {
+
+        try {
+                
+            //接受POST数据
+            $data['allnum'] = I('post.allnum');
+            $id = $_POST['id'];
+
+            $inventory = M('inventory');
+            //修改库存数据
+            $info = $inventory->where('gid='.$id)->save($data);
+
+            if ($info) {
+                    E('修改成功',$info);
+                }else{
+                    E('修改失败',203);
+            }         
+            
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+
+        
+    }
+
+    /**
+     * [ainventoryEdidList 总库存编辑页面]
+     * @return [type] [description]
+     */
+    public function ainventoryEdidList()
+    {
+        // echo $gid;
+        //查询商品
+        $ginfo = D('goods')->field('id,name')->find($_GET['gid']);
+        // dump($ginfo);
+
+        $this->assign('ginfo', $ginfo);
+        $this->display('ainventory_edit');
+    }
+
+
+
+
+    /* 快递公司模块添加 */
+
+    /**
+     * [courier 快递公司显示]
+     * @return [type] [description]
+     */
+    public function courier()
+    {   
+        //接受处理搜索条件
+        if (!empty(I('get.keywords'))) {
+            $map['name'] = array('like',"%".I('get.keywords')."%");
+        }
+
+        $courier = D('courier');
+        $clist = $courier->where($map)->select();
+
+        $this->assign('clist', $clist);
+        $this->display();
+    }   
+
+    /**
+     * [courierAdd 执行快递公司添加]
+     * @return [type] [description]
+     */
+    public function courierAdd()
+    {
+        try {      
+            //接受POST数据
+            $data['name'] = I('post.name');
+          
+            // dump($data);die;
+            $courier = M('courier');
+
+            //添加快递公司前先判断快递公司是否已经存在于表中
+            if ($courier->where("name = '{$data['name']}'")->find()) {
+
+                E('该快递公司已存在，如需改名请前往更改页面更改','203');
+
+            } else {
+                //添加快递公司
+                $info = $courier->add($data);
+
+                if ($info) {
+                        E('添加成功',$info);
+                    }else{
+                        E('添加失败',203);
+                }      
+            }
+                    
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [courierAddList 加载快递公司添加页面]
+     * @return [type] [description]
+     */
+    public function courierAddList()
+    {
+        $this->display('courier_add');
+    }
+
+    /**
+     * [courierEdit 执行修改快递公司]
+     * @return [type] [description]
+     */
+    public function courierEdit()
+    {
+        try {
+                
+            //接受POST数据
+            $data['name'] = $_POST['name'];
+            $id = $_POST['id'];
+            $data['status'] = $_POST['status'];
+
+            $courier = M('courier');
+            //修改库存数据
+            $info = $courier->where('id='.$id)->save($data);
+
+            if ($info) {
+                    E('修改成功',$info);
+                }else{
+                    E('修改失败',203);
+            }         
+            
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [courierEditList 快递公司编辑页面加载]
+     * @return [type] [description]
+     */
+    public function courierEditList($id)
+    {
+        $cinfo = M('courier')->find($id);
+
+        $this->assign('cinfo', $cinfo);
+        $this->display('courier_edit');
+    }
+
+    /**
+     * [courierDel 快递公司删除]
+     * @return [type] [description]
+     */
+    public function courierDel()
+    {
+        try {
+                
+            //接收要删除数据的id
+            $id = $_POST['id'];
+
+            $courier = M('courier');
+            //删除快递表信息
+            $info = $courier->where('id='.$id)->delete();
+            
+            if ($info) {
+                //查看关联表中是否存在这个快递公司
+                if (M('GoodsCourier')->where('cid='.$id)->select()) {
+                    //存在
+                    //删除快递公司的同时也要删除关联表的信息
+                    $gc = M('GoodsCourier')->where('cid='.$id)->delete();
+                }
+
+                E('删除成功',$info);
+            } else {
+                    E('删除失败',203);
+            }         
+            
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [goodsCourier 修改商品对应的快递价格]
+     * @return [type] [description]
+     */
+    public function goodsCourierEdit($gid)
+    {
+        echo $gid;
+    }
+
+    /**
+     * [goodsCourierList 查询商品对应的运费]
+     * @return [type] [description]
+     */
+    public function goodsCourierList()
+    {
+        try {
+            $gid = I('post.gid');
+            $gc = M('GoodsCourier');
+            $data = $gc->alias('gc')->where('gc.gid='.$gid)->join('__COURIER__ c ON gc.cid = c.id')->select();
+
+            $this->ajaxReturn($data);
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+
 }

@@ -47,7 +47,7 @@ class UsersModel extends Model
     }
 
     // 设备解除绑定
-    public function unBind($where=array(),$uid=array())
+    public function unBind2($where=array(),$uid=array())
     {
         $use_device = M('UserDevice');
         $this->startTrans();
@@ -88,5 +88,28 @@ class UsersModel extends Model
             $this->rollback();
             return false;
         }
+    }
+
+    public function unbind($uid,$device_code)
+    {
+        $user_device = M('UserDevice');
+        $device = M('devices')->where(['device_code'=>$device_code])->find();
+        $did = $device['id'];
+        $res = $user_device->where(['did'=>$did,'uid'=>$uid])->delete();
+        $count_devices = $user_device->where(['uid'=>$uid])->count();
+        if($count_devices > 0){
+            $userDevice = $user_device->where(['uid'=>$uid])->find();
+            $res2 = $user_device->where(['id'=>$userDevice['id']])->setField('status',1);
+            if($res && $res2){
+                return true;
+            } else {
+                return false;
+            }  
+        }
+        if($res){
+            return true;           
+        } else {
+            return false;
+        }        
     }
 }

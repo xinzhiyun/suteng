@@ -11,122 +11,55 @@
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 	<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
-	<style>
-		body{
-				font-size: 0.8rem;
-				color:#373737;
-			}
-		.switchTop{
-			width: 100%;
-			border-bottom:0.4rem solid #ECECEC;
-			margin-bottom: 1.5rem;
-		}
-		.swContain{ 
-			width: 100%;
-			padding:0.533333rem auto 0rem;
-			/*margin-bottom: 1rem;*/
-		}
-		.swContain p{
-			padding: 0.2rem 0 0.266667rem 0.5rem;
-			font-size: 0.8rem;
-			line-height: 2.666667rem;
-		}
-		.inputTime{
-			width: 100%;
-			height: 1.6rem;
-			border-top:1px solid #ECECEC;
-			border-bottom:1px solid #ECECEC;
-			text-align: center;
-			margin: 2.0rem 0 3.0rem;
-		}
-		.inputTime input{
-			width: 40%;
-			margin: 0 auto;
-			height: 1.6rem;
-			border:none;
-			text-align: center;
-			letter-spacing: 0.133333rem;
-			padding-left: 0.4rem;
-			margin-left: 3rem;
-			background: #fff;
-		}
-		.switchFoot{
-			height: 4.0rem;
-			margin: 0 auto;
-			position: relative;
-			width: 86vw;
-		}	
-		.switchFoot input{
-			width:100%;
-			height: 2.133333rem;
-			padding:0.2rem 0;
-			position: absolute;
-			bottom: 0;
-			border:none;
-			border-radius: 0.2rem;
-			background: #2EB6AA;
-			/*background: #fff;*/
-			color:#fff;
-			font-size: 0.82rem;
-			letter-spacing: 0.1rem;
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/switch/setTime.css">
 
-		}
-		/*兼容性*/
-		@media screen and (max-height:520px) {
-				.inputTime {
-	   				 margin: 1rem 0 1rem;
-				}
-		}
-		.action_type,.time_type{
-			display: flex;
-           -webkit-justify-content: center; 
-           -moz-justify-content: center; 
+	<!-- 日期插件 -->
+	<script src="__PUBLIC__/Home/datechajian/dev/jquery-1.9.1.js"></script>
 
-		}
-		.time_type{
-			margin: 2rem auto 3rem;
-		}
-		.action_type>span,.time_type>span{
-			display: inline-block;
-			padding:0.2rem 0.3rem;
-			text-align: center;
-			color: #373737;
-			background: #FFF;
-			margin:0rem 0.3rem;
-			border-radius: 0.2rem;
-			border:1px solid #f1f1f1;
-		}
-		.time_type>span{
-			padding:0.3rem 1rem;
-			margin:0 0.7rem;
+    <script src="__PUBLIC__/Home/datechajian/dev/js/mobiscroll.core-2.5.2.js" type="text/javascript"></script>
+	<script src="__PUBLIC__/Home/datechajian/dev/js/mobiscroll.core-2.5.2-zh.js" type="text/javascript"></script>
 
-		}
-		span.checked{
-			color: #fff;
-			background: #2EB6AA;
-			border:1px solid #2EB6AA;
-		}
+	<link href="__PUBLIC__/Home/datechajian/dev/css/mobiscroll.core-2.5.2.css" rel="stylesheet" type="text/css" />
+	<link href="__PUBLIC__/Home/datechajian/dev/css/mobiscroll.animation-2.5.2.css" rel="stylesheet" type="text/css" />
+	<script src="__PUBLIC__/Home/datechajian/dev/js/mobiscroll.datetime-2.5.1.js" type="text/javascript"></script>
+	<script src="__PUBLIC__/Home/datechajian/dev/js/mobiscroll.datetime-2.5.1-zh.js" type="text/javascript"></script>
 
-
-
-	</style>
+	<!-- S 可根据自己喜好引入样式风格文件 -->
+	<script src="__PUBLIC__/Home/datechajian/dev/js/mobiscroll.android-ics-2.5.2.js" type="text/javascript"></script>
+	<link href="__PUBLIC__/Home/datechajian/dev/css/mobiscroll.android-ics-2.5.2.css" rel="stylesheet" type="text/css" />
+	<!-- E 可根据自己喜好引入样式风格文件 -->
+	
 </head>
 <body>
 	<div class="switchAll">
-		<div class="switchTop">
-			<div class="swContain">
-				<p>时间设置：(时/分)</p>
-				<div class="inputTime open"><input type="time" name="time" value="00:00" class="setdata"></div>
+		<!-- 加热时间 -->
+		<div class="hotTime">
+			<p>加热时间:(时/分)</p>
+			<p><input type="text" name="appTime" id="appTime" /></p>
+		</div>
+		<!-- 功能选项 -->
+		<div class="funOption">
+			<div>功能选项:</div>
+			<div class="shezhi">
+				<p alt="0">开机</p>
+				<p alt="1">关机</p>
+			</div>
+			<div class="shezhi">
+				<p alt="2">开启加热</p>
+				<p alt="3">关闭加热</p>
 			</div>
 		</div>
-		<div class="action_type">
-			<span class="checked" alt="0">开机</span><span alt="1">关机</span><span alt="2">开启加热</span><span alt="3">关闭加热</span>
-		</div>	
-		<div class="time_type">
-			<span class="checked" alt="0">一次</span><span alt="1">每天</span>
-		</div>	
+		<!-- 重复方式 -->
+		<div class="repeat">
+			<p>重复方式:</p>
+			<div>
+				<p alt="0">一次</p>
+				<p alt="1">每天</p>
+			</div>
+		</div>
+		<!-- 保存 -->
 		<div class="switchFoot">
-			<input type="button" value="保存" id="save">
+			<p id="save">保存</p>
 		</div>
 	</div>
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
@@ -150,55 +83,76 @@
 		      // console.log(home)
 		    }()
 		})
-		$('.action_type>span').click(function (){
-			$('.action_type>span').removeClass('checked');
-			$(this).addClass('checked');
-		});
 
-		$('.time_type>span').click(function (){
-			$('.time_type>span').removeClass('checked');
-			$(this).addClass('checked');
-		});
-		$('.switchFoot').click(function() {
-			layuiHint("保存成功!");
-			setTimeout(function() {
-				window.location.href = "{{:U('Home/VipCenter/minepack')}}";
-			}, 1000);
-		})
+		// 默认时分
+		var d = new Date();
+		var hours = d.getHours();
+		var minutes = d.getMinutes();
+		minutes = minutes < 10 ? "0" + minutes : minutes;
+		hours = hours < 10 ? "0" + hours : hours;
+		$("input[name=appTime]").val(hours + ":" + minutes);
 
 		$("#save").click(function(){
 			// 获取表单数据
-        	var time = $('input[name="time"]').val();
-        	var action_type = $('.action_type>span.checked').attr('alt');
-        	var time_type = $('.time_type>span.checked').attr('alt');
-        	console.dir(time)
-        	console.dir(action_type)
-        	console.dir(time_type)
+        	var time = $('input[name="appTime"]').val();//时间
+        	var action_type = $('.shezhi>p.checked').attr('alt');//功能选择 
+			var time_type = $('.repeat>div>p.checked').attr('alt');//重复方式选择	
 	        $.ajax({
 	            url:"{{:U('Home/Task/set_time')}}",
 	            data:{time:time,type:action_type,repeat:time_type},
-	            dataType:"json",
 	            type: 'post',
 	            success:function(res){
-	                // console.dir(res);
 	                if(res.code == 200){
 	                    // 添加成功
 	                    swal(res.msg,res.msg, "success");
 	                    // 两秒后刷新
-	                    // setTimeout(function(){
-	                    //     window.location.reload();
-	                    // },1000);
+	                    setTimeout(function(){
+	                        window.location.href = "{{:U('Home/VipCenter/minepack')}}";
+						},1000);
 	                }else{
 	                    // 添加失败
-	                    swal(res.msg, "请重新提交！", "success");
+						swal(res.msg, "请重新提交！", "success");
 	                }
-	            }
+	            },
+				error: function(res) {
+					console.log("错误", res)
+				}
 	        });
 		})
 
-        
-        //  异步请求
+        // 日期插件
+		$(function () {
+			var currYear = (new Date()).getFullYear();	
+			var opt={};
+			opt.date = {preset : 'date'};
+			opt.datetime = {preset : 'datetime'};
+			opt.time = {preset : 'time'};
+			opt.default = {
+				theme: 'android-ics light', //皮肤样式
+		        display: 'modal', //显示方式 
+		        mode: 'scroller', //日期选择模式
+				lang:'zh',
+		        startYear:currYear - 10, //开始年份
+		        endYear:currYear + 10 //结束年份
+			};
+		  	var optTime = $.extend(opt['time'], opt['default']);
+		    $("#appTime").mobiscroll(optTime).time(optTime);
+		});
+		
+		// 默认选中第一个
+		$(".repeat>div>p").eq(0).addClass("checked");
+		$(".shezhi>p").eq(0).addClass("checked");
+		// 功能选项选择
+		$(".shezhi> p").on("touchstart", function() {
+			console.log($(this))
+			$(this).addClass("checked").siblings().removeClass("checked").parent().siblings(".shezhi").children().removeClass("checked")
+		})
+		// 重复方式选择
+		$(".repeat>div>p").on("touchstart", function() {
+			$(this).addClass("checked").siblings().removeClass("checked");
+		})
 
 	</script>
+	
 </body>
 </html>                                                                                                                                                                                                                                                                      	

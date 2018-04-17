@@ -10,9 +10,8 @@ class DeviceController extends CommonController
      */
     public function index()
     {
-        //调用微信JS-SDK类获取签名需要用到的数据
-        $weixin = new WeixinJssdk;
-        $signPackage = $weixin->getSignPackage();
+        $this->wx_info();   //加载微信信息
+
         // 查询用户微信中的openid
         //$openId = $weixin->GetOpenid();
         // 调试用默认用户
@@ -28,7 +27,6 @@ class DeviceController extends CommonController
         $cur_device = $user_device->where($where)->find();
         session('device.did',$cur_device['did']);
         //分配数据        
-        $this->assign('info',$signPackage);
         $this->assign('bindInfo',$bind_device);
         $this->assign('openId',$openId);
     	$this->display();

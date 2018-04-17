@@ -12,31 +12,33 @@ class ShopController extends CommonController
      */
     public function index()
     {
-        $goods = D('Goods');
-        $cartInfo = M('Cart')->where('uid='.session('user.id'))->count();
-        $cate = M('Category')->select();
-        $map['pr.grade'] = session('user.grade');
-        $map['gd.status'] = 0;
-        $map['g.status'] = array('neq', 2);
-        $goodsList = $goods->getGoodsList($map);
-        foreach($goodsList as $val){
-    		$key = $val['gid'];
-    		if(isset($arr[$key])) {
-    			$arr[$key]['attr'] .= $val['attr'].':'.$val['val'].'|';
-    		} else {
-                $arr[$key] = $val;
-    			$arr[$key]['attr'] = $val['attr'].':'.$val['val'].'|';
-    		}
-    	}
-    	$goodsList = array_values($arr);
-        $assign = [
-            'cate' => json_encode($cate),
-            'cartInfo' => json_encode($cartInfo),
-            'goods' => json_encode($goodsList),
-        ];
-        $this->assign('goodsList',$goodsList);
-        $this->assign($assign);
-        $this->display();
+        if(IS_AJAX){
+            $goods = D('Goods');
+            $cartInfo = M('Cart')->where('uid='.session('user.id'))->count();
+            $cate = M('Category')->select();
+            $map['pr.grade'] = session('user.grade');
+            $map['gd.status'] = 0;
+            $map['g.status'] = array('neq', 2);
+            $goodsList = $goods->getGoodsList($map);
+            foreach($goodsList as $val){
+                $key = $val['gid'];
+                if(isset($arr[$key])) {
+                    $arr[$key]['attr'] .= $val['attr'].':'.$val['val'].'|';
+                } else {
+                    $arr[$key] = $val;
+                    $arr[$key]['attr'] = $val['attr'].':'.$val['val'].'|';
+                }
+            }
+            $goodsList = array_values($arr);
+            $assign = [
+                'cate' => $cate,
+                'cartInfo' => $cartInfo,
+                'goods' => $goodsList
+            ];
+            return $this->ajaxReturn($assign);
+        } else {
+            $this->display();
+        }
     }
 
     /**

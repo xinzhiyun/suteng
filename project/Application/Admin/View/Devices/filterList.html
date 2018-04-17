@@ -27,7 +27,7 @@
                         <label class="input form-control">滤芯名称</label>
                         <input type="text" name="filtername" placeholder="输入搜索关键字" class="input form-control"   style="width:50%">
                         <span class="input-group-btn" style="display: inline-block;">
-                                <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
+                                <input type="submit" class="btn btn btn-primary" name="sou"> <i class="fa fa-search"></i> 搜索</button>
                         </span>
                     </div>
                 </form>
@@ -300,7 +300,7 @@
                 shade: false //不显示遮罩
             }, function(){
                 $.ajax({
-                    url:'filterAction',
+                    url:"{{:U('admin/devices/filterAction')}}",
                     type:'post',
                     dataType:'json',
                     cache: false,
@@ -336,7 +336,7 @@
                 closeOnConfirm: false
             }, function () {
                 $.ajax({
-                    url:'filtersDel',
+                    url:"{{:U('Admin/devices/filtersDel')}}",
                     type:'post',
                     dataType:'json',
                     data:{'id':id},
@@ -374,7 +374,7 @@
                 shade: true //不显示遮罩
             }, function(){
                 $.ajax({
-                    url:'filterEdit',
+                    url:"{{:U('Admin/devices/filterEdit')}}",
                     type:'post',
                     dataType:'json',
                     cache: false,

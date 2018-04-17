@@ -132,18 +132,22 @@
 		//微信接口
 		wx.config({
 			debug: false,
-			appId: '{{$info["appId"]}}',
-			timestamp: '{{$info["timestamp"]}}',
-			nonceStr: '{{$info["nonceStr"]}}',
-			signature: '{{$info["signature"]}}',
+			appId: '{{$wxinfo["appId"]}}',
+			timestamp: '{{$wxinfo["timestamp"]}}',
+			nonceStr: '{{$wxinfo["nonceStr"]}}',
+			signature: '{{$wxinfo["signature"]}}',
 			jsApiList: [
 		      // 所有要调用的 API 都要加到这个列表中
 		      'chooseWXPay'
 		      ]
-		  });
+		});
 
 		// 微信支付方法
 		function weixinPay(res){
+			var type = Object.prototype.toString.call(res);
+			if(type === '[object Object]'){
+				res = JSON.stringify(res);
+			}
 			WeixinJSBridge.invoke(
 				'getBrandWCPayRequest',
 				JSON.parse(res),
@@ -362,12 +366,10 @@
 									// console.log('支付错误！');
 									parent.layer.msg('支付错误！');
 								}else{
-									
 									// 调用微信支付方法
 									weixinPay(res);
 									
 								}
-								weixinPay(res);
 							}
 
 

@@ -1,8 +1,19 @@
 
+// ajax 请求全部数据
+var html = $.ajax({
+	url: ThinkPHP.shopIndexUrl,
+	async: false
+   }).responseText;
+
+data = JSON.parse(html);
+var cartCount = data.cartinfo,
+	goods 	  = data.goods,
+	cate 	  = data.cate;
+
 //首页显示购物车数量
 // console.log($("#cartInfo").val())
-if(JSON.parse($("#cartInfo").val())){
-	$(".cartnum>span").text(JSON.parse($("#cartInfo").val()));
+if(cartCount){
+	$(".cartnum>span").text(cartCount);
 }else {
 	// 如果购物车没有商品
 	$(".cartnum>span").text(0);
@@ -22,9 +33,9 @@ var searchArr = [];		//存放搜索用数据
 /***************** 数据遍历 -- 开始 ************************/
 // 获取商品分类
 var _cate;
-if($("#_cate").val()){
+if(cate){
 	//有数据
-	_cate = JSON.parse($("#_cate").val());
+	_cate = cate;
 	// console.log(_cate);
 	// 遍历分类
 	for(var i=0;i<_cate.length; i++){
@@ -66,9 +77,9 @@ if($("#_cate").val()){
  */
 var _goods;
 var lazyNum = 0;	// '|'的加载次数
-if($("#_goods").val() != 'null'){
+if(goods != 'null'){
 	//有数据
-	_goods = JSON.parse($("#_goods").val());
+	_goods = goods;
 	// console.log(_goods);
 	if(_cate){
 		for(var i=0;i<_cate.length; i++){
@@ -85,13 +96,13 @@ if($("#_goods").val() != 'null'){
 					_htmlArr[i] += 
 						'<li>'+
 							'<a class="pic" goods_gid="'+_goods[j].gid+'" href="javasctipt:;" cid="'+ i +'">'+
-								'<img src="/Uploads/'+_goods[j].path+'" alt="正在加载中...">'+
+								'<span ><img src="/Uploads/'+_goods[j].path+'" alt="正在加载中..."></span>'+
 								'<p class="name">'+ _goods[j].name +'</p>'+
-								'<b class="price">¥'+ _goods[j].price +'</b><span class="iconfont "></span>'+
+								'<b class="price">¥'+ _goods[j].price +'</b>'+
 							'</a>'+
 							'<i class="iconfont icon-jiarugouwuche"></i>'+
 						'</li>';
-					if(lazyNum > 0 && (lazyNum+1)%4 == 0){
+					if(lazyNum > 4 && (lazyNum+1)%4 == 0){
 						console.log('lazyNum: ', lazyNum);
 						console.log('(lazyNum+1)%6: ',(lazyNum+1)%4);
 						//每隔6个添加 '|' ，后面懒加载用
@@ -315,9 +326,3 @@ function lazyLoad(_this){
 }
 
 /*********************** 懒加载 -- 结束 ***********************/
-if(window.name != 'isrefreshed'){
-	window.name = 'isrefreshed';
-	location.reload();
-}else{
-	window.name = '';
-}
