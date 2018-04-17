@@ -2,7 +2,7 @@
 namespace Home\Controller;
 use \Org\Util\WeixinJssdk;
 use Think\Controller;
-
+use Think\Log;
 class WeiXinPayController extends Controller
 {
 
@@ -109,30 +109,34 @@ class WeiXinPayController extends Controller
     public function notify()
     {
         // 获取微信服务器返回的xml文档
-        $xml=file_get_contents('php://input', 'r');       
-//         $xml = '<xml><appid><![CDATA[wx0bab2f4b5b7ec3b5]]></appid>
-// <attach><![CDATA[561131965313806]]></attach>
-// <bank_type><![CDATA[CFT]]></bank_type>
-// <cash_fee><![CDATA[1]]></cash_fee>
-// <fee_type><![CDATA[CNY]]></fee_type>
-// <is_subscribe><![CDATA[Y]]></is_subscribe>
-// <mch_id><![CDATA[1490274062]]></mch_id>
-// <nonce_str><![CDATA[2332uho7x16aiz10cg13ffkz5fwdrayg]]></nonce_str>
-// <openid><![CDATA[oQktJwL8ioR4DoxSQmikdzekbUyU]]></openid>
-// <out_trade_no><![CDATA[478056852556374]]></out_trade_no>
-// <result_code><![CDATA[SUCCESS]]></result_code>
-// <return_code><![CDATA[SUCCESS]]></return_code>
-// <sign><![CDATA[A684A3F06136116FDD304A338A606E58]]></sign>
-// <time_end><![CDATA[20180201023601]]></time_end>
-// <total_fee>1</total_fee>
-// <trade_type><![CDATA[JSAPI]]></trade_type>
-// <transaction_id><![CDATA[4200000071201802014605968829]]></transaction_id>
-// </xml>';
+//        $xml=file_get_contents('php://input', 'r');
+//        Log::write( $xml,'测试一号');
+        $xml = '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
+<attach><![CDATA[819818675126975]]></attach>
+<bank_type><![CDATA[CFT]]></bank_type>
+<cash_fee><![CDATA[1]]></cash_fee>
+<fee_type><![CDATA[CNY]]></fee_type>
+<is_subscribe><![CDATA[Y]]></is_subscribe>
+<mch_id><![CDATA[1501254081]]></mch_id>
+<nonce_str><![CDATA[5wgcm1ptarl19i0v3k06k93p8osbderw]]></nonce_str>
+<openid><![CDATA[onLe70fYcrqU71RjzfYUjkNf90_E]]></openid>
+<out_trade_no><![CDATA[841179983093492]]></out_trade_no>
+<result_code><![CDATA[SUCCESS]]></result_code>
+<return_code><![CDATA[SUCCESS]]></return_code>
+<sign><![CDATA[CA0B6D87B669E772C9297B65832B3EA2]]></sign>
+<time_end><![CDATA[20180411145314]]></time_end>
+<total_fee>1</total_fee>
+<trade_type><![CDATA[JSAPI]]></trade_type>
+<transaction_id><![CDATA[4200000052201804116501776653]]></transaction_id>
+</xml>
+';
+
 // 
 // 
 // UR体会与人体热敷的供热的高
         // file_put_contents('./wx_dddpay.txt',$xml."\r\n", FILE_APPEND);die;
         if($xml){
+
             //解析微信返回数据数组格式
             $result = $this->notifyData($xml);
             // dump($result);die;
@@ -142,9 +146,11 @@ class WeiXinPayController extends Controller
             $showOrder['order_id'] = $result['attach'];
             // 查询订单表
             $orderData = $order->where($showOrder)->find();
+
             
             // 如果订单未支付
             if($orderData['status']==8){
+
                 // 开启事务
                 // $order->startTrans();
                 // dump();die;
@@ -156,7 +162,7 @@ class WeiXinPayController extends Controller
                 // 快递地址ID
                 $saveOrderDara['address_id'] = M('address')->where($showAddres)->find()['id'];
                 // 准备更新数据
-                $saveOrderDara['status'] = 9;
+//                $saveOrderDara['status'] = 9;
                 // 支付类型
                 $saveOrderDara['mode'] = 0;
                 // 执行更新操作
@@ -186,8 +192,11 @@ class WeiXinPayController extends Controller
                 $jb = ($profit*$jbbl)>0?($profit*$jbbl):0;
                 // 银币
                 $yb = ($profit*$ybbl)>0?($profit*$ybbl):0;
-
-                // echo $open_id.'-'.$yj.'-'.$jb.'-'.$yb;die;
+                //商品销售佣金
+                $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.g_cost,a.g_price,a.g_num,b.vid,c.id ccid,c.code,c.invitation_code,c.superiors_code,c.superior_code,c.abonus')->join('st_goods b on a.gid = b.id')->join('st_vendors c on b.vid = c.id')->where(['a
+                .g_type'=>1,'a.status'=>7,'a.order_id'=>$saveOrder['order_id']])->select();
+                echo M('ShopOrder as a')->getLastSql();
+                   // echo $open_id.'-'.$yj.'-'.$jb.'-'.$yb;die;
                 // 分配佣金
                 $this->branch_commission($open_id,$order_id,$yj,$jb,$yb);
             }
@@ -246,7 +255,249 @@ class WeiXinPayController extends Controller
         }
     }
 
+    /*
+     * 商城购买商品成功后回调
+     */
+    public function setmealNotify() {
+        // 接收微信支付回调
+//        $xml=file_get_contents('php://input', 'r');
+        $xml = '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
+<bank_type><![CDATA[CFT]]></bank_type>
+<cash_fee><![CDATA[1]]></cash_fee>
+<fee_type><![CDATA[CNY]]></fee_type>
+<is_subscribe><![CDATA[Y]]></is_subscribe>
+<mch_id><![CDATA[1501254081]]></mch_id>
+<nonce_str><![CDATA[biuey4vbyqa4knh7nnfsf64tda593471]]></nonce_str>
+<openid><![CDATA[onLe70fYcrqU71RjzfYUjkNf90_E]]></openid>
+<out_trade_no><![CDATA[275280889129432]]></out_trade_no>
+<result_code><![CDATA[SUCCESS]]></result_code>
+<return_code><![CDATA[SUCCESS]]></return_code>
+<sign><![CDATA[B85DC37828AD6CE246FF81642F3ACF41]]></sign>
+<time_end><![CDATA[20180417093419]]></time_end>
+<total_fee>1</total_fee>
+<trade_type><![CDATA[JSAPI]]></trade_type>
+<transaction_id><![CDATA[4200000067201804179838501934]]></transaction_id>
+</xml>
+';
+        if($xml){
+            //解析微信返回数据数组格式
+            $result = $this->notifyData($xml);
 
+
+            //$uid = M('Users')->where("open_id='{$result['']}'")->find()['id'];
+            //file_put_contents('./wx_pay1.txt',$xml."\r\n", FILE_APPEND);
+            // 如果订单号不为空
+            if(!empty($result['out_trade_no'])){
+//                $did =  $result['out_trade_no'];
+
+                $did = 694887979570733;
+                //file_put_contents('./wx_pay1.txt',$result['out_trade_no']."\r\n", FILE_APPEND);
+                //file_put_contents('./wx_pay1.txt',$uid."\r\n", FILE_APPEND);
+                // 获取传回来的订单号
+                $data['order_id'] = $did;
+
+
+                // 查询订单是否已处理
+                // 查询订单是否已处理
+                $orderData = M('orders')->where($data)->field('is_pay,total_price,device_id')->find();
+
+                // 1分钱测试数据
+                $orderData['total_price'] = 1;
+                // dump($data);die;
+                // 如果订单未处理，订单支付金额等于订单实际金额
+                if(empty($orderData['is_pay']) && $orderData['total_price'] == $result['total_fee']){
+
+                    //file_put_contents('./wx_pay121.txt',$xml."\r\n", FILE_APPEND);
+//                    dump($result);
+                    // 处理订单
+                    // 实例化订单对象
+                    $orders = M('orders');
+                    // 实例化订单滤芯对象
+//                    $orderFilter = M('order_filter');
+                    // 实例化订单套餐对象
+                    $orderSetmeal = M('order_setmeal');
+                    // 实例化设备详细信息对象
+                    $devicesStatu = M('devices_statu');
+                    // 实例化设备对象
+                    $device = M('Devices');
+                    // 实例化充值流水对象
+                    $flowObj = M('Flow');
+
+                    // 开启事务
+                    $orders->startTrans();
+
+                    // 修改订单状态为已付款
+                    $isPay['is_pay'] = 1;
+
+
+                    //show($isPayRes);die;
+                    // 查询订单包含的全部套餐
+                    $orderSetmealData = $orderSetmeal->where($data)->select();
+
+
+
+                    if($orderSetmealData){
+                        $isPay['is_recharge'] = 1;
+                    }
+
+                    $isPayRes = $orders->where($data)->save($isPay);
+
+                    // dump($orderSetmealData);die;
+                    // 充值状态
+                    $status = 0;
+
+
+                    if($orderSetmealData){
+                        //show($orderSetmealData);die;
+                        // 统计未处理套餐数量
+                        $countNun = count($orderSetmealData);
+
+                        // 定义计数器
+                        $num     = 0;
+                        $flownum = 0;
+                        //file_put_contents('./wx_pay1uid.txt',$result['out_trade_no']."\r\n", FILE_APPEND);
+                        // 查询当前设备编号
+//                        $deviceId['id'] = $did;
+                        $deviceId['id'] = $orderData['device_id'];
+                        //file_put_contents('./wx_pay2uid.txt',$uid."\r\n", FILE_APPEND);
+                        $deviceCode['DeviceID'] = $device->where($deviceId)->find()['device_code'];
+
+
+                        foreach ($orderSetmealData as $value) {
+
+                            // 查询设备当前剩余流量
+                            $devicesStatus = $devicesStatu->where($deviceCode)->find();
+
+
+                            // $devicesStatuReFlow = $devicesStatu->where($deviceCode)->find()['reflow']-0;
+                            $devicesStatuReFlow = $devicesStatus['reflow'];
+                            $devicesStatuReDay = $devicesStatus['reday'];
+                            // file_put_contents('套餐模式',var_export($value['remodel'], true),FILE_APPEND);
+//                             if ($value['remodel'] == 1) {
+//                                 // 充值后流量应剩余天数
+//                                 $Flow['ReDay'] = $devicesStatuReDay + ($value['flow']*$value['goods_num']);
+//                             } else {
+//                                 // 充值后流量应剩余流量
+//                                 $Flow['ReFlow'] = $devicesStatuReFlow + ($value['flow']*$value['goods_num']);
+//                             }
+                            switch ($value['remodel']) {
+                                case '0'://流量
+                                    $Flow['ReFlow'] = $devicesStatuReFlow + ($value['flow']*$value['goods_num']);
+                                    break;
+                                case '1'://时长
+                                    $Flow['ReDay'] =$devicesStatuReDay  + ($value['flow']*$value['goods_num']);
+                                    break;
+                                default:
+                                    # code...
+                                    break;
+                            }
+                            $Flow['data_statu']=1;
+
+                            Log::write(json_encode($Flow), '更新devicesStatu');
+
+                            // 修改设备剩余流量
+                            $FlowRes = $devicesStatu->where($deviceCode)->save($Flow);
+
+
+                            // file_put_contents('jfdsk',var_export($devicesStatu->_sql(), true),FILE_APPEND);
+                            // 准备发送指令
+                            // if(empty($Flow['ReDay'])){
+                            //     $msg = [
+                            //         'DeviceID'=>$deviceCode['DeviceID'],
+                            //         'PackType'=>'SetData',
+                            //         'Vison'=>'0',
+                            //         'ReFlow'=>$Flow['ReFlow'],
+                            //     ];
+                            // } else {
+                            //     $msg = [
+                            //         'DeviceID'=>$deviceCode['DeviceID'],
+                            //         'PackType'=>'SetData',
+                            //         'Vison'=>'0',
+                            //         'ReDay'=>$Flow['ReDay'],
+                            //     ];
+                            // }
+                            // dump($msg);die;
+
+                            // 写充值流水
+                            // 订单编号
+                            $flowData['order_id']       = $value['order_id'];
+                            // 用户ID
+                            $flowData['did']            = $did;
+                            // 充值金额
+                            //
+                            $flowData['money']          = $value['money'];
+                            // 充值方式
+                            $flowData['mode']           = 1;
+                            // 充值流量
+                            $flowData['flow']           = $value['flow'];
+                            // 套餐数量
+                            $flowData['num']            = $value['goods_num'];
+                            // 套餐描述
+                            $flowData['describe']       = $value['describe'];
+                            // 当前流量
+                            $flowData['currentflow']    = $Flow['ReFlow'];
+                            // 充值时间
+                            $flowData['addtime']           = time();
+                            //show($flowData);die;
+                            // 创建充值流水
+                            $flowObjRes = $flowObj->add($flowData);
+
+                            // dump($orderData);
+                            // dump($flowObjRes);die;
+
+                            // 判断流水是否创建成果
+                            if($flowObjRes){
+                                // 定时器++
+                                $flownum++;
+                            }
+//                            dump($FlowRes);
+
+                            // 判断修改结果
+                            if($FlowRes){
+                                // 计数器++
+                                $num++;
+                            }
+
+                        }
+//                         dump($countNun);
+//                         die;
+                        // 全部套餐充值完成
+                        if($countNun == $num && $countNun == $flownum){
+                            // 充值和流水完成，状态设为1
+                            $status = 1;
+                        }
+                        // echo 12;
+                    }else{
+                        // 没有套餐默认值，状态设为1
+                        $status = 1;
+                    }
+//                     dump($status);die;
+                    // show($msg);die;
+                    // file_put_contents('saaa',$isPayRes .'jfdslajfds'. $status);
+                    if($isPayRes && $status){
+//                        dump($deviceCode);
+                        // 执行事务
+                        $orders->commit();
+
+                        $sc=A("Api/Action");
+
+                        $sc->sysnc($deviceCode['DeviceID']);
+
+                    }else{
+                        // 事务回滚
+                        $orders->rollback();
+                        // file_put_contents('./wx_notifyEeor.txt','订单号：'.$result['attach']."充值失败 \r\n", FILE_APPEND);
+                    }
+                }else{
+                    // 充值金额不匹配
+                    // if($orderData['total_price'] != $result['total_fee']){
+                    //    file_put_contents('./wx_notifymoney.txt','订单号：'.$result['attach']."充值失败,金额不匹配。订单金额：{$orderData['total_price']} ，充值金额：{$result['total_fee']} \r\n", FILE_APPEND);
+                    // }
+                }
+            }
+        }
+//        Log::write( $xml,'');
+    }
 
     /**
      * 处理充值写入数据

@@ -136,9 +136,11 @@
                 <foreach name="data" item="vo">
                     <li>
                         <a href="{{:U('Home/Vendors/income_detailed',array('order_id'=>$vo['order_id']))}}"><!--需要添加连接参数-->
-                            <span class="iconBig" style="color:#337DE6">{{$vo.describe}}</span>
+                            <!--<span class="iconBig" style="color:#337DE6">{{$vo.describe}}</span>-->
+                            <span class="iconBig" style="color:#337DE6">{{$vo.name}}</span>
                             <span class="countto">{{$vo.abonus}}</span>
-                            <span>{{:date("Y-m-d",$vo['addtime'])}}</span>
+                            <!--<span>{{:date("Y-m-d",$vo['addtime'])}}</span>-->
+                            <span>{{$vo.create_time}}</span>
                         </a>
                         <i class="iconfont icon-dayuhao-copy-copy detailicon"></i>
                     </li>

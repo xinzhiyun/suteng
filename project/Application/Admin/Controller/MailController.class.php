@@ -63,11 +63,17 @@ class MailController extends CommonController
         	}
         }
 
-    	$data = M('mail')->where($map)->select();
+		$total = M('mail')->where($map)->count();
+        $page  = new \Think\Page($total,8);
+        page_config($page);
+        $pageButton =$page->show();
+    	$data = M('mail')->where($map)->limit($page->firstRow.','.$page->listRows)->order('addtime desc')->select();
 
 	    $assign = [
-	        'data' => $data,
+			'data' => $data,
+			'page' =>bootstrap_page_style($pageButton)
 	    ];
+
 
 	    // 分配数据
 	    $this->assign($assign);
@@ -224,10 +230,15 @@ class MailController extends CommonController
         	// }
         }
 
-    	$data = M('mail')->where($map)->select();
+		$total = M('mail')->where($map)->count();
+        $page  = new \Think\Page($total,8);
+        page_config($page);
+        $pageButton =$page->show();
+    	$data = M('mail')->where($map)->limit($page->firstRow.','.$page->listRows)->select();
 
 	    $assign = [
-	        'data' => $data,
+			'data' => $data,
+			'page' =>bootstrap_page_style($pageButton)
 	    ];
 
 	    // 分配数据

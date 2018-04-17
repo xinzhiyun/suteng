@@ -25,11 +25,12 @@ class CommonController extends Controller
             // 如果不存在则，跳转获取open_id,并缓存
             // $_SESSION['open_id'] = $weixin->GetOpenid();
             // 前端调试通道
-            $_SESSION['open_id'] = 'oQktJwL8ioR4DoxSQmikdzekbUyU';
+            $_SESSION['open_id'] = 'onLe70WUA8z0I_P5qqCmN66_Cl34';
 
         }
         // 获取用户open_id
         $showData['open_id'] = $_SESSION['open_id'];
+
         // 查询微信信息表
         $wechat = M('wechat')->where($showData)->find();
 

@@ -96,7 +96,7 @@ class WeixinJssdk
     // access_token 全局存储7000与更新[文件形式缓存]
     $data = json_decode($this->get_php_file("access_token.php"));
 
-   
+
     // 判断access_token是否过期
     if ($data->expire_time < time()) {
     

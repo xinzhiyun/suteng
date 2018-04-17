@@ -4914,38 +4914,17 @@ body.modal-open {
     background: url('../img/passw.png') no-repeat;
     background-size: contain;
 }
-.loginDiv:nth-of-type(3) {
-    padding: 0;
-    -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
-    -webkit-box-align: stretch;
-        -ms-flex-align: stretch;
-            align-items: stretch;
-    border: none;
-    border-radius: 9px;
-    background: none;
-}
-.loginDiv:nth-of-type(3)>input, 
-.loginDiv:nth-of-type(3)>img {
+.loginDiv:nth-of-type(3)>span {
     -webkit-box-flex: 1;
-        -ms-flex: 1 0;
+        -ms-flex: 1;
             flex: 1 0;
-    width: 50%;
-    height: auto;
-    min-height: 50px;
-    max-height: 50px;
+    height: 26px;
+    display: inline-block;
+    margin: 0 4%;
+    background: url('../img/passw.png') no-repeat;
+    background-size: contain;
 }
-.loginDiv:nth-of-type(3)>input {
-    max-width: 120px;
-    padding: 4%;
-    border: 2px solid #8BAFD0;
-    border-radius: 9px;
-    background: #DFF3FE;
-}
-.loginDiv:nth-of-type(3)>img {
-    margin-left: 5%;
-}
+
 
 .logo-name {
     width: 100%;
