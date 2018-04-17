@@ -196,8 +196,12 @@ class DevicesController extends CommonController
 
     public function save_import($data)
     {
+        // dump($data);die;
         $i = 0;
         foreach ($data as $key => $val) {
+            if(strlen(trim($val['A'])) === 0 || $val['A'] == NULL){
+                continue;
+            }
             $i ++;
             $_POST['device_code'] = $val['A'];
             $_POST['type_id'] = $val['B'];
