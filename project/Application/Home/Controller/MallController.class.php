@@ -80,19 +80,20 @@ class MallController extends CommonController
 
         $bind_device_info = M('devices')->where(['id'=> $_SESSION['device']['did']])->find();
 
+
         // 实例化订单模型
         $orders = M('orders');
         // 实例化订单套餐模型
         $orderSetmeal = M('order_setmeal');
 //        处理订单信息
-//        $mealId     = I('post.id');     // 商品（套餐）ID
-        $mealId     = 57;     // 商品（套餐）ID
+        $mealId     = I('post.id');     // 商品（套餐）ID
+//        $mealId     = 57;     // 商品（套餐）ID
         $num        = I('post.num');    // 套餐数量
         $money      = I('post.money');    // 套餐金额
         $mealInfo   = D('setmeal')->find($mealId);
 
         $orderId    = $this->getOrderId();
-
+        file_put_contents('./111.txt',$orderId."\r\n", FILE_APPEND);
         // 开启事务
         $orders->startTrans();
 
