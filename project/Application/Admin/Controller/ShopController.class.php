@@ -447,7 +447,7 @@ class ShopController extends CommonController
     {
 
 
-        dump($_POST);
+        // dump($_POST);
 
         // die;
         try{
