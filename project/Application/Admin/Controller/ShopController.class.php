@@ -113,6 +113,8 @@ class ShopController extends CommonController
             'cateInfo'=>$cateInfo,
             // 'show' => $goodsList['show'],
         ];
+
+        // dump($assign);
         $this->assign($assign);
         $this->display();
     }
@@ -375,147 +377,226 @@ class ShopController extends CommonController
         $goods = M('goods');
 
         $goodsInfo=D('goods')->getGoodInfo($id);
-        
+
         // dump($goodsInfo);
         $price = $goodsInfo['price'];
         $attrVal = $goodsInfo['attr_val'];
         $goodsCourier = $goodsInfo['goods_courier'];
         $goodsDetail = $goodsInfo['goods_detail'];
 
+        //处理属性所属
+        foreach ($attrVal as $value) {
+            $attrValArr[]=$value['aid'];
+        }
+
+        foreach ($arrtList as &$value) {
+            if(in_array($value['id'], $attrValArr)){
+                $value['check']='checked';
+            }else{
+                $value['check']='';
+            }
+        }
+
+        // dump($attrVal);
+        //处理商品对应属性的属性值
+        if (!empty($attrVal)) {
+            foreach ($attrVal as $key => $val) {
+                $newattrVal[$val['aid']] = $val['val'];
+            }
+        } else {
+            $newattrVal = '';
+        }
+        
+
+        //处理快递所属
+        foreach ($goodsCourier as $v) {
+            $goodsDetailArr[]=$v['cid'];
+        }
+
+        foreach ($courierList as &$v) {
+            if(in_array($v['id'], $goodsDetailArr)){
+                $v['check']='checked';
+            }else{
+                $v['check']='';
+            }
+        }
+
+        //处理商品对应的快递费
+        if (!empty($goodsCourier)) {
+            foreach ($goodsCourier as $key => $cval) {
+                $gcVal[$cval['cid']] = $cval['cprice'];
+            }
+        } else {
+            $gcVal = '';
+        }
+        
 
         $this->assign('courierList', $courierList);
         $this->assign('categoryList', $categoryList);
         $this->assign('arrtList', $arrtList);
         $this->assign('goodsInfo', $goodsInfo);
         $this->assign('price', $price);
-        $this->assign('attrVal', $attrVal);
-        $this->assign('goodsCourier', $goodsCourier);
+        $this->assign('newattrVal', $newattrVal);
+        $this->assign('gcVal', $gcVal);
         $this->assign('goodsDetail', $goodsDetail);
-        $this->display();
-
-        die;
-
-        $gid = $_GET['gid'];
-        $where['st_goods.id'] = $gid;
-        $goods = D(Goods);
-        $price = M(Price);
-       
-        $goodsInfo = $goods->where($where)
-                  ->join('st_goods_detail ON st_goods.id = st_goods_detail.gid')
-                  ->field('st_goods.id,st_goods.name,st_goods_detail.cost,st_goods_detail.stock,st_goods_detail.cost')
-                  ->select();
-        // 查价格
-        // 重新定义条件
-        $wheres['gid'] = $gid;
-        $prices = $price->where($wheres)->select();
-
-        $pre = array();
-        foreach ($prices as $key => $value) {
-            $pre[0][$value['grade']] = $value['price'];
-
-        }
-        // 分类
-        $cate = D('Category');
-        $cateInfo = $cate->where('pid=0')->select();
-        // 商品属性
-        $attr = D('Attr');
-        $attrInfo = $attr->select();
-
-        /* 新增--查询商品快递运费信息 */
-        $gc = M('GoodsCourier');
-        $gcInfo = $gc->alias('gc')->where('gc.gid='.$gid)->join('__COURIER__ c ON gc.cid = c.id')->select();
-
-        $assign = [
-            'cateInfo'  => $cateInfo,
-            'attrInfo'  => $attrInfo,
-            'goodsInfo' => $goodsInfo,
-            'pre'       => $pre,
-            //商品快递运费信息
-            'gcInfo'    => $gcInfo,
-        ];
-        dump($assign);
-
-        $this->assign($assign);
-        $this->display();
-        
+        $this->display(); 
     }
 
     // 商品编辑处理
     public function goodsEditAction()
     {
+
+
+        dump($_POST);
+
+        // die;
         try{
-            $goods_add = D('Goods');
-            $attr_val = D('AttrVal');
-            $attr = D('Attr');
-            $goods_detail = D('GoodsDetail');
-            $cate = D('Category');
-            $data = I('post.');
-            // 准备两个条件，给多个表更新用
-            $where['id'] = $data['gid'];
-            $wheres['gid'] = $data['gid'];
 
-            $price = $data['price'];
-            $goods['cid'] = $cate->sureCate();
-            if(!$goods['cid']) E('请选择分类', 605);
-            $goods['name'] = $data['name'];
-            $goods['updatetime'] = time();
-            // 事务开启
-            $goods_add->startTrans();
-            if(!$goods_add->create($goods)) {
-                E($goods_add->getError(),406);
-            }
-            // 商品添加
-            $goods_status = $goods_add->where($where)->save($goods);
+            //接收要修改的商品的id
+            $gid = $_POST['gid'];
 
-            $goodsDetail['gid'] = $data['gid'];
-            $goodsDetail['cost'] = $data['cost'];
-            $goodsDetail['stock'] = $data['stock'];
-            if($data['is_install'] == 'on'){
-                $goodsDetail['is_install'] = 1;
+            //1.修改商品分类及商品名
+            $goods = M('goods');
+
+            //接受要修改分类的id
+            $data['cid'] = $_POST['firscate'];
+            $data['name'] = $_POST['name'];
+            $data['updatetime'] = time();
+            $goodsBool = $goods->where('id='.$gid)->save($data);
+
+
+            //2.修改商品的属性
+            /* 在修改属性之前，先将之前商品的所有属性删除 */
+            $av = D('attr_val');
+            //先查询是否存在，存在则删除
+            if($av->where('gid='.$gid)->select()) {
+                $av->where('gid='.$gid)->delete();
+                //进行属性添加
+                //接受属性值
+                $attrValList = $_POST['attr'];
+                foreach ($attrValList as $key => $value) {
+                    $attrValDate['gid'] = $gid;
+                    $attrValDate['aid'] = $key;
+                    $attrValDate['val'] = $value;
+                    $avBool = $av->add($attrValDate);
+
+                }
             } else {
-                $goodsDetail['is_install'] = 0;
+                //进行属性添加
+                //接受属性值
+                $attrValList = $_POST['attr'];
+                foreach ($attrValList as $key => $value) {
+                    $attrValDate['gid'] = $gid;
+                    $attrValDate['aid'] = $key;
+                    $attrValDate['val'] = $value;
+                    $avBool = $av->add($attrValDate);
+
+                }
+                
             }
-            if($data['is_hire'] == 'on'){
-                $goodsDetail['is_hire'] = 1;
-            } else {
-                $goodsDetail['is_hire'] = 0;
-            }
-            if(!$goods_detail->create($goodsDetail)) E($goods_detail->getError(),408);
-            // 商品详情添加
-            $goodsDetail_status = $goods_detail->where($wheres)->save($goodsDetail);
 
-            $attrVal['gid'] = $data['gid'];
-            // 添加之前先干掉原来的属性
-            $attrdel = $attr_val->where($wheres)->delete();
-            foreach ($data['attr'] as $key => $val) {
-                if($attr->where('id='.$key)->field('id')){
-
-                    $attrVal['aid'] = $key;
-                    $attrVal['val'] = $val;
-                    if(!$attr_val->create($attrVal)) E($attr_val->getError(),407);
-                    // 属性值添加                   
-                    $attr_val_status = $attr_val->add($attrVal);                    
-
-                } else {
-                    E('属性缺失，请刷新页面', 506);
+            //添加完后，将属性名也写入数据库
+            //接受属性名
+            if ($avBool) {
+                $attrNameList = $_POST['attrName'];
+                foreach ($attrNameList as $akey => $avalue) {
+                    $attrNameDate['aname'] = $avalue;
+                    $attrBool = $av->where('aid='.$key)->save($attrNameDate);
                 }
             }
+           
+            //3.修改商品的快递运费
+            /* 在修改快递运费之前，先将之前商品的所有快递运费删除 */
+            $gc = D('goods_courier');
+            if ($gc->where('gid='.$gid)->select()) {
+                $gc->where('gid='.$gid)->delete();
 
-            // 商品单价添加
-            // dump($price);
-            foreach ($price as $key => $value) {
+                //接受快递费
+                $courierList = $_POST['courier'];
+                foreach ($courierList as $k => $v) {
+                    $courierValDate['gid'] = $gid;
+                    $courierValDate['cid'] = $k;
+                    $courierValDate['cprice'] = $v;
+                    $gcBool = $gc->add($courierValDate);
 
-                $p['price'] = $value;
-                $wheres['grade'] = $key;
-                $price_status = M('Price')->where($wheres)->save($p);
+                }
+            } else {
+                //进行快递费添加
+                //接受快递费
+                $courierList = $_POST['courier'];
+                foreach ($courierList as $k => $v) {
+                    $courierValDate['gid'] = $gid;
+                    $courierValDate['cid'] = $k;
+                    $courierValDate['cprice'] = $v;
+                    $gcBool = $gc->add($courierValDate);
+
+                }
+                
             }
+
+            //添加完后，将快递名也写入数据库
+            //接收快递名
+            if ($gcBool) {
+                $courierNameList = $_POST['courierName'];
+                foreach ($courierNameList as $ckey => $cvalue) {
+                    $courierNameDate['cname'] = $cvalue;
+                    $courierBool = $gc->where('cid='.$key)->save($courierNameDate);
+                }
+            }
+            
+
+            //4.商品价格修改
+            //添加价格之前先删除之前的价格
+            $price = D('price');
+
+            if ($price->where('gid='.$gid)->select()) {
+                $price->where('gid='.$gid)->delete();
+                //接受价格数据
+                $priceList = $_POST['price'];
+                foreach ($priceList as $keys => $values) {
+                    $priceValDate['gid'] = $gid;
+                    $priceValDate['price'] = $values;
+                    $priceValDate['grade'] = $keys;
+                    $priceBool = $price->add($priceValDate);
+                }
+            } else {
+                //进行商品价格添加
+                //接受价格数据
+                $priceList = $_POST['price'];
+                foreach ($priceList as $keys => $values) {
+                    $priceValDate['gid'] = $gid;
+                    $priceValDate['price'] = $values;
+                    $priceValDate['grade'] = $keys;
+                    $priceBool = $price->add($priceValDate);
+                }
+            }
+            
+            
+            //5.成本价，是否安装，是否租赁修改
+            $goodDetail = D('goods_detail');
+            $detailDate['cost'] = $_POST['cost'];
+            $detailDate['updatetime'] = time();
+            $detailDate['is_install'] = $_POST['is_install'];
+            $detailDate['is_hire'] = $_POST['is_hire'];
+
+            if($detailDate['is_install'] == 'on'){
+                $detailDate['is_install'] = 1;
+            } else {
+                $detailDate['is_install'] = 0;
+            }
+            if($detailDate['is_hire'] == 'on'){
+                $detailDate['is_hire'] = 1;
+            } else {
+                $detailDate['is_hire'] = 0;
+            }
+
+            $bool = $goodDetail->where('gid='.$gid)->save($detailDate);
+
           
-            if($goods_status && $attr_val_status){
-                $goods_add->commit();
+            if($bool && $priceBool && $courierBool && $attrBool && $goodsBool){
                 E('商品编辑成功！',200);
             } else {
-                $goods_add->rollback();
-                E('商品编辑失败，请添加属性后重新提交',407);
+                E('商品编辑失败',407);
             }
         } catch (\Exception $e) {
             $err = [
