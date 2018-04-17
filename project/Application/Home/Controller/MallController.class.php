@@ -76,9 +76,9 @@ class MallController extends CommonController
 //        $uid = $_SESSION['open_id'];
         $user_device = D('UserDevice');
         $map['ud.uid'] = session('user.id');
-        $bind_device = $user_device->getBindInof($map);
 
-        $bind_device_info = M('devices')->where(['device_code'=>$bind_device[0]['device_code']])->find();
+
+        $bind_device_info = M('devices')->where(['id'=> $_SESSION['device']['did']])->find();
 
         // 实例化订单模型
         $orders = M('orders');
