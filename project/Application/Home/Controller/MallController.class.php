@@ -133,6 +133,7 @@ class MallController extends CommonController
         ];
         $orderSetmeal = D('OrderSetmeal');
         $insertId = $orderSetmeal->data($dataDS)->add();
+         
 
         // 创建订单
         $ordersRes = $orders->add($order);
@@ -228,27 +229,27 @@ class MallController extends CommonController
     }
     */
 
-//    /**
-//     * 订单ID
-//     * @return string   绝对唯一的32位订单ID号
-//     */
-//    function getOrderId()
-//    {
-//        do {
-//            $orderId = onlyOrderId();
-//            //查询订单号是否存在
-//            $oid = M('shop_order')->where("`order_id`='{$orderId}'")->field('id')->find();
-//            $osid = D('OrderSetmeal')->where("`order_id`='{$orderId}'")->field('id')->find();
-//            if ($oid || $osid) {
-//                $res = true;
-//            } else {
-//                $res = false;
-//            }
-//            // 如果订单号已存在再重新获取一次
-//        } while ($res);
-//
-//        return $orderId;
-//    }
+    /**
+     * 订单ID
+     * @return string   绝对唯一的32位订单ID号
+     */
+    function getOrderId()
+    {
+        do {
+            $orderId = onlyOrderId();
+            //查询订单号是否存在
+            $oid = M('shop_order')->where("`order_id`='{$orderId}'")->field('id')->find();
+            $osid = D('OrderSetmeal')->where("`order_id`='{$orderId}'")->field('id')->find();
+            if ($oid || $osid) {
+                $res = true;
+            } else {
+                $res = false;
+            }
+            // 如果订单号已存在再重新获取一次
+        } while ($res);
+
+        return $orderId;
+    }
 }
 
 
