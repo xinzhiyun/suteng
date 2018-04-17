@@ -72,44 +72,131 @@ class MallController extends CommonController
     // 信息确认并生成订单
     public function information()
     {
-        if (IS_AJAX) {                    
-            // 处理订单信息
-            $mealId     = I('post.id');     // 商品（套餐）ID
-            $num        = I('post.num');    // 套餐数量
-            $money      = I('post.money');    // 套餐金额
-            $mealInfo   = D('setmeal')->find($mealId);
-            $orderId    = $this->getOrderId();
-            // print_r($mealInfo);
-            // 写入订单表
-            $dataDS = [
-                'order_id'      =>  $orderId,
-                'uid'           =>  session('user.id'),
-                'setmeal_id'    =>  $mealId,
-                'type_id'       =>  $mealInfo['tid'],
-                'remodel'       =>  $mealInfo['remodel'],
-                'money'         =>  $money,
-                'flow'          =>  $mealInfo['flow'],
-                'describe'      =>  $mealInfo['describe'],
-                'goods_num'     =>  $num,
-                'goods_price'   =>  $money,
-                'status'        =>  0,
-                'created_at'    =>  time()
-            ];
-            $orderSetmeal = D('OrderSetmeal');
-            $insertId = $orderSetmeal->data($dataDS)->add();        
-            // 订单详情表(商品遍历)
-            // $order = $orderSetmeal->where('id='.$insertId)->field('order_id,created_at')->find();
-            // $dataOD = [
-            //     'order_id'      =>  $order['order_id'],
-            //     'gid'           =>  $mealId,
-            //     'num'           =>  $num,
-            //     'price'         =>  $money,
-            //     'status'        =>  0,
-            //     'addtime'       =>  $order['created_at'],
-            // ];
-            // D('OrderDetail')->data($dataOD)->add();
+        // 获取用户uid
+//        $uid = $_SESSION['open_id'];
+        $user_device = D('UserDevice');
+        $map['ud.uid'] = session('user.id');
+        $bind_device = $user_device->getBindInof($map);
+
+        $bind_device_info = M('devices')->where(['device_code'=>$bind_device[0]['device_code']])->find();
+
+        // 实例化订单模型
+        $orders = M('orders');
+        // 实例化订单套餐模型
+        $orderSetmeal = M('order_setmeal');
+//        处理订单信息
+//        $mealId     = I('post.id');     // 商品（套餐）ID
+        $mealId     = 57;     // 商品（套餐）ID
+        $num        = I('post.num');    // 套餐数量
+        $money      = I('post.money');    // 套餐金额
+        $mealInfo   = D('setmeal')->find($mealId);
+
+        $orderId    = $this->getOrderId();
+
+        // 开启事务
+        $orders->startTrans();
+
+        // 准备数据
+        // 唯一订单ID号
+        $order['order_id']      = $orderId;
+
+        // 用户ID号
+        $order['user_id']       = session('user.id');
+        // 关联的设备ID号
+        $order['device_id']     =$bind_device_info['id'];
+
+//        $order['device_id']     = M('currentDevices')->where("`uid`={$uid}")->getField('did');
+        // 商品的购买总数量
+        $order['total_num']     = $num;
+        // 商品的购买总金额
+        $order['total_price']   = $money;
+        // 订单创建时间
+        $order['created_at']   = time();
+
+//
+        // print_r($mealInfo);
+        // 写入订单表
+        $dataDS = [
+            'order_id'      =>  $orderId,
+            'uid'           =>  session('user.id'),
+            'device_id'    =>  $bind_device_info['id'],
+            'setmeal_id'    =>  $mealId,
+            'type_id'       =>  $mealInfo['tid'],
+            'remodel'       =>  $mealInfo['remodel'],
+            'money'         =>  $money,
+            'flow'          =>  $mealInfo['flow'],
+            'describe'      =>  $mealInfo['describe'],
+            'goods_num'     =>  $num,
+            'goods_price'   =>  $money,
+            'status'        =>  0,
+            'created_at'    =>  time()
+        ];
+        $orderSetmeal = D('OrderSetmeal');
+        $insertId = $orderSetmeal->data($dataDS)->add();
+
+        // 创建订单
+        $ordersRes = $orders->add($order);
+
+
+        if($ordersRes && $orderSetmeal){
+            // 执行事务
+            $orders->commit();
+            // 准备订单数据
+            // 充值金额
+            $money = $dataDS['goods_price']-0;
+            // 订单号码
+            $order_id = $order['order_id'];
+            // 订单描述
+            $contentstr = $dataDS['describe'];
+
+            // 描述超长处理
+            $content = substr($contentstr, 0, 100);
+            // 订单创建成功，跳转到支付页面
             $this->ajaxReturn($orderId);
+        }else{
+            // 事务回滚
+            $orders->rollback();
+            $this->error('订单创建失败');
         }
+//        if (IS_AJAX) {
+//            // 处理订单信息
+//            $mealId     = I('post.id');     // 商品（套餐）ID
+//            $num        = I('post.num');    // 套餐数量
+//            $money      = I('post.money');    // 套餐金额
+//            $mealInfo   = D('setmeal')->find($mealId);
+//            $orderId    = $this->getOrderId();
+//            // print_r($mealInfo);
+//            // 写入订单表
+//            $dataDS = [
+//                'order_id'      =>  $orderId,
+//                'uid'           =>  session('user.id'),
+//                'device_id'    => M('currentDevices')->where("`uid`={$uid}")->getField('did'),
+//                'setmeal_id'    =>  $mealId,
+//                'type_id'       =>  $mealInfo['tid'],
+//                'remodel'       =>  $mealInfo['remodel'],
+//                'money'         =>  $money,
+//                'flow'          =>  $mealInfo['flow'],
+//                'describe'      =>  $mealInfo['describe'],
+//                'goods_num'     =>  $num,
+//                'goods_price'   =>  $money,
+//                'status'        =>  0,
+//                'created_at'    =>  time()
+//            ];
+//            $orderSetmeal = D('OrderSetmeal');
+//            $insertId = $orderSetmeal->data($dataDS)->add();
+//            // 订单详情表(商品遍历)
+//            // $order = $orderSetmeal->where('id='.$insertId)->field('order_id,created_at')->find();
+//            // $dataOD = [
+//            //     'order_id'      =>  $order['order_id'],
+//            //     'gid'           =>  $mealId,
+//            //     'num'           =>  $num,
+//            //     'price'         =>  $money,
+//            //     'status'        =>  0,
+//            //     'addtime'       =>  $order['created_at'],
+//            // ];
+//            // D('OrderDetail')->data($dataOD)->add();
+//            $this->ajaxReturn($orderId);
+//        }
     }
 
     public function chooseMeal()
