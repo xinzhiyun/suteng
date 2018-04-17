@@ -227,10 +227,11 @@ class PaymentSystemController extends CommonController
     // 套餐支付
     public function choosePay()
     {
-        $showWhere['setmeal_id'] = I('post.order');
+        $showWhere['order_id'] = I('post.order');
 
         // // 查询订单表
         $orderData = M('order_setmeal')->where($showWhere)->find();
+
         // print_r($orderData);
         // 判断订单未支付
         if($orderData['status']==0){

@@ -80,19 +80,20 @@ class MallController extends CommonController
 
         $bind_device_info = M('devices')->where(['id'=> $_SESSION['device']['did']])->find();
 
+
         // 实例化订单模型
         $orders = M('orders');
         // 实例化订单套餐模型
         $orderSetmeal = M('order_setmeal');
 //        处理订单信息
-//        $mealId     = I('post.id');     // 商品（套餐）ID
-        $mealId     = 57;     // 商品（套餐）ID
+        $mealId     = I('post.id');     // 商品（套餐）ID
+//        $mealId     = 57;     // 商品（套餐）ID
         $num        = I('post.num');    // 套餐数量
         $money      = I('post.money');    // 套餐金额
         $mealInfo   = D('setmeal')->find($mealId);
 
         $orderId    = $this->getOrderId();
-
+        file_put_contents('./111.txt',$orderId."\r\n", FILE_APPEND);
         // 开启事务
         $orders->startTrans();
 
@@ -133,6 +134,7 @@ class MallController extends CommonController
         ];
         $orderSetmeal = D('OrderSetmeal');
         $insertId = $orderSetmeal->data($dataDS)->add();
+         
 
         // 创建订单
         $ordersRes = $orders->add($order);
@@ -228,27 +230,27 @@ class MallController extends CommonController
     }
     */
 
-//    /**
-//     * 订单ID
-//     * @return string   绝对唯一的32位订单ID号
-//     */
-//    function getOrderId()
-//    {
-//        do {
-//            $orderId = onlyOrderId();
-//            //查询订单号是否存在
-//            $oid = M('shop_order')->where("`order_id`='{$orderId}'")->field('id')->find();
-//            $osid = D('OrderSetmeal')->where("`order_id`='{$orderId}'")->field('id')->find();
-//            if ($oid || $osid) {
-//                $res = true;
-//            } else {
-//                $res = false;
-//            }
-//            // 如果订单号已存在再重新获取一次
-//        } while ($res);
-//
-//        return $orderId;
-//    }
+    /**
+     * 订单ID
+     * @return string   绝对唯一的32位订单ID号
+     */
+    function getOrderId()
+    {
+        do {
+            $orderId = onlyOrderId();
+            //查询订单号是否存在
+            $oid = M('shop_order')->where("`order_id`='{$orderId}'")->field('id')->find();
+            $osid = D('OrderSetmeal')->where("`order_id`='{$orderId}'")->field('id')->find();
+            if ($oid || $osid) {
+                $res = true;
+            } else {
+                $res = false;
+            }
+            // 如果订单号已存在再重新获取一次
+        } while ($res);
+
+        return $orderId;
+    }
 }
 
 
