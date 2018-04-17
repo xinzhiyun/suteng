@@ -267,16 +267,16 @@ class WeiXinPayController extends Controller
 <fee_type><![CDATA[CNY]]></fee_type>
 <is_subscribe><![CDATA[Y]]></is_subscribe>
 <mch_id><![CDATA[1501254081]]></mch_id>
-<nonce_str><![CDATA[biuey4vbyqa4knh7nnfsf64tda593471]]></nonce_str>
+<nonce_str><![CDATA[j1hzjra71md7r8gr23b08u59l2y6evkh]]></nonce_str>
 <openid><![CDATA[onLe70fYcrqU71RjzfYUjkNf90_E]]></openid>
-<out_trade_no><![CDATA[275280889129432]]></out_trade_no>
+<out_trade_no><![CDATA[175489079649672]]></out_trade_no>
 <result_code><![CDATA[SUCCESS]]></result_code>
 <return_code><![CDATA[SUCCESS]]></return_code>
-<sign><![CDATA[B85DC37828AD6CE246FF81642F3ACF41]]></sign>
-<time_end><![CDATA[20180417093419]]></time_end>
+<sign><![CDATA[71A39BC39D8660A5D630EB06FD52A64B]]></sign>
+<time_end><![CDATA[20180417142344]]></time_end>
 <total_fee>1</total_fee>
 <trade_type><![CDATA[JSAPI]]></trade_type>
-<transaction_id><![CDATA[4200000067201804179838501934]]></transaction_id>
+<transaction_id><![CDATA[4200000057201804170475711201]]></transaction_id>
 </xml>
 ';
         if($xml){
@@ -290,7 +290,7 @@ class WeiXinPayController extends Controller
             if(!empty($result['out_trade_no'])){
 //                $did =  $result['out_trade_no'];
 
-                $did = 694887979570733;
+                $did = $result['out_trade_no'];
                 //file_put_contents('./wx_pay1.txt',$result['out_trade_no']."\r\n", FILE_APPEND);
                 //file_put_contents('./wx_pay1.txt',$uid."\r\n", FILE_APPEND);
                 // 获取传回来的订单号
@@ -300,7 +300,7 @@ class WeiXinPayController extends Controller
                 // 查询订单是否已处理
                 // 查询订单是否已处理
                 $orderData = M('orders')->where($data)->field('is_pay,total_price,device_id')->find();
-
+               echo M('orders')->getlastsql();exit;
                 // 1分钱测试数据
                 $orderData['total_price'] = 1;
                 // dump($data);die;

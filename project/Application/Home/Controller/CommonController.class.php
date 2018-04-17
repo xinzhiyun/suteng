@@ -22,10 +22,11 @@ class CommonController extends Controller
         $weixin = new WeixinJssdk;
         // 获取用户open_id
         if(empty($_SESSION['open_id'])){
+
             // 如果不存在则，跳转获取open_id,并缓存
-            // $_SESSION['open_id'] = $weixin->GetOpenid();
+             $_SESSION['open_id'] = $weixin->GetOpenid();
             // 前端调试通道
-            $_SESSION['open_id'] = 'onLe70WUA8z0I_P5qqCmN66_Cl34';
+//            $_SESSION['open_id'] = 'onLe70fYcrqU71RjzfYUjkNf90_E';
 
         }
         // 获取用户open_id
@@ -39,6 +40,21 @@ class CommonController extends Controller
         $type   = $wechat["type"];
         // 接收操作
         $action = $wechat["action"];
+        // 查询用户信息
+        $info = M('users')->where(['open_id'=>$showData['open_id']])->find();
+
+        // 判断用户是否存在
+        if($info){
+            // 用户当前设备
+            $info['did'] = M('currentDevices')->where(['uid'=>$info['id']])->field('did')->find()['did'];
+
+            $_SESSION['homeuser'] = $info;
+
+        }else{
+            // 用户不存在
+            redirect(U('/Home/Wechat/follow'), 2, '请先关注微信公众号...');
+
+        }
 
         switch ($type) {
             case '0':
