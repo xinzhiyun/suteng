@@ -262,23 +262,23 @@ class WeiXinPayController extends Controller
         // 接收微信支付回调
 //        $xml=file_get_contents('php://input', 'r');
         $xml = '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
+<attach><![CDATA[540520625856781]]></attach>
 <bank_type><![CDATA[CFT]]></bank_type>
 <cash_fee><![CDATA[1]]></cash_fee>
 <fee_type><![CDATA[CNY]]></fee_type>
 <is_subscribe><![CDATA[Y]]></is_subscribe>
 <mch_id><![CDATA[1501254081]]></mch_id>
-<nonce_str><![CDATA[j1hzjra71md7r8gr23b08u59l2y6evkh]]></nonce_str>
+<nonce_str><![CDATA[ecwuldu4fq2yenz0af15vatxj4zi9muu]]></nonce_str>
 <openid><![CDATA[onLe70fYcrqU71RjzfYUjkNf90_E]]></openid>
-<out_trade_no><![CDATA[175489079649672]]></out_trade_no>
+<out_trade_no><![CDATA[144710542061205]]></out_trade_no>
 <result_code><![CDATA[SUCCESS]]></result_code>
 <return_code><![CDATA[SUCCESS]]></return_code>
-<sign><![CDATA[71A39BC39D8660A5D630EB06FD52A64B]]></sign>
-<time_end><![CDATA[20180417142344]]></time_end>
+<sign><![CDATA[1849051D4571C31B4762934639F2F6F2]]></sign>
+<time_end><![CDATA[20180417154117]]></time_end>
 <total_fee>1</total_fee>
 <trade_type><![CDATA[JSAPI]]></trade_type>
-<transaction_id><![CDATA[4200000057201804170475711201]]></transaction_id>
-</xml>
-';
+<transaction_id><![CDATA[4200000055201804170285501056]]></transaction_id>
+</xml>';
         if($xml){
             //解析微信返回数据数组格式
             $result = $this->notifyData($xml);
@@ -287,10 +287,10 @@ class WeiXinPayController extends Controller
             //$uid = M('Users')->where("open_id='{$result['']}'")->find()['id'];
             //file_put_contents('./wx_pay1.txt',$xml."\r\n", FILE_APPEND);
             // 如果订单号不为空
-            if(!empty($result['out_trade_no'])){
+            if(!empty($result['attach'])){
 //                $did =  $result['out_trade_no'];
 
-                $did = $result['out_trade_no'];
+                $did = $result['attach'];
                 //file_put_contents('./wx_pay1.txt',$result['out_trade_no']."\r\n", FILE_APPEND);
                 //file_put_contents('./wx_pay1.txt',$uid."\r\n", FILE_APPEND);
                 // 获取传回来的订单号
@@ -300,7 +300,7 @@ class WeiXinPayController extends Controller
                 // 查询订单是否已处理
                 // 查询订单是否已处理
                 $orderData = M('orders')->where($data)->field('is_pay,total_price,device_id')->find();
-               echo M('orders')->getlastsql();exit;
+
                 // 1分钱测试数据
                 $orderData['total_price'] = 1;
                 // dump($data);die;
@@ -341,6 +341,7 @@ class WeiXinPayController extends Controller
                     }
 
                     $isPayRes = $orders->where($data)->save($isPay);
+                    $isStatus = $orderSetmeal->where($data)->save(['status'=>1]);
 
                     // dump($orderSetmealData);die;
                     // 充值状态
@@ -474,8 +475,8 @@ class WeiXinPayController extends Controller
 //                     dump($status);die;
                     // show($msg);die;
                     // file_put_contents('saaa',$isPayRes .'jfdslajfds'. $status);
-                    if($isPayRes && $status){
-//                        dump($deviceCode);
+                    if($isPayRes && $status && $isStatus){
+
                         // 执行事务
                         $orders->commit();
 

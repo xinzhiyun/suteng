@@ -80,6 +80,8 @@ class PayController extends Controller
     {
         $showWhere['setmeal_id'] = I('post.order');
 
+
+
         //查询订单表
         $orderData = M('order_setmeal')->where($showWhere)->find();
         // 判断订单未支付

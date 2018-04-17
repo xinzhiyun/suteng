@@ -14,6 +14,7 @@ class ActionController extends Controller
 
     public function test()
     {
+        $this->sysnc('868575025659808');
 //
 //        $message['DeviceID'] = '868575025672249';
 //        $message['PackType'] = "SetData";
@@ -424,7 +425,7 @@ class ActionController extends Controller
     {
         $code = M('devices')->where("device_code={$dcode}")->find();
 //        $status = M('devices_statu')->where("DeviceID='{$dcode}'")->find();
-        $type = M('device_type')->where("id={$code['type_id']}")->find();
+        $type = M('type')->where("id={$code['type_id']}")->find();
 
         unset($type['id'], $type['typename'], $type['addtime']);
         $sum = array_filter($type);
