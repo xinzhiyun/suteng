@@ -33,7 +33,7 @@
                         <select name="status" class="form-control" name="account" style="width:30%">
                             <option     <?php echo ($where['status']=="")?'selected':''; ?> value="">-- 状态 --</option>
                             <!-- <option     <?php echo ($where['status']=="")?'selected':''; ?> value="">会员等级</option> -->
-                            <option   <?php echo ($where['status']=="0")?'selected':''; ?> value="0">非企业会员</option>
+                            <option   <?php echo ($where['status']=="0")?'selected':''; ?> value="0">身份信息填写</option>
                             <option  <?php echo ($where['status']==1)?'selected':''; ?> value="1">公司信息填写</option>
                             <option  <?php echo ($where['status']==2)?'selected':''; ?> value="2">签协议</option>
                             <option <?php echo ($where['status']==3)?'selected':''; ?> value="3">待审批</option>
@@ -46,7 +46,7 @@
                         </select>
 
                         <span class="input-group-btn" style="display: inline-block;">
-                                <input type="submit" class="btn btn btn-primary submitbtn" name=""> <i class="fa fa-search"></i> 搜索</button>
+                                <input type="submit" class="btn btn btn-primary submitbtn" name="sou"> <i class="fa fa-search"></i> 搜索</button>
                         </span>
                     </div>
                 </form>
