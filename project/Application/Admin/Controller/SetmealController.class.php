@@ -44,6 +44,7 @@ class SetmealController extends CommonController
                     ->join(' LEFT JOIN st_type ON st_setmeal.tid = st_type.id')
                     ->field('st_setmeal.*,st_type.typename')
                     ->select();
+
         // dump($list);die;
         $this->assign('list',$list);
         $this->assign('button',bootstrap_page_style($pageButton));
