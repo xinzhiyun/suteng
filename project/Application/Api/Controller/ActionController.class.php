@@ -18,6 +18,7 @@ class ActionController extends Controller
 
     public function test()
     {
+        $this->sysnc('868575025659808');
 //
 //        $message['DeviceID'] = '868575025672249';
 //        $message['PackType'] = "SetData";

@@ -28,7 +28,7 @@
 	<script src="__PUBLIC__/Home/datechajian/dev/js/mobiscroll.android-ics-2.5.2.js" type="text/javascript"></script>
 	<link href="__PUBLIC__/Home/datechajian/dev/css/mobiscroll.android-ics-2.5.2.css" rel="stylesheet" type="text/css" />
 	<!-- E 可根据自己喜好引入样式风格文件 -->
-	
+
 </head>
 <body>
 	<div class="switchAll">
@@ -70,7 +70,7 @@
 		      // 创建 a 标签
 		      var home = document.createElement('a');
 		      home.innerText = '首\n页';
-		      
+
 		      home.href = '{{:U("Home/VipCenter/minepack")}}';
 		      home.setAttribute("id", 'back2Home');
 
@@ -87,16 +87,15 @@
 		// 默认时分
 		var d = new Date();
 		var hours = d.getHours();
-		var minutes = d.getMinutes();
-		minutes = minutes < 10 ? "0" + minutes : minutes;
+		var minutes = '00';
 		hours = hours < 10 ? "0" + hours : hours;
 		$("input[name=appTime]").val(hours + ":" + minutes);
 
 		$("#save").click(function(){
 			// 获取表单数据
         	var time = $('input[name="appTime"]').val();//时间
-        	var action_type = $('.shezhi>p.checked').attr('alt');//功能选择 
-			var time_type = $('.repeat>div>p.checked').attr('alt');//重复方式选择	
+        	var action_type = $('.shezhi>p.checked').attr('alt');//功能选择
+					var time_type = $('.repeat>div>p.checked').attr('alt');//重复方式选择
 	        $.ajax({
 	            url:"{{:U('Home/Task/set_time')}}",
 	            data:{time:time,type:action_type,repeat:time_type},
@@ -120,25 +119,28 @@
 	        });
 		})
 
-        // 日期插件
+    // 日期插件
 		$(function () {
-			var currYear = (new Date()).getFullYear();	
+			var currYear = (new Date()).getFullYear();
 			var opt={};
 			opt.date = {preset : 'date'};
 			opt.datetime = {preset : 'datetime'};
-			opt.time = {preset : 'time'};
+			opt.time = {preset : 'time', stepMinute: 30};
 			opt.default = {
 				theme: 'android-ics light', //皮肤样式
-		        display: 'modal', //显示方式 
-		        mode: 'scroller', //日期选择模式
+		    display: 'modal', //显示方式
+		    mode: 'scroller', //日期选择模式
 				lang:'zh',
-		        startYear:currYear - 10, //开始年份
-		        endYear:currYear + 10 //结束年份
+		    startYear:currYear - 10, //开始年份
+		    endYear:currYear + 10, //结束年份
+				width: 100,
+				height: 50,
 			};
 		  	var optTime = $.extend(opt['time'], opt['default']);
 		    $("#appTime").mobiscroll(optTime).time(optTime);
 		});
-		
+
+
 		// 默认选中第一个
 		$(".repeat>div>p").eq(0).addClass("checked");
 		$(".shezhi>p").eq(0).addClass("checked");
@@ -153,6 +155,6 @@
 		})
 
 	</script>
-	
+
 </body>
-</html>                                                                                                                                                                                                                                                                      	
+</html>
