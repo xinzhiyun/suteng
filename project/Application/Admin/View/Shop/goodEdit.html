@@ -36,16 +36,6 @@
                                     </volist>
                                 </select>
                             </div>
-                            <div class="col-sm-2" style="display:none">
-                                <select class="form-control m-b" name="seccate">
-                                    <option value="--">--请选择--</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-2" style="display:none">
-                                <select class="form-control m-b" name="thirdcate">
-                                    <option value="--">--请选择--</option>
-                                </select>
-                            </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">商品名称：</label>
@@ -58,9 +48,11 @@
                             <label class="col-sm-2 control-label _attr">商品属性：</label>
                             <div class="col-sm-10">
                                 <div class="checkbox i-checks">
-                                    <volist name="arrtList" id="vo">
+                                    <volist name="arrtList" id="vo" key="k">                                        
                                         <label class="attr">
-                                            <input type="checkbox" data-name={{$vo.attr}} data-id="{{$vo.id}}"> <i></i> {{$vo.attr}}
+                                            <input class="aattr" type="checkbox" data-name={{$vo.attr}} data-id="{{$vo.id}}" {{$vo.check}}  >
+                                            {{$vo.attr}}
+                                           
                                         </label>
                                     </volist>
                                     <label class="attrList">
@@ -72,6 +64,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="form-group">
                             <label class="col-sm-2 control-label">商品规格：</label>
                             <div class="col-sm-6 attr_val">
@@ -85,7 +78,7 @@
                                 <div class="checkbox i-checks">
                                     <volist name="courierList" id="vo">
                                         <label class="courier">
-                                            <input type="checkbox" data-name={{$vo.name}} data-id="{{$vo.id}}"> <i></i> {{$vo.name}}
+                                            <input type="checkbox" class="courierCheck" data-name={{$vo.name}} data-id="{{$vo.id}}" {{$vo.check}}> <i></i> {{$vo.name}}
                                         </label>
                                     </volist>
                                     <label class="courierList">
@@ -503,9 +496,10 @@
                 lang: 'zh-CN'
             });
             $("#form .attr").on("click", function(e){
+
                 bindClick();
             });
-            $("#form .iCheck-helper").on("click", function(e){
+            $(".attr .iCheck-helper").on("click", function(e){
                 bindClick();
             });
 
@@ -515,7 +509,7 @@
                 cbindClick();
             });
 
-            $("#form .iCheck-helper").on("click", function(e){
+            $(".courier .iCheck-helper").on("click", function(e){
                 cbindClick();
             });
             /* 快递费设置 */
@@ -570,8 +564,13 @@
                 }
             })
             $('.attr_val').empty();
+            var newattrVal = {{$newattrVal|json_encode}};
             for(var i=0;i<arr.length;i++){
-                $('.attr_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].attrName+'</span><input type="text" placeholder="请输入'+arr[i].attrName+'的规格" name="attr['+arr[i].attrId+']" value="" class="form-control"></div>');
+
+                var astr = newattrVal[arr[i].attrId];
+                if (astr == undefined) astr = '';
+
+                $('.attr_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].attrName+'</span><input type="text" placeholder="请输入'+arr[i].attrName+'的规格" name="attr['+arr[i].attrId+']" value="'+astr+'" class="form-control"><input type="hidden" name="attrName['+arr[i].attrId+']" value=' + arr[i].attrName + ' class="form-control"></div>');
             }
         }
 
@@ -593,8 +592,14 @@
                 }
             })
             $('.courier_val').empty();
+            var gcVal = {{$gcVal|json_encode}};
+
+
             for(var i=0;i<arr.length;i++){
-                $('.courier_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].courierName+'</span><input type="text" placeholder="请输入'+arr[i].courierName+'的费用" name="courier['+arr[i].courierId+']"  class="form-control"></div>');
+                var str = gcVal[arr[i].courierId];
+                if (str == undefined) str = '';
+                
+                $('.courier_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].courierName+'</span><input type="text" placeholder="请输入'+arr[i].courierName+'的费用" name="courier['+arr[i].courierId+']" value="'+str+'" class="form-control"><input type="hidden" name="courierName['+arr[i].courierId+']" value=' + arr[i].courierName + ' class="form-control"></div>');
             }
         }
         /* 快递 */
@@ -629,5 +634,9 @@
                 }
             });
         });
+
+
+
+                       
     </script>
 </block>
