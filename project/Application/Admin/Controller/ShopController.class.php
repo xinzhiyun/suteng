@@ -477,6 +477,7 @@ class ShopController extends CommonController
                 foreach ($attrValList as $key => $value) {
                     $attrValDate['gid'] = $gid;
                     $attrValDate['aid'] = $key;
+                    $attrValDate['updatetime'] = time();
                     $attrValDate['val'] = $value;
                     $avBool = $av->add($attrValDate);
 
@@ -489,6 +490,7 @@ class ShopController extends CommonController
                     $attrValDate['gid'] = $gid;
                     $attrValDate['aid'] = $key;
                     $attrValDate['val'] = $value;
+                    $attrValDate['updatetime'] = time();
                     $avBool = $av->add($attrValDate);
 
                 }
@@ -517,6 +519,7 @@ class ShopController extends CommonController
                     $courierValDate['gid'] = $gid;
                     $courierValDate['cid'] = $k;
                     $courierValDate['cprice'] = $v;
+                    $courierValDate['updatetime'] = time();
                     $gcBool = $gc->add($courierValDate);
 
                 }
@@ -527,6 +530,7 @@ class ShopController extends CommonController
                 foreach ($courierList as $k => $v) {
                     $courierValDate['gid'] = $gid;
                     $courierValDate['cid'] = $k;
+                    $courierValDate['updatetime'] = time();
                     $courierValDate['cprice'] = $v;
                     $gcBool = $gc->add($courierValDate);
 
@@ -540,7 +544,7 @@ class ShopController extends CommonController
                 $courierNameList = $_POST['courierName'];
                 foreach ($courierNameList as $ckey => $cvalue) {
                     $courierNameDate['cname'] = $cvalue;
-                    $courierBool = $gc->where('cid='.$key)->save($courierNameDate);
+                    $courierBool = $gc->where('cid='.$ckey)->save($courierNameDate);
                 }
             }
             
@@ -557,6 +561,7 @@ class ShopController extends CommonController
                     $priceValDate['gid'] = $gid;
                     $priceValDate['price'] = $values;
                     $priceValDate['grade'] = $keys;
+                    $priceValDate['updatetime'] = time();
                     $priceBool = $price->add($priceValDate);
                 }
             } else {
@@ -566,6 +571,7 @@ class ShopController extends CommonController
                 foreach ($priceList as $keys => $values) {
                     $priceValDate['gid'] = $gid;
                     $priceValDate['price'] = $values;
+                    $priceValDate['updatetime'] = time();
                     $priceValDate['grade'] = $keys;
                     $priceBool = $price->add($priceValDate);
                 }
