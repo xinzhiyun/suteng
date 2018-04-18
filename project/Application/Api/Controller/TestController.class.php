@@ -28,7 +28,7 @@ class TestController extends Controller
             $res = json_decode($redis->get($list[$i]));
             $res->key = $list[$i];
             $items[]  =  $res;
-            //$redis->delete($list[$i]);
+//            $redis->delete($list[$i]);
         }
         return $items;
     }

@@ -474,23 +474,37 @@ class ShopController extends CommonController
                 //进行属性添加
                 //接受属性值
                 $attrValList = $_POST['attr'];
-                foreach ($attrValList as $key => $value) {
-                    $attrValDate['gid'] = $gid;
-                    $attrValDate['aid'] = $key;
-                    $attrValDate['val'] = $value;
-                    $avBool = $av->add($attrValDate);
 
+                if (empty($attrValList)) {
+                    E('属性不能为空！',407);
+
+                } else {
+                    foreach ($attrValList as $key => $value) {
+                        $attrValDate['gid'] = $gid;
+                        $attrValDate['aid'] = $key;
+                        $attrValDate['updatetime'] = time();
+                        $attrValDate['val'] = $value;
+                        $avBool = $av->add($attrValDate);
+
+                    }
                 }
+                
             } else {
                 //进行属性添加
                 //接受属性值
                 $attrValList = $_POST['attr'];
-                foreach ($attrValList as $key => $value) {
-                    $attrValDate['gid'] = $gid;
-                    $attrValDate['aid'] = $key;
-                    $attrValDate['val'] = $value;
-                    $avBool = $av->add($attrValDate);
+                if (empty($attrValList)) {
+                    E('属性不能为空！',407);
 
+                } else {
+                    foreach ($attrValList as $key => $value) {
+                        $attrValDate['gid'] = $gid;
+                        $attrValDate['aid'] = $key;
+                        $attrValDate['updatetime'] = time();
+                        $attrValDate['val'] = $value;
+                        $avBool = $av->add($attrValDate);
+
+                    }
                 }
                 
             }
@@ -513,23 +527,36 @@ class ShopController extends CommonController
 
                 //接受快递费
                 $courierList = $_POST['courier'];
-                foreach ($courierList as $k => $v) {
-                    $courierValDate['gid'] = $gid;
-                    $courierValDate['cid'] = $k;
-                    $courierValDate['cprice'] = $v;
-                    $gcBool = $gc->add($courierValDate);
 
+                if (empty($courierList)) {
+                    E('快递费不能为空！',407);
+                    
+                } else {
+                    foreach ($courierList as $k => $v) {
+                        $courierValDate['gid'] = $gid;
+                        $courierValDate['cid'] = $k;
+                        $courierValDate['cprice'] = $v;
+                        $courierValDate['updatetime'] = time();
+                        $gcBool = $gc->add($courierValDate);
+
+                    }
                 }
+                
             } else {
                 //进行快递费添加
                 //接受快递费
                 $courierList = $_POST['courier'];
-                foreach ($courierList as $k => $v) {
-                    $courierValDate['gid'] = $gid;
-                    $courierValDate['cid'] = $k;
-                    $courierValDate['cprice'] = $v;
-                    $gcBool = $gc->add($courierValDate);
+                if (empty($courierList)) {
+                    E('快递费不能为空！',407);
+                } else {
+                    foreach ($courierList as $k => $v) {
+                        $courierValDate['gid'] = $gid;
+                        $courierValDate['cid'] = $k;
+                        $courierValDate['cprice'] = $v;
+                        $courierValDate['updatetime'] = time();
+                        $gcBool = $gc->add($courierValDate);
 
+                    }
                 }
                 
             }
@@ -540,7 +567,7 @@ class ShopController extends CommonController
                 $courierNameList = $_POST['courierName'];
                 foreach ($courierNameList as $ckey => $cvalue) {
                     $courierNameDate['cname'] = $cvalue;
-                    $courierBool = $gc->where('cid='.$key)->save($courierNameDate);
+                    $courierBool = $gc->where('cid='.$ckey)->save($courierNameDate);
                 }
             }
             
@@ -553,21 +580,34 @@ class ShopController extends CommonController
                 $price->where('gid='.$gid)->delete();
                 //接受价格数据
                 $priceList = $_POST['price'];
-                foreach ($priceList as $keys => $values) {
-                    $priceValDate['gid'] = $gid;
-                    $priceValDate['price'] = $values;
-                    $priceValDate['grade'] = $keys;
-                    $priceBool = $price->add($priceValDate);
+
+                if (empty($priceList)) {
+                     E('商品价格不能为空！',407);
+                } else {
+                    foreach ($priceList as $keys => $values) {
+                        $priceValDate['gid'] = $gid;
+                        $priceValDate['price'] = $values;
+                        $priceValDate['grade'] = $keys;
+                        $priceValDate['updatetime'] = time();
+                        $priceBool = $price->add($priceValDate);
+                    }
                 }
+                
             } else {
                 //进行商品价格添加
                 //接受价格数据
                 $priceList = $_POST['price'];
-                foreach ($priceList as $keys => $values) {
-                    $priceValDate['gid'] = $gid;
-                    $priceValDate['price'] = $values;
-                    $priceValDate['grade'] = $keys;
-                    $priceBool = $price->add($priceValDate);
+                if (empty($priceList)) {
+                    E('商品价格不能为空！',407);
+                    
+                } else {
+                    foreach ($priceList as $keys => $values) {
+                        $priceValDate['gid'] = $gid;
+                        $priceValDate['price'] = $values;
+                        $priceValDate['grade'] = $keys;
+                        $priceValDate['updatetime'] = time();
+                        $priceBool = $price->add($priceValDate);
+                    }
                 }
             }
             

@@ -97,7 +97,10 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <a data-toggle="modal" class="btn btn-outline btn-success" data-target="#myModal" typename="{{$vo.typename}}" typeid="{{$vo.id}}" filter1="{{$vo.filter1}}" filter2="{{$vo.filter2}}" filter3="{{$vo.filter3}}" filter4="{{$vo.filter4}}" filter5="{{$vo.filter5}}" filter6="{{$vo.filter6}}" filter7="{{$vo.filter7}}" filter8="{{$vo.filter8}}" type="{{$vo.type}}" onclick="edit(this)">
+                                                    <a data-toggle="modal" class="btn btn-outline btn-success" data-target="#myModal"
+                                                       typename="{{$vo.typename}}"typeid="{{$vo.id}}"typeid="{{$vo.id}}" typeid="{{$vo.id}}" filter1="{{$vo.filter1}}" filter2="{{$vo.filter2}}"
+                                                       filter3="{{$vo.filter3}}" filter4="{{$vo.filter4}}" filter5="{{$vo.filter5}}" filter6="{{$vo.filter6}}" filter7="{{$vo.filter7}}"
+                                                       filter8="{{$vo.filter8}}" type="{{$vo.type}}" price="{{$vo.price}}" cost="{{$vo.cost}}" onclick="edit(this)">
                                                         编辑
                                                     </a>
                                                     <a class="btn btn-outline btn-success deletBnt" productId="{{$vo['id']}}" onclick="del(this)">
@@ -137,6 +140,18 @@
                             <label class="col-sm-4 control-label">类型名称：</label>
                             <div class="col-sm-5">
                                 <input class="input-medium form-control" placeholder="请输入滤芯名称..." type="text" name="typename">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">滤芯价格：</label>
+                            <div class="col-sm-5">
+                                <input class="input-medium form-control" placeholder="请输入滤芯价格..." type="text" name="price">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">单位时间成本：</label>
+                            <div class="col-sm-5">
+                                <input class="input-medium form-control" placeholder="请输入单位时间成本..." type="text" name="cost">
                             </div>
                         </div>
                         <div class="form-group">
@@ -257,6 +272,8 @@
             $('.choosed').css('border','none');
             var typename = $(obj).attr('typename');
             var id = $(obj).attr('typeid');
+            var price = $(obj).attr('price');
+            var cost = $(obj).attr('cost');
             var arr = new Array();
             var filter1 = $(obj).attr('filter1');
             var filter2 = $(obj).attr('filter2');
@@ -267,7 +284,7 @@
             var filter7 = $(obj).attr('filter7');
             var filter8 = $(obj).attr('filter8');
             var type = $(obj).attr('type');
-            console.log(type);
+            console.log( $(obj).attr('price'));
 
             var html = '';
             // 状态判断
@@ -303,6 +320,8 @@
             }
             $('input[name="id"]').val(id);
             $("input[name='typename']").val(typename);
+            $("input[name='price']").val(price);
+            $("input[name='cost']").val(cost);
             $('.choosed').css('border','1px solid red');
             $('.product-add').addClass('product-edit');
             $('.product-add').removeClass('product-add');
