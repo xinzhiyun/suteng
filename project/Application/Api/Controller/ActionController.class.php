@@ -3,13 +3,17 @@ namespace Api\Controller;
 use Think\Controller;
 use Think\Log;
 use Org\Util\Gateway;
-
+use Common\Tool\Device;
 class ActionController extends Controller
 {
     public function __construct()
     {
         parent::__construct();
         Gateway::$registerAddress = '127.0.0.1:9504';
+
+        global $device_cache;
+        $device_cache =  new Device();
+
     }
 
     public function test()
@@ -87,6 +91,7 @@ class ActionController extends Controller
             }
         }
         Gateway::sendToClient($client_id, $message);
+        Log::write(json_encode($message), '设备信息包分发');
 
         switch ($message['PackType']) {
             case 'login':
@@ -115,6 +120,8 @@ class ActionController extends Controller
     public function Close($DeviceID)
     {
         $DeviceID=trim($DeviceID);
+
+
 
         $status_id = M('devices_statu')->where("DeviceID=" . $DeviceID)->getField('id');
 
@@ -225,24 +232,25 @@ class ActionController extends Controller
 
             $DeviceID=trim($message['DeviceID']);
 
-            if ($message['PackNum'] == 6 || $message['PackNum'] == 5) {
+            if ($message['PackNum'] == 5) {  //更新
                 $status_id = M('devices_statu')->where("DeviceID=" . $DeviceID)->save(['data_statu'=>0]);
             }
 
-//            $res = $this->check_msg($message);
-//            $data['data_statu'] = 0;
+            if ($message['PackNum'] == 6 ) {  //激活
+                $status_id = M('devices_statu')->where("DeviceID=" . $DeviceID)->save(['data_statu'=>0,
+                    'AliveStause'=>1]);
+            }
 
-//            if (!empty($res['data'])) {
-//                if(!empty($res['rest'])){
-//                    //数据不统一 继续更新
-//
-//                }else{
-////                    $data = $res['data'];
-//                    $data['data_statu'] = 0;
-//                }
-//                $this->updateData($status_id, $data);
-//
-//            }
+            if ($message['PackNum'] == 4 ) { //定时任务
+                $time = time();
+                $h = date('G',$time);
+                $m = ltrim(date('i',$time),'0');
+
+                //获取定时器缓存 进行删除
+                global $device_cache;
+                $device_cache->get_devices_info($DeviceID);
+
+            }
         }
     }
 
@@ -424,7 +432,7 @@ class ActionController extends Controller
     {
         $code = M('devices')->where("device_code={$dcode}")->find();
 //        $status = M('devices_statu')->where("DeviceID='{$dcode}'")->find();
-        $type = M('device_type')->where("id={$code['type_id']}")->find();
+        $type = M('type')->where("id={$code['type_id']}")->find();
 
         unset($type['id'], $type['typename'], $type['addtime']);
         $sum = array_filter($type);

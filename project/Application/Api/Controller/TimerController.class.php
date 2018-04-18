@@ -17,6 +17,20 @@ class TimerController extends Controller
         $redis->connect('127.0.0.1',6379);
     }
 
+    public function del()
+    {
+        global $redis;
+        $list = $redis->keys('shizhou_timer_*');
+        $items = [];
+        for ($i=0; $i< count($list); $i++){
+//            $res = '';
+//            $res = json_decode($redis->get($list[$i]));
+//            $res->key = $list[$i];
+//            $items[]  =  $res;
+            $redis->delete($list[$i]);
+        }
+    }
+
 
     /**
      * 获取缓存
@@ -98,7 +112,7 @@ class TimerController extends Controller
         $msgs = [
             '0'=>['DeviceID'=>'', 'PackType'=>'SetData','Vison'=>'0','DeviceStause'=>'8'],//开机
             '1'=>['DeviceID'=>'', 'PackType'=>'SetData','Vison'=>'0','DeviceStause'=>'7'],//关机
-//            '2'=>['DeviceID'=>'', 'PackType'=>'SetData','Vison'=>'0','DeviceStause'=>'8'],//开启加热
+//            '2'=>['DeviceID'=>'', 'PackType'=>'SetData','Vison'=>'0','DeviceStause'=>'8'],//开启加热  等待确定命令宝
 //            '3'=>['DeviceID'=>'', 'PackType'=>'SetData','Vison'=>'0','DeviceStause'=>'8'],//关闭加热
         ];
 
@@ -145,32 +159,6 @@ class TimerController extends Controller
         }
     }
 
-    public function timer_add($key='')
-    {
-        $key=128;
-        if(!empty($key)){
-            $data = M('task')->where('id='.$key)->find();
-            $data['device_code'] = M('Devices')->where('id='.$data['did'])->getField('device_code');// 查询设备码
-
-            //redis连接
-            $redis = new \Redis();
-            $redis->connect('127.0.0.1',6379);
-
-            $key = "Timer_".$key;
-            $res=$redis->set($key,json_encode($data));
-        }
-    }
-
-//    //删除定时缓存
-//    public function timer_del($key='')
-//    {
-//        if(!empty($key)){
-//            $key = "Timer_".$key;
-//            $redis = new \Redis();
-//            $redis->connect('127.0.0.1',6379);
-//            $redis->delete($key);
-//        }
-//    }
 
 
 }
