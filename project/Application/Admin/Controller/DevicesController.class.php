@@ -526,6 +526,7 @@ class DevicesController extends CommonController
         $pageButton =$page->show();
        
         $data = $type->where($map)->limit($page->firstRow.','.$page->listRows)->order('id desc')->select();
+
         $filter = $filters->where(['status'=>0])->order('id desc')->select();
         $assign = [
             'data' => $data,
@@ -543,6 +544,8 @@ class DevicesController extends CommonController
             $type = D('Type');
             $filter = I('post.arr');
             $data['typename'] = I('post.typename');
+            $data['price'] = I('post.price');
+            $data['cost'] = I('post.cost');
             $data['addtime'] = time();
             $data['updatetime'] = time();
             $i = 1;
@@ -582,6 +585,8 @@ class DevicesController extends CommonController
             $arr = I('post.');
             $where['id'] = I('post.id');
             $data['typename'] = $arr['typename'];
+            $data['price'] = $arr['price'];
+            $data['cost'] = $arr['cost'];
             $types = I('post.type');
             // dump($types);die;
             if($types == 'on'){

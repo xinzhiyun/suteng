@@ -143,8 +143,8 @@ class OrderController extends CommonController
 
             $map = I('post.');
 
-//            $map['order_id'] = $map['order_id'];
-            $map['order_id'] = '500985865733851';
+            $map['order_id'] = $map['order_id'];
+//            $map['order_id'] = '500985865733851';
 //            $data['status'] = 3;
 //            $data['addtime'] = '12';
             $info = M('shop_order')->where($map)->find();
@@ -188,6 +188,7 @@ class OrderController extends CommonController
 //                dump($money);exit;
                     //查出当前推荐商人
                     $c_info = M('vendors')->where(['code'=>$list['invitation_code']])->find();
+
                     //查出推荐人的推荐人
                     $f_info = M('vendors')->where(['code'=>$c_info['office_code']])->find();
                     //销售奖(卖商品的经销商)
