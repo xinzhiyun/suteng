@@ -544,6 +544,7 @@
             }
 
             showAttr();
+            showCourier();
 
         });
 
@@ -579,7 +580,10 @@
             }
         }
         /* 快递费设置页面 */
-        function cbindClick(){
+        function cbindClick() {
+            showCourier();
+        }
+        function showCourier(){
             var courierId,courierName;
             var arr = new Array();
 
