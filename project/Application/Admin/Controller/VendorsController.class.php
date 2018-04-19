@@ -642,6 +642,12 @@ class VendorsController extends CommonController
         $where['key'] = $_GET['key'];
         $where['keywords'] = $_GET['keywords'];
         $where['status'] = I('get.status');
+        $where['leavel'] = I('get.leavel');
+
+
+
+        dump($where);
+
 
 
         //echo D('vendors')->getLastSql();
