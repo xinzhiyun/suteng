@@ -403,6 +403,7 @@ class ActionController extends Controller
 //            $res[] = M('filters')->where($map)->field('timelife,flowlife')->find();
             $res[] = M('filters')->where($map)->field('timelife,flowlife')->find();
         }
+        array_filter($res);
         return $res;
     }
 
