@@ -90,13 +90,13 @@ class CommentController extends CommonController
     public function getComments($gid='')
     {
         $gid = I('get.gid');
-        $gid = 71;
+        // $gid = 71;
         $map['status'] = 1; //查询不隐藏的评论
         $comment = D('Comment');
         if(empty($gid)){
             //  获取单个用户的评论
             $map['uid'] = session('user.id');
-            $map['uid'] = 27;
+            // $map['uid'] = 27;
             $with = ['good','pics'];
         } else {
             // 获取单个商品的评论
