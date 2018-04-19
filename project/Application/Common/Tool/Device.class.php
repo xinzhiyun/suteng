@@ -7,64 +7,70 @@
 
 namespace Common\Tool;
 
-
-class Device
+class Device extends Redis
 {
-    private static $pre = 'devices_';       //缓存的前缀
+    public static $pre = 'devices_';       //缓存的前缀
     private static $fields = array(         //缓存中的字段
         'id',               //设备表的ID
         'sid',              //设备状态表的ID
-        'timer'             //定时的数据 --json
+        'timer',            //定时的数据 --json
+        'type_id',          //设备类型
 
     );
-
-    public function __construct()
-    {
-        global $redis;
-        $redis = new \Redis();
-        $redis->connect('127.0.0.1',6379);
-    }
+    private static $notnullfields=array(    //非空字段
+        'id',               //设备表的ID
+        'sid',              //设备状态表的ID
+        'type_id',          //设备类型
+    );
 
     /**
      * 设备数据
      * @param $key 设备号
      * @return mixed
      */
-    public function get_devices_info($device_code,$field='')
+    public static function get_devices_info($device_code,$field='')
     {
-        global $redis;
+        self::connect();
         $key = self::$pre.$device_code;
 
         if (empty($field)) { //获取所有
 
         }
 
-        if ($redis->hExists($key,$field)) {
-            return $redis->hget($key,$field);
+        if (self::$redis->hExists($key,$field)) {
+            $res = self::$redis->hget($key,$field);
+            //返回值为空 就重建缓存
+            if (in_array($field,self::$notnullfields)) {
+                $res = $res ?? self::make_cache($device_code,$field);
+            }
+            return $res;
         } else {
-            return $this->make_cache($device_code,$field);
+            return self::make_cache($device_code,$field);
         }
     }
 
     /**
      * 创建设备缓存
      */
-    public function make_cache($device_code,$field)
+    public static function make_cache($device_code,$field)
     {
-        global $redis;
+        self::connect();
         $key = self::$pre.$device_code;
 
-        if (in_array($field,self::$fields)) {
-            switch ($field) {
+        if ( in_array( $field, self::$fields ) ) {
+            switch ( $field ) {
                 case "id":
-//                case "id":
+                case "type_id":
                     $val = M('devices')->where('device_code='.$device_code)->getField($field);
-                    break;
+                    self::$redis->hset($key,$field,$val);
+                break;
                 case "sid":
                     $val = M('devices_statu')->where('DeviceID='.$device_code)->getField('id');
-                    break;
+                    if(!empty($val)){
+                        self::$redis->hset($key,$field,$val);
+                    }
+                break;
             }
-            $redis->hset($key,$field,$val);
             return $val;
         }
     }
@@ -75,11 +81,11 @@ class Device
      * @param $field
      * @param $val
      */
-    public function set($device_code,$field,$val)
+    public static function hset($device_code,$field,$val)
     {
-        global $redis;
+        self::connect();
         $key = self::$pre.$device_code;
-        return $redis->hset($key,$field,$val);
+        return self::$redis->hset($key,$field,$val);
     }
 
 
