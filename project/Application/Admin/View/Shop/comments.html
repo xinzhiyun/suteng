@@ -20,9 +20,9 @@
                     <div class="input-grouprow" id='searchdiv' style="display: flex; ">
                         <select name="grade" class="form-control" name="account" style="display: inline-block;width: 50%">
                             <option value="">-- 评价 --</option>
-                            <option value="1">好评</option>
-                            <option value="2">中评</option>
-                            <option value="3">差评</option>
+                            <option value="1" <?php echo $_GET['grade'] == 1 ? 'selected' : ''; ?> >好评</option>
+                            <option value="2" <?php echo $_GET['grade'] == 2 ? 'selected' : ''; ?> >中评</option>
+                            <option value="3" <?php echo $_GET['grade'] == 3 ? 'selected' : ''; ?> >差评</option>
                         </select>
                         <select name="status" class="form-control" name="account" style="display: inline-block;">
                                 <option value="">-- 状态 --</option>
