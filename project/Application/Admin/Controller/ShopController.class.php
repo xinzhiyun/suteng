@@ -1217,6 +1217,53 @@ class ShopController extends CommonController
             $this->ajaxReturn($err);
         }
     }
+    
 
+    /**
+     * 商品评论列表
+     */
+    public function comments()
+    {       
+        $comment = D('comment');
+        strlen(I('get.grade')) ? $map['grade'] = (int)I('get.grade'):'';
+        strlen(I('get.status')) ? $map['status'] = (int)I('get.status'):'';   
+        // ---- 解决非第一页搜索条件$_GET['p']不等于1的情况【start】
+        if(I('sou')){
+            $_GET['p'] = 1;
+            unset($_GET['sou']);
+        }
+        // ---- 【end】             
+        if($map !== NULL && count($map) > 0){
+           $comment->where($map);          
+        }
+        $comment2 = clone $comment;
+        $total = $comment->count();
+        $page  = new \Think\Page($total,10);
+        $pageButton =$page->show();
+        $data = $comment2->relation(['user','good','pics'])->limit($page->firstRow.','.$page->listRows)->select();
+  
+        $this->assign('list',$data);
+        $this->assign('page',bootstrap_page_style($pageButton));
+        $this->display();
+    }
 
+    /**
+     * 商品评论修改显示状态
+     */
+    public function comment_edit()
+    {
+        if(IS_AJAX) {
+            $id = I('get.id');
+            $status = I('get.status');
+            if(!is_numeric($id) || !is_numeric($status)){
+                return $this->ajaxReturn(['code'=>401,'msg'=>'修改失败','errMsg'=>'参数错误']);
+            }
+            $res = D('comment')->where(['id'=>$id])->data(['status'=>$status])->save();
+            if($res){
+                return $this->ajaxReturn(['code'=>200,'msg'=>'修改成功']);
+            } else {
+                return $this->ajaxReturn(['code'=>401,'msg'=>'修改失败']);
+            }
+        }
+    }
 }
