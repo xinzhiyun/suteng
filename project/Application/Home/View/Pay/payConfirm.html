@@ -33,7 +33,7 @@
 						<span class="price">￥120.00</span>
 						<span class="num">X&nbsp;<b>2</b></span>
 					</div>
-					
+
 				</div>
 			</div> -->
 		</div>
@@ -88,7 +88,7 @@
 			</div>
 			<div id="payNow">
 				<div>立即付款</div>
-			</div>			
+			</div>
 		</div> -->
 		<footer id="footerContain">
 			<div>实付金额：<span>240.00</span></div>
@@ -102,7 +102,7 @@
 				<div class="paytopRight">
 					<h3>付款</h3>
 					<p>￥3620.00</p>
-				</div>	
+				</div>
 			</div>
 			<div class="paymidd">
 				<h3>选择支付方式</h3>
@@ -119,7 +119,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- 模态框的内容 -->
 	<div class="modelAll">
 		<!-- <a class="start" href="javascript:;">点击</a> -->
@@ -147,7 +147,7 @@
 				// 创建 a 标签
 				var home = document.createElement('a');
 				home.innerText = '首\n页';
-				
+
 				home.href = '{{:U("Home/Shop/index")}}';
 				home.setAttribute("id", 'back2Home');
 
@@ -175,26 +175,26 @@
 		$(function(){
 			// 快递费
 			var postage = $("#postage").val();
-			// console.log(postage);
+			console.log("快递费",postage);
 			$("#hLeft").click(function(){
 				location.href = "{{:U('Address/index')}}";
 			})
 			//获取从后台传来的订单号
-			var order_id;	
+			var order_id;
 			if(sessionStorage.getItem('order_id')){
-				order_id = sessionStorage.getItem('order_id');	
+				order_id = sessionStorage.getItem('order_id');
 				// console.log(order_id);
 			}
 
 			// 获取后台传来的默认地址
 			var addressInfo;
 			// console.log($("#addressInfo").val())
-			if(($("#addressInfo").val())!='null'){ 
+			if(($("#addressInfo").val())!='null'){
 				// alert(1)
 				addressInfo = JSON.parse($("#addressInfo").val());
 				console.log(addressInfo);
-				if(addressInfo){ 
-					var addresssHTML = 
+				if(addressInfo){
+					var addresssHTML =
 						'<p>'+
 							'<span>收货人：'+ addressInfo.name +'</span>'+
 							'<span>'+ addressInfo.phone +'</span>'+
@@ -264,8 +264,8 @@
 
 			}else if(goods_data){	// 如果有商品购买，从商品详情’立即购买‘过来
 				// 遍历需要支付的商品信息
-				goods_data.goodsDetail.desc = goods_data.goodsDetail.desc 
-				? goods_data.goodsDetail.desc 
+				goods_data.goodsDetail.desc = goods_data.goodsDetail.desc
+				? goods_data.goodsDetail.desc
 				: '暂无描述';
 				goodsHTML += '<div class="goods">'+
 					'<div class="img"><img src="/Uploads/'+ goods_data.goodsDetail.path +'" alt="正在加载..."></div>'+
@@ -327,10 +327,22 @@
 			var voiceArr;
 			if(sessionStorage.getItem("voiceArr")){
 				voiceArr = JSON.parse(sessionStorage.getItem("voiceArr"));
-				console.log(voiceArr[0].type, voiceArr[0].info)
+				
+				// console.log("发票信息",voiceArr[0].type, voiceArr[0].info)
 
-				if(voiceArr[0].type && voiceArr[0].info && voiceArr[0].voicehead && voiceArr[0].phone){
-					$(".ynticket>a>span").text(voiceArr[0].type+' / '+ voiceArr[0].info)
+				// if(voiceArr[0].type && voiceArr[0].info && voiceArr[0].voicehead && voiceArr[0].phone){
+				// 	$(".ynticket>a>span").text(voiceArr[0].type+' / '+ voiceArr[0].info)
+				// }
+				if(voiceArr[0].type){
+					$(".ynticket>a>span").text(voiceArr[0].type)
+				}
+			}else {
+				// 默认 
+				voiceArr = {
+					'type': "不开发票",
+					'info': "",
+					'voicehead': "",
+					'phone': ""
 				}
 			}
 			/******** 订单遍历--结束--	**********/
@@ -390,7 +402,7 @@
 	  	 //     	})
 	      	/*
 	      		点击立即支付
-	      	 */ 
+	      	 */
 			$(".payBott").click(function(){
 				// 判断选择的是什么支付方式
 				var index = $(".icon-xuanze").parents("li").attr("index");
@@ -403,14 +415,14 @@
 						console.log('银币');
 						break;
 					case '3':
-						console.log('微信支付');
+						console.log('微信支付'); 
 						//如果有默认地址
 						if($("#addressInfo").val()){
 							//请求微信支付方法
 							$.ajax({
 								url: "{{:U('Home/PaymentSystem/orderPay')}}",
 								type: 'post',
-								data: {order: order_id},
+								data: {order: order_id, voiceArr: voiceArr},
 								success: function(res){
 									console.log(res);
 									if(res == -1){
@@ -447,15 +459,15 @@
 					case '5':
 						console.log('银联支付');
 						break;
-					
+
 					default:
 						console.log('无');
 						break;
-				} 
-			}) 
+				}
+			})
 	      	/*
 	      		微信支付方法
-	      	 */ 
+	      	 */
 	      	function weixinPay(res){
 	      		WeixinJSBridge.invoke(
 	      			'getBrandWCPayRequest',
@@ -468,7 +480,7 @@
 	      					setTimeout(function(){
 	      						location.href = '{{:U("PaymentSystem/paytosuccess")}}';
 	      					},500);
-	      					
+
 	      				}else if(res.err_msg.substr(-6) == 'cancel'){
 	      					//取消订单操作
 	      				}else{
@@ -477,7 +489,7 @@
 	      					setTimeout(function(){
 	      						location.href = '{{:U("PaymentSystem/paytofailed")}}';
 	      					},500);
-	      					
+
 	      				}
 	      			}
 	      		)
@@ -486,7 +498,7 @@
 			/******** 付款过程--结束--	**********/
 
 		})
-		
+
 	</script>
 </body>
 </html>
