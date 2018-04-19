@@ -116,24 +116,19 @@
 			请求评论数据
 		 */
 		$.ajax({
-			url: '{{:U("VipCenter/ajaxMy")}}',
+			url: '{{:U("Home/comment/getComments")}}',
 			type: 'post',
 			success: function(res){
 				console.log('成功！ ',res);
 				var picStr = '';	//存放图片的html
 				var picArr = [];	//存放评论图片的数组
 				var text_html = '';		//商品评价或安装评论
-				//模拟数据
-				res = [
-					{'comment':0,'path': ['comm_02.png','comm_02.png','comm_02.png'],'content':'宝贝很好~~~好喜欢好喜欢宝贝很好','addtime':'2017-12-11'},
-					{'comment':1,'path': ['comm_02.png','comm_02.png'],'content':'宝贝很不错，挺好的挺好的','addtime':'2017-12-12','xing1':'4','xing2':'5','xing3':'3'},
-					{'comment':0,'path': ['comm_02.png'],'content':'真的很不错，物有所值','addtime':'2017-12-13','xing1':'5','xing2':'4','xing3':'4'}
-				];
-				for(var i=0; i<res.length; i++){
-					if(!res[i].comment){	//商品评论
+				/* 以下为模拟数据 */
+				for(var i=0; i<res.data.length; i++){
+					if(res.data[i].installer_graded == 0){	//商品评论
 						text_html = '<!-- 评论内容 -->'+
 							'<div class="itemgoodsBott">'+
-								'<p>'+ res[i].content +'</p>'+
+								'<p>'+ res.data[i].content +'</p>'+
 								'<div class="commpic">'+
 									'<ul></ul>'+
 								'</div>'+
@@ -144,15 +139,15 @@
 								'<div class="mysaleBot">'+
 									'<p class=".clearfix">'+
 										'<b>安装人员评分</b>'+
-										'<i index="1" class="iconfont pingfen"><span style="width:'+ res[i].xing1*20 +'%"></span></i>'+
+										'<i index="1" class="iconfont pingfen"><span style="width:'+ res.data[i].installer_graded*20 +'%"></span></i>'+
 									'</p>'+
 									'<p class=".clearfix">'+
 										'<b>服务态度评分</b>'+
-										'<i index="1" class="iconfont pingfen"><span style="width:'+ res[i].xing2*20 +'%"></span></i>'+
+										'<i index="1" class="iconfont pingfen"><span style="width:'+ res.data[i].attitude*20 +'%"></span></i>'+
 									'</p>'+
 									'<p class=".clearfix">'+
 										'<b>着装评分</b>'+
-										'<i index="1" class="iconfont pingfen"><span style="width:'+ res[i].xing3*20 +'%"></span></i>'+
+										'<i index="1" class="iconfont pingfen"><span style="width:'+ res.data[i].dressing*20 +'%"></span></i>'+
 									'</p>'+
 									'<p>安装师傅认真负责，很好的一次用户体现</p>'+
 								'</div>'+
@@ -160,7 +155,7 @@
 					}
 					commetHTML += '<div class="mycomItem-first clearfix">'+
 							'<div class="itemgoodsTop">'+
-								'<h3><span>'+ res[i].addtime +'</span><span>10:28:39</span></h3>'+
+								'<h3><span>'+ timetrans(res.data[i].addtime) +'</span><span>10:28:39</span></h3>'+
 								'<div class="goodspic clearfix">'+
 									'<div class="mygoodsLeft"><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>'+
 									'<div class="mygoodsRight">'+
@@ -171,14 +166,14 @@
 							'</div>'+
 						'</div>' + text_html;
 
-					if(res[i].path.length == 1){//图片只有一张
-						picArr.push({'picHTML':'<li><img src="__PUBLIC__/Home/images/'+res[i].path+'" alt=""></li>'})
-					}else if(res[i].path.length > 1){
+					if(res.data[i].pics.length == 1){//图片只有一张
+						picArr.push({'picHTML':'<li><img src="__PUBLIC__/Home/images/'+res.data[i].pics[0].path+'" alt=""></li>'});
+					}else if(res.data[i].pics.length > 1){
 						picStr = '';	//先清空再生成
 						//图片多于一张
 						// console.log(res[i].path.length)
-						for(var j=0; j<res[i].path.length; j++){
-							picStr += '<li><img src="__PUBLIC__/Home/images/'+res[i].path[j]+'" alt=""></li>'
+						for(var j=0; j<res.data[i].pics.length; j++){
+							picStr += '<li><img src="__PUBLIC__/Home/images/'+res.data[i].pics[j].path+'" alt=""></li>';
 						}
 						picArr.push({'picHTML':picStr});
 					}
