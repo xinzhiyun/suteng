@@ -4,6 +4,7 @@ use Think\Controller;
 use Think\Log;
 use Org\Util\Gateway;
 use Common\Tool\Device;
+use Common\Tool\Timer;
 class ActionController extends Controller
 {
     public function __construct()
@@ -11,31 +12,16 @@ class ActionController extends Controller
         parent::__construct();
         Gateway::$registerAddress = '127.0.0.1:9504';
 
-        global $device_cache;
-        $device_cache =  new Device();
-
+        Device::connect();
     }
 
-    public function test()
-    {
-        $this->sysnc('868575025659808');
-//
-//        $message['DeviceID'] = '868575025672249';
-//        $message['PackType'] = "SetData";
-//        $message['Vison']    = 0;
-//        $message['Reday']    = '226';
-////
-////        $this->get_filter_info('868575025659121');
-////
-//////        $this->check_info(94);
-//        $this->sendMsg($message);
-    }
 
     /**
      * 接收信息 信息分发
      */
     public function receive()
     {
+
         $message = I('post.');
         $client_id = $message['client_id'];
         unset($message['client_id']);
@@ -43,14 +29,16 @@ class ActionController extends Controller
             $mes  = Gateway::getSession($client_id);
             $message['DeviceID']  = $mes['DeviceID'];
         }
+        var_export($message);
+
         // 判断数据传输的对象
         if( $message['soure']=='Close')
         {
             $this->Close($message['DeviceID']);
+            //$this->getws($client_id, $message);//发送 断开的状态  (以后)
         }
         else if( $message['soure']=='TCP'){
             $this->gettcp($client_id, $message);
-
         } else {
             $this->getws($client_id, $message);
         }
@@ -80,6 +68,7 @@ class ActionController extends Controller
 
             $message['DeviceID'] = $res['DeviceID'];
         }
+        $message['DeviceID'] = trim($message['DeviceID']);
 
         if($message['PackType'] == 'login'){
             Gateway::bindUid($client_id, $message['DeviceID']);
@@ -92,6 +81,9 @@ class ActionController extends Controller
             }
         }
         Gateway::sendToClient($client_id, $message);
+
+
+        $message['sid'] = Device::get_devices_info($message['DeviceID'],'sid');
         Log::write(json_encode($message), '设备信息包分发');
 
         switch ($message['PackType']) {
@@ -109,8 +101,9 @@ class ActionController extends Controller
 
             default:
                 $data['NetStause']=1;
-
-                M('devices_statu')->where("DeviceID=" . $message['DeviceID'])->save($data);
+                if(empty($message['sid'])){
+                    M('devices_statu')->where("id=" . $message['sid'])->save($data);
+                }
                 break;
         }
     }
@@ -120,10 +113,6 @@ class ActionController extends Controller
      */
     public function Close($DeviceID)
     {
-        $DeviceID=trim($DeviceID);
-
-
-
         $status_id = M('devices_statu')->where("DeviceID=" . $DeviceID)->getField('id');
 
         if($status_id){
@@ -135,7 +124,6 @@ class ActionController extends Controller
     // 登陆数据处理
     public function loginAction($message)
     {
-
         $data = [
             'Device'      => $message['Device'],
             'ICCID'       => $message['ICCID'],
@@ -144,11 +132,7 @@ class ActionController extends Controller
             'NetStause'   =>1,
         ];
 
-        $dcode=trim($message['DeviceID']);
-
-        $status_id  = M('devices_statu')->where("DeviceID={$dcode}")->getField('id');
-
-        if( empty($status_id) ){
+        if( empty($message['sid']) ){
             $data['DeviceID']=$dcode;
             $res = $this->saveData($data);
             if($res){
@@ -157,13 +141,13 @@ class ActionController extends Controller
                 M('devices')->where('device_code=' . $message['DeviceID'])->save($data);
             }
         } else {
-            if($this->check_info($status_id)){
-                $this->updateData($status_id, $data);
+            if($this->check_info($message['sid'])){
+                $this->updateData($message['sid'], $data);
             }
         }
+
+        Device::get_devices_info($message['DeviceID'],'sid');
     }
-
-
 
     /**
      * 设备查询包处理
@@ -179,46 +163,45 @@ class ActionController extends Controller
             'PureTDS'      => $message['PureTDS'],
             'Temperature'  => $message['Temperature'],
         ];
-        if( isset($message['SumPump']) ) $data['SumPump'] = $message['SumPump'];
+        if ( isset($message['SumPump'])              )       $data['SumPump']     = $message['SumPump'];
 
-
-        if(isset($message['FilerNum']) || $message['FilerNum'] != null ){
+        if ( isset($message['FilerNum']) || $message['FilerNum'] != null ) {
             $res = $this->filterAction($message);
 
             $data = array_merge( $data, $res );
         }
-        $dcode=trim($message['DeviceID']);
 
-        $ds = M('devices_statu')->where("DeviceID=" . $dcode)->find();
+        if ( empty( $message['sid'] ) ){
+            $message['sid'] = Device::get_devices_info($message['DeviceID'],'sid');
+        }
 
-        if ($ds) {
-            if( $ds['data_statu'] != 0 ){
-                $this->sysnc($dcode);//信息同步
-            }else{
-                if( isset($message['ReFlow']) ) $data['ReFlow'] = $message['ReFlow'];
+        $data_statu = M('devices_statu')->where('id='.$message['sid'])->getField('data_statu');
 
-                if( isset($message['Reday']) ) $data['ReDay']      =$message['Reday'];
-                if( isset($message['SumFlow']) ) $data['SumFlow']    =$message['SumFlow'];
-                if( isset($message['SumDay']) and $message['SumDay']!=0) $data['SumDay']     =$message['SumDay'];
-                if( isset($message['FilterMode']) ) $data['FilterMode'] =$message['FilterMode'];
-                if( isset($message['LeasingMode']) ) $data['LeasingMode']=$message['LeasingMode'];
-                if( isset($message['AliveStause']) ) $data['AliveStause']=$message['AliveStause'];
+        if ($message['sid']) {
+            if ( $data_statu != 0 ) {
+                $this->sysnc( $message['DeviceID'] );//信息同步
+            } else {
+                if ( isset($message['ReFlow'])       )       $data['ReFlow']      = $message['ReFlow'];
+                if ( isset($message['Reday'])        )       $data['ReDay']       = $message['Reday'];
+                if ( isset($message['SumFlow'])      )       $data['SumFlow']     = $message['SumFlow'];
+                if ( isset($message['SumDay'])       )       $data['SumDay']      = $message['SumDay'];
+                if ( isset($message['FilterMode'])   )       $data['FilterMode']  = $message['FilterMode'];
+                if ( isset($message['LeasingMode'])  )       $data['LeasingMode'] = $message['LeasingMode'];
+                //if ( isset($message['AliveStause'])  )       $data['AliveStause'] = $message['AliveStause'];
 
+                if ( isset($message['CSQ'])          )       $data['CSQ']         = $message['CSQ'];
+                if ( isset($message['ICCID'])        )       $data['ICCID']       = $message['ICCID'];
+                if ( isset($message['Device'])       )       $data['Device']      = $message['Device'];
+                if ( isset($message['ICCID'])        )       $data['ICCID']       = $message['ICCID'];
 
-                if( isset($message['CSQ']) ) $data['CSQ']        =$message['CSQ'];
-                if( isset($message['ICCID']) ) $data['ICCID']      =$message['ICCID'];
-                if( isset($message['Device']) ) $data['Device']     =$message['Device'];
-                if( isset($message['ICCID']) ) $data['ICCID']      =$message['ICCID'];
-
-                if(isset($message['FilerNum'])){
-                    for ($i=1;$i<=$message['FilerNum'];$i++){
-                        if( isset($message['ReFlowFilter'.$i]) ) $data['ReFlowFilter'.$i]    =$message['ReFlowFilter'.$i];
-                        if( isset($message['ReDayFilter'.$i])  ) $data['ReDayFilter'.$i]     =$message['ReDayFilter'.$i];
+                if ( isset($message['FilerNum']) ) {
+                    for ($i=1;$i<=$message['FilerNum'];$i++) {
+                        if( isset($message['ReFlowFilter'.$i]) ) $data['ReFlowFilter'.$i] = $message['ReFlowFilter'.$i];
+                        if( isset($message['ReDayFilter'.$i])  ) $data['ReDayFilter'.$i]  = $message['ReDayFilter'.$i];
                     }
                 }
             }
-
-            $this->updateData($ds['id'], $data);
+            $this->updateData($message['sid'], $data);
         }
     }
 
@@ -231,26 +214,28 @@ class ActionController extends Controller
     {
         if (isset($message['PackNum'])) {
 
-            $DeviceID=trim($message['DeviceID']);
-
             if ($message['PackNum'] == 5) {  //更新
-                $status_id = M('devices_statu')->where("DeviceID=" . $DeviceID)->save(['data_statu'=>0]);
+                M('devices_statu')->where("id=" . $message['sid'])->save(['data_statu'=>0]);
             }
 
             if ($message['PackNum'] == 6 ) {  //激活
-                $status_id = M('devices_statu')->where("DeviceID=" . $DeviceID)->save(['data_statu'=>0,
+                M('devices_statu')->where("id=" . $message['sid'])->save(['data_statu'=>0,
                     'AliveStause'=>1]);
             }
 
             if ($message['PackNum'] == 4 ) { //定时任务
-                $time = time();
-                $h = date('G',$time);
-                $m = ltrim(date('i',$time),'0');
 
                 //获取定时器缓存 进行删除
-                global $device_cache;
-                $device_cache->get_devices_info($DeviceID);
+                $timers = Device::get_devices_info($DeviceID,'timer');
+                $timers = json_encode($timers);
+                $oldtimers = $timers;
 
+                foreach ($timers as $k=> $timer){
+                    if (Timer::play($timer)) {
+                        unset($oldtimers[$k]);
+                    }
+                }
+                Device::hset($DeviceID,'timer',json_encode($oldtimers));
             }
         }
     }
@@ -261,43 +246,11 @@ class ActionController extends Controller
      */
     public function sysnc($dcode)
     {
-        $status_id = M('devices_statu')->where("DeviceID=" . $dcode)->getField('id');
+        $status_id = Device::get_devices_info($dcode,'sid');
+
         $this->check_info($status_id);
     }
 
-    /**
-     * 检查设备与库里的数据的一致性   (禁用)
-     * @param $message
-     */
-    public function check_msg($message)
-    {
-        $data = M('devices_statu')->where("DeviceID=" . $DeviceID)->find();
-        //要验证的字段
-        $arr=['ReFlow', 'Reday',
-            'SumDay','SumFlow',
-            'FilterMode','LeasingMode','AliveStause',
-            //            'ReFlowFilter1','ReDayFilter1',
-            //            'ReFlowFilter2','ReDayFilter2',
-            //            'ReFlowFilter3','ReDayFilter3',
-            //            'ReFlowFilter4','ReDayFilter4',
-            //            'ReFlowFilter5','ReDayFilter5',
-            //            'ReFlowFilter6','ReDayFilter6',
-            //            'ReFlowFilter7','ReDayFilter7',
-            //            'ReFlowFilter8','ReDayFilter8',
-        ];
-
-        foreach ($message as $key=>$value){
-            $key=strtolower($key);
-            $res = [];
-            if(isset($data[$key]) || $data[$key] == $value){
-                $res[$key] = $value;
-            }else{
-                $rest[$key] = $value;
-            }
-        }
-
-        return ['id'=>$data['id'],'data'=>$res,'rest'=>$rest];
-    }
     /**
      * 库数据检查  单向推送到设备
      * $id  数据串的id
@@ -308,7 +261,6 @@ class ActionController extends Controller
         $data = M('devices_statu')->find($id);
         if (isset($data['data_statu']) && $data['data_statu'] > 0 ){
             $msg = $this->get_data($data);
-
             if($msg) $this->sendMsg($msg);
 
             return false;
@@ -338,40 +290,42 @@ class ActionController extends Controller
 
         //剩余
         $msg['ReFlow'] = empty($data['reflow'])? 0 : $data['reflow'];
-        $msg['Reday']  = empty($data['reday'])? 0 : $data['reday'];
+        $msg['Reday']  = empty($data['reday'] )? 0 : $data['reday'];
 
         $msg['SumFlow']     = empty($data['sumflow'])? 0 :$data['sumflow'];
-        $msg['SumDay']      = empty($data['sumday'])? 0 :$data['sumday'];
+        $msg['SumDay']      = empty($data['sumday'] )? 0 :$data['sumday'];
+
+        if ($data['data_statu'] == 2) {  //设备激活
+            $msg['AliveStause'] = 1;
+            $msg['SumFlow']     = 0;
+            $msg['SumDay']      = 0;
+        }
 
         $filter_life=$this->get_filter_info($data['deviceid']);
-        if(empty($filter_life)) return false;
+        if(!empty($filter_life)) {
+            $filenum=count($filter_life);
+            $msg['FilerNum'] = $filenum;
 
-        if ($msg['PackNum'] == 5) { //设备更新
-            for ($i=1; $i<9; $i++){
-                if( !empty($data['reflowfilter'.$i]) or !empty($data['redayfilter'.$i])){
+            if ($msg['PackNum'] == 5) { //设备更新
+                for ($i = 1; $i <= $filenum; $i++ ) {
                     $msg['ReFlowFilter'. $i]     = $data['reflowfilter'.$i];
                     $msg['ReDayFilter'. $i]      = $data['redayfilter'.$i];
                     $msg['FlowLifeFilter'. $i]   = $filter_life[$i-1]['flowlife'];
                     $msg['DayLifeFiter'. $i]     = $filter_life[$i-1]['timelife'];
                 }
             }
-        }
 
-        if ($msg['PackNum']==6 && $data['alivestause'] == 0) {//设备激活
-            $msg['AliveStause'] = 1;
-
-            $filenum=0;
-            for ($i=1; $i<9; $i++){
-                if( !empty($data['reflowfilter'.$i]) or !empty($data['redayfilter'.$i])){
-                    $filenum++;
+            if ($msg['PackNum'] == 6) {  //设备激活
+                for ($i = 1; $i <= $filenum ; $i++) {
                     $msg['ReFlowFilter'. $i]     = $filter_life[$i-1]['flowlife'];
                     $msg['ReDayFilter'. $i]      = $filter_life[$i-1]['timelife'];
                     $msg['FlowLifeFilter'. $i]   = $filter_life[$i-1]['flowlife'];
                     $msg['DayLifeFiter'. $i]     = $filter_life[$i-1]['timelife'];
                 }
+
             }
-            $msg['FilerNum'] = $filenum;
         }
+
         return $msg;
     }
 
@@ -382,7 +336,7 @@ class ActionController extends Controller
      */
     public function sendMsg($message)
     {
-        Log::write(json_encode($message), '发送信息包');
+        Log::write(json_encode($message), 'sendMsg 发送信息包');
 
         if(isset($message['DeviceID'])){
             Gateway::sendToUid($message['DeviceID'], $message);
@@ -414,29 +368,34 @@ class ActionController extends Controller
             $data['ReFlowFilter' . $i]   = $message['ReFlowFilter' . $i];
             $data['ReDayFilter' . $i]    = $message['ReDayFilter' . $i];
         }
-        if ($data['ReFlowFilter1']==-1) {
-            $data['FilterMode']=0;
+        if (empty($message['FilterMode'])) {
+            if ($data['ReFlowFilter1']==-1) {
+                $data['FilterMode']=0;
+            }
+            if ( $data['ReDayFilter1']==-1 ){
+                $data['FilterMode']=1;
+            }
+            if ($data['ReDayFilter1']>=0 and  $data['ReFlowFilter1']>=0) {
+                $data['FilterMode']=2;
+            }
         }
-        if ( $data['ReDayFilter1']==-1 ){
-            $data['FilterMode']=1;
-        }
-        if ($data['ReDayFilter1']>=0 and  $data['ReFlowFilter1']>=0) {
-            $data['FilterMode']=2;
-        }
-
-
         return $data;
     }
 
 
     public function get_filter_info($dcode)
     {
-        $code = M('devices')->where("device_code={$dcode}")->find();
-//        $status = M('devices_statu')->where("DeviceID='{$dcode}'")->find();
-        $type = M('type')->where("id={$code['type_id']}")->find();
+        $type_id = Device::get_devices_info($dcode,'type_id');
 
-        unset($type['id'], $type['typename'], $type['addtime']);
-        $sum = array_filter($type);
+        if( empty($type_id) ) return [];
+        $type = M('type')->where("id={$type_id}")->find();
+
+        foreach ($type as $k=> $v) {
+            if(strstr($k,'filter') and !empty($v) ){
+                $sum[$k] = $v;
+            }
+        }
+
         foreach ($sum as $key => $value) {
             $str = stripos($value,'-');
             $map['filtername'] = substr($value, 0,$str);
@@ -444,9 +403,9 @@ class ActionController extends Controller
 //            $res[] = M('filters')->where($map)->field('timelife,flowlife')->find();
             $res[] = M('filters')->where($map)->field('timelife,flowlife')->find();
         }
+        array_filter($res);
         return $res;
     }
-
 
     /**
      * 设备初始化  (待完善)
@@ -491,14 +450,22 @@ class ActionController extends Controller
         $this->sendMsg($message);
     }
 
-//    public function updateNetStase($DeviceID,$NetStause)
-//    {
-//        $status_id = M('devices_statu')->where("DeviceID=" . $DeviceID)->getField('id');
+    public function test()
+    {
+        //$this->sysnc('868575025659808');
 //
-//        $data = [
-//            'NetStause'   => $NetStause,
-//        ];
-//        $this->updateData($status_id, $data);
-//    }
+
+        $this->get_filter_info('868575025659808');
+
+//        $message['DeviceID'] = '868575025672249';
+//        $message['PackType'] = "SetData";
+//        $message['Vison']    = 0;
+//        $message['Reday']    = '226';
+////
+////        $this->get_filter_info('868575025659121');
+////
+//////        $this->check_info(94);
+//        $this->sendMsg($message);
+    }
 
 }

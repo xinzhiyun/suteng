@@ -1,0 +1,157 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>商城管理 <small>商品评论</small></h5>
+                    <!-- <div class="ibox-tools">
+                        <i class="fa fa-user-plus"></i>
+                        <a href="{{:U('goodsAdd')}}">添加商品</a>
+                    </div> -->
+                </div>
+                <form method="get" action="">
+                    <div class="input-grouprow" id='searchdiv' style="display: flex; ">
+                        <select name="grade" class="form-control" name="account" style="display: inline-block;width: 50%">
+                            <option value="">-- 评价 --</option>
+                            <option value="1">好评</option>
+                            <option value="2">中评</option>
+                            <option value="3">差评</option>
+                        </select>
+                        <select name="status" class="form-control" name="account" style="display: inline-block;">
+                                <option value="">-- 状态 --</option>
+                                <option value="0">隐藏</option>
+                                <option value="1">显示</option>
+                            </select>
+                        <span class="input-group-btn" style="display: inline-block;">
+                                <input type="submit" class="btn btn btn-primary" name="sou"> <i class="fa fa-search"></i> 搜索</button>
+                        </span>
+                    </div>
+                </form>
+                <div class="ibox-content">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    用户
+                                </th>
+                                <th>
+                                    商品
+                                </th>
+                                <th>
+                                    评论内容
+                                </th>
+                                <th>
+                                    安装人员评分
+                                </th>
+                                <th>
+                                    服务态度评分
+                                </th>
+                                <th>
+                                    着装评分
+                                </th>
+                                <th>
+                                    评价
+                                </th>
+                                <th>
+                                    状态
+                                </th>
+                                <th>
+                                    添加时间
+                                </th>
+                                <!-- <th>
+                                    操作
+                                </th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <empty name="list">
+                                <tr><td colspan="12">暂无商品数据</td></tr>
+                            <else />
+                                <volist name="list" id="v">
+                                    <tr>
+                                        <td>
+                                            {{$v.user.nickname}}
+                                        </td>
+                                        <td>
+                                            {{$v.good.name}}
+                                        </td>
+                                        <td>
+                                            {{$v.content}}
+                                        </td>
+                                        <td>
+                                            {{$v.installer_graded}}
+                                        </td>
+                                        <td>
+                                            {{$v.attitude}}
+                                        </td>
+                                        <td>
+                                            {{$v.dressing}}
+                                        </td>
+
+                                        <td>
+                                            <switch name="v.grade">
+                                                <case value="1">好评</case>
+                                                <case value="2">中评</case>
+                                                <case value="3">差评</case>
+                                            </switch>
+                                        </td>
+                                        <td>
+                                            <switch name="v.status">
+                                                <case value="0">
+                                                    <a st="0" class="btn btn-sm btn-default disable-button" onclick="edit_status({{$v['id']}},1)">隐藏</a>
+                                                </case>
+                                                <case value="1">
+                                                    <a st="1" class="btn btn-sm btn-success disable-button" onclick="edit_status({{$v['id']}},0)">显示</a>
+                                                </case>
+                                            </switch>
+                                        </td>
+                                        <td>
+                                            {{$v['addtime']|date='Y-m-d H:i:s',###}}
+                                        </td>
+                                    </tr>
+                                </volist>
+                            </empty>
+                        </tbody>
+                    </table>
+                    <div>
+                        {{$page}}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script>
+      
+    function edit_status(id,status)
+    {
+        $.ajax({
+            type : 'GET',
+            url : "{{:U('Admin/shop/comment_edit')}}",
+            data : {
+                'id' : id,
+                'status' : status
+            },
+            success : function(msg){
+                if (msg.code == 200) {
+                    parent.layer.msg(msg.msg);
+                    // window.location.href="{{:U('Admin/shop/orders')}}?p=";
+                    location.reload();
+                }else{
+                    parent.layer.msg(msg.msg);
+                }           
+            }
+        });
+    }
+        
+    </script>
+</block>

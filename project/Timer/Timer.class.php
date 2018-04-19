@@ -169,6 +169,7 @@ class Timer
 
         $where=[
             'st_task.state=1',
+            'st_task.playstate=0',
             "st_task.hour<$h",
         ];
         $page = $db->select('count(id) num')
