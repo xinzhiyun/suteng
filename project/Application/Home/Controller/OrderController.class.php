@@ -144,10 +144,12 @@ class OrderController extends CommonController
             $map = I('post.');
 
             $map['order_id'] = $map['order_id'];
+
 //            $map['order_id'] = '500985865733851';
-//            $data['status'] = 3;
+            $data['status'] = 3;
 //            $data['addtime'] = '12';
-            $info = M('shop_order')->where($map)->find();
+            $info = M('shop_order')->where($map)->save($data);
+
 
 
             if ($info) {
@@ -158,6 +160,7 @@ class OrderController extends CommonController
                    ->join('st_users d on d.id = a.uid')->join
                   ('st_goods b on a.gid = b.id')->where(['a
                 .g_type'=>1,'a.status'=>3,'a.order_id'=>$map['order_id']])->find();
+
 
                 if ($list['invitation_code'] != null) {
 
@@ -176,7 +179,7 @@ class OrderController extends CommonController
                     $com_d = $money*(($butros['com_b']/ 100)*(50/ 100));
                     //市场培育将
                     $com_p = $money*(($butros['com_b']/100)*((50/100)));
-//                     //团队管理奖 B级加盟商
+                    //团队管理奖 B级加盟商
                     $com_t =  $money*(($butros['com_a']/ 100)*(50/ 100));
                     //团队管理奖 A级加盟商
                     $com_ta =  $money*(($butros['com_a']/100)*((100-50)/100));
@@ -194,6 +197,7 @@ class OrderController extends CommonController
                     //销售奖(卖商品的经销商)
                     if ($f_info) {
                         $earnings_comc = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_c);
+
                         //销售奖收益记录
                         if ($earnings_comc) {
                             M('earnings')->add(['name'=>$list['name'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
