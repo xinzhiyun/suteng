@@ -159,7 +159,7 @@ class OrderController extends CommonController
                 $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.g_cost,a.g_price,a.g_num,b.name,d.invitation_code,d.id')
                    ->join('st_users d on d.id = a.uid')->join
                   ('st_goods b on a.gid = b.id')->where(['a
-                .g_type'=>1,'a.status'=>2,'a.order_id'=>$map['order_id']])->find();
+                .g_type'=>1,'a.status'=>3,'a.order_id'=>$map['order_id']])->find();
 
 
                 if ($list['invitation_code'] != null) {
