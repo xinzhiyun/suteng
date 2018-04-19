@@ -259,27 +259,32 @@ class WeiXinPayController extends Controller
      * 商城购买商品成功后回调
      */
     public function setmealNotify() {
-        // 接收微信支付回调
-//        $xml=file_get_contents('php://input', 'r');
-        $xml = '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
-<attach><![CDATA[422857227845535]]></attach>
-<bank_type><![CDATA[CFT]]></bank_type>
-<cash_fee><![CDATA[1]]></cash_fee>
-<fee_type><![CDATA[CNY]]></fee_type>
-<is_subscribe><![CDATA[Y]]></is_subscribe>
-<mch_id><![CDATA[1501254081]]></mch_id>
-<nonce_str><![CDATA[b9e3hxfcbwti6o5zqcroj7pockl4ys7d]]></nonce_str>
-<openid><![CDATA[onLe70fYcrqU71RjzfYUjkNf90_E]]></openid>
-<out_trade_no><![CDATA[655031213736439]]></out_trade_no>
-<result_code><![CDATA[SUCCESS]]></result_code>
-<return_code><![CDATA[SUCCESS]]></return_code>
-<sign><![CDATA[A5D1F0DCE2EFC6F133DE030CADC4D275]]></sign>
-<time_end><![CDATA[20180417161735]]></time_end>
-<total_fee>1</total_fee>
-<trade_type><![CDATA[JSAPI]]></trade_type>
-<transaction_id><![CDATA[4200000052201804170492710278]]></transaction_id>
-</xml>';
+        //  // 接收微信支付回调
+        $xml=file_get_contents('php://input', 'r');
+        // $uid = $_SESSION['homeuser']['id'];
+        // file_put_contents('./uid.txt',$uid ."\r\n", FILE_APPEND);
+        // file_put_contents('./wx_payFee.txt',$xml."\r\n", FILE_APPEND);
+//         $xml = '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
+// <attach><![CDATA[690717115943689]]></attach>
+// <bank_type><![CDATA[CFT]]></bank_type>
+// <cash_fee><![CDATA[1]]></cash_fee>
+// <fee_type><![CDATA[CNY]]></fee_type>
+// <is_subscribe><![CDATA[Y]]></is_subscribe>
+// <mch_id><![CDATA[1501254081]]></mch_id>
+// <nonce_str><![CDATA[nfg355bzgs86eo02u99d1mlgkd1ndzig]]></nonce_str>
+// <openid><![CDATA[onLe70fYcrqU71RjzfYUjkNf90_E]]></openid>
+// <out_trade_no><![CDATA[407262452762225]]></out_trade_no>
+// <result_code><![CDATA[SUCCESS]]></result_code>
+// <return_code><![CDATA[SUCCESS]]></return_code>
+// <sign><![CDATA[C6CF5F04B12B8DE7A82440287BE4BF98]]></sign>
+// <time_end><![CDATA[20180419100251]]></time_end>
+// <total_fee>1</total_fee>
+// <trade_type><![CDATA[JSAPI]]></trade_type>
+// <transaction_id><![CDATA[4200000073201804191635528017]]></transaction_id>
+// </xml>';
+
         if($xml){
+
             //解析微信返回数据数组格式
             $result = $this->notifyData($xml);
 
@@ -297,6 +302,8 @@ class WeiXinPayController extends Controller
                 $data['order_id'] = $did;
 
 
+
+
                 // 查询订单是否已处理
                 // 查询订单是否已处理
                 $orderData = M('orders')->where($data)->field('is_pay,total_price,device_id')->find();
@@ -304,219 +311,81 @@ class WeiXinPayController extends Controller
                 // 1分钱测试数据
                 $orderData['total_price'] = 1;
 
+
                 // dump($data);die;
                 // 如果订单未处理，订单支付金额等于订单实际金额
-                    if(empty($orderData['is_pay']) && $orderData['total_price'] == $result['total_fee']){
+                if(empty($orderData['is_pay']) && $orderData['total_price'] == $result['total_fee']){
 
-                        //file_put_contents('./wx_pay121.txt',$xml."\r\n", FILE_APPEND);
-    //                    dump($result);
-                        // 处理订单
-                        // 实例化订单对象
-                        $orders = M('orders');
-                        // 实例化订单滤芯对象
-    //                    $orderFilter = M('order_filter');
-                        // 实例化订单套餐对象
-                        $orderSetmeal = M('order_setmeal');
-                        // 实例化设备详细信息对象
-                        $devicesStatu = M('devices_statu');
-                        // 实例化设备对象
-                        $device = M('Devices');
-                        // 实例化充值流水对象
-                        $flowObj = M('Flow');
+                    //file_put_contents('./wx_pay121.txt',$xml."\r\n", FILE_APPEND);
+                    //                    dump($result);
+                    // 处理订单
+                    // 实例化订单对象
+                    $orders = M('orders');
+                    // 实例化订单滤芯对象
+                    //                    $orderFilter = M('order_filter');
+                    // 实例化订单套餐对象
+                    $orderSetmeal = M('order_setmeal');
+                    // 实例化设备详细信息对象
+                    $devicesStatu = M('devices_statu');
+                    // 实例化设备对象
+                    $device = M('Devices');
+                    // 实例化充值流水对象
+                    $flowObj = M('Flow');
 
 //
 
-                        // 修改订单状态为已付款
-                        $isPay['is_pay'] = 1;
+                    // 修改订单状态为已付款
+                    $isPay['is_pay'] = 1;
 
 
-                        //show($isPayRes);die;
-                        // 查询订单包含的全部套餐
-                        $orderSetmealData = $orderSetmeal->where($data)->select();
+                    //show($isPayRes);die;
+                    // 查询订单包含的全部套餐
+                    $orderSetmealData = $orderSetmeal->where($data)->select();
 
 
-                        if($orderSetmealData){
-                            $isPay['is_recharge'] = 1;
-                        }
+                    if($orderSetmealData){
+                        $isPay['is_recharge'] = 1;
+                    }
 
-                        $isPayRes = $orders->where($data)->save($isPay);
-                        $isStatus = $orderSetmeal->where($data)->save(['status'=>1]);
+                    $isPayRes = $orders->where($data)->save($isPay);
+                    $isStatus = $orderSetmeal->where($data)->save(['status'=>1]);
+                    //     $isPayRes = $orders->where($data)->find();
+                    // $isStatus = $orderSetmeal->where($data)->find();
 
-                        // dump($orderSetmealData);die;
-                        // 充值状态
-                        $status = 0;
-
-
-                        if($orderSetmealData){
-                            //show($orderSetmealData);die;
-                            // 统计未处理套餐数量
-                            $countNun = count($orderSetmealData);
-
-                            // 定义计数器
-                            $num     = 0;
-                            $flownum = 0;
-                            //file_put_contents('./wx_pay1uid.txt',$result['out_trade_no']."\r\n", FILE_APPEND);
-                            // 查询当前设备编号
-    //                        $deviceId['id'] = $did;
-                            $deviceId['id'] = $orderData['device_id'];
-                            //file_put_contents('./wx_pay2uid.txt',$uid."\r\n", FILE_APPEND);
-                            $deviceCode['DeviceID'] = $device->where($deviceId)->find()['device_code'];
+                    // dump($orderSetmealData);die;
+                    // 充值状态
+                    $status = 0;
 
 
-                            foreach ($orderSetmealData as $value) {
+                    if($orderSetmealData){
 
-                                // 查询设备当前剩余流量
-                                $devicesStatus = $devicesStatu->where($deviceCode)->find();
+
+                        //查询当前用户
+                        $user_info = M('users')->field('id,invitation_code')->where(['open_id'=> $result['openid']])->find();
+
+
+                        file_put_contents('./222222.txt',M('users')->getLastSql() ."\r\n", FILE_APPEND);
+                        //show($orderSetmealData);die;
+                        // 统计未处理套餐数量
+                        $countNun = count($orderSetmealData);
+
+                        // 定义计数器
+                        $num     = 0;
+                        $flownum = 0;
+                        //file_put_contents('./wx_pay1uid.txt',$result['out_trade_no']."\r\n", FILE_APPEND);
+                        // 查询当前设备编号
+                        //                        $deviceId['id'] = $did;
+                        $deviceId['id'] = $orderData['device_id'];
+
+                        //file_put_contents('./wx_pay2uid.txt',$uid."\r\n", FILE_APPEND);
+                        $deviceCode['DeviceID'] = $device->where($deviceId)->find()['device_code'];
+
+
+                        foreach ($orderSetmealData as $value) {
+
+                            // 查询设备当前剩余流量
+                            $devicesStatus = $devicesStatu->where($deviceCode)->find();
 ////查找对应的租金总价
-                                $setmeal_money = M('setmeal')->field('money,flow,tid,describe')->where(['id'=>$orderSetmealData[0]['setmeal_id']])->find();
-                                //查找对应的滤芯成本
-                                $setmeal = M('type')->where(['id'=>$setmeal_money['tid']])->find();
-                                //计算出利润
-//                               dump($setmeal_money['money']-($setmeal['money']+$setmeal['cost']*$setmeal_money['flow']));exit;
-                                if ($orderData['total_price'] < $setmeal['money']) {
-                                    $money = 0;
-                                } else {
-                                    $money =      $orderData['total_price']-($setmeal['money']+$setmeal['cost']*$setmeal_money['flow']);
-                                }
-
-                                
-                                
-                                
-                                
-                                
-
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                // $devicesStatuReFlow = $devicesStatu->where($deviceCode)->find()['reflow']-0;
-                                $devicesStatuReFlow = $devicesStatus['reflow'];
-                                $devicesStatuReDay = $devicesStatus['reday'];
-                                // file_put_contents('套餐模式',var_export($value['remodel'], true),FILE_APPEND);
-    //                             if ($value['remodel'] == 1) {
-    //                                 // 充值后流量应剩余天数
-    //                                 $Flow['ReDay'] = $devicesStatuReDay + ($value['flow']*$value['goods_num']);
-    //                             } else {
-    //                                 // 充值后流量应剩余流量
-    //                                 $Flow['ReFlow'] = $devicesStatuReFlow + ($value['flow']*$value['goods_num']);
-    //                             }
-                                switch ($value['remodel']) {
-                                    case '0'://流量
-                                        $Flow['ReFlow'] = $devicesStatuReFlow + ($value['flow']*$value['goods_num']);
-                                        break;
-                                    case '1'://时长
-                                        $Flow['ReDay'] =$devicesStatuReDay  + ($value['flow']*$value['goods_num']);
-                                        break;
-                                    default:
-                                        # code...
-                                        break;
-                                }
-                                $Flow['data_statu']=1;
-
-                                Log::write(json_encode($Flow), '更新devicesStatu');
-
-                                // 修改设备剩余流量
-                                $FlowRes = $devicesStatu->where($deviceCode)->save($Flow);
-
-
-                                // file_put_contents('jfdsk',var_export($devicesStatu->_sql(), true),FILE_APPEND);
-                                // 准备发送指令
-                                // if(empty($Flow['ReDay'])){
-                                //     $msg = [
-                                //         'DeviceID'=>$deviceCode['DeviceID'],
-                                //         'PackType'=>'SetData',
-                                //         'Vison'=>'0',
-                                //         'ReFlow'=>$Flow['ReFlow'],
-                                //     ];
-                                // } else {
-                                //     $msg = [
-                                //         'DeviceID'=>$deviceCode['DeviceID'],
-                                //         'PackType'=>'SetData',
-                                //         'Vison'=>'0',
-                                //         'ReDay'=>$Flow['ReDay'],
-                                //     ];
-                                // }
-                                // dump($msg);die;
-
-                                // 写充值流水
-                                // 订单编号
-                                $flowData['order_id']       = $value['order_id'];
-                                // 用户ID
-                                $flowData['did']            = $did;
-                                // 充值金额
-                                //
-                                $flowData['money']          = $value['money'];
-                                // 充值方式
-                                $flowData['mode']           = 1;
-                                // 充值流量
-                                $flowData['flow']           = $value['flow'];
-                                // 套餐数量
-                                $flowData['num']            = $value['goods_num'];
-                                // 套餐描述
-                                $flowData['describe']       = $value['describe'];
-                                // 当前流量
-                                $flowData['currentflow']    = $Flow['ReFlow'];
-                                // 充值时间
-                                $flowData['addtime']           = time();
-                                //show($flowData);die;
-                                // 创建充值流水
-                                $flowObjRes = $flowObj->add($flowData);
-
-                                // dump($orderData);
-                                // dump($flowObjRes);die;
-
-                                // 判断流水是否创建成果
-                                if($flowObjRes){
-                                    // 定时器++
-                                    $flownum++;
-                                }
-    //                            dump($FlowRes);
-
-                                // 判断修改结果
-                                if($FlowRes){
-                                    // 计数器++
-                                    $num++;
-                                }
-
-                            }
-    //                         dump($countNun);
-    //                         die;
-                            // 全部套餐充值完成
-                            if($countNun == $num && $countNun == $flownum){
-                                // 充值和流水完成，状态设为1
-                                $status = 1;
-                            }
-                            // echo 12;
-                        }else{
-                            // 没有套餐默认值，状态设为1
-                            $status = 1;
-                        }
-    //                     dump($status);die;
-                        // show($msg);die;
-                        // file_put_contents('saaa',$isPayRes .'jfdslajfds'. $status);
-                        if($isPayRes && $status && $isStatus){
-
-                            // 执行事务
-                            $orders->commit();
-
-                            $sc=A("Api/Action");
-
-                            $sc->sysnc($deviceCode['DeviceID']);
-                            //我觉得应该按订单的总价为标准
-
-                            //查找对应的租金总价
                             $setmeal_money = M('setmeal')->field('money,flow,tid,describe')->where(['id'=>$orderSetmealData[0]['setmeal_id']])->find();
                             //查找对应的滤芯成本
                             $setmeal = M('type')->where(['id'=>$setmeal_money['tid']])->find();
@@ -526,6 +395,137 @@ class WeiXinPayController extends Controller
                                 $money = 0;
                             } else {
                                 $money =      $orderData['total_price']-($setmeal['money']+$setmeal['cost']*$setmeal_money['flow']);
+                            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            // $devicesStatuReFlow = $devicesStatu->where($deviceCode)->find()['reflow']-0;
+                            $devicesStatuReFlow = $devicesStatus['reflow'];
+                            $devicesStatuReDay = $devicesStatus['reday'];
+                            // file_put_contents('套餐模式',var_export($value['remodel'], true),FILE_APPEND);
+                            //                             if ($value['remodel'] == 1) {
+                            //                                 // 充值后流量应剩余天数
+                            //                                 $Flow['ReDay'] = $devicesStatuReDay + ($value['flow']*$value['goods_num']);
+                            //                             } else {
+                            //                                 // 充值后流量应剩余流量
+                            //                                 $Flow['ReFlow'] = $devicesStatuReFlow + ($value['flow']*$value['goods_num']);
+                            //                             }
+                            switch ($value['remodel']) {
+                                case '0'://流量
+                                    $Flow['ReFlow'] = $devicesStatuReFlow + ($value['flow']*$value['goods_num']);
+                                    break;
+                                case '1'://时长
+                                    $Flow['ReDay'] =$devicesStatuReDay  + ($value['flow']*$value['goods_num']);
+                                    break;
+                                default:
+                                    # code...
+                                    break;
+                            }
+                            $Flow['data_statu']=1;
+
+                            Log::write(json_encode($Flow), '更新devicesStatu');
+
+                            // 修改设备剩余流量
+                            $FlowRes = $devicesStatu->where($deviceCode)->save($Flow);
+
+
+
+                            // file_put_contents('jfdsk',var_export($devicesStatu->_sql(), true),FILE_APPEND);
+                            // 准备发送指令
+                            // if(empty($Flow['ReDay'])){
+                            //     $msg = [
+                            //         'DeviceID'=>$deviceCode['DeviceID'],
+                            //         'PackType'=>'SetData',
+                            //         'Vison'=>'0',
+                            //         'ReFlow'=>$Flow['ReFlow'],
+                            //     ];
+                            // } else {
+                            //     $msg = [
+                            //         'DeviceID'=>$deviceCode['DeviceID'],
+                            //         'PackType'=>'SetData',
+                            //         'Vison'=>'0',
+                            //         'ReDay'=>$Flow['ReDay'],
+                            //     ];
+                            // }
+                            // dump($msg);die;
+
+                            // 写充值流水
+                            // 订单编号
+                            $flowData['order_id']       = $value['order_id'];
+                            // 用户ID
+                            $flowData['user_id']            = $user_info['id'];
+                            // 充值金额
+                            //
+                            $flowData['money']          = $value['money'];
+                            // 充值方式
+                            $flowData['mode']           = 1;
+                            // 充值流量
+                            $flowData['flow']           = $value['flow'];
+                            // 套餐数量
+                            $flowData['num']            = $value['goods_num'];
+                            // 套餐描述
+                            $flowData['describe']       = $value['describe'];
+                            // 当前流量
+                            $flowData['currentflow']    = $Flow['ReFlow'];
+                            // 充值时间
+                            $flowData['addtime']           = time();
+                            //show($flowData);die;
+                            // 创建充值流水
+                            $flowObjRes = $flowObj->add($flowData);
+
+                            // dump($orderData);
+                            // dump($flowObjRes);die;
+
+                            // 判断流水是否创建成果
+                            if($flowObjRes){
+                                // 定时器++
+                                $flownum++;
+                            }
+                            //                            dump($FlowRes);
+
+                            // 判断修改结果
+                            if($FlowRes){
+                                // 计数器++
+                                $num++;
+                            }
+
+                        }
+
+
+                        //                         die;
+                        // 全部套餐充值完成
+                        if($countNun == $num && $countNun == $flownum){
+
+                            //查找对应的租金总价
+                            $setmeal_money = M('setmeal')->field('money,flow,tid,describe')->where(['id'=>$orderSetmealData[0]['setmeal_id']])->find();
+                            //查找对应的滤芯成本
+                            $setmeal = M('type')->where(['id'=>$setmeal_money['tid']])->find();
+                            //计算出利润
+//                               dump($setmeal_money['money']-($setmeal['money']+$setmeal['cost']*$setmeal_money['flow']));exit;
+                            if ($setmeal_money['money'] < $setmeal['money']) {
+                                $money = 0;
+                            } else {
+                                $money =      $setmeal_money['money']-($setmeal['money']+$setmeal['cost']*$setmeal_money['flow']);
                             }
 
                             //查询分配比例
@@ -548,19 +548,25 @@ class WeiXinPayController extends Controller
 //                                dump($money);exit;
                             //查出当前推荐商人
 
-                            $c_info = M('vendors')->where(['code'=>$_SESSION['homeuser']['invitation_code']])->find();
+                            $c_info = M('vendors')->where(['code'=>$user_info['invitation_code']])->find();
 
+                            // echo M('vendors')->getLastSql();
+
+                            // file_put_contents('./wx3333333_payFee.txt',M('vendors')->getLastSql()."\r\n", FILE_APPEND);
                             //查出推荐人的分公司
                             $f_info = M('vendors')->where(['code'=>$c_info['office_code']])->find();
                             //销售奖(卖商品的经销商 分公司)
                             if ($f_info) {
                                 $earnings_comc = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_c);
-                                echo M('vendors')->getLastSql();
+
+                                // file_put_contents('./wx2_payFee.txt', M('vendors')->getLastSql()."\r\n", FILE_APPEND);
+
                                 //销售奖收益记录
                                 if ($earnings_comc) {
 
-                                    $a = M('earnings')->add(['name'=>$setmeal['typename'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
-                                    echo M('earnings')->getLastSql();
+                                    M('earnings')->add(['name'=>$setmeal_money['describe'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
+                                    // file_put_contents('./wx2_payFee.txt', M('earnings')->getLastSql()."\r\n", FILE_APPEND);
+
                                 }
                             }
 
@@ -569,7 +575,7 @@ class WeiXinPayController extends Controller
                                 $earnings_comd = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_d);
                                 //销售奖收益记录
                                 if ($earnings_comd) {
-                                    M('earnings')->add(['name'=>$setmeal['typename'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['name'=>$setmeal_money['describe'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
                             }
                             //查找直系推荐关系中的最近B级加盟商(包括自己)
@@ -582,7 +588,7 @@ class WeiXinPayController extends Controller
                                 $earnings_comp = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_p);
                                 //市场培育收益记录
                                 if ($earnings_comp) {
-                                    M('earnings')->add(['name'=>$setmeal['typename'],'vid'=>$c_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['name'=>$setmeal_money['describe'],'vid'=>$c_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
 
                             } else {
@@ -649,14 +655,37 @@ class WeiXinPayController extends Controller
                                     }
                                 }
                             }
-
-
-                        }else{
-                            // 事务回滚
-                            $orders->rollback();
-                            // file_put_contents('./wx_notifyEeor.txt','订单号：'.$result['attach']."充值失败 \r\n", FILE_APPEND);
+                            // 充值和流水完成，状态设为1
+                            $status = 1;
                         }
+                        // echo 12;
                     }else{
+                        // 没有套餐默认值，状态设为1
+                        $status = 1;
+                    }
+
+                    // show($msg);die;
+                    // file_put_contents('saaa',$isPayRes .'jfdslajfds'. $status);
+                    if($isPayRes && $status && $isStatus){
+
+
+                        // 执行事务
+                        $b = $orders->commit();
+                        file_put_contents('./wx22223_payFee.txt',$b."\r\n", FILE_APPEND);
+                        $sc=A("Api/Action");
+
+                        $sc->sysnc($deviceCode['DeviceID']);
+                        //我觉得应该按订单的总价为标准
+
+
+
+
+                    }else{
+                        // 事务回滚
+                        $orders->rollback();
+                        // file_put_contents('./wx_notifyEeor.txt','订单号：'.$result['attach']."充值失败 \r\n", FILE_APPEND);
+                    }
+                }else{
                     // 充值金额不匹配
                     // if($orderData['total_price'] != $result['total_fee']){
                     //    file_put_contents('./wx_notifymoney.txt','订单号：'.$result['attach']."充值失败,金额不匹配。订单金额：{$orderData['total_price']} ，充值金额：{$result['total_fee']} \r\n", FILE_APPEND);
