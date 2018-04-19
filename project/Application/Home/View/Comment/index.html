@@ -65,7 +65,7 @@
 			gid = href.substr(href.indexOf('?gid=')+5);
 		}
 		// console.log(gid);
-		$("#submit").click(function(){
+		$("#submit").on('click',function(){
 			if(!$("#shopping").val()){
 				layuiHint("请您对我们的商品做出评价呗");
 				return
@@ -93,12 +93,19 @@
 				processData: false,
 				contentType: false,
 				success: function(res){
-					console.log('连接',res)
+					console.log('连接',res);
+					$("#submit").off('click');
 					//评论成功后跳转
 					if(res.code == 200){
-						location.href = "{{:U('Home/Order/index')}}";
-					}else{
-						layuiHint('评论失败,请稍后再试！')
+						layuiHint('评论成功！');
+						setTimeout(function(){
+							location.href = "{{:U('Home/Order/index')}}";
+						},500);
+					}else if(res.code == 605){
+						layuiHint('你已经评论过了！');
+						setTimeout(function(){
+							location.href = "{{:U('Home/Order/index')}}";
+						},500);
 					}
 				},
 				error: function(res){
