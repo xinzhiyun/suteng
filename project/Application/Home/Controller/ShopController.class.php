@@ -261,7 +261,7 @@ class ShopController extends CommonController
         $cartInfo = M('Cart')->where('uid='.session('user.id'))->count();
         $this->assign('cartInfo',$cartInfo);
         $this->assign('sold_num',$sold_num[0]['sum']);
-        $this->assign('postage',8.99);
+        // $this->assign('postage',8.99);
         $this->display();
     }
 
