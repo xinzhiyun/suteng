@@ -9,8 +9,8 @@ class Timer
     private static $msgs=[
         '0'=>['DeviceID'=>'', 'PackType'=>'SetData','Vison'=>'0','DeviceStause'=>'8','PackNum'=>4],//开机
         '1'=>['DeviceID'=>'', 'PackType'=>'SetData','Vison'=>'0','DeviceStause'=>'7','PackNum'=>4],//关机
-//            '2'=>['DeviceID'=>'', 'PackType'=>'SetData','Vison'=>'0','DeviceStause'=>'8','PackNum'=>4],//开启加热  等待确定命令宝
-//            '3'=>['DeviceID'=>'', 'PackType'=>'SetData','Vison'=>'0','DeviceStause'=>'8','PackNum'=>4],//关闭加热
+        '2'=>['DeviceID'=>'', 'PackType'=>'SetData','Vison'=>'0','DeviceStause'=>'8','PackNum'=>4],//开启加热  等待确定命令宝
+        '3'=>['DeviceID'=>'', 'PackType'=>'SetData','Vison'=>'0','DeviceStause'=>'8','PackNum'=>4],//关闭加热  等待确定命令宝
     ];
 
     private static $timer_pre = "shizhou_timer_";
@@ -82,20 +82,14 @@ class Timer
      */
     public function Timer_day()
     {
-//        global $redis;
-//        $k=self::$timer_pre;
-//        exit;
-//        $map['state']=1;
-//        $map['repeat']=1;
-//        $data = M('task')->where($map)->select();
-//        foreach ($data as $val) {
-//            $k='';
-//            $k = $key.$val['id'];
-//
-//            $val['device_code'] = M('Devices')->where('id='.$val['did'])->getField('device_code');// 查询设备码
-//
-//            $res=$redis->set($k,json_encode($val));
-//        }
+        // 重复的 开启状态的 已执行的 数据 重新开启
+        $map['repeat']=1;
+        $map['state']=1;
+        $map['playstate']=1;
+
+        $data['playstate']=0;
+        M('task')->where($map)->save($data);
+        $this->makeCache(self::$timer_pre);
     }
 
     /**
@@ -172,7 +166,7 @@ class Timer
             'st_task.playstate=0',
             "st_task.hour<$h",
         ];
-        $page = $db->select('count(id) num')
+        $page = $db->select('count(*) num')
             ->from('st_task')->innerJoin('st_devices','st_task.did=st_devices.id')
             ->where($where)
             ->row();
