@@ -220,6 +220,7 @@ class VipCenterController extends CommonController
     public function purificationNotes()
     {
         $id = session('device.did');
+
         $map['dcode'] = M('devices')->where('id='.$id)->getField('device_code');
         $map['date'] = date("Ym", time());
         $data = M('Tds')->where($map)->select();
