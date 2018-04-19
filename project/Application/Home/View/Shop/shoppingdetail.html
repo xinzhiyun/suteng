@@ -11,7 +11,7 @@
 </head>
 <body>
 	<input type="hidden" value='{{$sold_num}}' id="sold_num">
-	<input type="hidden" value='{{$postage}}' id="postage">
+	<!-- <input type="hidden" value='{{$postage}}' id="postage"> -->
 	<div class="shopdetailContain">
 		<div class="detailTop">
 			<!-- /*商品信息*/ -->
@@ -81,7 +81,7 @@
 			return
 			// console.log(home)
 		}()
-		var postage = $("#postage").val();
+		// var postage = $("#postage").val();
 		var sold_num = $('#sold_num').val();
 		//清除历史发票信息sessionStorage
 		sessionStorage.setItem("voiceArr", '');
