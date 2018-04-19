@@ -1,10 +1,10 @@
 <?php
 namespace Api\Controller;
-use Common\Tool\Timer;
 use Think\Controller;
 use Think\Log;
 use Org\Util\Gateway;
 use Common\Tool\Device;
+use Common\Tool\Timer;
 class ActionController extends Controller
 {
     public function __construct()
@@ -13,7 +13,6 @@ class ActionController extends Controller
         Gateway::$registerAddress = '127.0.0.1:9504';
 
         Device::connect();
-
     }
 
 
@@ -22,6 +21,7 @@ class ActionController extends Controller
      */
     public function receive()
     {
+
         $message = I('post.');
         $client_id = $message['client_id'];
         unset($message['client_id']);
@@ -29,6 +29,8 @@ class ActionController extends Controller
             $mes  = Gateway::getSession($client_id);
             $message['DeviceID']  = $mes['DeviceID'];
         }
+        var_export($message);
+
         // 判断数据传输的对象
         if( $message['soure']=='Close')
         {
@@ -37,7 +39,6 @@ class ActionController extends Controller
         }
         else if( $message['soure']=='TCP'){
             $this->gettcp($client_id, $message);
-
         } else {
             $this->getws($client_id, $message);
         }
@@ -80,11 +81,10 @@ class ActionController extends Controller
             }
         }
         Gateway::sendToClient($client_id, $message);
+
+
+        $message['sid'] = Device::get_devices_info($message['DeviceID'],'sid');
         Log::write(json_encode($message), '设备信息包分发');
-
-        global $device_cache;
-
-        $message['sid'] = $device_cache->get_devices_info($message['DeviceID'],'sid');
 
         switch ($message['PackType']) {
             case 'login':
@@ -141,8 +141,8 @@ class ActionController extends Controller
                 M('devices')->where('device_code=' . $message['DeviceID'])->save($data);
             }
         } else {
-            if($this->check_info($status_id)){
-                $this->updateData($status_id, $data);
+            if($this->check_info($message['sid'])){
+                $this->updateData($message['sid'], $data);
             }
         }
 
@@ -172,12 +172,13 @@ class ActionController extends Controller
         }
 
         if ( empty( $message['sid'] ) ){
-            global $device_cache;
-            $message['sid'] = $device_cache->get_devices_info($message['DeviceID'],'sid');
+            $message['sid'] = Device::get_devices_info($message['DeviceID'],'sid');
         }
 
+        $data_statu = M('devices_statu')->where('id='.$message['sid'])->getField('data_statu');
+
         if ($message['sid']) {
-            if ( $ds['data_statu'] != 0 ) {
+            if ( $data_statu != 0 ) {
                 $this->sysnc( $message['DeviceID'] );//信息同步
             } else {
                 if ( isset($message['ReFlow'])       )       $data['ReFlow']      = $message['ReFlow'];
@@ -245,8 +246,7 @@ class ActionController extends Controller
      */
     public function sysnc($dcode)
     {
-        global $device_cache;
-        $status_id = $device_cache->get_devices_info($dcode,'sid');
+        $status_id = Device::get_devices_info($dcode,'sid');
 
         $this->check_info($status_id);
     }
@@ -261,7 +261,6 @@ class ActionController extends Controller
         $data = M('devices_statu')->find($id);
         if (isset($data['data_statu']) && $data['data_statu'] > 0 ){
             $msg = $this->get_data($data);
-
             if($msg) $this->sendMsg($msg);
 
             return false;
@@ -303,7 +302,6 @@ class ActionController extends Controller
         }
 
         $filter_life=$this->get_filter_info($data['deviceid']);
-
         if(!empty($filter_life)) {
             $filenum=count($filter_life);
             $msg['FilerNum'] = $filenum;
@@ -388,11 +386,16 @@ class ActionController extends Controller
     public function get_filter_info($dcode)
     {
         $type_id = Device::get_devices_info($dcode,'type_id');
-        empty($type_id) return [];
+
+        if( empty($type_id) ) return [];
         $type = M('type')->where("id={$type_id}")->find();
 
-        unset($type['id'], $type['typename'], $type['addtime']);
-        $sum = array_filter($type);
+        foreach ($type as $k=> $v) {
+            if(strstr($k,'filter') and !empty($v) ){
+                $sum[$k] = $v;
+            }
+        }
+
         foreach ($sum as $key => $value) {
             $str = stripos($value,'-');
             $map['filtername'] = substr($value, 0,$str);
@@ -451,7 +454,7 @@ class ActionController extends Controller
         //$this->sysnc('868575025659808');
 //
 
-
+        $this->get_filter_info('868575025659808');
 
 //        $message['DeviceID'] = '868575025672249';
 //        $message['PackType'] = "SetData";
