@@ -543,11 +543,17 @@
                 size              : 'default'
             }
 
+            showAttr();
+            showCourier();
+
         });
 
 
         //属性值设置
         function bindClick(){
+            showAttr();
+        }
+        function showAttr(){
             var attrId,attrName;
             var arr = new Array();
 
@@ -573,9 +579,11 @@
                 $('.attr_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].attrName+'</span><input type="text" placeholder="请输入'+arr[i].attrName+'的规格" name="attr['+arr[i].attrId+']" value="'+astr+'" class="form-control"><input type="hidden" name="attrName['+arr[i].attrId+']" value=' + arr[i].attrName + ' class="form-control"></div>');
             }
         }
-
         /* 快递费设置页面 */
-        function cbindClick(){
+        function cbindClick() {
+            showCourier();
+        }
+        function showCourier(){
             var courierId,courierName;
             var arr = new Array();
 

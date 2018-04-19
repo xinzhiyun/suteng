@@ -17,6 +17,7 @@ class CommonController extends Controller
      */
     public function _initialize()
     {
+
         // $_SESSION = null;
         // 实例化微信JSSDK
         $weixin = new WeixinJssdk;
@@ -24,9 +25,9 @@ class CommonController extends Controller
         if(empty($_SESSION['open_id'])){
 
             // 如果不存在则，跳转获取open_id,并缓存
-             $_SESSION['open_id'] = $weixin->GetOpenid();
+            //  $_SESSION['open_id'] = $weixin->GetOpenid();
             // 前端调试通道
-//            $_SESSION['open_id'] = 'onLe70fYcrqU71RjzfYUjkNf90_E';
+           $_SESSION['open_id'] = 'onLe70fYcrqU71RjzfYUjkNf90_E';
 
         }
         // 获取用户open_id
@@ -45,14 +46,12 @@ class CommonController extends Controller
 
         // 判断用户是否存在
         if($info){
+
             // 用户当前设备
-            $info['did'] = M('currentDevices')->where(['uid'=>$info['id']])->field('did')->find()['did'];
+            $info['did'] = M('current_devices')->where(['uid'=>$info['id']])->field('did')->find()['did'];
 
             $_SESSION['homeuser'] = $info;
 
-        }else{
-            // 用户不存在
-            redirect(U('/Home/Wechat/follow'), 2, '请先关注微信公众号...');
 
         }
 

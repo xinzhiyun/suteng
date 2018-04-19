@@ -1,6 +1,6 @@
 
-body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td 
-{ margin:0; padding:0; } 
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td
+{ margin:0; padding:0; }
 
 * {
 	-webkit-box-sizing: border-box;
@@ -255,7 +255,7 @@ body {
 	position: relative;
 	z-index: 100;
 }
-.search>label>i {    
+.search>label>i {
 	height: 100%;
 	display: inline-block;
 		font-size: 0.9rem;
@@ -399,7 +399,7 @@ body {
 	display: block;
 	position: relative;
 	width: 46%;
-	height: 8.5rem;
+	/* height: 8.5rem; */
 	padding: 5% 0% 6% 7%;
 	-webkit-box-sizing: border-box;
 	        box-sizing: border-box;
@@ -434,8 +434,8 @@ body {
 	/*width: 130%;
 	display: block;
 	font-size: 0.67rem;
-	line-height: 1rem;
-	overflow: hidden;
+	line-height: 1rem;*/
+	 overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;*/
     display: block;
@@ -453,7 +453,7 @@ body {
     margin-top: -0.74rem;
     text-align: right;
 	font-size: 1rem;
-    color: #ff3232;    
+    color: #ff3232;
     z-index: 999;
 }
 .allgoods>ul>li>a>b{
