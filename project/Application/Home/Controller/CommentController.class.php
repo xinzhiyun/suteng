@@ -87,6 +87,33 @@ class CommentController extends CommonController
         }
     }
 
+    public function getComments($gid='')
+    {
+        $gid = I('get.gid');
+        // $gid = 71;
+        $map['status'] = 1; //查询不隐藏的评论
+        $comment = D('Comment');
+        if(empty($gid)){
+            //  获取单个用户的评论
+            $map['uid'] = session('user.id');
+            // $map['uid'] = 27;
+            $with = ['good','pics'];
+        } else {
+            // 获取单个商品的评论
+            if(is_numeric($gid)){
+                $map['gid'] = $gid;
+                $with = ['user','pics'];
+                $pageNumber = I('get.page_number')?I('get.page_number'):1;
+                $pageSize = I('get.page_size')?I('get.page_size'):10;
+                $comment->page($pageNumber.','.$pageSize);
+            } else {
+                return $this->ajaxReturn(['code'=>401,'msg'=>'参数错误']);
+            }           
+        }
+        $data = $comment->where($map)->relation($with)->select();
+        return $this->ajaxReturn(['code'=>200,'data'=>$data,'uid'=>$map['uid']]);
+    }
+
     /**
      * [saleServic 售后评分]
      * @return [type] [description]

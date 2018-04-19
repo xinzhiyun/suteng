@@ -1,5 +1,5 @@
 
-body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td,span 
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td,span
 { margin:0; padding:0; -webkit-box-sizing: border-box; box-sizing: border-box;}
 
 body{
@@ -36,7 +36,7 @@ body{
     line-height: 1.6rem;
     background: #F04B7E;
      color: #FFF;
-	
+
 
 }
 .detailTxt>span>b{
@@ -51,7 +51,7 @@ body{
 	padding:0rem 0.3rem;
 	float: right;
 }
-.detailTxt>p, 
+.detailTxt>p,
 .detailTxt>b {
 	padding: 0.2rem 5%;
 	font-size: 0.72rem;
@@ -71,7 +71,17 @@ body{
 	border-bottom:1px solid #E5E5E5;
 	color: #5a5a5a;
 }
-
+/* 邮费 */
+.selectPostage {
+	padding:0.7rem 0;
+	border-bottom:1px solid #E5E5E5;
+	color: #5a5a5a;
+	display: flex;
+	justify-content: space-between;
+}
+.selectPostage > span > select {
+	border: none;
+}
 .detailist>p>span{
 	font-size: 0.72rem;
 	color: #373737;

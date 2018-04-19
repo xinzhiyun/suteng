@@ -29,6 +29,7 @@ class LoginController extends Controller
             }
 
         }else{
+            if($_SESSION['adminInfo']){$this->redirect('Index/index');}
             $this->display();
         }
     }

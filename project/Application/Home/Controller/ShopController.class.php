@@ -69,19 +69,30 @@ class ShopController extends CommonController
     			$arr[$key]['attr'] = $val['attr'].':'.$val['val'].'|';
     		}
     	}
+
+        // dump($goodsDetail);
     	$goodsDetail = array_values($arr);
+        // dump($goodsDetail);
+
+        //查询商品对应的快递运费信息
+        $goodsCourier = M('goods_courier')->where('gid='.$_GET['id'])->field('cid,cname,cprice')->select();
+        // dump($goodsCourier);
+
+
+        //获取评论数据
         $commentInfo = $goods->getComment($map['g.id']);
         $data = [
             'goodsDetail' => $goodsDetail,
             'commentInfo' => $commentInfo,
+            'goodsCourier' => $goodsCourier,
         ];
+
+        // dump($data);
         $this->ajaxReturn($data);
     }
 
     public function chooseMeal()
-    {
-
-        
+    {  
         $meal = D('setmeal')->select();
 
         //调用微信JS-SDK类获取签名需要用到的数据

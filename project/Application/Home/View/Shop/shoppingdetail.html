@@ -69,7 +69,7 @@
 			// 创建 a 标签
 			var home = document.createElement('a');
 			home.innerText = '首\n页';
-			
+
 			home.href = '{{:U("Home/Shop/index")}}';
 			home.setAttribute("id", 'back2Home');
 
@@ -104,6 +104,7 @@
 		$.ajax({
 			url: '{{:U("Shop/goods_detail")}}',
 			type: 'get',
+			async: false,
 			data: {'id': goods_gid},
 			success: function(res){
 				console.log('成功！ ',res);
@@ -113,6 +114,13 @@
 				var goodsDetail_html = '', commentInfo_html = '';
 				desc = !goodsDetail.desc ? '商品暂无描述' : goodsDetail.desc;
 				goodsDetail.attr = !goodsDetail.attr ? '' : goodsDetail.attr;
+				// 接受邮费数据
+				goodsCourier = res.goodsCourier;
+				goodsCourier_html = "";// 邮费数据
+				for (var i = 0; i < goodsCourier.length; i++) {
+					goodsCourier_html = goodsCourier_html + '<option index='+i+'>'+goodsCourier[i].cname+'</option>'
+					// '<li><span class="couriername">'+goodsCourier[i].cname+'</span><span><b class="expressMoney"><span class="couriermoney">'+goodsCourier[i].cprice+'</span></b></span></li>'
+				}
 				// 输出商品详情
 				goodsDetail_html = '<div class="detailpic">'+
 						'<img src="/Uploads/'+ goodsDetail.path +'" alt="">'+
@@ -134,10 +142,23 @@
 								'<input type="button" value="+" class="plus">'+
 							'</span>'+
 						'</p>'+
-						'<p><span>邮费</span><span><b class="expressMoney">￥<span>'+ postage +'</span></b></span></p>'+
-					'</div>'; 
+						// 邮费
+
+						// '<p><span>邮费</span><span><b class="expressMoney">￥<span>'+ postage +'</span></b></span></p>'+
+
+						'<div class="selectPostage">'+
+
+							// 显示点击
+							'<span><select  class="postage"><option>请选择</option>'+
+
+							goodsCourier_html
+
+
+							+'</select></span><span class="postagename">邮费</span>'
+						'</div>'+
+					'</div>';
 				console.log(res.commentInfo[0])
-				// 如果有评价则遍历出来		
+				// 如果有评价则遍历出来
 				if(res.commentInfo){
 					if(res.commentInfo.length > 1){
 						for(var i=0; i<res.commentInfo.length; i++){
@@ -190,19 +211,31 @@
 					$('.detailItem:nth-child(1)').css('display','block');
 					$('.detailItem:nth-child(2)').css('display','block');
 				}
-				$(".detailTxt p").html(escape2Html(desc));
+				// $(".detailTxt p").html(escape2Html(desc));
 			},
 			error: function(res){
 				console.log('失败！ ',res)
 			}
 		})
+
+		// 点击选择邮费
+		$(".postage").on("change", function() {
+			// 邮费种类
+			postageName = $(this).val();
+			// 邮费某条数
+			postageNum = $(this).find("option:selected").attr("index");
+			postageMoney = goodsCourier[postageNum].cprice;
+			console.log(postageMoney)
+			$(".postagename").text(postageMoney)
+		})
+
 		//处理后台传过来的转义字符
-		var escape2Html = function(str) {   
-			 var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};   
+		var escape2Html = function(str) {
+			 var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
 			 return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,i){
 			 	return arrEntities[i];
-			 });   
-		}; 
+			 });
+		};
 		var price;
 		/*
 			 按加'+'号
@@ -249,7 +282,7 @@
 				// $('.detailItem').eq(1).slideDown('slow');
 				$('.detailItem').eq(0).css('display','block');
 				$('.detailItem').eq(1).css('display','block');
-			
+
 			}
 		})
 
@@ -281,8 +314,8 @@
 	       			parent.layer.msg('添加失败！');
 				}
 			})
-		})	
- 
+		})
+
 		/*
 			点击‘立即购买’
 		 */
@@ -303,10 +336,10 @@
 			var goods_dataArr = [];
 			var money = num*(goodsDetail.price);	//订单总价
 			goods_dataArr.push({'num':num,'gid': goodsDetail.gid,'money': money});
-			
+
 			sessionStorage.setItem("goods_dataArr",JSON.stringify(goods_dataArr));
 			console.dir(goods_dataArr);
-			
+
 			// 发送ajax请求让后台生成订单号
 			$.ajax({
 				url: '{{:U("PaymentSystem/information")}}',
@@ -331,6 +364,12 @@
 				}
 			})
 		})
+
+
+
+
+
+
 	})
 
 	</script>

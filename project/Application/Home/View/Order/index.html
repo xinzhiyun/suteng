@@ -645,19 +645,19 @@
                     	sessionStorage.setItem("pinglunObj","");
                     }
                     /*
-                    	点击评论
-                    	*/
-                    	$('#dingdanDaipinglun').on('click',".commentBtn",function(){
+                	点击评论
+                	*/
+                	$('#dingdanDaipinglun').on('click',".commentBtn",function(){
                     	var pinglunObj = {};	//存储带评论的订单编号
                     	pinglunObj['order_id'] = $(this).attr("name");
                     	pinglunObj['gid'] = $(this).attr("gid");
                     	pinglunObj['pic'] = $(this).parents(".goods").find('.giPicture>img').attr('src');
                     	//将点击的带评论商品数据存到本地存储中
                     	sessionStorage.setItem("pinglunObj",JSON.stringify(pinglunObj));
-                    	location.href = '{{:U("Comment/index")}}';
+                    	location.href = '{{:U("Comment/index")}}?gid=' + $(this).attr("gid");
                     }) 
-                    }
-                });  
+                }
+            });  
 
  			$.ajax({//4：退货/售后
  				url:"{{:U('Home/Refund/showGoods')}}",
