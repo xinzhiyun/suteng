@@ -26,7 +26,8 @@ class DeviceController extends CommonController
         $where['uid'] = session('user.id');
         $cur_device = $user_device->where($where)->find();
         session('device.did',$cur_device['did']);
-        //分配数据        
+        session('user.did',$cur_device['did']);
+        //分配数据
         $this->assign('bindInfo',$bind_device);
         $this->assign('openId',$openId);
     	$this->display();
@@ -85,6 +86,7 @@ class DeviceController extends CommonController
             // dump($type);die;
             if($res_save){
                 $_SESSION['device']['did'] = $did;
+                $_SESSION['user']['did'] = $did;
                 $device->commit();
                 
                 E('设备绑定成功',200);
@@ -119,6 +121,7 @@ class DeviceController extends CommonController
             // 设置当前设备状态
             $user_status = $user_device->where($map)->save(['status'=>1]);;
             $_SESSION['device']['did'] = $map['did'];
+            $_SESSION['user']['did'] = $map['did'];
             if($user_status){
                 $user_device->commit();
                 E('更新成功',200);
