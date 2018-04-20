@@ -119,12 +119,6 @@
 				var goodsDetail_html = '', commentInfo_html = '';
 				desc = !goodsDetail.desc ? '商品暂无描述' : goodsDetail.desc;
 				goodsDetail.attr = !goodsDetail.attr ? '' : goodsDetail.attr;
-				// 接受邮费数据
-				goodsCourier = res.goodsCourier;
-				goodsCourier_html = "";// 邮费数据
-				for (var i = 0; i < goodsCourier.length; i++) {
-					goodsCourier_html = goodsCourier_html + '<option index='+i+'>'+goodsCourier[i].cname+'</option>'
-				}
 				// 商品图片
 				goodsPicArr.push(goodsDetail.path);
 				// 输出商品详情
@@ -146,18 +140,6 @@
 								'<input type="button" value="+" class="plus">'+
 							'</span>'+
 						'</p>'+
-						// 邮费
-
-						'<div class="selectPostage">'+
-
-							// 显示点击
-							'<span><select  class="postage" required><option>快递</option>'+
-
-							goodsCourier_html
-
-
-							+'</select></span><span class="postagename">邮费</span>'
-						'</div>'+
 					'</div>';
 				console.log(res.commentInfo.length)
 				// 如果有评价则遍历出来
@@ -202,9 +184,7 @@
 				goodsPicArr.map(function(value,index){
 					goodsPicHTML += '<li><img src="/Uploads/'+ value +'" alt=""></li>';
 				})
-				// console.log(goodsPicHTML);
 				$('.detailpic>ul').html(goodsPicHTML);
-				// console.log($('.detailpic>ul>li'));
 				// 设置图片宽度
 				$('.detailpic>ul')[0].style.width = goodsPicArr.length*100 + '%';
 				$('.detailpic>ul').find('li').css({width: 100/goodsPicArr.length + '%'});
@@ -233,7 +213,6 @@
 						$(".detailItem").eq(m).append(commPicArr[m][n].img)
 					}
 				}
-				// console.dir($('.detailItem').length);
 				// 只显示2条评论
 				var _length=$('.detailItem').length;
 				if (_length>2) {
@@ -241,7 +220,6 @@
 					$('.detailItem:nth-child(1)').css('display','block');
 					$('.detailItem:nth-child(2)').css('display','block');
 				}
-				// $(".detailTxt p").html(escape2Html(desc));
 			},
 			error: function(res){
 				console.log('失败！ ',res)
@@ -249,15 +227,15 @@
 		})
 		
 		// 点击选择邮费
-		$(".postage").on("change", function() {
-			// 邮费种类
-			postageName = $(this).val();
-			// 邮费某条数
-			postageNum = $(this).find("option:selected").attr("index");
-			// 根据条数找到对应的价格
-			postageMoney = goodsCourier[postageNum].cprice;
-			$(".postagename").text(postageMoney)
-		})
+		// $(".postage").on("change", function() {
+		// 	// 邮费种类
+		// 	postageName = $(this).val();
+		// 	// 邮费某条数
+		// 	postageNum = $(this).find("option:selected").attr("index");
+		// 	// 根据条数找到对应的价格
+		// 	postageMoney = goodsCourier[postageNum].cprice;
+		// 	$(".postagename").text(postageMoney)
+		// })
 
 		//处理后台传过来的转义字符
 		var escape2Html = function(str) {
@@ -320,25 +298,25 @@
 			点击‘加入购物车’
 		 */
 		$("#add2ShopCart").click(function(){
-			if($(".postage").find("option:selected").val() == "快递") {
-				parent.layer.msg('请选择快递方式');
-				return false;
-			}
+			// if($(".postage").find("option:selected").val() == "快递") {
+			// 	parent.layer.msg('请选择快递方式');
+			// 	return false;
+			// }
 
 			var num = $(".number").val();	//选择的数量
 			var addtime = new Date().getTime();	//添加进购物车的时间
 			// var expressMoney = $(".postagename").text();	//快递费
-			var expressMoney = goodsCourier[postageNum];	//快递费goodsCourier[postageNum]
+			// var expressMoney = goodsCourier[postageNum];	//快递费goodsCourier[postageNum]
 			/*
 				goods_gid:商品唯一ID
 				num: 商品数量
 			 */
-			var data = JSON.stringify([{'gid':goods_gid,'num':num, 'expressMoney':expressMoney}])
+			var data = JSON.stringify([{'gid':goods_gid,'num':num}])
 			console.log(data)
 			$.ajax({
 				url: '{{:U("ShoppingCart/shopAdd")}}',
 				type: 'post',
-				data: {'gid': goods_gid,'num':num, 'expressMoney':expressMoney},
+				data: {'gid': goods_gid,'num':num},
 				success: function(res){
 					console.log('成功！ ', res)
 					//更新购物车数量
@@ -357,29 +335,23 @@
 			点击‘立即购买’
 		 */
 			$("#buyNow").click(function(){
-
-			if($(".postage").find("option:selected").val() == "快递") {
-				parent.layer.msg('请选择快递方式');
-				return false;
-			}
-
 			//清除其他页面的sessionStorage
 			sessionStorage.setItem("lvxinData", '');
 			sessionStorage.setItem("shopCar_data", '');
 			var num = $(".number").val();	//选择的数量
-			var expressMoney = $(".postagename").text();	//快递费
-			var postageInfo = goodsCourier[postageNum];
+			// var expressMoney = $(".postagename").text();	//快递费
+			// var postageInfo = goodsCourier[postageNum];
 			/*
 				goods_gid:商品唯一ID
 				num: 商品数量
 				uid: 用户id
 			 */
-			var goods_data = JSON.stringify({'goodsDetail': goodsDetail,'num': num,'expressMoney':expressMoney});
+			var goods_data = JSON.stringify({'goodsDetail': goodsDetail,'num': num});
 			sessionStorage.setItem("goods_data",goods_data);
 			//发送给后台生成订单编号的数据
 			var goods_dataArr = [];
 			var money = num*(goodsDetail.price);	//订单总价
-			goods_dataArr.push({'num':num,'gid': goodsDetail.gid,'money': money, 'postage': postageInfo});
+			goods_dataArr.push({'num':num,'gid': goodsDetail.gid,'money': money});
 
 			sessionStorage.setItem("goods_dataArr",JSON.stringify(goods_dataArr));
 			// console.dir(goods_dataArr);return false;
