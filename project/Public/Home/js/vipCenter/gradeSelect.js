@@ -16,13 +16,15 @@ $(".goldGrade").on("touchstart", function() {
         $(".confirmBtn > p").css("background", "rgb(69, 69, 69, .5)");
         $(this).children(".goldInfo").css("display", "none").end().siblings().children(".goldInfo").css("display", "none");
         $(this).attr("index", "0").siblings().attr("index", "0");
+        // 选中确认变色 否则不变
+        $(".confirmBtn > p").css("background", "#A2A2A2");
     }
 })
 // 阻止事件冒泡
 $(".goldInfo").on("touchstart", function(e) {
     e.stopPropagation();
 });
-// 点击叉叉小图标 
+// 点击叉叉小图标
 $(".icon-shibai").on("touchstart", function() {
     $(this).parent().css("display", "none");
 });
@@ -34,7 +36,7 @@ $(".confirmBtn").on("touchstart", function() {
         $(".payKuan").css("display", "block");
         // 选中会员价格
         $(".selectFinall").html(selectPrice);
-    }	
+    }
 });
 // 点击面板叉叉小图标
 $(".icon-chacha").on("touchstart", function() {
