@@ -212,7 +212,7 @@
                     var leasingmode = {'0':'零售型','1':'按流量计费','2':'按时间计费','3':'时长和流量套餐','4':'商务型'};
                     var filtermode = {'0':'按时长','1':'按流量','2':'时长和流量'};
                     var _color = ['#05CE3E','#005384','#DD4B39','#337AB7','#5CB85C','#77E1FB'];
-                    $('._dev').append(statu.deviceid)
+                    $('._dev').text('当前设备：' + statu.deviceid);
                     $('._dive div h1').eq(0).html(devicestause[statu.devicestause]?devicestause[statu.devicestause]:'--');
                     $('._dive div h1').eq(1).html(statu.puretds?statu.puretds:'--');
                     $('._dive div h1').eq(2).html(statu.rawtds?statu.rawtds:'--');
