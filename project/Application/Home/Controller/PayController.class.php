@@ -66,7 +66,7 @@ class PayController extends Controller
         $goodsCourier = M('goods_courier')->where('gid='.$gid)->field('cid,cname,cprice')->select();
         $assign = [
             'data' => json_encode($data),
-            'goodsCourier' => $goodsCourier,
+            'goodsCourier' => json_encode($goodsCourier),
         ];
         // dump($assign);
         $this->wx_info();
