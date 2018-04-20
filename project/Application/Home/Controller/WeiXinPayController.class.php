@@ -361,7 +361,7 @@ class WeiXinPayController extends Controller
 
 
                         //查询当前用户
-                        $user_info = M('users')->field('id,invitation_code')->where(['open_id'=> $result['openid']])->find();
+                        $user_info = M('users')->field('id,invitation_code，open_id')->where(['open_id'=> $result['openid']])->find();
 
 
                         file_put_contents('./222222.txt',M('users')->getLastSql() ."\r\n", FILE_APPEND);
@@ -564,7 +564,7 @@ class WeiXinPayController extends Controller
                                 //销售奖收益记录
                                 if ($earnings_comc) {
 
-                                    M('earnings')->add(['name'=>$setmeal_money['describe'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['name'=>$setmeal_money['describe'],'open_id'=>$user_info['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
                                     // file_put_contents('./wx2_payFee.txt', M('earnings')->getLastSql()."\r\n", FILE_APPEND);
 
                                 }
@@ -575,7 +575,7 @@ class WeiXinPayController extends Controller
                                 $earnings_comd = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_d);
                                 //销售奖收益记录
                                 if ($earnings_comd) {
-                                    M('earnings')->add(['name'=>$setmeal_money['describe'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['name'=>$setmeal_money['describe'],'open_id'=>$user_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
                             }
                             //查找直系推荐关系中的最近B级加盟商(包括自己)
@@ -588,7 +588,7 @@ class WeiXinPayController extends Controller
                                 $earnings_comp = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_p);
                                 //市场培育收益记录
                                 if ($earnings_comp) {
-                                    M('earnings')->add(['name'=>$setmeal_money['describe'],'vid'=>$c_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['name'=>$setmeal_money['describe'],'open_id'=>$user_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
 
                             } else {
@@ -605,7 +605,7 @@ class WeiXinPayController extends Controller
                                         M('vendors')->where(['id'=>$my_level_info['id']])->setInc('abonus',$com_p);
                                         //
                                         if ($earnings_comc) {
-                                            M('earnings')->add(['name'=>$setmeal_money['describe'],'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
+                                            M('earnings')->add(['name'=>$setmeal_money['describe'],'open_id'=>$user_info['open_id'],'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
                                         }
                                     }
                                 }
@@ -622,7 +622,7 @@ class WeiXinPayController extends Controller
                                 $earnings_ta = M('vendors')->where(['id'=>$in_info['id']])->setInc('abonus',$com_t);
                                 //市场培育收益记录
                                 if ($earnings_ta) {
-                                    M('earnings')->add(['name'=>$setmeal_money['describe'],'vid'=>$in_info['id'],'abonus'=>$com_t,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['name'=>$setmeal_money['describe'],'open_id'=>$user_info['open_id'],'vid'=>$in_info['id'],'abonus'=>$com_t,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
                             }
                             //B级加盟商受益人
@@ -634,7 +634,7 @@ class WeiXinPayController extends Controller
 
                                 //市场培育收益记录
                                 if ($earnings_ta) {
-                                    M('earnings')->add(['name'=>$setmeal_money['describe'],'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['name'=>$setmeal_money['describe'],'open_id'=>$user_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
 
                             } else {
@@ -650,7 +650,7 @@ class WeiXinPayController extends Controller
 //                            M('vendors')->where(['id'=>$path_info_A['id']])->save(['updatetime'=>time()]);
                                         $earnings_ta = M('vendors')->where(['id'=>$path_info_A['id']])->setInc('abonus',$com_ta);
                                         if ($earnings_ta) {
-                                            M('earnings')->add(['name'=>$setmeal_money['describe'],'vid'=>$path_info_A['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                                            M('earnings')->add(['name'=>$setmeal_money['describe'],'open_id'=>$user_info['open_id'],'vid'=>$path_info_A['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
                                         }
                                     }
                                 }
