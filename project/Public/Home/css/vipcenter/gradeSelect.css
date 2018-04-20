@@ -13,7 +13,7 @@ body {
 	margin-bottom: 1rem;
 }
 /* 会员选择 */
-.gradeSelect {
+.gradeSelect { 
 	display: flex;
 	justify-content: space-between;
 	position: relative;
