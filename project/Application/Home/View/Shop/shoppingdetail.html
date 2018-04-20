@@ -20,6 +20,7 @@
 					<ul id='wrapul'>
 						<li><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></li>
 					</ul>
+					<span class="picnum"><b>1</b><span></span></span>
 				</div> -->
 				<!-- /*商品说明*/ -->
 				<!-- <div class="detailTxt">
@@ -127,7 +128,7 @@
 				// 商品图片
 				goodsPicArr.push(goodsDetail.path);
 				// 输出商品详情
-				goodsDetail_html = '<div class="detailpic"><ul id="wrapul"></ul></div>'+
+				goodsDetail_html = '<div class="detailpic"><ul id="wrapul"></ul><span class="picnum"><b>1</b><span></span></span></div>'+
 					'<!-- /*商品说明*/ -->'+
 					'<div class="detailTxt">'+
 						'<span><b>￥'+ goodsDetail.price +'</b><em>已售： '+ sold_num +'</em></span>'+
@@ -196,6 +197,7 @@
 				$(".detailTop>div").html(goodsDetail_html);
 
 				/* 顶部图片滑动部分 -- 开始 */
+				$('.picnum>span').text('/'+ goodsPicArr.length);
 				var goodsPicHTML = '';
 				goodsPicArr.map(function(value,index){
 					goodsPicHTML += '<li><img src="/Uploads/'+ value +'" alt=""></li>';
@@ -209,7 +211,16 @@
 				var wrapul = document.getElementById('wrapul');
 				var lilen = wrapul.getElementsByTagName('li').length;
 				// 实例化滑动
-				var move = new tMove(wrapul, lilen);
+				var move = new tMove(wrapul, lilen, function(res){
+					// 当前页数
+					var nowpic = res.offleft/window.innerWidth;
+					// offleft为零则第一张
+					nowpic = res.offleft == 0 ? 1 : Math.abs(nowpic)+1;
+					// console.log(nowpic);
+					// 显示当前页数
+					$('.picnum>b').text(Math.round(nowpic));
+					
+				});
 				/* 顶部图片滑动部分 -- 结束 */
 
 				// 将评价添加到页面
