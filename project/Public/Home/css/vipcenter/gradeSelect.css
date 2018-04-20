@@ -9,11 +9,11 @@ body {
 /* 标题 */
 .selectInfo > p {
 	font-size: 1rem;
-	color: rgb(55, 55, 55);
+	color: rgb(55, 55, 55); 
 	margin-bottom: 1rem;
 }
 /* 会员选择 */
-.gradeSelect { 
+.gradeSelect {
 	display: flex;
 	justify-content: space-between;
 	position: relative;
