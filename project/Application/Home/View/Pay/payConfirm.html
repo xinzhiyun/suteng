@@ -10,6 +10,7 @@
 </head>
 <body>
 	<input type="hidden" value='{{$data}}' id="addressInfo">
+	<input type="hidden" value='{{$postage}}' id="postage">
 	<div id="content">
 		<header id="header">
 			<div id="hLeft">
@@ -174,8 +175,9 @@
 		});
 		$(function(){
 			// 快递费
-			var postage = $("#postage").val();
-			console.log("快递费",postage);
+			// var postage = $("#postage").val();
+			var addressInfo = $("#addressInfo").val();
+			// console.log("快递费",postage, addressInfo);
 			$("#hLeft").click(function(){
 				location.href = "{{:U('Address/index')}}";
 			})
@@ -213,7 +215,7 @@
 				订单遍历
 			 */
 			// 从本地sessionStorage中获取订单数据
-			var lvxinData, goods_data, shopCar_data;
+			var lvxinData, goods_data, shopCar_data, goods_dataArr;
 			if(sessionStorage.getItem("lvxinData")){
 				// 从滤芯购买传来
 				lvxinData = JSON.parse(sessionStorage.getItem("lvxinData"));
@@ -226,9 +228,15 @@
 				// 购物车传来
 				shopCar_data = JSON.parse(sessionStorage.getItem("shopCar_data"));
 			}
+			if(sessionStorage.getItem("goods_dataArr")) {
+				// 从商品详情传来
+				goods_dataArr = JSON.parse(sessionStorage.getItem("goods_dataArr"));
+			}
 			console.log('lvxinData： ',lvxinData);
 			console.log('goods_data： ',goods_data);
 			console.log('shopCar_data： ',shopCar_data);
+			console.log('邮费 ',goods_dataArr[0].postage.cprice);
+			var postage = goods_dataArr[0].postage.cprice;
 			var goodsHTML = '';	//存放需要支付的商品信息
 			var numAll = 0;		//存放订单的总数量
 			var priceAll = 0;	//存放订单的总价格
@@ -327,7 +335,7 @@
 			var voiceArr;
 			if(sessionStorage.getItem("voiceArr")){
 				voiceArr = JSON.parse(sessionStorage.getItem("voiceArr"));
-				
+
 				// console.log("发票信息",voiceArr[0].type, voiceArr[0].info)
 
 				// if(voiceArr[0].type && voiceArr[0].info && voiceArr[0].voicehead && voiceArr[0].phone){
@@ -337,7 +345,7 @@
 					$(".ynticket>a>span").text(voiceArr[0].type)
 				}
 			}else {
-				// 默认 
+				// 默认
 				voiceArr = {
 					'type': "不开发票",
 					'info': "",
@@ -415,7 +423,7 @@
 						console.log('银币');
 						break;
 					case '3':
-						console.log('微信支付'); 
+						console.log('微信支付');
 						//如果有默认地址
 						if($("#addressInfo").val()){
 							//请求微信支付方法
