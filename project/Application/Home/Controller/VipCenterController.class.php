@@ -288,7 +288,9 @@ class VipCenterController extends CommonController
         // 返回JSON格式数据
         $this->ajaxReturn($message);
     }
-    
+    public function  gradeSelect() {
+        $this->display();
+    }
     // 会员订单
     public function user_order()
     {

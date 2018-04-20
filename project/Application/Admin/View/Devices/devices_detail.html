@@ -115,7 +115,7 @@
                 </h5>
             </div>
             <div class="tableBoxs">
-                <h1 class="text-center _dev">当前设备：</h1>
+                <h1 class="text-center _dev">当前设备：{{$device_code}}</h1>
                 <div class="clearfix" style="margin-left: 1%">
                     <div style="margin: 15px 0;" class="_dive">
                         <div class="_four _margin-right _DD4B39 text-center">
@@ -284,12 +284,12 @@
                                         '<td>'+'<button class="btn btn-info clickBtn resetBtn" name="'+ filterInfo[i].filtername+'">复位</button><input type="hidden" value='+i+'></td>'+
                                         '</tr>';
                                 } 
-                            }else{
-                                 $('._table').html("暂无数据");
                             }
                         }
                         $('._table').append(html);
-                    }  
+                    }else{
+                         $('._table').html("暂无数据");
+                    }
                     var html2 = '<tr>'+
                                     '<td>'+'设备编号'+'</td>'+
                                     '<td class="tdDeviceId">'+(statu.deviceid?statu.deviceid:'--')+'</td>'+

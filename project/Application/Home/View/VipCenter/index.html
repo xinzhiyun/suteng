@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
 	<link rel="stylesheet" href="//at.alicdn.com/t/font_574708_lrbbkvcwhcjo47vi.css">
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/index.css"> 
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/index.css">
 	<title>会员中心</title>
 </head>
 <body>
@@ -23,8 +23,8 @@
 			<p class="member">
 				<span>{{$user['nickname']}}</span>&nbsp;&nbsp;
 				<!-- <i class="iconfont icon-wodehuiyuan0101"></i> -->
-				<span><img src="__PUBLIC__/Home/images/hj.png" alt=""></span>
-				<span>黄金会员</span> 
+				<span><img src="__PUBLIC__/Home/images/hyhj.png" alt=""></span>
+				<span>黄金会员</span>
 			</p>
 			<div id="package">
 				<span>我的钱包：</span>
@@ -76,7 +76,7 @@
 					<i class="iconfont icon-dayuhao-copy-copy"></i>
 				</a>
 
-			</p> 
+			</p>
 			<div>
 				<a href="{{:U('Home/VipCenter/reward')}}">
 					<span>金币{{$comData['gold_num']}}</span>
@@ -126,7 +126,7 @@
 				</a>
 			</div>
 			<div id="member">
-				<a href="####">
+				<a href="{{:U('Home/VipCenter/gradeSelect')}}">
 					<i class="iconfont icon-huiyuan"></i>
 					<p>会员升级</p>
 					<i class="iconfont icon-dayuhao-copy-copy"></i>
@@ -145,13 +145,13 @@
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script>
 		$(function(){
-			
+
 			// 首页按钮
 			!function(){
 				// 创建 a 标签
 				var home = document.createElement('a');
 				home.innerText = '首\n页';
-				
+
 				home.href = '{{:U("Home/Index/index")}}';
 				home.setAttribute("id", 'back2Home');
 
@@ -202,7 +202,7 @@
 				console.log('请求失败! ',res)
 			}
 		})
-		
+
 	</script>
 	<script>
 
@@ -263,7 +263,7 @@
 		// function Download(){
 	 //        //cavas 保存图片到本地  js 实现
 	 //        //------------------------------------------------------------------------
-	 //        //1.确定图片的类型  获取到的图片格式 data:image/Png;base64,...... 
+	 //        //1.确定图片的类型  获取到的图片格式 data:image/Png;base64,......
 	 //        var type ='png';//你想要什么图片格式 就选什么吧
 	 //        var d=document.getElementById("canvas");
 	 //        var imgdata=d.toDataURL(type);
@@ -284,7 +284,7 @@
 	 //            event.initMouseEvent('click',true,false,window,0,0,0,0,0,false,false,false,false,0,null);
 	 //            save_link.dispatchEvent(event);
 	 //        };
-	 //        var filename=''+new Date().getSeconds()+'.'+type;  
+	 //        var filename=''+new Date().getSeconds()+'.'+type;
 	 //        //我想用当前秒是可以解决重名的问题了 不行你就换成毫秒
 	 //        savaFile(imgdata,filename);
   //       };

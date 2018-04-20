@@ -40,6 +40,7 @@ class RefundController extends CommonController
     public function create()
     {
         $post = I('post.');
+        $order_id = $post['order_id'];
         // 商品
         $data['serial_num'] = $this->getNumber();
         $data['uid']        = $_SESSION['user']['id'];
@@ -50,7 +51,13 @@ class RefundController extends CommonController
         $data['create_time'] = time();      
         foreach ($post['gid'] as $key => $value) {
             $data['goods'][$key] = ['oid'=>$post['order_id'],'gid'=>$value,'amount'=>$post['price']];
+            $res = D('RefundGoods')->where(['oid'=>$order_id,'gid'=>$value])->select();
+            if($res){
+                return $this->ajaxReturn(['code'=>601,'msg'=>'商品已经退过款了']);
+            }
         }
+        
+        
 
         try {
             $refund = D('Refund');
@@ -78,12 +85,12 @@ class RefundController extends CommonController
                 }
                 $data['pic'] = $path;
             }
-           
+            
             $refund->startTrans();
             // print_r($data);die;                    
             $result = D('Refund')->relation(true)->add($data);
             // 将订单状态更改为退货处理中
-            D('order_detail')->where(['order_id'=>$post['order_id'],'uid'=>$data['uid']])->setField(['status'=>6]);
+            D('order_detail')->where(['order_id'=>$order_id])->setField(['status'=>6]);
             if($result){
                 $refund->commit();
                 E('申请成功', 200);
@@ -97,7 +104,7 @@ class RefundController extends CommonController
             $this->rmfiles($info);
             $err = [
                 'code' => $e->getCode(),
-                'msg' => $e->getMessage(),
+                'msg' => $e->getMessage()
             ];
             $this->ajaxReturn($err);
             // $this->error('评论失败');                     
