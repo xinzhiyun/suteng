@@ -2,7 +2,7 @@
 var selectPrice;
 $(".goldGrade").on("touchstart", function() {
     if($(this).attr("index") == "0") {
-        // 添加类名 改变背景颜色
+        // 添加类名 改变背景颜色 
         $(this).addClass("selectChange").siblings().removeClass("selectChange");
         // 通过改变index标识
         $(this).attr("index", "1").siblings().attr("index", "0");
