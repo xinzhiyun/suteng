@@ -716,7 +716,7 @@ class WeiXinPayController extends Controller
                                     $in_B['id']  = array('in',$path);
                                     $in_B['leavel'] = 3;
                                     //查找最近的B级经销商
-                                    $my_level_info = M('vendors')->field('id,leavel,code,path,updatetime')->order('id desc')->where($in_B)->find();
+                                    $my_level_info = M('vendors')->field('id,leavel,code,path,updatetime,open_id')->order('id desc')->where($in_B)->find();
                                     if ($my_level_info) {
                                         //                            M('vendors')->where(['id'=>$my_level_info['id']])->save(['updatetime'=>time()]);
                                         M('vendors')->where(['id'=>$my_level_info['id']])->setInc('abonus',$com_p);
