@@ -119,6 +119,7 @@ class DeviceController extends CommonController
             // 设置当前设备状态
             $user_status = $user_device->where($map)->save(['status'=>1]);;
             $_SESSION['device']['did'] = $map['did'];
+            $_SESSION['user']['did'] = $map['did'];
             if($user_status){
                 $user_device->commit();
                 E('更新成功',200);
