@@ -17,7 +17,9 @@
 			<!-- /*商品信息*/ -->
 			<div>
 				<!-- <div class="detailpic">
-					<img src="__PUBLIC__/Home/images/comm_02.png" alt="">
+					<ul id='wrapul'>
+						<li><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></li>
+					</ul>
 				</div> -->
 				<!-- /*商品说明*/ -->
 				<!-- <div class="detailTxt">
@@ -61,6 +63,7 @@
 	</div>
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
   	<script src="__PUBLIC__/Home/js/public.js"></script>
+  	<script src="__PUBLIC__/Home/js/shop/tmove.js"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script>
 	$(function(){
@@ -100,6 +103,7 @@
 		var desc;
 		var picPathArr = []; 	//存放后台传过来的图片路径转换的数组
 		var commPicArr = [];	//存储每条评论的图片
+		var goodsPicArr = [];	//顶部图片浏览
 		// ajax发送商品id查询商品详情
 		$.ajax({
 			url: '{{:U("Shop/goods_detail")}}',
@@ -120,10 +124,10 @@
 				for (var i = 0; i < goodsCourier.length; i++) {
 					goodsCourier_html = goodsCourier_html + '<option index='+i+'>'+goodsCourier[i].cname+'</option>'
 				}
+				// 商品图片
+				goodsPicArr.push(goodsDetail.path);
 				// 输出商品详情
-				goodsDetail_html = '<div class="detailpic">'+
-						'<img src="/Uploads/'+ goodsDetail.path +'" alt="">'+
-					'</div>'+
+				goodsDetail_html = '<div class="detailpic"><ul id="wrapul"></ul></div>'+
 					'<!-- /*商品说明*/ -->'+
 					'<div class="detailTxt">'+
 						'<span><b>￥'+ goodsDetail.price +'</b><em>已售： '+ sold_num +'</em></span>'+
@@ -190,9 +194,27 @@
 
 				// 将商品信息添加到页面
 				$(".detailTop>div").html(goodsDetail_html);
+
+				/* 顶部图片滑动部分 -- 开始 */
+				var goodsPicHTML = '';
+				goodsPicArr.map(function(value,index){
+					goodsPicHTML += '<li><img src="/Uploads/'+ value +'" alt=""></li>';
+				})
+				// console.log(goodsPicHTML);
+				$('.detailpic>ul').html(goodsPicHTML);
+				// console.log($('.detailpic>ul>li'));
+				// 设置图片宽度
+				$('.detailpic>ul')[0].style.width = goodsPicArr.length*100 + '%';
+				$('.detailpic>ul').find('li').css({width: 100/goodsPicArr.length + '%'});
+				var wrapul = document.getElementById('wrapul');
+				var lilen = wrapul.getElementsByTagName('li').length;
+				// 实例化滑动
+				var move = new tMove(wrapul, lilen);
+				/* 顶部图片滑动部分 -- 结束 */
+
 				// 将评价添加到页面
 				$(".detailItemall").append(commentInfo_html);
-				// console.log(picPathArr, '\n', commPicArr)
+				// console.log(picPathArr, '\n', commPicArr);
 				// 遍历评论列表的每个评论的图片
 				for(var m=0; m<commPicArr.length; m++){
 					for(var n=0; n<commPicArr[m].length; n++){
@@ -214,7 +236,7 @@
 				console.log('失败！ ',res)
 			}
 		})
-
+		
 		// 点击选择邮费
 		$(".postage").on("change", function() {
 			// 邮费种类
@@ -287,18 +309,25 @@
 			点击‘加入购物车’
 		 */
 		$("#add2ShopCart").click(function(){
+			if($(".postage").find("option:selected").val() == "快递") {
+				parent.layer.msg('请选择快递方式');
+				return false;
+			}
+
 			var num = $(".number").val();	//选择的数量
 			var addtime = new Date().getTime();	//添加进购物车的时间
+			// var expressMoney = $(".postagename").text();	//快递费
+			var expressMoney = goodsCourier[postageNum];	//快递费goodsCourier[postageNum]
 			/*
 				goods_gid:商品唯一ID
 				num: 商品数量
 			 */
-			var data = JSON.stringify([{'gid':goods_gid,'num':num}])
+			var data = JSON.stringify([{'gid':goods_gid,'num':num, 'expressMoney':expressMoney}])
 			console.log(data)
 			$.ajax({
 				url: '{{:U("ShoppingCart/shopAdd")}}',
 				type: 'post',
-				data: {'gid': goods_gid,'num':num},
+				data: {'gid': goods_gid,'num':num, 'expressMoney':expressMoney},
 				success: function(res){
 					console.log('成功！ ', res)
 					//更新购物车数量

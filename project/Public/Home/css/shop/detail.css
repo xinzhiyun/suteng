@@ -16,10 +16,9 @@ body{
 }
 .detailpic{
 	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
-    width: 100%;
-    padding: 1.5rem 4.5rem;
-    text-align: center;
+	box-sizing: border-box;
+	width: 100%;
+	text-align: center;
 }
 .detailpic>img{
 	width: 100%;
@@ -31,13 +30,13 @@ body{
 .detailTxt>span{
 	padding: 0 0.5rem;
 	display: inline-block;
-    width: 100%;
-    height: 1.6rem;
-    line-height: 1.6rem;
-    background: #F04B7E;
-     color: #FFF;
-
-
+	width: 100%;
+	height: 1.6rem;
+	line-height: 1.6rem;
+	background: #F04B7E;
+	color: #FFF;
+	
+	
 }
 .detailTxt>span>b{
 	float: left;
@@ -47,7 +46,7 @@ body{
 .detailTxt>span>em{
 	display: inline-block;
 	height: 1.6rem;
-    line-height: 1.6rem;
+	line-height: 1.6rem;
 	padding:0rem 0.3rem;
 	float: right;
 }
@@ -80,6 +79,11 @@ body{
 	justify-content: space-between;
 }
 .selectPostage > span > select {
+	-webkit-appearance:none;
+	appearance:none;
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	background: white;
 	border: none;
 }
 .detailist>p>span{
@@ -124,35 +128,35 @@ body{
 
 /*商品数量*/
 .num {
-    width: 30%;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    -webkit-box-align: stretch;
-        -ms-flex-align: stretch;
-            align-items: stretch;
+	width: 30%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: stretch;
+	-ms-flex-align: stretch;
+	align-items: stretch;
 }
 
 .num>input {
-    width: 1.2rem;
-    height: 1.4rem;
-    line-height: 1.4rem;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    text-align: center;
-    font-size: 0.9rem;
-    border: none;
-    -webkit-appearance: none;
-    border-radius: 4px;
-    background: #e2e2e2;
+	width: 1.2rem;
+	height: 1.4rem;
+	line-height: 1.4rem;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	text-align: center;
+	font-size: 0.9rem;
+	border: none;
+	-webkit-appearance: none;
+	border-radius: 4px;
+	background: #e2e2e2;
 }
 .num>input:nth-of-type(2){
 	background: #fff;
@@ -161,18 +165,18 @@ body{
 	padding-bottom: 0.06rem;
 }
 .num>.number {
-    width: 33%;
-    margin: 0 4px;
-    text-align: center;
-    border-radius: 4px;
-    border: 1px solid #a4a4a4;
-    font-size: .8rem;
+	width: 33%;
+	margin: 0 4px;
+	text-align: center;
+	border-radius: 4px;
+	border: 1px solid #a4a4a4;
+	font-size: .8rem;
 }
 .detailContain>p{
 	padding: 2.5rem 5% 0.4rem;
 	font-size: 0.68rem;
 	position: relative;
-
+	
 }
 .detailContain>p>i{
 	font-size: 1.1rem;
@@ -192,10 +196,10 @@ body{
 }
 .detailItem>p{
 	padding: 0.2rem 5% 0.2rem 0;
-    font-size: 0.68rem;
-    line-height: 1.0rem;
-    margin:0.5rem;
-
+	font-size: 0.68rem;
+	line-height: 1.0rem;
+	margin:0.5rem;
+	
 }
 .detailItem>p>em{
 	display: inline-block;
@@ -211,8 +215,8 @@ body{
 }
 .detailItem>p>b{
 	display: inline-block;
-    height: 2rem;
-    line-height: 2rem;
+	height: 2rem;
+	line-height: 2rem;
 }
 .detailItem>span{
 	margin-right: 0.8rem;
@@ -231,18 +235,18 @@ body{
 /*查看更多*/
 .detailContain>.pinglunshow{
 	position: relative;
-    top: 0rem;
-    right: 0;
-    padding: 0.8rem 0 5%;
-    color: #F04B7E;
+	top: 0rem;
+	right: 0;
+	padding: 0.8rem 0 5%;
+	color: #F04B7E;
 }
 
 .pinglunshow>p{
 	display: block;
-    height: 2rem;
-    width: 25%;
-    font-size: 0.7rem;
-    float: right;
+	height: 2rem;
+	width: 25%;
+	font-size: 0.7rem;
+	float: right;
 }
 .pinglunshow>p>span{
 	padding-left: 5%;
@@ -266,10 +270,10 @@ body{
 	width: 80%;
 	height: 8vh;
 	display: inline-block;
-    line-height: 8vh;
+	line-height: 8vh;
 	white-space: nowrap;
 	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 }
 .shopdetailBott>a {
 	width: 20%;
@@ -288,7 +292,7 @@ body{
 .shopdetailBott>div>input{
 	width: 50%;
 	height: 8vh;
-    line-height: 8vh;
+	line-height: 8vh;
 	border: none;
 	color:#fff;
 	border-radius: 0px!important;
@@ -303,11 +307,11 @@ body{
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-box-pack: center;
-	    -ms-flex-pack: center;
-	        justify-content: center;
+	-ms-flex-pack: center;
+	justify-content: center;
 	-webkit-box-align: center;
-	    -ms-flex-align: center;
-	        align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
 	width: 70%;
 	height: 70%;
 	top: -20%;
@@ -321,11 +325,19 @@ body{
 #add2ShopCart {
 	height: 8vh;
 	width: 50%;
-    display: inline-block;
-    line-height: 8vh;
-    text-align: center;
+	display: inline-block;
+	line-height: 8vh;
+	text-align: center;
 }
 #add2ShopCart:active {
 	color: #fff;
 	background: #F04B7E;
 }
+ul, li {
+	list-style: none;
+}
+.detailpic {width: 100vw;height: 40vh;position: relative;background: #fff;overflow: hidden;}
+.detailpic>ul {height: 100%;position: relative;transition: .3s linear;}
+.detailpic>ul::after {content: '';display: block;clear: both;}
+.detailpic>ul>li {height: 100%;float: left;text-align: center;vertical-align: baseline;border:1px solid #eee;}
+.detailpic img {height: 100%;width:auto;}

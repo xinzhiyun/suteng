@@ -114,9 +114,20 @@ class ShopController extends CommonController
             // 'show' => $goodsList['show'],
         ];
 
-        // dump($assign);
+//         dump($assign);
         $this->assign($assign);
         $this->display();
+    }
+
+    //加载商品详情
+    public function good_detail()
+    {
+        if(IS_AJAX){
+            $id = I('post.id');
+            $res = M('goods_detail')->where('gid='.$id)->getField('desc');
+            return $this->ajaxReturn($res);
+        }
+
     }
 
     // 添加商品

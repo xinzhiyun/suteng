@@ -16,32 +16,34 @@
                     </div>
                 <form method="get" action="">
                     <div class="input-group col-md-4" id='searchdiv'>
-                        <select name="key" class="form-control acc" name="account">
-                            <option <?php echo ($where['key']=="name")?'selected':''; ?> value="name">姓名</option>
-                            <option <?php echo ($where['key']=="leavel")?'selected':''; ?> value="leavel">级别</option>
-                            <option <?php echo ($where['key']=="user")?'selected':''; ?> value="user">分配用户名</option>
+                        <select name="key" class="form-control where_key" name="account">
+                            <option class="where_key_name" value="name">姓名</option>
+                            <option class="where_key_leavel" value="leavel">级别</option>
+                            <option class="where_key_user" value="user">分配用户名</option>
                         </select>
-                        <input type="text" name="keywords" placeholder="输入搜索关键字"  value="{{$where['keywords']}}" class="input form-control keywordscc"   style="width:40%">
-                        <select name="leavel" class="form-control abb"   style="width:30%">
-                            <option   value="">-- 级别 --</option>
-                            <option  value="0">超级管理员</option>
-                            <option value="1">分公司 </option>
-                            <option value="2">A级分销商</option>
-                            <option value="3">B级分销商</option>
-                            <option value="4">C级分销商</option>
+                        <input type="text" name="keywords" placeholder="输入搜索关键字"  value="{{$where['keywords']}}"
+                               class="input form-control where_key_box where_key_box_name where_key_box_user"
+                               style="width:40%">
+                        <select name="leavel" class="form-control where_key_box  where_key_box_leavel"
+                                style="width:30%;display: none;">
+                            <option class="where_leavel_"  value="">-- 级别 --</option>
+                            <option class="where_leavel_0" value="0">超级管理员</option>
+                            <option class="where_leavel_1" value="1">分公司 </option>
+                            <option class="where_leavel_2" value="2">A级分销商</option>
+                            <option class="where_leavel_3" value="3">B级分销商</option>
+                            <option class="where_leavel_4" value="4">C级分销商</option>
                         </select>
-                        <select name="status" class="form-control" name="account" style="width:30%">
-                            <option     <?php echo ($where['status']=="")?'selected':''; ?> value="">-- 状态 --</option>
-                            <!-- <option     <?php echo ($where['status']=="")?'selected':''; ?> value="">会员等级</option> -->
-                            <option   <?php echo ($where['status']=="0")?'selected':''; ?> value="0">身份信息填写</option>
-                            <option  <?php echo ($where['status']==1)?'selected':''; ?> value="1">公司信息填写</option>
-                            <option  <?php echo ($where['status']==2)?'selected':''; ?> value="2">签协议</option>
-                            <option <?php echo ($where['status']==3)?'selected':''; ?> value="3">待审批</option>
-                            <option <?php echo ($where['status']==4)?'selected':''; ?> value="4">身份证审批失败</option>
-                            <option  <?php echo ($where['status']==5)?'selected':''; ?> value="5">公司信息审批失败</option>
-                            <option  <?php echo ($where['status']==6)?'selected':''; ?> value="6">协议审批失败</option>
-                            <option  <?php echo ($where['status']==7)?'selected':''; ?> value="7">审批成功</option>
-                            <option  <?php echo ($where['status']==8)?'selected':''; ?> value="8">禁用分销商</option>
+                        <select name="status" class="form-control where_status" name="account" style="width:30%;">
+                            <option  class="where_status_"  value="">-- 状态 --</option>
+                            <option  class="where_status_0" value="0">身份信息填写</option>
+                            <option  class="where_status_1" value="1">公司信息填写</option>
+                            <option  class="where_status_2" value="2">签协议</option>
+                            <option  class="where_status_3" value="3">待审批</option>
+                            <option  class="where_status_4" value="4">身份证审批失败</option>
+                            <option  class="where_status_5" value="5">公司信息审批失败</option>
+                            <option  class="where_status_6" value="6">协议审批失败</option>
+                            <option  class="where_status_7" value="7">审批成功</option>
+                            <option  class="where_status_8" value="8">禁用分销商</option>
                             <!-- 0:身份填写 1:公司信息填写 2:签协议 3:待审批 4:身份证审批失败 5:公司信息审批失败 6:协议审批失败  7：审批成功  8：禁用分销商 -->
                         </select>
 
@@ -49,6 +51,7 @@
                                 <input type="submit" class="btn btn btn-primary submitbtn" name="sou"> <i class="fa fa-search"></i> 搜索</button>
                         </span>
                     </div>
+
                 </form>
                     <div class="ibox-content">
                         <table class="table">
@@ -79,7 +82,7 @@
                                             <td>{{$i}}</td>
                                             <td>{{$val.name}}</td>
                                             <td>{{$val.leavel}}</td>
-                                            <td>{{$vo.company}}</td>
+                                            <td>{{$val.company}}</td>
                                             <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_a}}" alt="A级邀请"></td>
                                             <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_b}}" alt="B级邀请"></td>
                                             <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_c}}" alt="C级邀请"></td>
@@ -115,31 +118,25 @@
     </div>
     <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
     <script>
-        $(".abb").hide();
-        $(".acc").change(function(){
-            var key = $(this).val();
-            if (key =='leavel' ) {
-                $(".keywordscc").hide();
-                $(".abb").show();
-                level = true;
-            } else {
-                $(".keywordscc").show();
-                $(".abb").hide();
-            }
-
-        });
-        var level = null;  //是否选中级别的标志符号
-        // 点击提交搜索
-        $('.submitbtn').click(function(){
-            if(level){
-                sessionStorage.setItem('level', level);
-            }else{
-                sessionStorage.setItem('level', '');
-            }
-        })
-        if(sessionStorage.getItem('level')){
-            $(".abb").show();
-            $(".keywordscc").hide();
+        var where ={{$where||json_encode}};
+        if(where.key!=''){
+            $('.where_key_'+where.key).attr('selected','true');
+            $('.where_key_box').hide();
+            $('.where_key_box_'+where.key).show();
         }
+        if(where.leavel!=''){
+            $('.where_leavel_'+where.leavel).attr('selected','true');
+        }
+        if(where.status!=''){
+            $('.where_status_'+where.status).attr('selected','true');
+        }
+
+        $(".where_key").change(function(){
+
+            var key = $(this).val();
+            $('.where_key_box').hide();
+            $('.where_key_box_'+key).show();
+        });
+
     </script>
 </block>

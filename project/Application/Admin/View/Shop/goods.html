@@ -267,6 +267,16 @@
         function edit(id)
         {   
             gid = id;
+            $.ajax({
+                url:'{{:U("admin/shop/good_detail")}}',
+                type:'post',
+                data:{'id':id},
+                success:function(res){
+                    if(res!=null){
+                        $('#description').val(res);
+                    }
+                }
+            });
             $('#st-edit').modal('show');         
         }
         $('#edit_submit').click(function(){

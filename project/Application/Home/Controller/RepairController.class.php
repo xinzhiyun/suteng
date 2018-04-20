@@ -12,7 +12,7 @@ class RepairController extends CommonController
     {   
 
         // 调试用默认用户
-        $openId = $_SESSION['homeuser']['open_id'];
+        $openId = $_SESSION['user']['open_id'];
         // 查询绑定设备
         $user_device = D('UserDevice');
         $map['ud.uid'] = session('user.id');

@@ -106,7 +106,6 @@ class VendorsModel extends BaseModel
      */
     public function vendorList($map=array()){
         // 查询分公司数据
-
         if (!empty($map)) {
             $total = $this->where('`leavel`>1')
             ->where($map)
@@ -126,6 +125,7 @@ class VendorsModel extends BaseModel
             'list' => $this->formatData($list),
             'page' =>$pageButton
         ];
+
         return $data;
     }
 

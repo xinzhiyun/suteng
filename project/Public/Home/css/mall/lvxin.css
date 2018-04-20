@@ -12,7 +12,8 @@ body {
     height: 84vh;
     position: relative;
     margin-top: 8vh;
-    left: -200vw;
+    left: 0;
+    transform: translateX(-200vw);
     margin-bottom: 8vh;
 }
 #header, #footer {

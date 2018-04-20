@@ -639,10 +639,11 @@ class VendorsController extends CommonController
         $assign = [
             'data' => $data['list'],
         ];
-        $where['key'] = $_GET['key'];
-        $where['keywords'] = $_GET['keywords'];
+        $where['key'] = I('get.key');
+        $where['keywords'] = I('get.keywords');
         $where['status'] = I('get.status');
-
+        $where['leavel'] = I('get.leavel');
+        
 
         //echo D('vendors')->getLastSql();
         $this->assign($assign);

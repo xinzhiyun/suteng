@@ -7,14 +7,7 @@ $(function(){
 	var res = JSON.parse($(".lvxin_data").val()).filterInfo;//滤芯详情数据
 	// console.dir(data);
 	// console.log(res);
-	
-	// 判断内容是否在购买超出，不超出则溢出隐藏
-	$("#content")
-	.css({height: lvxinArr[2].height, 
-		overflowY: $(lvxinArr[2])[0].offsetHeight > $("#content")[0].offsetHeight 
-		? 'visible'
-		: 'hidden'
-	});
+
 	// 当当前设备为零售模式时候，不显示滤芯购买页面
 	if(data){
 		deviceId = data.deviceid;
@@ -43,6 +36,7 @@ $(function(){
 	}
 	// 点击顶部tab切换内容
 	$(".tabTitle").click(function(){
+
 		// 隐藏其他模块
 		for(var i=0; i<lvxinArr.length; i++){
 			$(lvxinArr[i]).fadeOut();
@@ -73,7 +67,7 @@ $(function(){
 			$("#line").css({marginLeft: $(this).attr("index")*33.33 + '%'});
 		}
 		// 内容切换
-		$("#content").animate({transform: 'translateX(-'+ $(this).attr("index") +'00vw'});
+		$("#content").css({transform: 'translateX(-'+ $(this).attr("index") +'00vw)'});
 		
 		//滤芯选中状态样式
 		$("#lvxinReset").on("click","li",function(){
@@ -84,8 +78,6 @@ $(function(){
 		})
 		
 	})
-	
-
 	
 	console.log(data);
 	
@@ -99,21 +91,20 @@ $(function(){
 	var reflowpercent;//滤芯剩余流量百分比
 	
 	if(res){
+		console.log(res);
 		for(var i=0; i<res.length; i++){ 
-			
 			if(res[i]){
-				console.log(res[i].introduce);
 				timelife = (res[i].timelife?res[i].timelife:0);
 				flowlife = (res[i].flowlife?res[i].flowlife:0);
 				reday = (data['redayfilter'+(i+1)]?data['redayfilter'+(i+1)]:0);
 				reflow = (data['reflowfilter'+(i+1)]?data['reflowfilter'+(i+1)]:0);
 				redaypercent = (((data['redayfilter'+(i+1)]/res[i].timelife)*100).toFixed(2)>100)?100:(((data['redayfilter'+(i+1)]/res[i].timelife)*100).toFixed(2));
 				reflowpercent = (((data['reflowfilter'+(i+1)]/res[i].flowlife)*100).toFixed(0)>100)?100:(((data['reflowfilter'+(i+1)]/res[i].flowlife)*100).toFixed(0));
-				console.dir(filtermode);
-				if(!filtermode){
+				if(filtermode == ''){
 					return
 				}
-			    if(filtermode == 0){//时常
+				// console.log('filtermode: ',filtermode);
+			    if(filtermode == 0){//时长
 			        // 遍历膜的详情, 不存在则不遍历
 			        if(res[i].filtername){
 			            moHTML += '<li class="_padding">'+

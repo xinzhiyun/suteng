@@ -136,13 +136,18 @@ console.log('_htmlArr: ',_htmlArr)
 if(_htmlArr[0]){
 	// $(".allgoods>ul").eq(0).html(_htmlArr[0]);
 	// console.log($("#content>div").eq(0).attr("index"))
-	if(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|').length <= 1){
-
+	var html = _htmlArr[tab_now].substr(0,_htmlArr[0].length-1);
+	if(html.split('|').length <= 1){
+		if(_htmlArr[0].lastIndexOf('|') == _htmlArr[0].length-1){
+			_htmlArr[0] = _htmlArr[0].substring(0, _htmlArr[0].length-1);
+		}
 		$(".allgoods>ul").eq(0).html(_htmlArr[0]);
 	}else{
-
+		if(html.lastIndexOf('|') == html.length-1){
+			html = html.substring(0, html.length-1);
+		}
 		//如果数据多余6条， 则先加载6条，剩下的懒加载
-		$(".allgoods>ul").eq(0).html(_htmlArr[tab_now].substr(0,_htmlArr[0].length-1).split('|')[0]);
+		$(".allgoods>ul").eq(0).html(html.split('|')[0]);
 	}
 	
 }else{
@@ -219,7 +224,18 @@ function tabContent(_this){
 	ullen = $(".allgoods").eq(_this.attr("index")).find("ul")[0].childElementCount;
 	//如果当前分类下有商品, 且页面未生成，则添加数据，否则不改动
 	if(_htmlArr[_this.attr("index")] && ullen < 1){	
-		$(".allgoods>ul").eq(_this.attr("index")).html(_htmlArr[_this.attr("index")]);
+		var nowhtml = _htmlArr[_this.attr("index")];
+		// console.log(nowhtml.lastIndexOf('|')==nowhtml.length-1);
+
+		if(nowhtml.lastIndexOf('|') == nowhtml.length-1){
+			nowhtml = nowhtml.substring(0,nowhtml.length-1);
+
+			$(".allgoods>ul").eq(_this.attr("index")).html(nowhtml);
+		}else{
+
+			$(".allgoods>ul").eq(_this.attr("index")).html(nowhtml);
+		}
+		// console.log(nowhtml);
 		
 		$('#container').css({
 			overflowY : 'scroll'
