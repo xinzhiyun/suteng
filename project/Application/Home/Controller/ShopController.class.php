@@ -54,7 +54,11 @@ class ShopController extends CommonController
     public function goods_detail()
     {
         //将商品的id存入session
-        session('goodsid',$_GET['id']);
+        // unset($_SESSION['goodsid']);
+        $_SESSION['goodsid'][] = $_GET['id'];
+
+        //去掉同样商品的值
+        $_SESSION['goodsid'] = array_unique($_SESSION['goodsid']);
         $map['g.id'] = I('get.id');
         $goods = D('Goods');
 
@@ -78,7 +82,7 @@ class ShopController extends CommonController
         // dump($goodsDetail);
 
         //查询商品对应的快递运费信息
-        $goodsCourier = M('goods_courier')->where('gid='.$_GET['id'])->field('cid,cname,cprice')->select();
+        // $goodsCourier = M('goods_courier')->where('gid='.$_GET['id'])->field('cid,cname,cprice')->select();
         // dump($goodsCourier);
 
 
@@ -87,7 +91,7 @@ class ShopController extends CommonController
         $data = [
             'goodsDetail' => $goodsDetail,
             'commentInfo' => $commentInfo,
-            'goodsCourier' => $goodsCourier,
+            // 'goodsCourier' => $goodsCourier,
         ];
 
         // dump($data);

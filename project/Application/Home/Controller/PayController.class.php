@@ -58,17 +58,22 @@ class PayController extends Controller
     {
         $address = D('Address');
         $where['uid'] = session('user.id');
-        $gid = session('goodsid');
         // dump(session());
         $where['status'] = 0;
         $data = $address->where($where)->find();
+
         //查询商品对应的快递运费信息
-        $goodsCourier = M('goods_courier')->where('gid='.$gid)->field('cid,cname,cprice')->select();
+        foreach ($_SESSION['goodsid'] as $key => $value) {
+            // echo $value."<br>";
+            $goodsCourier[$value] = M('goods_courier')->where('gid='.$value)->field('gid,cid,cname,cprice')->select();
+        }
+        unset($_SESSION['goodsid']);
+        dump($goodsCourier);
         $assign = [
             'data' => json_encode($data),
             'goodsCourier' => json_encode($goodsCourier),
         ];
-        // dump($assign);
+        dump($assign);
         $this->wx_info();
 
         $this->assign($assign);
