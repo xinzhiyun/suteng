@@ -53,8 +53,11 @@ class ShopController extends CommonController
     // 商品详情页面
     public function goods_detail()
     {
+        //将商品的id存入session
+        session('goodsid',$_GET['id']);
         $map['g.id'] = I('get.id');
         $goods = D('Goods');
+
         $map['pr.grade'] = session('user.grade');
         $map['gd.status'] = 0;
         $map['g.status'] = array('neq', 2);

@@ -113,16 +113,21 @@ class DevicesModel extends Model
     }
 
     // 查询滤芯详情
-    public function getFilterDetail($sum)
+    public function getFilterDetail($list)
     {
-        unset($sum['id'],$sum['typename'],$sum['addtime']);
-        $sum = array_filter($sum);
+        foreach ($list as $k=> $v) {
+            if(strstr($k,'filter') and !empty($v) ){
+                $sum[$k] = $v;
+            }
+        }
+        //unset($sum['id'],$sum['typename'],$sum['addtime']);
         foreach ($sum as $key => $value) {
             $str = stripos($value,'-');
             $map['filtername'] = substr($value, 0,$str);
             $map['alias'] = substr($value, $str+1);
             $res[] = M('filters')->where($map)->find();
         }
+        $res = array_filter($res);
         return $res;
     }
 

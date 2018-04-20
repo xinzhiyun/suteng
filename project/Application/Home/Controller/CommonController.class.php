@@ -304,7 +304,7 @@ class CommonController extends Controller
                             $userWhere['open_id'] = $_SESSION['open_id'];
                             // 查询用户信息,并缓存
                             $_SESSION['user'] = M('users')->where($userWhere)->find();
-                            if(empty(session('device.id'))){
+                            if(empty(session('device.did'))){
                                 $this->redirect("Device/index");
                             }
                         }

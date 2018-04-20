@@ -29,7 +29,7 @@ class ActionController extends Controller
             $mes  = Gateway::getSession($client_id);
             $message['DeviceID']  = $mes['DeviceID'];
         }
-        var_export($message);
+//        var_export($message);
 
         // 判断数据传输的对象
         if( $message['soure']=='Close')
