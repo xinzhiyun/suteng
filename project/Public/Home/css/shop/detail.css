@@ -18,7 +18,6 @@ body{
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	width: 100%;
-	padding: 1.5rem 4.5rem;
 	text-align: center;
 }
 .detailpic>img{
@@ -334,3 +333,11 @@ body{
 	color: #fff;
 	background: #F04B7E;
 }
+ul, li {
+	list-style: none;
+}
+.detailpic {width: 100vw;height: 40vh;position: relative;background: #fff;overflow: hidden;}
+.detailpic>ul {height: 100%;position: relative;transition: .3s linear;}
+.detailpic>ul::after {content: '';display: block;clear: both;}
+.detailpic>ul>li {height: 100%;float: left;text-align: center;vertical-align: baseline;border:1px solid #eee;}
+.detailpic img {height: 100%;width:auto;}
