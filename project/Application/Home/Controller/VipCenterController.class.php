@@ -219,7 +219,11 @@ class VipCenterController extends CommonController
     // 净水记录
     public function purificationNotes()
     {
-        $id = session('device.did');
+        $info = session('user');
+        if( empty($info['did']) ){
+            $id = M('user_device')->where(['uid'=>$info['id'],'status'=>1])->getField('did');
+            session('user.did',$id);
+        }
         $map['dcode'] = M('devices')->where('id='.$id)->getField('device_code');
         $map['date'] = date("Ym", time());
         $data = M('Tds')->where($map)->select();
@@ -284,7 +288,9 @@ class VipCenterController extends CommonController
         // 返回JSON格式数据
         $this->ajaxReturn($message);
     }
-    
+    public function  gradeSelect() {
+        $this->display();
+    }
     // 会员订单
     public function user_order()
     {
@@ -328,122 +334,3 @@ class VipCenterController extends CommonController
 
     }
 }
-// Array
-// (
-//     [0] => Array
-//         (
-//             [nickname] => 快乐翱翔
-//             [g_price] => 500.00
-//             [gold_num] => 0
-//             [silver] => 1
-//             [addtime] => 1519442351
-//         )
-
-//     [1] => Array
-//         (
-//             [nickname] => 快乐翱翔
-//             [g_price] => 1000.00
-//             [gold_num] => 1
-//             [silver] => 2
-//             [addtime] => 1518259208
-//         )
-
-// )
-
-// Array
-// (
-//     [0] => Array
-//         (
-//             [id] => 255
-//             [nexus_user] => 96B1944669C
-//             [user_code] => 5BBED4D4B5F
-//             [order_id] => 815782408320460
-//             [gold_num] => 50000450
-//             [silver] => 903
-//             [current_gold_num] => 407
-//             [current_silver] => 1817
-//             [describe] => 自己购买，单号为[815782408320460]的商品获得金币奖励:0.72个,获得银币奖励：1.44个
-//             [type] => 0
-//             [status] => 9
-//             [addtime] => 1518242765
-//             [updatetime] => 1519608241
-//             [open_id] => fgs
-//             [office_code] => 653A61
-//             [vendora_code] => 
-//             [vendorb_code] => 
-//             [vendorc_code] => 
-//             [vendori_code] => 
-//             [invitation_code] => 67037D
-//             [code] => 96B1944669C
-//             [invite] => 0
-//             [ticket] => gQGy7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZVVUamtFMmJkOTAxRXpxQXhxMXgAAgTzFH1aAwQwhScA
-//             [parameter] => 27
-//             [ticket_time] => 1520736803
-//             [nickname] => 快乐翱翔
-//             [head] => http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUicB78UOvFu61ibbk8DRhmMnRK79oAKfibo9ficu1aVSzaFEjHoYD7oYHrRlw5K4S9zEnkL0TsfpvvibGf5cwURvpKVJ/132
-//             [sex] => 0
-//             [area] => 广东
-//             [address] => 中国 广东 广州
-//             [balance] => 0.00
-//             [original_grade] => 0
-//             [total_money] => 100.00
-//             [grade] => 3
-//             [uid] => 35
-//             [address_id] => 52
-//             [gid] => 
-//             [g_cost] => 380.00
-//             [g_price] => 500.00
-//             [g_num] => 1
-//             [g_type] => 2
-//             [mode] => 0
-//             [express] => 
-//         )
-
-//     [1] => Array
-//         (
-//             [id] => 279
-//             [nexus_user] => 96B1944669C
-//             [user_code] => 5BBED4D4B5F
-//             [order_id] => 764154273195985
-//             [gold_num] => 50000450
-//             [silver] => 903
-//             [current_gold_num] => 1301
-//             [current_silver] => 3
-//             [describe] => 自己购买，单号为[764154273195985]的商品获得金币奖励:1.44个,获得银币奖励：2.88个
-//             [type] => 0
-//             [status] => 9
-//             [addtime] => 1518259196
-//             [updatetime] => 1519608241
-//             [open_id] => fgs
-//             [office_code] => 653A61
-//             [vendora_code] => 
-//             [vendorb_code] => 
-//             [vendorc_code] => 
-//             [vendori_code] => 
-//             [invitation_code] => 67037D
-//             [code] => 96B1944669C
-//             [invite] => 0
-//             [ticket] => gQGy7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZVVUamtFMmJkOTAxRXpxQXhxMXgAAgTzFH1aAwQwhScA
-//             [parameter] => 27
-//             [ticket_time] => 1520736803
-//             [nickname] => 快乐翱翔
-//             [head] => http://thirdwx.qlogo.cn/mmopen/8RP9wLClmUicB78UOvFu61ibbk8DRhmMnRK79oAKfibo9ficu1aVSzaFEjHoYD7oYHrRlw5K4S9zEnkL0TsfpvvibGf5cwURvpKVJ/132
-//             [sex] => 0
-//             [area] => 广东
-//             [address] => 中国 广东 广州
-//             [balance] => 0.00
-//             [original_grade] => 0
-//             [total_money] => 100.00
-//             [grade] => 3
-//             [uid] => 35
-//             [address_id] => 52
-//             [gid] => 
-//             [g_cost] => 760.00
-//             [g_price] => 1000.00
-//             [g_num] => 2
-//             [g_type] => 2
-//             [mode] => 0
-//             [express] => 
-//         )
-
-// )

@@ -12,7 +12,7 @@ class IndexController extends CommonController
         $where['status'] = 1;//session('device.did');
         $where['uid'] = session('user.id');
         $res = $user_device->where($where)->find();
-        if(empty($res['did'])) $this->redirect('Home/Devices/index');
+        if(empty($res['did'])) $this->redirect('Home/Device/index');
         $deviceInfo = $device
             ->alias('d')
             ->where('d.id='.$res['did'])

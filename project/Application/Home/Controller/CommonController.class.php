@@ -21,6 +21,7 @@ class CommonController extends Controller
         // $_SESSION = null;
         // 实例化微信JSSDK
         $weixin = new WeixinJssdk;
+
         // 获取用户open_id
         if(empty($_SESSION['open_id'])){
 
@@ -48,11 +49,8 @@ class CommonController extends Controller
         if($info){
 
             // 用户当前设备
-            $info['did'] = M('current_devices')->where(['uid'=>$info['id']])->field('did')->find()['did'];
-
-            $_SESSION['homeuser'] = $info;
-
-
+            $info['did'] = M('user_device')->where(['uid'=>$info['id'],'status'=>1])->getField('did');
+            session('user',$info);
         }
 
         switch ($type) {

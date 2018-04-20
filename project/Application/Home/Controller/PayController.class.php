@@ -111,10 +111,13 @@ class PayController extends Controller
      */
     public function lvxin()
     {
+        $where['status'] = 1;//session('device.did');
+        $where['uid'] = session('user.id');
+        $devices['d.id'] = M('UserDevice')->where($where)->getField('did');
 
         $filter = D('Filters');
         $device = D('Devices');
-        $devices['d.id'] = session('device.did');
+
         $res = $filter->getFilters($devices);
         $data = $device
             ->alias('d')
