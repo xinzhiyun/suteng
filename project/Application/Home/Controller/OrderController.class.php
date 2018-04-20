@@ -156,7 +156,7 @@ class OrderController extends CommonController
 //                  $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.g_cost,a.g_price,a.g_num,b.vid,c.id ccid,c.code,c.invitation_code,c.superiors_code,c.superior_code,c.abonus,b.name')->join
 //                  ('st_goods b on a.gid = b.id')->join('st_vendors c on b.vid = c.id')->where(['a
 //                .g_type'=>1,'a.status'=>3,'a.order_id'=>$map['order_id']])->find();
-                $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.g_cost,a.g_price,a.g_num,b.name,d.invitation_code,d.id')
+                $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.g_cost,a.g_price,a.g_num,b.name,d.invitation_code,d.id,d.open_id')
                    ->join('st_users d on d.id = a.uid')->join
                   ('st_goods b on a.gid = b.id')->where(['a
                 .g_type'=>1,'a.status'=>3,'a.order_id'=>$map['order_id']])->find();
@@ -200,7 +200,7 @@ class OrderController extends CommonController
 
                         //销售奖收益记录
                         if ($earnings_comc) {
-                            M('earnings')->add(['name'=>$list['name'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['name'=>$list['name'],'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
                         }
                     }
 
@@ -212,7 +212,7 @@ class OrderController extends CommonController
                         $earnings_comd = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_d);
                         //销售奖收益记录
                         if ($earnings_comd) {
-                            M('earnings')->add(['name'=>$list['name'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['name'=>$list['name'],'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
                         }
                     }
                     //查找直系推荐关系中的最近B级加盟商(包括自己)
@@ -225,7 +225,7 @@ class OrderController extends CommonController
                         $earnings_comp = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_p);
                         //市场培育收益记录
                         if ($earnings_comp) {
-                            M('earnings')->add(['name'=>$list['name'],'vid'=>$c_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['name'=>$list['name'],'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
                         }
 
                     } else {
@@ -242,7 +242,7 @@ class OrderController extends CommonController
                                 M('vendors')->where(['id'=>$my_level_info['id']])->setInc('abonus',$com_p);
 //
                                 if ($earnings_comc) {
-                                    M('earnings')->add(['name'=>$list['name'],'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['name'=>$list['name'],'opoen_id'=>$list['open_id'],'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
                             }
                         }
@@ -259,7 +259,7 @@ class OrderController extends CommonController
                         $earnings_ta = M('vendors')->where(['id'=>$in_info['id']])->setInc('abonus',$com_t);
                         //市场培育收益记录
                         if ($earnings_ta) {
-                            M('earnings')->add(['name'=>$list['name'],'vid'=>$in_info['id'],'abonus'=>$com_t,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['name'=>$list['name'],'opoen_id'=>$list['open_id'],'vid'=>$in_info['id'],'abonus'=>$com_t,'create_time'=>date('Y-m-d H:i:s')]);
                         }
                     }
                     //B级加盟商受益人
@@ -271,7 +271,7 @@ class OrderController extends CommonController
 
                         //市场培育收益记录
                         if ($earnings_ta) {
-                            M('earnings')->add(['name'=>$list['name'],'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['name'=>$list['name'],'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
                         }
 
                     } else {
@@ -287,7 +287,7 @@ class OrderController extends CommonController
 //                            M('vendors')->where(['id'=>$path_info_A['id']])->save(['updatetime'=>time()]);
                                 $earnings_ta = M('vendors')->where(['id'=>$path_info_A['id']])->setInc('abonus',$com_ta);
                                 if ($earnings_ta) {
-                                    M('earnings')->add(['name'=>$list['name'],'vid'=>$path_info_A['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['name'=>$list['name'],'opoen_id'=>$list['open_id'],'vid'=>$path_info_A['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
                             }
                         }
