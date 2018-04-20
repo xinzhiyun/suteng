@@ -48,7 +48,7 @@ class CommonController extends Controller
         if($info){
 
             // 用户当前设备
-            $info['did'] = M('user_device')->where(['uid'=>$info['id']])->getField('did');
+            $info['did'] = M('user_device')->where(['uid'=>$info['id'],'status'=>1])->getField('did');
             session('user',$info);
         }
 
