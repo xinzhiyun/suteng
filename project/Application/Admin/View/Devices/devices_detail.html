@@ -284,12 +284,12 @@
                                         '<td>'+'<button class="btn btn-info clickBtn resetBtn" name="'+ filterInfo[i].filtername+'">复位</button><input type="hidden" value='+i+'></td>'+
                                         '</tr>';
                                 } 
-                            }else{
-                                 $('._table').html("暂无数据");
                             }
                         }
                         $('._table').append(html);
-                    }  
+                    }else{
+                         $('._table').html("暂无数据");
+                    }
                     var html2 = '<tr>'+
                                     '<td>'+'设备编号'+'</td>'+
                                     '<td class="tdDeviceId">'+(statu.deviceid?statu.deviceid:'--')+'</td>'+

@@ -17,7 +17,9 @@
 			<!-- /*商品信息*/ -->
 			<div>
 				<!-- <div class="detailpic">
-					<img src="__PUBLIC__/Home/images/comm_02.png" alt="">
+					<ul id='wrapul'>
+						<li><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></li>
+					</ul>
 				</div> -->
 				<!-- /*商品说明*/ -->
 				<!-- <div class="detailTxt">
@@ -100,6 +102,7 @@
 		var desc;
 		var picPathArr = []; 	//存放后台传过来的图片路径转换的数组
 		var commPicArr = [];	//存储每条评论的图片
+		var goodsPicArr = [];	//顶部图片浏览
 		// ajax发送商品id查询商品详情
 		$.ajax({
 			url: '{{:U("Shop/goods_detail")}}',
@@ -120,10 +123,10 @@
 				for (var i = 0; i < goodsCourier.length; i++) {
 					goodsCourier_html = goodsCourier_html + '<option index='+i+'>'+goodsCourier[i].cname+'</option>'
 				}
+				// 商品图片
+				goodsPicArr.push(goodsDetail.path);
 				// 输出商品详情
-				goodsDetail_html = '<div class="detailpic">'+
-						'<img src="/Uploads/'+ goodsDetail.path +'" alt="">'+
-					'</div>'+
+				goodsDetail_html = '<div class="detailpic"><ul></ul></div>'+
 					'<!-- /*商品说明*/ -->'+
 					'<div class="detailTxt">'+
 						'<span><b>￥'+ goodsDetail.price +'</b><em>已售： '+ sold_num +'</em></span>'+
@@ -190,6 +193,16 @@
 
 				// 将商品信息添加到页面
 				$(".detailTop>div").html(goodsDetail_html);
+				// 顶部图片滚动
+				var goodsPicHTML = '';
+				goodsPicArr.push(goodsPicArr[0]);
+				goodsPicArr.map(function(value,index){
+					goodsPicHTML += '<li><img src="/Uploads/'+ value +'" alt=""></li>';
+				})
+				console.log(goodsPicHTML);
+				$('.detailpic>ul').html(goodsPicHTML);
+				$('.detailpic>ul').css({width: goodsPicArr.legnth*100 + '%'});
+				$('.detailpic>ul').find('li').css({width: 100/goodsPicArr.legnth + '%'});
 				// 将评价添加到页面
 				$(".detailItemall").append(commentInfo_html);
 				// console.log(picPathArr, '\n', commPicArr)
