@@ -123,6 +123,7 @@ class DevicesController extends CommonController
         $filter     = $device->getFilterInfo($map);
         $filterInfo = $device->getFilterDetail($filter);
         $assign = [
+            'device_code'=> $map['device_code'],
             'statu'      => $statu,
             'filterInfo' => $filterInfo,
             'filter'     => $filter,
