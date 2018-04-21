@@ -253,8 +253,8 @@
     <script>
         // 添加滤芯
         function add() {
-            $("input[name='filtername']").val('');
-            $("input[name='alias']").val('');
+            $("input[name='filtername']").val('').removeAttr('disabled');
+            $("input[name='alias']").val('').removeAttr('disabled');
             $("input[name='price']").val('');
             $("input[name='cost']").val('');
             $("input[name='timelife']").val('');
