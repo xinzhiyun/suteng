@@ -61,11 +61,14 @@ body {
 #footer {
 	width: 100vw;
 	height: 8vh;
+	position: fixed;
+    bottom: 0;
 	line-height: 8vh;
 	color: #fff;
 	font-size: .9rem;
 	text-align: center;
 	background: #2EB6AA;
+	z-index: 999;
 }
 /*付款页面*/
 .paystyle{
