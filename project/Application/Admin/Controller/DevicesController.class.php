@@ -489,6 +489,24 @@ class DevicesController extends CommonController
         try {
             $filter = D('Filters');
             $id['id'] = I('post.id');
+            $data = $filter->where($id)->Field('filtername,alias')->find();
+            $filter_name = $data['filtername'].'-'.$data['alias'];
+
+            $map=[
+                'filter1'=>$filter_name,
+                'filter2'=>$filter_name,
+                'filter3'=>$filter_name,
+                'filter4'=>$filter_name,
+                'filter5'=>$filter_name,
+                'filter6'=>$filter_name,
+                'filter7'=>$filter_name,
+                'filter8'=>$filter_name,
+                '_logic'=> 'OR',
+            ];
+            $typename = M('type')->where($map)->getField('typename');
+            if(!empty($typename)){
+                E('该滤芯正在被:'.$typename.'使用', 604);
+            }
             $res = $filter->where($id)->save(['status'=>1]);
             if($res) {
                 E('删除成功', 200);
