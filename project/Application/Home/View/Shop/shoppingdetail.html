@@ -122,7 +122,7 @@
 				// 商品图片
 				goodsPicArr.push(goodsDetail.path);
 				// 输出商品详情
-				goodsDetail_html = '<div class="detailpic"><ul id="wrapul"></ul><span class="picnum"><b>1</b><span></span></span></div>'+
+				goodsDetail_html = '<div class="detailpic"><ul id="wrapul"></ul><span class="closepicshow">X</span><span class="picnum"><b>1</b><span></span></span></div>'+
 					'<!-- /*商品说明*/ -->'+
 					'<div class="detailTxt">'+
 						'<span><b>￥'+ goodsDetail.price +'</b><em>已售： '+ sold_num +'</em></span>'+
@@ -189,16 +189,59 @@
 				$('.detailpic>ul')[0].style.width = goodsPicArr.length*100 + '%';
 				$('.detailpic>ul').find('li').css({width: 100/goodsPicArr.length + '%'});
 				var wrapul = document.getElementById('wrapul');
-				var lilen = wrapul.getElementsByTagName('li').length;
+				var oldclass = wrapul.parentNode.getAttribute('class');
+				var wrapli = wrapul.getElementsByTagName('li');
+				for(var i=0; i<wrapli.length; i++){
+					wrapli[i].setAttribute('style','width:100vw;');
+					wrapli[i].onclick = function(){
+						// console.log(oldclass);
+						$('.closepicshow').show();
+						wrapul.parentNode.setAttribute('class',oldclass + ' fullscreen');
+						
+					}
+				}
+				// 关闭图片查看
+				$('.detailpic').on('click','.closepicshow', function(){
+					wrapul.parentNode.setAttribute('class',oldclass);
+					$(this).hide();
+				})
+				var imgScale = null;
 				// 实例化滑动
-				var move = new tMove(wrapul, lilen, function(res){
+				var move = new tMove({
+					elem: wrapul, 
+					lilen: wrapli.length,
+					scale: true
+				},function(res){
 					// 当前页数
-					var nowpic = res.offleft/window.innerWidth;
-					// offleft为零则第一张
-					nowpic = res.offleft == 0 ? 1 : Math.abs(nowpic)+1;
-					// console.log(nowpic);
-					// 显示当前页数
-					$('.picnum>b').text(Math.round(nowpic));
+					var nowpic = Math.abs(res.offleft/window.innerWidth);
+					// console.log('nowpic: ', nowpic);
+					if(res.scale){
+						console.log('双击', res);
+						// 当前图片
+						var imgnow = res.elem.childNodes[nowpic];
+						var oldstyle = 'width:'+ imgnow.style.width +';';
+						console.log('imgnow: ', imgnow);
+						// 放大缩小
+						if(!imgScale){
+							imgnow.setAttribute('style',
+								oldstyle + 'transform:scale(4);transform-origin:'+
+								res.posX + 'px ' + res.posY + 'px;'
+							);
+							imgScale = true;
+						}else{
+							imgnow.setAttribute('style',
+								oldstyle + 'widthtransform:scale(1);'
+							);
+							imgScale = null;
+						}
+						return
+					}else {
+						// offleft为零则第一张
+						nowpic = res.offleft == 0 ? 1 : nowpic+1;
+						// 显示当前页数
+						$('.picnum>b').text(Math.round(nowpic));
+						return
+					}
 					
 				});
 				/* 顶部图片滑动部分 -- 结束 */
@@ -226,16 +269,7 @@
 			}
 		})
 		
-		// 点击选择邮费
-		// $(".postage").on("change", function() {
-		// 	// 邮费种类
-		// 	postageName = $(this).val();
-		// 	// 邮费某条数
-		// 	postageNum = $(this).find("option:selected").attr("index");
-		// 	// 根据条数找到对应的价格
-		// 	postageMoney = goodsCourier[postageNum].cprice;
-		// 	$(".postagename").text(postageMoney)
-		// })
+		
 
 		//处理后台传过来的转义字符
 		var escape2Html = function(str) {
@@ -298,10 +332,7 @@
 			点击‘加入购物车’
 		 */
 		$("#add2ShopCart").click(function(){
-			// if($(".postage").find("option:selected").val() == "快递") {
-			// 	parent.layer.msg('请选择快递方式');
-			// 	return false;
-			// }
+			
 
 			var num = $(".number").val();	//选择的数量
 			var addtime = new Date().getTime();	//添加进购物车的时间

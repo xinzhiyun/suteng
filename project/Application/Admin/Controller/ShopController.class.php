@@ -783,7 +783,7 @@ class ShopController extends CommonController
             $data['status'] = 2;
             $order = D('ShopOrder');
             $res = $order->where('order_id='.$id)->save($data);
-            if ($res) {
+            if ($res && D('Orders')->where(['order_id'=>$id])->save(['is_ship'=>1])) {
                 return $this->ajaxReturn(['code'=>200,'msg'=>'发货成功']);
             } else {
                 return $this->ajaxReturn(['code'=>500,'msg'=>'发货失败']);

@@ -43,4 +43,5 @@ class GoodsModel extends Model
     {
         
     }
+    
 }
