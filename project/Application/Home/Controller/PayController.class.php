@@ -68,16 +68,37 @@ class PayController extends Controller
             $goodsCourier[$value] = M('goods_courier')->where('gid='.$value)->field('gid,cid,cname,cprice')->select();
         }
         unset($_SESSION['goodsid']);
-        dump($goodsCourier);
         $assign = [
             'data' => json_encode($data),
             'goodsCourier' => json_encode($goodsCourier),
         ];
-        dump($assign);
         $this->wx_info();
 
         $this->assign($assign);
         $this->display();
+    }
+
+    /**
+     * [updateOrder 支付前修改订单的快递运费信息及是否开发票信息]
+     * @return [type] [description]
+     */
+    public function updateOrder()
+    {
+        //接收前端传过来的订单号进行修改订单信息
+        $orderid = $_POST[''];
+
+
+    }
+
+    /**
+     * [invoiceAdd 将发票信息写入订单]
+     * @return [type] [description]
+     */
+    public function invoiceAdd()
+    {
+        //发票相关信息
+        
+        //订单id
     }
 
     /**
