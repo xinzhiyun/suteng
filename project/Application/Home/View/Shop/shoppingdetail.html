@@ -269,16 +269,7 @@
 			}
 		})
 		
-		// 点击选择邮费
-		// $(".postage").on("change", function() {
-		// 	// 邮费种类
-		// 	postageName = $(this).val();
-		// 	// 邮费某条数
-		// 	postageNum = $(this).find("option:selected").attr("index");
-		// 	// 根据条数找到对应的价格
-		// 	postageMoney = goodsCourier[postageNum].cprice;
-		// 	$(".postagename").text(postageMoney)
-		// })
+		
 
 		//处理后台传过来的转义字符
 		var escape2Html = function(str) {
@@ -341,10 +332,7 @@
 			点击‘加入购物车’
 		 */
 		$("#add2ShopCart").click(function(){
-			// if($(".postage").find("option:selected").val() == "快递") {
-			// 	parent.layer.msg('请选择快递方式');
-			// 	return false;
-			// }
+			
 
 			var num = $(".number").val();	//选择的数量
 			var addtime = new Date().getTime();	//添加进购物车的时间
