@@ -78,8 +78,10 @@ class MallController extends CommonController
         $map['ud.uid'] = session('user.id');
 
 
-        $bind_device_info = M('devices')->where(['id'=> $_SESSION['device']['did']])->find();
 
+
+//        $bind_device_info = M('devices')->where(['id'=> $_SESSION['device']['did']])->find();
+        $bind_device_info= M('user_device')->where(['uid'=>$_SESSION['user']['id'],'status'=>1])->getField('did');
 
         // 实例化订单模型
         $orders = M('orders');
@@ -104,7 +106,7 @@ class MallController extends CommonController
         // 用户ID号
         $order['user_id']       = session('user.id');
         // 关联的设备ID号
-        $order['device_id']     =$bind_device_info['id'];
+        $order['device_id']     =$bind_device_info;
 
 //        $order['device_id']     = M('currentDevices')->where("`uid`={$uid}")->getField('did');
         // 商品的购买总数量
