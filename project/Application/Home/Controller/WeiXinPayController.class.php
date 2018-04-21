@@ -381,24 +381,25 @@ class WeiXinPayController extends Controller
         // $uid = $_SESSION['homeuser']['id'];
         // file_put_contents('./uid.txt',$uid ."\r\n", FILE_APPEND);
         // file_put_contents('./wx_payFee.txt',$xml."\r\n", FILE_APPEND);
-//         $xml = '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
-// <attach><![CDATA[690717115943689]]></attach>
-// <bank_type><![CDATA[CFT]]></bank_type>
-// <cash_fee><![CDATA[1]]></cash_fee>
-// <fee_type><![CDATA[CNY]]></fee_type>
-// <is_subscribe><![CDATA[Y]]></is_subscribe>
-// <mch_id><![CDATA[1501254081]]></mch_id>
-// <nonce_str><![CDATA[nfg355bzgs86eo02u99d1mlgkd1ndzig]]></nonce_str>
-// <openid><![CDATA[onLe70fYcrqU71RjzfYUjkNf90_E]]></openid>
-// <out_trade_no><![CDATA[407262452762225]]></out_trade_no>
-// <result_code><![CDATA[SUCCESS]]></result_code>
-// <return_code><![CDATA[SUCCESS]]></return_code>
-// <sign><![CDATA[C6CF5F04B12B8DE7A82440287BE4BF98]]></sign>
-// <time_end><![CDATA[20180419100251]]></time_end>
-// <total_fee>1</total_fee>
-// <trade_type><![CDATA[JSAPI]]></trade_type>
-// <transaction_id><![CDATA[4200000073201804191635528017]]></transaction_id>
-// </xml>';
+//        $xml = '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
+//<attach><![CDATA[563420921526937]]></attach>
+//<bank_type><![CDATA[CFT]]></bank_type>
+//<cash_fee><![CDATA[1]]></cash_fee>
+//<fee_type><![CDATA[CNY]]></fee_type>
+//<is_subscribe><![CDATA[Y]]></is_subscribe>
+//<mch_id><![CDATA[1501254081]]></mch_id>
+//<nonce_str><![CDATA[xe7p4q5rivnzv2x5hqcpsuv0mvjngfti]]></nonce_str>
+//<openid><![CDATA[onLe70fYcrqU71RjzfYUjkNf90_E]]></openid>
+//<out_trade_no><![CDATA[823015972963031]]></out_trade_no>
+//<result_code><![CDATA[SUCCESS]]></result_code>
+//<return_code><![CDATA[SUCCESS]]></return_code>
+//<sign><![CDATA[DF47E2D692068E2793E2227479FD1700]]></sign>
+//<time_end><![CDATA[20180421160517]]></time_end>
+//<total_fee>1</total_fee>
+//<trade_type><![CDATA[JSAPI]]></trade_type>
+//<transaction_id><![CDATA[4200000056201804213161230696]]></transaction_id>
+//</xml>';
+
 
         if($xml){
 
@@ -466,8 +467,8 @@ class WeiXinPayController extends Controller
 
                     $isPayRes = $orders->where($data)->save($isPay);
                     $isStatus = $orderSetmeal->where($data)->save(['status'=>1]);
-                    //     $isPayRes = $orders->where($data)->find();
-                    // $isStatus = $orderSetmeal->where($data)->find();
+//                         $isPayRes = $orders->where($data)->find();
+//                     $isStatus = $orderSetmeal->where($data)->find();
 
                     // dump($orderSetmealData);die;
                     // 充值状态
@@ -564,7 +565,7 @@ class WeiXinPayController extends Controller
 
                             // 修改设备剩余流量
                             $FlowRes = $devicesStatu->where($deviceCode)->save($Flow);
-
+                            echo $devicesStatu->getlastsql();
 
 
                             // file_put_contents('jfdsk',var_export($devicesStatu->_sql(), true),FILE_APPEND);
@@ -666,7 +667,6 @@ class WeiXinPayController extends Controller
                             //查出当前推荐商人
 
                             $c_info = M('vendors')->where(['code'=>$user_info['invitation_code']])->find();
-
                             // echo M('vendors')->getLastSql();
 
                             // file_put_contents('./wx3333333_payFee.txt',M('vendors')->getLastSql()."\r\n", FILE_APPEND);

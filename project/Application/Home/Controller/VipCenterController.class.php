@@ -289,6 +289,8 @@ class VipCenterController extends CommonController
         $this->ajaxReturn($message);
     }
     public function  gradeSelect() {
+        $annual = M('annual')->find();
+        $this->assign('annual',$annual);
         $this->display();
     }
     // 会员订单
