@@ -70,39 +70,39 @@ body {
 	padding: 4% 4% 0%;
 }
 .goods {
-	width: 94vw;
+	border-bottom: 1px solid #eee;
+	padding: 3% 4%;
+}
+.infos {
+	width: 100%;
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
 	position: relative;
-	padding: 3% 0;
-	left: 50%;
-	margin-left: -47%;
-	border-bottom: 1px solid #eee;
 	font-size: .6rem;
 }
-
-.goods>.img {
+.goods > .infos >.img {
 	width: 36%;
-	margin: 2% 2% 2% 0;
+	margin: 3% 0 0 0;
+	height: 4rem;
 	border: 1px solid #ddd;
 	border-radius: 10px;
 }	
-.goods>.img>img {
+.goods> .infos > .img>img {
 	width: 100%;
-	height: ;
+	height: 100%;
 	display: inline-block;
 }
-.goods>.dec {
+.goods > .infos >.dec {
 	width: 64%;
 	padding: 2% 0 2% 2%;
 	background: #fff;
 }
-.goods>.dec>h5{
+.goods > .infos >.dec>h5{
 	font-size: 0.72rem;
 
 }
-.goods>.dec>p {
+.goods > .infos >.dec>p {
 	font-size: .62rem;
 	margin: 4% 0;
 	color: #555;
@@ -166,6 +166,47 @@ body {
     padding: 2% 3%;
     font-size: .7rem;
     text-align: right;
+}
+/* 选择邮费 */
+.postage {
+	display: flex;
+	padding: 0 3%;
+	justify-content: space-between;
+	margin-top: .5rem;
+	position: relative;
+	
+}
+.postage > select {
+	width: 100%;
+	text-align: right;
+	border: none;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	position: relative;
+	text-align-last: right;
+	margin-right: .3rem;
+	background: white;
+	direction: rtl;
+	
+}
+.postage > select > option {
+	direction: rtl;
+}
+.poselct {
+	/* vertical-align: middle; */
+	/* position: absolute; */
+	/* right: 0; */
+	/* top: 12%; */
+	font-size: .5rem;
+}
+.poselct::before {
+	display: block;
+	margin-top: .15rem;
+	font-size: .8rem;
+}
+.posway {
+	white-space: nowrap;
 }
 #calc>p>b{
 	color: #373737;
