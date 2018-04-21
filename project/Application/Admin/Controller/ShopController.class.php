@@ -779,6 +779,7 @@ class ShopController extends CommonController
     {
         if (IS_AJAX) {
             $id = I('post.orderid');
+            $data['express_name'] = I('post.express_name');
             $data['express'] = I('post.express');
             $data['status'] = 2;
             $order = D('ShopOrder');
