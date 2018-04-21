@@ -230,7 +230,7 @@ body{
 	height: 2rem;
 	line-height: 2rem;
 }
-.detailItem>span{
+.detailItem>span, .commPic{
 	margin-right: 0.8rem;
 	display: inline-block;
 	width: 20%;

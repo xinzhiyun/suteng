@@ -96,15 +96,18 @@
 		}else{
 			$('.cartnum>span').text(0);
 		}
+
 		//存放ajax请求成功返回的商品信息
 		var goodsDetail;
 		// 从地址栏URL中获取从商城首页点击的商品唯一id
 		var goods_gid = location.search.substr(location.search.indexOf("=")+1);
 		// console.log(goods_gid)
 		var desc;
+		var goodsPicArr = [];	//顶部图片浏览
 		var picPathArr = []; 	//存放后台传过来的图片路径转换的数组
 		var commPicArr = [];	//存储每条评论的图片
-		var goodsPicArr = [];	//顶部图片浏览
+		var commentInfo_html = '';
+
 		// ajax发送商品id查询商品详情
 		$.ajax({
 			url: '{{:U("Shop/goods_detail")}}',
@@ -116,7 +119,7 @@
 				//显示购物车数量
 				$(".icon-gouwuche>span").text(res.cartnum);
 				goodsDetail = res.goodsDetail[0];
-				var goodsDetail_html = '', commentInfo_html = '';
+				var goodsDetail_html = ''
 				desc = !goodsDetail.desc ? '商品暂无描述' : goodsDetail.desc;
 				goodsDetail.attr = !goodsDetail.attr ? '' : goodsDetail.attr;
 				// 商品图片
@@ -141,40 +144,6 @@
 							'</span>'+
 						'</p>'+
 					'</div>';
-				console.log(res.commentInfo.length)
-				// 如果有评价则遍历出来
-				if(res.commentInfo){
-					if(res.commentInfo.length > 1){
-						for(var i=0; i<res.commentInfo.length; i++){
-							commPicArr[i] = []; //初始化
-							res.commentInfo[i].nickname = res.commentInfo[i].nickname == null ? '不知道是谁' : res.commentInfo[i].nickname;
-							res.commentInfo[i].content = res.commentInfo[i].content == null ? '该用户暂未评论' : res.commentInfo[i].content;
-							res.commentInfo[i].path = res.commentInfo[i].path == null ? '' : res.commentInfo[i].path;
-							commentInfo_html += '<div class="detailItem">'+
-								'<p><em><img src="'+ res.commentInfo[i].head +'" alt=""></em><b>'+ res.commentInfo[i].nickname +'</b></p>'+
-								'<p>'+ res.commentInfo[i].content +'</p>'+
-							'</div>';
-							picPathArr = res.commentInfo[i].path.split('|');
-							// 存储每条评论的图片
-							for(var j=0; j<picPathArr.length; j++){
-
-								commPicArr[i].push({'img':'<span><img class="commPic" src="/Uploads/'+ picPathArr[i] +'" alt=""></span>'});
-							}
-						}
-					}else{
-						res.commentInfo.nickname = res.commentInfo.nickname == null ? '不知道是谁' : res.commentInfo.nickname;
-						res.commentInfo.content = res.commentInfo.content == null ? '该用户暂未评论' : res.commentInfo.content;
-						res.commentInfo.path = res.commentInfo.path == null ? '' : res.commentInfo.path;
-						commentInfo_html += '<div class="detailItem">'+
-							'<p><em><img src="'+ res.commentInfo.head +'" alt=""></em><b>'+ res.commentInfo.nickname +'</b></p>'+
-							'<p>'+ res.commentInfo.content +'</p>'+
-							'<span><img src="'+ res.commentInfo.path +'" alt=""></span>'+
-						'</div>';
-					}
-				}else{
-					commentInfo_html = '暂无评价';
-				}
-
 				// 将商品信息添加到页面
 				$(".detailTop>div").html(goodsDetail_html);
 
@@ -191,6 +160,7 @@
 				var wrapul = document.getElementById('wrapul');
 				var oldclass = wrapul.parentNode.getAttribute('class');
 				var wrapli = wrapul.getElementsByTagName('li');
+				// 点击查看图片
 				for(var i=0; i<wrapli.length; i++){
 					wrapli[i].setAttribute('style','width:100vw;');
 					wrapli[i].onclick = function(){
@@ -230,7 +200,7 @@
 							imgScale = true;
 						}else{
 							imgnow.setAttribute('style',
-								oldstyle + 'widthtransform:scale(1);'
+								oldstyle + 'transform:scale(1);'
 							);
 							imgScale = null;
 						}
@@ -246,8 +216,6 @@
 				});
 				/* 顶部图片滑动部分 -- 结束 */
 
-				// 将评价添加到页面
-				$(".detailItemall").append(commentInfo_html);
 				// console.log(picPathArr, '\n', commPicArr);
 				// 遍历评论列表的每个评论的图片
 				for(var m=0; m<commPicArr.length; m++){
@@ -269,6 +237,79 @@
 			}
 		})
 		
+		// 请求评论数据
+		$.ajax({
+			url: '{{:U("Home/comment/getComments")}}',
+			type: 'get',
+			// data: {gid: goods_gid},
+			data: {gid: 75},
+			success: function(res){
+				console.log('请求成功： ',res);
+
+				// 如果有评价则遍历出来
+				if(res.data.length){
+					if(res.data.length > 1){		// 有多条评论
+						for(var i=0; i<res.data.length; i++){
+							commPicArr[i] = []; //初始化
+							var nickname = res.data[i].user.nickname == null ? '不知道是谁' : res.data[i].user.nickname;
+							var content = !res.data[i].content ? '该用户暂未评论' : res.data[i].content;
+							var head = !res.data[i].user.head ? '' : res.data[i].user.head;
+							commentInfo_html += '<div class="detailItem">'+
+								'<p><em><img src="'+ head +'" alt=""></em><b>'+ nickname +'</b></p>'+
+								'<p>'+ content +'</p>'+
+								'<div></div>'+
+							'</div>';
+							// 存储每条评论的图片
+							picPathArr = res.data[i].pics;
+							for(var k=0; k<picPathArr.length; k++){
+								commPicArr[i].push({'img':'<span><img class="commPic" src="'+ picPathArr[k].path +'" alt=""></span>'});
+							}
+							
+						}
+					}else if(res.data.length == 1){		// 只有1条评论
+						var nickname = res.data[0].user.nickname == null ? '不知道是谁' : res.data[0].user.nickname;
+						var content = !res.data[0].content ? '该用户暂未评论' : res.data[0].content;
+						var head = !res.data[0].user.head ? '' : res.data[0].user.head;
+						commentInfo_html += '<div class="detailItem">'+
+							'<p><em><img src="'+ head +'" alt=""></em><b>'+ nickname +'</b></p>'+
+							'<p>'+ content +'</p>'+
+							'<div></div>'+
+						'</div>';
+						// 存储每条评论的图片
+						picPathArr = res.data[0].pics;
+						for(var j=0; j<res.data.length; j++){
+							commPicArr[j] = [];
+							for(var k=0; k<picPathArr.length; k++){
+								commPicArr[j].push({'img':'<span><img class="commPic" src="'+ picPathArr[k].path +'" alt=""></span>'});
+							}
+						}
+						// console.log(commPicArr);
+					}
+
+				}else{
+					commentInfo_html = '<div style="padding:10px 0;text-align:center;">暂无评价</div>';
+				}
+
+				// 将评价添加到页面
+				$(".detailItemall").append(commentInfo_html);
+				// console.log(commPicArr);
+				var picHTML = '';
+				//	遍历评论的图片
+				for(var i=0; i<commPicArr.length; i++){
+					picHTML = '';	// 初始化
+					// 遍历多条评论的多个图片
+					for(var j=0; j<commPicArr[i].length; j++){
+						// console.log(commPicArr[i][j]);
+						picHTML += commPicArr[i][j].img;
+					}
+					// 各自评论的图片放到对应位置
+					$('.detailItemall .detailItem').eq(i).find('div').html(picHTML);
+				}
+			},
+			error: function(err){
+				console.log('请求失败： ',err);
+			}
+		})
 		
 
 		//处理后台传过来的转义字符
