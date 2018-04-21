@@ -472,7 +472,7 @@ class DevicesController extends CommonController
             if($res){
                 E('修改完成',200);
             } else {
-                E('数据有误',603);
+                E('您没有做修改',400);
             }
         } catch (\Exception $e) {
             $err = [

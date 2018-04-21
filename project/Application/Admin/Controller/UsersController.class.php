@@ -138,14 +138,14 @@ class UsersController extends CommonController
         if(strlen($_GET['mode'])) $map['st_flow.mode'] = I('get.mode');
         $flow = M('flow');
         $total = $flow->where($map)
-                                ->join('st_users ON st_flow.user_id = st_users.id')
+                                ->join('st_users ON st_flow.user_id = st_users.id','LEFT')
                                 ->field('st_flow.*,st_users.nickname,st_users.balance')
                                 ->count();
         $page  = new \Think\Page($total,10);
 //        $pageButton =$page->show();
 
         $list = $flow->where($map)->limit($page->firstRow.','.$page->listRows)
-                                ->join('st_users ON st_flow.user_id = st_users.id')
+                                ->join('st_users ON st_flow.user_id = st_users.id','LEFT')
                                 ->field('st_flow.*,st_users.nickname,st_users.balance')
                                 ->select();
         // dump($list);die;

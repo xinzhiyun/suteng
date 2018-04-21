@@ -47,26 +47,28 @@ class RefundModel extends RelationModel
         $count=$model
             ->where($map)
             ->count();
-        $page=new_page($count,$limit);
+        $Page       = new \Think\Page($count,$limit);
+        page_config($Page);
+        $show       = $Page->show();
         // setPageConf($page);
         // 获取分页数据
         if (empty($field)) {
             $list=$model
                 ->where($map)
                 ->order($order)
-                ->limit($page->firstRow.','.$page->listRows)
+                ->limit($Page->firstRow.','.$Page->listRows)
                 ->select();
         }else{
             $list=$model
                 ->field($field)
                 ->where($map)
                 ->order($order)
-                ->limit($page->firstRow.','.$page->listRows)
+                ->limit($Page->firstRow.','.$Page->listRows)
                 ->select();
         }
         $data=array(
             'data'=>$list,
-            'page'=>$page->show()
+            'page'=>bootstrap_page_style($show)
             );
         return $data;
     }
