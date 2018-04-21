@@ -63,11 +63,12 @@ class CommentController extends CommonController
             unset($data['file']);
             $com_status = $comment->add($data);
             foreach ($info as $key => $value) {
-                $path .= $value.'|';
+                $com_pic[] = [
+                    'cid' => $com_status,
+                    'path' => $value
+                ]
             }
-            $com_pic['path'] = $path;
-            $com_pic['cid'] = $com_status;
-            $pic_status = D("ComPic")->add($com_pic);
+            $pic_status = D("ComPic")->addAll($com_pic);
             if($com_status&&$pic_status){
                 $res = D('ShopOrder')->where(['uid'=>$data['uid'],'gid'=>$data['gid']])->setField(['status'=>7]);
                 $comment->commit();

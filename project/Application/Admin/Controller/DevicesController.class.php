@@ -323,7 +323,7 @@ class DevicesController extends CommonController
     // 设备绑定经销商方法
     public function bind()
     {
-        $vendors = M('vendors')->field('id,user,leavel')->select();
+        $vendors = M('vendors')->field('id,user,leavel')->where(['status'=>7,'reviewed'=>3])->select();
         $devices = M('devices')->where('vid IS NULL')->select();
         $assign = [
             'user' => $vendors,
