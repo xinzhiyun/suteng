@@ -103,7 +103,7 @@ class PaymentSystemController extends CommonController
     // 信息确认并生成订单
     public function information()
     {
-       
+        // dump($_POST);die;
         try {
             $goods = D('Goods');
             $orders = D('ShopOrder');
@@ -211,7 +211,7 @@ class PaymentSystemController extends CommonController
                 // 订单描述
                 $content = '速腾商城商品购买';
                 $openId = $_SESSION['open_id'];
-                $url = 'http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/notify');
+                $url = 'http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/onotify');
                 A('Pay')->uniformOrder($openId,$money,$order_id,$content,$url);
 
 //                $this->uniformOrderTow($money,$order_id,$content);

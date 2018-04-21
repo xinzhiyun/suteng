@@ -330,7 +330,7 @@ class ButrosController extends CommonController
             header("Content-type: text/html; charset=utf-8");
             $data = I('post.');
             $data['create_time'] = date('Y-m-d H:i:s');
-           dump(urldecode($data['per_describe']));exit;
+
 //            dump( urldecode(iconv("gb2312", "UTF-8", $data['per_describe'])));exit;
             if (intval($data['annual_money']) < intval($data['cost_money'])) {
                 $message = ['code' => 403, 'message' =>'年费不能小于成本价'];

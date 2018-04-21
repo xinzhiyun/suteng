@@ -1,8 +1,10 @@
 // 选中的会员等级价格
 var selectPrice;
+// 选中会员名称
+var selectName;
 $(".goldGrade").on("touchstart", function() {
     if($(this).attr("index") == "0") {
-        // 添加类名 改变背景颜色 
+        // 添加类名 改变背景颜色
         $(this).addClass("selectChange").siblings().removeClass("selectChange");
         // 通过改变index标识
         $(this).attr("index", "1").siblings().attr("index", "0");
@@ -11,6 +13,8 @@ $(".goldGrade").on("touchstart", function() {
         // 选中确认变色 否则不变
         $(".confirmBtn > p").css("background", "rgb(46, 182, 170)");
         selectPrice = parseInt($(this).children(".selectPrice").html()) + ".00";
+        selectName = $(this).children("p").children(".gradeName").html()
+        console.log(selectName)
     }else {
         $(this).removeClass("selectChange").siblings().removeClass("selectChange");
         $(".confirmBtn > p").css("background", "rgb(69, 69, 69, .5)");
@@ -18,6 +22,7 @@ $(".goldGrade").on("touchstart", function() {
         $(this).attr("index", "0").siblings().attr("index", "0");
         // 选中确认变色 否则不变
         $(".confirmBtn > p").css("background", "#A2A2A2");
+
     }
 })
 // 阻止事件冒泡

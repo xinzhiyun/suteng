@@ -66,7 +66,7 @@ class VendorsModel extends BaseModel
 
     }
 
-    public function companyListPage()
+    public function companyListPage($map)
     {
          // 查询分公司数据
          $map['leavel'] = 1;
