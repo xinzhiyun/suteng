@@ -249,7 +249,7 @@ class VendorsController extends CommonController
     {
         $map = '';
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
-            $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
+            $map[I('get.key')] = array('like',"%".trim(I('get.keywords'))."%");
         }
 
         $data = D('vendors')->companyListPage($map);
