@@ -265,7 +265,7 @@
         // 跳转到用户列表
         $('.touserdetail').click(function(){
             var id = $(this).attr('uid');
-            location.href = "{{:U('user_detail','','')}}?id="+id;
+            location.href = "{{:U('Users/user_detail','','')}}?id="+id;
         })
         $("td").on('click','.deviceDetail',function(e){
             var code = $(this).html();
