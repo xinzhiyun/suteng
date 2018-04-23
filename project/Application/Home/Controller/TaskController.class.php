@@ -1,6 +1,8 @@
 <?php
 namespace Home\Controller;
 use Think\Controller;
+use Common\Tool\Timer;
+use Think\Log;
 
 class TaskController extends CommonController
 {
@@ -42,7 +44,7 @@ class TaskController extends CommonController
             // 判断是否添加成功
             if($addRes){
                 //设置成功
-                $this->timer_add($addRes);//加入定时
+                Timer::statu($addRes,1);
 
                 // 设置返回提示码
                 $data['code'] = 200;
@@ -104,8 +106,6 @@ class TaskController extends CommonController
      */
     public function update()
     {
-        //用户ID 筛选条件
-        $where['uid'] = $_SESSION['user']['id'];
         //task表ID
         $where['id'] = I('post.id');
         // 查询这条记录状态
@@ -114,8 +114,7 @@ class TaskController extends CommonController
         if ($info == '1') {
            $update_info = M('task')->where($where)->setField('state',0);
            if ($update_info) {
-                $this->timer_del($where['id']);
-
+               Timer::statu($where['id'],0);
                $message    = ['code' => 200, 'message' => '禁用成功!'];
            } else {
                $message    = ['code' => 403, 'message' => '禁用失败!'];
@@ -123,7 +122,7 @@ class TaskController extends CommonController
         } else {
             $update_info = M('task')->where($where)->setField('state',1);
 
-            $this->timer_add($where['id']);//加入定时
+            Timer::statu($where['id'],1);//加入定时
             if ($update_info) {
                 $message    = ['code' => 200, 'message' => '启用成功!'];
             } else {
@@ -142,8 +141,7 @@ class TaskController extends CommonController
         $delData['id'] = I('post.id');
         // $delData['id'] = 67;
         if($delData['id']){
-            $this->timer_del($delData['id']);
-
+            Timer::statu($delData['id'],0);
             $res = M('task')->where($delData)->delete();
             if($res){
                 $message    = ['code' => 200, 'message' => '删除成功!'];
@@ -158,31 +156,31 @@ class TaskController extends CommonController
         $this->ajaxReturn($message);
     }
 
-    //添加定时的缓存
-    public function timer_add($key='')
-    {
-        if(!empty($key)){
-            $data = M('task')->where('id='.$key)->find();
-            $data['device_code'] = M('Devices')->where('id='.$data['did'])->getField('device_code');// 查询设备码
-         
-            //redis连接
-            $redis = new \Redis();
-            $redis->connect('127.0.0.1',6379);
+//    //添加定时的缓存
+//    public function timer_add($key='')
+//    {
+//        if(!empty($key)){
+//            $data = M('task')->where('id='.$key)->find();
+//            $data['device_code'] = M('Devices')->where('id='.$data['did'])->getField('device_code');// 查询设备码
+//
+//            //redis连接
+//            $redis = new \Redis();
+//            $redis->connect('127.0.0.1',6379);
+//
+//            $key = "Timer_".$key;
+//            $res=$redis->set($key,json_encode($data));
+//        }
+//    }
 
-            $key = "Timer_".$key;
-            $res=$redis->set($key,json_encode($data));
-        }
-    }
-
-    //删除定时缓存
-    public function timer_del($key='')
-    {
-        if(!empty($key)){
-            $key = "Timer_".$key;
-            $redis = new \Redis();
-            $redis->connect('127.0.0.1',6379);
-            $redis->delete($key);
-        }
-    }
-    
+//    //删除定时缓存
+//    public function timer_del($key='')
+//    {
+//        if(!empty($key)){
+//            $key = "Timer_".$key;
+//            $redis = new \Redis();
+//            $redis->connect('127.0.0.1',6379);
+//            $redis->delete($key);
+//        }
+//    }
+//
 }
