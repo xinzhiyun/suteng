@@ -21,7 +21,7 @@ window.onload = function(){
 		})
 		$('.swiper-wrapper').html(bannerHTML);
 	}
-	// 自动轮播
+	// 自动轮播 
 	var mySwiper = new Swiper('.swiper-container', {
 		autoplay: 5000,//可选选项，自动滑动
 		pagination : '.swiper-pagination',
