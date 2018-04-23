@@ -11,12 +11,22 @@ var cartCount = data.cartinfo,
 	banner 	  = data.banner,
 	cate 	  = data.cate;
 console.log('banner: ',banner);
-var bannerHTML = '';
-banner.map(function(img, index){
-	bannerHTML += '<li><a class="pic" goods_gid="'+ img.id
-	+'" href="javascript:;"><img src="/Uploads/'+ img.pic +'" /></a></li>'
-})
-$('#slider-wrap>ul').html(bannerHTML);
+window.onload = function(){
+	// 轮播图
+	var bannerHTML = '';
+	if(banner){
+		banner.map(function(img, index){
+			bannerHTML += '<a class="pic swiper-slide" goods_gid="'+ img.id
+			+'" href="javascript:;"><img src="/Uploads/'+ img.pic +'" /></a>'
+		})
+		$('.swiper-wrapper').html(bannerHTML);
+	}
+	// 自动轮播 
+	var mySwiper = new Swiper('.swiper-container', {
+		autoplay: 5000,//可选选项，自动滑动
+		pagination : '.swiper-pagination',
+	})
+}
 //首页显示购物车数量
 // console.log($("#cartInfo").val())
 if(cartCount){
@@ -37,7 +47,7 @@ var searchArr = [];		//存放搜索用数据
 	// 数组的每个子元素长度为6个商品（数量遍历商品时给出）
 	var lazyArr = [];	
 
-/***************** 数据遍历 -- 开始 ************************/
+/************ 数据遍历 -- 开始 **************/
 // 获取商品分类
 var _cate;
 if(cate){
@@ -139,7 +149,7 @@ for(var i=0; i<categoryArr.length; i++){
 /*
 	如果第一页有内容则加载第一页
  */
-console.log('_htmlArr: ',_htmlArr)
+// console.log('_htmlArr: ',_htmlArr)
 if(_htmlArr[0]){
 	// $(".allgoods>ul").eq(0).html(_htmlArr[0]);
 	// console.log($("#content>div").eq(0).attr("index"))
@@ -162,7 +172,7 @@ if(_htmlArr[0]){
 	$('#container').off('scroll');
 }
 
-/***************** 数据遍历 -- 结束 ************************/
+/*********** 数据遍历 -- 结束 **************/
 
 
 /*
@@ -290,7 +300,7 @@ if(sessionStorage.getItem('shopCid')){
 	// console.log('tab_now: ',tab_now);
 }
 
-/*********************** 懒加载 -- 开始 ***********************/
+/************** 懒加载 -- 开始 ***************/
 /*
 	监听滚动事件
  */ 
@@ -348,4 +358,4 @@ function lazyLoad(_this){
 	// console.groupEnd()
 }
 
-/*********************** 懒加载 -- 结束 ***********************/
+/*********** 懒加载 -- 结束 ************/
