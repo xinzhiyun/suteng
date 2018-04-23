@@ -44,7 +44,7 @@ class DevicesController extends CommonController
             ->join('__USER_DEVICE__ ud ON d.id=ud.did', 'LEFT')
             ->join('__USERS__ u ON ud.uid=u.id', 'LEFT')
             ->limit($Page->firstRow.','.$Page->listRows)
-            ->field('d.device_code,d.type_id,d.addtime,v.user,d.device_statu,t.typename,ds.AliveStause,u.nickname')
+            ->field('d.id')
             ->count();
         $Page       = new \Think\Page($count,10);
         page_config($Page);
@@ -58,7 +58,7 @@ class DevicesController extends CommonController
             ->join('__USER_DEVICE__ ud ON d.id=ud.did', 'LEFT')
             ->join('__USERS__ u ON ud.uid=u.id', 'LEFT')
             ->limit($Page->firstRow.','.$Page->listRows)
-            ->field('d.device_code,d.type_id,d.vid,d.addtime,v.user,d.device_statu,t.typename,ds.AliveStause,u.nickname')
+            ->field('d.device_code,d.type_id,d.vid,d.addtime,v.user,ud.uid,d.device_statu,t.typename,ds.AliveStause,u.nickname')
             ->order('d.id desc')
             ->select();
         $filterType = M('type')->where(['status'=>0])->select();
