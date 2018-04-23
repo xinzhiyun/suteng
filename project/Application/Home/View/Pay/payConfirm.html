@@ -160,19 +160,19 @@
 				return
 			}()
 		})
-		//微信接口
-		wx.config({
-			debug: false,
-			appId: '{{$wxinfo["appId"]}}',
-			timestamp: '{{$wxinfo["timestamp"]}}',
-			nonceStr: '{{$wxinfo["nonceStr"]}}',
-			signature: '{{$wxinfo["signature"]}}',
-			jsApiList: [
-			// 所有要调用的 API 都要加到这个列表中
-			'chooseWXPay'
-			]
-		});
 		$(function(){
+			//微信接口
+			wx.config({
+				debug: false,
+				appId: '{{$wxinfo["appId"]}}',
+				timestamp: '{{$wxinfo["timestamp"]}}',
+				nonceStr: '{{$wxinfo["nonceStr"]}}',
+				signature: '{{$wxinfo["signature"]}}',
+				jsApiList: [
+				// 所有要调用的 API 都要加到这个列表中
+				'chooseWXPay'
+				]
+			});
 			// 快递数据
 			var postage = JSON.parse($("#goodsCourier").val());
 			var addressInfo = $("#addressInfo").val();
@@ -182,20 +182,25 @@
 			console.log(postage)
 
 			// 循环对象
-			for(var j in postage) {
-				if(postage[j].length != 0) {
-					for(var i=0; i < postage[j].length; i++) {
-						posOption = posOption + "<option cid='"+postage[j][i].cid+"' index='"+postage[j][i].cprice+"'>"+postage[j][i].cname+"</option>";
+			if(postage) {
+				for(var j in postage) {
+					if(postage[j].length != 0) {
+						for(var i=0; i < postage[j].length; i++) {
+							posOption = posOption + "<option cid='"+postage[j][i].cid+"' index='"+postage[j][i].cprice+"'>"+postage[j][i].cname+"</option>";
+
+						}
+						selectPostage = "<p class='postage'><span class='posway'>配送方式</span><select name='selectPostage' class='selectPostage'><option index='0' cid=''>选择快递</option>"+posOption+"</select><span class='youfei'></span><span class='iconfont icon-dayuhao-copy-copy poselct'></span></p>";
+
+						postageAll[j]=selectPostage;
+						posOption = "";//清空
 
 					}
-					selectPostage = "<p class='postage'><span class='posway'>配送方式</span><select name='selectPostage' class='selectPostage'><option>选择快递</option>"+posOption+"</select><span class='youfei'></span><span class='iconfont icon-dayuhao-copy-copy poselct'></span></p>";
-
-					postageAll[j]=selectPostage;
-					posOption = "";//清空
-
+					
 				}
-				
+			}else {
+
 			}
+			
 			console.log(postageAll[77], postageAll[73])
 			$("#hLeft").click(function(){
 				location.href = "{{:U('Address/index')}}";
@@ -265,6 +270,7 @@
 					// console.dir(lvxinData[i])
 					lvxinData[i].desc = lvxinData[i].desc ? lvxinData[i].desc : '暂无描述';
 					goodsHTML += '<div class="goods">'+
+					'<div class="infos">'+
 					'<div class="img"><img src="'+ lvxinData[i].picpath +'" alt="正在加载..."></div>'+
 					'<div class="dec">'+
 					'<h5>'+ lvxinData[i].filtername +'</h5>'+
@@ -272,6 +278,7 @@
 					'<div>'+
 					'<span class="price">'+ lvxinData[i].price +'</span>'+
 					'<span class="num">X&nbsp;<b>'+ lvxinData[i].num +'</b></span>'+
+					'</div>'+
 					'</div>'+
 					'</div>'+ postageAll[73]+
 					'</div>';
@@ -306,19 +313,17 @@
 				+'</div>'+
 				selectPostage+
 				'</div>';
-							// 统计数量和价格
-							numAll = parseInt(goods_data.num);
-							priceAll = parseInt(goods_data.goodsDetail.price);
-							// console.log("数量和价格", numAll, priceAll)
-							//快递费
-							$("#main").append(goodsHTML);	//订单的信息
-							$(".numAll").text(numAll);		//订单的总数量
-							$(".priceAll").text('￥'+ (parseFloat(numAll*priceAll)).toFixed(2));	//订单的总价格
-							$("#footerContain>div>span").text('￥'+(parseFloat(numAll*priceAll)).toFixed(2));	//订单的总价格
-							$(".paytopRight>p").text('￥'+(parseFloat(numAll*priceAll)).toFixed(2));	//订单的总价格
+				// 统计数量和价格 单个
+				priceAll = parseInt(goods_data.goodsDetail.price * goods_data.num);
+				//快递费
+				$("#main").append(goodsHTML);	//订单的信息
+				$(".numAll").text(numAll);		//订单的总数量
+				$(".priceAll").text('￥'+ (parseFloat(priceAll)).toFixed(2));	//订单的总价格
+				$("#footerContain>div>span").text('￥'+(parseFloat(priceAll)).toFixed(2));	//订单的总价格
+				$(".paytopRight>p").text('￥'+(parseFloat(priceAll)).toFixed(2));	//订单的总价格
 
 			}else if(shopCar_data){	// 如果有商品购买，从购物车’结算‘过来
-
+				console.log(shopCar_data.length)
 				for(var i=0; i<shopCar_data.length; i++){
 					if(shopCar_data[i]){
 						shopCar_data[i].desc = shopCar_data[i].desc
@@ -326,6 +331,7 @@
 						: '暂无描述';
 						// 遍历需要支付的商品信息
 						goodsHTML += '<div class="goods">'+
+						'<div class="infos">'+
 						'<div class="img"><img src="'+ shopCar_data[i].path +'" alt="正在加载..."></div>'+
 						'<div class="dec">'+
 						'<h5>'+ shopCar_data[i].name +'</h5>'+
@@ -334,19 +340,17 @@
 						'<span class="price">'+ shopCar_data[i].price +'</span>'+
 						'<span class="num">X&nbsp;<b>'+ shopCar_data[i].num +'</b></span>'+
 						'</div>'+
+						'</div>'+
 						'</div>'+ postageAll[shopCar_data[i].gid]+
 						'</div>';
 					}
 
-					// 统计数量和价格
-					
-					// numAll += parseInt(shopCar_data[i].num);
-					priceAll += parseInt(shopCar_data[i].num * shopCar_data[i].money);//总价，但不考虑邮费 选择邮费再加上
-					console.log(priceAll)
-				}
+					// 统计数量和价格 多个
+					numAll += parseInt(shopCar_data[i].num);
+					priceAll += parseInt((parseInt(shopCar_data[i].num) * parseInt(shopCar_data[i].price)));//总价，但不考虑邮费 选择邮费再加上
 
-				// console.log(priceAll)；
-				// priceAll += Number(postageMoney * numAll);	//加上快递费
+                	console.log(priceAll,shopCar_data[i].num, shopCar_data[i].price)
+				}
 				$("#main").append(goodsHTML);	//订单的信息
 				$(".numAll").text(numAll);		//订单的总数量
 				$(".priceAll").text('￥'+ priceAll);	//订单的总价格
@@ -354,76 +358,75 @@
 				$(".paytopRight>p").text('￥'+priceAll);	//订单的总价格
 			}
 
-			// 邮费
+			// 邮费放置
+			var postageArr = [];
+			for(var i = 0; i < $(".goods").length; i++) {
+				postageArr[i] = 0;
+				$(".goods").eq(i).attr("data", i);
+			}
 			// 点击选择邮费
 			var postageName, postageNum, postageMoney, cid, num, self;
 			$(".selectPostage").on("change", function() {
-				if($(this).find("option:selected").val() != "选择快递") {
+				// 获取当前点击到的goods块的data值
+				var posNum = $(this).parent().parent(".goods").attr("data");
+				// 邮费种类
+				postageName = $(this).val();
+				// 邮费价格
+				postagePrice = $(this).find("option:selected").attr("index");
+				// 邮费id
+				cid = $(this).find("option:selected").attr("cid");
+				// 选中邮费所在块的商品的数量
+				num = parseInt($(this).parent().siblings(".infos").children(".dec").children("div").children(".num").children("b").text());
+				// 邮费价格乘以数量
+				postageArr[posNum] = postagePrice * num;
+				function sum(arr) {
+					var s=0;
+					if(arr.length==0){
+						return 0;
+					}else if(arr.length==1){
+						return arr[0];
+					}else{
+						for(var i=0;i<arr.length;i++){
+							s+=parseInt(arr[i]);
+						}
+						return s;
+					}
+				}
+				postageMoney = sum(postageArr);//总邮费
+				console.log(priceAll, numAll, num, postageMoney, postageArr);
+				$(".priceAll").text('￥'+ (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
+				$(".paytopRight>p").text('￥'+(parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
+				$("#footerContain>div>span").text('￥'+(parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
 
+				if($(this).find("option:selected").val() != "选择快递") {
 					// 快递选择向右图标隐藏
 					$(this).siblings(".poselct").css("display", "none");
 					$(this).siblings(".posway").css("display", "none");
-					// 邮费种类
-					postageName = $(this).val();
-					// 邮费某条数
-					postageNum = $(this).find("option:selected").attr("index");
-					
-					// 邮费id
-					cid = $(this).find("option:selected").attr("cid");
-					// 选中邮费所在块的商品的数量
-					num = $(this).parent().siblings(".dec").children("div").children(".num").children("b").text();
-					// num = $(this).parent().siblings(".dev");
-					// // 根据条数找到对应的价格邮费
-					postageMoney = postageNum * num;
-					console.log(num, cid)
-
-					$(".priceAll").text('￥'+ (parseFloat(priceAll) + parseFloat(postageMoney*num)).toFixed(2));	//订单的总价格
-					$(".paytopRight>p").text('￥'+(parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
-					$("#footerContain>div>span").text('￥'+(parseFloat(priceAll) + parseFloat(postageMoney * num)).toFixed(2));	//订单的总价格
-
 					// 快递费写入页面
-					$(this).siblings(".youfei").text(postageMoney);
+					$(this).siblings(".youfei").text(postagePrice);
 
-					// 提交后台
-					$.ajax({
-						url: "{{:U('Pay/updateOrder')}}",
-						data: {orderId: order_id, cid: cid},//将订单id和邮费id传递
-						type: "post",
-						success: function(res) {
-							console.log("邮费成功", res);
-						},
-						error: function(res) {
-							console.log("邮费失败", res);
-						}
-					})
+					
 				}else {
 					// 快递选择向右图标显示
 					$(this).siblings(".poselct").css("display", "block");
 					$(this).siblings(".posway").css("display", "block");
 					$(this).siblings(".youfei").text("");
-
-					$(".priceAll").text('￥'+ (parseFloat(priceAll)).toFixed(2));	//订单的总价格
-					$(".paytopRight>p").text('￥'+(parseFloat(priceAll)).toFixed(2));	//订单的总价格
-					$("#footerContain>div>span").text('￥'+(parseFloat(priceAll)).toFixed(2));	//订单的总价格
-					// 提交后台
-					$.ajax({
-						url: "{{:U('Pay/updateOrder')}}",
-						data: {orderId: order_id, cid: ""},//将订单id和邮费id传递
-						type: "post",
-						success: function(res) {
-							console.log("邮费成功", res);
-						},
-						error: function(res) {
-							console.log("邮费失败", res)
-						}
-					})
 				}
+				// 提交后台
+				$.ajax({
+					url: "{{:U('Pay/updateOrder')}}",
+					data: {orderId: order_id, cid: cid},//将订单id和邮费id传递
+					type: "post",
+					success: function(res) {
+						console.log("邮费成功", res);
+					},
+					error: function(res) {
+						console.log("邮费失败", res);
+					}
+				})
 				
 				
 			})
-
-
-
 			/*
 			发票信息
 			*/
@@ -465,11 +468,12 @@
 					},500);
 					return false;
 				}
-				if($(".selectPostage").find("option:selected").val() == "选择快递") {
-					parent.layer.msg('请选择快递方式');
-					return false;
-				}
-				
+				for(var i = 0; i < $(".selectPostage").length; i++) {
+					if($(".selectPostage").eq(i).find("option:selected").val() == "选择快递") {
+						parent.layer.msg('请选择快递方式');
+						return false;
+					}
+				}	
 				$('.paystyle').slideDown("slow");
 			})
 			// 付款方式的单选框
