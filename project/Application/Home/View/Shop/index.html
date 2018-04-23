@@ -10,6 +10,7 @@
   	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/font-awesome.css">
     <link rel="stylesheet" href="__PUBLIC__/Home/css/style.css">
     <link rel="stylesheet" href="__PUBLIC__/Home/css/shop/index.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/swiper-3.4.2.min.css">
 	<title>商城首页</title>
 </head>
 <body>
@@ -36,29 +37,15 @@
 			</div>
 
 			<!-- 轮播图 -->
-			<div id="wrapper">
-		
-				<div id="slider-wrap">
-				  <ul id="slider">
-				    <!-- <li><a class="pic" goods_gid="{{$goodsList[0]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[0]['path']}}" /></a></li>
-				    <li><a class="pic" goods_gid="{{$goodsList[1]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[1]['path']}}" /></a></li>
-				    <li><a class="pic" goods_gid="{{$goodsList[2]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[2]['path']}}" /></a></li>
-				    <li><a class="pic" goods_gid="{{$goodsList[3]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[3]['path']}}" /></a></li>
-				    <li><a class="pic" goods_gid="{{$goodsList[4]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[4]['path']}}" /></a></li>	 -->	 
-				  </ul>
-				  
-				   <!--controls-->
-				  <div class="btns" id="next"><i class="fa fa-arrow-right"></i></div>
-				  <div class="btns" id="previous"><i class="fa fa-arrow-left"></i></div>
-				  <div id="counter"></div>
-				  
-				  <div id="pagination-wrap">
-					<ul>
-					</ul>
-				  </div>
-				  <!--controls-->  
-						 
+			<div id="wrapper" class='swiper-container'>
+				<div class='swiper-wrapper'>
+					<!-- <a class="pic swiper-slide" goods_gid="{{$goodsList[0]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[0]['path']}}" /></a>
+					<a class="pic swiper-slide" goods_gid="{{$goodsList[1]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[1]['path']}}" /></a>
+					<a class="pic swiper-slide" goods_gid="{{$goodsList[2]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[2]['path']}}" /></a>
+					<a class="pic swiper-slide" goods_gid="{{$goodsList[3]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[3]['path']}}" /></a>
+					<a class="pic swiper-slide" goods_gid="{{$goodsList[4]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[4]['path']}}" /></a> -->
 				</div>
+				<div class="swiper-pagination"></div>
 			</div>		
 		</div>
 		<div id="content">
@@ -88,16 +75,16 @@
   	<div id="loading">
   		<img src="__PUBLIC__/Home/images/loading.gif" alt="加载中...">
   	</div>
-	  <script>
-		  var ThinkPHP = {
-			  shopIndexUrl : "{{:U('home/shop/index')}}"
-		  }
-	  </script>
+	<script>
+	  var ThinkPHP = {
+		  shopIndexUrl : "{{:U('home/shop/index')}}"
+	  }
+	</script>
+	<script type="text/javascript" src="__PUBLIC__/Home/js/swiper-3.4.2.min.js"></script>
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
   	<script src="__PUBLIC__/Home/js/public.js"></script>
   	<script src="__PUBLIC__/Home/js/shop/index.js"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
-	<script type="text/javascript" src="__PUBLIC__/Home/js/slide.js"></script>
 	<script>
 		$(function(){
 			// 首页按钮

@@ -199,90 +199,138 @@
 	<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script type="text/javascript">
-		$(".dateSelect").click(function(){
-			//年月范围选择
-			laydate.render({ 
-			  elem: '.dateSelect',
-			  show: true,
-			  max: new Date().getTime()
-			});
-		})
-		$('#name').change( function() {
-		  	// 这里可以写些验证代码
-		  	var name = $(this).val();
-		  	if(name==name.match(/^[a-zA-Z\u4e00-\u9fa5]{2,30}$/u)){// 纯中文姓名支持支持 /^[\u4e00-\u9fa5]{2,30}$/u
-		  		console.dir('验证通过');
-		  	}else{
-		  		layuiHint('请输入真实的姓名！');
-		  	}
-		});
-
-		$('#tel').change( function() {
-		  	// 这里可以写些验证代码
-		  	var phone = $(this).val();
-		  	var rephone = phone.match(/^1((((3[0-35-9])|([5|8][0-9])|(4[5|7|9])|66|(7[3|5-8])|(9[8|9]))\d)|(34[0-8]))\d{7}$/);
-		  	if(rephone){
-			  	if(phone==rephone[0]){
+		$(function(){
+			var machineNo;
+			var href = location.href;
+			// 绑定设备
+			if(href.indexOf('?machineNo=') > -1){
+				machineNo = href.substr(href.indexOf('?machineNo=')+11);
+			}
+			$(".dateSelect").click(function(){
+				//年月范围选择
+				laydate.render({ 
+				  elem: '.dateSelect',
+				  show: true,
+				  max: new Date().getTime()
+				});
+			})
+			$('#name').change( function() {
+			  	// 这里可以写些验证代码
+			  	var name = $(this).val();
+			  	if(name==name.match(/^[a-zA-Z\u4e00-\u9fa5]{2,30}$/u)){// 纯中文姓名支持支持 /^[\u4e00-\u9fa5]{2,30}$/u
 			  		console.dir('验证通过');
 			  	}else{
+			  		layuiHint('请输入真实的姓名！');
+			  	}
+			});
+
+			$('#tel').change( function() {
+			  	// 这里可以写些验证代码
+			  	var phone = $(this).val();
+			  	var rephone = phone.match(/^1((((3[0-35-9])|([5|8][0-9])|(4[5|7|9])|66|(7[3|5-8])|(9[8|9]))\d)|(34[0-8]))\d{7}$/);
+			  	if(rephone){
+				  	if(phone==rephone[0]){
+				  		console.dir('验证通过');
+				  	}else{
+				  		layuiHint('请输入正确的手机号码！');
+				  	}	
+			  	}else{
 			  		layuiHint('请输入正确的手机号码！');
-			  	}	
-		  	}else{
-		  		layuiHint('请输入正确的手机号码！');
-		  	}
+			  	}
 
-		});
+			});
 
-		$('#addr').change( function() {
-		  	// 这里可以写些验证代码
-		  	var addr = $(this).val();
-		  	if(addr==addr.match(/^[\w\-\u4e00-\u9fa5]{6,255}$/u)){// 公司地址，不为空时验证，数字字母下划线横线中文 6-255位
-		  		console.dir('验证通过');
-		  	}else{
-		  		layuiHint('地址格式不正确！');
-		  	}
-		});
-		$("#save").click(function(){
-			if((nameReg.test($('#name').val())) && $("#birth").val() && (phoneReg.test($('#tel').val())) && (addressReg.test($('#addr').val()))){
-				var obj = {};
-				// obj['name'] = $('#name').val();
-				
-				var data = new FormData(document.getElementById("form"))
-				$.ajax({
-					url: 'infomationAction',
-					type: 'post',
-					async: false,
-			        cache: false,
-			        contentType: false,
-			        processData: false,
-					data: data,//JSON.stringify(obj),
-					success: function(res){
-						if(res.code == 200){
-							layuiHint(res.msg);
-							window.setTimeout("window.location='{{:U('Home/Index/index')}}'",2000); 
-						}else{
-							layuiHint(res.msg);
-						}
-						
-					},
-					error: function(res){
-						console.log('失败!', res)
+			$('#addr').change( function() {
+			  	// 这里可以写些验证代码
+			  	var addr = $(this).val();
+			  	if(addr==addr.match(/^[\w\-\u4e00-\u9fa5]{6,255}$/u)){// 公司地址，不为空时验证，数字字母下划线横线中文 6-255位
+			  		console.dir('验证通过');
+			  	}else{
+			  		layuiHint('地址格式不正确！');
+			  	}
+			});
+			var binddevice = null;
+			// 点击保存
+			$("#save").click(function(){
+				if(machineNo){
+					// 绑定设备
+					$.ajax({
+				    	url:"{{:U('Device/bind')}}",
+				    	type:"post",
+				    	data:{device_code: machineNo},
+				    	dataType:'json',
+				    	success:function(data){
+							if(data.code == 200 ){
+								layuiHint('绑定成功！');
+								// 替换当前历史记录为首页
+								history.replaceState({}, null, "{{:U('Home/Index/index')}}");
+								setTimeout(function(){
+									// 跳转到我的钱包
+									location.href="{{:U('Home/VipCenter/minepack')}}";	
+								},500);	
+							}else{
+								layuiHint(data.msg);
+								binddevice = null;
+								return
+							}
+				    	},
+				    	error:function(jqXHR, textStatus, errorThrown){
+
+		    				layuiHint("绑定失败" + jqXHR.status + textStatus + errorThrown);
+		    				binddevice = null;
+		    				return
+				    		//console.log(jqXHR.status);
+				    	}
+				    });
+
+				}
+				// formdata
+				var data = new FormData(document.getElementById("form"));
+				if((nameReg.test($('#name').val())) && $("#birth").val() && (phoneReg.test($('#tel').val())) && (addressReg.test($('#addr').val()))){
+					if(machineNo && !binddevice){
+						return
 					}
-				})
-			}else if(!(nameReg.test($('#name').val()))){
-				layuiHint("请输入真实的姓名");
-				return false;
-			}else if(!$("#birth").val()){
-				layuiHint("请选中您的生日");
-				return false;
-			}else if(!(phoneReg.test($('#tel').val()))){
-				layuiHint("请输入正确的手机号码");
-				return false;
-			}else if(!(addressReg.test($('#addr').val()))){
-				layuiHint("请输入详细地址！");
-				return false;
-			}
-		});
+					// 保存信息
+					$.ajax({
+						url: 'infomationAction',
+						type: 'post',
+						async: false,
+				        cache: false,
+				        contentType: false,
+				        processData: false,
+						data: data,
+						success: function(res){
+							if(res.code == 200){
+								layuiHint(res.msg);
+								// 替换当前历史记录为首页
+								history.replaceState({}, null, "{{:U('Home/Index/index')}}");
+								window.setTimeout("window.location='{{:U('Home/VipCenter/minepack')}}'",2000); 
+							}else{
+								layuiHint(res.msg);
+							}
+							
+						},
+						error: function(res){
+							console.log('失败!', res)
+						}
+					})
+				}else if(!(nameReg.test($('#name').val()))){
+					layuiHint("请输入真实的姓名");
+					return false;
+				}else if(!$("#birth").val()){
+					layuiHint("请选中您的生日");
+					return false;
+				}else if(!(phoneReg.test($('#tel').val()))){
+					layuiHint("请输入正确的手机号码");
+					return false;
+				}else if(!(addressReg.test($('#addr').val()))){
+					layuiHint("请输入详细地址！");
+					return false;
+				}
+				
+			});
+
+		})
 	</script>
 	
 </body>
