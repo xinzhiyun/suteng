@@ -226,8 +226,8 @@ class ActionController extends Controller
             if ($message['PackNum'] == 4 ) { //定时任务
 
                 //获取定时器缓存 进行删除
-                $timers = Device::get_devices_info($DeviceID,'timer');
-                $timers = json_encode($timers);
+                $timers = Device::get_devices_info($message['DeviceID'],'timer');
+                $timers = unserialize($timers);
                 $oldtimers = $timers;
 
                 foreach ($timers as $k=> $timer){
@@ -235,7 +235,7 @@ class ActionController extends Controller
                         unset($oldtimers[$k]);
                     }
                 }
-                Device::hset($DeviceID,'timer',json_encode($oldtimers));
+                Device::hset($message['DeviceID'],'timer',serialize($oldtimers));
             }
         }
     }

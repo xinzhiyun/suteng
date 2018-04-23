@@ -77,19 +77,19 @@ class Timer extends Redis
     }
 
     //开启和关闭定时
-    public function statu($id,$state)
+    public static function statu($id,$state)
     {
         self::connect();
         $res = false;
         $time = time();
         if(M('task')->where('id='.$id)->save(['state'=>$state,'updatetime'=>$time])) {
             $res = true;
-            if ($state == 0) {
-                $res = self::del($id);
-            } else {
+            if ($state == '1') {
                 $key = self::$pre.$id;
                 $val = M('task')->where('id='.$id)->find();
                 $res = self::$redis->hMset($key,$val);
+            } else {
+                $res = self::del($id);
             }
         }
         return $res;

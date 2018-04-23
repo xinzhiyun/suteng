@@ -35,7 +35,6 @@ class Timer
     {
         global $redis;
         $items = $this->getCache(self::$timer_pre);
-
         $time = time();
         //发送设备命令
         foreach ($items as $k=>$li){
@@ -52,17 +51,27 @@ class Timer
                     $key ="devices_".$li['device_code'];
                     $arr = [];
                     if ($redis->hExists($key,'timer')) {
-                        $arr = json_decode($redis->hget($key,'timer'));
-                        if(!in_array($li['id'],$arr)){
+                        $timer_c=$redis->hget($key,'timer');
+                        $arr = unserialize($timer_c);
+                        if(!empty($arr) and is_array($arr)){
+                            if(!in_array($li['id'],$arr)){
+                                $arr[]=$li['id'];
+                            }
+                        }else{
+                            $arr = [];
                             $arr[]=$li['id'];
                         }
+
                     } else {
                         $arr[]=$li['id'];
                     }
-                    $redis->hset($key,'timer',json_encode($arr));
+
+                    $redis->hset($key,'timer',serialize($arr));
+
 
                     //发送设备命令
                     $msg['DeviceID'] = $li['device_code'];
+
                     $this->sendMsg($msg);
                 }
             }
@@ -70,7 +79,7 @@ class Timer
             unset($msg);
         }
 
-        sleep(3);
+        usleep(10);
         //创建下一次的缓存数据
         $this->makeCache(self::$timer_pre);
 
