@@ -32,18 +32,19 @@
     #foot{
       padding:40px 20px 20px 20px;
     }
-    #order{
+    #foot>a {
       display: block;
+      padding: 2px 12px;
+      border-radius: 4px;
+      border: 1px solid #c7c7c7;
+    }
+    #order{
       float: left;
     }
     #shop{
-      display: block;
       float: right;
     }
   </style>
-  <script>
-     
-  </script>
 </head>
 <body>
     <div class="manageCard">
@@ -52,8 +53,8 @@
            <p>支付成功</p>
         </div>
         <div id="foot">
-            <a id="order" href="{{:U('Home/Pay/chongzhi')}}">继续充值</a><a id="shop"
-                                                                      href="{{:U('Home/VipCenter/index')}}">返回首页</a>
+            <a id="order" href="javascript:history.go(-1)">继续充值</a>
+            <a id="shop" href="{{:U('Home/VipCenter/index')}}">返回首页</a>
         </div>
     </div>
 </body>
