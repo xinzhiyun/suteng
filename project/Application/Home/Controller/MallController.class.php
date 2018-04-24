@@ -93,9 +93,8 @@ class MallController extends CommonController
         $num        = I('post.num');    // 套餐数量
         $money      = I('post.money');    // 套餐金额
         $mealInfo   = D('setmeal')->find($mealId);
-
         $orderId    = $this->getOrderId();
-        file_put_contents('./111.txt',$orderId."\r\n", FILE_APPEND);
+
         // 开启事务
         $orders->startTrans();
 
@@ -243,7 +242,8 @@ class MallController extends CommonController
             //查询订单号是否存在
             $oid = M('shop_order')->where("`order_id`='{$orderId}'")->field('id')->find();
             $osid = D('OrderSetmeal')->where("`order_id`='{$orderId}'")->field('id')->find();
-            if ($oid || $osid) {
+            $usid = D('users_order')->where("`order_id`='{$orderId}'")->field('id')->find();
+            if ($oid || $osid || $usid) {
                 $res = true;
             } else {
                 $res = false;

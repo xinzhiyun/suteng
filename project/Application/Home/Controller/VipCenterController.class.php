@@ -39,6 +39,7 @@ class VipCenterController extends CommonController
             ->select();
         $orderNum = count($orderData);
         // 分配数据
+
         $this->assign('user',$user);
         $this->assign('comData',$comData);
         $this->assign('orderNum',$orderNum);
@@ -288,10 +289,75 @@ class VipCenterController extends CommonController
         // 返回JSON格式数据
         $this->ajaxReturn($message);
     }
+    /*
+     * 充值年费
+     */
     public function  gradeSelect() {
+        $this->wx_info();
         $annual = M('annual')->find();
         $this->assign('annual',$annual);
         $this->display();
+    }
+    /*
+     * 生成充值年费订单
+     */
+    public function Usersorder() {
+
+
+        $mall =A("Home/Mall");
+//        处理订单信息
+        $data   = I('post.');
+        $data['order_id'] = $mall->getOrderId();
+        $data['user_id']= session('user.id');
+        $data['create_time'] = date('Y-m-d H:i:s');
+        $data['is_pay'] = 0;
+
+        // 实例化订单模型
+        $users_order = M('users_order');
+        $annual_find = M('annual')->find();
+        switch ($data['annual_status']) {
+            case '1':
+                $data['price'] = $annual_find['annual_money'];
+                $data['name'] = '钻石年费充值';
+                break;
+            case '2':
+                $data['medal_money'] = $annual_find['annual_money'];
+                $data['name'] = '黄金年费充值';
+                break;
+            case '3':
+                $data['personal_money'] = $annual_find['annual_money'];
+                $data['name'] = '个人年费充值';
+                break;
+        }
+
+        // 开启事务
+        $users_order->startTrans();
+        // 创建订单
+        $ordersRes = $users_order->add($data);
+
+
+        if($ordersRes){
+            // 执行事务
+            $users_order->commit();
+            // 准备订单数据
+            // 充值金额
+            $money =   $data['price']-0;
+            // 订单号码
+            $order_id = $ordersRes['order_id'];
+            // 订单描述
+            $contentstr = $data['name'];
+
+            // 描述超长处理
+            $content = substr($contentstr, 0, 100);
+
+            // 订单创建成功，跳转到支付页面
+            $this->ajaxReturn($data['order_id']);
+        }else{
+            // 事务回滚
+            $users_order->rollback();
+            $this->error('订单创建失败');
+        }
+
     }
     // 会员订单
     public function user_order()
