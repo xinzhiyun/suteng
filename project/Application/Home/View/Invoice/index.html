@@ -335,19 +335,25 @@
 		*/
 		var voiceArr = sessionStorage.getItem("voiceArr");
 
+		var voiceArr = [];		//发票信息
+
 		// 订单id
 		var order_id = sessionStorage.getItem("order_id");
+
+		// 判断是否点击提交按钮
+		var clickFlag = false;
 		/*
 		点击’确定‘按钮
 		*/
 		$(".submit").click(function(){
+			clickFlag = true;
 			/*
 			'type': 发票类型
 			'info': 发票信息
 			'voicehead': 发票抬头
 			'phone': 手机号码
 			*/
-			var voiceArr = [];		//发票信息
+			
 			//不开发票
 			if($(this).attr("index") == 0){
 				console.log('不开发票啊！');
@@ -357,22 +363,8 @@
 					'voicehead': "",
 					'phone': ""
 				})
-				// sessionStorage.setItem("voiceArr", JSON.stringify(voiceArr));
-				// 提交发票
-				$.ajax({
-					url: "{{:U('Pay/invoiceAdd')}}",
-					data: {voiceArr: voiceArr, order_id: order_id},
-					type: "post",
-					success: function(res) {
-						console.log("发票成功", res);
-						// window.location.href = "{{:U('Pay/payConfirm')}}";
-					},
-					fail: function(res) {
-						console.log("发票失败!", res);
-					}
-				})
-				
-			}else {		//开发票
+			}else {	
+				//开发票	
 				//发票类型
 				var type = $("#tab").find(".icon-xuanze").parent().text();
 				if(type == '电子发票'){
@@ -402,20 +394,6 @@
 							'voicehead': dianziHead,
 							'mail': dianziTel
 						});
-						// 提交发票
-						$.ajax({
-							url: "{{:U('Pay/invoiceAdd')}}",
-							data: {voiceArr: voiceArr, order_id: order_id},
-							type: "post",
-							success: function(res) {
-								console.log("发票成功", res);
-								// window.location.href = "{{:U('Pay/payConfirm')}}";
-							},
-							fail: function(res) {
-								console.log("发票失败!", res);
-							}
-						})
-
 					}else{
 						// 判断信息是否输入
 						var dianziHead = $(".company label p span #secperHead").val();
@@ -429,9 +407,9 @@
 							return false;
 						}
 						if(dianziAssociated == '') {
-							layer.msg("税号必须输入!");
+							layer.msg("税号必须输入!"); 
 							return false;
-						}else if(!dianziHead.match(/^[A-Z0-9]{15}$|^[A-Z0-9]{17}$|^[A-Z0-9]{18}$|^[A-Z0-9]{20}$/)) {
+						}else if(!dianziAssociated.match(/^[A-Za-z0-9]{15}$|^[A-Za-z0-9]{17}$|^[A-Za-z0-9]{18}$|^[A-Za-z0-9]{20}$/)) {
 							layer.msg("税号格式有误");
 							return false;
 						}
@@ -449,19 +427,6 @@
 							'voicehead': dianziHead,
 							'phone': dianziTel
 						});
-						// 提交发票
-						$.ajax({
-							url: "{{:U('Pay/invoiceAdd')}}",
-							data: {voiceArr: voiceArr, order_id: order_id},
-							type: "post",
-							success: function(res) {
-								console.log("发票成功", res);
-								// window.location.href = "{{:U('Pay/payConfirm')}}";
-							},
-							fail: function(res) {
-								console.log("发票失败!", res);
-							}
-						})
 					}
 				}else{
 					// 纸质发票
@@ -501,19 +466,6 @@
 							'voicehead': zhizhiHead,
 							'phone': zhizhiTel
 						});
-						// 提交发票
-						$.ajax({
-							url: "{{:U('Pay/invoiceAdd')}}",
-							data: {voiceArr: voiceArr, order_id: order_id},
-							type: "post",
-							success: function(res) {
-								console.log("发票成功", res);
-								// window.location.href = "{{:U('Pay/payConfirm')}}";
-							},
-							fail: function(res) {
-								console.log("发票失败!", res);
-							}
-						})
 					}else{
 						// 判断信息是否输入
 						var zhizhiHead = $(".zhicompany label p span #zhisecpHead").val();
@@ -530,7 +482,7 @@
 						if(zhizhiAssociated == '') {
 							layer.msg("税号必须输入!");
 							return false;
-						}else if(!zhizhiAssociated.match(/^[A-Z0-9]{15}$|^[A-Z0-9]{17}$|^[A-Z0-9]{18}$|^[A-Z0-9]{20}$/)) {
+						}else if(!zhizhiAssociated.match(/^[A-Za-z0-9]{15}$|^[A-Za-z0-9]{17}$|^[A-Za-z0-9]{18}$|^[A-Za-z0-9]{20}$/)) {
 							layer.msg("税号格式有误");
 							return false;
 						}
@@ -548,7 +500,6 @@
 							layer.msg("号码格式有误!");
 							return false;
 						}
-
 						voiceArr.push({
 							'type': type,
 							'associated': zhizhiAssociated,
@@ -557,51 +508,33 @@
 							'voicehead': zhizhiHead,
 							'phone': zhizhiTel
 						});
-						// 提交发票
-						$.ajax({
-							url: "{{:U('Pay/invoiceAdd')}}",
-							data: {voiceArr: voiceArr, order_id: order_id},
-							type: "post",
-							success: function(res) {
-								console.log("发票成功", res);
-								// window.location.href = "{{:U('Pay/payConfirm')}}";
-							},
-							fail: function(res) {
-								console.log("发票失败!", res);
-							}
-						})
 					}
 				}
-				// console.log(JSON.stringify(voiceArr))
-				// sessionStorage.setItem("voiceArr",JSON.stringify(voiceArr)
-				
-
-
-				// 发送ajax请求告诉后台，选择了发票信息
-				// $.ajax({
-				// 	url: '{{:U("")}}',
-				// 	type: 'post',
-				// 	data: JSON.stringify(voiceArr),
-				// 	success: function(res){
-				// 		// console.log("成功！ ",res);
-				// location.href = '{{:U("Pay/payConfirm")}}'
-				// 	},
-				// 	error: function(res){
-				// 		console.log("失败！ ",res);
-				// 	}
-				// })
 			}
 		})
-
-		// 不选择发票时默认发送不开发票
-		voiceArr.push({
-			'type': "不开发票",
-			'info': "",
-			'voicehead': "",
-			'phone': ""
-		})
-		// sessionStorage.setItem("voiceArr", JSON.stringify(voiceArr));
-		// 提交发票
+		// 获取页面是否从点击发票页面跳转过来的 若不是，则默认为不开发票
+		var ref = document.referrer;
+		if(!ref) {
+			voiceArr.push({
+				'type': "不开发票",
+				'info': "",
+				'voicehead': "",
+				'phone': ""
+			})
+		}else {
+			// 确定是从选择发票信息页面点击过来的，但是并没有选择发票
+			if(!clickFlag) {
+				voiceArr.push({
+					'type': "不开发票",
+					'info': "",
+					'voicehead': "",
+					'phone': ""
+				})
+			}
+		}
+		// 将发票信息保存到浏览器session中
+		sessionStorage.setItem("voiceArr", JSON.stringify(voiceArr));
+		// 提交发票信息到后台
 		$.ajax({
 			url: "{{:U('Pay/invoiceAdd')}}",
 			data: {voiceArr: voiceArr, order_id: order_id},

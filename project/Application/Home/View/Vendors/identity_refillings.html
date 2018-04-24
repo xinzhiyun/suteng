@@ -195,7 +195,7 @@
         padding: 0.2rem 0.4rem;
         border-radius: 0.6rem;
     }
-        .col-md-5>.xiePic{
+    .col-md-5>.xiePic{
         visibility:hidden;
         width: 4.6rem;
         line-height: 4.6rem;
@@ -215,30 +215,30 @@
         height: 100%;
     }
     .xiePic>i{
-            position: absolute;
-            top: -0.3rem;
-            right: -0.3rem;
-            display: block;
-            width: 1rem;
-            height: 1rem;
-            border-radius: 0.8rem;
-            background: red;
-            line-height: 1rem;
-            color: #fff;
-            font-weight: 600;
-        }
+        position: absolute;
+        top: -0.3rem;
+        right: -0.3rem;
+        display: block;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 0.8rem;
+        background: red;
+        line-height: 1rem;
+        color: #fff;
+        font-weight: 600;
+    }
     /*申请按钮*/
-        .xieBtn>input{
-            margin-top:2rem;
-            position: absolute;
-            background: #2EB6AA;
-            width: 100vw;
-            border:none;
-            color: #fff;
-            height: 2rem;
-            letter-spacing: 0.1rem;
-            font-size: 0.8rem;
-        }
+    .xieBtn>input{
+        margin-top:2rem;
+        position: absolute;
+        background: #2EB6AA;
+        width: 100vw;
+        border:none;
+        color: #fff;
+        height: 2rem;
+        letter-spacing: 0.1rem;
+        font-size: 0.8rem;
+    }
 </style>
 <body>
     <div class="ibox-content">
@@ -285,6 +285,7 @@
                 <label class="col-sm-2 control-label">上传身份证反面</label>
                 <div class="col-md-5">
                     <input type="button" id="comLicen1" name="opposite" class="form-control">
+                    <input type="hidden" name="pic">
                     <i class="iconfont icon-tianjiajingdian"></i>
                     <div class="xiePic" index="0"><img src="" id="opposite" style="width: 100%;"><i class="iconfont icon-cuohao" ></i></div>
                 </div>
@@ -293,6 +294,7 @@
                 <label class="col-sm-2 control-label">上传手持身份证</label>
                 <div class="col-md-5">
                     <input type="button" id="comLicen2" name="handheld" class="form-control">
+                    <input type="hidden" name="pic">
                     <i class="iconfont icon-tianjiajingdian"></i>
                     <div class="xiePic" index="0"><img src="" id="handheld" style="width: 100%;"><i class="iconfont icon-cuohao" ></i></div>
                 </div>
@@ -303,6 +305,21 @@
         </form>
     </div>
     <script>
+        //微信接口
+        wx.config({
+            debug: false,
+            appId: '{{$info["appId"]}}',
+            timestamp: '{{$info["timestamp"]}}',
+            nonceStr: '{{$info["nonceStr"]}}',
+            signature: '{{$info["signature"]}}',
+            jsApiList: [
+            // 所有要调用的 API 都要加到这个列表中
+            'chooseImage',
+                'uploadImage',
+                'getLocalImgData',
+                'downloadImage'
+            ]
+        });
         // 上传图片 file文件对象
         // function imageCommen(file) {
         //     if (!file.files || !file.files[0]) {
@@ -431,15 +448,18 @@ function wxuploadImage(e,num, objs) {
  wx.uploadImage({  
      localId: e, // 需要上传的图片的本地ID，由chooseImage接口获得  
      isShowProgressTips: 1, // 默认为1，显示进度提示  
-     success: function (res) {                                        
-         mediaId = res.serverId;                     
-         $(objs).siblings('input[name="pic"]').val(mediaId);
+     success: function (res) {   
+        // alert('成功！',JSON.stringify(res));                                     
+        mediaId = res.serverId;                     
+        $(objs).siblings('input[name="pic"]').val(mediaId);
      },  
      fail: function (error) {  
-         picPath = '';  
-         localIds = '';  
+        // alert('失败！',error);    
+        picPath = '';  
+        localIds = '';  
      }          
  });
+
 }
 // var $span = $("<span></span>");
 // var $span1 = $("<span>X</span>");
@@ -455,18 +475,18 @@ function wxgetLocalImgData(e,num, objs){
        wx.getLocalImgData({
            localId: e, // 图片的localID
            success: function (res) {                    
-           var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
-           localData = localData.replace('jgp', 'jpeg');//iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下                                
-                $(objs).siblings(".xiePic").children("img").attr("src", localData).end().css("visibility", "visible");
+                var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+                localData = localData.replace('jgp', 'jpeg');//iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下                                
+                $(objs).siblings(".xiePic").children("img").attr("src", localData)
+                $(objs).css("visibility", "visible");
 
-                // $img[0].src = localData;
            },
            fail:function(res){
                 alert("显示失败");
            }
        });
    }else{
-    $(objs).siblings(".xiePic").children("img").attr("src", "").end().css("visibility", "hidden");
+        $(objs).siblings(".xiePic").children("img").attr("src", e).end().css("visibility", "visible");
        
    }
 
