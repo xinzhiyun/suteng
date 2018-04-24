@@ -378,29 +378,29 @@ class WeiXinPayController extends Controller
         $xml=file_get_contents('php://input', 'r');
 
 //        $xml= '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
-//<attach><![CDATA[965313394842465]]></attach>
+//<attach><![CDATA[887986782575785]]></attach>
 //<bank_type><![CDATA[CFT]]></bank_type>
 //<cash_fee><![CDATA[1]]></cash_fee>
 //<fee_type><![CDATA[CNY]]></fee_type>
 //<is_subscribe><![CDATA[Y]]></is_subscribe>
 //<mch_id><![CDATA[1501254081]]></mch_id>
-//<nonce_str><![CDATA[4977p3ofg687bb4vntracrm02xpsmyqs]]></nonce_str>
+//<nonce_str><![CDATA[t0uztso4xfld1mn26s1qv8v61uo7hkxx]]></nonce_str>
 //<openid><![CDATA[onLe70fYcrqU71RjzfYUjkNf90_E]]></openid>
-//<out_trade_no><![CDATA[550999399678714]]></out_trade_no>
+//<out_trade_no><![CDATA[459387713033247]]></out_trade_no>
 //<result_code><![CDATA[SUCCESS]]></result_code>
 //<return_code><![CDATA[SUCCESS]]></return_code>
-//<sign><![CDATA[C76B87F01A3F863A64318C04C1417B59]]></sign>
-//<time_end><![CDATA[20180424142037]]></time_end>
+//<sign><![CDATA[ED33D79486EA660A9ECF77ECAC1A0B52]]></sign>
+//<time_end><![CDATA[20180424162153]]></time_end>
 //<total_fee>1</total_fee>
 //<trade_type><![CDATA[JSAPI]]></trade_type>
-//<transaction_id><![CDATA[4200000076201804245026014757]]></transaction_id>
+//<transaction_id><![CDATA[4200000068201804245225491997]]></transaction_id>
 //</xml>';
         if ($xml) {
             //解析微信返回数据数组格式
             $result = $this->notifyData($xml);
 
             // 获取传回来的订单号
-            $data['order_id'] = '727545134313741';
+            $data['order_id'] = $result['attach'];
             $orderData = M('users_order')->where($data)->field('is_pay,user_id,annual_status,name')->find();
 
             if (empty($orderData['is_pay'])) {
