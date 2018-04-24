@@ -407,7 +407,7 @@
 							return false;
 						}
 						if(dianziAssociated == '') {
-							layer.msg("税号必须输入!");
+							layer.msg("税号必须输入!"); 
 							return false;
 						}else if(!dianziAssociated.match(/^[A-Z0-9]{15}$|^[A-Z0-9]{17}$|^[A-Z0-9]{18}$|^[A-Z0-9]{20}$/)) {
 							layer.msg("税号格式有误");
