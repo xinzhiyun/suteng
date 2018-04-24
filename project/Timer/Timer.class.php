@@ -19,8 +19,8 @@ class Timer
     {
         global $redis;
         global $db;
-        include_once './lib/Gateway.php';
-        include_once './lib/Connection.php';
+        include_once '/www/shizhou/Timer/lib/Gateway.php';
+        include_once '/www/shizhou/Timer/lib/Connection.php';
 
         $redis = new \Redis();
         $redis->connect('127.0.0.1',6379);

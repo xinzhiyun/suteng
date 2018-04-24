@@ -1,1 +1,1 @@
-<?phpini_set("memory_limit","1000M");include './Timer.class.php';/** *  任务 每分钟执行 */$Timer = new TimerClient\Timer();$Timer->Timer_min();
+<?phpini_set("memory_limit","1000M");include '/www/shizhou/Timer/Timer.class.php';/** *  任务 每分钟执行 */$Timer = new TimerClient\Timer();$Timer->Timer_min();
