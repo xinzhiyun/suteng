@@ -36,6 +36,7 @@ class UsersController extends CommonController
             'data' => $userlist,
             'button' => bootstrap_page_style($pageButton),
         ];
+
         $where['nickname'] = $_GET['nickname'];
         $where['grade'] = I('get.grade');
         $where['sex'] = I('get.sex');

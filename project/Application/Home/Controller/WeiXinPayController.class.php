@@ -407,28 +407,36 @@ class WeiXinPayController extends Controller
                 $save_info =M('users_order')->where($data)->save(['is_pay'=>1]);
 //                $save_info =M('users_order')->where($data)->find();
                 if ($save_info) {
-                   $users_info = M('users')->where(['id'=>$orderData['user_id']])->save(['level'=>$orderData['annual_status']]);
+                    //查找对应的租金总价
+                    $annual_money = M('annual')->find();
+//                    //会员等级{0：非企业会员，1：普通会员，2：VIP会员，3：标准会员，4：钻石会员}
+//                    1钻石会员2黄金会员3个人会员4普通会员(默认)
+                    switch ($orderData['annual_status']) {
+                        case '1':
+                            $data['price'] = $annual_money['annual_money']-$annual_money['cost_money'];
+                            $data['grade'] = 4;
+                            break;
+                        case '2':
+                            $data['price'] = $annual_money['medal_money']-$annual_money['gold_money'];
+                            $data['grade'] = 3;
+                            break;
+                        case '3':
+                            $data['price'] = $annual_money['personal_money']-$annual_money['per_money'];
+                            $data['grade'] = 2;
+                            break;
+                    }
+
+                   $users_info = M('users')->where(['id'=>$orderData['user_id']])->save(['grade'=>$data['grade']]);
 //                $users_info =  $users_info = M('users')->where(['id'=>$orderData['user_id']])->find();
                 }
 
                 if ($save_info && $users_info) {
-                    //查找对应的租金总价
-                    $annual_money = M('annual')->find();
+
 
                     //查询当前用户
                     $user_info = M('users')->field('id,invitation_code,open_id')->where(['open_id'=> $result['openid']])->find();
 
-                    switch ($orderData['annual_status']) {
-                        case '1':
-                            $data['price'] = $annual_money['annual_money']-$annual_money['cost_money'];
-                            break;
-                        case '2':
-                            $data['price'] = $annual_money['medal_money']-$annual_money['gold_money'];
-                            break;
-                        case '3':
-                            $data['price'] = $annual_money['personal_money']-$annual_money['per_money'];
-                            break;
-                    }
+
 
 
                     if ($annual_money['money'] < $annual_money['money']) {
