@@ -201,7 +201,7 @@
                     parent.layer.msg('付款成功！');
                     //付款成功后的操作
                     setTimeout(function(){
-                        location.href = '{{:U("Vipcenter/index")}}';
+                        location.href = '{{:U("Home/vipcenter/index")}}';
                     },500);
 
                 }else if(res.err_msg.substr(-6) == 'cancel'){
