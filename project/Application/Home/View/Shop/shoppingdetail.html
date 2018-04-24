@@ -436,8 +436,6 @@
 				success: function(res){
 					console.log('成功！', res);
 					sessionStorage.setItem('order_id',res);
-					//解绑事件
-					$("#buyNow").off('click');
 					if(typeof JSON.parse(res) == 'number'){
 
 						// 跳转到订单确认页面
