@@ -200,18 +200,18 @@
 
                     parent.layer.msg('付款成功！');
                     //付款成功后的操作
-//                    setTimeout(function(){
-//                        location.href = '{{:U("PaymentSystem/paytosuccess")}}';
-//                    },500);
+                    setTimeout(function(){
+                        location.href = '{{:U("Vipcenter/index")}}';
+                    },500);
 
                 }else if(res.err_msg.substr(-6) == 'cancel'){
                     //取消订单操作
                 }else{
                     parent.layer.msg('付款失败！');
                     //付款失败操作
-                    setTimeout(function(){
-                        location.href = '{{:U("PaymentSystem/paytofailed")}}';
-                    },500);
+//                    setTimeout(function(){
+//                        location.href = '{{:U("PaymentSystem/paytofailed")}}';
+//                    },500);
 
                 }
             }
