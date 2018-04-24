@@ -448,15 +448,18 @@ function wxuploadImage(e,num, objs) {
  wx.uploadImage({  
      localId: e, // 需要上传的图片的本地ID，由chooseImage接口获得  
      isShowProgressTips: 1, // 默认为1，显示进度提示  
-     success: function (res) {                                        
-         mediaId = res.serverId;                     
-         $(objs).siblings('input[name="pic"]').val(mediaId);
+     success: function (res) {   
+        // alert('成功！',JSON.stringify(res));                                     
+        mediaId = res.serverId;                     
+        $(objs).siblings('input[name="pic"]').val(mediaId);
      },  
      fail: function (error) {  
-         picPath = '';  
-         localIds = '';  
+        // alert('失败！',error);    
+        picPath = '';  
+        localIds = '';  
      }          
  });
+
 }
 // var $span = $("<span></span>");
 // var $span1 = $("<span>X</span>");
@@ -472,18 +475,18 @@ function wxgetLocalImgData(e,num, objs){
        wx.getLocalImgData({
            localId: e, // 图片的localID
            success: function (res) {                    
-           var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
-           localData = localData.replace('jgp', 'jpeg');//iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下                                
-                $(objs).siblings(".xiePic").children("img").attr("src", localData).end().css("visibility", "visible");
+                var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+                localData = localData.replace('jgp', 'jpeg');//iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下                                
+                $(objs).siblings(".xiePic").children("img").attr("src", localData)
+                $(objs).css("visibility", "visible");
 
-                // $img[0].src = localData;
            },
            fail:function(res){
                 alert("显示失败");
            }
        });
    }else{
-    $(objs).siblings(".xiePic").children("img").attr("src", "").end().css("visibility", "hidden");
+        $(objs).siblings(".xiePic").children("img").attr("src", e).end().css("visibility", "visible");
        
    }
 
