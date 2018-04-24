@@ -8,8 +8,15 @@ var html = $.ajax({
 data = JSON.parse(html);
 var cartCount = data.cartinfo,
 	goods 	  = data.goods,
+	banner 	  = data.banner,
 	cate 	  = data.cate;
-
+console.log('banner: ',banner);
+var bannerHTML = '';
+banner.map(function(img, index){
+	bannerHTML += '<li><a class="pic" goods_gid="'+ img.id
+	+'" href="javascript:;"><img src="/Uploads/'+ img.pic +'" /></a></li>'
+})
+$('#slider-wrap>ul').html(bannerHTML);
 //首页显示购物车数量
 // console.log($("#cartInfo").val())
 if(cartCount){
@@ -103,8 +110,8 @@ if(goods != 'null'){
 							'<i class="iconfont icon-jiarugouwuche"></i>'+
 						'</li>';
 					if(lazyNum > 4 && (lazyNum+1)%4 == 0){
-						console.log('lazyNum: ', lazyNum);
-						console.log('(lazyNum+1)%6: ',(lazyNum+1)%4);
+						// console.log('lazyNum: ', lazyNum);
+						// console.log('(lazyNum+1)%6: ',(lazyNum+1)%4);
 						//每隔6个添加 '|' ，后面懒加载用
 						_htmlArr[i] += '|';
 						// lazyNum = 0;

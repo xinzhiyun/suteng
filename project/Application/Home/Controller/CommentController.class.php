@@ -60,14 +60,17 @@ class CommentController extends CommonController
             }
 
             $data['addtime'] = time();
+            unset($data['file']);
             $com_status = $comment->add($data);
             foreach ($info as $key => $value) {
-                $path .= $value.'|';
+                $com_pic[] = [
+                    'cid' => $com_status,
+                    'path' => $value
+                ]
             }
-            $com_pic['path'] = $path;
-            $com_pic['cid'] = $com_status;
-            $pic_status = M("com_pic")->add($com_pic);
+            $pic_status = D("ComPic")->addAll($com_pic);
             if($com_status&&$pic_status){
+                $res = D('ShopOrder')->where(['uid'=>$data['uid'],'gid'=>$data['gid']])->setField(['status'=>7]);
                 $comment->commit();
                 E('评论成功', 200);
                 // $this->success('评论成功');
@@ -111,7 +114,7 @@ class CommentController extends CommonController
             }           
         }
         $data = $comment->where($map)->relation($with)->select();
-        return $this->ajaxReturn(['code'=>200,'data'=>$data,'uid'=>$map['uid']]);
+        return $this->ajaxReturn(['code'=>200,'data'=>$data]);
     }
 
     /**

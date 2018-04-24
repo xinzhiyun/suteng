@@ -69,8 +69,8 @@ window.onload = function(){
 
     $(".rawtdsVal").html(getdataList.rawtds?getdataList.rawtds:0);//纯水值
     $(".phVal").html(getdataList.phval?getdataList.phval:0);//ph酸碱值
-    $(".puretdsVal").html(getdataList.puretds?getdataList.puretds:0);//原水值
-    $(".rawtdsVal2").html(getdataList.rawtds?getdataList.rawtds:0);//纯水值
+    $(".rawtdsVal2").html(getdataList.puretds?getdataList.puretds:0);//原水值
+    $(".puretdsVal").html(getdataList.rawtds?getdataList.rawtds:0);//原水值
     $(".hotwater").html((getdataList.temperature?getdataList.temperature:0)+"&#8451;");
     $(".coldwater").html(parseInt(Math.random()*10+10)+"&#8451;");
     $(".roomtemperature").html(parseInt(Math.random()*10+20)+"&#8451;");

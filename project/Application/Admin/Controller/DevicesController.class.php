@@ -323,7 +323,7 @@ class DevicesController extends CommonController
     // 设备绑定经销商方法
     public function bind()
     {
-        $vendors = M('vendors')->field('id,user,leavel')->select();
+        $vendors = M('vendors')->field('id,user,leavel')->where(['status'=>7,'reviewed'=>3])->select();
         $devices = M('devices')->where('vid IS NULL')->select();
         $assign = [
             'user' => $vendors,
@@ -489,6 +489,24 @@ class DevicesController extends CommonController
         try {
             $filter = D('Filters');
             $id['id'] = I('post.id');
+            $data = $filter->where($id)->Field('filtername,alias')->find();
+            $filter_name = $data['filtername'].'-'.$data['alias'];
+
+            $map=[
+                'filter1'=>$filter_name,
+                'filter2'=>$filter_name,
+                'filter3'=>$filter_name,
+                'filter4'=>$filter_name,
+                'filter5'=>$filter_name,
+                'filter6'=>$filter_name,
+                'filter7'=>$filter_name,
+                'filter8'=>$filter_name,
+                '_logic'=> 'OR',
+            ];
+            $typename = M('type')->where($map)->getField('typename');
+            if(!empty($typename)){
+                E('该滤芯正在被:'.$typename.'使用', 604);
+            }
             $res = $filter->where($id)->save(['status'=>1]);
             if($res) {
                 E('删除成功', 200);
@@ -620,6 +638,10 @@ class DevicesController extends CommonController
         try {
             $type = D('Type');
             $where = I('post.');
+            $map['type_id'] = I('post.id');
+            $device_code = M('devices')->where()->getField('device_code');
+            if(!empty($device_code))E('该类型被设备:'.$device_code.'使用中', 603);
+            
             $type->startTrans();
             $res = $type->where($where)->delete();
             if($res){

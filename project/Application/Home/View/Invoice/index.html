@@ -334,6 +334,9 @@
 		进入页面获取刚刚填写的发票信息，如果有的话
 		*/
 		var voiceArr = sessionStorage.getItem("voiceArr");
+
+		// 订单id
+		var order_id = sessionStorage.getItem("order_id");
 		/*
 		点击’确定‘按钮
 		*/
@@ -354,8 +357,21 @@
 					'voicehead': "",
 					'phone': ""
 				})
-				sessionStorage.setItem("voiceArr", JSON.stringify(voiceArr));
-				window.location.href = "{{:U('Pay/payConfirm')}}";
+				// sessionStorage.setItem("voiceArr", JSON.stringify(voiceArr));
+				// 提交发票
+				$.ajax({
+					url: "{{:U('Pay/invoiceAdd')}}",
+					data: {voiceArr: voiceArr, order_id: order_id},
+					type: "post",
+					success: function(res) {
+						console.log("发票成功", res);
+						// window.location.href = "{{:U('Pay/payConfirm')}}";
+					},
+					fail: function(res) {
+						console.log("发票失败!", res);
+					}
+				})
+				
 			}else {		//开发票
 				//发票类型
 				var type = $("#tab").find(".icon-xuanze").parent().text();
@@ -386,6 +402,19 @@
 							'voicehead': dianziHead,
 							'mail': dianziTel
 						});
+						// 提交发票
+						$.ajax({
+							url: "{{:U('Pay/invoiceAdd')}}",
+							data: {voiceArr: voiceArr, order_id: order_id},
+							type: "post",
+							success: function(res) {
+								console.log("发票成功", res);
+								// window.location.href = "{{:U('Pay/payConfirm')}}";
+							},
+							fail: function(res) {
+								console.log("发票失败!", res);
+							}
+						})
 
 					}else{
 						// 判断信息是否输入
@@ -420,6 +449,19 @@
 							'voicehead': dianziHead,
 							'phone': dianziTel
 						});
+						// 提交发票
+						$.ajax({
+							url: "{{:U('Pay/invoiceAdd')}}",
+							data: {voiceArr: voiceArr, order_id: order_id},
+							type: "post",
+							success: function(res) {
+								console.log("发票成功", res);
+								// window.location.href = "{{:U('Pay/payConfirm')}}";
+							},
+							fail: function(res) {
+								console.log("发票失败!", res);
+							}
+						})
 					}
 				}else{
 					// 纸质发票
@@ -459,6 +501,19 @@
 							'voicehead': zhizhiHead,
 							'phone': zhizhiTel
 						});
+						// 提交发票
+						$.ajax({
+							url: "{{:U('Pay/invoiceAdd')}}",
+							data: {voiceArr: voiceArr, order_id: order_id},
+							type: "post",
+							success: function(res) {
+								console.log("发票成功", res);
+								// window.location.href = "{{:U('Pay/payConfirm')}}";
+							},
+							fail: function(res) {
+								console.log("发票失败!", res);
+							}
+						})
 					}else{
 						// 判断信息是否输入
 						var zhizhiHead = $(".zhicompany label p span #zhisecpHead").val();
@@ -502,11 +557,24 @@
 							'voicehead': zhizhiHead,
 							'phone': zhizhiTel
 						});
+						// 提交发票
+						$.ajax({
+							url: "{{:U('Pay/invoiceAdd')}}",
+							data: {voiceArr: voiceArr, order_id: order_id},
+							type: "post",
+							success: function(res) {
+								console.log("发票成功", res);
+								// window.location.href = "{{:U('Pay/payConfirm')}}";
+							},
+							fail: function(res) {
+								console.log("发票失败!", res);
+							}
+						})
 					}
 				}
-				console.log(JSON.stringify(voiceArr))
-				sessionStorage.setItem("voiceArr",JSON.stringify(voiceArr)
-				);
+				// console.log(JSON.stringify(voiceArr))
+				// sessionStorage.setItem("voiceArr",JSON.stringify(voiceArr)
+				
 
 
 				// 发送ajax请求告诉后台，选择了发票信息
@@ -516,12 +584,34 @@
 				// 	data: JSON.stringify(voiceArr),
 				// 	success: function(res){
 				// 		// console.log("成功！ ",res);
-				location.href = '{{:U("Pay/payConfirm")}}'
+				// location.href = '{{:U("Pay/payConfirm")}}'
 				// 	},
 				// 	error: function(res){
 				// 		console.log("失败！ ",res);
 				// 	}
 				// })
+			}
+		})
+
+		// 不选择发票时默认发送不开发票
+		voiceArr.push({
+			'type': "不开发票",
+			'info': "",
+			'voicehead': "",
+			'phone': ""
+		})
+		// sessionStorage.setItem("voiceArr", JSON.stringify(voiceArr));
+		// 提交发票
+		$.ajax({
+			url: "{{:U('Pay/invoiceAdd')}}",
+			data: {voiceArr: voiceArr, order_id: order_id},
+			type: "post",
+			success: function(res) {
+				console.log("发票成功", res);
+				// window.location.href = "{{:U('Pay/payConfirm')}}";
+			},
+			fail: function(res) {
+				console.log("发票失败!", res);
 			}
 		})
 		

@@ -139,6 +139,7 @@
         $.ajax({
 
             url:"{{:U('Admin/Butros/annual')}}",
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
             data:{
                 "id":id,
                 "annual_money":annual_money,

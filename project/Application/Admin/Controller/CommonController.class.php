@@ -33,6 +33,17 @@ class CommonController extends Controller
         $this->assign($assign);
     }
 
+    /**
+     * 检测当前用户是否为经销商
+     */
+    public function check_vendors()
+    {
+        if(M('vendors')->where('id='.session('adminInfo.id'))->getField('leavel') >0 ){
+            return true;
+        }
+        return false;
+    }
+
     public function rule_check($uid)
     {
         $auth = new \Think\Auth();

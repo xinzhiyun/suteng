@@ -253,8 +253,8 @@
     <script>
         // 添加滤芯
         function add() {
-            $("input[name='filtername']").val('');
-            $("input[name='alias']").val('');
+            $("input[name='filtername']").val('').removeAttr('disabled');
+            $("input[name='alias']").val('').removeAttr('disabled');
             $("input[name='price']").val('');
             $("input[name='cost']").val('');
             $("input[name='timelife']").val('');
@@ -275,9 +275,9 @@
             var filterUrl = $(obj).attr('FilterUrl');
             var filterIntroducet = $(obj).attr('FilterIntroducet');
             $(".modal-title").html("修改滤芯");
-            $("input[name='filtername']").val(filterName);
+            $("input[name='filtername']").val(filterName).attr('disabled','true');
             $("input[name='id']").val(filterId);
-            $("input[name='alias']").val(filterAlias);
+            $("input[name='alias']").val(filterAlias).attr('disabled','true');;
             $("input[name='price']").val(filterPrice);
             $("input[name='cost']").val(filterCost);
             $("input[name='timelife']").val(filterTimelift);
@@ -341,6 +341,7 @@
                     dataType:'json',
                     data:{'id':id},
                     success:function(res){
+                        swal.close();
                         if(res.code == 200){
                             location.reload();
                             parent.layer.msg(res.msg);

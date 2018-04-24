@@ -92,7 +92,7 @@
 									'<b class="price">￥<span>'+ res[i].price +'</span></b>'+
 									'<span class="num">'+
 										'<input type="button" value="-" class="minus">'+
-										'<input class="number" type="number" value="'+ res[i].num +'" min="1" max="19">'+
+										'<input class="number" type="number" disabled="false" value="'+ res[i].num +'" min="1" max="19">'+
 										'<input type="button" value="+" class="plus">'+
 									'</span>'+
 								'</p>'+
@@ -251,13 +251,13 @@
        })
 
 		// 选中框
-		$('.shpingcarAll').on('click','.itemcarLeft>.xuanzhong>i',function(){
+		$('.shpingcarAll').on('click','.itemcarLeft>.xuanzhong',function(){
 			var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
-			var _class=$(this).attr('class');
+			var _class=$(this).children().attr('class');
 
 			// 无选择商品
 			if(_class=='iconfont icon-xuanze'){
-				$(this).removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+				$(this).children().removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 				
 				priceAll = 0;
 				var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
@@ -273,7 +273,7 @@
 				$(".priceAll>span").text(priceAll);
 			// 有选择商品
 			}else{
-				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+				$(this).children().removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
 				priceAll = 0;
 				var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
 				// 实时将总价格更新到合计

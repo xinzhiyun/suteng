@@ -68,16 +68,37 @@ class PayController extends Controller
             $goodsCourier[$value] = M('goods_courier')->where('gid='.$value)->field('gid,cid,cname,cprice')->select();
         }
         unset($_SESSION['goodsid']);
-        dump($goodsCourier);
         $assign = [
             'data' => json_encode($data),
             'goodsCourier' => json_encode($goodsCourier),
         ];
-        dump($assign);
         $this->wx_info();
 
         $this->assign($assign);
         $this->display();
+    }
+
+    /**
+     * [updateOrder 支付前修改订单的快递运费信息及是否开发票信息]
+     * @return [type] [description]
+     */
+    public function updateOrder()
+    {
+        //接收前端传过来的订单号进行修改订单信息
+        $orderid = $_POST[''];
+
+
+    }
+
+    /**
+     * [invoiceAdd 将发票信息写入订单]
+     * @return [type] [description]
+     */
+    public function invoiceAdd()
+    {
+        //发票相关信息
+        
+        //订单id
     }
 
     /**
@@ -110,7 +131,36 @@ class PayController extends Controller
             echo -1;
         }
     }
-
+    /*
+   * 充值年费
+   */
+    public function  gradeSelect() {
+        $this->wx_info();
+        $annual = M('annual')->find();
+        $this->assign('annual',$annual);
+        $this->display();
+    }
+    /*
+     * 会员升级充值
+     */
+    public function annualPay() {
+        $userWhere['order_id'] = I('post.order');
+        $orderData = M('users_order')->where($userWhere)->find();
+        if ($orderData['is_pay'] == 0) {
+            //订单号码
+            $money = $orderData['price'];
+            //订单号
+            $order_id = $orderData['order_id'];
+            //订单描述
+            $content = '速腾'.$orderData['name'].'购买';
+            $openId = $_SESSION['open_id'];
+            $url = 'http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/annualNotify');
+            $this->uniformOrder($openId,$money,$order_id,$content,$url);
+        } else {
+            //订单不存在
+            echo -1;
+        }
+    }
 
     /**
      * [lvxin 滤芯]

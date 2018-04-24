@@ -29,11 +29,14 @@ class ShopController extends CommonController
                     $arr[$key]['attr'] = $val['attr'].':'.$val['val'].'|';
                 }
             }
+            $banner = D('goods')->page(1,5)->order('addtime desc')->field('id,pic')->select();
+            // dump($banner);
             $goodsList = array_values($arr);
             $assign = [
                 'cate' => $cate,
                 'cartInfo' => $cartInfo,
-                'goods' => $goodsList
+                'goods' => $goodsList,
+                'banner' => $banner
             ];
             return $this->ajaxReturn($assign);
         } else {

@@ -212,7 +212,7 @@
                     var leasingmode = {'0':'零售型','1':'按流量计费','2':'按时间计费','3':'时长和流量套餐','4':'商务型'};
                     var filtermode = {'0':'按时长','1':'按流量','2':'时长和流量'};
                     var _color = ['#05CE3E','#005384','#DD4B39','#337AB7','#5CB85C','#77E1FB'];
-                    $('._dev').text('当前设备：' + statu.deviceid);
+                    $('._dev').text('当前设备：'+ statu.deviceid);
                     $('._dive div h1').eq(0).html(devicestause[statu.devicestause]?devicestause[statu.devicestause]:'--');
                     $('._dive div h1').eq(1).html(statu.puretds?statu.puretds:'--');
                     $('._dive div h1').eq(2).html(statu.rawtds?statu.rawtds:'--');
@@ -308,11 +308,11 @@
                                 '</tr>'+
                                 '<tr>'+
                                     '<td  class="tdOriginalWater">'+'原水值(ppm)'+'</td>'+
-                                    '<td>'+(statu.puretds?statu.puretds:'--')+'</td>'+
+                                    '<td>'+(statu.rawtds?statu.rawtds:'--')+'</td>'+
                                 '</tr>'+
                                 '<tr>'+
                                     '<td  class="tdCleanWater">'+'纯水值(ppm)'+'</td>'+
-                                    '<td>'+(statu.rawtds?statu.rawtds:'--')+'</td>'+
+                                    '<td>'+(statu.puretds?statu.puretds:'--')+'</td>'+
                                 '</tr>'+
                                 '<tr>'+
                                     '<td class="reflow">'+'剩余流量 (L)'+'</td>'+
@@ -477,10 +477,11 @@
 
                             $(".H1devicestause").text(devicestause[dataList.DeviceStause]?devicestause[dataList.DeviceStause]:'--');//设置设备状态
                             $(".tdDeviceStause").text(devicestause[dataList.DeviceStause]?devicestause[dataList.DeviceStause]:'--');//设置设备状态
-                            $(".originalWater").text(dataList.PureTDS);//设置当前设备原水值
-                            $(".tdOriginalWater").text(dataList.PureTDS);
-                            $(".cleanWater").text(dataList.RawTDS);//设置当前设备纯水值
-                            $(".tdCleanWater").text(dataList.RawTDS);//设置当前设备纯水值
+                            $(".originalWater").text(dataList.RawTDS);//设置当前设备原水值
+                            $(".tdOriginalWater").text(dataList.RawTDS);
+                            $(".cleanWater").text(dataList.PureTDS);//设置当前设备纯水值
+                            $(".tdCleanWater").text(dataList.PureTDS);//设置当前设备纯水值
+                            
                             $(".leaseMode").text(leasingmode[dataList.LeasingMode]?leasingmode[dataList.LeasingMode]:'--');//设置当前设备租赁模式
                             $(".tdLeaseMode").text(leasingmode[dataList.LeasingMode]?leasingmode[dataList.LeasingMode]:'--');//设置当前设备租赁模式
                             $(".tdFilterMode").text(filterMode);//设置当前设备滤芯模式

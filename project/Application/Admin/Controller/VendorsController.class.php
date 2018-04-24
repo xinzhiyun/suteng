@@ -349,8 +349,11 @@ class VendorsController extends CommonController
         if($vendor || $user){
             // 获取分公司级别
             $showLeavel['leavel'] = $office['leavel'];
+            $showLeavel['status'] = ['neq',8];
             // 查询同级分公司
             $officeLeavel = $vendors->where($showLeavel)->select();
+
+
             // 统计同级分公司数量，包括自己
             $officeNum = count($officeLeavel);
             // 如果同级分公司不止一个
