@@ -2,6 +2,8 @@
 var selectPrice;
 // 选中会员名称
 var selectName;
+// 选中会员识别号
+var selectStatus
 $(".goldGrade").on("touchstart", function() {
     if($(this).attr("index") == "0") {
         // 添加类名 改变背景颜色
@@ -14,7 +16,8 @@ $(".goldGrade").on("touchstart", function() {
         $(".confirmBtn > p").css("background", "rgb(46, 182, 170)");
         selectPrice = parseInt($(this).children(".selectPrice").html()) + ".00";
         selectName = $(this).children("p").children(".gradeName").html()
-        console.log(selectName)
+        selectStatus = parseInt($(this).children('.goldInfo').children(".gradeStatus").children().val())
+
     }else {
         $(this).removeClass("selectChange").siblings().removeClass("selectChange");
         $(".confirmBtn > p").css("background", "rgb(69, 69, 69, .5)");
@@ -34,15 +37,7 @@ $(".icon-shibai").on("touchstart", function() {
     $(this).parent().css("display", "none");
 });
 
-// 点击提交
-$(".confirmBtn").on("touchstart", function() {
-    if($(".goldGrade").hasClass("selectChange")) {
-        // 显示付款面板
-        $(".payKuan").css("display", "block");
-        // 选中会员价格
-        $(".selectFinall").html(selectPrice);
-    }
-});
+
 // 点击面板叉叉小图标
 $(".icon-chacha").on("touchstart", function() {
     $(".payKuan").css("display", "none");

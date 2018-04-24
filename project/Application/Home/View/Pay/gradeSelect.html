@@ -9,102 +9,102 @@
 	<title>会员升级</title>
 </head>
 <body>
-	<div class="main">
-		<div class="selectInfo">
-			<p>请选择会员等级</p>
-			<!-- 会员选择 -->
-			<div class="gradeSelect">
-				<!-- 钻石会员 -->
-				<div class="goldGrade" index="0">
-					<p>
-						<span><img src="__PUBLIC__/Home/images/zssjx.png" alt=""></span>
-						<span class="gradeName">钻石会员</span>
-					</p>
-					<p class="selectPrice">{{$annual.annual_money}}元</p>
-					<div class="goldInfo">
-						<p>钻石会员说明</p>
-						<p>{{$annual.dia_describe}}</p>
-						<p  class="gradeStatus"><input type="hidden" name="status"  value="{{$annual.dia_status}}"></p>
-						<p class="sanjiao"></p>
-						<span class="iconfont icon-shibai"></span>
-					</div>
-				</div>
-				<!-- 黄金会员 -->
-				<div class="goldGrade" index="0">
-					<p>
-						<span><img src="__PUBLIC__/Home/images/hjsjx.png" alt=""></span>
-						<span class="gradeName">黄金会员</span>
-					</p>
-					<p class="selectPrice">{{$annual.medal_money}}元</p>
-					<div class="goldInfo">
-						<p>黄金会员说明</p> 
-						<p>{{$annual.gold_describe}}</p>
-						<p class="gradeStatus"><input type="hidden" name="status"  value="{{$annual.gold_status}}"></p>
-						<p class="sanjiao"></p>
-
-						<span class="iconfont icon-shibai"></span>
-					</div>
-				</div>
-				<!-- 普通会员 -->
-				<div class="goldGrade ordinary" index="0">
-					<p>
-						<span><img src="__PUBLIC__/Home/images/ptsjx.png" alt=""></span>
-						<span class="gradeName">普通会员</span>
-					</p>
-					<p class="selectPrice">{{$annual.personal_money}}元</p>
-					<div class="goldInfo">
-						<p>个人会员说明</p>
-						<p>{{$annual.per_describe}}</p>
-						<p  class="gradeStatus"><input type="hidden" name="status"  value="{{$annual.per_status}}"></p>
-						<p class="sanjiao"></p>
-						<span class="iconfont icon-shibai"></span>
-					</div>
+<div class="main">
+	<div class="selectInfo">
+		<p>请选择会员等级</p>
+		<!-- 会员选择 -->
+		<div class="gradeSelect">
+			<!-- 钻石会员 -->
+			<div class="goldGrade" index="0">
+				<p>
+					<span><img src="__PUBLIC__/Home/images/zssjx.png" alt=""></span>
+					<span class="gradeName">钻石会员</span>
+				</p>
+				<p class="selectPrice">{{$annual.annual_money}}元</p>
+				<div class="goldInfo">
+					<p>钻石会员说明</p>
+					<p>{{$annual.dia_describe}}</p>
+					<p  class="gradeStatus"><input type="hidden" name="status"  value="{{$annual.dia_status}}"></p>
+					<p class="sanjiao"></p>
+					<span class="iconfont icon-shibai"></span>
 				</div>
 			</div>
-			<!-- 确认选择 -->
-			<div class="confirmBtn">
-				<p>确认</p>
+			<!-- 黄金会员 -->
+			<div class="goldGrade" index="0">
+				<p>
+					<span><img src="__PUBLIC__/Home/images/hjsjx.png" alt=""></span>
+					<span class="gradeName">黄金会员</span>
+				</p>
+				<p class="selectPrice">{{$annual.medal_money}}元</p>
+				<div class="goldInfo">
+					<p>黄金会员说明</p>
+					<p>{{$annual.gold_describe}}</p>
+					<p class="gradeStatus"><input type="hidden" name="status"  value="{{$annual.gold_status}}"></p>
+					<p class="sanjiao"></p>
+
+					<span class="iconfont icon-shibai"></span>
+				</div>
+			</div>
+			<!-- 普通会员 -->
+			<div class="goldGrade ordinary" index="0">
+				<p>
+					<span><img src="__PUBLIC__/Home/images/ptsjx.png" alt=""></span>
+					<span class="gradeName">普通会员</span>
+				</p>
+				<p class="selectPrice">{{$annual.personal_money}}元</p>
+				<div class="goldInfo">
+					<p>个人会员说明</p>
+					<p>{{$annual.per_describe}}</p>
+					<p  class="gradeStatus"><input type="hidden" name="status"  value="{{$annual.per_status}}"></p>
+					<p class="sanjiao"></p>
+					<span class="iconfont icon-shibai"></span>
+				</div>
 			</div>
 		</div>
-		<!-- 点击付款后弹出支付模式 -->
-		<div class="payKuan">
-			<ul>
-				<li>
-					<p>付款</p>
-					<p class="selectFinall">￥<span></span></p>
-					<span class="iconfont icon-chacha "></span>
-				</li>
-				<li>
-					<p style="padding-left:.5rem;">选择支付方式</p>
-				</li>
-				<li>
-					<div class="payWay">
-						<p>
-							<span class="iconfont icon-weixin2" style="color:rgb(82,165,73)"></span>微信支付
-						</p>
-						<span class="iconfont icon-xuanzhongduigou xuanzhong" style="color:#56AAF1"></span>
-					</div>
-
-					<div class="payWay">
-						<p>
-							<span class="iconfont icon-zhifubao" style="color:rgb(0,170,239)"></span>支付宝支付
-						</p>
-						<span class="iconfont icon-weixuanzhong xuanzhong"></span>
-					</div>
-					<div class="payWay">
-						<p class="ylpic">
-							<img src="__PUBLIC__/Home/images/yl.png" alt="">银联支付
-						</p>
-						<span class="iconfont icon-weixuanzhong xuanzhong"></span>
-					</div>
-
-					<div class="payConfirm">
-						<p>立即付款</p>
-					</div>
-				</li>
-			</ul>
+		<!-- 确认选择 -->
+		<div class="confirmBtn">
+			<p>确认</p>
 		</div>
 	</div>
+	<!-- 点击付款后弹出支付模式 -->
+	<div class="payKuan">
+		<ul>
+			<li>
+				<p>付款</p>
+				<p class="selectFinall">￥<span></span></p>
+				<span class="iconfont icon-chacha "></span>
+			</li>
+			<li>
+				<p style="padding-left:.5rem;">选择支付方式</p>
+			</li>
+			<li>
+				<div class="payWay">
+					<p>
+						<span class="iconfont icon-weixin2" style="color:rgb(82,165,73)"></span>微信支付
+					</p>
+					<span class="iconfont icon-xuanzhongduigou xuanzhong" style="color:#56AAF1"></span>
+				</div>
+
+				<div class="payWay">
+					<p>
+						<span class="iconfont icon-zhifubao" style="color:rgb(0,170,239)"></span>支付宝支付
+					</p>
+					<span class="iconfont icon-weixuanzhong xuanzhong"></span>
+				</div>
+				<div class="payWay">
+					<p class="ylpic">
+						<img src="__PUBLIC__/Home/images/yl.png" alt="">银联支付
+					</p>
+					<span class="iconfont icon-weixuanzhong xuanzhong"></span>
+				</div>
+
+				<div class="payConfirm">
+					<p>立即付款</p>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
 </body>
 <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 <script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
@@ -117,7 +117,7 @@
 <script>
     //微信接口
     wx.config({
-        debug: true,
+        debug: false,
         appId: '{{$wxinfo["appId"]}}',
         timestamp: '{{$wxinfo["timestamp"]}}',
         nonceStr: '{{$wxinfo["nonceStr"]}}',
@@ -161,7 +161,7 @@
 
         }
     });
-	$('.payConfirm').on('touchstart',function(){
+    $('.payConfirm').on('touchstart',function(){
 
         console.log(dingdanID)
         $.ajax({
@@ -170,14 +170,13 @@
             async: false,
             data: {order: dingdanID},
             success: function(res){
-                console.log('成功！ ', res);
-		alert(1);
+
                 if(res == -1){
                     console.log('支付错误！');
                     parent.layer.msg('支付错误！');
                 }else{
-                    alert(2);
-					weixinPay(res);
+
+                    weixinPay(res);
                 }
             },
             error: function(res){
@@ -185,35 +184,34 @@
                 parent.layer.msg('系统出了一点小问题，请稍后再试！');
             }
         })
-	})
+    })
 
 
-    /*
-     微信支付方法
-     */
+	/*
+	 微信支付方法
+	 */
     function weixinPay(res){
         WeixinJSBridge.invoke(
             'getBrandWCPayRequest',
             JSON.parse(res),
             function(res){
-                WeixinJSBridge.log(res.err_msg);
-                alert(res.err_code+res.err_desc+res.err_msg);
+
                 if(res.err_msg.substr(-2) == 'ok'){
 
                     parent.layer.msg('付款成功！');
                     //付款成功后的操作
-                    setTimeout(function(){
-                        location.href = '{{:U("VipCenter/index")}}';
-                    },500);
+//                    setTimeout(function(){
+//                        location.href = '{{:U("PaymentSystem/paytosuccess")}}';
+//                    },500);
 
                 }else if(res.err_msg.substr(-6) == 'cancel'){
                     //取消订单操作
                 }else{
                     parent.layer.msg('付款失败！');
                     //付款失败操作
-//                    setTimeout(function(){
-//                        location.href = '{{:U("PaymentSystem/paytofailed")}}';
-//                    },500);
+                    setTimeout(function(){
+                        location.href = '{{:U("PaymentSystem/paytofailed")}}';
+                    },500);
 
                 }
             }
