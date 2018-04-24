@@ -168,21 +168,22 @@
 		});
 		$(".taocan div").on("click", function(){
 			$(this).addClass('taocanSelectNow').siblings().removeClass("taocanSelectNow");
-
+			$(".moneySon").css({transition:'.3s linear'});
 			var _index=$(this).attr("index");
 			if(_index==0){
-				$(".moneySon").eq(0).animate({left: '0vw'}),
-				$(".moneySon").eq(1).animate({left: '100vw'}),
-				$(".moneySon").eq(2).animate({left: '200vw'})
-				// $('#footer').click(function
+				$(".moneySon").eq(0).css({transform: 'translateX(0vw)'});
+				$(".moneySon").eq(1).css({transform: 'translateX(100vw)'});
+				$(".moneySon").eq(2).css({transform: 'translateX(200vw)'});
+
 			}else if(_index==1){
-				$(".moneySon").eq(0).animate({left: '-100vw'}),
-			 	$(".moneySon").eq(1).animate({left: '0vw'}),
-			 	$(".moneySon").eq(2).animate({left: '100vw'})
+				$(".moneySon").eq(0).css({transform: 'translateX(-100vw)'});
+			 	$(".moneySon").eq(1).css({transform: 'translateX(0vw)'});
+			 	$(".moneySon").eq(2).css({transform: 'translateX(100vw)'});
+
 			}else if(_index==2){
-				$(".moneySon").eq(0).animate({left: '-200vw'}),
-			 	$(".moneySon").eq(1).animate({left: '-100vw'}),
-			 	$(".moneySon").eq(2).animate({left: '0vw'})
+				$(".moneySon").eq(0).css({transform: 'translateX(-200vw)'});
+			 	$(".moneySon").eq(1).css({transform: 'translateX(-100vw)'});
+			 	$(".moneySon").eq(2).css({transform: 'translateX(0vw)'});
 			}
 			
 		})

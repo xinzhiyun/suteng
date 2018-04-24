@@ -66,7 +66,7 @@ class CommentController extends CommonController
                 $com_pic[] = [
                     'cid' => $com_status,
                     'path' => $value
-                ]
+                ];
             }
             $pic_status = D("ComPic")->addAll($com_pic);
             if($com_status&&$pic_status){

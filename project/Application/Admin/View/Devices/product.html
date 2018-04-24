@@ -130,14 +130,14 @@
                         &times;
                     </button>
                     <h4 class="modal-title" id="myModalLabel">
-                        类型设置
+                        型号设置
                     </h4>
                 </div>
                 <div class="modal-body">
                     <form id="form" onsubmit="false" class="form-horizontal">
                         <input type="hidden" name="id">
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">类型名称：</label>
+                            <label class="col-sm-4 control-label">型号名称：</label>
                             <div class="col-sm-5">
                                 <input class="input-medium form-control" placeholder="请输入滤芯名称..." type="text" name="typename">
                             </div>
@@ -209,7 +209,7 @@
         }
         function add()
         {
-            $("#myModalLabel").html('类型设置');
+            $("#myModalLabel").html('型号设置');
             $('.product-edit').addClass('product-add');
             $('.product-edit').removeClass('product-edit');
             $('input[name="typename"]').val('');

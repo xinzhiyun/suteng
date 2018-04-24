@@ -53,10 +53,10 @@ body {
 	text-align: center;
 }
 .money>div:nth-of-type(2) {
-	left: 100vw;
+	transform: translateX(100vw);
 }
 .money>div:nth-of-type(3) {
-	left: 200vw;
+	transform: translateX(200vw);
 }
 #footer {
 	width: 100vw;
@@ -68,7 +68,7 @@ body {
 	font-size: .9rem;
 	text-align: center;
 	background: #2EB6AA;
-	z-index: 999;
+	z-index: 1;
 }
 /*付款页面*/
 .paystyle{
@@ -176,11 +176,14 @@ body {
 /*底部按钮*/
 .payBott{
 	width: 86vw;
+	position: absolute;
+	bottom: 6vh;
 	margin:5.5vh 7vw 0;
+	font-size: .9rem;
 }
 .payBott>input{
 	border:none;
-	padding:1vh  0;
+	padding:2vh  0;
 	width: 86vw;
 	background: #2EB6AA;
 	border-radius:0.2rem;

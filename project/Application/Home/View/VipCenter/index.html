@@ -21,19 +21,19 @@
 				<!-- <i class="iconfont icon-iconfontfenxiang2"></i> -->
 			</div>
 			<p class="member">
-				<span>{{$user['nickname']}}</span>&nbsp;&nbsp;
+				<span>{{$user['nickname']}}	{{$user.user.grade}}</span>&nbsp;&nbsp;
 
 				<!-- <i class="iconfont icon-wodehuiyuan0101"></i> -->
-				<switch name="user.level">
-					<case value="1">
+				<switch name="user.grade">
+					<case value="4">
 						<span><img src="__PUBLIC__/Home/images/hyzs.png" alt=""></span>
 						<span>钻石会员</span>
 					</case>
-					<case value="2">
-						<span><img src="__PUBLIC__/Home/images/hyhj.png" alt=""></span>
-						<span>黄金会员</span>
-					</case>
 					<case value="3">
+						<span><img src="__PUBLIC__/Home/images/hyhj.png" alt=""></span>
+						<span>金牌会员</span>
+					</case>
+					<case value="2">
 						<span><img src="__PUBLIC__/Home/images/hypt.png" alt=""></span>
 						<span>普通会员</span>
 					</case>

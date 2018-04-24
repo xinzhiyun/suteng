@@ -15,7 +15,7 @@
                         <a href="javascript:;" onclick="add()">添加设备</a>
                         <i class="fa fa-user-plus"></i>
                         <a href="javascript:;" onclick="adds()">批量添加设备</a>
-                    </div>
+                    </div> 
                 </div>
                 <form method="get" action="">
                     <div class="input-group col-md-6" id='searchdiv'>
@@ -70,7 +70,7 @@
                                     <volist name="deviceInfo" id="vo">
                                         <tr>
                                             <td>{{$i}}</td>
-                                            <td><a class="btn btn-success deviceDetail" href="#">{{$vo.device_code}}</a></td>
+                                            <td><a style="color:rgb(0, 47, 255)" class=" deviceDetail" href="#">{{$vo.device_code}}</a></td>
                                             <td>{{$vo.typename}}</td>
                                             <td>
                                                 <empty name="vo.user">
@@ -83,7 +83,7 @@
                                                 <empty name="vo.nickname">
                                                     <span style="color:blue">未绑定用户</span>
                                                 <else />
-                                                    <span style="color:red">{{$vo.nickname}}</span>
+                                                    <a class='touserdetail' style="color:red" uid="{{$vo.uid}}">{{$vo.nickname}}</a>
                                                 </empty>
                                             </td>
                                             <td>
@@ -262,7 +262,11 @@
                 }
             });
         })
-
+        // 跳转到用户列表
+        $('.touserdetail').click(function(){
+            var id = $(this).attr('uid');
+            location.href = "{{:U('Users/user_detail','','')}}?id="+id;
+        })
         $("td").on('click','.deviceDetail',function(e){
             var code = $(this).html();
             location.href = "{{:U('deviceDetail'), '', ''}}?code="+code;
