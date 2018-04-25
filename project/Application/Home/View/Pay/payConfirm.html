@@ -421,7 +421,7 @@
 				// 提交后台
 				$.ajax({
 					url: "{{:U('Pay/updateOrder')}}",
-					data: {orderId: order_id, cid: cid, good_id: gid},//将订单id和邮费id传递
+					data: {orderId: order_id, cid: cid, gid: gid},//将订单id和邮费id传递
 					type: "post",
 					success: function(res) {
 						console.log("邮费成功", res);
