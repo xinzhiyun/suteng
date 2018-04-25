@@ -40,7 +40,7 @@ class WeiXinPayController extends Controller
         // 下单
         $this->uniformOrderVendor($money,$code,$content);
     }
-    
+
     /**
      * 统一收分销商加盟费并返回数据
      * @return string json格式的数据，可以直接用于js支付接口的调用
@@ -131,8 +131,8 @@ class WeiXinPayController extends Controller
 </xml>
 ';
 
-// 
-// 
+//
+//
 // UR体会与人体热敷的供热的高
         // file_put_contents('./wx_dddpay.txt',$xml."\r\n", FILE_APPEND);die;
         if($xml){
@@ -151,7 +151,7 @@ class WeiXinPayController extends Controller
             // 查询订单表
             $orderData = $order->where($showOrder)->find();
 
-            
+
             // 如果订单未支付
             if($orderData['status']==8){
 
@@ -200,7 +200,7 @@ class WeiXinPayController extends Controller
                 $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.g_cost,a.g_price,a.g_num,b.vid,c.id ccid,c.code,c.invitation_code,c.superiors_code,c.superior_code,c.abonus')->join('st_goods b on a.gid = b.id')->join('st_vendors c on b.vid = c.id')->where(['a
                 .g_type'=>1,'a.status'=>7,'a.order_id'=>$saveOrder['order_id']])->select();
                 echo M('ShopOrder as a')->getLastSql();
-                   // echo $open_id.'-'.$yj.'-'.$jb.'-'.$yb;die;
+                // echo $open_id.'-'.$yj.'-'.$jb.'-'.$yb;die;
                 // 分配佣金
                 $this->branch_commission($open_id,$order_id,$yj,$jb,$yb);
             }
@@ -209,7 +209,7 @@ class WeiXinPayController extends Controller
 
     /*********************************************新增方法-支付后修改订单数据**********************************************/
 
-        /**
+    /**
      * 处理订单写入数据
      * @return array 返回数组格式的notify数据
      */
@@ -238,13 +238,13 @@ class WeiXinPayController extends Controller
 </xml>
 ';
 
-// 
-// 
+//
+//
 // UR体会与人体热敷的供热的高
         // file_put_contents('./wx_dddpay.txt',$xml."\r\n", FILE_APPEND);die;
         if($xml){
 
-            
+
 
 
 
@@ -258,7 +258,7 @@ class WeiXinPayController extends Controller
             // 查询订单表
             $orderData = $order->where($showOrder)->find();
 
-            
+
             // 如果订单未支付
             if($orderData['status']==8){
 
@@ -307,7 +307,7 @@ class WeiXinPayController extends Controller
                 $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.g_cost,a.g_price,a.g_num,b.vid,c.id ccid,c.code,c.invitation_code,c.superiors_code,c.superior_code,c.abonus')->join('st_goods b on a.gid = b.id')->join('st_vendors c on b.vid = c.id')->where(['a
                 .g_type'=>1,'a.status'=>7,'a.order_id'=>$saveOrder['order_id']])->select();
                 echo M('ShopOrder as a')->getLastSql();
-                   // echo $open_id.'-'.$yj.'-'.$jb.'-'.$yb;die;
+                // echo $open_id.'-'.$yj.'-'.$jb.'-'.$yb;die;
                 // 分配佣金
                 $this->branch_commission($open_id,$order_id,$yj,$jb,$yb);
             }
@@ -367,8 +367,8 @@ class WeiXinPayController extends Controller
                 // 分红
                 // dump($result);die;
             }
- 
-  
+
+
         }
     }
     /*
@@ -376,25 +376,26 @@ class WeiXinPayController extends Controller
      */
     public function annualNotify() {
         $xml=file_get_contents('php://input', 'r');
-
-//        $xml= '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
-//<attach><![CDATA[887986782575785]]></attach>
-//<bank_type><![CDATA[CFT]]></bank_type>
-//<cash_fee><![CDATA[1]]></cash_fee>
-//<fee_type><![CDATA[CNY]]></fee_type>
-//<is_subscribe><![CDATA[Y]]></is_subscribe>
-//<mch_id><![CDATA[1501254081]]></mch_id>
-//<nonce_str><![CDATA[t0uztso4xfld1mn26s1qv8v61uo7hkxx]]></nonce_str>
-//<openid><![CDATA[onLe70fYcrqU71RjzfYUjkNf90_E]]></openid>
-//<out_trade_no><![CDATA[459387713033247]]></out_trade_no>
-//<result_code><![CDATA[SUCCESS]]></result_code>
-//<return_code><![CDATA[SUCCESS]]></return_code>
-//<sign><![CDATA[ED33D79486EA660A9ECF77ECAC1A0B52]]></sign>
-//<time_end><![CDATA[20180424162153]]></time_end>
-//<total_fee>1</total_fee>
-//<trade_type><![CDATA[JSAPI]]></trade_type>
-//<transaction_id><![CDATA[4200000068201804245225491997]]></transaction_id>
-//</xml>';
+        // file_put_contents('./wx_payFee.txt',$xml."\r\n", FILE_APPEND);
+// //
+//         $xml= '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
+// <attach><![CDATA[642095402778539]]></attach>
+// <bank_type><![CDATA[CFT]]></bank_type>
+// <cash_fee><![CDATA[1]]></cash_fee>
+// <fee_type><![CDATA[CNY]]></fee_type>
+// <is_subscribe><![CDATA[Y]]></is_subscribe>
+// <mch_id><![CDATA[1501254081]]></mch_id>
+// <nonce_str><![CDATA[l9vsahb2lhpdnipmtcmgbdarmgi7lujb]]></nonce_str>
+// <openid><![CDATA[onLe70fYcrqU71RjzfYUjkNf90_E]]></openid>
+// <out_trade_no><![CDATA[660206065870525]]></out_trade_no>
+// <result_code><![CDATA[SUCCESS]]></result_code>
+// <return_code><![CDATA[SUCCESS]]></return_code>
+// <sign><![CDATA[74DC70A12EEA05D5E3ED1091C457A2C4]]></sign>
+// <time_end><![CDATA[20180424203103]]></time_end>
+// <total_fee>1</total_fee>
+// <trade_type><![CDATA[JSAPI]]></trade_type>
+// <transaction_id><![CDATA[4200000066201804245357066132]]></transaction_id>
+// </xml>';
         if ($xml) {
             //解析微信返回数据数组格式
             $result = $this->notifyData($xml);
@@ -405,7 +406,7 @@ class WeiXinPayController extends Controller
 
             if (empty($orderData['is_pay'])) {
                 $save_info =M('users_order')->where($data)->save(['is_pay'=>1]);
-//                $save_info =M('users_order')->where($data)->find();
+                $save_info =M('users_order')->where($data)->find();
                 if ($save_info) {
                     //查找对应的租金总价
                     $annual_money = M('annual')->find();
@@ -414,36 +415,71 @@ class WeiXinPayController extends Controller
                     switch ($orderData['annual_status']) {
                         case '1':
                             $data['price'] = $annual_money['annual_money']-$annual_money['cost_money'];
+                            //每天的会员费
+                            $data['mon_ey'] = $annual_money['annual_money']/365;
                             $data['grade'] = 4;
                             break;
                         case '2':
                             $data['price'] = $annual_money['medal_money']-$annual_money['gold_money'];
+                            $data['mon_ey'] = $annual_money['medal_money']/365;
                             $data['grade'] = 3;
                             break;
                         case '3':
                             $data['price'] = $annual_money['personal_money']-$annual_money['per_money'];
+                            $data['mon_ey'] = $annual_money['personal_money']/365;
                             $data['grade'] = 2;
                             break;
                     }
 
-                   $users_info = M('users')->where(['id'=>$orderData['user_id']])->save(['grade'=>$data['grade']]);
-//                $users_info =  $users_info = M('users')->where(['id'=>$orderData['user_id']])->find();
-                }
 
+
+                    $users_info =  $users_info = M('users')->where(['id'=>$orderData['user_id']])->find();
+                }
                 if ($save_info && $users_info) {
 
 
                     //查询当前用户
-                    $user_info = M('users')->field('id,invitation_code,open_id')->where(['open_id'=> $result['openid']])->find();
+                    $user_info = M('users')->field('id,invitation_code,open_id,grade,start_time,end_time')->where(['open_id'=> $result['openid']])->find();
 
+                    if ($user_info['grade']  > 1) {
+                        switch ($user_info['grade']) {
+                            case '4':
+                                //每天的会员费
+                                $data['mo_ey'] = $annual_money['annual_money']/365;
+                                break;
+                            case '3':
+                                $data['mo_ey'] = $annual_money['medal_money']/365;
+                                break;
+                            case '2':
+                                $data['mo_ey'] = $annual_money['personal_money']/365;
+                                break;
+                        }
+                        // dump($user_info);
+                        //计算出当前会员剩余天数
+                        $time = intval(($user_info['end_time']-time())/86400);
+                        $money= (round($data['mon_ey'], 2)-round($data['mo_ey'], 2)) * $time ;
 
-
-
-                    if ($annual_money['money'] < $annual_money['money']) {
-                        $money = 0;
                     } else {
                         $money =    $data['price'];
                     }
+
+
+                    $users_info = M('users')->where(['id'=>$orderData['user_id']])->save(['grade'=>$data['grade'],'start_time'=>time(),'end_time'=>strtotime("+1 year")]);
+                    // dump($users_info);
+                    file_put_contents('./11.txt',$data['mon_ey']."\r\n", FILE_APPEND);
+                    file_put_contents('./22.txt',$data['mo_ey']."\r\n", FILE_APPEND);
+                    file_put_contents('./33.txt',$time."\r\n", FILE_APPEND);
+                    file_put_contents('./44.txt',$money."\r\n", FILE_APPEND);
+//                    if ($orderData['annual_status'] > $user_info['grade']) {
+//
+//                    }
+
+
+//                    if ($annual_money['money'] < $annual_money['money']) {
+//                        $money = 0;
+//                    } else {
+//                        $money =    $data['price'];
+//                    }
 
                     //查询分配比例
                     $butros = M('butros')->find();
@@ -457,12 +493,12 @@ class WeiXinPayController extends Controller
                     $com_t =  $money*(($butros['com_a']/ 100)*(50/ 100));
                     //团队管理奖 A级加盟商
                     $com_ta =  $money*(($butros['com_a']/100)*((100-50)/100));
-//                                dump($com_c);
-//                                dump($com_d);
-//                                dump($com_p);
-//                                dump($com_t);
-//                                dump($com_ta);
-//                                dump($money);exit;
+                    // dump($com_c);
+                    // dump($com_d);
+                    // dump($com_p);
+                    // dump($com_t);
+                    // dump($com_ta);
+                    // dump($money);exit;
                     //查出当前推荐商人
 
                     $c_info = M('vendors')->where(['code'=>$user_info['invitation_code']])->find();
@@ -1066,7 +1102,7 @@ class WeiXinPayController extends Controller
 
                 switch ($table) {
                     case 'gold':
-                        // 金币数量 
+                        // 金币数量
                         $addData['gold_num'] = $flowData['gold_num'];
                         // 当前金币
                         $addData['current_gold_num'] = $saveData['gold_num'] = $flowData['gold_num'] + $user['gold_num'];
@@ -1074,7 +1110,7 @@ class WeiXinPayController extends Controller
                         $addData['current_silver'] = $user['silver'];
                         break;
                     case 'silver':
-                        // 银币数量 
+                        // 银币数量
                         $addData['silver_num'] = $flowData['silver_num'];
                         // 当前银币
                         $addData['current_silver'] = $saveData['silver'] = $flowData['silver_num'] + $user['silver'];
@@ -1130,9 +1166,9 @@ class WeiXinPayController extends Controller
         // 转成php数组
         $data=$this->toArray($xml);
         // return 1;
-        // file_put_contents('./wx_notify1.txt','data:'.$data, FILE_APPEND);    
+        // file_put_contents('./wx_notify1.txt','data:'.$data, FILE_APPEND);
         // file_put_contents('./wx_notify2.txt','123:'.$data['out_trade_no'], FILE_APPEND);
-        // file_put_contents('./wx_notify3.txt','456:'.$data['sign'], FILE_APPEND); 
+        // file_put_contents('./wx_notify3.txt','456:'.$data['sign'], FILE_APPEND);
 
         // 保存原sign
         $dataSign=$data['sign'];
@@ -1142,7 +1178,7 @@ class WeiXinPayController extends Controller
 
         // 生成签名
         $sign=$this->makeSign($data);
-        // file_put_contents('./wx_notify.txt','原签: '.$dataSign.'现签：'.$sign, FILE_APPEND);  
+        // file_put_contents('./wx_notify.txt','原签: '.$dataSign.'现签：'.$sign, FILE_APPEND);
         // 判断签名是否正确  判断支付状态
         if ($sign==$dataSign && $data['return_code']=='SUCCESS') {
 
@@ -1152,11 +1188,11 @@ class WeiXinPayController extends Controller
             // 返回数据给回调函数进行插入操作
             return $data;
         }else{
-            // 签名错误 或 支付未成功 
+            // 签名错误 或 支付未成功
             $result=false;
         }
 
-        
+
     }
 
     /**
@@ -1164,10 +1200,10 @@ class WeiXinPayController extends Controller
      * @param  string $xml xml字符串
      * @return array       转换得到的数组
      */
-    public function toArray($xml){   
+    public function toArray($xml){
         //禁止引用外部xml实体
         libxml_disable_entity_loader(true);
-        $result= json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);        
+        $result= json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
         return $result;
     }
 
@@ -1608,9 +1644,9 @@ class WeiXinPayController extends Controller
         // 描述
         $saveData['describe']   = '邀请会员'.$user['nickname'].'购买，单号为['.$order_id.']的商品获得金币奖励:'.$saveData['gold_num'].'个,获得银币奖励：'.$saveData['silver'].'个';
         // 创建时间
-        $saveData['addtime']    = time(); 
+        $saveData['addtime']    = time();
         // 更新时间
-        $saveData['updatetime']     = $saveData['addtime']; 
+        $saveData['updatetime']     = $saveData['addtime'];
 
 
         // dump($saveData);die;
@@ -1677,12 +1713,12 @@ class WeiXinPayController extends Controller
         // 描述
         $saveData['describe']   = '自己购买，单号为['.$order_id.']的商品获得金币奖励:'.$saveData['gold_num'].'个,获得银币奖励：'.$saveData['silver'].'个';
         // 创建时间
-        $saveData['addtime']    = time(); 
+        $saveData['addtime']    = time();
         // 更新时间
-        $saveData['updatetime']     = $saveData['addtime']; 
+        $saveData['updatetime']     = $saveData['addtime'];
 
 
-        
+
         // 写用户佣金记录
         $userRes = $usersCommission->add($saveData);
         // 准备更新条件
@@ -1718,7 +1754,7 @@ class WeiXinPayController extends Controller
      * [vendor_commission 分销商佣金分配]
      * @param  [type] $vendor   [分销商]
      * @param  [type] $type     [获得佣金类型]
-     * @param  [type] $nexus_vendor     [产生分红的分销商] 
+     * @param  [type] $nexus_vendor     [产生分红的分销商]
      * @param  [type] $ratio    [分成比例]
      * @param  [type] $order_id [获得分成的订单号]
      * @param  [type] $yj       [佣金总额]
@@ -1740,9 +1776,9 @@ class WeiXinPayController extends Controller
         // 获得分红的类型
         $addData['type'] = $type;
         // 创建时间
-        $addData['addtime']     = time(); 
+        $addData['addtime']     = time();
         // 更新时间
-        $addData['updatetime']  = $addData['addtime']; 
+        $addData['updatetime']  = $addData['addtime'];
         // 获得分红的描述
         switch ($type) {
             case '0':
