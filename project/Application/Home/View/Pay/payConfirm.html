@@ -383,7 +383,8 @@
 				postageArr[posNum] = postagePrice * num;
 
 				// 获取点击到的商品的id
-				console.log("商品id", $(this).parent().parent(".goods").attr("v-data"));
+				// console.log("商品id", $(this).parent().parent(".goods").attr("v-data"));
+				var gid = $(this).parent().parent(".goods").attr("v-data");
 				function sum(arr) {
 					var s=0;
 					if(arr.length==0){
@@ -432,6 +433,15 @@
 				
 				
 			})
+			// 点击发票
+			$(".kaifapiao").on("click", function() {
+				for(var i = 0; i < $(".selectPostage").length; i++) {
+					if($(".selectPostage").eq(i).find("option:selected").val() == "选择快递") {
+						parent.layer.msg('请选择快递方式');
+						return false;
+					}
+				}
+			});
 			/*
 			发票信息
 			*/
