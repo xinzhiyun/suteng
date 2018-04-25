@@ -61,7 +61,6 @@ class PayController extends Controller
         // dump(session());
         $where['status'] = 0;
         $data = $address->where($where)->find();
-
         //查询商品对应的快递运费信息
         foreach ($_SESSION['goodsid'] as $key => $value) {
             // echo $value."<br>";
@@ -84,8 +83,23 @@ class PayController extends Controller
      */
     public function updateOrder()
     {
+
         //接收前端传过来的订单号进行修改订单信息
-        $orderid = $_POST[''];
+        // dump($_POST);
+        $orderId = $_POST['orderId'];
+        $data['cid'] = $_POST['cid'];
+
+        //更改订单快递信息
+        $so = M('ShopOrder');
+
+        $info = $so->where('order_id='.$orderId)->save($data);
+
+        if ($info) {
+            $this->ajaxReturn('快递方式选择成功');
+        } else {
+            $this->ajaxReturn('快递方式选择失败');
+
+        }
 
 
     }
@@ -98,7 +112,7 @@ class PayController extends Controller
     {
         //发票相关信息
         
-        //订单id
+        dump($_POST);
     }
 
     /**
