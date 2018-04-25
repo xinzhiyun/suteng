@@ -4,7 +4,23 @@ var selectPrice;
 var selectName;
 // 选中会员识别号
 var selectStatus
+var gradePanduan = $(".gradePanduan").val();//获取会员等级
 $(".goldGrade").on("touchstart", function() {
+    // 钻石会员 其他会员不可以选
+    if(gradePanduan == 0) {
+        parent.layer.msg('您已经是最高级了，亲！');
+        return false;
+    }
+    // 黄金会员 选中黄金和青铜会员不可以选
+    if((gradePanduan == 1 && $(this).attr("data") == 1) || (gradePanduan == 1 && $(this).attr("data") == 2)) {
+        parent.layer.msg('您只能升级为钻石会员！');
+        return false;
+    }
+    // 青铜会员 选中青铜不可以选
+    if(gradePanduan == 2 && $(this).attr("data") == 2) {
+        parent.layer.msg('您只能升级到钻石或黄金会员！');
+        return false;
+    }
     if($(this).attr("index") == "0") {
         // 添加类名 改变背景颜色
         $(this).addClass("selectChange").siblings().removeClass("selectChange");
