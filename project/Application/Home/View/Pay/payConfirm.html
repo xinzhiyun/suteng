@@ -197,10 +197,7 @@
 					}
 					
 				}
-			}else {
-
 			}
-			
 			console.log(postageAll[77], postageAll[73])
 			$("#hLeft").click(function(){
 				location.href = "{{:U('Address/index')}}";
@@ -377,6 +374,9 @@
 				postagePrice = $(this).find("option:selected").attr("index");
 				// 邮费id
 				cid = $(this).find("option:selected").attr("cid");
+				// 邮费对象
+				postageData = {cname: postageName, cprice: postagePrice, cid: cid};
+				console.log(postageName, postagePrice, cid);
 				// 选中邮费所在块的商品的数量
 				num = parseInt($(this).parent().siblings(".infos").children(".dec").children("div").children(".num").children("b").text());
 				// 邮费价格乘以数量
@@ -421,7 +421,7 @@
 				// 提交后台
 				$.ajax({
 					url: "{{:U('Pay/updateOrder')}}",
-					data: {orderId: order_id, cid: cid, good_id: gid},//将订单id和邮费id传递
+					data: {orderId: order_id, postageData: postageData, good_id: gid},//将订单id和邮费id传递
 					type: "post",
 					success: function(res) {
 						console.log("邮费成功", res);
