@@ -335,7 +335,7 @@
 		*/
 		var voiceArr = sessionStorage.getItem("voiceArr");
 
-		var voiceArr = [];		//发票信息
+		var voiceArr = {};		//发票信息
 
 		// 订单id
 		var order_id = sessionStorage.getItem("order_id");
@@ -388,12 +388,12 @@
 							layer.msg("邮箱格式有误!");
 							return false;
 						}
-						voiceArr.push({
+						voiceArr = {
 							'type': type,
 							'info': _voice,
 							'voicehead': dianziHead,
 							'mail': dianziTel
-						});
+						};
 					}else{
 						// 判断信息是否输入
 						var dianziHead = $(".company label p span #secperHead").val();
@@ -420,13 +420,13 @@
 							layer.msg("邮箱格式有误!");
 							return false;
 						}
-						voiceArr.push({
+						voiceArr = {
 							'type': type,
 							'info': _voice,
 							'associated': dianziAssociated,//税号
 							'voicehead': dianziHead,
 							'phone': dianziTel
-						});
+						};
 					}
 				}else{
 					// 纸质发票
@@ -458,14 +458,14 @@
 							layer.msg("号码格式有误!");
 							return false;
 						}
-						voiceArr.push({
+						voiceArr = {
 							'type': type,
 							'associated': zhizhiAssociated,
 							'secpAddr': zhizhiAddr,
 							'info': _voice,
 							'voicehead': zhizhiHead,
 							'phone': zhizhiTel
-						});
+						};
 					}else{
 						// 判断信息是否输入
 						var zhizhiHead = $(".zhicompany label p span #zhisecpHead").val();
@@ -500,54 +500,34 @@
 							layer.msg("号码格式有误!");
 							return false;
 						}
-						voiceArr.push({
+						voiceArr = {
 							'type': type,
 							'associated': zhizhiAssociated,
 							'secpAddr': zhizhiAddr,
 							'info': _voice,
 							'voicehead': zhizhiHead,
 							'phone': zhizhiTel
-						});
+						};
 					}
 				}
 			}
-		})
-		// 获取页面是否从点击发票页面跳转过来的 若不是，则默认为不开发票
-		var ref = document.referrer;
-		if(!ref) {
-			voiceArr.push({
-				'type': "不开发票",
-				'info': "",
-				'voicehead': "",
-				'phone': ""
+
+			// 将发票信息保存到浏览器session中
+			sessionStorage.setItem("voiceArr", JSON.stringify(voiceArr));
+			// 提交发票信息到后台
+			$.ajax({
+				url: "{{:U('Pay/invoiceAdd')}}",
+				data: {voiceArr: voiceArr, order_id: order_id},
+				type: "post",
+				success: function(res) {
+					console.log("发票成功", res);
+					window.location.href = "{{:U('Pay/payConfirm')}}";
+				},
+				fail: function(res) { 
+					console.log("发票失败!", res);
+				}
 			})
-		}else {
-			// 确定是从选择发票信息页面点击过来的，但是并没有选择发票
-			if(!clickFlag) {
-				voiceArr.push({
-					'type': "不开发票",
-					'info': "",
-					'voicehead': "",
-					'phone': ""
-				})
-			}
-		}
-		// 将发票信息保存到浏览器session中
-		sessionStorage.setItem("voiceArr", JSON.stringify(voiceArr));
-		// 提交发票信息到后台
-		$.ajax({
-			url: "{{:U('Pay/invoiceAdd')}}",
-			data: {voiceArr: voiceArr, order_id: order_id},
-			type: "post",
-			success: function(res) {
-				console.log("发票成功", res);
-				// window.location.href = "{{:U('Pay/payConfirm')}}";
-			},
-			fail: function(res) {
-				console.log("发票失败!", res);
-			}
 		})
-		
 	</script>
 </body>
 <script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
