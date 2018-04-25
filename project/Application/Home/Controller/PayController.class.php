@@ -87,8 +87,11 @@ class PayController extends Controller
         //接收前端传过来的订单号进行修改订单信息
         // dump($_POST);die;
         $orderId = $_POST['orderId'];
-        $gid = $_POST['gid'];
-        $data['cid'] = $_POST['cid'];
+        $gid = $_POST['good_id'];
+
+        $data['cid'] = $_POST['postageData']['cid'];
+        $data['cprice'] = $_POST['postageData']['cprice'];
+        $data['cname'] = $_POST['postageData']['cname'];
 
         //更改订单快递信息
         $so = M('OrderDetail');
