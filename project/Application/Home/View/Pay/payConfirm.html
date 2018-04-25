@@ -330,8 +330,9 @@
 						shopCar_data[i].desc = shopCar_data[i].desc
 						? shopCar_data[i].desc
 						: '暂无描述';
+						console.log("商品id",shopCar_data[i].gid)
 						// 遍历需要支付的商品信息
-						goodsHTML += '<div class="goods">'+
+						goodsHTML += '<div class="goods" v-data=" '+ shopCar_data[i].gid +' ">'+
 						'<div class="infos">'+
 						'<div class="img"><img src="'+ shopCar_data[i].path +'" alt="正在加载..."></div>'+
 						'<div class="dec">'+
@@ -380,6 +381,9 @@
 				num = parseInt($(this).parent().siblings(".infos").children(".dec").children("div").children(".num").children("b").text());
 				// 邮费价格乘以数量
 				postageArr[posNum] = postagePrice * num;
+
+				// 获取点击到的商品的id
+				console.log("商品id", $(this).parent().parent(".goods").attr("v-data"));
 				function sum(arr) {
 					var s=0;
 					if(arr.length==0){
@@ -416,7 +420,7 @@
 				// 提交后台
 				$.ajax({
 					url: "{{:U('Pay/updateOrder')}}",
-					data: {orderId: order_id, cid: cid},//将订单id和邮费id传递
+					data: {orderId: order_id, cid: cid, good_id: gid},//将订单id和邮费id传递
 					type: "post",
 					success: function(res) {
 						console.log("邮费成功", res);
