@@ -149,8 +149,30 @@ class PayController extends Controller
    * 充值年费
    */
     public function  gradeSelect() {
+
         $this->wx_info();
+        //查出当前会员等级
+        $map['id'] = $_SESSION['user']['id'];
+        $grade = M('users')->where($map)->field('id,grade')->find();
+
+        switch ($grade['grade']) {
+            case '1':
+                $grade['grade'] = '3';
+                break;
+            case '2':
+                $grade['grade'] = '2';
+                break;
+            case '3':
+                $grade['grade'] = '1';
+                break;
+            case '4':
+                $grade['grade'] = '0';
+                break;
+        }
+
         $annual = M('annual')->find();
+
+        $this->assign('grade',$grade);
         $this->assign('annual',$annual);
         $this->display();
     }
