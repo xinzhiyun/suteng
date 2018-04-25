@@ -318,17 +318,41 @@ class VipCenterController extends CommonController
         switch ($data['annual_status']) {
             case '1':
                 $data['price'] = $annual_find['annual_money'];
+                $data['mon_ey'] = $annual_find['annual_money']/365;
                 $data['name'] = '钻石年费充值';
                 break;
             case '2':
-                $data['medal_money'] = $annual_find['annual_money'];
+                $data['price'] = $annual_find['medal_money'];
+                $data['mon_ey'] = $annual_find['medal_money']/365;
                 $data['name'] = '黄金年费充值';
                 break;
             case '3':
-                $data['personal_money'] = $annual_find['annual_money'];
+                $data['price'] = $annual_find['personal_money'];
+                $data['mon_ey'] = $annual_find['personal_money']/365;
                 $data['name'] = '个人年费充值';
                 break;
         }
+        //查询当前用户
+        $user_info = M('users')->field('id,invitation_code,open_id,grade,start_time,end_time')->where(['id'=> $data['user_id']])->find();
+        //会员升级金钱
+        if ($user_info['grade']  > 1) {
+            switch ($user_info['grade']) {
+                case '4':
+                    //每天的会员费
+                    $data['mo_ey'] = $annual_find['annual_money'] / 365;
+                    break;
+                case '3':
+                    $data['mo_ey'] = $annual_find['medal_money'] / 365;
+                    break;
+                case '2':
+                    $data['mo_ey'] = $annual_find['personal_money'] / 365;
+                    break;
+            }
+            $time = intval(($user_info['end_time']-time())/86400);
+            $data['price']= (round($data['mon_ey'], 2)-round($data['mo_ey'], 2)) * $time ;
+        }
+
+
 
         // 开启事务
         $users_order->startTrans();
