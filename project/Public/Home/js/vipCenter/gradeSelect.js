@@ -6,6 +6,7 @@ var selectName;
 var selectStatus
 var gradePanduan = $(".gradePanduan").val();//获取会员等级
 $(".goldGrade").on("touchstart", function() {
+
     // 钻石会员 其他会员不可以选
     if(gradePanduan == 0) {
         parent.layer.msg('您已经是最高级了，亲！');
