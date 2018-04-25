@@ -511,17 +511,26 @@
 					}
 				}
 			}
-		})
-		// 获取页面是否从点击发票页面跳转过来的 若不是，则默认为不开发票
-		var ref = document.referrer;
-		if(!ref) {
-			voiceArr.push({
-				'type': "不开发票",
-				'info': "",
-				'voicehead': "",
-				'phone': ""
+
+			// 将发票信息保存到浏览器session中
+			sessionStorage.setItem("voiceArr", JSON.stringify(voiceArr));
+			// 提交发票信息到后台
+			$.ajax({
+				url: "{{:U('Pay/invoiceAdd')}}",
+				data: {voiceArr: voiceArr, order_id: order_id},
+				type: "post",
+				success: function(res) {
+					console.log("发票成功", res);
+					// window.location.href = "{{:U('Pay/payConfirm')}}";
+				},
+				fail: function(res) {
+					console.log("发票失败!", res);
+				}
 			})
-		}else {
+		})
+		// 获取页面是否从点击发票页面跳转过来的
+		var ref = document.referrer;
+		if(ref) {
 			// 确定是从选择发票信息页面点击过来的，但是并没有选择发票
 			if(!clickFlag) {
 				voiceArr.push({
@@ -530,23 +539,25 @@
 					'voicehead': "",
 					'phone': ""
 				})
+				// 将发票信息保存到浏览器session中
+				sessionStorage.setItem("voiceArr", JSON.stringify(voiceArr));
+				// 提交发票信息到后台
+				$.ajax({
+					url: "{{:U('Pay/invoiceAdd')}}",
+					data: {voiceArr: voiceArr, order_id: order_id},
+					type: "post",
+					success: function(res) {
+						console.log("发票成功", res);
+						// window.location.href = "{{:U('Pay/payConfirm')}}";
+					},
+					fail: function(res) {
+						console.log("发票失败!", res);
+					}
+				})
 			}
+			
 		}
-		// 将发票信息保存到浏览器session中
-		sessionStorage.setItem("voiceArr", JSON.stringify(voiceArr));
-		// 提交发票信息到后台
-		$.ajax({
-			url: "{{:U('Pay/invoiceAdd')}}",
-			data: {voiceArr: voiceArr, order_id: order_id},
-			type: "post",
-			success: function(res) {
-				console.log("发票成功", res);
-				// window.location.href = "{{:U('Pay/payConfirm')}}";
-			},
-			fail: function(res) {
-				console.log("发票失败!", res);
-			}
-		})
+		
 		
 	</script>
 </body>
