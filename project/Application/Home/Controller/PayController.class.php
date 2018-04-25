@@ -85,22 +85,22 @@ class PayController extends Controller
     {
 
         //接收前端传过来的订单号进行修改订单信息
-        dump($_POST);die;
-        // $orderId = $_POST['orderId'];
-        // $gid = $_POST['gid'];
-        // $data['cid'] = $_POST['cid'];
+        // dump($_POST);die;
+        $orderId = $_POST['orderId'];
+        $gid = $_POST['gid'];
+        $data['cid'] = $_POST['cid'];
 
-        // //更改订单快递信息
-        // $so = M('OrderDetail');
+        //更改订单快递信息
+        $so = M('OrderDetail');
 
-        // $info = $so->where('order_id='.$orderId.' AND gid='.$gid)->save($data);
+        $info = $so->where('order_id='.$orderId.' AND gid='.$gid)->save($data);
 
-        // if ($info) {
-        //     $this->ajaxReturn('快递方式选择成功');
-        // } else {
-        //     $this->ajaxReturn('快递方式选择失败');
+        if ($info) {
+            $this->ajaxReturn('快递方式选择成功');
+        } else {
+            $this->ajaxReturn('快递方式选择失败');
 
-        // }
+        }
 
 
     }
