@@ -432,18 +432,20 @@
 			发票信息
 			*/
 			var voiceArr;
+			// 如果有session存在发票信息， 则更新发票信息， 没有默认为不开发票
 			if(sessionStorage.getItem("voiceArr")){
 				voiceArr = JSON.parse(sessionStorage.getItem("voiceArr"));
-				if(voiceArr[0].type){
-					$(".ynticket>a>span").text(voiceArr[0].type)
+				if(voiceArr.type){
+					$(".ynticket>a>span").text(voiceArr.type)
+				}
+			}else {
+				voiceArr = {
+					'type': "不开发票",
+					'info': "",
+					'voicehead': "",
+					'phone': ""
 				}
 			}
-			// 发票标志， 若无点击开发票 则默认发送不开发票信息
-			$(".kaifapiao").on("click", function() {
-				var fapiaoFlag = true;
-				sessionStorage.setItem("fapiaoFlag", fapiaoFlag)
-			})
-			
 			/******** 订单遍历--结束--	**********/
 			/*
 			付款过程
@@ -472,33 +474,8 @@
 						parent.layer.msg('请选择快递方式');
 						return false;
 					}
-				}	
-				// 并无点击开发票 默认不开发票 发送发票信息给后台
-				if(!sessionStorage.getItem("fapiaoFlag")) {
-					voiceArr.push({
-						'type': "不开发票",
-						'info': "",
-						'voicehead': "",
-						'phone': ""
-					})
-					// 将发票信息保存到浏览器session中
-					sessionStorage.setItem("voiceArr", JSON.stringify(voiceArr));
-					// 提交发票信息到后台
-					$.ajax({
-						url: "{{:U('Pay/invoiceAdd')}}",
-						data: {voiceArr: voiceArr, order_id: order_id},
-						type: "post",
-						success: function(res) {
-							console.log("发票成功", res);
-							// window.location.href = "{{:U('Pay/payConfirm')}}";
-						},
-						fail: function(res) {
-							console.log("发票失败!", res);
-						}
-					})
 				}
 
-				
 				$('.paystyle').slideDown("slow");
 			})
 			// 付款方式的单选框
