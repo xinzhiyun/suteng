@@ -297,8 +297,9 @@ class VendorsController extends Controller
             }
 
     	}else{
+
             $this->wx_info();
-    		$this->display('identity');
+    		$this->display('identity_refillings');
     	}
     }
 
@@ -1177,7 +1178,7 @@ class VendorsController extends Controller
         $weixin = new \Org\Util\WeixinJssdk();
         $signPackage = $weixin->getSignPackage();
 
-        $this->assign('wxinfo',$signPackage);
+        $this->assign('info',$signPackage);
 
         //$openId = $weixin->GetOpenid();
         $openId = $_SESSION['open_id'];
