@@ -327,7 +327,8 @@
                             success: function (res) {                    
                                     var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
                                     localData = localData.replace('jgp', 'jpeg');//iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下                                
-                                    $(objs).siblings(".xiePic").children("img").attr("src", localData).end().css("visibility", "visible");
+                                    $(objs).siblings(".xiePic").children("img").attr("src", localData);
+                                    $(objs).siblings(".xiePic").css("visibility", "visible").attr("index", "1");
 
                             },
                             fail:function(res){
@@ -335,7 +336,8 @@
                             }
                         });
                     }else{
-                            $(objs).siblings(".xiePic").children("img").attr("src", e).end().css("visibility", "visible");
+                            $(objs).siblings(".xiePic").children("img").attr("src", e);
+                            $(objs).siblings(".xiePic").css("visibility", "visible").attr("index", "1");
                         
                     }
 
