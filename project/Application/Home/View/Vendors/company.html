@@ -210,193 +210,191 @@
             <p><span>{{$vendor.name}}</span></p>
         </header>
         <!-- <form action="{{:U('Home/Vendors/company')}}" method="post" class="form-horizontal clearfix" enctype="multipart/form-data">    -->
-            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal clearfix"> 
-                <div class="form-group">
-                    <i class="iconfont icon-gongsimingcheng1"></i>
-                    <label class="col-sm-2 control-label" for="comName">公司名称</label>
-                    
-                    <div class="col-md-3">
-                        <input id="comName" type="text" name="company" class="form-control">
-                    </div>
-                </div> 
-                <div class="form-group">
-                    <i class="iconfont icon-dianhua"></i>
-                    <label class="col-sm-2 control-label" for="comTel">固定电话</label>
-                    
-                    <div class="col-md-3">
-                        <input id="comTel" type="text" name="telephone" class="form-control">
-                    </div>
+        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal clearfix"> 
+            <div class="form-group">
+                <i class="iconfont icon-gongsimingcheng1"></i>
+                <label class="col-sm-2 control-label" for="comName">公司名称</label>
+
+                <div class="col-md-3">
+                    <input id="comName" type="text" name="company" class="form-control">
                 </div>
-                <div class="form-group">
-                    <i class="iconfont icon-dizhi"></i>
-                    <label class="col-sm-2 control-label" for="comAddr">公司地址</label>
-                    
-                    <div class="col-md-3">
-                        <input id="comAddr" type="text" name="address" class="form-control">
-                    </div> 
+            </div> 
+            <div class="form-group">
+                <i class="iconfont icon-dianhua"></i>
+                <label class="col-sm-2 control-label" for="comTel">固定电话</label>
+
+                <div class="col-md-3">
+                    <input id="comTel" type="text" name="telephone" class="form-control">
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label" for="comLicen">营业执照</label>
-                    <div class="col-md-3">
-                        <input type="button" id="comLicen" name="licence" class="form-control">
-                        <i class="iconfont icon-tianjiajingdian"></i>
-                        <div class="xiePic" index="0">
-                            <img src="" id="licence"><i class="iconfont icon-cuohao" onclick="removePic(this)"></i></div>
-                        </div>
-                    </div> 
-                    <div class="xieBtn">
-                        <input class="btn btn-primary" type="submit" value="下一步"></input>
-                    </div>
-                </form>
             </div>
-            <script>
-                //微信接口
-                wx.config({
-                    debug: false,
-                    appId: '{{$info["appId"]}}',
-                    timestamp: '{{$info["timestamp"]}}',
-                    nonceStr: '{{$info["nonceStr"]}}',
-                    signature: '{{$info["signature"]}}',
-                    jsApiList: [
-                    // 所有要调用的 API 都要加到这个列表中
-                    'chooseImage',
-                        'uploadImage',
-                        'getLocalImgData',
-                        'downloadImage'
-                    ]
-                });
-                // 点击上传图片
-                $("input[type=button]").on("click", function() {
-                    if($(this).siblings(".xiepic").is(":visible")) {
-                        layui.use("只支持一张图片!继续操作会覆盖原图片", function(index){
-                            var layer = layui.layer;
-                            layer.confirm(text, function(index) {
-                                // 确认后执行函数并关闭窗口
-                                takePicture(1, $(this));
-                                layer.close(index);
-                            });
-                        });
-                    }else {
+            <div class="form-group">
+                <i class="iconfont icon-dizhi"></i>
+                <label class="col-sm-2 control-label" for="comAddr">公司地址</label>
+
+                <div class="col-md-3">
+                    <input id="comAddr" type="text" name="address" class="form-control">
+                </div> 
+            </div>
+            <div class="form-group">
+            <label class="col-sm-2 control-label" for="comLicen">营业执照</label>
+            <div class="col-md-3">
+                <input type="button" id="comLicen" name="licence" class="form-control">
+                <i class="iconfont icon-tianjiajingdian"></i>
+                <div class="xiePic" index="0">
+                    <img src="" id="licence"><i class="iconfont icon-cuohao" onclick="removePic(this)"></i></div>
+                </div>
+            </div> 
+            <div class="xieBtn">
+                <input class="btn btn-primary" type="submit" value="下一步"></input>
+            </div>
+        </form>
+    </div>
+    <script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
+    <script>
+        //微信接口
+        wx.config({
+            debug: false,
+            appId: '{{$info["appId"]}}',
+            timestamp: '{{$info["timestamp"]}}',
+            nonceStr: '{{$info["nonceStr"]}}',
+            signature: '{{$info["signature"]}}',
+            jsApiList: [
+            // 所有要调用的 API 都要加到这个列表中
+            'chooseImage',
+            'uploadImage',
+            'getLocalImgData',
+            'downloadImage'
+            ]
+        });
+        // 点击上传图片
+        $("input[type=button]").on("click", function() {
+            if($(this).siblings(".xiepic").is(":visible")) {
+                layui.use("只支持一张图片!继续操作会覆盖原图片", function(index){
+                    var layer = layui.layer;
+                    layer.confirm(text, function(index) {
+                        // 确认后执行函数并关闭窗口
                         takePicture(1, $(this));
-                    }
-                })
-                
-                function takePicture(nums, obj) {  
-                    wx.chooseImage({  
-                        count: 1,  //最多可以选择的图片张数
-                        needResult: 1,  
-                        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有  
-                        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有  
-                        success: function (data) {                  
-                            localIds = data.localIds[0];   // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片        
-                                            
-                            var num1 = nums;
-                            var objs = obj;
-                            wxuploadImage(localIds,num1, objs);
-                            wxgetLocalImgData(localIds,num1, objs);
-                        },  
-                        fail: function (res) {  
-                            console.log('失败：',JSON.stringify(res));
-                        }    
-                    });  
-
-                }
-                function wxuploadImage(e,num, objs) {
-
-                    wx.uploadImage({  
-                        localId: e, // 需要上传的图片的本地ID，由chooseImage接口获得  
-                        isShowProgressTips: 1, // 默认为1，显示进度提示  
-                        success: function (res) {   
-                            // alert('成功！',JSON.stringify(res));                                     
-                            mediaId = res.serverId;                     
-                            $(objs).siblings('input[name="pic"]').val(mediaId);
-                        },  
-                        fail: function (error) {  
-                            // alert('失败！',error);    
-                            picPath = '';  
-                            localIds = '';  
-                        }          
+                        layer.close(index);
                     });
+                });
+            }else {
+                takePicture(1, $(this));
+            }
+        })
+        
+        function takePicture(nums, obj) {  
+            wx.chooseImage({  
+                count: 1,  //最多可以选择的图片张数
+                needResult: 1,  
+                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有  
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有  
+                success: function (data) {                  
+                    localIds = data.localIds[0];   // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片        
 
-                }
+                    var num1 = nums;
+                    var objs = obj;
+                    wxuploadImage(localIds,num1, objs);
+                    wxgetLocalImgData(localIds,num1, objs);
+                },  
+                fail: function (res) {  
+                    console.log('失败：',JSON.stringify(res));
+                }    
+            });  
 
-                function wxgetLocalImgData(e,num, objs){
-                    if(window.__wxjs_is_wkwebview){
-                        wx.getLocalImgData({
-                            localId: e, // 图片的localID
-                            success: function (res) {                    
-                                    var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
-                                    localData = localData.replace('jgp', 'jpeg');//iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下                                
-                                    $(objs).siblings(".xiePic").children("img").attr("src", localData);
-                                    $(objs).siblings(".xiePic").css("visibility", "visible").attr("index", "1");
+        }
+        function wxuploadImage(e,num, objs) {
 
-                            },
-                            fail:function(res){
-                                    alert("显示失败");
-                            }
-                        });
-                    }else{
-                            $(objs).siblings(".xiePic").children("img").attr("src", e);
+            wx.uploadImage({  
+                localId: e, // 需要上传的图片的本地ID，由chooseImage接口获得  
+                isShowProgressTips: 1, // 默认为1，显示进度提示  
+                success: function (res) {   
+                    // alert('成功！',JSON.stringify(res));                                     
+                    mediaId = res.serverId;                     
+                    $(objs).siblings('input[name="pic"]').val(mediaId);
+                },  
+                fail: function (error) {  
+                    // alert('失败！',error);    
+                    picPath = '';  
+                    localIds = '';  
+                }          
+            });
+
+        }
+
+        function wxgetLocalImgData(e,num, objs){
+            if(window.__wxjs_is_wkwebview){
+                wx.getLocalImgData({
+                    localId: e, // 图片的localID
+                    success: function (res) {                    
+                            var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+                            localData = localData.replace('jgp', 'jpeg');//iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下                                
+                            $(objs).siblings(".xiePic").children("img").attr("src", localData);
                             $(objs).siblings(".xiePic").css("visibility", "visible").attr("index", "1");
-                        
-                    }
 
-                }
-                // 点击叉叉隐藏div
-                function removePic(removeObj) {
-                    removeObj.previousSibling.src = "";//将图片路径删除
-                    removeObj.parentNode.style.visibility = "hidden";//隐藏div
-                    removeObj.parentNode.setAttribute("index", "0");//设置index为0
-                }
-                // 提交验证
-                $('form').submit(function(e) {
-                    var comNameVal = $('#comName').val();//输入公司名称
-                    var comTellVal = $("#comTel").val();//输入公司固定电话
-                    var comAddrVal = $("#comAddr").val();//公司地址
-                    // 验证是否合法公司名称：字母或中文开头，数字字母下划线中文,2-30位
-                    var comNameReg = /^[\u4e00-\u9fa5\w]{2,30}$/;
-                    if(comNameVal) {
-                        if(comNameReg.test(comNameVal)) {
-                            // 座机号码验证
-                            if(comTellVal) {
-                                var comTellReg = /^((0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/;//固定电话号码
-                                var comTellRegs = /^1[3|4|5|8][0-9]\d{4,8}$/;//手机号码
-                                if(comTellReg.test(comTellVal) || comTellRegs.test(comTellVal)) {
-                                    // 公司地址验证
-                                    if(comAddrVal) {
-                                        var comAddrReg = /^[\w\-\u4e00-\u9fa5]{6,255}$/u;
-                                        if(comAddrReg.test(comAddrVal)) {
-                                            // 上传营业执照图片
-                                            if($(".xiePic").attr("index") === "1") {
-                                                // 验证成功后跳转
-                                                window.location.href = "{{:U('Home/Vendors/protocol')}}";
-                                            }else{
-                                                layuiHint("营业执照图片必须上传"); 
-                                            }
-                                        }else{
-                                            layuiHint("请输入完整的公司地址");
-                                        }
+                        },
+                        fail:function(res){
+                            alert("显示失败");
+                        }
+                    });
+            }else{
+                $(objs).siblings(".xiePic").children("img").attr("src", e);
+                $(objs).siblings(".xiePic").css("visibility", "visible").attr("index", "1");
+                
+            }
+
+        }
+        // 点击叉叉隐藏div
+        function removePic(removeObj) {
+            removeObj.previousSibling.src = "";//将图片路径删除
+            removeObj.parentNode.style.visibility = "hidden";//隐藏div
+            removeObj.parentNode.setAttribute("index", "0");//设置index为0
+        }
+        // 提交验证
+        $('form').submit(function(e) {
+            var comNameVal = $('#comName').val();//输入公司名称
+            var comTellVal = $("#comTel").val();//输入公司固定电话
+            var comAddrVal = $("#comAddr").val();//公司地址
+            // 验证是否合法公司名称：字母或中文开头，数字字母下划线中文,2-30位
+            var comNameReg = /^[\u4e00-\u9fa5\w]{2,30}$/;
+            if(comNameVal) {
+                if(comNameReg.test(comNameVal)) {
+                    // 座机号码验证
+                    if(comTellVal) {
+                        var comTellReg = /^((0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/;//固定电话号码
+                        var comTellRegs = /^1[3|4|5|8][0-9]\d{4,8}$/;//手机号码
+                        if(comTellReg.test(comTellVal) || comTellRegs.test(comTellVal)) {
+                            // 公司地址验证
+                            if(comAddrVal) {
+                                var comAddrReg = /^[\w\-\u4e00-\u9fa5]{6,255}$/u;
+                                if(comAddrReg.test(comAddrVal)) {
+                                    // 上传营业执照图片
+                                    if($(".xiePic").attr("index") === "1") {
+                                        // 验证成功后跳转
+                                        window.location.href = "{{:U('Home/Vendors/protocol')}}";
                                     }else{
-                                        layuiHint("请输入公司地址");
+                                        layuiHint("营业执照图片必须上传"); 
                                     }
                                 }else{
-                                    layuiHint("坐机号码或手机号码格式不正确");
+                                    layuiHint("请输入完整的公司地址");
                                 }
                             }else{
-                                layuiHint("请输入坐机号码");
+                                layuiHint("请输入公司地址");
                             }
                         }else{
-                            layuiHint("公司名称格式不正确，请重新输入");
+                            layuiHint("坐机号码或手机号码格式不正确");
                         }
                     }else{
-                        layuiHint("请输入公司名称");
+                        layuiHint("请输入坐机号码");
                     }
-                    
-                    return false;
-                })
-            </script>
-        </body>
-        </html>
-        
-        
-        
+                }else{
+                    layuiHint("公司名称格式不正确，请重新输入");
+                }
+            }else{
+                layuiHint("请输入公司名称");
+            }
+            
+            return false;
+        })
+    </script>
+</body>
+</html>
