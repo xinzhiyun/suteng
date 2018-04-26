@@ -376,7 +376,7 @@
 				cid = $(this).find("option:selected").attr("cid");
 				// 邮费对象
 				postageData = {cname: postageName, cprice: postagePrice, cid: cid};
-				// console.log(postageName, postagePrice, cid);
+				console.log(postageName, postagePrice, cid);
 				// 选中邮费所在块的商品的数量
 				num = parseInt($(this).parent().siblings(".infos").children(".dec").children("div").children(".num").children("b").text());
 				// 邮费价格乘以数量
@@ -576,26 +576,12 @@
 					JSON.parse(res),
 					function(res){
 						if(res.err_msg.substr(-2) == 'ok'){
-							$.ajax({
-								type: "POST",
-								async: false,
-								url: '{{:U("PaymentSystem/paytosuccess")}}',
-								data: {
-									'order' : order_id
-								},
-								success: function(msg){
-									
-									parent.layer.msg('付款成功！');
-									//付款成功后的操作
-									setTimeout(function(){
-										location.href = '{{:U("PaymentSystem/paytosuccess")}}';
-									},500);
-								},
-								error: function(msg){
 
-								}
-							});
-
+							parent.layer.msg('付款成功！');
+						//付款成功后的操作
+						setTimeout(function(){
+							location.href = '{{:U("PaymentSystem/paytosuccess")}}';
+						},500);
 						
 					}else if(res.err_msg.substr(-6) == 'cancel'){
 						//取消订单操作
@@ -612,24 +598,7 @@
 			}
 			
 			/******** 付款过程--结束--	**********/
-			// 获取商品id
-			var goodId = [];
-			for(var i = 0; i < $(".goods").length; i++) {
-				goodId.push($(".goods").eq(i).attr("v-data"));
-			}
-			console.log("拿到的商品id",goodId);
-			// 直接提交商品id到后台
-			$.ajax({
-				url: "",
-				type: "post",
-				data: {goodId: goodId},//商品id
-				success: function(res) {
-					console.log("提交商品id成功", res);
-				},
-				error: function(res) {
-					console.log("提交商品id失败", res);
-				}
-			})
+			
 		})
 
 	</script>

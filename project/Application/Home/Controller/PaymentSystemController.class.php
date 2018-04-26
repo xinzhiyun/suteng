@@ -204,7 +204,7 @@ class PaymentSystemController extends CommonController
             $res = $Model->execute($sql);
             if($rs && $res){
                 $shopOrder->commit();
-                $this->ajaxReturn(['code'=>200,'msg'=>'','state'=>true]);
+                $this->ajaxReturn(['code'=>200,'msg'=>'操作成功','state'=>true]);
             } else {
                 $shopOrder->rollback();
                 $this->ajaxReturn(['code'=>400,'msg'=>'操作失败','state'=>false]);
