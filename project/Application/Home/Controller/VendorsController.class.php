@@ -78,6 +78,7 @@ class VendorsController extends Controller
 	        // 匹配分销商状态，安排后续操作
 	        switch ($status) {
 	        	case '0':
+	        	    $this->wx_info();
 	        		// 身份证信息填写
                 	$this->identity();
 	        		break;
@@ -296,6 +297,7 @@ class VendorsController extends Controller
             }
 
     	}else{
+            $this->wx_info();
     		$this->display('identity');
     	}
     }
@@ -413,6 +415,7 @@ class VendorsController extends Controller
             }
 
     	}else{
+            $this->wx_info();
     		$this->display('identity_refillings');
     	}
     }
@@ -529,7 +532,7 @@ class VendorsController extends Controller
             }
 
     	}else{
-            dump($this->wx_info());
+            $this->wx_info();
     		$this->display('company');
     	}
     }
@@ -646,6 +649,7 @@ class VendorsController extends Controller
             }
 
     	}else{
+            $this->wx_info();
     		$this->display('company_refillings');
     	}
     }
@@ -662,7 +666,7 @@ class VendorsController extends Controller
 
             // 上传合同文件
             $info = $this->upload();
-            dump($open_id);
+
 
             if($info){
                 $info['status'] = 9;
@@ -686,6 +690,7 @@ class VendorsController extends Controller
 
             $this->ajaxReturn($message); 
         } else {
+            $this->wx_info();
             $this->display();
         }
     	
