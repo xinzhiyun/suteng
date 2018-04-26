@@ -322,7 +322,7 @@
         });
         // 点击上传图片
         $("input[type=button]").on("click", function() {
-            if($(this).siblings(".xiepic").is(":visible")) {
+            if($(this).siblings(".xiepic").attr("index") == 1) {
                 layui.use("只支持一张图片!继续操作会覆盖原图片", function(index){
                     var layer = layui.layer;
                     layer.confirm(text, function(index) {
@@ -368,11 +368,11 @@
                                    layuiHint("身份证格式错误") ;
                                 }else{
                                     // 正面身份证是否提交
-                                    if($('.xiePic').eq(0).attr("index") === "1") {
+                                    if($('.xiePic').eq(0).attr("index") == "1") {
                                         // 反面身份证是否提交
-                                        if($('.xiePic').eq(1).attr("index") === "1"){
+                                        if($('.xiePic').eq(1).attr("index") == "1"){
                                             // 手持身份证是否提交
-                                            if($('.xiePic').eq(2).attr("index") === "1") {
+                                            if($('.xiePic').eq(2).attr("index") == "1") {
 
                                                 window.location.href = "{{:U('Home/Vendors/company')}}";
                                                 // 验证成功后跳转
@@ -459,7 +459,7 @@ function wxgetLocalImgData(e,num, objs){
        });
    }else{ //安卓
         $(objs).siblings(".xiePic").children("img").attr("src", e);
-        $(objs).siblings(".xiePic").css("visibility", "visible");
+        $(objs).siblings(".xiePic").css("visibility", "visible").attr("index", "1");
        
    }
 
