@@ -576,12 +576,26 @@
 					JSON.parse(res),
 					function(res){
 						if(res.err_msg.substr(-2) == 'ok'){
+							$.ajax({
+								type: "POST",
+								async: false,
+								url: '{{:U("PaymentSystem/paytosuccess")}}',
+								data: {
+									'order' : order_id
+								},
+								success: function(msg){
+									
+									parent.layer.msg('付款成功！');
+									//付款成功后的操作
+									setTimeout(function(){
+										location.href = '{{:U("PaymentSystem/paytosuccess")}}';
+									},500);
+								},
+								error: function(msg){
 
-							parent.layer.msg('付款成功！');
-						//付款成功后的操作
-						setTimeout(function(){
-							location.href = '{{:U("PaymentSystem/paytosuccess")}}';
-						},500);
+								}
+							});
+
 						
 					}else if(res.err_msg.substr(-6) == 'cancel'){
 						//取消订单操作

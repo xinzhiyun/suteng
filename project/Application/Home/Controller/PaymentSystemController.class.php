@@ -166,7 +166,53 @@ class PaymentSystemController extends CommonController
      */
     public function paytosuccess()
     {
-    	$this->display();
+        if(IS_AJAX){
+            $order_id = I('post.order_id');
+            $uid = session('user.id');
+
+            $shopOrder = D('ShopOrder');
+            $orderDetail = D('OrderDetail');
+            $inventory = D('inventory');
+            
+            $shopOrder->startTrans();
+            $rs = $shopOrder->where(['order_id'=>$order_id,'uid'=>$uid])->setField(['status'=>9]);
+            $order_goods = $order_detail->field('gid,num')->where(['order_id'=>$order_id])->select();
+            // $goods = \array_column($order_goods,'gid');
+            foreach($order_goods as $good){
+                // $inventory->where(['gid'=>$good['gid']])->setDec('allnum',$good['num']);
+                $display_order[$good['gid']] = $good['num'];
+            }
+            
+            // $display_order = array( 
+            //     1 => 4, 
+            //     2 => 1, 
+            //     3 => 2, 
+            //     4 => 3, 
+            //     5 => 9, 
+            //     6 => 5, 
+            //     7 => 8, 
+            //     8 => 9 
+            // ); 
+            $ids = implode(',', array_keys($display_order)); 
+            $sql = "UPDATE st_inventory SET allnum = CASE gid "; 
+            foreach ($display_order as $id => $ordinal) { 
+                $sql .= sprintf("WHEN %d THEN allnum - %d ", $id, $ordinal); 
+            } 
+            $sql .= "END WHERE id IN ($goods)"; 
+            // echo $sql;
+            $Model = new \Think\Model(); // 实例化一个model对象 没有对应任何数据表
+            $res = $Model->execute($sql);
+            if($rs && $res){
+                $shopOrder->commit();
+                $this->ajaxReturn(['code'=>200,'msg'=>'','state'=>true]);
+            } else {
+                $shopOrder->rollback();
+                $this->ajaxReturn(['code'=>400,'msg'=>'操作失败','state'=>false]);
+            }
+
+        } else {
+            $this->display();
+        }  	
     }
 
     /**
