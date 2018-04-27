@@ -50,6 +50,8 @@
 				<!-- 报装中 -->
 				<div class="tuikuangall clearfix returned5">
 				</div>
+				<!-- 评论成功后跳转到退款售后 -->
+				<div class="tuikuangall clearfix returned6"></div>
 			</div>
 			
 		</div>
@@ -188,6 +190,7 @@
 		var returned3='';//退款退货中html
 		var returned4='';//退货成功html
 		var returned5='';//报装中与报装完成html
+		var returned6='';//评论完成html
 		
 		// 订单状态
 		var dingdanArr = [ '#dingdanDaifukuan','#dingdanDaifahuo','#dingdanDaishouhuo','#dingdanDaipinglun','#saleAfter']
@@ -663,11 +666,11 @@
         });  
 
 		$.ajax({//4：退货/售后
-				url:"{{:U('Home/Refund/showGoods')}}",
-				data:{
-            	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-            	// "status":4
-            	"refundStatus":1,
+			url:"{{:U('Home/Refund/showGoods')}}",
+			data:{
+				"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
+				// "status":4
+				"refundStatus":1,
             },
             // dataType:"json",
             type: 'get',
@@ -790,19 +793,18 @@
                 				'<p><b>商品已寄出，退款退货中</b></p>';
                 			}
                 		}else if(res.data[i]['status']=='7'){
-                			for(var k=0;k<res.data[i]['goods'].length;k++){
+                			for(var k=0;k<res.data[i].length;k++){
                 				// 无图片时显示
-                				var noimg_show = res.data[i]['goods'][k]['orderimg']
-                				? (imgpath + res.data[i]['goods'][k]['orderimg'])
-                				: noimg;
-                				returned4+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
+                				var noimg_show = res.data[i][productList][0]['orderimg']
+                				? (imgpath + res.data[i][productList][0]['orderimg']) : noimg;
+                				returned4+='<p>信息更新时间：'+ res.data[i]['ordertime'] +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft ">'+
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
-                				'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
-                				'<p><b>￥'+ res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
+                				'<span>'+ res.data[i][productList][0]['productname'] +'</span>'+
+                				'<p><b>￥'+ res.data[i][productList][0]['price'] +'</b><span>x '+ res.data[i][productList][0]['productnumber'] +'</span></p>'+
                 				'</div>'+
                 				'</div>'+
                 				'<p><b>退款退货成功剁你小JJ</b></p>';
@@ -904,8 +906,40 @@
             dataType:"json",
             type: 'post',
             success:function(res){
-				
-            }
+				console.log("请求退款售后成功", res);
+				if(res.code == 200) {
+					for(var i=0;i<res.data.length;i++){
+						var productLists = res.data[i].productList.length;
+						console.log("产品数量", productLists)
+						// 产品列表循环
+						for(var j = 0; j < productLists; j++) {
+							console.log(res.data[i].productList[j])
+						
+							// 无图片时显示
+							var noimg_show = res.data[i].productList[j].orderimg
+							? (imgpath + res.data[i].productList[j].orderimg)
+							: noimg;
+							returned6+='<p>信息更新时间：'+ res.data[i].ordertime +'</p>'+
+							'<div class="shangpingnei clearfix">'+
+							'<div class="tuikuangLeft ">'+
+							'<img src="'+ noimg_show +'" alt="">'+
+							'</div>'+
+							'<div class="tuikuangRight">'+
+							'<span>'+ res.data[i].productList[j].productname +'</span>'+
+							'<p><b>￥'+res.data[i].productList[j].price+'</b><span>x '+ res.data[i].productList[j].productnumber +'</span></p>'+
+							'</div>'+
+							'</div>'+
+							'<p><b>添加完成</b></p>';
+						}
+
+                	}
+                	$(".returned6").html(returned6);
+                	Rejectednum=res.data.length;
+				}				
+            },
+			error: function(res) {
+				console.log("请求失败", res);
+			}
         });
 
 		// 从支付成功跳到查看订单界面 ~~ 待发货
