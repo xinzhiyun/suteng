@@ -22,6 +22,8 @@ class CommentController extends CommonController
         try {
             $comment = D('Comment');
             $data = I('post.');
+            $orderid = $data['orderid'];
+            // dump($data);
             $data['uid'] = session('user.id');
             $savePath = 'Uploads/pic/';
             // 二进制文件上传简单处理
@@ -53,24 +55,42 @@ class CommentController extends CommonController
                 E('只能添加三张图片',604);
             } 
             $comment->startTrans();
-            // 判断该用户是否已经对这个商品评价过，如果评价过，就不能评价了           
-            if($comment->where(['uid'=>$data['uid'],'gid'=>$data['gid']])->find()){
-                
-                E('你已经评论过了，不能再次评论！', 605);
-            }
-
-            $data['addtime'] = time();
-            unset($data['file']);
-            $com_status = $comment->add($data);
-            foreach ($info as $key => $value) {
-                $com_pic[] = [
-                    'cid' => $com_status,
-                    'path' => $value
+            // 根据订单获取所有商品
+            $goods = D('order_detail')->where(['order_id'=>$orderid])->field('gid')->select();
+            foreach($goods as $key => $value){
+                // 判断该用户是否已经对这个商品评价过，如果评价过，就不能评价了           
+                if($comment->where(['uid'=>$data['uid'],'gid'=>$value['gid'],'order_id'=>$orderid])->find()){                   
+                    E('你已经评论过了，不能再次评论！', 605);
+                    break;
+                }
+                $comments = [];
+                $comments = [
+                    'order_id' => $orderid,
+                    'gid' => $value['gid'],
+                    'uid' => $data['uid'],
+                    'status' => $data['status'],
+                    'content' => $data['content'],
+                    'addtime' => time()
                 ];
+                $com_status[] = $comment->add($comments);
             }
+            // print_r($comments);die;
+            // unset($data['file']);
+            foreach($com_status as $coms){
+                foreach ($info as $key => $value) {
+                    $com_pic[] = [
+                        'cid' => $coms,
+                        'path' => $value
+                    ];
+                }
+            }
+            
+            
+            // print_r($com_status);
+            // dump($com_status);die;
             $pic_status = D("ComPic")->addAll($com_pic);
             if($com_status&&$pic_status){
-                $res = D('ShopOrder')->where(['uid'=>$data['uid'],'gid'=>$data['gid']])->setField(['status'=>7]);
+                $res = D('ShopOrder')->where(['uid'=>$data['uid'],'order_id'=>$orderid])->setField(['status'=>7]);
                 $comment->commit();
                 E('评论成功', 200);
                 // $this->success('评论成功');

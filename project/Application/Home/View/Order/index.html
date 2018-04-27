@@ -657,7 +657,7 @@
                 	pinglunObj['pic'] = $(this).parents(".goods").find('.giPicture>img').attr('src');
                 	//将点击的带评论商品数据存到本地存储中
                 	sessionStorage.setItem("pinglunObj",JSON.stringify(pinglunObj));
-                	location.href = '{{:U("Comment/index")}}?gid=' + $(this).attr("gid");
+                	location.href = '{{:U("Comment/index")}}?orderid=' + $(this).attr('name');
                 }) 
             }
         });  
@@ -805,7 +805,7 @@
                 				'<p><b>￥'+ res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
                 				'</div>'+
                 				'</div>'+
-                				'<p><b>退款退货成功</b></p>';
+                				'<p><b>退款退货成功剁你小JJ</b></p>';
                 			}
                 		}
                 	}
@@ -894,7 +894,19 @@
                 }); 	
             }
         }); 
-            
+		
+		$.ajax({//9：评价后的已完成的订单
+				url:"{{:U('Home/Order/order_list')}}",
+				data:{
+            	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单},
+            	"status":[7]
+            },
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+				
+            }
+        });
 
 		// 从支付成功跳到查看订单界面 ~~ 待发货
 		var offsetInt = setInterval(function(){

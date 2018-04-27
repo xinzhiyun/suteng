@@ -428,7 +428,7 @@ class OrderController extends CommonController
             // $refund = D('refund_goods')->field('oid,gid')->select(false);
             // echo $refund;die;
             // $data = M('shop_order')->alias('so')->where('order_id='.$orderid)->select();
-            $subsql = D('refund_goods')->field('gid')->select(false);
+            $subsql = D('refund_goods')->where(['oid'=>$orderid])->field('gid')->select(false);
             $data = M('order_detail')                        
                         ->alias('d')
                         // ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'d.gid'=>['NEQ','rg.gid'],'rg.oid'=>['NEQ',$orderid]])
