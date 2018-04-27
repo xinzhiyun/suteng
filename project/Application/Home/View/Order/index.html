@@ -391,7 +391,7 @@
 				url:"{{:U('Home/Order/order_list')}}",
 				data:{
             	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单},
-            	"status":9
+            	"status":[4,6,9]
             },
             dataType:"json",
             type: 'post',
@@ -687,7 +687,7 @@
                 				? (imgpath + res.data[i]['goods'][k]['orderimg'])
                 				: noimg;
                 				// console.log(res.data[i]['dw_time']);
-                				returned1+='<p>信息更新时间：'+ res.data[i]['dw_time'] +'</p>'+
+                				returned1+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft ">'+
                 				'<img src="'+ noimg_show +'" alt="">'+
@@ -699,14 +699,32 @@
                 				'</div>'+
                 				'<p><b>等待商家同意退款</b></p>';
                 			}
-                		}else if(res.data[i]['status']=='1'){//商家已同意
+                		}else if(res.data[i]['status']=='1'){
+                			for(var k=0;k<res.data[i]['goods'].length;k++){
+                				// 无图片时显示
+                				var noimg_show = res.data[i]['goods'][k]['orderimg']
+                				? (imgpath + res.data[i]['goods'][k]['orderimg'])
+                				: noimg;
+                				returned4+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
+                				'<div class="shangpingnei clearfix">'+
+                				'<div class="tuikuangLeft ">'+
+                				'<img src="'+ noimg_show +'" alt="">'+
+                				'</div>'+
+                				'<div class="tuikuangRight">'+
+                				'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+                				'<p><b>￥'+ res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
+                				'</div>'+
+                				'</div>'+
+                				'<p><b>商家同意退款</b></p>';
+                			}
+                		}else if(res.data[i]['status']=='3'){//商家已同意
                 			// console.log(1111);
                 			for(var k=0;k<res.data[i]['goods'].length;k++){
                 				// 无图片时显示
                 				var noimg_show = res.data[i]['goods'][k]['orderimg']
                 				? (imgpath + res.data[i]['goods'][k]['orderimg'])
                 				: noimg;
-                				returned2+='<p>信息更新时间：'+res.data[i]['dw_time']+'</p>'+
+                				returned2+='<p>信息更新时间：'+timestampToTime(res.data[i]['create_time'])+'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft ">'+
                 				'<img src="'+ noimg_show +'" alt="">'+
@@ -734,6 +752,24 @@
                 				'</div>';
                 			}
 
+                		}else if(res.data[i]['status']=='5'){
+                			for(var k=0;k<res.data[i]['goods'].length;k++){
+                				// 无图片时显示
+                				var noimg_show = res.data[i]['goods'][k]['orderimg']
+                				? (imgpath + res.data[i]['goods'][k]['orderimg'])
+                				: noimg;
+                				returned4+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
+                				'<div class="shangpingnei clearfix">'+
+                				'<div class="tuikuangLeft ">'+
+                				'<img src="'+ noimg_show +'" alt="">'+
+                				'</div>'+
+                				'<div class="tuikuangRight">'+
+                				'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+                				'<p><b>￥'+ res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
+                				'</div>'+
+                				'</div>'+
+                				'<p><b>退款成功</b></p>';
+                			}
                 		}else if(res.data[i]['status']=='6'){//正在退货
                 			
                 			for(var k=0;k<res.data[i]['goods'].length;k++){
@@ -741,7 +777,7 @@
                 				var noimg_show = waitpaylist[i]['productList'][k]['orderimg']
                 				? (imgpath + waitpaylist[i]['productList'][k]['orderimg'])
                 				: noimg;
-                				returned3+='<p>信息更新时间：'+ res.data[i]['dw_time'] +'</p>'+
+                				returned3+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft ">'+
                 				'<img src="'+ noimg_show +'" alt="">'+
@@ -759,7 +795,7 @@
                 				var noimg_show = res.data[i]['goods'][k]['orderimg']
                 				? (imgpath + res.data[i]['goods'][k]['orderimg'])
                 				: noimg;
-                				returned4+='<p>信息更新时间：'+ res.data[i]['dw_time'] +'</p>'+
+                				returned4+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft ">'+
                 				'<img src="'+ noimg_show +'" alt="">'+
@@ -875,7 +911,16 @@
 			}
 		},10)
 	})();
-
+function timestampToTime(timestamp) {
+	var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+	Y = date.getFullYear() + '-';
+	M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+	D = date.getDate() + ' ';
+	h = date.getHours() + ':';
+	m = date.getMinutes() + ':';
+	s = date.getSeconds();
+	return Y+M+D+h+m+s;
+}
 </script>
 </body>
 </html>

@@ -219,7 +219,7 @@ class WeiXinPayController extends Controller
 //        $xml=file_get_contents('php://input', 'r');
 //        Log::write( $xml,'测试一号');
         $xml = '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
-<attach><![CDATA[819818675126975]]></attach>
+<attach><![CDATA[723557061295684]]></attach>
 <bank_type><![CDATA[CFT]]></bank_type>
 <cash_fee><![CDATA[1]]></cash_fee>
 <fee_type><![CDATA[CNY]]></fee_type>
@@ -322,7 +322,7 @@ class WeiXinPayController extends Controller
                   $orderDetail = D('OrderDetail');
                   $inventory = D('inventory');
                   
-                //   $shopOrder->startTrans();
+                  $shopOrder->startTrans();
                   $rs = $shopOrder->where(['order_id'=>$order_id,'uid'=>$uid])->setField(['status'=>9]);
                   $order_goods = $order_detail->field('gid,num')->where(['order_id'=>$order_id])->select();
                   // $goods = \array_column($order_goods,'gid');
