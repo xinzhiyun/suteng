@@ -15,7 +15,7 @@
 			<div class="xuanping clearfix">
 				<div class="pingpic"><img src="" alt=""></div>
 				<!-- 商品ID -->
-				<input type="hidden" name="gid" value="">
+				<!-- <input type="hidden" name="gid" value=""> -->
 			    <div class='everyItem'>
 			        <input id="item1" type="radio" name="status" value="1" checked>
 			        <label for="item1"></label>
@@ -60,9 +60,9 @@
 			点击提交
 		*/
 		var href = location.href;
-		var gid;
-		if(href.indexOf('?gid=') > -1){
-			gid = href.substr(href.indexOf('?gid=')+5);
+		var orderid;
+		if(href.indexOf('?orderid=') > -1){
+			orderid = href.substr(href.indexOf('?orderid=')+9);
 		}
 		// console.log(gid);
 		$("#submit").on('click',function(){
@@ -75,12 +75,12 @@
 			//评分
 			formData.delete("status");	//清空，防止多次点击提交
 			formData.delete("content");	//清空，防止多次点击提交
-			formData.delete("gid");
-			formData.append('gid',gid);
+			formData.delete("orderid");
+			formData.append('orderid',orderid);
 			formData.append('status',$('input[name="status"]:checked')[0].value);
 			formData.append('content',$('#shopping').val());	//评价的内容
 			console.group();
-			console.log(formData.getAll('gid'));
+			console.log(formData.getAll('orderid'));
 			console.log(formData.getAll('status'));
 			console.log(formData.getAll('content'));
 			console.log(formData.getAll('sForm[]'));

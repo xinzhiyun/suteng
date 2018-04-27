@@ -45,7 +45,7 @@
 		</div>
 		<div class="ynticket">
 			<b>开具发票</b>
-			<a href="{{:U('Invoice/index')}}">
+			<a href="{{:U('Invoice/index')}}" class="kaifapiao">
 				<span>不开发票</span>
 				<i class="iconfont icon-dayuhao-copy-copy"></i>
 			</a>
@@ -197,10 +197,7 @@
 					}
 					
 				}
-			}else {
-
 			}
-			
 			console.log(postageAll[77], postageAll[73])
 			$("#hLeft").click(function(){
 				location.href = "{{:U('Address/index')}}";
@@ -269,7 +266,7 @@
 				for(var i=0; i<lvxinData.length;i++){
 					// console.dir(lvxinData[i])
 					lvxinData[i].desc = lvxinData[i].desc ? lvxinData[i].desc : '暂无描述';
-					goodsHTML += '<div class="goods">'+
+					goodsHTML += '<div class="goods" v-data="'+lvxinData[i].gid+'">'+
 					'<div class="infos">'+
 					'<div class="img"><img src="'+ lvxinData[i].picpath +'" alt="正在加载..."></div>'+
 					'<div class="dec">'+
@@ -299,7 +296,7 @@
 				goods_data.goodsDetail.desc = goods_data.goodsDetail.desc
 				? goods_data.goodsDetail.desc
 				: '暂无描述'; 
-				goodsHTML += '<div class="goods">'+
+				goodsHTML += '<div class="goods" v-data="'+goods_data.goodsDetail.gid+'">'+
 				'<div class="infos">'+ 
 				'<div class="img"><img src="/Uploads/'+ goods_data.goodsDetail.path +'" alt="正在加载..."></div>'+
 				'<div class="dec">'+
@@ -330,8 +327,9 @@
 						shopCar_data[i].desc = shopCar_data[i].desc
 						? shopCar_data[i].desc
 						: '暂无描述';
+						console.log("商品id",shopCar_data[i].gid)
 						// 遍历需要支付的商品信息
-						goodsHTML += '<div class="goods">'+
+						goodsHTML += '<div class="goods" v-data=" '+ shopCar_data[i].gid +' ">'+
 						'<div class="infos">'+
 						'<div class="img"><img src="'+ shopCar_data[i].path +'" alt="正在加载..."></div>'+
 						'<div class="dec">'+
@@ -376,10 +374,17 @@
 				postagePrice = $(this).find("option:selected").attr("index");
 				// 邮费id
 				cid = $(this).find("option:selected").attr("cid");
+				// 邮费对象
+				postageData = {cname: postageName, cprice: postagePrice, cid: cid};
+				console.log(postageName, postagePrice, cid);
 				// 选中邮费所在块的商品的数量
 				num = parseInt($(this).parent().siblings(".infos").children(".dec").children("div").children(".num").children("b").text());
 				// 邮费价格乘以数量
 				postageArr[posNum] = postagePrice * num;
+
+				// 获取点击到的商品的id
+				console.log("商品id", $(this).parent().parent(".goods").attr("v-data"));
+				var gid = $(this).parent().parent(".goods").attr("v-data");
 				function sum(arr) {
 					var s=0;
 					if(arr.length==0){
@@ -416,7 +421,7 @@
 				// 提交后台
 				$.ajax({
 					url: "{{:U('Pay/updateOrder')}}",
-					data: {orderId: order_id, cid: cid},//将订单id和邮费id传递
+					data: {orderId: order_id, postageData: postageData, good_id: gid},//将订单id和邮费id传递
 					type: "post",
 					success: function(res) {
 						console.log("邮费成功", res);
@@ -428,14 +433,31 @@
 				
 				
 			})
+			// 点击发票
+			$(".kaifapiao").on("click", function() {
+				for(var i = 0; i < $(".selectPostage").length; i++) {
+					if($(".selectPostage").eq(i).find("option:selected").val() == "选择快递") {
+						parent.layer.msg('请选择快递方式');
+						return false;
+					}
+				}
+			});
 			/*
 			发票信息
 			*/
 			var voiceArr;
+			// 如果有session存在发票信息， 则更新发票信息， 没有默认为不开发票
 			if(sessionStorage.getItem("voiceArr")){
 				voiceArr = JSON.parse(sessionStorage.getItem("voiceArr"));
-				if(voiceArr[0].type){
-					$(".ynticket>a>span").text(voiceArr[0].type)
+				if(voiceArr.type){
+					$(".ynticket>a>span").text(voiceArr.type)
+				}
+			}else {
+				voiceArr = {
+					'type': "不开发票",
+					'info': "",
+					'voicehead': "",
+					'phone': ""
 				}
 			}
 			/******** 订单遍历--结束--	**********/
@@ -466,7 +488,8 @@
 						parent.layer.msg('请选择快递方式');
 						return false;
 					}
-				}	
+				}
+
 				$('.paystyle').slideDown("slow");
 			})
 			// 付款方式的单选框

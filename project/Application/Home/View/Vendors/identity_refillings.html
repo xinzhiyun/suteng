@@ -289,7 +289,7 @@
                     <i class="iconfont icon-tianjiajingdian"></i>
                     <div class="xiePic" index="0"><img src="" id="opposite" style="width: 100%;"><i class="iconfont icon-cuohao" ></i></div>
                 </div>
-            </div> 
+            </div>  
             <div class="form-group form-group1">
                 <label class="col-sm-2 control-label">上传手持身份证</label>
                 <div class="col-md-5">
@@ -320,47 +320,26 @@
                 'downloadImage'
             ]
         });
-        // 上传图片 file文件对象
-        // function imageCommen(file) {
-        //     if (!file.files || !file.files[0]) {
-        //         return;
-        //     };
-        //     var reader = new FileReader();
-        //     reader.onload = function (evt) {
-        //         var total = (evt.total/1024)/1024;
-        //         if(total >= 3) {
-        //             layuiHint("图片超出允许上传文件大小3M");
-        //         }else{
-        //             var objId = file.nextSibling.nextSibling.nextSibling.nextSibling;//找到兄弟节点.xiePic
-        //             objId.firstChild.src = evt.target.result;//找到img对象
-        //             objId.style.visibility = "visible";
-        //             objId.setAttribute("index", "1");
-        //         }
-        //     };
-        //     reader.readAsDataURL(file.files[0]);
-        // };
-        // 点击叉叉隐藏div
-        // function removePic(removeObj) {
-        //     removeObj.previousSibling.src = "";//将图片路径删除
-        //     removeObj.parentNode.style.visibility = "hidden";//隐藏div
-        //     removeObj.parentNode.setAttribute("index", "0");//设置index为0
-        // }
+        // 点击上传图片
         $("input[type=button]").on("click", function() {
-            console.log($(this).siblings(".xiepic").is(":visible"));
-            var ren;
-            if($(this).siblings(".xiepic").is(":visible")) {
-                ren = 1;
+            if($(this).siblings(".xiepic").attr("index") == 1) {
+                layui.use("只支持一张图片!继续操作会覆盖原图片", function(index){
+                    var layer = layui.layer;
+                    layer.confirm(text, function(index) {
+                        // 确认后执行函数并关闭窗口
+                        takePicture(1, $(this));
+                        layer.close(index);
+                    });
+                });
+            }else {
+                takePicture(1, $(this));
             }
-            if(ren == 1) {
-                layuiHint("暂时只支持一张图片!");
-                return;
-            }
-            takePicture(1, $(this));
         })
         var formData = new FormData($("#form")[0]);
         // 删除图片
         $(".icon-cuohao").on("click", function() {
             $(this).parent().css("visibility", "hidden").attr("index", "0").siblings("img").attr("src", "");
+
         })
 
         // 表单提交
@@ -389,11 +368,11 @@
                                    layuiHint("身份证格式错误") ;
                                 }else{
                                     // 正面身份证是否提交
-                                    if($('.xiePic').eq(0).attr("index") === "1") {
+                                    if($('.xiePic').eq(0).attr("index") == "1") {
                                         // 反面身份证是否提交
-                                        if($('.xiePic').eq(1).attr("index") === "1"){
+                                        if($('.xiePic').eq(1).attr("index") == "1"){
                                             // 手持身份证是否提交
-                                            if($('.xiePic').eq(2).attr("index") === "1") {
+                                            if($('.xiePic').eq(2).attr("index") == "1") {
 
                                                 window.location.href = "{{:U('Home/Vendors/company')}}";
                                                 // 验证成功后跳转
@@ -461,41 +440,29 @@ function wxuploadImage(e,num, objs) {
  });
 
 }
-// var $span = $("<span></span>");
-// var $span1 = $("<span>X</span>");
-// var $img = $('<img src="" alt="" />');
-// var $img = $(".xiePic>img").eq(0);
-// console.log($img)
 function wxgetLocalImgData(e,num, objs){
-
-//    $img[0].width = "100%";
-//    $img[0].height = "90%";
-
+    // ios
    if(window.__wxjs_is_wkwebview){
        wx.getLocalImgData({
            localId: e, // 图片的localID
-           success: function (res) {                    
+           success: function (res) {    
+
                 var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
                 localData = localData.replace('jgp', 'jpeg');//iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下                                
-                $(objs).siblings(".xiePic").children("img").attr("src", localData)
-                $(objs).css("visibility", "visible");
+                $(objs).siblings(".xiePic").children("img").attr("src", localData);
+                $(objs).siblings(".xiePic").css("visibility", "visible").attr("index", "1");
 
            },
            fail:function(res){
                 alert("显示失败");
            }
        });
-   }else{
-        $(objs).siblings(".xiePic").children("img").attr("src", e).end().css("visibility", "visible");
+   }else{ //安卓
+        $(objs).siblings(".xiePic").children("img").attr("src", e);
+        $(objs).siblings(".xiePic").css("visibility", "visible").attr("index", "1");
        
    }
 
-//    $span1.addClass("delPic");
-//    $span1.css({zIndex: '999'});
-//    $span.append($span1);
-//    $span.append($img[0]);
-//    $('#picShow').append($span);
-   
 }
     </script>
 </body>

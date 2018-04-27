@@ -51,6 +51,10 @@ class DeviceController extends CommonController
             $data['did']        = $did;
             $data['uid']        = $uid;
             $data['status']     = 1;
+            $data['sex'] = I('sex');
+            $data['name'] = I('name');
+            $data['birth'] = I('birth');
+            $data['phone'] = I('phone');
             $data['addtime']    = time();
             $data['updatetime'] = time();
             $user_device->where('uid='.$uid)->save(['status'=>0]);

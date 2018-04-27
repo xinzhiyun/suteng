@@ -61,7 +61,6 @@ class PayController extends Controller
         // dump(session());
         $where['status'] = 0;
         $data = $address->where($where)->find();
-
         //查询商品对应的快递运费信息
         foreach ($_SESSION['goodsid'] as $key => $value) {
             // echo $value."<br>";
@@ -84,8 +83,27 @@ class PayController extends Controller
      */
     public function updateOrder()
     {
+
         //接收前端传过来的订单号进行修改订单信息
-        $orderid = $_POST[''];
+        // dump($_POST);die;
+        $orderId = $_POST['orderId'];
+        $gid = $_POST['good_id'];
+
+        $data['cid'] = $_POST['postageData']['cid'];
+        $data['cprice'] = $_POST['postageData']['cprice'];
+        $data['cname'] = $_POST['postageData']['cname'];
+
+        //更改订单快递信息
+        $so = M('OrderDetail');
+
+        $info = $so->where('order_id='.$orderId.' AND gid='.$gid)->save($data);
+
+        if ($info) {
+            $this->ajaxReturn('快递方式选择成功');
+        } else {
+            $this->ajaxReturn('快递方式选择失败');
+
+        }
 
 
     }
@@ -97,8 +115,61 @@ class PayController extends Controller
     public function invoiceAdd()
     {
         //发票相关信息
-        
-        //订单id
+        $data['oid'] = $_POST['order_id'];
+        $data['voicehead'] = $_POST['voiceArr']['voicehead'];
+        $data['associated'] = $_POST['voiceArr']['associated'];
+        $data['secpAddr'] = $_POST['voiceArr']['secpAddr'];
+        $data['phone'] = $_POST['voiceArr']['phone'];
+        $data['email'] = $_POST['voiceArr']['mail'];
+
+        //发票是个人还是公司的
+        switch ($_POST['voiceArr']['info']) {
+            case '公司':
+                $data['info'] = 2;
+                break;
+            case '个人':
+                $data['info'] = 1;
+                break;
+        }
+
+        //电子发票还是纸质发票
+        switch ($_POST['voiceArr']['type']) {
+            case '电子发票':
+                $data['is_electronic'] = 2;
+                break;
+            case '纸质发票':
+                $data['is_electronic'] = 3;
+                break;
+            
+            default:
+                $data['is_electronic'] = 1;
+                break;
+        }
+
+        //将订单发票信息写入数据库
+        $invoice = M('invoice');
+        // dump($data);die;
+        //写入之前先判断是否存在该订单下是否有发票信息
+        $info = $invoice->where('oid='.$_POST['order_id'])->find();
+       
+
+        if ($info) {
+            //已存在则修改信息
+            if ($invoice->where('oid='.$_POST['order_id'])->save($data)) {
+                $this->ajaxReturn('发票信息修改成功');
+            } else {
+                $this->ajaxReturn('发票信息修改成功');
+            }
+
+        } else {
+            //不存在则写入
+            if ($invoice->add($data)) {
+                $this->ajaxReturn('发票信息写入成功');
+            } else {
+                $this->ajaxReturn('发票信息写入失败');
+            }
+
+        }
     }
 
     /**
@@ -135,8 +206,30 @@ class PayController extends Controller
    * 充值年费
    */
     public function  gradeSelect() {
+
         $this->wx_info();
+        //查出当前会员等级
+        $map['id'] = $_SESSION['user']['id'];
+        $grade = M('users')->where($map)->field('id,grade')->find();
+
+        switch ($grade['grade']) {
+            case '1':
+                $grade['grade'] = '3';
+                break;
+            case '2':
+                $grade['grade'] = '2';
+                break;
+            case '3':
+                $grade['grade'] = '1';
+                break;
+            case '4':
+                $grade['grade'] = '0';
+                break;
+        }
+
         $annual = M('annual')->find();
+
+        $this->assign('grade',$grade);
         $this->assign('annual',$annual);
         $this->display();
     }

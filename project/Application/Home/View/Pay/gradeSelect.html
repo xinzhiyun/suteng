@@ -11,11 +11,12 @@
 <body>
 <div class="main">
 	<div class="selectInfo">
+		<input type="hidden" value="{{$grade['grade']}}" class="gradePanduan">
 		<p>请选择会员等级</p>
 		<!-- 会员选择 -->
 		<div class="gradeSelect">
 			<!-- 钻石会员 -->
-			<div class="goldGrade" index="0">
+			<div class="goldGrade" index="0" data="0">
 				<p>
 					<span><img src="__PUBLIC__/Home/images/zssjx.png" alt=""></span>
 					<span class="gradeName">钻石会员</span>
@@ -30,7 +31,7 @@
 				</div>
 			</div>
 			<!-- 黄金会员 -->
-			<div class="goldGrade" index="0">
+			<div class="goldGrade" index="0" data="1">
 				<p>
 					<span><img src="__PUBLIC__/Home/images/hjsjx.png" alt=""></span>
 					<span class="gradeName">黄金会员</span>
@@ -46,7 +47,7 @@
 				</div>
 			</div>
 			<!-- 普通会员 -->
-			<div class="goldGrade ordinary" index="0">
+			<div class="goldGrade ordinary" index="0" data="2">
 				<p>
 					<span><img src="__PUBLIC__/Home/images/ptsjx.png" alt=""></span>
 					<span class="gradeName">普通会员</span>
@@ -115,6 +116,7 @@
 <script src="__PUBLIC__/Home/js/vipCenter/gradeSelect.js"></script>
 
 <script>
+
     //微信接口
     wx.config({
         debug: false,
@@ -127,6 +129,7 @@
             'chooseWXPay'
         ]
     });
+    // var gradePanduan = $(".gradePanduan").val();//获取会员等级
     var dingdanID;
     // 点击提交
     $(".confirmBtn").on("touchstart", function() {

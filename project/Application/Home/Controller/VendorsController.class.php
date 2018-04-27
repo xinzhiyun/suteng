@@ -78,11 +78,14 @@ class VendorsController extends Controller
 	        // 匹配分销商状态，安排后续操作
 	        switch ($status) {
 	        	case '0':
+	        	    $this->wx_info();
 	        		// 身份证信息填写
                 	$this->identity();
 	        		break;
 	        	case '1':
 	        		// 公司信息填写
+
+
 	        		$this->company();
 	        		break;
 	        	case '2':
@@ -294,7 +297,9 @@ class VendorsController extends Controller
             }
 
     	}else{
-    		$this->display('identity');
+
+            $this->wx_info();
+    		$this->display('identity_refillings');
     	}
     }
 
@@ -411,6 +416,7 @@ class VendorsController extends Controller
             }
 
     	}else{
+            $this->wx_info();
     		$this->display('identity_refillings');
     	}
     }
@@ -527,6 +533,7 @@ class VendorsController extends Controller
             }
 
     	}else{
+            $this->wx_info();
     		$this->display('company');
     	}
     }
@@ -643,6 +650,7 @@ class VendorsController extends Controller
             }
 
     	}else{
+            $this->wx_info();
     		$this->display('company_refillings');
     	}
     }
@@ -659,7 +667,7 @@ class VendorsController extends Controller
 
             // 上传合同文件
             $info = $this->upload();
-            dump($open_id);
+
 
             if($info){
                 $info['status'] = 9;
@@ -683,6 +691,7 @@ class VendorsController extends Controller
 
             $this->ajaxReturn($message); 
         } else {
+            $this->wx_info();
             $this->display();
         }
     	
@@ -1159,6 +1168,21 @@ class VendorsController extends Controller
 
         // 返回JSON格式数据
         $this->ajaxReturn($message);
+    }
+
+    /**
+     * 加载微信配置信息
+     */
+    public function wx_info()
+    {
+        $weixin = new \Org\Util\WeixinJssdk();
+        $signPackage = $weixin->getSignPackage();
+
+        $this->assign('info',$signPackage);
+
+        //$openId = $weixin->GetOpenid();
+        $openId = $_SESSION['open_id'];
+        $this->assign('openId',$openId);
     }
 
 }

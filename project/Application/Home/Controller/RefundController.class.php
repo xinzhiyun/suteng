@@ -90,6 +90,7 @@ class RefundController extends CommonController
             // print_r($data);die;                    
             $result = D('Refund')->relation(true)->add($data);
             // 将订单状态更改为退货处理中
+            D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>6]);
             D('order_detail')->where(['order_id'=>$order_id])->setField(['status'=>6]);
             if($result){
                 $refund->commit();
