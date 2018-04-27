@@ -96,7 +96,7 @@ class RepairController extends CommonController
 
             $dir =rtrim(THINK_PATH,"ThinkPHP/").'/Public'.$path_info;
             if(!is_dir($dir)){
-                mkdir($dir);
+                mkdir($dir,'0777',true);
             }
             $path_info = $path_info.'/'.$file;
 
