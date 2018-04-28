@@ -265,7 +265,7 @@
         	url:"{{:U('Home/Order/order_list')}}",
         	data:{
             	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-            	"status":8
+            	"status":[8]
             },
             dataType:"json",
             type: 'post',
@@ -480,7 +480,7 @@
 				url:"{{:U('Home/Order/order_list')}}",
 				data:{
             	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-            	"status":2
+            	"status":[2]
             },
             dataType:"json",
             type: 'post',
@@ -586,7 +586,7 @@
 				url:"{{:U('Home/Order/order_list')}}",
 				data:{
             	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-            	"status":3
+            	"status":[3]
             },
             dataType:"json",
             type: 'post',
@@ -929,7 +929,7 @@
 							'<p><b>￥'+res.data[i].productList[j].price+'</b><span>x '+ res.data[i].productList[j].productnumber +'</span></p>'+
 							'</div>'+
 							'</div>'+
-							'<p><b>添加完成</b></p>';
+							'<p><b>订单完成</b></p>';
 						}
 
                 	}

@@ -216,28 +216,28 @@ class WeiXinPayController extends Controller
     public function onotify()
     {
         // 获取微信服务器返回的xml文档
-//        $xml=file_get_contents('php://input', 'r');
+       $xml=file_get_contents('php://input', 'r');
 //        Log::write( $xml,'测试一号');
-        $xml = '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
-<attach><![CDATA[723557061295684]]></attach>
-<bank_type><![CDATA[CFT]]></bank_type>
-<cash_fee><![CDATA[1]]></cash_fee>
-<fee_type><![CDATA[CNY]]></fee_type>
-<is_subscribe><![CDATA[Y]]></is_subscribe>
-<mch_id><![CDATA[1501254081]]></mch_id>
-<nonce_str><![CDATA[5wgcm1ptarl19i0v3k06k93p8osbderw]]></nonce_str>
-<openid><![CDATA[onLe70fYcrqU71RjzfYUjkNf90_E]]></openid>
-<out_trade_no><![CDATA[841179983093492]]></out_trade_no>
-<result_code><![CDATA[SUCCESS]]></result_code>
-<return_code><![CDATA[SUCCESS]]></return_code>
-<sign><![CDATA[CA0B6D87B669E772C9297B65832B3EA2]]></sign>
-<time_end><![CDATA[20180411145314]]></time_end>
-<total_fee>1</total_fee>
-<trade_type><![CDATA[JSAPI]]></trade_type>
-<transaction_id><![CDATA[4200000052201804116501776653]]></transaction_id>
-</xml>
-';
-
+//         $xml = '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
+//         <attach><![CDATA[524354793912987]]></attach>
+//         <bank_type><![CDATA[CFT]]></bank_type>
+//         <cash_fee><![CDATA[1]]></cash_fee>
+//         <fee_type><![CDATA[CNY]]></fee_type>
+//         <is_subscribe><![CDATA[Y]]></is_subscribe>
+//         <mch_id><![CDATA[1501254081]]></mch_id>
+//         <nonce_str><![CDATA[zikcymdhlnnn4589mg246twui8cwqgq0]]></nonce_str>
+//         <openid><![CDATA[onLe70TWeEMl71EYjG_MKdy_kWaA]]></openid>
+//         <out_trade_no><![CDATA[677165132821232]]></out_trade_no>
+//         <result_code><![CDATA[SUCCESS]]></result_code>
+//         <return_code><![CDATA[SUCCESS]]></return_code>
+//         <sign><![CDATA[35B7FED1036EC1048C7ABFE37220C788]]></sign>
+//         <time_end><![CDATA[20180428145351]]></time_end>
+//         <total_fee>1</total_fee>
+//         <trade_type><![CDATA[JSAPI]]></trade_type>
+//         <transaction_id><![CDATA[4200000129201804287629468731]]></transaction_id>
+//         </xml>
+// ';
+        // Log::write($xml,'微信支付的回调');
 //
 //
 // UR体会与人体热敷的供热的高
@@ -250,6 +250,8 @@ class WeiXinPayController extends Controller
 
             //解析微信返回数据数组格式
             $result = $this->notifyData($xml);
+            // Log::write($result,'微信支付的解析');
+
             // dump($result);die;
             // 实例化订单模型
             $order = M('shop_order');
@@ -296,7 +298,7 @@ class WeiXinPayController extends Controller
                 $jbbl = 0.01;
                 // 银币比例
                 $ybbl = 0.02;
-
+ 
                 // 佣金
                 $yj = ($profit*$yjbl)>0?($profit*$yjbl):0;
                 // 金币
@@ -304,9 +306,8 @@ class WeiXinPayController extends Controller
                 // 银币
                 $yb = ($profit*$ybbl)>0?($profit*$ybbl):0;
                 //商品销售佣金
-                $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.g_cost,a.g_price,a.g_num,b.vid,c.id ccid,c.code,c.invitation_code,c.superiors_code,c.superior_code,c.abonus')->join('st_goods b on a.gid = b.id')->join('st_vendors c on b.vid = c.id')->where(['a
-                .g_type'=>1,'a.status'=>7,'a.order_id'=>$saveOrder['order_id']])->select();
-                echo M('ShopOrder as a')->getLastSql();
+                // $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.g_cost,a.g_price,a.g_num,b.vid,c.id ccid,c.code,c.invitation_code,c.superiors_code,c.superior_code,c.abonus')->join('st_goods b on a.gid = b.id')->join('st_vendors c on b.vid = c.id')->where(['a.g_type'=>1,'a.status'=>7,'a.order_id'=>$saveOrder['order_id']])->select();
+                // echo M('ShopOrder as a')->getLastSql();
                 // echo $open_id.'-'.$yj.'-'.$jb.'-'.$yb;die;
                 // 分配佣金
                 $this->branch_commission($open_id,$order_id,$yj,$jb,$yb);
@@ -322,13 +323,13 @@ class WeiXinPayController extends Controller
                   $orderDetail = D('OrderDetail');
                   $inventory = D('inventory');
                   
-                  $shopOrder->startTrans();
                   $rs = $shopOrder->where(['order_id'=>$order_id,'uid'=>$uid])->setField(['status'=>9]);
-                  $order_goods = $order_detail->field('gid,num')->where(['order_id'=>$order_id])->select();
+                  $order_goods = $orderDetail->field('gid,num')->where(['order_id'=>$order_id])->select();
+                  Log::write($order_goods,'微信支付的解析');
                   // $goods = \array_column($order_goods,'gid');
                   foreach($order_goods as $good){
-                      $inventory->where(['gid'=>$good['gid']])->setDec('allnum',$good['num']);
-                    //   $display_order[$good['gid']] = $good['num'];
+                    //   $inventory->where(['gid'=>$good['gid']])->setDec('allnum',$good['num']);
+                      $display_order[$good['gid']] = $good['num'];
                   }
                   
                   // $display_order = array( 
@@ -341,15 +342,15 @@ class WeiXinPayController extends Controller
                   //     7 => 8, 
                   //     8 => 9 
                   // ); 
-                //   $ids = implode(',', array_keys($display_order)); 
-                //   $sql = "UPDATE st_inventory SET allnum = CASE gid "; 
-                //   foreach ($display_order as $id => $ordinal) { 
-                //       $sql .= sprintf("WHEN %d THEN allnum - %d ", $id, $ordinal); 
-                //   } 
-                //   $sql .= "END WHERE id IN ($goods)"; 
-                //   // echo $sql;
-                //   $Model = new \Think\Model(); // 实例化一个model对象 没有对应任何数据表
-                //   $res = $Model->execute($sql);
+                  $ids = implode(',', array_keys($display_order)); 
+                  $sql = "UPDATE st_inventory SET allnum = CASE gid "; 
+                  foreach ($display_order as $id => $ordinal) { 
+                      $sql .= sprintf("WHEN %d THEN allnum - %d ", $id, $ordinal); 
+                  } 
+                  $sql .= "END WHERE id IN ($goods)"; 
+                  // echo $sql;
+                  $Model = new \Think\Model(); // 实例化一个model对象 没有对应任何数据表
+                  $res = $Model->execute($sql);
       
             }
         }

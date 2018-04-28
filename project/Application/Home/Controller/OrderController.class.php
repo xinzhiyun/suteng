@@ -32,7 +32,7 @@ class OrderController extends CommonController
             $g_type = I('post.g_type');
             // 8：未支付，9：待发货，2：待收货，7：待评论 4：退款处理中 5：已退货
             $status = I('post.status');
-            
+            $sta =implode(',',$status);
             // 查询用户
             $uid  = $_SESSION['user']['id'];
             // 订单类型
@@ -40,7 +40,7 @@ class OrderController extends CommonController
             // 订单状态
             $showData['status'] = $status;
             // 查询订单表
-            $arrList = M('shop_order')->where(['uid'=>$uid,'g_type'=>$g_type,'status'=>array('in',$status)])->select();
+            $arrList = M('shop_order')->where(['uid'=>$uid,'g_type'=>$g_type,'status'=>array('in',$sta)])->select();
 
             // 未支付订单
             $waitpaylist = [];

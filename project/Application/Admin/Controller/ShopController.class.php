@@ -219,6 +219,13 @@ class ShopController extends CommonController
             $goodsDetail_status = $goods_detail->add($goodsDetail);
             // $attrVal['val'] = $data['attr_val'];
 
+            /*********************   写入一条商品默认库存   
+             * 默认都为 0
+            */
+            $gid = $goods_status;
+            D('inventory')->add(['allnum'=>0,'abnormalnum'=>0,'gid'=>$gid]);
+
+            
             //商品属性添加
             $attrVal['gid'] = $goods_status;
             foreach ($data['attr'] as $key => $val) {
@@ -759,6 +766,14 @@ class ShopController extends CommonController
         }
         $order = D('ShopOrder');
         $data = $order->getOrders($map);
+
+        // $data = $order
+        //             ->alias('o')
+        //             ->join('st_users u ON o.uid = u.id','LEFT')
+        //             ->join('st_address ad ON o.address_id = ad.id','LEFT')
+        //             ->field('o.*,u.nickname,ad.name as adname,ad.phone as adphone')
+        //             ->select();
+        // dump($data);
         $assign = [
             'data' => $data['data'],
             'show' => $data['show'],
