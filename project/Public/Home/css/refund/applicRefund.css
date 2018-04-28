@@ -196,7 +196,7 @@ body{
 .appFoot{
 	height: 1.8rem;
 	width: 100%;
-	position: fixed;
+	/* position: fixed; */
 	bottom: 0;
 	text-align: center;
 	line-height: 1.8rem;
