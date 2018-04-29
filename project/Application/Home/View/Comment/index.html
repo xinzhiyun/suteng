@@ -67,14 +67,13 @@
 		if(href.indexOf('?orderid=') > -1){
 			orderid = href.substr(href.indexOf('?orderid=')+9);
 		}
-		// console.log(gid);
 		$("#submit").on('click',function(){
 			if(!$("#shopping").val()){
 				layuiHint("请您对我们的商品做出评价呗");
 				return
 			}
-			// console.log($('input[name="status"]:checked')[0].value);
-			// console.log($('#shopping').val());
+			// 防止多次提交
+			$("#submit").attr("disabled", true);
 			//评分
 			formData.delete("status");	//清空，防止多次点击提交
 			formData.delete("content");	//清空，防止多次点击提交
@@ -86,7 +85,6 @@
 			console.log(formData.getAll('orderid'));
 			console.log(formData.getAll('status'));
 			console.log(formData.getAll('content'));
-			console.log(formData.getAll('sForm[]'));
 			//发送数据到后台
 			$.ajax({
 				url: '{{:U("Comment/commentsucceed")}}',
@@ -96,8 +94,11 @@
 				processData: false,
 				contentType: false,
 				success: function(res){
+					alert(res)
 					console.log('连接',res);
-					$("#submit").off('click');
+					// $("#submit").off('click');
+					// 发送到后台并返回结果时解除禁止点击
+					$("#submit").removeAttr("disabled");
 					//评论成功后跳转
 					if(res.code == 200){
 						layuiHint('评论成功！');
@@ -112,6 +113,9 @@
 					}
 				},
 				error: function(res){
+					// 发送到后台并返回结果时解除禁止点击
+					$("#submit").removeAttr("disabled");
+
 					console.log('失败', res);
 					layuiHint('评论失败,请稍后再试！')
 				}
