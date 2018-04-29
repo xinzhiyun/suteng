@@ -607,6 +607,11 @@
 							var noimg_show = waitcommentlist[i]['productList'][k]['orderimg']
 							? (imgpath + waitcommentlist[i]['productList'][k]['orderimg'])
 							: noimg;
+							// 产品名字
+							waitcommentlist[i]['productList'][k]['productname'] = waitcommentlist[i]['productList'][k]['productname'] ? waitcommentlist[i]['productList'][k]['productname'] : "暂无标题";
+							// 产品描述
+							waitcommentlist[i]['productList'][k]['productbrief'] = waitcommentlist[i]['productList'][k]['productbrief'] ? waitcommentlist[i]['productList'][k]['productbrief'] : "暂无描述";
+							// 拼接数据
 							dingdanDaipinglun2+='<div class="goodsItem">'+
 							'<div class="giPicture">'+
 							'<img src="'+ noimg_show +'" alt="">'+
