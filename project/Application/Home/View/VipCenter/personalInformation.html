@@ -249,86 +249,100 @@
 			  		layuiHint('地址格式不正确！');
 			  	}
 			});
-			var binddevice = null;
+			
 			// 点击保存
 			$("#save").click(function(){
-				if(machineNo){
-					// 绑定设备
-					$.ajax({
-				    	url:"{{:U('Device/bind')}}",
-				    	type:"post",
-				    	data:{device_code: machineNo},
-				    	dataType:'json',
-				    	success:function(data){
-							if(data.code == 200 ){
-								layuiHint('绑定成功！');
-								// 替换当前历史记录为首页
-								history.replaceState({}, null, "{{:U('Home/Index/index')}}");
-								setTimeout(function(){
-									// 跳转到我的钱包
-									location.href="{{:U('Home/VipCenter/minepack')}}";	
-								},500);	
-							}else{
-								layuiHint(data.msg);
-								binddevice = null;
-								return
-							} 
-				    	},
-				    	error:function(jqXHR, textStatus, errorThrown){
-
-		    				layuiHint("绑定失败" + jqXHR.status + textStatus + errorThrown);
-		    				binddevice = null;
-		    				return
-				    		//console.log(jqXHR.status);
-				    	}
-				    });
-
-				}
+				
 				// formdata
 				var data = new FormData(document.getElementById("form"));
-				if((nameReg.test($('#name').val())) && $("#birth").val() && (phoneReg.test($('#tel').val())) && (addressReg.test($('#addr').val()))){
-					if(machineNo && !binddevice){
-						return
-					}
-					// 保存信息
-					$.ajax({
-						url: 'infomationAction',
-						type: 'post',
-						async: false,
-				        cache: false,
-				        contentType: false,
-				        processData: false,
-						data: data,
-						success: function(res){
-							if(res.code == 200){
-								layuiHint(res.msg);
-								// 替换当前历史记录为首页
-								history.replaceState({}, null, "{{:U('Home/Index/index')}}");
-								window.setTimeout("window.location='{{:U('Home/VipCenter/minepack')}}'",2000); 
-							}else{
-								layuiHint(res.msg);
-							}
-							
-						},
-						error: function(res){
-							console.log('失败!', res)
-						}
-					})
-				}else if(!(nameReg.test($('#name').val()))){
+
+				if(!(nameReg.test($('#name').val()))){
 					layuiHint("请输入真实的姓名");
-					return false;
+					return;
+
 				}else if(!$("#birth").val()){
 					layuiHint("请选中您的生日");
-					return false;
+					return;
+
 				}else if(!(phoneReg.test($('#tel').val()))){
 					layuiHint("请输入正确的手机号码");
-					return false;
+					return;
+
 				}else if(!(addressReg.test($('#addr').val()))){
 					layuiHint("请输入详细地址！");
-					return false;
+					return;
+
+				}
+				if(machineNo){
+					// 绑定设备
+					bindFn(function(res){
+						if(res.binddevice){
+							// 保存信息
+							saveFn(data);
+						}
+					});
+				}else{
+					// 保存信息
+					saveFn(data);
 				}
 				
 			});
+			function saveFn(data){				
+				// 保存信息
+				$.ajax({
+					url: 'infomationAction',
+					type: 'post',
+					async: false,
+			        cache: false,
+			        contentType: false,
+			        processData: false,
+					data: data,
+					success: function(res){
+						if(res.code == 200){
+							layuiHint(res.msg);
+							// 替换当前历史记录为首页
+							history.replaceState({}, null, "{{:U('Home/Index/index')}}");
+							setTimeout(function(){
+								// 跳转到我的钱包
+								location.href="{{:U('Home/VipCenter/minepack')}}";	
+							},500);	
+						}else{
+							layuiHint(res.msg);
+						}
+						
+					},
+					error: function(res){
+						console.log('失败!', res)
+					}
+				})
+			}
+			function bindFn(callback){
+				// 绑定设备
+				$.ajax({
+			    	url:"{{:U('Device/bind')}}",
+			    	type:"post",
+			    	data:{device_code: machineNo},
+			    	dataType:'json',
+			    	success:function(data){
+			    		console.log(data);
+						if(data.code == 200 ){
+							layuiHint('绑定成功！');
+							callback({binddevice: true});
+							
+						}else{
+							layuiHint(data.msg);
+							callback({binddevice: null});
+						} 
+			    	},
+			    	error:function(jqXHR, textStatus, errorThrown){
+
+	    				layuiHint("绑定失败" + jqXHR.status + textStatus + errorThrown);
+						callback({binddevice: null});
+	    				return
+			    		//console.log(jqXHR.status);
+			    	}
+			    });
+			}
 
 		})
 	</script>
