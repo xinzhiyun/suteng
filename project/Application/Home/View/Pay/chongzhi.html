@@ -359,8 +359,10 @@
 			$.post('{{:U("Home/PaymentSystem/exchange")}}',{'id':id}, function(res){
 				if(res.code==200){
 					swal("兑换成功",res.message, "success");
+					$('.paystyle1').slideUp("slow");
 				}else{
 					swal("兑换失败",res.message, "error");
+					$('.paystyle1').slideUp("slow");
 				}
 				
 			});
