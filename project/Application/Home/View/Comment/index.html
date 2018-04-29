@@ -94,8 +94,8 @@
 				processData: false,
 				contentType: false,
 				success: function(res){
-					alert(res)
 					console.log('连接',res);
+					alert(res.code)
 					// $("#submit").off('click');
 					// 发送到后台并返回结果时解除禁止点击
 					$("#submit").removeAttr("disabled");
