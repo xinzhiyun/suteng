@@ -125,6 +125,7 @@
 				var text_html = '';		//商品评价或安装评论
 				/* 以下为模拟数据 */
 				for(var i=0; i<res.data.length; i++){
+					console.log("图片路径",res.data[i].pics[0].path)
 					if(res.data[i].installer_graded == 0){	//商品评论
 						text_html = '<!-- 评论内容 -->'+
 							'<div class="itemgoodsBott">'+
@@ -157,7 +158,7 @@
 							'<div class="itemgoodsTop">'+
 								'<h3><span>'+ timetrans(res.data[i].addtime) +'</span><span>10:28:39</span></h3>'+
 								'<div class="goodspic clearfix">'+
-									'<div class="mygoodsLeft"><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>'+
+									'<div class="mygoodsLeft"><img src="'+ res.data[i].pics[0].path +'" alt=""></div>'+
 									'<div class="mygoodsRight">'+
 										'<p>尼康（Nikon）D3300 单反套（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头熔体破天也5替人图片</p>'+
 										'<b>5699.00</b>'+
