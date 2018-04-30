@@ -24,6 +24,7 @@ class CommentController extends CommonController
             $data = I('post.');
             $orderid = $data['orderid'];
             // dump($data);
+            // $_SESSION['user']['id'] = 27;
             $data['uid'] = session('user.id');
             $savePath = 'Uploads/pic/';
             // 二进制文件上传简单处理
@@ -40,16 +41,17 @@ class CommentController extends CommonController
                     fclose ( $$key );
                 }
             }else{
-                E('没有文件上传', 602);
+                $info = [];
+                // E('没有文件上传', 602);
             }   
         // print_r($info);
         // die;
         // print_r($_FILES);die;
 
            
-            if(!$info) {// 上传错误提示错误信息
-                E($upload->getError(),606);
-            }
+            // if(!$info) {// 上传错误提示错误信息
+            //     E($upload->getError(),606);
+            // }
             if(!(count($info) <= 3)){
 
                 E('只能添加三张图片',604);
@@ -74,26 +76,28 @@ class CommentController extends CommonController
                 ];
                 $com_status[] = $comment->add($comments);
             }
-            // print_r($comments);die;
-            // unset($data['file']);
-            foreach($com_status as $coms){
-                foreach ($info as $key => $value) {
-                    $com_pic[] = [
-                        'cid' => $coms,
-                        'path' => $value
-                    ];
-                }
+            // 处理图片写入
+            if(!empty($info)){
+                                // print_r($comments);die;
+                // unset($data['file']);
+                foreach($com_status as $coms){
+                    foreach ($info as $key => $value) {
+                        $com_pic[] = [
+                            'cid' => $coms,
+                            'path' => $value
+                        ];
+                    }
+                }           
+                // print_r($com_status);
+                // dump($com_status);die;
+                $pic_status = D("ComPic")->addAll($com_pic);
             }
-            
-            
-            // print_r($com_status);
-            // dump($com_status);die;
-            $pic_status = D("ComPic")->addAll($com_pic);
-            if($com_status&&$pic_status){
-                $res = D('ShopOrder')->where(['uid'=>$data['uid'],'order_id'=>$orderid])->setField(['status'=>7]);
+            $res = D('ShopOrder')->where(['uid'=>$data['uid'],'order_id'=>$orderid])->setField(['status'=>7]);
+            // var_dump($res);dump($orderid);
+            if($res){                
                 $comment->commit();
                 E('评论成功', 200);
-                // $this->success('评论成功');
+                $this->success('评论成功');
             } else {
                 $comment->rollback();
                 E('评论失败', 603);
