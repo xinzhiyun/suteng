@@ -213,8 +213,9 @@
 		});
 		// 点击tab移动content的函数
 		function tabContentMove(_this){
-			
-			$("#content").css({transform: 'translate(-'+ _this.attr("index") +'00vw)'});
+			setTimeout(function() {
+				$("#content").css({transform: 'translate(-'+ _this.attr("index") +'00vw)'});
+			}, 600);
 			$("#line").css({left: _this.attr("index")*2 + '0%'});
 			$(".tab").css('color','#5A5A5A');
 			_this.css('color','#373737');
