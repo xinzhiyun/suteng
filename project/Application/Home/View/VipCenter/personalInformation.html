@@ -204,6 +204,11 @@
 			var href = location.href;
 			// 绑定设备
 			if(href.indexOf('?machineNo=') > -1){
+				$('#name').val('');
+				$('#birth').val('');
+				$('#tel').val('');
+				$('#addr').val('');
+				$('#addr').text('');
 				machineNo = href.substr(href.indexOf('?machineNo=')+11);
 			}
 			$(".dateSelect").click(function(){
