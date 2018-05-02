@@ -793,17 +793,24 @@ class ShopController extends CommonController
     public function ship()
     {
         if (IS_AJAX) {
-            $id = I('post.orderid');
-            $data['express_name'] = I('post.express_name');
-            $data['express'] = I('post.express');
-            $data['status'] = 2;
-            $order = D('ShopOrder');
-            $res = $order->where('order_id='.$id)->save($data);
-            if ($res && D('Orders')->where(['order_id'=>$id])->save(['is_ship'=>1])) {
-                return $this->ajaxReturn(['code'=>200,'msg'=>'发货成功']);
-            } else {
-                return $this->ajaxReturn(['code'=>500,'msg'=>'发货失败']);
+            try{
+                $id = I('post.orderid');
+                $data['express_name'] = I('post.express_name');
+                $data['express'] = I('post.express');
+                $data['status'] = 2;
+                $order = D('ShopOrder');
+                // print_r(I(''));die;
+                $res = $order->where('order_id='.$id)->save($data);
+                $res2 = D('shopOrder')->where(['order_id'=>$id])->setField('status',2);
+                if ($res) {
+                    return $this->ajaxReturn(['code'=>200,'msg'=>'发货成功']);
+                } else {
+                    return $this->ajaxReturn(['code'=>500,'msg'=>'发货失败']);
+                }
+            } catch (\Exception $e){
+                return $this->ajaxReturn(['code'=>501,'msg'=>'发货失败']);
             }
+                
         }             
     }
 

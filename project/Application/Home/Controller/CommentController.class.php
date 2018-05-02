@@ -24,7 +24,7 @@ class CommentController extends CommonController
             $data = I('post.');
             $orderid = $data['orderid'];
             // dump($data);
-            // $_SESSION['user']['id'] = 27;
+            $_SESSION['user']['id'] = 27;
             $data['uid'] = session('user.id');
             $savePath = 'Uploads/pic/';
             // 二进制文件上传简单处理
@@ -70,7 +70,7 @@ class CommentController extends CommonController
                     'order_id' => $orderid,
                     'gid' => $value['gid'],
                     'uid' => $data['uid'],
-                    'status' => $data['status'],
+                    // 'status' => $data['status'],
                     'content' => $data['content'],
                     'addtime' => time()
                 ];
