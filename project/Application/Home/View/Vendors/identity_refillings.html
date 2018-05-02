@@ -339,6 +339,7 @@
         // 删除图片
         $(".icon-cuohao").on("click", function() {
             $(this).parent().css("visibility", "hidden").attr("index", "0").siblings("img").attr("src", "");
+            $(this).parent().siblings("input[name='pic']").val("");
 
         })
 

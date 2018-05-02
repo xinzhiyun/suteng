@@ -239,6 +239,7 @@
             <label class="col-sm-2 control-label" for="comLicen">营业执照</label>
             <div class="col-md-3">
                 <input type="button" id="comLicen" name="licence" class="form-control">
+                <input type="hidden" name="pic">
                 <i class="iconfont icon-tianjiajingdian"></i>
                 <div class="xiePic" index="0">
                     <img src="" id="licence"><i class="iconfont icon-cuohao" onclick="removePic(this)"></i></div>
@@ -345,6 +346,7 @@
         }
         // 点击叉叉隐藏div
         function removePic(removeObj) {
+            $(this).parent().siblings("input[name='pic']").val("");
             removeObj.previousSibling.src = "";//将图片路径删除
             removeObj.parentNode.style.visibility = "hidden";//隐藏div
             removeObj.parentNode.setAttribute("index", "0");//设置index为0
