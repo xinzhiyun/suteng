@@ -24,7 +24,7 @@ class CommentModel extends RelationModel
                 'foreign_key'   => 'uid',
                 'mapping_name'  => 'user',
                 'mapping_fields' => 'id,nickname,head'
-        ),
+        )
     );
 
     public function getInfo($map=array())

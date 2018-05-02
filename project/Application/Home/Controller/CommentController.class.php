@@ -123,8 +123,8 @@ class CommentController extends CommonController
         if(empty($gid)){
             //  获取单个用户的评论
             $map['uid'] = session('user.id');
-            // $map['uid'] = 27;
-            $with = ['good','pics'];
+            $map['uid'] = 27;
+            $with = ['good','pics','price'];
         } else {
             // 获取单个商品的评论
             if(is_numeric($gid)){
@@ -138,6 +138,14 @@ class CommentController extends CommonController
             }           
         }
         $data = $comment->where($map)->relation($with)->select();
+        $pic = D('pic');
+        $shop_order = D('shopOrder');
+        if(empty($gid)){
+            foreach($data as $key => $value){
+                $data[$key]['good']['pic'] = $pic->field('path')->getByGid($value['good']['id'])['path'];
+                $data[$key]['good']['price'] = $shop_order->field('g_price')->getByOrderId($value['order_id'])['g_price'];
+            }
+        }
         return $this->ajaxReturn(['code'=>200,'data'=>$data]);
     }
 
