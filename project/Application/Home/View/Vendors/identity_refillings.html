@@ -425,7 +425,7 @@ function takePicture(nums, obj) {
     });  
 
 }
-var pic = [];
+// var pic = [];
 function wxuploadImage(e,num, objs) {
 
  wx.uploadImage({  
@@ -434,8 +434,8 @@ function wxuploadImage(e,num, objs) {
      success: function (res) {   
         // alert('成功！',JSON.stringify(res));                                     
         mediaId = res.serverId; 
-        pic.push(mediaId);                    
-        $("#pics").val(pic);
+        // pic.push(mediaId);                    
+        $(objs).siblings('input[name="pic"]').val(mediaId);
      },  
      fail: function (error) {  
         // alert('失败！',error);    
