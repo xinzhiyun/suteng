@@ -419,7 +419,7 @@ function takePicture(nums, obj) {
             wxuploadImage(localIds,num1, objs);
             wxgetLocalImgData(localIds,num1, objs);
         },  
-        fail: function (res) {  
+        fail: function (res) {   
             console.log('失败：',JSON.stringify(res));
         }    
     });  
