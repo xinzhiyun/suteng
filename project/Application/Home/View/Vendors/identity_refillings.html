@@ -276,7 +276,7 @@
                 <label class="col-sm-2 control-label" >上传身份证正面</label>
                 <div class="col-md-5">
                     <input id="comLicen" name="positive" class="form-control" type="button">
-                    <input type="hidden" name="pic">
+                    <input type="hidden" name="pic" id="pics">
                     <i class="iconfont icon-tianjiajingdian"></i>
                     <div class="xiePic" index="0"><img src="" id="positive" style="width: 100%;"><i class="iconfont icon-cuohao"></i></div>
                 </div>
@@ -435,7 +435,7 @@ function wxuploadImage(e,num, objs) {
         // alert('成功！',JSON.stringify(res));                                     
         mediaId = res.serverId; 
         pic.push(mediaId);                    
-        $(objs).siblings('input[name="pic"]').val(pic);
+        $("#pics").val(pic);
      },  
      fail: function (error) {  
         // alert('失败！',error);    
