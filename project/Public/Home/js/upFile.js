@@ -211,7 +211,7 @@
 		if(imgUpload.length == 0) {
 			filePic = false;
 		}
-
+ 
 	})
 	/*
 		将base64字符串转换为2进制
