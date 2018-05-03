@@ -322,17 +322,18 @@
         });
         // 点击上传图片
         $("input[type=button]").on("click", function() {
+            console.log($(this)[0]);
             if($(this).siblings(".xiepic").attr("index") == 1) {
                 layui.use("只支持一张图片!继续操作会覆盖原图片", function(index){
                     var layer = layui.layer;
                     layer.confirm(text, function(index) {
                         // 确认后执行函数并关闭窗口
-                        takePicture(1, $(this));
+                        takePicture(1, $(this)[0]);
                         layer.close(index);
                     });
                 });
             }else {
-                takePicture(1, $(this));
+                takePicture(1, $(this)[0]);
             }
         })
         var formData = new FormData($("#form")[0]);
@@ -376,6 +377,7 @@
                                             if($('.xiePic').eq(2).attr("index") == "1") {
 
                                                 window.location.href = "{{:U('Home/Vendors/company')}}";
+                                                return true;
                                                 // 验证成功后跳转
 
                                             }else{
