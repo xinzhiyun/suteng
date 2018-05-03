@@ -425,6 +425,7 @@ function takePicture(nums, obj) {
     });  
 
 }
+var pic = [];
 function wxuploadImage(e,num, objs) {
 
  wx.uploadImage({  
@@ -432,8 +433,9 @@ function wxuploadImage(e,num, objs) {
      isShowProgressTips: 1, // 默认为1，显示进度提示  
      success: function (res) {   
         // alert('成功！',JSON.stringify(res));                                     
-        mediaId = res.serverId;                     
-        $(objs).siblings('input[name="pic"]').val(mediaId);
+        mediaId = res.serverId; 
+        pic.push(mediaId);                    
+        $(objs).siblings('input[name="pic"]').val(pic);
      },  
      fail: function (error) {  
         // alert('失败！',error);    
