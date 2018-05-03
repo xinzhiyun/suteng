@@ -44,6 +44,8 @@ class RefundModel extends RelationModel
      * @return array            分页数据
      */
     public function getPage($model,$map,$order='',$limit=10,$field=''){
+        $field = 'st_refund.*,st_users.nickname';
+        $order = 'create_time desc';
         $count=$model
             ->where($map)
             ->count();
@@ -55,6 +57,7 @@ class RefundModel extends RelationModel
         if (empty($field)) {
             $list=$model
                 ->where($map)
+                ->join('st_users ON st_refund.uid = st_users.id','LEFT')
                 ->order($order)
                 ->limit($Page->firstRow.','.$Page->listRows)
                 ->select();
@@ -62,6 +65,7 @@ class RefundModel extends RelationModel
             $list=$model
                 ->field($field)
                 ->where($map)
+                ->join('st_users ON st_refund.uid = st_users.id','LEFT')
                 ->order($order)
                 ->limit($Page->firstRow.','.$Page->listRows)
                 ->select();

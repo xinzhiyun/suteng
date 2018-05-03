@@ -26,11 +26,17 @@ class RefundController extends CommonController
     {
         $id = I('get.id');
         $data = D('Refund')->relation(['logistics','goods'])->find($id);
+        $orderDetail = D('orderDetail');
         foreach ($data['goods'] as $key => $value) {
-            $goods[] = $value['gid'];
-        }
-        $d = D('goods')->field('id,name,pic')->where('id',['in',$goods])->select();
-        dump($goods);
+            $orderDetail->union('select num,price,st_goods.name,st_pic.path from st_order_detail LEFT JOIN st_goods ON st_order_detail.gid = st_goods.id LEFT JOIN st_pic ON st_order_detail.gid = st_pic.gid where order_id = '.$value['oid'].' AND st_order_detail.gid ='.$value['gid']);
+        } 
+            $orderDetail->field('num,price,st_goods.name,st_pic.path');
+            $orderDetail->join('st_goods ON st_order_detail.gid = st_goods.id','LEFT');
+            $orderDetail->join('st_pic ON st_order_detail.gid = st_pic.gid','LEFT');
+            $orderDetail->where('st_order_detail.id < 0');
+        $goods = $orderDetail->select();
+
+        $this->assign('goods',$goods);
         $this->assign('data',$data);
         $this->display();
     }
