@@ -86,7 +86,6 @@
 			console.log(formData.getAll('status'));
 			console.log(formData.getAll('content'));
 			alert($("#submit").attr("disabled"));
-			return false;
 			//发送数据到后台
 			$.ajax({
 				url: '{{:U("Comment/commentsucceed")}}',
