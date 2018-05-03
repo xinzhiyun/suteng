@@ -65,6 +65,7 @@
 		var href = location.href;
 		// var successFlag = true;
 		var orderid;
+		var successFlag = true;
 		if(href.indexOf('?orderid=') > -1){
 			orderid = href.substr(href.indexOf('?orderid=')+9);
 		}
@@ -74,8 +75,8 @@
 				return
 			}
 			// 防止多次提交
-			// if(successFlag) {
-				// successFlag = false; //禁止再次点击提交
+			if(successFlag) {
+				successFlag = false; //禁止再次点击提交
 				//评分
 				formData.delete("status");	//清空，防止多次点击提交
 				formData.delete("content");	//清空，防止多次点击提交
@@ -100,7 +101,7 @@
 						alert(res.code);
 						console.log('连接',res);
 						// 发送到后台并返回结果时解除禁止点击
-						// successFlag = true;
+						successFlag = true;
 						//评论成功后跳转
 						if(res.code == 200){
 							layuiHint('评论成功！');
@@ -117,12 +118,12 @@
 					error: function(res){
 						console.log(res.code)
 						// 发送到后台并返回结果时解除禁止点击
-						// successFlag = true;
+						successFlag = true;
 						console.log('失败', res);
 						layuiHint('评论失败,请稍后再试！')
 					}
 				})
-			// }
+			}
 			
 		});
 	</script>
