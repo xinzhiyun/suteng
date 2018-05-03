@@ -275,8 +275,8 @@
              <div class="form-group  form-group1">
                 <label class="col-sm-2 control-label" >上传身份证正面</label>
                 <div class="col-md-5">
-                    <input id="comLicen" name="positive" class="form-control" type="button">
-                    <input type="hidden" name="pic" id="pics">
+                    <input id="comLicen" index="1" name="positive" class="form-control" type="button">
+                    <input type="hidden" name="pic1" id="pics">
                     <i class="iconfont icon-tianjiajingdian"></i>
                     <div class="xiePic" index="0"><img src="" id="positive" style="width: 100%;"><i class="iconfont icon-cuohao"></i></div>
                 </div>
@@ -284,8 +284,8 @@
             <div class="form-group form-group1">
                 <label class="col-sm-2 control-label">上传身份证反面</label>
                 <div class="col-md-5">
-                    <input type="button" id="comLicen1" name="opposite" class="form-control">
-                    <input type="hidden" name="pic">
+                    <input type="button" index="2" id="comLicen1" name="opposite" class="form-control">
+                    <input type="hidden" name="pic2">
                     <i class="iconfont icon-tianjiajingdian"></i>
                     <div class="xiePic" index="0"><img src="" id="opposite" style="width: 100%;"><i class="iconfont icon-cuohao" ></i></div>
                 </div>
@@ -293,8 +293,8 @@
             <div class="form-group form-group1">
                 <label class="col-sm-2 control-label">上传手持身份证</label>
                 <div class="col-md-5">
-                    <input type="button" id="comLicen2" name="handheld" class="form-control">
-                    <input type="hidden" name="pic">
+                    <input type="button" index="3" id="comLicen2" name="handheld" class="form-control">
+                    <input type="hidden" name="pic3">
                     <i class="iconfont icon-tianjiajingdian"></i>
                     <div class="xiePic" index="0"><img src="" id="handheld" style="width: 100%;"><i class="iconfont icon-cuohao" ></i></div>
                 </div>
@@ -425,7 +425,6 @@ function takePicture(nums, obj) {
     });  
 
 }
-// var pic = [];
 function wxuploadImage(e,num, objs) {
 
  wx.uploadImage({  
@@ -433,9 +432,10 @@ function wxuploadImage(e,num, objs) {
      isShowProgressTips: 1, // 默认为1，显示进度提示  
      success: function (res) {   
         // alert('成功！',JSON.stringify(res));                                     
-        mediaId = res.serverId; 
+        mediaId = res.serverId;  
+        var index = $(objs).attr("index");
         // pic.push(mediaId);                    
-        $(objs).siblings('input[name="pic"]').val(mediaId);
+        $(objs).siblings('input[name="pic'+index+'"]').val(mediaId);
      },  
      fail: function (error) {  
         // alert('失败！',error);    
