@@ -244,7 +244,7 @@
 			// data: {gid: goods_gid},
 			data: {gid: goods_gid},
 			success: function(res){
-				console.log('请求成功： ',res);
+				console.log('请求评论成功： ',res);
 
 				// 如果有评价则遍历出来
 				if(res.data.length){
@@ -262,7 +262,7 @@
 							// 存储每条评论的图片
 							picPathArr = res.data[i].pics;
 							for(var k=0; k<picPathArr.length; k++){
-								commPicArr[i].push({'img':'<span><img class="commPic" src="'+ picPathArr[k].path +'" alt=""></span>'});
+								commPicArr[i].push({'img':'<span><img class="commPic" src="'+ picPathArr[k].path +'" alt="图片加载中"></span>'});
 							}
 							
 						}
@@ -447,6 +447,19 @@
 				},
 				error: function(res){
 					console.log('失败！', res);
+				}
+			});
+
+			// 发送商品id 'good_id' 到payconfirm控制器中
+			$.ajax({
+				url: "{{:U('Pay/payConfirm')}}",
+				type: "post",
+				data: good_id,
+				success: function() {
+
+				},
+				error: function() {
+
 				}
 			})
 		})
