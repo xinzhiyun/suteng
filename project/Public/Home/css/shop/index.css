@@ -447,14 +447,17 @@ body {
 .allgoods>ul>li>i{
 	position: absolute;
 	width: 2rem;
-    height: 1.2rem;
+    height: 2.5rem;
     display: inline-block;
 	right: 0;
-    margin-top: -0.74rem;
+	bottom:0;
+    /*margin-top: -0.74rem;*/
     text-align: right;
 	font-size: 1rem;
     color: #ff3232;
     z-index: 999;
+    text-align:center;
+    line-height:2.2rem;
 }
 .allgoods>ul>li>a>b{
 	display: inline-block;
