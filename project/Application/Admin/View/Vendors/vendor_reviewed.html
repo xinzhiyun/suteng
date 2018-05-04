@@ -255,7 +255,7 @@
                                 协议文件
                             </td>
                             <td>
-                                <a class="protocol" href="">文件</a>
+                                <a class="protocolXy" href="">文件</a>
                             </td>
                         </tr>
                         <tr>
@@ -377,14 +377,14 @@
             success:function(res){
                 console.dir(res);
                 if(res.res.code == 200){
-                    // $('#protocol img.protocol').attr('src','__PUBLIC__/'+res.data.protocol);
+                    $('#protocol img.protocol').attr('src','__PUBLIC__/'+res.data.protocol);
 
                     
                     // 将协议文件放到模拟框中
                     $(".protocolImg").attr("src", '__PUBLIC__/'+res.data.protocol);
 
 
-                    $('#protocol a.protocol').attr('href','__PUBLIC__/'+res.data.protocol);
+                    // $('#protocol a.protocol').attr('href','__PUBLIC__/'+res.data.protocol);
                     $("#protocol input[name='id']").val(res.data.id); 
                     // 显示模块
                     $('#protocol').modal('show');
@@ -619,7 +619,7 @@
         });
     }
     // 点击查看协议文件
-    $(".protocol").on("click", function() {
+    $(".protocolXy").on("click", function() {
         $("#showProtocol").modal('show');
     })
 
