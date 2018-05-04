@@ -5,25 +5,26 @@ use Think\Controller;
 use \Org\Util\WeixinJssdk;
 
 /**
- * 分销商前台控制器 
+ * 分销商前台控制器
  * 吴智彬
  */
 class VendorsController extends Controller
 {
-	/**
-	 * [index 分销商主页]
-	 * @return [type] [description]
-	 */
+    /**
+     * [index 分销商主页]
+     * @return [type] [description]
+     */
     public function index()
     {
         // dump($_SESSION['vendorInfo']);die;
         // 获取用户open_id
-        if(empty($_SESSION['vendorInfo']['open_id'])){
-        	// 请先登录
-        	$this->redirect('Login/index');
-        	exit;
+        if(empty($_SESSION['vendorInfo']['id'])){
+
+            // 请先登录
+            $this->redirect('Login/index');
+            exit;
         }
-        
+
         // 获取用户open_id
 //        $showData['open_id'] = $_SESSION['vendorInfo']['open_id'];
         // 查询分销商
@@ -41,16 +42,16 @@ class VendorsController extends Controller
         // 根据分销商级别匹配查询条件
         switch ($vendor_leavel) {
             case '2':
-                    // A级分销商
-                    $vendor_code = 'vendora_code';
+                // A级分销商
+                $vendor_code = 'vendora_code';
                 break;
             case '3':
-                    // B级分销商
-                    $vendor_code = 'vendorb_code';
+                // B级分销商
+                $vendor_code = 'vendorb_code';
                 break;
             case '4':
-                    // C级分销商
-                    $vendor_code = 'vendorc_code';
+                // C级分销商
+                $vendor_code = 'vendorc_code';
                 break;
             default:
                 # code...
@@ -58,9 +59,10 @@ class VendorsController extends Controller
         }
         // dump($Yesterday);die;
         // 昨天统计
+
         $YesterdayData = $this->showTimeData($vendor_code,$vendor['code'],$Yesterday);
         // 本月统计
-        $monthData = $this->showTimeData($vendor_code,$vendor['code'],$month); 
+        $monthData = $this->showTimeData($vendor_code,$vendor['code'],$month);
         // 查询下属用户总数量
         $userNum = $this->showUserData($vendor_code,$vendor['code']);
         // 查询下属分销商总数量
@@ -73,48 +75,48 @@ class VendorsController extends Controller
         $this->assign('verdorNum',$verdorNum);
         $this->assign('vendor',$vendor);
         if($vendor){
-        	// 获取分销商状态码
-	        $status = $vendor['status'];
-	        // 匹配分销商状态，安排后续操作
-	        switch ($status) {
-	        	case '0':
-	        	    $this->wx_info();
-	        		// 身份证信息填写
-                	$this->identity();
-	        		break;
-	        	case '1':
-	        		// 公司信息填写
+            // 获取分销商状态码
+            $status = $vendor['status'];
+            // 匹配分销商状态，安排后续操作
+            switch ($status) {
+                case '0':
+                    $this->wx_info();
+                    // 身份证信息填写
+                    $this->identity();
+                    break;
+                case '1':
+                    // 公司信息填写
 
 
-	        		$this->company();
-	        		break;
-	        	case '2':
-	        		// 签协议
-	        		$this->display('protocol');
-	        		break;
-	        	case '3':
-	        		// 待审批
-	        		// echo '等待审批';
+                    $this->company();
+                    break;
+                case '2':
+                    // 签协议
+                    $this->display('protocol');
+                    break;
+                case '3':
+                    // 待审批
+                    // echo '等待审批';
                     $this->display('vendor_wait');
-	        		break;
-	        	case '4':
-	        		// 身份证审批失败
-                	$this->identity_refillings();
-	        		break;
-	        	case '5':
-	        		// 公司信息审批失败
-	        		$this->company_refillings();
-	        		break;
-	        	case '6':
-	        		// 协议审批失败
-	        		$this->display('protocol_refillings');
-	        		break;
+                    break;
+                case '4':
+                    // 身份证审批失败
+                    $this->identity_refillings();
+                    break;
+                case '5':
+                    // 公司信息审批失败
+                    $this->company_refillings();
+                    break;
+                case '6':
+                    // 协议审批失败
+                    $this->display('protocol_refillings');
+                    break;
                 case '9':
                     // 交加盟费，传入分销商级别
                     // $this->protocol_fee();
                     $this->redirect('Home/vendors/protocol_fee');
                     break;
-	        	case '7':
+                case '7':
                     $leavel = $vendor['vendor'];
                     switch ($leavel) {
                         case '2':
@@ -163,19 +165,19 @@ class VendorsController extends Controller
                             break;
                     }
                     $this->assign('data',$data);
-                    
-	        		// 审批成功
-	        		$this->display('index');
-	        		break;
-	        	case '8':
-	        		// 禁用分销商
-	        		echo '禁用分销商';
-	        		break;
-	        	default:
-	        		// 异常处理
-            		$this->error('分销商状态码错误，请加盟联系客服！');
-	        		break;
-	        }
+
+                    // 审批成功
+                    $this->display('index');
+                    break;
+                case '8':
+                    // 禁用分销商
+                    echo '禁用分销商';
+                    break;
+                default:
+                    // 异常处理
+                    $this->error('分销商状态码错误，请加盟联系客服！');
+                    break;
+            }
         }else{
             // 异常处理
             $this->error('分销不存在，请加盟联系客服！');
@@ -186,38 +188,39 @@ class VendorsController extends Controller
     // 身份证信息填写
     public function identity()
     {
-    	if(IS_POST){
-    		// 获取缓存用户微信标识
-    		$open_id = $_SESSION['vendorInfo']['open_id'];
+        if(IS_POST){
 
-    		// 接收表单信息
-    		$name 		= I('post.name');
-  			$phone 		= I('post.phone');
-  			$identity 	= I('post.identity');
+            // 获取缓存用户微信标识
+            $open_id = $_SESSION['vendorInfo']['open_id'];
 
-    		// 实例化验证类
-    		$validate 	= new \Org\Util\Validate;
+            // 接收表单信息
+            $name 		= I('post.name');
+            $phone 		= I('post.phone');
+            $identity 	= I('post.identity');
 
-    		// 验证是否合法用户名：字母或中文开头，数字字母下划线中文,2-30位
-    		if($validate->isName($name)){
-    			$data['name'] = $name;
-    		}else{
-    			$this->error('请输入真实性名！');
-    		}
+            // 实例化验证类
+            $validate 	= new \Org\Util\Validate;
 
-    		// 手机号码验证
-    		if($validate->isMobilePhone($phone)){
-    			$data['phone'] = $phone;
-    		}else{
-    			 $this->error('手机号码格式不正确！');
-    		}
+            // 验证是否合法用户名：字母或中文开头，数字字母下划线中文,2-30位
+            if($validate->isName($name)){
+                $data['name'] = $name;
+            }else{
+                $this->error('请输入真实性名！');
+            }
 
-    		// 身份证号码验证
-    		if($validate->isIdentity($identity)){
-    			$data['identity'] = $identity;
-    		}else{
-    			 $this->error('请输入真实的身份证号码！');
-    		}
+            // 手机号码验证
+            if($validate->isMobilePhone($phone)){
+                $data['phone'] = $phone;
+            }else{
+                $this->error('手机号码格式不正确！');
+            }
+
+            // 身份证号码验证
+            if($validate->isIdentity($identity)){
+                $data['identity'] = $identity;
+            }else{
+                $this->error('请输入真实的身份证号码！');
+            }
 
             // 没有上传图片报错信息组
             $emptyError = array(
@@ -276,67 +279,69 @@ class VendorsController extends Controller
             $info = $this->upload();
 
             if($info){
-            	// 将图片和表单数据合并
-            	$newData = array_merge($data,$info);
-            	// 分销商状态
-            	$newData['status'] = 1;
-            	// 更新条件
-            	$saveData['open_id'] = $open_id;
-            	// 更新分销商信息
-            	$vandorRes = M('vendors')->where($saveData)->save($newData);
+                // 将图片和表单数据合并
+                $newData = array_merge($data,$info);
+                // 分销商状态
+                $newData['status'] = 1;
+                // 更新条件
+                $saveData['open_id'] = $open_id;
+                // 更新分销商信息
+                $vandorRes = M('vendors')->where($saveData)->save($newData);
 
-            	// 如果分销商数据更新成功
-            	if($vandorRes){
-            		$this->success('身份证信息提交成功', U('Home/Vendors/index'));
-            	}else{
-            		$this->error('身份证信息提交失败，请重新认证！');
-            	}
+                // 如果分销商数据更新成功
+                if($vandorRes){
+                    $this->success('身份证信息提交成功', U('Home/Vendors/index'));
+                }else{
+                    $this->error('身份证信息提交失败，请重新认证！');
+                }
 
             }else{
-            	$this->error('图片上传失败，请重新上传！');
+
+                $this->error('图片上传失败，请重新上传！');
             }
 
-    	}else{
+        }else{
+
 
             $this->wx_info();
-    		$this->display('identity_refillings');
-    	}
+            $this->display('identity_refillings');
+        }
     }
 
     // 身份证信息重填写
     public function identity_refillings()
     {
-    	if(IS_POST){
-    		// 获取缓存用户微信标识
-    		$open_id = $_SESSION['vendorInfo']['open_id'];
-    		// 接收表单信息
-    		$name 		= I('post.name');
-  			$phone 		= I('post.phone');
-  			$identity 	= I('post.identity');
+        if(IS_POST){
+            // 获取缓存用户微信标识
+            $open_id = $_SESSION['vendorInfo']['open_id'];
+            // 接收表单信息
+            $name 		= I('post.name');
+            $phone 		= I('post.phone');
+            $identity 	= I('post.identity');
 
-    		// 实例化验证类
-    		$validate 	= new \Org\Util\Validate;
+            // 实例化验证类
+            $validate 	= new \Org\Util\Validate;
 
-    		// 验证是否合法用户名：字母或中文开头，数字字母下划线中文,2-30位
-    		if($validate->isName($name)){
-    			$data['name'] = $name;
-    		}else{
-    			$this->error('请输入真实性名！');
-    		}
+            // 验证是否合法用户名：字母或中文开头，数字字母下划线中文,2-30位
+            if($validate->isName($name)){
+                $data['name'] = $name;
+            }else{
+                $this->error('请输入真实性名！');
+            }
 
-    		// 手机号码验证
-    		if($validate->isMobilePhone($phone)){
-    			$data['phone'] = $phone;
-    		}else{
-    			 $this->error('手机号码格式不正确！');
-    		}
+            // 手机号码验证
+            if($validate->isMobilePhone($phone)){
+                $data['phone'] = $phone;
+            }else{
+                $this->error('手机号码格式不正确！');
+            }
 
-    		// 身份证号码验证
-    		if($validate->isIdentity($identity)){
-    			$data['identity'] = $identity;
-    		}else{
-    			 $this->error('请输入真实的身份证号码！');
-    		}
+            // 身份证号码验证
+            if($validate->isIdentity($identity)){
+                $data['identity'] = $identity;
+            }else{
+                $this->error('请输入真实的身份证号码！');
+            }
 
             // 没有上传图片报错信息组
             $emptyError = array(
@@ -392,33 +397,38 @@ class VendorsController extends Controller
             }
 
             // 处理图片
-            $info = $this->upload();
+            // $info = $this->upload();
+            $info['positive'] = $this->downloadPic($_POST['pic1']);
+            $info['opposite'] = $this->downloadPic($_POST['pic1']);
+            $info['handheld'] = $this->downloadPic($_POST['pic1']);
+            if(!empty($info['positive']) &&  !empty($info['opposite']) &&  !empty($info['handheld']) ){
+                // 将图片和表单数据合并
+                $newData = array_merge($data,$info);
+                // 分销商状态
+                // $newData['status'] = 3;
+                $newData['status'] = 1;
+                // 更新条件
+                $saveData['open_id'] = $open_id;
+                // 更新分销商信息
+                $vandorRes = M('vendors')->where($saveData)->save($newData);
 
-            if($info){
-            	// 将图片和表单数据合并
-            	$newData = array_merge($data,$info);
-            	// 分销商状态
-            	$newData['status'] = 3;
-            	// 更新条件
-            	$saveData['open_id'] = $open_id;
-            	// 更新分销商信息
-            	$vandorRes = M('vendors')->where($saveData)->save($newData);
-
-            	// 如果分销商数据更新成功
-            	if($vandorRes){
-            		$this->success('身份证信息提交成功', U('Home/Vendors/index'));
-            	}else{
-            		$this->error('身份证信息提交失败，请重新认证！');
-            	}
+                // 如果分销商数据更新成功
+                if($vandorRes){
+                    $this->success('身份证信息提交成功', U('Home/Vendors/index'));
+                }else{
+                    $this->error('身份证信息提交失败，请重新认证！');
+                }
 
             }else{
-            	$this->error('图片上传失败，请重新上传！');
+
+                $this->error('图片上传失败，请重新上传！');
             }
 
-    	}else{
+        }else{
+
             $this->wx_info();
-    		$this->display('identity_refillings');
-    	}
+            $this->display('identity_refillings');
+        }
     }
 
     /**
@@ -426,37 +436,39 @@ class VendorsController extends Controller
      */
     public function company()
     {
-    	if(IS_POST){
-    		// 获取缓存用户微信标识
-    		$open_id = $_SESSION['vendorInfo']['open_id'];
-    		// 接收表单信息
-    		$company 		= I('post.company');
-  			$telephone 		= I('post.telephone');
-  			$address 	 	= I('post.address');
 
-    		// 实例化验证类
-    		$validate 	= new \Org\Util\Validate;
+        if(IS_POST){
 
-    		// 验证是否合法公司名称：字母或中文开头，数字字母下划线中文,2-30位
-    		if($validate->isName($company)){
-    			$data['company'] = $company;
-    		}else{
-    			 $this->error('公司名称格式不正确，请重新输入！');
-    		}
+            // 获取缓存用户微信标识
+            $open_id = $_SESSION['vendorInfo']['open_id'];
+            // 接收表单信息
+            $company 		= I('post.company');
+            $telephone 		= I('post.telephone');
+            $address 	 	= I('post.address');
 
-    		// 座机号码验证
-    		if($validate->isPhone($telephone)){
-    			$data['telephone'] = $telephone;
-    		}else{
-    			 $this->error('坐机号码格式不正确！');
-    		}
+            // 实例化验证类
+            $validate 	= new \Org\Util\Validate;
 
-    		// 公司地址验证
-    		if($validate->isAddress($address)){
-    			$data['address'] = $address;
-    		}else{
-    			 $this->error('请输入完整的公司地址！');
-    		}
+            // 验证是否合法公司名称：字母或中文开头，数字字母下划线中文,2-30位
+            if($validate->isName($company)){
+                $data['company'] = $company;
+            }else{
+                $this->error('公司名称格式不正确，请重新输入！');
+            }
+
+            // 座机号码验证
+            if($validate->isPhone($telephone)){
+                $data['telephone'] = $telephone;
+            }else{
+                $this->error('坐机号码格式不正确！');
+            }
+
+            // 公司地址验证
+            if($validate->isAddress($address)){
+                $data['address'] = $address;
+            }else{
+                $this->error('请输入完整的公司地址！');
+            }
 
             // 没有上传图片报错信息组
             $emptyError = array(
@@ -509,33 +521,35 @@ class VendorsController extends Controller
             }
 
             // 处理图片
-            $info = $this->upload();
+            // $info = $this->upload();
+            $info['licence'] = $this->downloadPic($_POST['pic']);
+
 
             if($info){
-            	// 将图片和表单数据合并
-            	$newData = array_merge($data,$info);
-            	// 分销商状态
-            	$newData['status'] = 2;
-            	// 更新条件
-            	$saveData['open_id'] = $open_id;
-            	// 更新分销商信息
-            	$vandorRes = M('vendors')->where($saveData)->save($newData);
+                // 将图片和表单数据合并
+                $newData = array_merge($data,$info);
+                // 分销商状态
+                $newData['status'] = 2;
+                // 更新条件
+                $saveData['open_id'] = $open_id;
+                // 更新分销商信息
+                $vandorRes = M('vendors')->where($saveData)->save($newData);
 
-            	// 如果分销商数据更新成功
-            	if($vandorRes){
-            		$this->success('公司信息提交成功', U('Home/Vendors/index'));
-            	}else{
-            		$this->error('身份证信息提交失败，请重新认证！');
-            	}
+                // 如果分销商数据更新成功
+                if($vandorRes){
+                    $this->success('公司信息提交成功', U('Home/Vendors/index'));
+                }else{
+                    $this->error('身份证信息提交失败，请重新认证！');
+                }
 
             }else{
-            	$this->error('图片上传失败，请重新上传！');
+                $this->error('图片上传失败，请重新上传！');
             }
 
-    	}else{
+        }else{
             $this->wx_info();
-    		$this->display('company');
-    	}
+            $this->display('company');
+        }
     }
 
     /**
@@ -543,37 +557,38 @@ class VendorsController extends Controller
      */
     public function company_refillings()
     {
-    	if(IS_POST){
-    		// 获取缓存用户微信标识
-    		$open_id = $_SESSION['vendorInfo']['open_id'];
-    		// 接收表单信息
-    		$company 		= I('post.company');
-  			$telephone 		= I('post.telephone');
-  			$address 	 	= I('post.address');
+        if(IS_POST){
 
-    		// 实例化验证类
-    		$validate 	= new \Org\Util\Validate;
+            // 获取缓存用户微信标识
+            $open_id = $_SESSION['vendorInfo']['open_id'];
+            // 接收表单信息
+            $company 		= I('post.company');
+            $telephone 		= I('post.telephone');
+            $address 	 	= I('post.address');
 
-    		// 验证是否合法公司名称：字母或中文开头，数字字母下划线中文,2-30位
-    		if($validate->isName($company)){
-    			$data['company'] = $company;
-    		}else{
-    			 $this->error('公司名称格式不正确，请重新输入！');
-    		}
+            // 实例化验证类
+            $validate 	= new \Org\Util\Validate;
 
-    		// 座机号码验证
-    		if($validate->isPhone($telephone)){
-    			$data['telephone'] = $telephone;
-    		}else{
-    			 $this->error('坐机号码格式不正确！');
-    		}
+            // 验证是否合法公司名称：字母或中文开头，数字字母下划线中文,2-30位
+            if($validate->isName($company)){
+                $data['company'] = $company;
+            }else{
+                $this->error('公司名称格式不正确，请重新输入！');
+            }
 
-    		// 公司地址验证
-    		if($validate->isAddress($address)){
-    			$data['address'] = $address;
-    		}else{
-    			 $this->error('请输入完整的公司地址！');
-    		}
+            // 座机号码验证
+            if($validate->isPhone($telephone)){
+                $data['telephone'] = $telephone;
+            }else{
+                $this->error('坐机号码格式不正确！');
+            }
+
+            // 公司地址验证
+            if($validate->isAddress($address)){
+                $data['address'] = $address;
+            }else{
+                $this->error('请输入完整的公司地址！');
+            }
 
             // 没有上传图片报错信息组
             $emptyError = array(
@@ -626,33 +641,35 @@ class VendorsController extends Controller
             }
 
             // 处理图片
-            $info = $this->upload();
+            // $info = $this->upload();
+            $info['licence'] = $this->downloadPic($_POST['pic']);
+
 
             if($info){
-            	// 将图片和表单数据合并
-            	$newData = array_merge($data,$info);
-            	// 分销商状态
-            	$newData['status'] = 3;
-            	// 更新条件
-            	$saveData['open_id'] = $open_id;
-            	// 更新分销商信息
-            	$vandorRes = M('vendors')->where($saveData)->save($newData);
+                // 将图片和表单数据合并
+                $newData = array_merge($data,$info);
+                // 分销商状态
+                $newData['status'] = 3;
+                // 更新条件
+                $saveData['open_id'] = $open_id;
+                // 更新分销商信息
+                $vandorRes = M('vendors')->where($saveData)->save($newData);
 
-            	// 如果分销商数据更新成功
-            	if($vandorRes){
-            		$this->success('公司信息提交成功', U('Home/Vendors/index'));
-            	}else{
-            		$this->error('身份证信息提交失败，请重新认证！');
-            	}
+                // 如果分销商数据更新成功
+                if($vandorRes){
+                    $this->success('公司信息提交成功', U('Home/Vendors/index'));
+                }else{
+                    $this->error('身份证信息提交失败，请重新认证！');
+                }
 
             }else{
-            	$this->error('图片上传失败，请重新上传！');
+                $this->error('图片上传失败，请重新上传！');
             }
 
-    	}else{
+        }else{
             $this->wx_info();
-    		$this->display('company_refillings');
-    	}
+            $this->display('company_refillings');
+        }
     }
 
     /**
@@ -660,21 +677,44 @@ class VendorsController extends Controller
      * @return [type] [description]
      */
     public function protocol()
-    {	
-        if (IS_AJAX) {
-            // 获取微信用户唯一标识
+    {
+        if (IS_POST) {
+
+            //       // 实例化微信JSSDK类对象
+            //     $wxJSSDK = new \Org\Util\WeixinJssdk;
+            //     // 调用获取公众号的全局唯一接口调用凭据
+            //     $access_token = $wxJSSDK->getAccessToken();
+            //     $serverId = I('pic');
+
+            //       // 要存在你服务器哪个位置？
+            // $targetName = "./tmp/'.date('YmdHis).'.jpg";
+            // $ch = curl_init("http://file.weixin.qq.com/cgi-bin/media/get?access_token=$access_token&media_id=$serverId");
+            // curl_setopt($ch, CURLOPT_URL, $url);
+            // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            // curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+            // $file = curl_exec($ch);
+            // dump($file);
+            // curl_close($ch);
+            $info['protocol'] = $this->downloadPic($_POST['pic']);
+
+
+
+            // // 获取微信用户唯一标识
             $open_id = $_SESSION['vendorInfo']['open_id'];
 
-            // 上传合同文件
-            $info = $this->upload();
+            // // 上传合同文件
+            // $info = $this->upload();
 
 
             if($info){
+
                 $info['status'] = 9;
                 // 更新条件
                 $saveData['open_id'] = $open_id;
                 // 更新分销商信息
                 $vandorRes = M('vendors')->where($saveData)->save($info);
+
+
                 if($vandorRes){
                     // $this->success('合同信息提交成功', U('Home/Vendors/index'));
                     $message['code'] = 200;
@@ -689,12 +729,52 @@ class VendorsController extends Controller
                 $message['res']  = '合同信息提交失败，请重新上传！';
             }
 
-            $this->ajaxReturn($message); 
+            $this->ajaxReturn($message);
         } else {
+
             $this->wx_info();
             $this->display();
         }
-    	
+
+    }
+    //下载图片
+    public function downloadPic($paths)
+    {
+
+        if(!empty($paths)){
+            $path_info = '/Pic/Vendors/'.date('Y-m-d',time());
+
+            $file=md5($paths).".jpg";
+            $dir =rtrim(THINK_PATH,"ThinkPHP/").'/Public'.$path_info;
+
+            if(!is_dir($dir)){
+                mkdir($dir,0777,true);
+            }
+            $path_info = $path_info.'/'.$file;
+
+
+            $path = './Public'.$path_info;
+
+            $weixin = new WeixinJssdk;
+            $ACCESS_TOKEN = $weixin->getAccessToken();
+
+            $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=$ACCESS_TOKEN&media_id=$paths";
+            // $url = "http://img.taopic.com/uploads/allimg/140729/240450-140HZP45790.jpg";
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+            $file = curl_exec($ch);
+
+            curl_close($ch);
+
+            $resource = fopen($path, 'a');
+            fwrite($resource, $file);
+            fclose($resource);
+            return $path_info;
+        }
+        return '';
+
     }
 
     /**
@@ -702,7 +782,7 @@ class VendorsController extends Controller
      * @return [type] [description]
      */
     public function protocol_re()
-    {   
+    {
         // 获取微信用户唯一标识
         $open_id = $_SESSION['vendorInfo']['open_id'];
 
@@ -729,9 +809,9 @@ class VendorsController extends Controller
             $message['res']  = '合同信息提交失败，请重新上传！';
         }
 
-        $this->ajaxReturn($message); 
+        $this->ajaxReturn($message);
     }
-    
+
 
     // 收加盟费
     public function protocol_fee()
@@ -774,7 +854,7 @@ class VendorsController extends Controller
         $vendor = M('vendors')->where($showDataa)->find();
         $this->assign('vendor',$vendor);
 
-        //分配数据        
+        //分配数据
         $this->assign('info',$signPackage);
         $this->assign('openId',$openId);
         $this->assign('money',$money);
@@ -843,7 +923,7 @@ class VendorsController extends Controller
         $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg','docx','doc');// 设置附件上传类型
         $upload->rootPath  =     './Public/'; // 设置附件上传根目录
         $upload->savePath  =     '/Vendors/'; // 设置附件上传（子）目录
-        // 上传文件 
+        // 上传文件
         $info   =   $upload->upload();
         if(!$info) {// 上传错误提示错误信息
             return false;
@@ -877,28 +957,28 @@ class VendorsController extends Controller
 
         // 昨日新增会员
         $YesterdayUserData =  M('users')->where($showYesterdayUser)->field('id')->select();
-        
+
         // 1.统计昨日新增会员数量
         $YesterdayUserNum = 0;
         if(!empty($YesterdayUserData)){
             $YesterdayUserNum = count($YesterdayUserData);
-        } 
-        
+        }
+
         // 昨日订单时间区间
         $showYesterdayUserOrder['o.addtime'] = $time;
         $showYesterdayUserOrder['u.'.$vendor] = $code;
 
         // 昨日会员订单
         $YesterdayUserOrderData = M('shop_order')
-                                    ->alias('o')
-                                    ->where($showYesterdayUserOrder)
-                                    ->join('__USERS__ u ON o.uid = u.id','LEFT')
-                                    ->field('o.id,o.g_price')
-                                    ->select();
+            ->alias('o')
+            ->where($showYesterdayUserOrder)
+            ->join('__USERS__ u ON o.uid = u.id','LEFT')
+            ->field('o.id,o.g_price')
+            ->select();
 
         // 2.昨日会员订单数量
         $YesterdayUserOrderNum = 0;
-        
+
         // 3.昨日会员订单总金额
         $YesterdayUserOrderPrice = 0;
 
@@ -937,13 +1017,13 @@ class VendorsController extends Controller
 
         // 昨日新增会员
         $YesterdayUserData =  M('users')->where($showYesterdayUser)->field('id')->select();
-        
+
         // 1.统计昨日新增会员数量
         $YesterdayUserNum = 0;
         if(!empty($YesterdayUserData)){
             $YesterdayUserNum = count($YesterdayUserData);
-        } 
- 
+        }
+
         return $YesterdayUserNum;
     }
 
@@ -967,13 +1047,13 @@ class VendorsController extends Controller
         // 昨日新增会员
         $YesterdayUserData =  M('vendors')->where($showYesterdayUser)->field('id')->select();
 
-        
+
         // 1.统计昨日新增会员数量
         $YesterdayUserNum = 0;
         if(!empty($YesterdayUserData)){
             $YesterdayUserNum = count($YesterdayUserData);
-        } 
- 
+        }
+
         return $YesterdayUserNum;
     }
 
@@ -1146,7 +1226,7 @@ class VendorsController extends Controller
     public function get_leavel()
     {
         // 用户级别2:A级分销商 3:B级分销商 4:C级分销商
-        $leavel = $_SESSION['vendorInfo']['leavel']; 
+        $leavel = $_SESSION['vendorInfo']['leavel'];
 
         switch ($leavel) {
             case '2':
