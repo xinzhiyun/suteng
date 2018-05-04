@@ -84,9 +84,9 @@
 				formData.append('status',$('input[name="status"]:checked')[0].value);
 				formData.append('content',$('#shopping').val());	//评价的内容
 				console.group();
-				console.log(formData.getAll('orderid'));
-				console.log(formData.getAll('status'));
-				console.log(formData.getAll('content'));
+				alert(formData.getAll('orderid'), formData.getAll('status'),formData.getAll('content') );
+				// console.log();
+				// console.log();
 				//发送数据到后台
 				$.ajax({
 					url: '{{:U("Comment/commentsucceed")}}',
