@@ -84,9 +84,9 @@
 				formData.append('status',$('input[name="status"]:checked')[0].value);
 				formData.append('content',$('#shopping').val());	//评价的内容
 				console.group();
-				alert(formData.getAll('orderid'), formData.getAll('status'),formData.getAll('content') );
-				// console.log();
-				// console.log();
+				alert(formData.getAll('orderid'));
+				alert(formData.getAll('status'));
+				alert(formData.getAll('content'));
 				//发送数据到后台
 				$.ajax({
 					url: '{{:U("Comment/commentsucceed")}}',
@@ -97,7 +97,7 @@
 					async: true,
 					contentType: false,
 					success: function(res){
-						console.log('连接',res);
+						alert('res: ',res);
 						// 发送到后台并返回结果时解除禁止点击
 						successFlag = true;
 						//评论成功后跳转
@@ -113,10 +113,10 @@
 							},500);
 						}
 					},
-					error: function(res){
+					error: function(err){
 						// 发送到后台并返回结果时解除禁止点击
 						successFlag = true;
-						alert("error",res);
+						alert("err: ",err);
 						console.log('失败', res);
 						layuiHint('评论失败,请稍后再试！')
 					}
