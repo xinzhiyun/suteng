@@ -116,7 +116,7 @@
 					error: function(res){
 						// 发送到后台并返回结果时解除禁止点击
 						successFlag = true;
-
+						alert(res);
 						console.log('失败', res);
 						layuiHint('评论失败,请稍后再试！')
 					}
