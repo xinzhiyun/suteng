@@ -253,12 +253,9 @@
                     window.location.href="{{:U('Admin/shop/orders')}}?p=";
                 }
                 if (msg.code == 500) {
-                    text = '';
-                    $.each(msg.msg, function(i, n){
-                      text = text + '*' + n + '</br>';                     
-                    });
-                    $('.errmsg').html(text);
-                    console.log(msg);
+                    $('#st-add').modal('hide');
+                    parent.layer.msg(msg.msg);
+                    window.location.href="{{:U('Admin/shop/orders')}}?p=";
                 }               
             }
         });

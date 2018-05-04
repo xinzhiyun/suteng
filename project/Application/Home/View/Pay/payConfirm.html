@@ -197,10 +197,7 @@
 					}
 					
 				}
-			}else {
-
 			}
-			
 			console.log(postageAll[77], postageAll[73])
 			$("#hLeft").click(function(){
 				location.href = "{{:U('Address/index')}}";
@@ -269,7 +266,7 @@
 				for(var i=0; i<lvxinData.length;i++){
 					// console.dir(lvxinData[i])
 					lvxinData[i].desc = lvxinData[i].desc ? lvxinData[i].desc : '暂无描述';
-					goodsHTML += '<div class="goods">'+
+					goodsHTML += '<div class="goods" v-data="'+lvxinData[i].gid+'">'+
 					'<div class="infos">'+
 					'<div class="img"><img src="'+ lvxinData[i].picpath +'" alt="正在加载..."></div>'+
 					'<div class="dec">'+
@@ -299,7 +296,7 @@
 				goods_data.goodsDetail.desc = goods_data.goodsDetail.desc
 				? goods_data.goodsDetail.desc
 				: '暂无描述'; 
-				goodsHTML += '<div class="goods">'+
+				goodsHTML += '<div class="goods" v-data="'+goods_data.goodsDetail.gid+'">'+
 				'<div class="infos">'+ 
 				'<div class="img"><img src="/Uploads/'+ goods_data.goodsDetail.path +'" alt="正在加载..."></div>'+
 				'<div class="dec">'+
@@ -377,13 +374,16 @@
 				postagePrice = $(this).find("option:selected").attr("index");
 				// 邮费id
 				cid = $(this).find("option:selected").attr("cid");
+				// 邮费对象
+				postageData = {cname: postageName, cprice: postagePrice, cid: cid};
+				console.log(postageName, postagePrice, cid);
 				// 选中邮费所在块的商品的数量
 				num = parseInt($(this).parent().siblings(".infos").children(".dec").children("div").children(".num").children("b").text());
 				// 邮费价格乘以数量
 				postageArr[posNum] = postagePrice * num;
 
 				// 获取点击到的商品的id
-				// console.log("商品id", $(this).parent().parent(".goods").attr("v-data"));
+				console.log("商品id", $(this).parent().parent(".goods").attr("v-data"));
 				var gid = $(this).parent().parent(".goods").attr("v-data");
 				function sum(arr) {
 					var s=0;
@@ -421,7 +421,7 @@
 				// 提交后台
 				$.ajax({
 					url: "{{:U('Pay/updateOrder')}}",
-					data: {orderId: order_id, cid: cid, gid: gid},//将订单id和邮费id传递
+					data: {orderId: order_id, postageData: postageData, good_id: gid},//将订单id和邮费id传递
 					type: "post",
 					success: function(res) {
 						console.log("邮费成功", res);
@@ -433,6 +433,15 @@
 				
 				
 			})
+			// 点击发票
+			$(".kaifapiao").on("click", function() {
+				for(var i = 0; i < $(".selectPostage").length; i++) {
+					if($(".selectPostage").eq(i).find("option:selected").val() == "选择快递") {
+						parent.layer.msg('请选择快递方式');
+						return false;
+					}
+				}
+			});
 			/*
 			发票信息
 			*/
@@ -571,6 +580,7 @@
 							parent.layer.msg('付款成功！');
 						//付款成功后的操作
 						setTimeout(function(){
+							
 							location.href = '{{:U("PaymentSystem/paytosuccess")}}';
 						},500);
 						

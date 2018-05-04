@@ -350,9 +350,10 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label" for="comLicen">上传协议文件</label>
                 <div class="col-md-3">
-                    <input type="file" id="comLicen" name="protocol" class="form-control" onchange="protocolImage(this);" accept="image/jpg, image/jpeg, image/png, image/gif">
+                    <input type="button" id="comLicen" name="protocol" class="form-control">
+                    <input type="hidden" name="pic">
                     <i class="iconfont icon-tianjiajingdian"></i>
-                    <div class="xiePic" index="0"><img src="" id="protocol" style="width: 100%;"><i class="iconfont icon-cuohao" onclick="removePic(this)"></i></div>
+                    <div class="xiePic" index="1"><img src="" id="protocol" style="width: 100%;"><i class="iconfont icon-cuohao" onclick="removePic(this)"></i></div>
                 </div>
             </div> 
             <div class="xieBtn">
@@ -403,7 +404,23 @@
             </div>
         </div>
     </div>
+    <script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
     <script>
+        //微信接口
+        wx.config({
+            debug: false,
+            appId: '{{$info["appId"]}}',
+            timestamp: '{{$info["timestamp"]}}',
+            nonceStr: '{{$info["nonceStr"]}}',
+            signature: '{{$info["signature"]}}',
+            jsApiList: [
+            // 所有要调用的 API 都要加到这个列表中
+            'chooseImage',
+                'uploadImage',
+                'getLocalImgData',
+                'downloadImage'
+            ]
+        });
         //支付方式   
         $('.xieBtn').click(function(){
 
@@ -435,34 +452,94 @@
             }else{
                 layuiHint("协议文件必须上传")
             }
+        }) 
+        // 点击上传图片
+        $("input[type=button]").on("click", function() {
+            if($(this).siblings(".xiepic").is(":visible")) {
+                layui.use("只支持一张图片!继续操作会覆盖原图片", function(index){
+                    var layer = layui.layer;
+                    layer.confirm(text, function(index) {
+                        // 确认后执行函数并关闭窗口
+                        takePicture(1, $(this));
+                        layer.close(index);
+                    });
+                });
+            }else {
+                takePicture(1, $(this));
+            }
         })
 
-        function protocolImage(file) {
-            if (!file.files || !file.files[0]) {
-                return;
-            }
-            var reader = new FileReader();
-            reader.onload = function (evt) {
-                var dx =(evt.total/1024)/1024;
-                var result = this.result;//图片路径加密后信息
-                // 上传图片大小是否符合
-                if(dx>=3) {
-                    layuiHint("协调文件图片超出允许上传文件大小3M");
-                }else{
-                    document.getElementById('protocol').src = evt.target.result;
-                    $("#protocol").parent(".xiePic").css("visibility","visible");
-                    $(".xiePic").attr("index", "1");
-                }
+        function takePicture(nums, obj) {  
+            wx.chooseImage({  
+                count: 1,  //最多可以选择的图片张数
+                needResult: 1,  
+                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有  
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有  
+                success: function (data) {                  
+                    localIds = data.localIds[0];   // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片        
+                                    
+                    var num1 = nums;
+                    var objs = obj;
+                    wxuploadImage(localIds,num1, objs);
+                    wxgetLocalImgData(localIds,num1, objs);
+                },  
+                fail: function (res) {  
+                    console.log('失败：',JSON.stringify(res));
+                }    
+            });  
+
+        }
+        function wxuploadImage(e,num, objs) {
+
+            wx.uploadImage({  
+                localId: e, // 需要上传的图片的本地ID，由chooseImage接口获得  
+                isShowProgressTips: 1, // 默认为1，显示进度提示  
+                success: function (res) {   
+                    // alert('成功！',JSON.stringify(res));                                     
+                    mediaId = res.serverId;                     
+                    $(objs).siblings('input[name="pic"]').val(mediaId);
+                },  
+                fail: function (error) {  
+                    // alert('失败！',error);    
+                    picPath = '';  
+                    localIds = '';  
+                }          
+            });
+
+        }
+
+        function wxgetLocalImgData(e,num, objs){
+            // ios
+            if(window.__wxjs_is_wkwebview){
+                wx.getLocalImgData({
+                    localId: e, // 图片的localID
+                    success: function (res) {                    
+                            var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+                            localData = localData.replace('jgp', 'jpeg');//iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下                                
+                            $(objs).siblings(".xiePic").children("img").attr("src", localData);
+                            $(objs).siblings(".xiePic").css("visibility", "visible").attr("index", "1");
+
+                    },
+                    fail:function(res){
+                            alert("显示失败");
+                    }
+                });
+            }else{ //安卓
+                    $(objs).siblings(".xiePic").children("img").attr("src", e);
+                    $(objs).siblings(".xiePic").css("visibility", "visible").attr("index", "1");
                 
             }
-            reader.readAsDataURL(file.files[0]);
+
         }
+        var formData = new FormData($("#form")[0]);
         // 点击叉叉隐藏div
         function removePic(removeObj) {
+            $(this).parent().siblings("input[name='pic']").val("");
             removeObj.previousSibling.src = "";//将图片路径删除
             removeObj.parentNode.style.visibility = "hidden";//隐藏div
             removeObj.parentNode.setAttribute("index", "0");//设置index为0
         }
+
     </script>
 </body>
 </html>

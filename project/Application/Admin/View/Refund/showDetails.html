@@ -56,18 +56,18 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>
+                                <!-- <th>
                                     序号
-                                </th>
+                                </th> -->
                                 <th>
                                     商品名称
                                 </th>
                                 <th>
                                     商品图片
                                 </th>
-                                <th>
+                                <!-- <th>
                                     商品描述
-                                </th>
+                                </th> -->
                                 <th>
                                     购买数量
                                 </th>
@@ -80,31 +80,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <empty name="data.goods">
+                            <empty name="goods">
                                 <tr><td colspan="12">暂无商品数据</td></tr>
                             <else />
-                                <volist name="data.goods" id="v">
+                                <volist name="goods" id="v">
                                     <tr>
                                         <td>
-                                            {{$v.gid}}
+                                            {{$v.name}}
                                         </td>
                                         <td>
-                                            {{$v.oid}}
+                                            <img src="/Uploads/{{$v.path}} ">
                                         </td>
                                         <td>
-                                            <img src="/Uploads/">
+                                            {{$v.num}}
+                                        </td>
+                                        <td class='price'>
+                                            {{$v.price}}
                                         </td>
                                         <td>
-                                            公司的得上
-                                        </td>
-                                        <td>
-                                            2
-                                        </td>
-                                        <td>
-                                            299
-                                        </td>
-                                        <td>
-                                            999
+                                            {{$v['price']*$v['num']}}
                                         </td>
                                     </tr>
                                 </volist>
@@ -115,8 +109,8 @@
                         <tfoot>
                             <tr>
                                 <td colspan="5"></td>
-                                <td>总计：</td>
-                                <td style="color: red;">1999元</td>
+                                <td >总计：</td>
+                                <td id="sum" style="color: red;">0.00元</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -128,5 +122,13 @@
 </block>
 <block name="myjs">
     <script>
+        var price = document.getElementsByClassName('price'),
+            sum = document.getElementById('sum'),
+            totalPrice = 0;
+
+        for(var i=0;i<price.length;i++){
+            totalPrice += parseFloat(price[i].textContent);
+        }
+        sum.textContent = totalPrice + '元';
     </script>
 </block>

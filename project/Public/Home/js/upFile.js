@@ -63,9 +63,9 @@
 					图片压缩
 				 */
 				function compressImage(url) {
-					let canvas = document.createElement("canvas");
-					let ctx = canvas.getContext("2d");
-					let img = new Image();
+					var canvas = document.createElement("canvas");
+					var ctx = canvas.getContext("2d");
+					var img = new Image();
 					img.src = url;
 
 					img.onload = function(){
@@ -144,9 +144,9 @@
 								图片压缩
 							 */
 							function compressImage(url) {
-								let canvas = document.createElement("canvas");
-								let ctx = canvas.getContext("2d");
-								let img = new Image();
+								var canvas = document.createElement("canvas");
+								var ctx = canvas.getContext("2d");
+								var img = new Image();
 								img.src = url;
 
 								img.onload = function(){
@@ -211,21 +211,21 @@
 		if(imgUpload.length == 0) {
 			filePic = false;
 		}
-
+ 
 	})
 	/*
 		将base64字符串转换为2进制
 	 */
 	function convert2Binary(dataURI){
-		let byteString = window.atob(dataURI.split(',')[1]);
-		let ab = new ArrayBuffer(byteString.length);
-		let ua = new Uint8Array(ab);
+		var byteString = window.atob(dataURI.split(',')[1]);
+		var ab = new ArrayBuffer(byteString.length);
+		var ua = new Uint8Array(ab);
 
 		for(var i=0; i<byteString.length; i++){
 			ua[i] = byteString.charCodeAt(i)
 		}
 		// console.log(ua)
-		let bb = new window.Blob([ ab ]);
+		var bb = new window.Blob([ ab ]);
 		// console.log(bb)
 		return bb;
 	}

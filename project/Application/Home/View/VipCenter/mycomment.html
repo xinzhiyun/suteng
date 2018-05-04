@@ -111,7 +111,7 @@
 				// console.log(home)
 			}()
 		})
-		var commetHTML = '';	//存放评论的数据
+		var commetHTML = '';	//存放评论相关商品的数据
 		/*
 			请求评论数据
 		 */
@@ -125,7 +125,10 @@
 				var text_html = '';		//商品评价或安装评论
 				/* 以下为模拟数据 */
 				for(var i=0; i<res.data.length; i++){
-					if(res.data[i].installer_graded == 0){	//商品评论
+					console.log("图片路径",res.data[i].pics.length)
+					
+					if(res.data[i].installer_graded == 0){	
+						// 用户对商品评论
 						text_html = '<!-- 评论内容 -->'+
 							'<div class="itemgoodsBott">'+
 								'<p>'+ res.data[i].content +'</p>'+
@@ -153,33 +156,45 @@
 								'</div>'+
 							'</div>';
 					}
+					// commetHTML += '<div class="mycomItem-first clearfix">'+
+					// 		'<div class="itemgoodsTop">'+
+					// 			'<h3><span>'+ timetrans(res.data[i].addtime) +'</span><span>10:28:39</span></h3>'+
+					// 			'<div class="goodspic clearfix">'+
+					// 				'<div class="mygoodsLeft"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></div>'+
+					// 				'<div class="mygoodsRight">'+
+					// 					'<p>'+res.data[i].good.name+'</p>'+
+					// 					'<b>5699.00</b>'+
+					// 				'</div>'+
+					// 			'</div>'+
+					// 		'</div>'+
+					// 	'</div>' + text_html;
+
+					// 所评论的商品详细信息   
 					commetHTML += '<div class="mycomItem-first clearfix">'+
 							'<div class="itemgoodsTop">'+
 								'<h3><span>'+ timetrans(res.data[i].addtime) +'</span><span>10:28:39</span></h3>'+
 								'<div class="goodspic clearfix">'+
-									'<div class="mygoodsLeft"><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></div>'+
+									'<div class="mygoodsLeft"><img src="/Uploads/'+res.data[i].good.pic+'" alt="图片加载中"></div>'+
 									'<div class="mygoodsRight">'+
-										'<p>尼康（Nikon）D3300 单反套（AF-P DX  18-55 mm/3.5-5.6G VR 防抖镜头熔体破天也5替人图片</p>'+
-										'<b>5699.00</b>'+
+										'<p style="margin-bottom: .4rem;">'+res.data[i].good.name+'</p>'+
+										'<b>'+res.data[i].good.price+'</b>'+
 									'</div>'+
 								'</div>'+
 							'</div>'+
 						'</div>' + text_html;
-
-					if(res.data[i].pics.length == 1){//图片只有一张
-						picArr.push({'picHTML':'<li><img src="__PUBLIC__/Home/images/'+res.data[i].pics[0].path+'" alt=""></li>'});
-					}else if(res.data[i].pics.length > 1){
+					
+					// 判断是否接收到图片数据
+					if(!res.data[i].pics.length) { 
+						dataPic = "";
+						picArr.push({'picHTML':'<li></li>'}); //无图片， 则为空
+					}else {
 						picStr = '';	//先清空再生成
-						//图片多于一张
-						// console.log(res[i].path.length)
 						for(var j=0; j<res.data[i].pics.length; j++){
-							picStr += '<li><img src="__PUBLIC__/Home/images/'+res.data[i].pics[j].path+'" alt=""></li>';
+							picStr += '<li><img src="'+res.data[i].pics[j].path+'" alt="图片加载中"></li>';
 						}
 						picArr.push({'picHTML':picStr});
 					}
 				}
-				// console.log('picArr: ',picArr)
-				// console.log('commetHTML: ',commetHTML)
 				if(commetHTML){
 					$(".mycommentContain").html(commetHTML);		//评价的内容
 					//遍历评价的图片

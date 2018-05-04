@@ -219,6 +219,13 @@ class ShopController extends CommonController
             $goodsDetail_status = $goods_detail->add($goodsDetail);
             // $attrVal['val'] = $data['attr_val'];
 
+            /*********************   写入一条商品默认库存   
+             * 默认都为 0
+            */
+            $gid = $goods_status;
+            D('inventory')->add(['allnum'=>0,'abnormalnum'=>0,'gid'=>$gid]);
+
+            
             //商品属性添加
             $attrVal['gid'] = $goods_status;
             foreach ($data['attr'] as $key => $val) {
@@ -759,6 +766,14 @@ class ShopController extends CommonController
         }
         $order = D('ShopOrder');
         $data = $order->getOrders($map);
+
+        // $data = $order
+        //             ->alias('o')
+        //             ->join('st_users u ON o.uid = u.id','LEFT')
+        //             ->join('st_address ad ON o.address_id = ad.id','LEFT')
+        //             ->field('o.*,u.nickname,ad.name as adname,ad.phone as adphone')
+        //             ->select();
+        // dump($data);
         $assign = [
             'data' => $data['data'],
             'show' => $data['show'],
@@ -778,17 +793,24 @@ class ShopController extends CommonController
     public function ship()
     {
         if (IS_AJAX) {
-            $id = I('post.orderid');
-            $data['express_name'] = I('post.express_name');
-            $data['express'] = I('post.express');
-            $data['status'] = 2;
-            $order = D('ShopOrder');
-            $res = $order->where('order_id='.$id)->save($data);
-            if ($res && D('Orders')->where(['order_id'=>$id])->save(['is_ship'=>1])) {
-                return $this->ajaxReturn(['code'=>200,'msg'=>'发货成功']);
-            } else {
-                return $this->ajaxReturn(['code'=>500,'msg'=>'发货失败']);
+            try{
+                $id = I('post.orderid');
+                $data['express_name'] = I('post.express_name');
+                $data['express'] = I('post.express');
+                $data['status'] = 2;
+                $order = D('ShopOrder');
+                // print_r(I(''));die;
+                $res = $order->where('order_id='.$id)->save($data);
+                $res2 = D('shopOrder')->where(['order_id'=>$id])->setField('status',2);
+                if ($res) {
+                    return $this->ajaxReturn(['code'=>200,'msg'=>'发货成功']);
+                } else {
+                    return $this->ajaxReturn(['code'=>500,'msg'=>'发货失败']);
+                }
+            } catch (\Exception $e){
+                return $this->ajaxReturn(['code'=>501,'msg'=>'发货失败']);
             }
+                
         }             
     }
 

@@ -67,11 +67,11 @@ window.onload = function(){
 
     machineStatus();//执行当前设备状态
 
-    $(".rawtdsVal").html(getdataList.rawtds?getdataList.rawtds:0);//纯水值
-    $(".phVal").html(getdataList.phval?getdataList.phval:0);//ph酸碱值
-    $(".rawtdsVal2").html(getdataList.puretds?getdataList.puretds:0);//原水值
-    $(".puretdsVal").html(getdataList.rawtds?getdataList.rawtds:0);//原水值
-    $(".hotwater").html((getdataList.temperature?getdataList.temperature:0)+"&#8451;");
+    $(".rawtdsVal").html(getdataList.rawtds?getdataList.rawtds:'--');//纯水值
+    $(".phVal").html(getdataList.phval?getdataList.phval:'--');//ph酸碱值
+    $(".rawtdsVal2").html(getdataList.puretds?getdataList.puretds:'--');//原水值
+    $(".puretdsVal").html(getdataList.rawtds?getdataList.rawtds:'--');//原水值
+    $(".hotwater").html((getdataList.temperature?getdataList.temperature:'--')+"&#8451;");
     $(".coldwater").html(parseInt(Math.random()*10+10)+"&#8451;");
     $(".roomtemperature").html(parseInt(Math.random()*10+20)+"&#8451;");
     var usedflow = getdataList.sumslow;
@@ -79,15 +79,15 @@ window.onload = function(){
     var reflow = getdataList.reflow;
     var reday = getdataList.reday;
     if(getdataList.leasingmode=="0"){//按零售
-        $(".surplusVal").html("已用流量："+(usedflow?usedflow:0)+"L");
-        $(".alreadyUsedVal").html("已用天数："+(usedday?usedday:0)+"天");
+        $(".surplusVal").html("已用流量："+(usedflow?usedflow:'--')+"L");
+        $(".alreadyUsedVal").html("已用天数："+(usedday?usedday:'--')+"天");
 
     }else if(getdataList.leasingmode=="1"){//按流量
-        $(".surplusVal").html("剩余流量："+(reflow?reflow:7)+"L");
-        $(".alreadyUsedVal").html("已用流量："+(usedflow?usedflow:0)+"L");
+        $(".surplusVal").html("剩余流量："+(reflow?reflow:'--')+"L");
+        $(".alreadyUsedVal").html("已用流量："+(usedflow?usedflow:'--')+"L");
     }else if(getdataList.leasingmode=="2"){//按天数
-        $(".surplusVal").html("剩余天数："+(reday?reday:7)+"天");
-        $(".alreadyUsedVal").html("已用天数：" + (usedday?usedday:0) + "天");
+        $(".surplusVal").html("剩余天数："+(reday?reday:'--')+"天");
+        $(".alreadyUsedVal").html("已用天数：" + (usedday?usedday:'--') + "天");
     }else if(getdataList.leasingmode=="3"){//流量&时间
 
     }
@@ -142,45 +142,41 @@ window.onload = function(){
             var phval = dataList.phval; 
             var puretds = dataList.PureTDS;
             //1.设备状态页面数据显示
-            $(".rawtdsVal").html((rawtds?rawtds:54));//纯水值
-            $(".phVal").html(phval?phval:3.8);//ph酸碱值
-            $(".puretdsVal").html((puretds?puretds:567));//原水值
-            $(".rawtdsVal2").html((rawtds?rawtds:54));//纯水值
-            $(".hotwater").html((hotwater?hotwater:98)+"&#8451;");//热水温度
+            $(".rawtdsVal").html((rawtds?rawtds:'--'));//纯水值
+            $(".phVal").html(phval?phval:'--');//ph酸碱值
+            $(".puretdsVal").html((puretds?puretds:'--'));//原水值
+            $(".rawtdsVal2").html((rawtds?rawtds:'--'));//纯水值
+            $(".hotwater").html((hotwater?hotwater:'--')+"&#8451;");//热水温度
             // $(".coldwater").html((coldwater?coldwater:12)+"&#8451;");//冷水温度
             // $(".roomtemperature").html((roomtemperature?roomtemperature:45)+"&#8451;");//室内温度
 
             if(dataList.LeasingMode=="0"){//按零售
-                $(".surplusVal").html("已用流量："+(usedflow?usedflow:75)+"L");
-                $(".alreadyUsedVal").html("已用天数："+(usedday?usedday:55)+"天");
+                $(".surplusVal").html("已用流量："+(usedflow?usedflow:'--')+"L");
+                $(".alreadyUsedVal").html("已用天数："+(usedday?usedday:'--')+"天");
 
             }else if(dataList.LeasingMode=="1"){//按流量
-                $(".surplusVal").html("剩余流量："+(reflow?reflow:75)+"L");
-                $(".alreadyUsedVal").html("已用流量："+(usedflow?usedflow:77)+"L");
+                $(".surplusVal").html("剩余流量："+(reflow?reflow:'--')+"L");
+                $(".alreadyUsedVal").html("已用流量："+(usedflow?usedflow:'--')+"L");
             }else if(dataList.LeasingMode=="2"){//按天数
-                $(".surplusVal").html("剩余天数："+(reday?reday:45)+"天");
-                $(".alreadyUsedVal").html("已用天数：" + (usedday?usedday:65) + "天");
+                $(".surplusVal").html("剩余天数："+(reday?reday:'--')+"天");
+                $(".alreadyUsedVal").html("已用天数：" + (usedday?usedday:'--') + "天");
             }else if(dataList.LeasingMode=="3"){//流量&时间
             }
 
         }
-        else if(dataList.PackType=="SetData")//设置数据类型数据
-        {
+        else if(dataList.PackType=="SetData"){//设置数据类型数据
             // identify=0;
             for(var i=0;i<CmdList.length;i++){
-                if(CmdList[i].cmd.PackNum==dataList.PackNum)
-                {
-                    if(CmdList[i].cmd.type=="关机中")
-                    {
+                if(CmdList[i].cmd.PackNum==dataList.PackNum){
+                    if(CmdList[i].cmd.type=="关机中"){
                         shutdown();
-                    }
-                    else if(CmdList[i].cmd.type=="开机中")
-                    {
+
+                    }else if(CmdList[i].cmd.type=="开机中"){
                         machineStatus();
-                    }
-                    else if(CmdList[i].cmd.type=="冲洗中")
-                    {
+
+                    } else if(CmdList[i].cmd.type=="冲洗中"){
                         wash();
+
                     }else  if(CmdList[i].cmd.type=="加热中"){
                         layui.use('layer', function(){
                             var layer = layui.layer;

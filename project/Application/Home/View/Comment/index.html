@@ -15,7 +15,7 @@
 			<div class="xuanping clearfix">
 				<div class="pingpic"><img src="" alt=""></div>
 				<!-- 商品ID -->
-				<input type="hidden" name="gid" value="">
+				<!-- <input type="hidden" name="gid" value=""> -->
 			    <div class='everyItem'>
 			        <input id="item1" type="radio" name="status" value="1" checked>
 			        <label for="item1"></label>
@@ -37,9 +37,12 @@
 					<label for="shopping">
 						<textarea name="content" id="shopping" cols="30" rows="10" placeholder="请您对我们的商品做出评价……"></textarea>
 					</label>
-					<span><i class="iconfont icon-tianjia"></i><em>限3张内</em></span>
+					<span>
+						<i class="iconfont icon-tianjia"></i><em>限3张内</em>
+						<div id="picShow"></div>
+					</span>
 					<input class="file_upload" name="pic[]" type="file" multiple="" accept="image/*" >
-					<div id="picShow"></div>
+					
 				</div>
 			</div>
 			<a href="javascript:;">
@@ -60,59 +63,65 @@
 			点击提交
 		*/
 		var href = location.href;
-		var gid;
-		if(href.indexOf('?gid=') > -1){
-			gid = href.substr(href.indexOf('?gid=')+5);
+		var orderid;
+		var successFlag = true;
+		if(href.indexOf('?orderid=') > -1){
+			orderid = href.substr(href.indexOf('?orderid=')+9);
 		}
-		// console.log(gid);
 		$("#submit").on('click',function(){
 			if(!$("#shopping").val()){
 				layuiHint("请您对我们的商品做出评价呗");
 				return
 			}
-			// console.log($('input[name="status"]:checked')[0].value);
-			// console.log($('#shopping').val());
-			//评分
-			formData.delete("status");	//清空，防止多次点击提交
-			formData.delete("content");	//清空，防止多次点击提交
-			formData.delete("gid");
-			formData.append('gid',gid);
-			formData.append('status',$('input[name="status"]:checked')[0].value);
-			formData.append('content',$('#shopping').val());	//评价的内容
-			console.group();
-			console.log(formData.getAll('gid'));
-			console.log(formData.getAll('status'));
-			console.log(formData.getAll('content'));
-			console.log(formData.getAll('sForm[]'));
-			//发送数据到后台
-			$.ajax({
-				url: '{{:U("Comment/commentsucceed")}}',
-				type: 'post',
-				cache: false,
-				data: formData,
-				processData: false,
-				contentType: false,
-				success: function(res){
-					console.log('连接',res);
-					$("#submit").off('click');
-					//评论成功后跳转
-					if(res.code == 200){
-						layuiHint('评论成功！');
-						setTimeout(function(){
-							location.href = "{{:U('Home/Order/index')}}";
-						},500);
-					}else if(res.code == 605){
-						layuiHint('你已经评论过了！');
-						setTimeout(function(){
-							location.href = "{{:U('Home/Order/index')}}";
-						},500);
+			if(successFlag) {
+				// 防止多次提交
+				successFlag = false;
+				//评分
+				formData.delete("status");	//清空，防止多次点击提交
+				formData.delete("content");	//清空，防止多次点击提交
+				formData.delete("orderid");
+				formData.append('orderid',orderid);
+				formData.append('status',$('input[name="status"]:checked')[0].value);
+				formData.append('content',$('#shopping').val());	//评价的内容
+				console.group();
+				console.log(formData.getAll('orderid'));
+				console.log(formData.getAll('status'));
+				console.log(formData.getAll('content'));
+				//发送数据到后台
+				$.ajax({
+					url: '{{:U("Comment/commentsucceed")}}',
+					type: 'post',
+					cache: false,
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: function(res){
+						console.log('连接',res);
+						// 发送到后台并返回结果时解除禁止点击
+						successFlag = true;
+						//评论成功后跳转
+						if(res.code == 200){
+							layuiHint('评论成功！');
+							setTimeout(function(){
+								location.href = "{{:U('Home/Order/index')}}";
+							},500); 
+						}else if(res.code == 605){
+							layuiHint('你已经评论过了！');
+							setTimeout(function(){
+								location.href = "{{:U('Home/Order/index')}}";
+							},500);
+						}
+					},
+					error: function(res){
+						// 发送到后台并返回结果时解除禁止点击
+						successFlag = true;
+
+						console.log('失败', res);
+						layuiHint('评论失败,请稍后再试！')
 					}
-				},
-				error: function(res){
-					console.log('失败', res);
-					layuiHint('评论失败,请稍后再试！')
-				}
-			})
+				})
+			}
+			
 		});
 	</script>
 </body>

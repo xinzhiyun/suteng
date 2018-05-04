@@ -32,15 +32,16 @@ class OrderController extends CommonController
             $g_type = I('post.g_type');
             // 8：未支付，9：待发货，2：待收货，7：待评论 4：退款处理中 5：已退货
             $status = I('post.status');
-            
+            $sta =implode(',',$status);
             // 查询用户
-            $showData['uid']     = $_SESSION['user']['id'];
+            $_SESSION['user']['id'] = 27;
+            $uid  = $_SESSION['user']['id'];
             // 订单类型
             $showData['g_type'] = $g_type;
             // 订单状态
             $showData['status'] = $status;
             // 查询订单表
-            $arrList = M('shop_order')->where($showData)->select();
+            $arrList = M('shop_order')->where(['uid'=>$uid,'g_type'=>$g_type,'status'=>array('in',$sta)])->select();
 
             // 未支付订单
             $waitpaylist = [];
@@ -71,7 +72,7 @@ class OrderController extends CommonController
                                                     ->join('__GOODS__ g ON g.id = d.gid','LEFT')
                                                     ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
                                                     ->join('__PIC__ p ON g.id = p.gid','LEFT')
-                                                    ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire'))
+                                                    ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire','d.cprice'))
                                                     ->select();
                 $i++;
             }
@@ -87,8 +88,10 @@ class OrderController extends CommonController
             // 返回JSON格式数据
             $this->ajaxReturn($message); 
         }
+    }
 
-
+    public function getOrders(){
+        
     }
 
     public function exchange_record()
@@ -426,15 +429,15 @@ class OrderController extends CommonController
             // $refund = D('refund_goods')->field('oid,gid')->select(false);
             // echo $refund;die;
             // $data = M('shop_order')->alias('so')->where('order_id='.$orderid)->select();
+            $subsql = D('refund_goods')->where(['oid'=>$orderid])->field('gid')->select(false);
             $data = M('order_detail')                        
                         ->alias('d')
                         // ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'d.gid'=>['NEQ','rg.gid'],'rg.oid'=>['NEQ',$orderid]])
-                        ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id']])
+                        ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'g.id'=>['exp',"NOT IN ($subsql)"]])
                         ->join('st_shop_order so ON d.order_id = so.order_id','LEFT')
                         ->join('__GOODS__ g ON g.id = d.gid','LEFT')
                         ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
                         ->join('__PIC__ p ON g.id = p.gid','LEFT')
-                        // ->join('st_refund_goods rg ON rg.oid = d.order_id','LEFT')
                         // // ->table($refund.' a')
                         ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire'))
                         ->select();

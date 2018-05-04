@@ -13,8 +13,8 @@
 		<span class="tab" index='0'><p><i class="iconfont icon-daifukuan"></i><b class="waitpay"></b></p>待付款</span>
 		<span class="tab" index='1'><p><i class="iconfont icon-daifahuo"></i><b class="waitsend"></b></p>待发货</span>	
 		<span class="tab" index='2'><p><i class="iconfont icon-daishouhuo"></i><b class="waitharvest"></b></p>待收货</span>
-		<span class="tab" index='3'><p><i class="iconfont icon-pinglun"></i><b class="waitassess"></b></p>待评价</span>
-		<span class="tab" index='4'><p><i class="iconfont icon-shouhoutuikuan"></i><b class="waitdrawback"></b></p>退款/售后</span>
+		<!-- <span class="tab" index='3'><p><i class="iconfont icon-pinglun"></i><b class="waitassess"></b></p>待评价</span> -->
+		<span class="tab" index='3'><p><i class="iconfont icon-shouhoutuikuan"></i><b class="waitdrawback"></b></p>退款/售后</span>
 		<div id="line">
 			<span></span>
 		</div>
@@ -211,11 +211,12 @@
 				},600)
 			}
 		});
-		// 点击tab移动content的函数
+		// 点击tab移动content的函
 		function tabContentMove(_this){
-			
-			$("#content").css({transform: 'translate(-'+ _this.attr("index") +'00vw)'});
-			$("#line").css({left: _this.attr("index")*2 + '0%'});
+			setTimeout(function() {
+				$("#content").css({transform: 'translate(-'+ _this.attr("index") +'00vw)'});
+			}, 600);
+			$("#line").css({left: _this.attr("index")*4.2 + 'rem'});
 			$(".tab").css('color','#5A5A5A');
 			_this.css('color','#373737');
 			// loading 结束标志
