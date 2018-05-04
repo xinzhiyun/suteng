@@ -110,6 +110,7 @@
 				console.log("失败！", res)
 			}
 		})
+		var payGood_id = []; //商品id
 		/*
 			结算
 		 */
@@ -119,6 +120,8 @@
 			
 			if($(".priceAll>span").text() != 0){
 				for(var i=0; i<chooseGoods.length; i++){
+					payGood_id.push(chooseGoods.eq(i).parents(".itemCar").attr("gid"));
+
 					shopCar_data.push({
 						'path': chooseGoods.eq(i).parents(".itemCar").find(".carpic>img").attr("src"),
 						'desc': chooseGoods.eq(i).parents(".itemCar").find(".roTxt").text(),
@@ -129,7 +132,7 @@
 						'money': parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text())*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number").val())
 					});
 				}
-
+				
 				//清除其他页面的sessionStorage
 				sessionStorage.setItem("lvxinData", '');
 				sessionStorage.setItem("goods_data", '');
@@ -137,7 +140,6 @@
 				// 将购物车选中的商品存到本地sessionStorage, 给订单确认页面使用
 				sessionStorage.setItem("shopCar_data",JSON.stringify(shopCar_data));
 				console.log(shopCar_data)
-				
 				// 发送ajax请求让后台生成订单号
 				$.ajax({
 					url: '{{:U("PaymentSystem/information")}}',
@@ -157,6 +159,15 @@
 					error: function(res){
 						console.log('失败！', res);
 					}
+				})
+
+				// 发送商品id good_id 到payconfirm 控制器中
+				$.ajax({
+					url: "{{:U('Pay/payConfirm')}}",
+					type: "post",
+					data: payGood_id,
+					success: function() {},
+					error: function() {}
 				})
 			}else{
 	       		parent.layer.msg('你还没选择购买的商品！');
