@@ -179,7 +179,7 @@
 			var selectPostage = "";//快递选择
 			var posOption = "";//option添入内容
 			var postageAll = []; //列入多个商品多个邮费
-			console.log(postage)
+			console.log("邮费",postage)
 
 			// 循环对象
 			if(postage) {
@@ -198,7 +198,11 @@
 					
 				}
 			}
-			console.log(postageAll[77], postageAll[73])
+			// else {
+			// 	// 若无快递数据时友情提示
+			// 	selectPostage = "<p class='postage'><span class='posway'>暂无快递选择</span></p>";
+			// }
+
 			$("#hLeft").click(function(){
 				location.href = "{{:U('Address/index')}}";
 			})
@@ -292,6 +296,8 @@
 							$(".paytopRight>p").text('￥'+priceAll);	//滤芯订单的总价格
 
 			}else if(goods_data){	// 如果有商品购买，从商品详情’立即购买‘过来
+				// 获取商品id
+				var goid = goods_data.goodsDetail.gid;
 				// 遍历需要支付的商品信息
 				goods_data.goodsDetail.desc = goods_data.goodsDetail.desc
 				? goods_data.goodsDetail.desc
@@ -321,12 +327,19 @@
 				$(".paytopRight>p").text('￥'+(parseFloat(priceAll)).toFixed(2));	//订单的总价格
 
 			}else if(shopCar_data){	// 如果有商品购买，从购物车’结算‘过来
-				console.log(shopCar_data.length)
+				// console.log(shopCar_data.length)
+				// 商品id
+				var goid = [];
 				for(var i=0; i<shopCar_data.length; i++){
+					goid.push(shopCar_data[i].gid);
 					if(shopCar_data[i]){
 						shopCar_data[i].desc = shopCar_data[i].desc
 						? shopCar_data[i].desc
 						: '暂无描述';
+
+						// 无快递数据时友情提示
+						// postageAll[shopCar_data[i].gid] = postageAll[shopCar_data[i].gid] ? postageAll[shopCar_data[i].gid] : "<p class='postage'><span class='posway'>暂无快递选择</span></p>";
+
 						console.log("商品id",shopCar_data[i].gid)
 						// 遍历需要支付的商品信息
 						goodsHTML += '<div class="goods" v-data=" '+ shopCar_data[i].gid +' ">'+
