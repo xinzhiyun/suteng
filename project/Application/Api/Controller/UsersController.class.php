@@ -14,7 +14,10 @@ use Aliyun\Api\Sms\Request\V20170525\SendSmsRequest;
  */
 class UsersController extends Controller
 {
-    //用户手机注册验证
+    /**
+     * [register 用户手机注册验证]
+     * @return [type] [description]
+     */
     public function register()
     {
         if (IS_POST) {
@@ -32,13 +35,16 @@ class UsersController extends Controller
                 
             }
         } else {
-            $this->ajaxReturn(array('msg'=>'请求方式有误','code'=>'202'));
+            $this->ajaxReturn(array('msg'=>'请求方式有误','code'=>'201'));
 
         }
 
     }
     
-    //发送短信
+    /**
+     * [sendMsg 发送短信]
+     * @return [type] [description]
+     */
     public function sendMsg()
     {
         $mobile = $_POST['phone'];
@@ -82,25 +88,13 @@ class UsersController extends Controller
             $this->set('code', $code);
             $this->ajaxReturn(array('msg'=>'短信已发送到您手机，请注意查收','code'=>'200'));
         } else {
-            $this->ajaxReturn(array('msg'=>'短信请求次数超过当天请求次数，请改天再来','code'=>'208'));
+            $this->ajaxReturn(array('msg'=>'短信请求次数超过当天请求次数，请改天再来','code'=>'201'));
         }
     }
 
-
     /**
-     * 获取随机位数数字，用于生成短信验证码
-     * @param  integer $len 长度
-     * @return string
-     */
-    protected  function rand_string($len = 6){
-        $chars = str_repeat('0123456789', $len);
-        $chars = str_shuffle($chars);
-        $str   = substr($chars, 0, $len);
-        return $str;
-    }
-
-    /**
-     * [Msg 接受手机验证码确认]
+     * [confirmMsg 接受手机验证码确认]
+     * @return [type] [description]
      */
     public function  confirmMsg() 
     {
@@ -111,23 +105,46 @@ class UsersController extends Controller
         
         if (!empty($sessCode)) {
             if ($msgCode == $sessCode) {
-            //验证码通过后将该用户手机号写入数据库
-            $data['phone'] = $_POST['phone'];
-
-            if (M('users')->add($data)) {
-                $this->ajaxReturn(array('msg'=>'注册成功','code'=>'200'));
+                //验证码通过后将该用户手机号写入数据库
+                $data['phone'] = $_POST['phone'];
+                if (M('users')->add($data)) {
+                    $_SESSION['phone'] = $_POST['phone'];
+                    $this->ajaxReturn(array('msg'=>'注册成功','code'=>'200'));
+                } else {
+                    $this->ajaxReturn(array('msg'=>'注册失败','code'=>'201'));
+                }
+         
             } else {
-                $this->ajaxReturn(array('msg'=>'注册失败','code'=>'204'));
-            }
-            
-            } else {
-                $this->ajaxReturn(array('msg'=>'验证码错误，请重新输入','code'=>'203'));
+                $this->ajaxReturn(array('msg'=>'验证码错误，请重新输入','code'=>'201'));
             }
         } else {
-            $this->ajaxReturn(array('msg'=>'验证码已过期','code'=>'207'));
+            $this->ajaxReturn(array('msg'=>'验证码已过期','code'=>'201'));
         }
         
 
+    }
+
+    /**
+     * [userUpdate 注册成功后完善信息]
+     * @return [type] [description]
+     */
+    public function userUpdate()
+    {
+        
+        $data['password'] = md5($_POST['password']);
+        $data['pcname'] = $_POST['pcname'];
+        $repass = md5($_POST['repassword']);
+
+        if ($data['password'] == $repass) {
+            if (M('users')->where('phone='.$_SESSION['phone'])->save($data)) {
+                $this->ajaxReturn(array('msg'=>'信息完善完成','code'=>'200'));
+            } else {
+                $this->ajaxReturn(array('msg'=>'信息完善失败','code'=>'201'));
+            }
+        }else {
+            $this->ajaxReturn(array('msg'=>'两次密码不一样','code'=>'201'));
+
+        }
     }
 
     /**
@@ -146,18 +163,30 @@ class UsersController extends Controller
 
         if ($info) {
             if ($info['password'] == $password) {
-
+                $_SESSION['phone'] = $phone;
                 $this->ajaxReturn(array('msg'=>'登录成功','code'=>'200'));
 
             } else {
 
-                $this->ajaxReturn(array('msg'=>'密码错误','code'=>'206'));
+                $this->ajaxReturn(array('msg'=>'密码错误','code'=>'201'));
 
             }
         } else {
-            $this->ajaxReturn(array('msg'=>'该手机号未注册','code'=>'205'));
+            $this->ajaxReturn(array('msg'=>'该手机号未注册','code'=>'201'));
         }
 
+
+    }
+
+    /**
+     * [logout 退出登录]
+     * @return [type] [description]
+     */
+    public function logout()
+    {
+        unset($_SESSION['phone']);
+        unset($_SESSION['weixin']);
+        $this->ajaxReturn(array('msg'=>'退出成功','code'=>'200'));
 
     }
 
@@ -208,6 +237,7 @@ class UsersController extends Controller
 
     }
 
+    /***************************************************辅助方法*************************************************/
     //设置session有效期
     public function set($name, $data, $expire=600){  
             $session_data = array();  
@@ -238,7 +268,20 @@ class UsersController extends Controller
      */  
     public function clear($name){  
         unset($_SESSION[$name]);  
-    }    
+    } 
+
+
+    /**
+     * 获取随机位数数字，用于生成短信验证码
+     * @param  integer $len 长度
+     * @return string
+     */
+    protected  function rand_string($len = 6){
+        $chars = str_repeat('0123456789', $len);
+        $chars = str_shuffle($chars);
+        $str   = substr($chars, 0, $len);
+        return $str;
+    }   
 
 
 }
