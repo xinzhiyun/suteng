@@ -110,7 +110,6 @@
 				console.log("失败！", res)
 			}
 		})
-		var payGood_id = []; //商品id
 		/*
 			结算
 		 */
@@ -120,8 +119,6 @@
 			
 			if($(".priceAll>span").text() != 0){
 				for(var i=0; i<chooseGoods.length; i++){
-					payGood_id.push(chooseGoods.eq(i).parents(".itemCar").attr("gid"));
-
 					shopCar_data.push({
 						'path': chooseGoods.eq(i).parents(".itemCar").find(".carpic>img").attr("src"),
 						'desc': chooseGoods.eq(i).parents(".itemCar").find(".roTxt").text(),
@@ -132,7 +129,7 @@
 						'money': parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text())*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number").val())
 					});
 				}
-				
+
 				//清除其他页面的sessionStorage
 				sessionStorage.setItem("lvxinData", '');
 				sessionStorage.setItem("goods_data", '');
@@ -140,6 +137,7 @@
 				// 将购物车选中的商品存到本地sessionStorage, 给订单确认页面使用
 				sessionStorage.setItem("shopCar_data",JSON.stringify(shopCar_data));
 				console.log(shopCar_data)
+				
 				// 发送ajax请求让后台生成订单号
 				$.ajax({
 					url: '{{:U("PaymentSystem/information")}}',
@@ -159,15 +157,6 @@
 					error: function(res){
 						console.log('失败！', res);
 					}
-				})
-
-				// 发送商品id good_id 到payconfirm 控制器中
-				$.ajax({
-					url: "{{:U('Pay/payConfirm')}}",
-					type: "post",
-					data: payGood_id,
-					success: function() {},
-					error: function() {}
 				})
 			}else{
 	       		parent.layer.msg('你还没选择购买的商品！');
@@ -201,6 +190,7 @@
 		 */
 		$(".shpingcarAll").on("touchend",".minus",function(){
 			var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
+			console.log("chooseGoods", chooseGoods)
 			priceAll = 0;	//合计归零，后面重新计算
 			// 获取数量
 			var value = $(".number").val();
@@ -212,6 +202,7 @@
 			// console.log($(this).siblings(".number")[0].value);
 			// 将金额实时更新到合计
 			for(var i=0; i<chooseGoods.length; i++){
+				// 判断是否选中框框
 				if($(".itemCar").find("i[class='iconfont icon-xuanze']")){
 					var itemCar = $(".shpingcarAll").find(".itemCar").eq(i);
 					priceAll += parseFloat(itemCar.find(".price>span").text())*parseFloat(itemCar.find(".number").val())
@@ -244,7 +235,31 @@
 						success: function(res){
 							console.log('成功！ ',res);
 							// 移除当前删除商品的元素
-			       			_this.parents('.itemCar').remove();
+							_this.parents('.itemCar').remove();
+							// 删除后计算总价格
+							// removePrice = _this.siblings('.itemcarRight').children(".roPrice").children(".price").children("span").text() * _this.children(".roPrice").children(".num").children(".number").val();
+							// priceAll -= removePrice;
+
+
+							var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
+							priceAll = 0;	//合计归零，后面重新计算
+							// 获取数量
+							// var value = $(".number").val();
+							// $(this).siblings(".number")[0].value++;
+
+							// 将金额实时更新到合计
+							for(var i=0; i<chooseGoods.length; i++){
+								if($(".itemCar").find("i[class='iconfont icon-xuanze']")){
+									var itemCar = $(".shpingcarAll").find(".itemCar").eq(i);
+									priceAll += parseFloat(itemCar.find(".price>span").text())*parseFloat(itemCar.find(".number").val())
+								}
+								// console.log('price: ',itemCar.find(".price>span").text())
+								// console.log('num: ',itemCar.find(".number").val())
+							}
+							$(".priceAll>span").text(priceAll);
+
+
+							// 弹出删除成功信息
 			       			parent.layer.msg('删除成功！');
 						},
 						error: function(res){
