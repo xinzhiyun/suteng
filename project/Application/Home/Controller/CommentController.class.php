@@ -1,7 +1,7 @@
 <?php
 namespace Home\Controller;
 use Think\Controller;
-
+use \Org\Util\WeixinJssdk;
 class CommentController extends CommonController
 {
     /**
@@ -48,8 +48,8 @@ class CommentController extends CommonController
             //     // E('没有文件上传', 602);
             // }   
   
-            if(!empty($date['pic'])){
-                $info = $this->downloadPic($date['pic']);
+            if(!empty($data['pic'])){
+                $info = $this->downloadPic($data['pic']);
             }
            
            
