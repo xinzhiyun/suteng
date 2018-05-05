@@ -434,7 +434,7 @@
 			// console.dir(goods_dataArr);return false;
 
 			// 发送ajax请求让后台生成订单号
-			$.ajax({
+			$.ajax({ 
 				url: '{{:U("PaymentSystem/information")}}',
 				type: 'post',
 				data: {'data': JSON.stringify(goods_dataArr)},
