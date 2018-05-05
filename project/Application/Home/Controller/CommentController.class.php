@@ -10,6 +10,7 @@ class CommentController extends CommonController
      */
     public function index()
     {
+        $this->wx_info();
         $this->display();
     }
 
@@ -26,36 +27,32 @@ class CommentController extends CommonController
             // dump($data);
             $_SESSION['user']['id'] = 27;
             $data['uid'] = session('user.id');
-            $savePath = 'Uploads/pic/';
-            // 二进制文件上传简单处理
-            if (!empty($_FILES["UploadForm"])) {
-                foreach ($_FILES["UploadForm"]["tmp_name"] as $key => $value) {
-                    $image = $_FILES["UploadForm"]["tmp_name"][$key];
 
-                    $$key = fopen($image, "r");
 
-                    $file = fread($$key, $_FILES["UploadForm"]["size"][$key]); //二进制数据流
+            // $savePath = 'Uploads/pic/';
+            // // 二进制文件上传简单处理
+            // if (!empty($_FILES["UploadForm"])) {
+            //     foreach ($_FILES["UploadForm"]["tmp_name"] as $key => $value) {
+            //         $image = $_FILES["UploadForm"]["tmp_name"][$key];
 
-                    $imgUp = new \Org\Util\ImageUpload(time().mt_rand(100000,9999999).'.png',$savePath);
-                    $info[] = $imgUp->stream2Image($file);
-                    fclose ( $$key );
-                }
-            }else{
-                $info = [];
-                // E('没有文件上传', 602);
-            }   
-        // print_r($info);
-        // die;
-        // print_r($_FILES);die;
+            //         $$key = fopen($image, "r");
 
+            //         $file = fread($$key, $_FILES["UploadForm"]["size"][$key]); //二进制数据流
+
+            //         $imgUp = new \Org\Util\ImageUpload(time().mt_rand(100000,9999999).'.png',$savePath);
+            //         $info[] = $imgUp->stream2Image($file);
+            //         fclose ( $$key );
+            //     }
+            // }else{
+            //     $info = [];
+            //     // E('没有文件上传', 602);
+            // }   
+  
+            if(!empty($date['pic'])){
+                $info = $this->downloadPic($date['pic']);
+            }
            
-            // if(!$info) {// 上传错误提示错误信息
-            //     E($upload->getError(),606);
-            // }
-            if(!(count($info) <= 3)){
-
-                E('只能添加三张图片',604);
-            } 
+           
             $comment->startTrans();
             // 根据订单获取所有商品
             $goods = D('order_detail')->where(['order_id'=>$orderid])->field('gid')->select();
@@ -81,12 +78,16 @@ class CommentController extends CommonController
                                 // print_r($comments);die;
                 // unset($data['file']);
                 foreach($com_status as $coms){
-                    foreach ($info as $key => $value) {
-                        $com_pic[] = [
+                    // foreach ($info as $key => $value) {
+                    //     $com_pic[] = [
+                    //         'cid' => $coms,
+                    //         'path' => $value
+                    //     ];
+                    // }
+                    $com_pic[] = [
                             'cid' => $coms,
-                            'path' => $value
+                            'path' => $info
                         ];
-                    }
                 }           
                 // print_r($com_status);
                 // dump($com_status);die;
@@ -112,6 +113,42 @@ class CommentController extends CommonController
             $this->ajaxReturn($err);
             // $this->error('评论失败');                     
         }
+    }
+
+    //下载图片
+    public function downloadPic($paths='')
+    {
+
+        $path_info = '/Pic/comment/'.date('Y-m-d',time());
+
+        $file=md5($paths).".jpg";
+
+
+        $dir =rtrim(THINK_PATH,"ThinkPHP/").'/Public'.$path_info;
+        if(!is_dir($dir)){
+            mkdir($dir,0777,true);
+        }
+        $path_info = $path_info.'/'.$file;
+
+        $path = './Public'.$path_info;
+        
+        $weixin = new WeixinJssdk;
+        $ACCESS_TOKEN = $weixin->getAccessToken();
+
+        $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=$ACCESS_TOKEN&media_id=$paths";
+        // $url = "http://img.taopic.com/uploads/allimg/140729/240450-140HZP45790.jpg";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+        $file = curl_exec($ch);
+        curl_close($ch);
+
+        $resource = fopen($path, 'a');
+        fwrite($resource, $file);
+        fclose($resource);
+        return $path_info;
+
     }
 
     public function getComments($gid='')
