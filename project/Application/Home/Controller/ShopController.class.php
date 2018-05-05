@@ -56,12 +56,6 @@ class ShopController extends CommonController
     // 商品详情页面
     public function goods_detail()
     {
-        //将商品的id存入session
-        // unset($_SESSION['goodsid']);
-        $_SESSION['goodsid'][] = $_GET['id'];
-
-        //去掉同样商品的值
-        $_SESSION['goodsid'] = array_unique($_SESSION['goodsid']);
         $map['g.id'] = I('get.id');
         $goods = D('Goods');
 
