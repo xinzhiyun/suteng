@@ -58,15 +58,26 @@ class PayController extends Controller
     {
         $address = D('Address');
         $where['uid'] = session('user.id');
-        // dump(session());
+
+        //根据订单id查询出该订单下有多少商品
+        
+        if (!empty($_GET['order_id'])) {
+            $_SESSION['order']['orderid'] = $_GET['order_id'];
+        }
+        
+
+        $orderid = $_SESSION['order']['orderid'];
+
+        $gids = M('OrderDetail')->where('order_id='.$orderid)->field('gid')->select();
+
         $where['status'] = 0;
         $data = $address->where($where)->find();
         //查询商品对应的快递运费信息
-        foreach ($_SESSION['goodsid'] as $key => $value) {
+        foreach ($gids as $key => $value) {
             // echo $value."<br>";
-            $goodsCourier[$value] = M('goods_courier')->where('gid='.$value)->field('gid,cid,cname,cprice')->select();
+            $goodsCourier[$value['gid']] = M('goods_courier')->where('gid='.$value['gid'])->field('gid,cid,cname,cprice')->select();
         }
-        unset($_SESSION['goodsid']);
+        
         $assign = [
             'data' => json_encode($data),
             'goodsCourier' => json_encode($goodsCourier),
@@ -76,6 +87,7 @@ class PayController extends Controller
         $this->assign($assign);
         $this->display();
     }
+
 
     /**
      * [updateOrder 支付前修改订单的快递运费信息及是否开发票信息]

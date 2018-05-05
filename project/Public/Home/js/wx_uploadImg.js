@@ -19,7 +19,7 @@ function takePicture(nums) {
      	}    
  	});  
  
-}
+} 
 function wxuploadImage(e,num) {
 
   wx.uploadImage({  

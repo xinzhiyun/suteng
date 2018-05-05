@@ -39,6 +39,7 @@
 					</label>
 					<span>
 						<i class="iconfont icon-tianjia"></i><em>限3张内</em>
+						<input type="hidden" name='pic'>
 						<div id="picShow"></div>
 					</span>
 					<input class="file_upload" name="pic[]" type="file" multiple="" accept="image/*" >
@@ -56,79 +57,100 @@
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
   	<script src="__PUBLIC__/Home/js/public.js"></script>
-  	<script src="__PUBLIC__/Home/js/upFile.js"></script>
+  	<!-- <script src="__PUBLIC__/Home/js/upFile.js"></script> -->
+  	<script src="__PUBLIC__/Home/js/wx_uploadImg.js"></script>
   	<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>	
 	<script>
 		var vConsole = new VConsole();
 	  	console.log('VConsole is cool');
-		/**
-			点击提交
-		*/
-		var href = location.href;
-		var orderid;
-		var successFlag = true;
-		if(href.indexOf('?orderid=') > -1){
-			orderid = href.substr(href.indexOf('?orderid=')+9);
-		}
-		$("#submit").on('click',function(){
-			if(!$("#shopping").val()){
-				layuiHint("请您对我们的商品做出评价呗");
-				return
+	  	$(function(){
+			//将评论的商品信息显示到页面从我的订单~待评论传来
+			if(sessionStorage.getItem("pinglunObj")){
+				pinglunObj = JSON.parse(sessionStorage.getItem("pinglunObj"));
+				// console.log(pinglunObj)
+				$(".pingpic>img").attr("src",pinglunObj.pic);
 			}
-			if(successFlag) {
-				// 防止多次提交
-				successFlag = false;
-				//评分
-				formData.delete("status");	//清空，防止多次点击提交
-				formData.delete("content");	//清空，防止多次点击提交
-				formData.delete("orderid");
-				formData.append('orderid',orderid);
-				formData.append('status',$('input[name="status"]:checked')[0].value);
-				formData.append('content',$('#shopping').val());	//评价的内容
-				console.group();
-				// alert(formData.getAll('orderid'));
-				// alert(formData.getAll('status'));
-				// alert(formData.getAll('content'));
-				
-				//发送数据到后台
-				$.ajax({
-					url: '{{:U("Comment/commentsucceed")}}',
-					type: 'post',
-					data: formData,
-					async: false,
-					cache: false,
-					contentType: false,
-					processData: false,
-					success: function(res){
-						console.log('res: ',JSON.stringify(res));
-						// 发送到后台并返回结果时解除禁止点击
-						successFlag = true;
-						//评论成功后跳转
-						if(res.code == 200){
-							layuiHint('评论成功！');
-							// 替换历史记录
-							history.replaceState({},null,"{{:U('Home/VipCenter/index')}}");
-							setTimeout(function(){
-								location.href = "{{:U('Home/Order/index')}}";
-							},500); 
-						}else if(res.code == 605){
-							layuiHint('你已经评论过了！');
-							setTimeout(function(){
-								location.href = "{{:U('Home/Order/index')}}";
-							},500);
+			//微信接口
+			wx.config({
+			    debug: false,
+			    appId: '{{$wxinfo["appId"]}}',
+			    timestamp: '{{$wxinfo["timestamp"]}}',
+			    nonceStr: '{{$wxinfo["nonceStr"]}}',
+			    signature: '{{$wxinfo["signature"]}}',
+			    jsApiList: [
+			      // 所有要调用的 API 都要加到这个列表中
+				    'chooseImage',
+			        'uploadImage',
+			        'getLocalImgData',
+			        'downloadImage'
+			    ]
+			});
+			/**
+				点击提交
+			*/
+			var href = location.href;
+			var orderid;
+			var successFlag = true;
+			if(href.indexOf('?orderid=') > -1){
+				orderid = href.substr(href.indexOf('?orderid=')+9);
+			}
+			$("#submit").on('click',function(){
+				var formData = new FormData($('#form')[0]);	// 评论的数据
+				var pic = $('#picShow>span').length;
+				if(!$("#shopping").val()){
+					layuiHint("请您对我们的商品做出评价呗");
+					return
+				} 
+				if(!pic){
+					// 没有图片
+					$('input[name="pic"]').attr('name','nopic');
+				}
+				if(successFlag) {
+					// 防止多次提交
+					successFlag = false;
+					//评分
+					
+					//发送数据到后台
+					$.ajax({
+						url: '{{:U("Comment/commentsucceed")}}',
+						type: 'post',
+						data: formData,
+						async: false,
+						cache: false,
+						contentType: false,
+						processData: false,
+						success: function(res){
+							console.log('res: ',JSON.stringify(res));
+							// 发送到后台并返回结果时解除禁止点击
+							successFlag = true;
+							//评论成功后跳转
+							if(res.code == 200){
+								layuiHint('评论成功！');
+								// 替换历史记录
+								history.replaceState({},null,"{{:U('Home/VipCenter/index')}}");
+								setTimeout(function(){
+									location.href = "{{:U('Home/Order/index')}}";
+								},500); 
+							}else if(res.code == 605){
+								layuiHint('你已经评论过了！');
+								setTimeout(function(){
+									location.href = "{{:U('Home/Order/index')}}";
+								},500);
+							}
+						},
+						error: function(err){
+							// 发送到后台并返回结果时解除禁止点击
+							successFlag = true;
+							console.log("err: ",JSON.stringify(err));
+							layuiHint('评论失败,请稍后再试！')
 						}
-					},
-					error: function(err){
-						// 发送到后台并返回结果时解除禁止点击
-						successFlag = true;
-						console.log("err: ",JSON.stringify(err));
-						layuiHint('评论失败,请稍后再试！')
-					}
-				})
+					})
+					
+				}
 				
-			}
-			
-		});
+			});
+		})
 	</script>
 </body>
 </html>
