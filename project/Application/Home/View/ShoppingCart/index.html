@@ -149,7 +149,7 @@
 							sessionStorage.setItem('order_id',res);
 
 							// 跳转到订单确认页面
-							location.href = '{{:U("Pay/payConfirm?order_id'+res+'")}}';
+							location.href = '{{:U("Pay/payConfirm")}}?orderid=' + res;
 						} else {
 							parent.layer.msg('系统异常');
 						}
