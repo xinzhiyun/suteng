@@ -251,9 +251,14 @@
 					if(res.data.length > 1){		// 有多条评论
 						for(var i=0; i<res.data.length; i++){
 							commPicArr[i] = []; //初始化
-							var nickname = res.data[i].user.nickname == null ? '不知道是谁' : res.data[i].user.nickname;
+							if(res.data[i].user == null) {
+								var nickname = '不知道是谁';
+								var head = '';
+							}else {
+								var nickname = res.data[i].user.nickname == null ? '不知道是谁' : res.data[i].user.nickname;
+								var head = !res.data[i].user.head ? '' : res.data[i].user.head;
+							}
 							var content = !res.data[i].content ? '该用户暂未评论' : res.data[i].content;
-							var head = !res.data[i].user.head ? '' : res.data[i].user.head;
 							commentInfo_html += '<div class="detailItem">'+
 								'<p><em><img src="'+ head +'" alt=""></em><b>'+ nickname +'</b></p>'+
 								'<p>'+ content +'</p>'+
@@ -447,19 +452,6 @@
 				},
 				error: function(res){
 					console.log('失败！', res);
-				}
-			});
-
-			// 发送商品id 'good_id' 到payconfirm控制器中
-			$.ajax({
-				url: "{{:U('Pay/payConfirm')}}",
-				type: "post",
-				data: good_id,
-				success: function() {
-
-				},
-				error: function() {
-
 				}
 			})
 		})
