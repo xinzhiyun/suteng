@@ -42,7 +42,7 @@
 						<input type="hidden" name='pic'>
 						<div id="picShow"></div>
 					</span>
-					<input class="file_upload" name="pic[]" type="file" multiple="" accept="image/*" >
+					<input class="file_upload" name="pic[]" type="button" multiple="" accept="image/*" >
 					
 				</div>
 			</div>
@@ -86,6 +86,10 @@
 			        'downloadImage'
 			    ]
 			});
+			// 点击选择图片
+			$('.file_upload').click(function(){
+				takePicture();
+			})
 			/**
 				点击提交
 			*/
@@ -121,7 +125,7 @@
 						contentType: false,
 						processData: false,
 						success: function(res){
-							console.log('res: ',JSON.stringify(res));
+							console.log('res: ',res);
 							// 发送到后台并返回结果时解除禁止点击
 							successFlag = true;
 							//评论成功后跳转
@@ -142,8 +146,8 @@
 						error: function(err){
 							// 发送到后台并返回结果时解除禁止点击
 							successFlag = true;
-							console.log("err: ",JSON.stringify(err));
 							layuiHint('评论失败,请稍后再试！')
+							console.log("err: ",err);
 						}
 					})
 					

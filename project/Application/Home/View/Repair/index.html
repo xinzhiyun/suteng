@@ -81,10 +81,11 @@
   <script src="__PUBLIC__/Home/js/public.js"></script>
   <script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
   <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
-  <script src="__PUBLIC__/Home/js/wx_uploadImg.js"></script>
+  <script src="__PUBLIC__/Home/js/wx_imgUpload.js"></script>
+  <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
   <script type="text/javascript">
   $(function(){
-
+    var vConsole = new VConsole();
     //微信接口
     wx.config({
         debug: false,
@@ -139,7 +140,29 @@
         layuiHint("暂时只支持一张图片！");
         return
       }
-      takePicture(1);
+      // takePicture(1);
+      // 浏览上传图片
+      wxuploadimg(function(res){
+        console.log('res: ',res);
+
+        var $span = $("<span></span>");
+        var $span1 = $("<span>X</span>");
+        var $img = $('<img src="" alt="" />');
+
+        $img[0].width = "100%";
+        $img[0].height = "90%";
+        $img[0].src = res['src'];
+        
+        $span1.addClass("delPic");
+        $span1.css({zIndex: '999'});
+        $span.append($span1);
+        $span.append($img[0]);
+
+        // 显示图片
+        $('#picShow').append($span);
+        // 待发送给后台的图片id
+        $('input[name="pic"]').val(res.media_Id);
+      });
     })
     var formData = new FormData($('#form')[0]);
     // 删除图片
