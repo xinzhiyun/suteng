@@ -107,7 +107,7 @@
 						if(res.code == 200){
 							layuiHint('评论成功！');
 							// 替换历史记录
-							history.replcaeState({},null,"{{:U('Home/VipCenter/index')}}");
+							history.replaceState({},null,"{{:U('Home/VipCenter/index')}}");
 							setTimeout(function(){
 								location.href = "{{:U('Home/Order/index')}}";
 							},500); 
