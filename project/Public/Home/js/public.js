@@ -97,6 +97,17 @@ var	nameReg = /^([a-zA-Z0-9_\u4e00-\u9fa5]){2,30}$/,
       //return Y+M+D+h+m+s;
       return Y+M+D;
   }
+
+  function dateformat(date){
+	var date = new Date(date*1000);//如果date为13位不需要乘1000
+	var Y = date.getFullYear() + '-';
+	var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+	var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+	var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+	var m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+	var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
+	return Y+M+D+h+m+s;
+}
 //获取url参数
 function GetQueryString(name) {  
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");  

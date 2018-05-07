@@ -160,7 +160,7 @@ class CommentController extends CommonController
         if(empty($gid)){
             //  获取单个用户的评论
             $map['uid'] = session('user.id');
-            $map['uid'] = 27;
+            // $map['uid'] = 27;
             $with = ['good','pics','price'];
         } else {
             // 获取单个商品的评论
