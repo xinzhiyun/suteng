@@ -668,6 +668,7 @@ class VendorsController extends CommonController
         }
         $data = D('vendors')->vendorReviewed($map);
 
+
         // dump($data);die;
         $assign = [
             'data' => $data,
@@ -708,6 +709,7 @@ class VendorsController extends CommonController
      */
     public function reviewed()
     {
+
         // 更新条件
         $saveData['id'] = I('post.id');
         // 更新数据
@@ -721,8 +723,48 @@ class VendorsController extends CommonController
         $data['auditing'] = $_SESSION['adminInfo']['user'];
         // 执行更新
         $res = D('vendors')->where($saveData)->save($data);
+
         // 判断信息是否修改成功
         if($res){
+            if ($data['reviewed'] == 3) {
+                $where['id'] = I('post.id');
+
+                $info = M('vendors')->field('invitation_code,id')->where($where)->find();
+               
+                $path = M('vendors')->field('path,id,leavel')->where(['code'=>$info['invitation_code']])->find();
+
+                if ($path['path']==null) {
+                    //当他推荐人是最大的时候
+                    $path = $path['id'];
+
+                } else{
+                    //当他推荐人还有推荐人的时候
+                    $path = $path['path'].'-'.$path['id'];
+                }
+
+                $buros_info = M('butros')->field('trader_a,trader_b')->find();
+
+                //多少个儿子
+                $count = M('vendors')->where(['invitation_code'=>$info['invitation_code']])->count();
+
+                $save_path = M('vendors')->where($where)->save(['path'=>$path]);
+                if ($save_path) {
+                    //查找多少个他下面多少个C级
+                    $count_c = M('vendors')->where(['invitation_code'=>$info['invitation_code'],'leavel'=>4])->count();
+                    if ($count_c >= $buros_info['trader_a']) {
+                        M('vendors')->where(['code'=>$info['invitation_code']])->save(['leavel'=>3]);
+                    }
+                    if ($path['leavel'] == 3) {
+                        $count_b = M('vendors')->where(['invitation_code'=>$info['invitation_code'],'leavel'=>3])->count();
+                        if ($count_b >=$buros_info['trader_b'] ) {
+                            M('vendors')->where(['code'=>$info['invitation_code']])->save(['leavel'=>2]);
+                        }
+                    }
+                    $this->ajaxReturn(['code'=>200,'msg'=>'审核成功']);
+                } else {
+                    $this->ajaxReturn(['code'=>400,'msg'=>'审核失败']);
+                }
+            }
             // 查询成功，设置返回前端的数据
             $message     = ['code' => 200, 'message' => '审核成功'];
         } else {

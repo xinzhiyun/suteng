@@ -273,7 +273,7 @@
                             </th>
                             <td>
                                 <input type="hidden" value="" name="id">
-                                <input class="btn btn-success" id="protocol_ok" type="submit" value="审核通过">
+                                <input class="btn btn-success" id="protocol_ok" type="button" value="审核通过">
                                 <input class="btn btn-success" id="protocol_on" type="submit" value="审核失败">
                             </td>
                         </tr>
@@ -375,6 +375,7 @@
             dataType:"json",
             type: 'post',
             success:function(res){
+
                 console.dir(res);
                 if(res.res.code == 200){
                     $('#protocol img.protocol').attr('src','__PUBLIC__/'+res.data.protocol);
@@ -386,6 +387,13 @@
 
                     // $('#protocol a.protocol').attr('href','__PUBLIC__/'+res.data.protocol);
                     $("#protocol input[name='id']").val(res.data.id); 
+
+
+                if(res.res.code == 200){
+                    $('#protocol img.protocol').attr('src','__PUBLIC__'+res.data.protocol);
+                    $('#protocol a.protocol').attr('href','__PUBLIC__/'+res.data.protocol);
+                    $("#protocol input[name='id']").val(res.data.id);
+
                     // 显示模块
                     $('#protocol').modal('show');
                 }else{
@@ -402,6 +410,7 @@
      * @return {[type]}     [description]
      */
     $('#protocol_ok').click(function(){
+
         $('#protocol').modal('hide');
         var id = $("#protocol input[name='id']").val();
         $.ajax({
@@ -410,10 +419,11 @@
             dataType:"json",
             type: 'post',
             success:function(res){
+
                 console.dir(res);
                 if(res.code == 200){
                     swal("协议文件审核成功！", "分销商审核流程完成。", "success");
-                    window.location.reload();
+//                    window.location.reload();
                 }else{
                     // 查询失败提示
                     // parent.layer.msg(resdata.res.message);
