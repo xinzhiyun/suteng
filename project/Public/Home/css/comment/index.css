@@ -76,8 +76,8 @@ body{
 .saleBott{
 	width: 86%;
 	height: 1.8rem;
-	margin:0 7%;
-	position: fixed;
+	margin:35% 7% 0 7%;
+	/* position: fixed; */
 	bottom: 1rem;
 }
 
