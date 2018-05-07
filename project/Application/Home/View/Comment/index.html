@@ -123,6 +123,7 @@
 			}
 			$("#submit").on('click',function(){
 				var formData = new FormData($('#form')[0]);	// 评论的数据
+				formData.append('orderid',orderid);
 				var pic = $('#picShow>span').length;
 				if(!$("#shopping").val()){
 					layuiHint("请您对我们的商品做出评价呗");
