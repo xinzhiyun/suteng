@@ -5,27 +5,26 @@
  *  使用：
  *    // 浏览上传图片
       wxuploadimg(function(res){
-        console.log('res: ',res);
+          console.log('res: ',res);
 
-        var $span = $("<span></span>");
-        var $span1 = $("<span>X</span>");
-        var $img = $('<img src="" alt="" />');
+          var $span = $("<span></span>");
+          var $span1 = $("<span>X</span>");
+          var $img = $('<img src="" alt="" />');
 
-        $img[0].width = "100%";
-        $img[0].height = "90%";
-        $img[0].src = res['src'];
-        
-        $span1.addClass("delPic");
-        $span1.css({zIndex: '999'});
-        $span.append($span1);
-        $span.append($img[0]);
+          $img[0].width = "100%";
+          $img[0].height = "90%";
+          $img[0].src = res['src'];
+          
+          $span1.addClass("delPic");
+          $span1.css({zIndex: '999'});
+          $span.append($span1);
+          $span.append($img[0]);
 
-        // 显示图片
-        $('#picShow').append($span);
-        // 待发送给后台的图片id
-        $('input[name="pic"]').val(res.media_Id);
+          // 显示图片
+          $('#picShow').append($span);
+          // 待发送给后台的图片id
+          $('input[name="pic"]').val(res.media_Id);
       });
-    })
  */
 var backdata = {};    // 需要上传给后台的图片id
 var wxuploadimg = function(callback){

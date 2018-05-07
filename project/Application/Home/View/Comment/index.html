@@ -88,7 +88,29 @@
 			});
 			// 点击选择图片
 			$('.file_upload').click(function(){
-				takePicture();
+				// takePicture();
+				// 浏览上传图片
+				wxuploadimg(function(res){
+				    console.log('res: ',res);
+
+				    var $span = $("<span></span>");
+				    var $span1 = $("<span>X</span>");
+				    var $img = $('<img src="" alt="" />');
+
+				    $img[0].width = "100%";
+				    $img[0].height = "90%";
+				    $img[0].src = res['src'];
+				    
+				    $span1.addClass("delPic");
+				    $span1.css({zIndex: '999'});
+				    $span.append($span1);
+				    $span.append($img[0]);
+
+				    // 显示图片
+				    $('#picShow').append($span);
+				    // 待发送给后台的图片id
+				    $('input[name="pic"]').val(res.media_Id);
+				});
 			})
 			/**
 				点击提交
