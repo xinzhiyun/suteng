@@ -1,9 +1,14 @@
 <extend name="Public/base" />
 <block name="mylink">
+    <link href="__PUBLIC__/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/switchery.min.css" rel="stylesheet">
 </block>
 <block name="content">
     <div class="wrapper wrapper-content animated fadeInRight">
@@ -176,8 +181,7 @@
                                                 <th>
                                                     快递名称：
                                                 </th>
-                                                <td>
-                                                    <input class="input-medium" type="text" name="express_name" id="express_name" class="form-control" value="">
+                                                <td id="courier">
                                                 </td>
                                             </tr>
                                      <tr>
@@ -229,17 +233,31 @@
         })
 
         // 发货状态处理
-        function ship(goodId) {
+        function ship(orderid) {
             $('.edit_errmsg').text('');
-            $('#edit_id').val(goodId);              
-            $('#st-edit').modal('show');        
+            $('#edit_id').val(orderid);              
+            $('#st-edit').modal('show');   
+            
+                
+            var courier = $('#courier');
+            $.get("{{:U('admin/orders/getCourierByOrder')}}",{ order_id : orderid},function(res){
+                if(res.code == 200){
+                    var html = '';
+                    for(var i = 0;i<res.data.length;i++){
+                        html += '<div class="radio i-checks"><label><input type="radio" value="'+ res.data[i]["cid"] +'" name="a"> <i></i>'+ res.data[i]["name"]  +'</label></div>';
+                    }
+                    courier.html(html);
+                    res = document.getElementById('courier').getElementsByTagName('input')[0].setAttribute('checked',true);
+                }
+            });
+            
         }
 
 
     $('#edit_submit').click(function(){
         var data = {
                 'orderid' : $('#edit_id').val(),
-                'express_name' : $('#express_name').val(),
+                'express_name' : $('#courier').find('input:checked').parent().text(),
                 'express' : $('#express').val(),
             }
         $.ajax({
@@ -260,13 +278,19 @@
             }
         });
     });
-
+    
 
 
         $('body').on('click','.showmore',function(){
             var orderId = $(this).attr('orderId')
             location.href = "{{:U('selectOrder'),'',''}}?id="+orderId;            
         })
-        
+
+    /**
+        快递
+    */
+
+
+
     </script>
 </block>

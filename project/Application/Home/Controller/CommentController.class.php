@@ -25,7 +25,7 @@ class CommentController extends CommonController
             $data = I('post.');
             $orderid = $data['orderid'];
             // dump($data);
-            $_SESSION['user']['id'] = 27;
+            // $_SESSION['user']['id'] = 27;
             $data['uid'] = session('user.id');
 
 

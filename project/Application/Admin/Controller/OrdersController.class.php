@@ -101,6 +101,14 @@ class OrdersController extends CommonController
 
     }
  
-    
+    public function getCourierByOrder($order_id = '')
+    {
+        if(!IS_AJAX){ return $this->ajaxReturn(['code'=>-1,'msg'=>'非法请求']); }
+        if(empty($order_id)){
+            return $this->ajaxReturn(['code'=>-1,'msg'=>'参数错误']);
+        }
+        $couriers = D('orderDetail')->where(['order_id'=>$order_id])->field('distinct(st_order_detail.cid),st_courier.name')->join('st_courier ON st_courier.id = st_order_detail.cid','LEFT')->select();
+        return $this->ajaxReturn(['code'=>200,'mag'=>'','data'=>$couriers]);
+    }
     
 }
