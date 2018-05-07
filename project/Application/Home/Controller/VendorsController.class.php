@@ -87,14 +87,16 @@ class VendorsController extends Controller
                 case '1':
                     // 公司信息填写
 
-
+                    $this->wx_info();
                     $this->company();
                     break;
                 case '2':
+                    $this->wx_info();
                     // 签协议
                     $this->display('protocol');
                     break;
                 case '3':
+
                     // 待审批
                     // echo '等待审批';
                     $this->display('vendor_wait');
@@ -399,8 +401,8 @@ class VendorsController extends Controller
             // 处理图片
             // $info = $this->upload();
             $info['positive'] = $this->downloadPic($_POST['pic1']);
-            $info['opposite'] = $this->downloadPic($_POST['pic1']);
-            $info['handheld'] = $this->downloadPic($_POST['pic1']);
+            $info['opposite'] = $this->downloadPic($_POST['pic2']);
+            $info['handheld'] = $this->downloadPic($_POST['pic3']);
             if(!empty($info['positive']) &&  !empty($info['opposite']) &&  !empty($info['handheld']) ){
                 // 将图片和表单数据合并
                 $newData = array_merge($data,$info);
@@ -701,7 +703,8 @@ class VendorsController extends Controller
 
             // // 获取微信用户唯一标识
             $open_id = $_SESSION['vendorInfo']['open_id'];
-
+            file_put_contents('./open_id.txt',$open_id."\r\n", FILE_APPEND);
+            file_put_contents('./protocol.txt',$info['protocol']."\r\n", FILE_APPEND);
             // // 上传合同文件
             // $info = $this->upload();
 
@@ -713,6 +716,7 @@ class VendorsController extends Controller
                 $saveData['open_id'] = $open_id;
                 // 更新分销商信息
                 $vandorRes = M('vendors')->where($saveData)->save($info);
+
 
 
                 if($vandorRes){
@@ -732,11 +736,49 @@ class VendorsController extends Controller
             $this->ajaxReturn($message);
         } else {
 
+
             $this->wx_info();
             $this->display();
         }
 
     }
+
+    /**
+     * [protocol 签协议]
+     * @return [type] [description]
+     */
+    public function protocol_re()
+    {
+        // 获取微信用户唯一标识
+        $open_id = $_SESSION['vendorInfo']['open_id'];
+
+        // 上传合同文件
+        // $info = $this->upload();
+        $info['protocol'] = $this->downloadPic($_POST['pic']);
+
+        if($info){
+            $info['status'] = 3;
+            // 更新条件
+            $saveData['open_id'] = $open_id;
+            // 更新分销商信息
+            $vandorRes = M('vendors')->where($saveData)->save($info);
+            if($vandorRes){
+                // $this->success('合同信息提交成功', U('Home/Vendors/index'));
+                $message['code'] = 200;
+                $message['res']  = '合同信息提交成功';
+            }else{
+                // $this->error('合同信息提交失败，请重新上传！');
+                $message['code'] = 605;
+                $message['res']  = '合同信息提交失败，请重新上传！';
+            }
+        }else{
+            $message['code'] = 605;
+            $message['res']  = '合同信息提交失败，请重新上传！';
+        }
+
+        $this->ajaxReturn($message);
+    }
+
     //下载图片
     public function downloadPic($paths)
     {
@@ -776,42 +818,6 @@ class VendorsController extends Controller
         return '';
 
     }
-
-    /**
-     * [protocol 签协议]
-     * @return [type] [description]
-     */
-    public function protocol_re()
-    {
-        // 获取微信用户唯一标识
-        $open_id = $_SESSION['vendorInfo']['open_id'];
-
-        // 上传合同文件
-        $info = $this->upload();
-
-        if($info){
-            $info['status'] = 3;
-            // 更新条件
-            $saveData['open_id'] = $open_id;
-            // 更新分销商信息
-            $vandorRes = M('vendors')->where($saveData)->save($info);
-            if($vandorRes){
-                // $this->success('合同信息提交成功', U('Home/Vendors/index'));
-                $message['code'] = 200;
-                $message['res']  = '合同信息提交成功';
-            }else{
-                // $this->error('合同信息提交失败，请重新上传！');
-                $message['code'] = 605;
-                $message['res']  = '合同信息提交失败，请重新上传！';
-            }
-        }else{
-            $message['code'] = 605;
-            $message['res']  = '合同信息提交失败，请重新上传！';
-        }
-
-        $this->ajaxReturn($message);
-    }
-
 
     // 收加盟费
     public function protocol_fee()
