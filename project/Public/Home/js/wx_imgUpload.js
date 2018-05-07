@@ -1,7 +1,7 @@
 /**
  * [wxuploadimg 微信接口上传，预览图片]
- * @param  {Function} callback [回调函数]
- * @return {[type]}            [description]
+ * @return  {Function} callback [回调函数]
+ * 
  *  使用：
  *    // 浏览上传图片
       wxuploadimg(function(res){
@@ -58,7 +58,7 @@ var wxuploadimg = function(callback){
         success: function (res) {                                        
             backdata['media_Id'] = res.serverId;
             wxgetLocalImgData(localIds,num);
-            // $('input[name="pic"]').val(mediaId);
+            
         },  
         fail: function (error) {  
             picPath = '';  
@@ -76,7 +76,7 @@ var wxuploadimg = function(callback){
   	        success: function (res) {                    
               var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
               localData = localData.replace('jgp', 'jpeg');//iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下                                            
-  			      // $img[0].src = localData;
+  			      
               backdata['src'] = localData;
   	        },
   	        fail:function(res){
@@ -84,14 +84,12 @@ var wxuploadimg = function(callback){
   	        }
   	    });
       }else{
-          // $img[0].src = e;
           backdata['src'] = e;
           
       }
 
     // 回调
     callback(backdata);
-  	// $('#picShow').append($span);
   	
   }
 }
