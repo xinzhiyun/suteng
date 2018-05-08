@@ -306,8 +306,8 @@
 							'</div>'+
 							'</div>'+
 							'</div>'; 
-
-							postage += parseFloat(waitsendlist[i]['productList'][k]['cprice']); // 邮费统计
+							// postage += parseFloat(waitsendlist[i]['productList'][k]['cprice']); // 邮费统计
+							postage += parseFloat(waitpaylist[i]['productList'][k]['cprice']); // 邮费统计
 						}
 						dingdanDaifukuan1+=dingdanDaifukuan2+'<div class="calc">'+
 						'<div>'+
@@ -404,7 +404,7 @@
             dataType:"json",
             type: 'post',
             success:function(res){
-                // console.dir(res);
+                console.dir(res);
                 if(res.code == 200){
                 	// 查询有数据
                 	
