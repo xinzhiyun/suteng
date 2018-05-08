@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/PaymentSystem/payConfirm.css">
+	<title>订单确认</title>
+</head>
+<body>
+	<input type="hidden" value='{{$data}}' id="addressInfo">
+	<div id="content">
+		<header id="header">
+			<div id="hLeft">
+
+			</div>
+			<a class="iconfont icon-dayuhao-copy-copy" id="hRight" href="{{:U('Address/index')}}"></a>
+		</header>
+		<div id="main">
+
+			
+		</div>
+		
+		<div id="calc">
+			<p>共 <b class="numAll">0</b> 件商品&emsp;合计：<b class="priceAll">0</b></p>
+		</div>
+		<div class="ynticket">
+			<b>开具发票</b>
+			<a href="{{:U('Invoice/index')}}" class="kaifapiao">
+				<span>不开发票</span>
+				<i class="iconfont icon-dayuhao-copy-copy"></i>
+			</a>
+		</div>
+
+		<footer id="footerContain">
+			<div>实付金额：<span>240.00</span></div>
+			<span id="_pay">付款</span>
+		</footer>
+		<div class="paystyle">
+			<div class="paystyleTop"></div>
+			<div class="payContain">
+				<div class="paytop clearfix">
+					<div class="paytopLeft"><i class="iconfont icon-cuohao"></i></div>
+					<div class="paytopRight">
+						<h3>付款</h3>
+						<p>￥3620.00</p>
+					</div>
+				</div>
+				<div class="paymidd">
+					<h3>选择支付方式</h3>
+					<ul class="clearfix">
+						<li index="1"><i class="iconfont icon-tubiao207"></i>金币<span class="iconfont icon-xuanze"></span></li>
+						<li index="2"><i class="iconfont icon-tubiao207-copy"></i>银币<span class="iconfont icon-kuang1"></span></li>
+						<li index="3"><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-kuang1"></span></li>
+						<li index="4"><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
+						<li index="5"><i class="iconfont icon-yinlian"></i>银联<span class="iconfont icon-kuang1"></span></li>
+					</ul>
+				</div>
+				<div class="payBott">
+					<input class=" start" type="button" value="立即支付">
+				</div>
+			</div>
+		</div>
+		
+		<!-- 模态框的内容 -->
+		<div class="modelAll">
+			<!-- <a class="start" href="javascript:;">点击</a> -->
+			<div class="modal fade">
+				<div class="modal-body">
+					<div class="modal-content">
+						<p>您咱没有绑定银行卡</p>
+						<p><a href="#">去绑定</a></p>
+						<p><a href="#">其他支付方式</a></p>
+						<p><input class="close" type="submit" value="取消"></p>
+					</div>
+				</div>
+			</div>
+			<div class="modal-backup"></div>
+		</div>
+	</div>
+	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
+	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
+	<script>
+		$(function(){
+			// 首页按钮
+			!function(){
+				// 创建 a 标签
+				var home = document.createElement('a');
+				home.innerText = '首\n页';
+				
+				home.href = '{{:U("Home/Shop/index")}}';
+				home.setAttribute("id", 'back2Home');
+				
+				// 添加到页面
+				document.body.appendChild(home);
+				home.onclick = function(){
+					home.style.background = '#aaa';
+				}
+				return
+			}()
+		})
+		$(function(){
+			//微信接口
+			wx.config({
+				debug: false,
+				appId: '{{$wxinfo["appId"]}}',
+				timestamp: '{{$wxinfo["timestamp"]}}',
+				nonceStr: '{{$wxinfo["nonceStr"]}}',
+				signature: '{{$wxinfo["signature"]}}',
+				jsApiList: [
+				// 所有要调用的 API 都要加到这个列表中
+				'chooseWXPay'
+				]
+			});
+
+			// else {
+			// 	// 若无快递数据时友情提示
+			// 	selectPostage = "<p class='postage'><span class='posway'>暂无快递选择</span></p>";
+			// }
+
+			$("#hLeft").click(function(){
+				location.href = "{{:U('Address/index')}}";
+			})
+			
+			
+			//获取从后台传来的订单号
+			var order_id;
+			if(sessionStorage.getItem('order_id')){
+				order_id = sessionStorage.getItem('order_id');
+				// console.log(order_id);
+			}
+			
+			// 获取后台传来的默认地址
+			var addressInfo;
+			// console.log($("#addressInfo").val())
+			if(($("#addressInfo").val())!='null'){
+				// alert(1)
+				addressInfo = JSON.parse($("#addressInfo").val());
+				console.log(addressInfo);
+				if(addressInfo){
+					var addresssHTML = '<p>'+
+					'<span>收货人：'+ addressInfo.name +'</span>'+
+					'<span>'+ addressInfo.phone +'</span>'+
+					'</p>'+
+					'<p>'+
+					'<span>收货地址：'+ addressInfo.address +'</span>'+
+					'</p>';
+							// 将用户收货信息添加到页面上
+							$("#hLeft").html(addresssHTML);
+				}
+			} else{
+				$("#hLeft").html('<p style="text-align:center;">请选择地址或添加新地址</p>');
+			}
+			$("#main").append('<h3 class="dingdanID">订单编号：'+order_id+'</h3>')
+			/*
+			订单遍历
+			*/
+			// 从本地sessionStorage中获取订单数据
+			var lvxinData, goods_data, shopCar_data, goods_dataArr;
+			if(sessionStorage.getItem("lvxinData")){
+				// 从滤芯购买传来
+				lvxinData = JSON.parse(sessionStorage.getItem("lvxinData"));
+			}
+			if(sessionStorage.getItem("goods_data")){
+				// 从商品详情传来
+				goods_data = JSON.parse(sessionStorage.getItem("goods_data"));
+			}
+			if(sessionStorage.getItem("shopCar_data")){
+				// 购物车传来
+				shopCar_data = JSON.parse(sessionStorage.getItem("shopCar_data"));
+				console.log(shopCar_data)
+			}
+			console.log('lvxinData： ',lvxinData);
+			console.log('goods_data： ',goods_data);
+			console.log('shopCar_data： ',shopCar_data);
+			var goodsHTML = '';	//存放需要支付的商品信息
+			var numAll = 0;		//存放订单的总数量
+			var priceAll = 0;	//存放订单的总价格
+
+
+			// 如果有购买滤芯，从’滤芯购买‘过来
+			if(lvxinData){
+				
+				// 遍历需要支付的滤芯商品信息
+				for(var i=0; i<lvxinData.length;i++){
+					// console.dir(lvxinData[i])
+					lvxinData[i].desc = lvxinData[i].desc ? lvxinData[i].desc : '暂无描述';
+					goodsHTML += '<div class="goods" v-data="'+lvxinData[i].gid+'">'+
+					'<div class="infos">'+
+					'<div class="img"><img src="'+ lvxinData[i].picpath +'" alt="正在加载..."></div>'+
+					'<div class="dec">'+
+					'<h5>'+ lvxinData[i].filtername +'</h5>'+
+					'<p>'+ lvxinData[i].desc +'</p>'+
+					'<div>'+
+					'<span class="price">'+ lvxinData[i].price +'</span>'+
+					'<span class="num">X&nbsp;<b>'+ lvxinData[i].num +'</b></span>'+
+					'</div>'+
+					'</div>'+
+					'</div>'+
+					'</div>';
+								// 统计数量和价格
+								numAll += parseInt(lvxinData[i].num);
+								priceAll += parseInt(lvxinData[i].priceAll);
+							}
+							// priceAll += Number(postageMoney * numAll);	//加上快递费价格
+							
+							$("#main").append(goodsHTML);	//滤芯订单的信息
+							$(".numAll").text(numAll);		//滤芯订单的总数量
+							$(".priceAll").text('￥'+priceAll);	//滤芯订单的总价格
+							$("#footerContain>div>span").text('￥'+priceAll);	//滤芯订单的总价格
+							$(".paytopRight>p").text('￥'+priceAll);	//滤芯订单的总价格
+
+			}else if(goods_data){	// 如果有商品购买，从商品详情’立即购买‘过来
+				// 获取商品id
+				var goid = goods_data.goodsDetail.gid;
+				// 遍历需要支付的商品信息
+				goods_data.goodsDetail.desc = goods_data.goodsDetail.desc
+				? goods_data.goodsDetail.desc
+				: '暂无描述'; 
+				goodsHTML += '<div class="goods" v-data="'+goods_data.goodsDetail.gid+'">'+
+				'<div class="infos">'+ 
+				'<div class="img"><img src="/Uploads/'+ goods_data.goodsDetail.path +'" alt="正在加载..."></div>'+
+				'<div class="dec">'+
+				'<h5>'+ goods_data.goodsDetail.name +'</h5>'+
+				'<p>'+ goods_data.goodsDetail.desc +'</p>'+
+				'<div>'+
+				'<span class="price">'+ goods_data.goodsDetail.price +'</span>'+
+				'<span class="num">X&nbsp;<b>'+ goods_data.num +'</b></span>'+
+				'</div>'+
+				'</div>' 
+				+'</div>'+
+				'</div>';
+				// 统计数量和价格 单个
+				numAll = parseInt(goods_data.num);
+				priceAll = parseInt(goods_data.goodsDetail.price * goods_data.num);
+				//快递费
+				$("#main").append(goodsHTML);	//订单的信息
+				$(".numAll").text(numAll);		//订单的总数量
+				$(".priceAll").text('￥'+ (parseFloat(priceAll)).toFixed(2));	//订单的总价格
+				$("#footerContain>div>span").text('￥'+(parseFloat(priceAll)).toFixed(2));	//订单的总价格
+				$(".paytopRight>p").text('￥'+(parseFloat(priceAll)).toFixed(2));	//订单的总价格
+
+			}
+
+			
+			// 点击发票
+			$(".kaifapiao").on("click", function() {
+				for(var i = 0; i < $(".selectPostage").length; i++) {
+					if($(".selectPostage").eq(i).find("option:selected").val() == "选择快递") {
+						parent.layer.msg('请选择快递方式');
+						return false;
+					}
+				}
+			});
+			/*
+			发票信息
+			*/
+			var voiceArr;
+			// 如果有session存在发票信息， 则更新发票信息， 没有默认为不开发票
+			if(sessionStorage.getItem("voiceArr")){
+				voiceArr = JSON.parse(sessionStorage.getItem("voiceArr"));
+				if(voiceArr.type){
+					$(".ynticket>a>span").text(voiceArr.type)
+				}
+			}else {
+				voiceArr = {
+					'type': "不开发票",
+					'info': "",
+					'voicehead': "",
+					'phone': ""
+				}
+			}
+			/******** 订单遍历--结束--	**********/
+			/*
+			付款过程
+			*/
+			// 点击付款界面左上角" X "
+			$("#closePay").on("click",function(){
+				$("#header").css({filter: 'brightness(100%)'});
+				$("#main").css({filter: 'brightness(100%)'});
+				$("#footer").css({filter: 'brightness(100%)'});
+				
+				$("#payWay").animate({bottom: '-100vh'}).css({display: 'none'});
+			})
+			
+			// 点击付款按钮
+			//支付方式
+			$('#footerContain').click(function(){
+				if($("#hLeft>p").text() == "请选择地址或添加新地址"){
+					parent.layer.msg('请添加一个地址！');
+					setTimeout(function(){
+						location.href = '{{:U("Address/newAddress")}}';
+					},500);
+					return false;
+				}
+				for(var i = 0; i < $(".selectPostage").length; i++) {
+					if($(".selectPostage").eq(i).find("option:selected").val() == "选择快递") {
+						parent.layer.msg('请选择快递方式');
+						return false;
+					}
+				}
+
+				$('.paystyle').slideDown("slow");
+			})
+			// 付款方式的单选框
+			$('.paymidd>ul>li>span').click(function(){
+				$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+			})
+			// 付款方式页面隐藏
+			$('.paytop>.paytopLeft>i').click(function(){
+				$('.paystyle').slideUp("slow");
+			})
+			// 模态框的js
+			/*
+			点击立即支付
+			*/
+			$(".payBott").click(function(){
+				// 判断选择的是什么支付方式
+				var index = $(".icon-xuanze").parents("li").attr("index");
+				// console.log(index);
+				switch(index){
+					case '1':
+					console.log('金币');
+					break;
+					case '2':
+					console.log('银币');
+					break;
+					case '3':
+					console.log('微信支付');
+					//如果有默认地址
+					if($("#addressInfo").val()){
+						//请求微信支付方法
+						$.ajax({
+							url: "{{:U('Home/PaymentSystem/orderPay')}}",
+							type: 'post',
+							data: {order: order_id, voiceArr: voiceArr},
+							success: function(res){
+								console.log(res);
+								if(res == -1){
+									console.log('支付错误！');
+									parent.layer.msg('支付错误！');
+								}else{
+									if($("#addressInfo").val()){
+										// 调用微信支付方法
+										weixinPay(res);
+									}else{
+										//无地址
+										parent.layer.msg('请添加一个地址');
+										setTimeout(function(){
+											location.href = '{{:U("Address/newAddress")}}';
+										},500);
+									}
+								}
+							},
+							error: function(res){
+								console.log('失败！ ',res);
+								parent.layer.msg('系统出了一点小问题，请稍后再试！');
+							}
+						});
+					}else{
+						parent.layer.msg('请添加一个地址');
+						setTimeout(function(){
+							location.href = '{{:U("Address/newAddress")}}';
+						},500);
+					}
+					break;
+					case '4':
+					console.log('支付宝支付');
+					break;
+					case '5':
+					console.log('银联支付');
+					break;
+					
+					default:
+					console.log('无');
+					break;
+				}
+			})
+			/*
+			微信支付方法
+			*/
+			function weixinPay(res){
+				WeixinJSBridge.invoke(
+					'getBrandWCPayRequest',
+					JSON.parse(res),
+					function(res){
+						if(res.err_msg.substr(-2) == 'ok'){
+
+							parent.layer.msg('付款成功！');
+						//付款成功后的操作
+						setTimeout(function(){
+							
+							location.href = '{{:U("PaymentSystem/paytosuccess")}}';
+						},500);
+						
+					}else if(res.err_msg.substr(-6) == 'cancel'){
+						//取消订单操作
+					}else{
+						parent.layer.msg('付款失败！');
+						//付款失败操作
+						setTimeout(function(){
+							location.href = '{{:U("PaymentSystem/paytofailed")}}';
+						},500);
+						
+					}
+				}
+				)
+			}
+			
+			/******** 付款过程--结束--	**********/
+			
+		})
+
+	</script>
+</body>
+</html>

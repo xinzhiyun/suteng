@@ -88,6 +88,39 @@ class PayController extends Controller
         $this->display();
     }
 
+        /**
+     * 滤芯 确认支付
+     * @return [type] [description]
+     */
+    public function lvxinPay()
+    {
+        $address = D('Address');
+        $where['uid'] = session('user.id');
+
+        //根据订单id查询出该订单下有多少商品
+        
+        if (!empty($_GET['order_id'])) {
+            $_SESSION['order']['orderid'] = $_GET['order_id'];
+        }
+        
+
+        $orderid = $_SESSION['order']['orderid'];
+
+        $gids = M('OrderDetail')->where('order_id='.$orderid)->field('gid')->select();
+
+        $where['status'] = 0;
+        $data = $address->where($where)->find();
+
+        $assign = [
+            'data' => json_encode($data)
+        ];
+        $this->wx_info();
+
+        $this->assign($assign);
+        $this->display();
+    }
+
+
 
     /**
      * [updateOrder 支付前修改订单的快递运费信息及是否开发票信息]
