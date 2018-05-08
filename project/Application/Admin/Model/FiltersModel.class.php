@@ -20,3 +20,4 @@ class FiltersModel extends BaseModel
         array('addtime','time',3,'function'), // 对addtime字段在新增和编辑的时候写入当前时间戳
     );
 }
+ 
