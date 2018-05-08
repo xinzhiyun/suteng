@@ -40,14 +40,14 @@
                                 <th>收货地址：</th>
                                 <td colspan="5">{{$userInfo['address']}}</td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <th>快递公司：</th>
                                 <td colspan="5">{{$userInfo['express_name']}}</td>
                             </tr>
                             <tr>
                                 <th>快递号：</th>
                                 <td colspan="5">{{$userInfo['express']}}</td>
-                            </tr>
+                            </tr> -->
                         </thead>
                     </table>
                     <table class="table table-bordered table-hover">
@@ -73,6 +73,12 @@
                                 </th>
                                 <th>
                                     商品金额
+                                </th>
+                                <th>
+                                    快递公司
+                                </th>
+                                <th>
+                                    快递单号
                                 </th>
                             </tr>
                         </thead>
@@ -102,6 +108,12 @@
                                         </td>
                                         <td>
                                             {{$v['num']*$v['price']|number_format=2}}元
+                                        </td>
+                                        <td>
+                                            {{$v['express_name']}}
+                                        </td>
+                                        <td>
+                                            {{$v['express']}}
                                         </td>
                                     </tr>
                                 </volist>

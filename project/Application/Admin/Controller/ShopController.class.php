@@ -792,22 +792,59 @@ class ShopController extends CommonController
      */
     public function ship()
     {
+//         Array
+// (
+//     [orderid] => 571896555985218
+//     [express] => Array
+//         (
+//             [0] => Array
+//                 (
+//                     [cid] => 2
+//                     [express_value] => 4325345
+//                 )
+
+//             [1] => Array
+//                 (
+//                     [cid] => 8
+//                     [express_value] => 54333333333335
+//                 )
+
+//             [2] => Array
+//                 (
+//                     [cid] => 10
+//                     [express_value] => 544444444453453
+//                 )
+
+//         )
+
+// )
+
+
         if (IS_AJAX) {
             try{
-                $id = I('post.orderid');
-                $data['express_name'] = I('post.express_name');
-                $data['express'] = I('post.express');
-                $data['status'] = 2;
-                $order = D('ShopOrder');
-                // print_r(I(''));die;
-                $res = $order->where('order_id='.$id)->save($data);
-                $res2 = D('shopOrder')->where(['order_id'=>$id])->setField('status',2);
-                if ($res) {
-                    return $this->ajaxReturn(['code'=>200,'msg'=>'发货成功']);
-                } else {
-                    return $this->ajaxReturn(['code'=>500,'msg'=>'发货失败']);
+                // $id = I('post.orderid');
+                // $data['express_name'] = I('post.express_name');
+                // $data['express'] = I('post.express');
+                // $data['status'] = 2;
+                // $order = D('ShopOrder');
+                // // print_r(I(''));die;
+                // $res = $order->where('order_id='.$id)->save($data);
+
+                $postData = I('post.');
+                $orderDetail = D('orderDetail');
+                $orderDetail->startTrans();
+                foreach($postData['express'] as $val){
+                    $orderDetail
+                            ->data(['express_name'=>$val['express_name'],'express'=>$val['express_value']])
+                            ->where(['order_id'=>$postData['orderid'],'cid'=>$val['cid']])
+                            ->save();
                 }
+                $res2 = D('shopOrder')->where(['order_id'=>$postData['orderid']])->setField('status',2);
+                $orderDetail->commit();
+                return $this->ajaxReturn(['code'=>200,'msg'=>'发货成功']);
+
             } catch (\Exception $e){
+                $orderDetail->rollback();
                 return $this->ajaxReturn(['code'=>501,'msg'=>'发货失败']);
             }
                 
