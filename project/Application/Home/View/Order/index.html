@@ -404,7 +404,7 @@
             dataType:"json",
             type: 'post',
             success:function(res){
-                console.dir(res);
+                // console.dir(res);
                 if(res.code == 200){
                 	// 查询有数据
                 	
@@ -529,8 +529,7 @@
 							'</div>'+
 							'</div>'+
 							'</div>';
-
-							postage += parseFloat(waitsendlist[i]['productList'][k]['cprice']); // 邮费统计
+							postage += parseFloat(waitgainlist[i]['productList'][k]['cprice']); // 邮费统计
 						}
 						dingdanDaishouhuo1+=dingdanDaishouhuo2+'<div class="calc">'+
 						'<div>'+
@@ -641,7 +640,7 @@
 							'</div>'+
 							'</div>';
 
-							postage += parseFloat(waitsendlist[i]['productList'][k]['cprice']); // 邮费统计
+							postage += parseFloat(waitcommentlist[i]['productList'][k]['cprice']); // 邮费统计
 						}
 						dingdanDaipinglun1+=dingdanDaipinglun2+'<div class="calc">'+
 						'<div>'+
@@ -697,10 +696,11 @@
             // dataType:"json",
             type: 'get',
             success:function(res){
+            	console.log(res);
             	var tuihuo = 0;
                 if(res.code == 200){
                 	// 查询有数据
-                	// alert(123);
+                	// console.log(222);
                 	console.log("退货收货数据",res);
                 	for(var i=0;i<res.data.length;i++){
                 		if(res.data[i]['status']=='0'){//商家未同意
@@ -743,6 +743,7 @@
                 				'<p><b>商家同意退款</b></p>';
                 			}
 							tuihuo += res.data[i]['goods'].length;
+							// console.log(res.data[i]['goods'][k]['productname']);
                 		}else if(res.data[i]['status']=='3'){//商家已同意
                 			// console.log(1111);
                 			for(var k=0;k<res.data[i]['goods'].length;k++){
