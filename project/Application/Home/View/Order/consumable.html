@@ -263,7 +263,7 @@
         	url:"{{:U('Home/Order/order_list')}}",
         	data:{
             	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-            	"status":8
+            	"status":[8]
             },
             dataType:"json",
             type: 'post',
@@ -399,7 +399,7 @@
 				url:"{{:U('Home/Order/order_list')}}",
 				data:{
 	            	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单},
-	            	"status":9
+	            	"status":[9]
 	            },
 	            dataType:"json",
 	            type: 'post',
@@ -488,7 +488,7 @@
 				url:"{{:U('Home/Order/order_list')}}",
 				data:{
 	            	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-	            	"status":2
+	            	"status":[2]
 	            },
 	            dataType:"json",
 	            type: 'post',
@@ -596,7 +596,7 @@
 				url:"{{:U('Home/Order/order_list')}}",
 				data:{
 	            	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-	            	"status":3
+	            	"status":[3]
 	            },
 	            dataType:"json",
 	            type: 'post',
@@ -831,7 +831,7 @@
 	        	url:"{{:U('Home/Order/install')}}",
 	        	data:{
 	            	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-	            	"status":5
+	            	"status":[5]
 	            },
 	            dataType:"json",
 	            type: 'get',
@@ -899,3 +899,10 @@
 </script>
 </body>
 </html>
+
+<?php
+	
+	$i = 1;
+	$j = 1;
+	echo $i + $j;
+?>
