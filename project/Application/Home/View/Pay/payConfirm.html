@@ -263,30 +263,9 @@
 			var priceAll = 0;	//存放订单的总价格
 			var dataNum;
 
-			// 存储快递信息
-			var storageAll = [];
-			if(!window.localStorage){
-				alert("浏览器支持localStorage！");
-			}else{
-				var storage = window.localStorage;
-				for(var i = 0;i<localStorage.length;i++){
-					// 库中所有的键
-			        var storage_value_all = localStorage.key(i);
-			        var number_all = storage_value_all.split("_")[0];
-			        var attrData = storage_value_all.split("_")[1];
-			        if(number_all == "data"){
-			        	var info = localStorage.getItem(storage_value_all);
-			        	$(".goods").eq(attrData).html(info);
-			        	storageAll.push(storage_value_all);
-			        }
-				}
-			}
 			// 如果有购买滤芯，从’滤芯购买‘过来
 			if(lvxinData){
-				// 清除快递信息
-				for(var i = 0;i<storageAll.length;i++){
-					localStorage.removeItem(storageAll[i]);
-				}
+				
 				// 遍历需要支付的滤芯商品信息
 				for(var i=0; i<lvxinData.length;i++){
 					// console.dir(lvxinData[i])
@@ -317,10 +296,6 @@
 							$(".paytopRight>p").text('￥'+priceAll);	//滤芯订单的总价格
 
 			}else if(goods_data){	// 如果有商品购买，从商品详情’立即购买‘过来
-				// 清除快递信息
-				for(var i = 0;i<storageAll.length;i++){
-					localStorage.removeItem(storageAll[i]);
-				}
 				// 获取商品id
 				var goid = goods_data.goodsDetail.gid;
 				// 遍历需要支付的商品信息
@@ -353,10 +328,6 @@
 
 			}else if(shopCar_data){	// 如果有商品购买，从购物车’结算‘过来
 				// console.log(shopCar_data.length)
-				// 清除快递信息
-				for(var i = 0;i<storageAll.length;i++){
-					localStorage.removeItem(storageAll[i]);
-				}
 				// 商品id
 				var goid = [];
 				for(var i=0; i<shopCar_data.length; i++){
@@ -405,12 +376,35 @@
 				postageArr[i] = 0;
 				$(".goods").eq(i).attr("data", i);
 			}
-			// localStorage.setItem("origin",$(".postage").html());
-			
+			localStorage.setItem("origin",$(".postage").html());
+			// 存储快递信息
+			var storageAll = [];
+			if(!window.localStorage){
+				alert("浏览器支持localStorage！");
+			}else{
+				var storage = window.localStorage;
+				for(var i = 0;i<localStorage.length;i++){
+					// 库中所有的键
+			        var storage_value_all = localStorage.key(i);
+			        var number_all = storage_value_all.split("_")[0];
+			        var attrData = storage_value_all.split("_")[1];
+			        if(number_all == "data"){
+			        	var info = localStorage.getItem(storage_value_all);
+			        	$(".goods").eq(attrData).html(info);
+			        	storageAll.push(storage_value_all);
+			        }
+				}
+			}
+			var dingdan = $(".dingdanID").html().substr(5,);
+			if($(".dingdanID").html().substr(5,) != dingdan){
+				for(var i = 0;i<storageAll.length;i++){
+					localStorage.removeItem(storageAll[i]);
+				}
+			}
 			// 点击选择邮费
 			var postageName, postageNum, postageMoney, cid, num, self;
 			$(".selectPostage").on("change", function() {
-				// 清除存储子啊localStorage的快递信息
+				// 清除存储子啊localStorage快递信息
 				dataNum = $(this).parents(".goods").attr("data");
 				localStorage.removeItem("data_"+dataNum);
 				// 获取当前点击到的goods块的data值
