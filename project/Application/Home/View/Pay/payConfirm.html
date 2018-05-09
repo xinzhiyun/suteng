@@ -262,7 +262,7 @@
 			var numAll = 0;		//存放订单的总数量
 			var priceAll = 0;	//存放订单的总价格
 			var dataNum;
-
+			var totalPub;		//订单总价格
 			// 如果有购买滤芯，从’滤芯购买‘过来
 			if(lvxinData){
 				
@@ -396,14 +396,24 @@
 				}
 			}
 			var dingdan = $(".dingdanID").html().substr(5,);
-			if($(".dingdanID").html().substr(5,) != dingdan){
+			if(localStorage.getItem("code") != dingdan){
 				for(var i = 0;i<storageAll.length;i++){
 					localStorage.removeItem(storageAll[i]);
-				} 
+					for(var i = 0;i<$(".postage").length;i++){
+						$(".postage").eq(i).html(localStorage.getItem("origin"));
+					}
+				}
+				localStorage.removeItem("totalPub");
+				console.log("换订单号删除信息")
+			}else{
+				console.log("同一个订单号")
 			}
+			var postageMoney = localStorage.getItem("postageMoney");
 			// 点击选择邮费
 			var postageName, postageNum, postageMoney, cid, num, self;
 			$(".selectPostage").on("change", function() {
+				var code = $(".dingdanID").html().substr(5,);
+				localStorage.setItem("code",code);
 				// 清除存储子啊localStorage快递信息
 				dataNum = $(this).parents(".goods").attr("data");
 				localStorage.removeItem("data_"+dataNum);
@@ -441,6 +451,10 @@
 				}
 				postageMoney = sum(postageArr);//总邮费
 				console.log(priceAll, numAll, num, postageMoney, postageArr);
+				totalPub = (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2);
+				localStorage.setItem("totalPub",totalPub);
+				// $(".priceAll").attr('data',totalPub);
+				// console.log(totalPub);
 				$(".priceAll").text('￥'+ (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
 				$(".paytopRight>p").text('￥'+(parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
 				$("#footerContain>div>span").text('￥'+(parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
@@ -476,7 +490,14 @@
 					}
 				})
 			})
-	
+			// 订单总价钱
+			totalPub = localStorage.getItem("totalPub");
+			if(totalPub){
+				$(".priceAll").text(totalPub);
+				$(".paytopRight>p").text(totalPub);
+				$("#footerContain>div>span").text(totalPub);
+			}
+			
 			// 点击发票
 			$(".kaifapiao").on("click", function() {
 				for(var i = 0; i < $(".selectPostage").length; i++) {
