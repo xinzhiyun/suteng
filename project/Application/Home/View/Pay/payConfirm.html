@@ -380,45 +380,45 @@
 			}
 			localStorage.setItem("origin",$(".postage").html());
 			// 存储快递信息
-			var storageAll = [];
-			if(!window.localStorage){
-				alert("浏览器支持localStorage！");
-			}else{
-				var storage = window.localStorage;
-				for(var i = 0;i<localStorage.length;i++){
-					// 库中所有的键
-			        var storage_value_all = localStorage.key(i);
-			        var number_all = storage_value_all.split("_")[0];
-			        var attrData = storage_value_all.split("_")[1];
-			        if(number_all == "data"){
-			        	var info = localStorage.getItem(storage_value_all);
-			        	$(".goods").eq(attrData).html(info);
-			        	storageAll.push(storage_value_all);
-			        }
-				}
-			}
-			var dingdan = $(".dingdanID").html().substr(5,);
-			if(localStorage.getItem("code") != dingdan){
-				for(var i = 0;i<storageAll.length;i++){
-					localStorage.removeItem(storageAll[i]);
-					for(var i = 0;i<$(".postage").length;i++){
-						$(".postage").eq(i).html(localStorage.getItem("origin"));
-					}
-				}
-				localStorage.removeItem("totalPub");
-				console.log("换订单号删除信息")
-			}else{
-				console.log("同一个订单号")
-			}
-			var postageMoney = localStorage.getItem("postageMoney");
+			// var storageAll = [];
+			// if(!window.localStorage){
+			// 	alert("浏览器支持localStorage！");
+			// }else{
+			// 	var storage = window.localStorage;
+			// 	for(var i = 0;i<localStorage.length;i++){
+			// 		// 库中所有的键
+			//         var storage_value_all = localStorage.key(i);
+			//         var number_all = storage_value_all.split("_")[0];
+			//         var attrData = storage_value_all.split("_")[1];
+			//         if(number_all == "data"){
+			//         	var info = localStorage.getItem(storage_value_all);
+			//         	$(".goods").eq(attrData).html(info);
+			//         	storageAll.push(storage_value_all);
+			//         }
+			// 	}
+			// }
+			// var dingdan = $(".dingdanID").html().substr(5,);
+			// if(localStorage.getItem("code") != dingdan){
+			// 	for(var i = 0;i<storageAll.length;i++){
+			// 		localStorage.removeItem(storageAll[i]);
+			// 		for(var i = 0;i<$(".postage").length;i++){
+			// 			$(".postage").eq(i).html(localStorage.getItem("origin"));
+			// 		}
+			// 	}
+			// 	localStorage.removeItem("totalPub");
+			// 	console.log("换订单号删除信息")
+			// }else{
+			// 	console.log("同一个订单号")
+			// }
+			// var postageMoney = localStorage.getItem("postageMoney");
 			// 点击选择邮费
 			var postageName, postageNum, postageMoney, cid, num, self;
 			$(".selectPostage").on("change", function() {
-				var code = $(".dingdanID").html().substr(5,);
-				localStorage.setItem("code",code);
+				// var code = $(".dingdanID").html().substr(5,);
+				// localStorage.setItem("code",code);
 				// 清除存储子啊localStorage快递信息
-				dataNum = $(this).parents(".goods").attr("data");
-				localStorage.removeItem("data_"+dataNum);
+				// dataNum = $(this).parents(".goods").attr("data");
+				// localStorage.removeItem("data_"+dataNum);
 				// 获取当前点击到的goods块的data值
 				var posNum = $(this).parent().parent(".goods").attr("data");
 				// 邮费种类
@@ -453,8 +453,8 @@
 				}
 				postageMoney = sum(postageArr);//总邮费
 				console.log(priceAll, numAll, num, postageMoney, postageArr);
-				totalPub = (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2);
-				localStorage.setItem("totalPub",totalPub);
+				// totalPub = (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2);
+				// localStorage.setItem("totalPub",totalPub);
 				// $(".priceAll").attr('data',totalPub);
 				// console.log(totalPub);
 				$(".priceAll").text('￥'+ (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
@@ -475,9 +475,9 @@
 				}
 
 				// +
-				var opDom = $("option:selected",this);
-				opDom.attr("selected","selected").siblings().attr("selected",false);
-				localStorage.setItem("data_"+dataNum,$(this).parents(".goods").html());
+				// var opDom = $("option:selected",this);
+				// opDom.attr("selected","selected").siblings().attr("selected",false);
+				// localStorage.setItem("data_"+dataNum,$(this).parents(".goods").html());
 				
 				// 提交后台
 				$.ajax({
@@ -646,9 +646,9 @@
 
 							parent.layer.msg('付款成功！');
 							// 清除快递信息
-							for(var i = 0;i<storageAll.length;i++){
-								localStorage.removeItem(storageAll[i]);
-							}
+							// for(var i = 0;i<storageAll.length;i++){
+							// 	localStorage.removeItem(storageAll[i]);
+							// }
 						//付款成功后的操作
 						setTimeout(function(){
 							
