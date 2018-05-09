@@ -175,13 +175,13 @@
 			});
 			// 快递数据
 			var postage = JSON.parse($("#goodsCourier").val());
-			var addressInfo = $("#addressInfo").val();
+			var addressInfo = $("#addressInfo").val();//收货数据
 			var selectPostage = "";//快递选择
 			var posOption = "";//option添入内容
 			var postageAll = []; //列入多个商品多个邮费
 			console.log("邮费",postage)
 
-			// 循环对象
+			// 循环快递对象
 			if(postage) {
 				for(var j in postage) {
 					if(postage[j].length != 0) {
@@ -261,7 +261,7 @@
 			var goodsHTML = '';	//存放需要支付的商品信息
 			var numAll = 0;		//存放订单的总数量
 			var priceAll = 0;	//存放订单的总价格
-
+			var dataNum;
 
 			// 如果有购买滤芯，从’滤芯购买‘过来
 			if(lvxinData){
@@ -340,7 +340,7 @@
 						// 无快递数据时友情提示
 						// postageAll[shopCar_data[i].gid] = postageAll[shopCar_data[i].gid] ? postageAll[shopCar_data[i].gid] : "<p class='postage'><span class='posway'>暂无快递选择</span></p>";
 
-						console.log("商品id",shopCar_data[i].gid)
+						// console.log("商品id",shopCar_data[i].gid)
 						// 遍历需要支付的商品信息
 						goodsHTML += '<div class="goods" v-data=" '+ shopCar_data[i].gid +' ">'+
 						'<div class="infos">'+
@@ -361,7 +361,7 @@
 					numAll += parseInt(shopCar_data[i].num);
 					priceAll += parseInt((parseInt(shopCar_data[i].num) * parseInt(shopCar_data[i].price)));//总价，但不考虑邮费 选择邮费再加上
 
-                	console.log(priceAll,shopCar_data[i].num, shopCar_data[i].price)
+                	// console.log(priceAll,shopCar_data[i].num, shopCar_data[i].price)
 				}
 				$("#main").append(goodsHTML);	//订单的信息
 				$(".numAll").text(numAll);		//订单的总数量
@@ -376,9 +376,31 @@
 				postageArr[i] = 0;
 				$(".goods").eq(i).attr("data", i);
 			}
+			localStorage.setItem("origin",$(".postage").html());
+			// 存储快递信息
+			var storageAll = [];
+			if(!window.localStorage){
+				alert("浏览器支持localStorage！");
+			}else{
+				var storage = window.localStorage;
+				for(var i = 0;i<localStorage.length;i++){
+					// 库中所有的键
+			        var storage_value_all = localStorage.key(i);
+			        var number_all = storage_value_all.split("_")[0];
+			        var attrData = storage_value_all.split("_")[1];
+			        if(number_all == "data"){
+			        	var info = localStorage.getItem(storage_value_all);
+			        	$(".goods").eq(attrData).html(info);
+			        	storageAll.push(storage_value_all);
+			        }
+				}
+			}
 			// 点击选择邮费
 			var postageName, postageNum, postageMoney, cid, num, self;
 			$(".selectPostage").on("change", function() {
+				// 清除存储子啊localStorage的快递信息
+				dataNum = $(this).parents(".goods").attr("data");
+				localStorage.removeItem("data_"+dataNum);
 				// 获取当前点击到的goods块的data值
 				var posNum = $(this).parent().parent(".goods").attr("data");
 				// 邮费种类
@@ -394,7 +416,7 @@
 				num = parseInt($(this).parent().siblings(".infos").children(".dec").children("div").children(".num").children("b").text());
 				// 邮费价格乘以数量
 				postageArr[posNum] = postagePrice * num;
-
+				console.log(33)
 				// 获取点击到的商品的id
 				console.log("商品id", $(this).parent().parent(".goods").attr("v-data"));
 				var gid = $(this).parent().parent(".goods").attr("v-data");
@@ -416,21 +438,25 @@
 				$(".priceAll").text('￥'+ (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
 				$(".paytopRight>p").text('￥'+(parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
 				$("#footerContain>div>span").text('￥'+(parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
-
-				if($(this).find("option:selected").val() != "选择快递") {
+				$(this).siblings(".youfei").text(postagePrice);
+				if($(this).find("option:selected").val() != "选择快递" && $(this).prev().html() == "配送方式") {
 					// 快递选择向右图标隐藏
 					$(this).siblings(".poselct").css("display", "none");
 					$(this).siblings(".posway").css("display", "none");
 					// 快递费写入页面
-					$(this).siblings(".youfei").text(postagePrice);
-
-					
+					// $(this).siblings(".youfei").text(postagePrice);
 				}else {
 					// 快递选择向右图标显示
 					$(this).siblings(".poselct").css("display", "block");
 					$(this).siblings(".posway").css("display", "block");
 					$(this).siblings(".youfei").text("");
 				}
+
+				// +
+				var opDom = $("option:selected",this);
+				opDom.attr("selected","selected").siblings().attr("selected",false);
+				localStorage.setItem("data_"+dataNum,$(this).parents(".goods").html());
+				
 				// 提交后台
 				$.ajax({
 					url: "{{:U('Pay/updateOrder')}}",
@@ -443,9 +469,8 @@
 						console.log("邮费失败", res);
 					}
 				})
-				
-				
 			})
+	
 			// 点击发票
 			$(".kaifapiao").on("click", function() {
 				for(var i = 0; i < $(".selectPostage").length; i++) {
@@ -591,6 +616,10 @@
 						if(res.err_msg.substr(-2) == 'ok'){
 
 							parent.layer.msg('付款成功！');
+							// 清除快递信息
+							for(var i = 0;i<storageAll.length;i++){
+								localStorage.removeItem(storageAll[i]);
+							}
 						//付款成功后的操作
 						setTimeout(function(){
 							
