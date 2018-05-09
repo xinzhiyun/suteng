@@ -34,7 +34,7 @@ class OrderController extends CommonController
             $status = I('post.status');
             $sta =implode(',',$status);
             // 查询用户
-            $_SESSION['user']['id'] = 27;
+            // $_SESSION['user']['id'] = 27;
             $uid  = $_SESSION['user']['id'];
             // 订单类型
             $showData['g_type'] = $g_type;
