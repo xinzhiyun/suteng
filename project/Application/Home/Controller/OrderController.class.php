@@ -66,14 +66,32 @@ class OrderController extends CommonController
                 // 订单详情表
                 $dWhere = array('d.order_id'=>$value['order_id']);
                 // 订单详情
-                $waitpaylist[$i]['productList'] = M('order_detail')
-                                                    ->alias('d')
-                                                    ->where($dWhere)
-                                                    ->join('__GOODS__ g ON g.id = d.gid','LEFT')
-                                                    ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
-                                                    ->join('__PIC__ p ON g.id = p.gid','LEFT')
-                                                    ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire','d.cprice'))
-                                                    ->select();
+                switch($g_type){
+                    case 0;
+                        break;
+                    case 1;
+                        $waitpaylist[$i]['productList'] = M('order_detail')
+                        ->alias('d')
+                        ->where($dWhere)
+                        ->join('__GOODS__ g ON g.id = d.gid','LEFT')
+                        ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
+                        ->join('__PIC__ p ON g.id = p.gid','LEFT')
+                        ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire','d.cprice'))
+                        ->select();
+                        break;
+                    case 2;
+                                            // 订单详情
+                        $waitpaylist[$i]['productList'] = M('order_detail')
+                        ->alias('d')
+                        ->where($dWhere)
+                        ->join('__FILTERS__ f ON f.id = d.gid','LEFT')
+                        ->field(array('f.picpath'=>'orderimg','f.filtername'=>'productname','f.introduce'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','d.cprice'))
+                        ->select();
+                        break;
+                    case 3;
+                        break;
+                }
+
                 $i++;
             }
 
@@ -88,10 +106,6 @@ class OrderController extends CommonController
             // 返回JSON格式数据
             $this->ajaxReturn($message); 
         }
-    }
-
-    public function getOrders(){
-        
     }
 
     public function exchange_record()
