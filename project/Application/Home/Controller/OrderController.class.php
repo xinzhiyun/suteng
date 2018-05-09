@@ -443,8 +443,15 @@ class OrderController extends CommonController
             // $refund = D('refund_goods')->field('oid,gid')->select(false);
             // echo $refund;die;
             // $data = M('shop_order')->alias('so')->where('order_id='.$orderid)->select();
-            $subsql = D('refund_goods')->where(['oid'=>$orderid])->field('gid')->select(false);
-            $data = M('order_detail')                        
+            $order = D('shopOrder')->where(['order_id'=>$orderid])->field('g_type')->find();
+            switch ($order['g_type']) {
+                case 0:
+                    # code...
+                    break;
+                
+                case 1:
+                        $subsql = D('refund_goods')->where(['oid'=>$orderid])->field('gid')->select(false);
+                        $data = M('order_detail')                        
                         ->alias('d')
                         // ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'d.gid'=>['NEQ','rg.gid'],'rg.oid'=>['NEQ',$orderid]])
                         ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'g.id'=>['exp',"NOT IN ($subsql)"]])
@@ -455,6 +462,29 @@ class OrderController extends CommonController
                         // // ->table($refund.' a')
                         ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire'))
                         ->select();
+                    break;
+
+                case 2:
+                        $subsql = D('refund_goods')->where(['oid'=>$orderid])->field('gid')->select(false);
+                        $data = M('order_detail')                        
+                        ->alias('d')
+                        // ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'d.gid'=>['NEQ','rg.gid'],'rg.oid'=>['NEQ',$orderid]])
+                        ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'f.id'=>['exp',"NOT IN ($subsql)"]])
+                        ->join('st_shop_order so ON d.order_id = so.order_id','LEFT')
+                        ->join('__FILTERS__ f ON f.id = d.gid','LEFT')
+                        // // ->table($refund.' a')
+                        ->field(array('f.picpath'=>'orderimg','f.filtername'=>'productname','f.introduce'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber'))
+                        ->select();
+                    break;
+
+                case 3:
+                    # code...
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+
             if ($data) {
                 return $this->ajaxReturn(['code'=>200,'data'=>$data]);
             }
