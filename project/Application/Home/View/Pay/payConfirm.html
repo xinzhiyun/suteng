@@ -141,9 +141,9 @@
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
-	<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+	<!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
 	<script>
-		var vConsole = new VConsole();
+		// var vConsole = new VConsole();
 		$(function(){
 			// 首页按钮
 			!function(){
@@ -392,7 +392,9 @@
 		        }
 			}
 			// console.log("storageAll"+storageAll);
-			var dingdan = $(".dingdanID").html().substr(5,);
+			// var dingdan = $(".dingdanID").html().substr(5,);
+			var dingdan = $(".dingdanID").html().split("：")[1];
+			console.log(dingdan);
 			if(sessionStorage.getItem("code") != dingdan){
 				console.log(storageAll);
 				for(var i = 0;i<storageAll.length;i++){
@@ -410,8 +412,8 @@
 			// 点击选择邮费
 			var postageName, postageNum, postageMoney, cid, num, self;
 			$(".selectPostage").on("change", function() {
-				var code = $(".dingdanID").html().substr(5,);
-				sessionStorage.setItem("code",code);
+				var dingdan = $(".dingdanID").html().split("：")[1];
+				sessionStorage.setItem("code",dingdan);
 				// 清除存储子啊sessionStorage快递信息
 				datanum = $(this).parents(".goods").attr("data");
 				sessionStorage.removeItem("data_"+datanum);
