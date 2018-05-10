@@ -380,23 +380,6 @@
 			sessionStorage.setItem("origin",$(".postage").html());
 			// 存储快递信息
 			var storageAll = [];
-			// if(!window.res){
-			// 	alert("浏览器支持res！");
-			// }else{
-			// 	var storage = window.res;
-			// 	for(var i = 0;i<res.length;i++){
-			// 		// 库中所有的键
-			//         var storage_value_all = res.key(i);
-			//         var number_all = storage_value_all.split("_")[0];
-			//         var attrData = storage_value_all.split("_")[1];
-			//         if(number_all == "data"){
-			//         	var info = res.getItem(storage_value_all);
-			//         	$(".goods").eq(attrData).html(info);
-			//         	storageAll.push(storage_value_all);
-			//         }
-			// 	}
-			// }
-
 			for(var i = 0;i<sessionStorage.length;i++){
 				// 库中所有的键
 		        var storage_value_all = sessionStorage.key(i);
@@ -408,14 +391,15 @@
 		        	storageAll.push(storage_value_all);
 		        }
 			}
-			
+			console.log("storageAll"+storageAll);
 			var dingdan = $(".dingdanID").html().substr(5,);
 			if(sessionStorage.getItem("code") != dingdan){
+				console.log(storageAll);
 				for(var i = 0;i<storageAll.length;i++){
 					sessionStorage.removeItem(storageAll[i]);
-					for(var i = 0;i<$(".postage").length;i++){
-						$(".postage").eq(i).html(sessionStorage.getItem("origin"));
-					}
+				}
+				for(var i = 0;i<$(".postage").length;i++){
+					$(".postage").eq(i).html(sessionStorage.getItem("origin"));
 				}
 				sessionStorage.removeItem("totalPub");
 				console.log("换订单号删除信息")
@@ -467,7 +451,7 @@
 				console.log(priceAll, numAll, num, postageMoney, postageArr);
 				totalPub = (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2);
 				sessionStorage.setItem("totalPub",totalPub);
-				// $(".priceAll").attr('data',totalPub);
+				$(".priceAll").attr('data',totalPub);
 				// console.log(totalPub);
 				$(".priceAll").text('￥'+ (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
 				$(".paytopRight>p").text('￥'+(parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
@@ -507,9 +491,9 @@
 			// 订单总价钱
 			totalPub = sessionStorage.getItem("totalPub");
 			if(totalPub){
-				$(".priceAll").text(totalPub);
-				$(".paytopRight>p").text(totalPub);
-				$("#footerContain>div>span").text(totalPub);
+				$(".priceAll").text('￥'+totalPub);
+				$(".paytopRight>p").text('￥'+totalPub);
+				$("#footerContain>div>span").text('￥'+totalPub);
 			}
 			
 			// 点击发票
@@ -657,10 +641,6 @@
 						if(res.err_msg.substr(-2) == 'ok'){
 
 							parent.layer.msg('付款成功！');
-							// 清除快递信息
-							for(var i = 0;i<storageAll.length;i++){
-								sessionStorage.removeItem(storageAll[i]);
-							}
 						//付款成功后的操作
 						setTimeout(function(){
 							
