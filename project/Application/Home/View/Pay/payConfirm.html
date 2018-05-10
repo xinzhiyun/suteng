@@ -392,26 +392,26 @@
 		        }
 			}
 			// console.log("storageAll"+storageAll);
-			// var dingdan = $(".dingdanID").html().substr(5,);
-			// if(sessionStorage.getItem("code") != dingdan){
-			// 	console.log(storageAll);
-			// 	for(var i = 0;i<storageAll.length;i++){
-			// 		sessionStorage.removeItem(storageAll[i]);
-			// 	}
-			// 	for(var i = 0;i<$(".postage").length;i++){
-			// 		$(".postage").eq(i).html(sessionStorage.getItem("origin"));
-			// 	}
-			// 	sessionStorage.removeItem("totalPub");
-			// 	console.log("换订单号删除信息")
-			// }else{
-			// 	console.log("同一个订单号")
-			// }
+			var dingdan = $(".dingdanID").html().substr(5,);
+			if(sessionStorage.getItem("code") != dingdan){
+				console.log(storageAll);
+				for(var i = 0;i<storageAll.length;i++){
+					sessionStorage.removeItem(storageAll[i]);
+				}
+				for(var i = 0;i<$(".postage").length;i++){
+					$(".postage").eq(i).html(sessionStorage.getItem("origin"));
+				}
+				// sessionStorage.removeItem("totalPub");
+				console.log("换订单号删除信息")
+			}else{
+				console.log("同一个订单号")
+			}
 			// var postageMoney = sessionStorage.getItem("postageMoney");
 			// 点击选择邮费
 			var postageName, postageNum, postageMoney, cid, num, self;
 			$(".selectPostage").on("change", function() {
-				// var code = $(".dingdanID").html().substr(5,);
-				// sessionStorage.setItem("code",code);
+				var code = $(".dingdanID").html().substr(5,);
+				sessionStorage.setItem("code",code);
 				// 清除存储子啊sessionStorage快递信息
 				datanum = $(this).parents(".goods").attr("data");
 				sessionStorage.removeItem("data_"+datanum);
