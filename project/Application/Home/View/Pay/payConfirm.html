@@ -371,24 +371,13 @@
 				$("#footerContain>div>span").text('￥'+priceAll);	//订单的总价格
 				$(".paytopRight>p").text('￥'+priceAll);	//订单的总价格
 			}
-			var res=(function(){
-			  var storage;
-			  if(!window.localStorage){
-			    alert("浏览器支持localStorage！");
-			    storage = localStorage;
-			    return storage;
-			  }else{
-			    storage = window.localStorage;
-			    return storage;
-			  }
-			})();
 			// 邮费放置
 			var postageArr = [];
 			for(var i = 0; i < $(".goods").length; i++) {
 				postageArr[i] = 0;
 				$(".goods").eq(i).attr("data", i);
 			}
-			res.setItem("origin",$(".postage").html());
+			sessionStorage.setItem("origin",$(".postage").html());
 			// 存储快递信息
 			var storageAll = [];
 			// if(!window.res){
@@ -408,40 +397,40 @@
 			// 	}
 			// }
 
-			for(var i = 0;i<res.length;i++){
+			for(var i = 0;i<sessionStorage.length;i++){
 				// 库中所有的键
-		        var storage_value_all = res.key(i);
+		        var storage_value_all = sessionStorage.key(i);
 		        var number_all = storage_value_all.split("_")[0];
 		        var attrData = storage_value_all.split("_")[1];
 		        if(number_all == "data"){
-		        	var info = res.getItem(storage_value_all);
+		        	var info = sessionStorage.getItem(storage_value_all);
 		        	$(".goods").eq(attrData).html(info);
 		        	storageAll.push(storage_value_all);
 		        }
 			}
 			
 			var dingdan = $(".dingdanID").html().substr(5,);
-			if(res.getItem("code") != dingdan){
+			if(sessionStorage.getItem("code") != dingdan){
 				for(var i = 0;i<storageAll.length;i++){
-					res.removeItem(storageAll[i]);
+					sessionStorage.removeItem(storageAll[i]);
 					for(var i = 0;i<$(".postage").length;i++){
-						$(".postage").eq(i).html(res.getItem("origin"));
+						$(".postage").eq(i).html(sessionStorage.getItem("origin"));
 					}
 				}
-				res.removeItem("totalPub");
+				sessionStorage.removeItem("totalPub");
 				console.log("换订单号删除信息")
 			}else{
 				console.log("同一个订单号")
 			}
-			var postageMoney = res.getItem("postageMoney");
+			var postageMoney = sessionStorage.getItem("postageMoney");
 			// 点击选择邮费
 			var postageName, postageNum, postageMoney, cid, num, self;
 			$(".selectPostage").on("change", function() {
 				var code = $(".dingdanID").html().substr(5,);
-				res.setItem("code",code);
-				// 清除存储子啊res快递信息
+				sessionStorage.setItem("code",code);
+				// 清除存储子啊sessionStorage快递信息
 				dataNum = $(this).parents(".goods").attr("data");
-				res.removeItem("data_"+dataNum);
+				sessionStorage.removeItem("data_"+dataNum);
 				// 获取当前点击到的goods块的data值
 				var posNum = $(this).parent().parent(".goods").attr("data");
 				// 邮费种类
@@ -477,7 +466,7 @@
 				postageMoney = sum(postageArr);//总邮费
 				console.log(priceAll, numAll, num, postageMoney, postageArr);
 				totalPub = (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2);
-				res.setItem("totalPub",totalPub);
+				sessionStorage.setItem("totalPub",totalPub);
 				// $(".priceAll").attr('data',totalPub);
 				// console.log(totalPub);
 				$(".priceAll").text('￥'+ (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
@@ -500,7 +489,7 @@
 				// +
 				var opDom = $("option:selected",this);
 				opDom.attr("selected","selected").siblings().attr("selected",false);
-				res.setItem("data_"+dataNum,$(this).parents(".goods").html());
+				sessionStorage.setItem("data_"+dataNum,$(this).parents(".goods").html());
 				
 				// 提交后台
 				$.ajax({
@@ -516,7 +505,7 @@
 				})
 			})
 			// 订单总价钱
-			totalPub = res.getItem("totalPub");
+			totalPub = sessionStorage.getItem("totalPub");
 			if(totalPub){
 				$(".priceAll").text(totalPub);
 				$(".paytopRight>p").text(totalPub);
@@ -670,7 +659,7 @@
 							parent.layer.msg('付款成功！');
 							// 清除快递信息
 							for(var i = 0;i<storageAll.length;i++){
-								res.removeItem(storageAll[i]);
+								sessionStorage.removeItem(storageAll[i]);
 							}
 						//付款成功后的操作
 						setTimeout(function(){
