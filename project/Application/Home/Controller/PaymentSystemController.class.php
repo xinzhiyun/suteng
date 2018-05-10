@@ -140,11 +140,12 @@ class PaymentSystemController extends CommonController
 
                 if(!$detail_statut) E('请重新结算',603);
             }
-
+            
             $res = $orders->add($order);
-
+            
             if($res){
-                M('Cart')->where('uid='.session('user.id'))->delete();
+                $ids = implode(',',array_column($data,'gid'));
+                M('Cart')->where(['uid'=>session('user.id'),'gid'=>array('in',$ids)])->delete();
                 $orders->commit();
                 $this->ajaxReturn($order['order_id']);
             } else {
