@@ -210,7 +210,7 @@
             var name = $("input[name='name']").val();
             var type = $("select[name='type']").val();
             $.ajax({
-                url:'add_device',
+                url:'{{:U("admin/devices/add_device")}}',
                 type:'post',
                 dataType:'json',
                 data:{"device_code":name,"type_id":type},
@@ -233,7 +233,7 @@
             $("#st-adds").modal('hide');
             var formData = new FormData(document.getElementById("form"));
             $.ajax({
-                url: 'deviceAdds' ,
+                url: '{{:U("admin/devices/deviceAdds")}}' ,
                 type: 'post',
                 data: formData,
                 async: false,
