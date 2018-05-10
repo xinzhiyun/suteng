@@ -316,6 +316,7 @@ class ShopController extends CommonController
     {
         try {
             $pic = D('Pic');
+            
             $data['gid'] = I('get.id');
             $upload = new \Think\Upload();// 实例化上传类
             $upload->maxSize   =     3145728 ;// 设置附件上传大小
@@ -323,13 +324,16 @@ class ShopController extends CommonController
             $upload->rootPath  =     './Uploads/'; // 设置附件上传根目录
             $upload->savePath  =     ''; // 设置附件上传（子）目录
             // 上传文件 
-            $info   =   $upload->upload();
+            $info   =   $upload->upload($_FILES);
+            
             if(!$info) E($upload->getError(),603);
             $data['picname'] = $info['pic']['savename'];
             $data['path'] = $info['pic']['savepath'].$info['pic']['savename'];
+            $data2 = \array_column($info,['savename','savepath']);
+            p($data2);die;
             $res = $pic->where('gid='.$data['gid'])->find();
             if($res){
-                $status_res = $pic->where('gid='.$data['gid'])->save($data);
+                $status_res = $pic->where('gid='.$data['gid'])->saveAll($data);
                 if($status_res){
                     E('更新成功',200);
                 } else {
