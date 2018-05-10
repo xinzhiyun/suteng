@@ -263,7 +263,7 @@
 			var goodsHTML = '';	//存放需要支付的商品信息
 			var numAll = 0;		//存放订单的总数量
 			var priceAll = 0;	//存放订单的总价格
-			var dataNum;
+			var datanum;
 			var totalPub;		//订单总价格
 			// 如果有购买滤芯，从’滤芯购买‘过来
 			if(lvxinData){
@@ -413,8 +413,8 @@
 				var code = $(".dingdanID").html().substr(5,);
 				sessionStorage.setItem("code",code);
 				// 清除存储子啊sessionStorage快递信息
-				dataNum = $(this).parents(".goods").attr("data");
-				sessionStorage.removeItem("data_"+dataNum);
+				datanum = $(this).parents(".goods").attr("data");
+				sessionStorage.removeItem("data_"+datanum);
 				// 获取当前点击到的goods块的data值
 				var posNum = $(this).parent().parent(".goods").attr("data");
 				// 邮费种类
@@ -473,7 +473,7 @@
 				// +
 				var opDom = $("option:selected",this);
 				opDom.attr("selected","selected").siblings().attr("selected",false);
-				sessionStorage.setItem("data_"+dataNum,$(this).parents(".goods").html());
+				sessionStorage.setItem("data_"+datanum,$(this).parents(".goods").html());
 				
 				// 提交后台
 				$.ajax({
