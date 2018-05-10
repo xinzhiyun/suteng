@@ -102,7 +102,7 @@ class PaymentSystemController extends CommonController
 
     // 信息确认并生成订单
     public function information()
-    {
+    {   
         // dump($_POST);die;
         try {
             $goods = D('Goods');
@@ -144,8 +144,12 @@ class PaymentSystemController extends CommonController
             $res = $orders->add($order);
             
             if($res){
-                $ids = implode(',',array_column($data,'gid'));
-                M('Cart')->where(['uid'=>session('user.id'),'gid'=>array('in',$ids)])->delete();
+                $path = \parse_url($_SERVER['HTTP_REFERER']);
+                $file = pathinfo($path['path'])['basename'];
+                if($file !== 'shoppingdetail.html'){
+                    $ids = implode(',',array_column($data,'gid'));
+                    M('Cart')->where(['uid'=>session('user.id'),'gid'=>array('in',$ids)])->delete();
+                }
                 $orders->commit();
                 $this->ajaxReturn($order['order_id']);
             } else {

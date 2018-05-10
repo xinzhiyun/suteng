@@ -116,7 +116,6 @@ class ShopController extends CommonController
     // 信息确认并生成订单
     public function information()
     {
-       
         try {
             $fliter = D('Filters');
             $orders = D('shop_order');
