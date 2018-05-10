@@ -403,12 +403,12 @@
 				for(var i = 0;i<$(".postage").length;i++){
 					$(".postage").eq(i).html(sessionStorage.getItem("origin"));
 				}
-				// sessionStorage.removeItem("totalPub");
+				sessionStorage.removeItem("totalPub");
 				console.log("换订单号删除信息")
 			}else{
 				console.log("同一个订单号")
 			}
-			// var postageMoney = sessionStorage.getItem("postageMoney");
+			var postageMoney = sessionStorage.getItem("postageMoney");
 			// 点击选择邮费
 			var postageName, postageNum, postageMoney, cid, num, self;
 			$(".selectPostage").on("change", function() {
@@ -451,9 +451,9 @@
 				}
 				postageMoney = sum(postageArr);//总邮费
 				console.log(priceAll, numAll, num, postageMoney, postageArr);
-				// totalPub = (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2);
-				// sessionStorage.setItem("totalPub",totalPub);
-				// $(".priceAll").attr('data',totalPub);
+				totalPub = (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2);
+				sessionStorage.setItem("totalPub",totalPub);
+				$(".priceAll").attr('data',totalPub);
 				// console.log(totalPub);
 				$(".priceAll").text('￥'+ (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
 				$(".paytopRight>p").text('￥'+(parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
@@ -491,12 +491,12 @@
 				})
 			})
 			// 订单总价钱
-			// totalPub = sessionStorage.getItem("totalPub");
-			// if(totalPub){
-			// 	$(".priceAll").text('￥'+totalPub);
-			// 	$(".paytopRight>p").text('￥'+totalPub);
-			// 	$("#footerContain>div>span").text('￥'+totalPub);
-			// }
+			totalPub = sessionStorage.getItem("totalPub");
+			if(totalPub){
+				$(".priceAll").text('￥'+totalPub);
+				$(".paytopRight>p").text('￥'+totalPub);
+				$("#footerContain>div>span").text('￥'+totalPub);
+			}
 			
 			// 点击发票
 			$(".kaifapiao").on("click", function() {
