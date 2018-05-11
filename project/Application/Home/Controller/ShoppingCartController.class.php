@@ -96,4 +96,22 @@ class ShoppingCartController extends CommonController
             $this->ajaxReturn($err);
         }
     }
+
+    public function deleteByGoodsID()
+    {
+        try {
+            $ids = I('ids');
+            if(!is_array($ids)) return(['code'=>603,'msg'=>'参数有误','data'=>$ids]);
+            $cart = D('Cart');
+            $ids = \implode(',',$ids);
+            $cart->where(['gid'=>array('in',$ids)])->delete();
+            E('删除',200);
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
 }

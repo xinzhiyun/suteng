@@ -845,53 +845,6 @@
                 	$(".returned4").html(returned4);
                 	Rejectednum += tuihuo;
 					console.log("一次",Rejectednum, res.data.length)
-					$.ajax({//9：评价后的已完成的订单
-						url:"{{:U('Home/Order/order_list')}}",
-						data:{
-						"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单},
-						"status":[7]
-					},
-					dataType:"json",
-					type: 'post',
-					success:function(res){
-						console.log("请求退款售后成功", res);
-						if(res.code == 200) {
-							var proDucts = 0;
-							for(var i=0;i<res.data.length;i++){
-								var productLists = res.data[i].productList.length;
-								// console.log("产品数量", productLists)
-								// 产品列表循环
-								for(var j = 0; j < productLists; j++) {
-									console.log(res.data[i].productList[j])
-								
-									// 无图片时显示
-									var noimg_show = res.data[i].productList[j].orderimg
-									? (imgpath + res.data[i].productList[j].orderimg)
-									: noimg;
-									returned6+='<p>信息更新时间：'+ res.data[i].ordertime +'</p>'+
-									'<div class="shangpingnei clearfix">'+
-									'<div class="tuikuangLeft ">'+
-									'<img src="'+ noimg_show +'" alt="">'+
-									'</div>'+
-									'<div class="tuikuangRight">'+
-									'<span>'+ res.data[i].productList[j].productname +'</span>'+
-									'<p><b>￥'+res.data[i].productList[j].price+'</b><span>x '+ res.data[i].productList[j].productnumber +'</span></p>'+
-									'</div>'+
-									'</div>'+
-									'<p><b>订单完成</b></p>';
-								}
-								proDucts += productLists;
-							}
-							$(".returned6").html(returned6);
-							Rejectednum = Rejectednum + proDucts;
-						}
-						console.log("数量", Rejectednum, res.data.length, proDucts)
-						$(".waitdrawback").html(Rejectednum);//退换货与售后数量显示				
-					},
-					error: function(res) {
-						console.log("请求失败", res);
-					}
-				});
                 }else{
                     // 查询无数据提示
                     // console.log(res.msg);
@@ -920,6 +873,54 @@
 
 			}
 		}); 
+		
+		$.ajax({//9：评价后的已完成的订单
+			url:"{{:U('Home/Order/order_list')}}",
+			data:{
+				"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单},
+				"status":[7]
+			},
+			dataType:"json",
+			type: 'post',
+			success:function(res){
+				console.log("请求退款售后成功", res);
+				if(res.code == 200) {
+					var proDucts = 0;
+					for(var i=0;i<res.data.length;i++){
+						var productLists = res.data[i].productList.length;
+						// console.log("产品数量", productLists)
+						// 产品列表循环
+						for(var j = 0; j < productLists; j++) {
+							console.log(res.data[i].productList[j])
+						
+							// 无图片时显示
+							var noimg_show = res.data[i].productList[j].orderimg
+							? (imgpath + res.data[i].productList[j].orderimg)
+							: noimg;
+							returned6+='<p>信息更新时间：'+ res.data[i].ordertime +'</p>'+
+							'<div class="shangpingnei clearfix">'+
+							'<div class="tuikuangLeft ">'+
+							'<img src="'+ noimg_show +'" alt="">'+
+							'</div>'+
+							'<div class="tuikuangRight">'+
+							'<span>'+ res.data[i].productList[j].productname +'</span>'+
+							'<p><b>￥'+res.data[i].productList[j].price+'</b><span>x '+ res.data[i].productList[j].productnumber +'</span></p>'+
+							'</div>'+
+							'</div>'+
+							'<p><b>订单完成</b></p>';
+						}
+						proDucts += productLists;
+					}
+					$(".returned6").html(returned6);
+					Rejectednum = Rejectednum + proDucts;
+				}
+				console.log("数量", Rejectednum, res.data.length, proDucts)
+				$(".waitdrawback").html(Rejectednum);//退换货与售后数量显示				
+			},
+			error: function(res) {
+				console.log("请求失败", res);
+			}
+		});
         $.ajax({//5：报装中
         	url:"{{:U('Home/Order/install')}}",
         	data:{

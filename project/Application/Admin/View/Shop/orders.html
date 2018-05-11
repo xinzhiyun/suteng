@@ -139,7 +139,7 @@
                                                     查看
                                                 </a>
                                                 <switch name="v.status">
-                                                    <case value="9">                                                <a class="btn btn-outline btn-success" href="javascript:;" onclick="ship({{$v['order_id']}})">
+                                                    <case value="9">                                                <a class="btn btn-outline btn-success" href="javascript:;" onclick="ship({{$v['order_id']}},{{$v['g_type']}})">
                                                     点击发货
                                                 </a></case>
                                                 </switch>
@@ -177,6 +177,27 @@
                             method="post">
                                 <input class="input-medium" type="text" id="edit_id" name="id" class="form-control" value="" readonly="" hidden="">
                                 <table id="courier" class="table table-striped table-bordered table-hover table-condensed">
+                                    <tbody>
+                                        <tr>
+                                            <th>
+                                                快递名称
+                                            </th>
+                                            <th>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" checked="" value="option1" name="optionsRadios">选项1</label>
+                                                </div>           
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                快递单号：
+                                            </th>
+                                            <td>
+                                                <input class="input-medium" type="text" name="express" id="express" class="form-control" value="">
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                     <!-- <tr>
                                         <th>
                                             快递名称
@@ -234,40 +255,83 @@
         })
 
         // 发货状态处理
-        function ship(orderid) {
+        function ship(orderid,type) {
+            window.type = type;
             $('.edit_errmsg').text('');
             $('#edit_id').val(orderid);              
             $('#st-edit').modal('show');   
-            
-                
             var courier = $('#courier');
-            $.get("{{:U('admin/orders/getCourierByOrder')}}",{ order_id : orderid},function(res){
-                if(res.code == 200){
-                    // var html = '<tr><th>快递名称</th><th>快递单号</th></tr>';
-                    var html = '';
-                    for(var i = 0;i<res.data.length;i++){
-                        html += '<tr><th>'+ res.data[i]['name'] +'</th><td><input class="input-medium express_input" type="text" name="express" cid="'+res.data[i]['cid']+'" class="form-control" value=""></td></tr>';
-                    }
-                    courier.prepend(html);
-                }
-            });
+            switch (type) {
+                case 1:                   
+                    // courier.prepend('');
+                    $.get("{{:U('admin/orders/getCourierByOrder')}}",{ order_id : orderid},function(res){
+
+                        if(res.code == 200){
+                            // var html = '<tr><th>快递名称</th><th>快递单号</th></tr>';
+                            var html = '';
+                            for(var i = 0;i<res.data.length;i++){
+
+                                html += '<tr><th>'+ res.data[i]['name'] +'</th><td><input class="input-medium express_input" type="text" name="express" cid="'+res.data[i]['cid']+'" class="form-control" value=""></td></tr>';
+                            }
+                            courier.find('tbody').eq(0).html(html);
+                        }
+                    });
+                    break;
+
+                case 2: // 耗材订单
+                                    // courier.prepend('');
+                    $.get("{{:U('admin/orders/getCouriers')}}",function(res){
+                        if(res.code == 200){
+                            // var html = '<tr><th>快递名称</th><th>快递单号</th></tr>';
+                            var html = '<tr><th>快递名称</th><th>';
+                            for(var i = 0;i<res.data.length;i++){
+                                html += '<div class="radio"><label><input type="radio" checked="" cid="'+res.data[i]['id']+'" value="" name="optionsRadios" class="express_name">'+ res.data[i]['name'] +'</label></div>';
+                            }
+                                html += '</th></tr>';
+                                html += '<tr><th>快递单号：</th><td><input class="input-medium" type="text" name="express" id="express" class="form-control" value=""></td></tr>';
+                                
+                            courier.find('tbody').eq(0).html(html);
+                        }
+                    });
+                    break;
+                
+                default:
+                    break;
+            }    
             
         }
 
 
-    $('#edit_submit').click(function(){
-        var express_input = $('.express_input');
+    $('#edit_submit').click(function(){    
+       
         var data = {
                 'orderid' : $('#edit_id').val(),
                 'express' : {},
             }
-        for(var i = 0;i<express_input.length;i++){
-            data.express[i] = {
-                'cid':express_input.eq(i).attr('cid'),
-                'express_value':express_input.eq(i).val(),
-                'express_name':express_input.eq(i).parent().parent().children().first().text()
-            }
+        switch (type) {
+            case 1:
+                    var express_input = $('.express_input');
+                    for(var i = 0;i<express_input.length;i++){
+                        data.express[i] = {
+                            'cid':express_input.eq(i).attr('cid'),
+                            'express_value':express_input.eq(i).val(),
+                            'express_name':express_input.eq(i).parent().parent().children().first().text()
+                        }
+                    }
+                break;
+            case 2:
+                    var express_input = $('.express_name:checked');
+                    // console.log(express_input.attr('cid'));return;
+                    data.express[0] = {
+                            'cid':express_input.attr('cid'),
+                            'express_value':$('#express').val(),
+                            'express_name':express_input.parent().text()
+                        }
+                break;
+            default:
+                break;
         }
+
         console.log(data);
         
         $.ajax({

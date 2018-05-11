@@ -111,4 +111,10 @@ class OrdersController extends CommonController
         return $this->ajaxReturn(['code'=>200,'mag'=>'','data'=>$couriers]);
     }
     
+    public function getCouriers()
+    {
+        if(!IS_AJAX){ return $this->ajaxReturn(['code'=>-1,'msg'=>'非法请求']); }
+        $couriers = D('courier')->field('id,name')->select();
+        $this->ajaxReturn(['code'=>200,'msg'=>'','data'=>$couriers]);
+    }
 }

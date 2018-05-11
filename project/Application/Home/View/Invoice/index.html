@@ -357,7 +357,7 @@
 			//不开发票
 			if($(this).attr("index") == 0){
 				console.log('不开发票啊！');
-				voiceArr.push({
+				voiceArr = ({
 					'type': "不开发票",
 					'info': "",
 					'voicehead': "",
@@ -521,13 +521,31 @@
 				type: "post",
 				success: function(res) {
 					console.log("发票成功", res);
-					window.location.href = "{{:U('Pay/payConfirm')}}";
+					// 获取上一页面的路径
+					var referUrl = document.referrer;
+					if(referUrl) {
+						// 滤芯传来
+						if(referUrl.indexOf("lvxinPay") != -1) {
+							window.location.href = "{{:U('Pay/lvxinPay')}}";
+						
+						// 商城传来
+						}else if(referUrl.indexOf("payConfirm") != -1) {
+							window.location.href = "{{:U('Pay/payConfirm')}}";
+						}
+					}
+					// else {
+					// 	// 路径为空
+					// 	layer.msg("请走正确的购买流程!");
+					// 	window.location.href = "{{:U('Shop/index')}}";
+					// }
+					
 				},
 				fail: function(res) { 
 					console.log("发票失败!", res);
 				}
 			})
 		})
+		
 	</script>
 </body>
 <script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
