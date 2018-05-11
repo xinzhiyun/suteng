@@ -317,7 +317,7 @@ class ShopController extends CommonController
         try {
             $pic = D('Pic');
             
-            $data['gid'] = I('get.id');
+            $gid = I('post.gid');
             $upload = new \Think\Upload();// 实例化上传类
             $upload->maxSize   =     3145728 ;// 设置附件上传大小
             $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
@@ -325,22 +325,24 @@ class ShopController extends CommonController
             $upload->savePath  =     ''; // 设置附件上传（子）目录
             // 上传文件 
             $info   =   $upload->upload($_FILES);
-            
             if(!$info) E($upload->getError(),603);
-            $data['picname'] = $info['pic']['savename'];
-            $data['path'] = $info['pic']['savepath'].$info['pic']['savename'];
-            $data2 = \array_column($info,['savename','savepath']);
-            p($data2);die;
-            $res = $pic->where('gid='.$data['gid'])->find();
+            foreach ($info as $key => $value) {
+                $data[$key] = [
+                    'gid' => $gid,
+                    'picname' => $value['name'],
+                    'path' => $value['savepath'].$value['savename']
+                ];
+            }
+            $res = $pic->where('gid='.$gid)->find();
             if($res){
-                $status_res = $pic->where('gid='.$data['gid'])->saveAll($data);
+                $status_res = $pic->where('gid='.$gid)->addAll($data);
                 if($status_res){
                     E('更新成功',200);
                 } else {
                     E('更新失败',604);
                 }
             } else {
-                $status_res = $pic->add($data);
+                $status_res = $pic->addAll($data);
                 if($status_res){
                     E('添加成功',200);
                 } else {
