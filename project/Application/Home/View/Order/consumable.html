@@ -271,7 +271,7 @@
             	// console.dir(res)
             	if(res.code == 200){
                 	// 查询有数据
-                	// console.dir(res.data)
+                	console.dir(res.data)
                 	var waitpaylist=res.data;
                 	for(var i=0;i<waitpaylist.length;i++){//待付款数据遍历
                 		dingdanDaifukuan1+='<div class="goods">'+
@@ -305,8 +305,8 @@
 						dingdanDaifukuan1+=dingdanDaifukuan2+'<div class="calc">'+
 						'<div>'+
 						'共'+ waitpaylist[i]['totalnumber'] +'件商品&emsp;'+
-						'合计：<b class="price">￥'+(Number(waitpaylist[i]['totalprice'])+Number(waitpaylist[i]['postage']))+'</b>'+
-						'<span class="postage">&nbsp;(含邮费￥'+waitpaylist[i]['postage']+')</span>'+
+						'合计：<b class="price">￥'+(Number(waitpaylist[i]['totalprice']))+'</b>'+
+						// '<span class="postage">&nbsp;(含邮费￥'+waitpaylist[i]['postage']+')</span>'+
 						'</div>'+
 						'<div>'+
 						'<div class="cancel start1" name='+waitpaylist[i]['orderid']+'>'+
@@ -443,8 +443,8 @@
 							dingdanDaifahuo1+=dingdanDaifahuo2+'<div class="calc">'+
 							'<div>'+
 							'共'+ waitsendlist[i]['totalnumber'] +'件商品&emsp;'+
-							'合计：<b class="price">￥'+(Number(waitsendlist[i]['totalprice']) + Number(waitsendlist[i]['postage']))+'</b>'+
-							'<span class="postage">&nbsp;(含邮费￥'+waitsendlist[i]['postage']+')</span>'+
+							'合计：<b class="price">￥'+(Number(waitsendlist[i]['totalprice']))+'</b>'+
+							// '<span class="postage">&nbsp;(含邮费￥'+waitsendlist[i]['postage']+')</span>'+
 							'</div>'+
 							'<div>'+
 							'<div class="cancel">'+
@@ -530,8 +530,8 @@
 							dingdanDaishouhuo1+=dingdanDaishouhuo2+'<div class="calc">'+
 							'<div>'+
 							'共'+ waitgainlist[i]['totalnumber'] +'件商品&emsp;'+
-							'合计：<b class="price">￥'+(Number(waitgainlist[i]['totalprice'])+Number(waitgainlist[i]['postage']))+'</b>'+
-							'<span class="postage">&nbsp;(含邮费￥'+waitgainlist[i]['postage']+')</span>'+
+							'合计：<b class="price">￥'+(Number(waitgainlist[i]['totalprice']))+'</b>'+
+							// '<span class="postage">&nbsp;(含邮费￥'+waitgainlist[i]['postage']+')</span>'+
 							'</div>'+
 							'<div>'+
 							'<div class="cancel">'+
