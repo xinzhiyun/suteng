@@ -223,7 +223,7 @@
                         if(typeof JSON.parse(res) == 'number'){
                             //返回的是订单号，数字型
         					// 跳转到订单确认页面
-        					location.href = '{{:U("Pay/payConfirm")}}';
+        					location.href = '{{:U("Pay/lvxinPay")}}' +'?order_id='+res;
                         }else{
                             layuiHint('发生错误，无法购买！');
                         }

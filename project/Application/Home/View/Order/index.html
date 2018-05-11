@@ -277,7 +277,8 @@
                 	// 查询有数据
                 	// console.dir(res.data)
                 	var waitpaylist=res.data;
-                	for(var i=0;i<waitpaylist.length;i++){//待付款数据遍历
+					for(var i=0;i<waitpaylist.length;i++){//待付款数据遍历
+						postage = 0; // 邮费统计
                 		dingdanDaifukuan1+='<div class="goods">'+
                 		'<p>订单编号：'+waitpaylist[i]['orderid']+'</p>'+
                 		'<p>下单时间：'+waitpaylist[i]['ordertime'] +
@@ -305,12 +306,14 @@
 							'</div>'+
 							'</div>'+
 							'</div>'; 
+							// postage += parseFloat(waitsendlist[i]['productList'][k]['cprice']); // 邮费统计
+							postage += parseFloat(waitpaylist[i]['productList'][k]['cprice']); // 邮费统计
 						}
 						dingdanDaifukuan1+=dingdanDaifukuan2+'<div class="calc">'+
 						'<div>'+
 						'共'+ waitpaylist[i]['totalnumber'] +'件商品&emsp;'+
 						'合计：<b class="price">￥'+(Number(waitpaylist[i]['totalprice'])+Number(waitpaylist[i]['postage']))+'</b>'+
-						'<span class="postage">&nbsp;(含邮费￥'+waitpaylist[i]['postage']+')</span>'+
+						'<span class="postage">&nbsp;(含邮费￥'+postage+')</span>'+
 						'</div>'+
 						'<div>'+
 						'<div class="cancel start1" name='+waitpaylist[i]['orderid']+'>'+
@@ -405,9 +408,11 @@
                 if(res.code == 200){
                 	// 查询有数据
                 	
-                	var waitsendlist=res.data;
+					var waitsendlist=res.data;
+					
                 	// console.log(waitsendlist.length);
-                	for(var i=0;i<waitsendlist.length;i++){//待发货数据遍历
+					for(var i=0;i<waitsendlist.length;i++){//待发货数据遍历
+						postage = 0; // 邮费统计
                 		dingdanDaifahuo1+='<div class="goods">'+
                 		'<p>订单编号：'+waitsendlist[i]['orderid']+'</p>'+
                 		'<p>下单时间：'+waitsendlist[i]['ordertime'] +
@@ -436,12 +441,14 @@
 							'</div>'+
 							'</div>'+
 							'</div>';
+
+							postage += parseFloat(waitsendlist[i]['productList'][k]['cprice']); // 邮费统计
 						}
 						dingdanDaifahuo1+=dingdanDaifahuo2+'<div class="calc">'+
 						'<div>'+
 						'共'+ waitsendlist[i]['totalnumber'] +'件商品&emsp;'+
 						'合计：<b class="price">￥'+(Number(waitsendlist[i]['totalprice']) + Number(waitsendlist[i]['postage']))+'</b>'+
-						'<span class="postage">&nbsp;(含邮费￥'+waitsendlist[i]['postage']+')</span>'+
+						'<span class="postage">&nbsp;(含邮费￥'+postage+')</span>'+
 						'</div>'+
 						'<div>'+
 						'<div class="cancel">'+
@@ -492,7 +499,9 @@
                 	// 查询有数据
                 	var waitgainlist=res.data;
                 	// console.log(waitgainlist.length);
-                	for(var i=0;i<waitgainlist.length;i++){//待收货数据遍历
+					for(var i=0;i<waitgainlist.length;i++){//待收货数据遍历
+						postage = 0; // 邮费统计
+
                 		dingdanDaishouhuo1+='<div class="goods">'+
                 		'<p>订单编号：'+waitgainlist[i]['orderid']+'</p>'+
                 		'<p>下单时间：'+waitgainlist[i]['ordertime'] +
@@ -520,12 +529,13 @@
 							'</div>'+
 							'</div>'+
 							'</div>';
+							postage += parseFloat(waitgainlist[i]['productList'][k]['cprice']); // 邮费统计
 						}
 						dingdanDaishouhuo1+=dingdanDaishouhuo2+'<div class="calc">'+
 						'<div>'+
 						'共'+ waitgainlist[i]['totalnumber'] +'件商品&emsp;'+
 						'合计：<b class="price">￥'+(Number(waitgainlist[i]['totalprice'])+Number(waitgainlist[i]['postage']))+'</b>'+
-						'<span class="postage">&nbsp;(含邮费￥'+waitgainlist[i]['postage']+')</span>'+
+						'<span class="postage">&nbsp;(含邮费￥'+postage+')</span>'+
 						'</div>'+
 						'<div>'+
 						'<div class="cancel">'+
@@ -598,7 +608,9 @@
                 	// 查询有数据
                 	var waitcommentlist=res.data;
                 	// console.dir(waitcommentlist);
-                	for(var i=0;i<waitcommentlist.length;i++){//待评论数据遍历
+					for(var i=0;i<waitcommentlist.length;i++){//待评论数据遍历
+						postage = 0; // 邮费统计
+
                 		dingdanDaipinglun1+='<div class="goods">'+
                 		'<p>订单编号：'+waitcommentlist[i]['orderid']+'</p>'+
                 		'<p>下单时间：'+waitcommentlist[i]['ordertime'] +
@@ -627,12 +639,14 @@
 							'</div>'+
 							'</div>'+
 							'</div>';
+
+							postage += parseFloat(waitcommentlist[i]['productList'][k]['cprice']); // 邮费统计
 						}
 						dingdanDaipinglun1+=dingdanDaipinglun2+'<div class="calc">'+
 						'<div>'+
 						'共'+ waitcommentlist[i]['totalnumber'] +'件商品&emsp;'+
 						'合计：<b class="price">￥'+(Number(waitcommentlist[i]['totalprice'])+Number(waitcommentlist[i]['postage']))+'</b>'+
-						'<span class="postage">&nbsp;(含邮费￥'+waitcommentlist[i]['postage']+')</span>'+
+						'<span class="postage">&nbsp;(含邮费￥'+postage+')</span>'+
 						'</div>'+
 						'<div>'+
 						'<div class="cancel">'+
@@ -682,10 +696,11 @@
             // dataType:"json",
             type: 'get',
             success:function(res){
+            	console.log(res);
             	var tuihuo = 0;
                 if(res.code == 200){
                 	// 查询有数据
-                	// alert(123);
+                	// console.log(222);
                 	console.log("退货收货数据",res);
                 	for(var i=0;i<res.data.length;i++){
                 		if(res.data[i]['status']=='0'){//商家未同意
@@ -728,6 +743,7 @@
                 				'<p><b>商家同意退款</b></p>';
                 			}
 							tuihuo += res.data[i]['goods'].length;
+							// console.log(res.data[i]['goods'][k]['productname']);
                 		}else if(res.data[i]['status']=='3'){//商家已同意
                 			// console.log(1111);
                 			for(var k=0;k<res.data[i]['goods'].length;k++){

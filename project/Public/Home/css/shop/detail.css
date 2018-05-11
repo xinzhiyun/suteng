@@ -221,6 +221,7 @@ body{
 	border:1px solid #ccc;
 	margin-right: 0.3rem;
 	float: left;
+	overflow: hidden;
 }
 .detailItem>p>em>img{
 	width: 100%;

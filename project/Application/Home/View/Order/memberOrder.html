@@ -121,10 +121,10 @@
     <div class="memberContainer">
         <div class="memberTop">
            <div class="myMember">
-             <h3>我的会员订单：<span>26</span></h3>
+             <h3>我的会员订单：<span></span></h3>
              <div class="iconMember clearfix">
-                <span><p>累计：</p><b>金币<em id="gold">402</em></b></span>
-                <span class="spanRight"><b>银币<em id="silver">402</em></b></span>
+                <span><p>累计：</p><b>金币<em id="gold"></em></b></span>
+                <span class="spanRight"><b>银币<em id="silver"></em></b></span>
              </div>
            </div>
         </div>
@@ -151,12 +151,15 @@
         dataType:"json",
         type: 'post',
         success:function(res){
+          console.log(res);
+          $('.myMember>h3>span').text(res.redata.tatal_num);
+          $('#gold').text(res.redata.tatal_gold);
+          $('#silver').text(res.redata.tatal_silver);
             if(res.code == 200){
-
                 // 有数据
-                $('.myMember>h3>span').text(res.redata.tatal_num);
-                $('#gold').text(res.redata.tatal_gold);
-                $('#silver').text(res.redata.tatal_silver);
+                // $('.myMember>h3>span').text(res.redata.tatal_num);
+                // $('#gold').text(res.redata.tatal_gold);
+                // $('#silver').text(res.redata.tatal_silver);
                 var _date = res.redata.data;
                 var liHtml='';
                 for(var i=0;i<_date.length;i++){

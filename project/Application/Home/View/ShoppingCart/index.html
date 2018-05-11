@@ -149,7 +149,7 @@
 							sessionStorage.setItem('order_id',res);
 
 							// 跳转到订单确认页面
-							location.href = '{{:U("Pay/payConfirm")}}';
+							location.href = '{{:U("Pay/payConfirm")}}?order_id=' + res;
 						} else {
 							parent.layer.msg('系统异常');
 						}
@@ -190,6 +190,7 @@
 		 */
 		$(".shpingcarAll").on("touchend",".minus",function(){
 			var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
+			console.log("chooseGoods", chooseGoods)
 			priceAll = 0;	//合计归零，后面重新计算
 			// 获取数量
 			var value = $(".number").val();
@@ -201,6 +202,7 @@
 			// console.log($(this).siblings(".number")[0].value);
 			// 将金额实时更新到合计
 			for(var i=0; i<chooseGoods.length; i++){
+				// 判断是否选中框框
 				if($(".itemCar").find("i[class='iconfont icon-xuanze']")){
 					var itemCar = $(".shpingcarAll").find(".itemCar").eq(i);
 					priceAll += parseFloat(itemCar.find(".price>span").text())*parseFloat(itemCar.find(".number").val())
@@ -233,7 +235,31 @@
 						success: function(res){
 							console.log('成功！ ',res);
 							// 移除当前删除商品的元素
-			       			_this.parents('.itemCar').remove();
+							_this.parents('.itemCar').remove();
+							// 删除后计算总价格
+							// removePrice = _this.siblings('.itemcarRight').children(".roPrice").children(".price").children("span").text() * _this.children(".roPrice").children(".num").children(".number").val();
+							// priceAll -= removePrice;
+
+
+							var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
+							priceAll = 0;	//合计归零，后面重新计算
+							// 获取数量
+							// var value = $(".number").val();
+							// $(this).siblings(".number")[0].value++;
+
+							// 将金额实时更新到合计
+							for(var i=0; i<chooseGoods.length; i++){
+								if($(".itemCar").find("i[class='iconfont icon-xuanze']")){
+									var itemCar = $(".shpingcarAll").find(".itemCar").eq(i);
+									priceAll += parseFloat(itemCar.find(".price>span").text())*parseFloat(itemCar.find(".number").val())
+								}
+								// console.log('price: ',itemCar.find(".price>span").text())
+								// console.log('num: ',itemCar.find(".number").val())
+							}
+							$(".priceAll>span").text(priceAll);
+
+
+							// 弹出删除成功信息
 			       			parent.layer.msg('删除成功！');
 						},
 						error: function(res){

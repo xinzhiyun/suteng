@@ -5,12 +5,6 @@
 	formData = new FormData(file);	// 实例化一个formdata对象
 	var fileList;	// 获取的图片文件
 	formData.append("file",file);
-	//将评论的商品信息显示到页面从我的订单~待评论传来
-	if(sessionStorage.getItem("pinglunObj")){
-		pinglunObj = JSON.parse(sessionStorage.getItem("pinglunObj"));
-		// console.log(pinglunObj)
-		$(".pingpic>img").attr("src",pinglunObj.pic);
-	}
 	/*
 		图片压缩上传
 	 */

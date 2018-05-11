@@ -22,7 +22,9 @@
                         <input type="text" name="keywords" placeholder="输入搜索关键字" class="input form-control"   style="width:40%">
                         <span class="input-group-btn" style="display: inline-block;">
                                 <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
+                                
                         </span>
+                        
                     </div>
                 </form>
                     <div class="ibox-content">
@@ -137,7 +139,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                                身份证反面面：
+                                身份证反面：
                             </td>
                         </tr>
                         <tr>
@@ -253,7 +255,7 @@
                                 协议文件
                             </td>
                             <td>
-                                <a class="protocol" href="">文件</a>
+                                <a class="protocolXy" href="">文件</a>
                             </td>
                         </tr>
                         <tr>
@@ -279,6 +281,30 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- 文件显示 -->
+    <div class="modal fade" id="showProtocol" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+        <div class="modal-dialog" style="width: 100% !important">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        文件详情
+                    </h4>
+                </div>
+                <!-- 放置文件 -->
+                <div class="modal-body">
+                    <img style="width: 70%; height: 100%;" src="" alt="" class="protocolImg">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
     </div>
 </block>
 <block name="myjs">
@@ -350,10 +376,24 @@
             type: 'post',
             success:function(res){
 
+                console.dir(res);
+                if(res.res.code == 200){
+                    $('#protocol img.protocol').attr('src','__PUBLIC__/'+res.data.protocol);
+
+                    
+                    // 将协议文件放到模拟框中
+                    $(".protocolImg").attr("src", '__PUBLIC__/'+res.data.protocol);
+
+
+                    // $('#protocol a.protocol').attr('href','__PUBLIC__/'+res.data.protocol);
+                    $("#protocol input[name='id']").val(res.data.id); 
+
+
                 if(res.res.code == 200){
                     $('#protocol img.protocol').attr('src','__PUBLIC__'+res.data.protocol);
                     $('#protocol a.protocol').attr('href','__PUBLIC__/'+res.data.protocol);
                     $("#protocol input[name='id']").val(res.data.id);
+
                     // 显示模块
                     $('#protocol').modal('show');
                 }else{
@@ -588,5 +628,10 @@
             }
         });
     }
+    // 点击查看协议文件
+    $(".protocolXy").on("click", function() {
+        $("#showProtocol").modal('show');
+    })
+
     </script>
 </block>

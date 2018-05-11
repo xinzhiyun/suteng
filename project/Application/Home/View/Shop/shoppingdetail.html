@@ -244,16 +244,21 @@
 			// data: {gid: goods_gid},
 			data: {gid: goods_gid},
 			success: function(res){
-				console.log('请求成功： ',res);
+				console.log('请求评论成功： ',res);
 
 				// 如果有评价则遍历出来
 				if(res.data.length){
 					if(res.data.length > 1){		// 有多条评论
 						for(var i=0; i<res.data.length; i++){
 							commPicArr[i] = []; //初始化
-							var nickname = res.data[i].user.nickname == null ? '不知道是谁' : res.data[i].user.nickname;
+							if(res.data[i].user == null) {
+								var nickname = '不知道是谁';
+								var head = '';
+							}else {
+								var nickname = res.data[i].user.nickname == null ? '不知道是谁' : res.data[i].user.nickname;
+								var head = !res.data[i].user.head ? '' : res.data[i].user.head;
+							}
 							var content = !res.data[i].content ? '该用户暂未评论' : res.data[i].content;
-							var head = !res.data[i].user.head ? '' : res.data[i].user.head;
 							commentInfo_html += '<div class="detailItem">'+
 								'<p><em><img src="'+ head +'" alt=""></em><b>'+ nickname +'</b></p>'+
 								'<p>'+ content +'</p>'+
@@ -262,7 +267,7 @@
 							// 存储每条评论的图片
 							picPathArr = res.data[i].pics;
 							for(var k=0; k<picPathArr.length; k++){
-								commPicArr[i].push({'img':'<span><img class="commPic" src="'+ picPathArr[k].path +'" alt=""></span>'});
+								commPicArr[i].push({'img':'<span><img class="commPic" src="'+ picPathArr[k].path +'" alt="图片加载中"></span>'});
 							}
 							
 						}
@@ -429,7 +434,7 @@
 			// console.dir(goods_dataArr);return false;
 
 			// 发送ajax请求让后台生成订单号
-			$.ajax({
+			$.ajax({ 
 				url: '{{:U("PaymentSystem/information")}}',
 				type: 'post',
 				data: {'data': JSON.stringify(goods_dataArr)},
@@ -437,9 +442,10 @@
 					console.log('成功！', res);
 					sessionStorage.setItem('order_id',res);
 					if(typeof JSON.parse(res) == 'number'){
+						// alert('{{:U("Pay/payConfirm/order_id/'+res+'")}}')
 
 						// 跳转到订单确认页面
-						location.href = '{{:U("Pay/payConfirm")}}';
+						location.href = '{{:U("Pay/payConfirm")}}?order_id='+res;
 					}else{
 						//支付发生错误，无法生成订单号
 						parent.layer.msg('系统发生错误，请稍后再试！');
