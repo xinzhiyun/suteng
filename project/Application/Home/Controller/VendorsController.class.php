@@ -29,7 +29,11 @@ class VendorsController extends Controller
 //        $showData['open_id'] = $_SESSION['vendorInfo']['open_id'];
         // 查询分销商
         $showData['id'] = $_SESSION['vendorInfo']['id'];
+
         $vendor = M('vendors')->where($showData)->find();
+        if (empty($vendor)) {
+            $this->error('暂无数据');
+        }
 
 
         // 分销商级别
@@ -911,10 +915,13 @@ class VendorsController extends Controller
     // 收入详情
     public function income_detailed()
     {
-        $map['od.order_id'] = I('order_id');
-        $order_detail = D('OrderDetail');
-        $data = $order_detail->getGoodsDetail($map);
-        $this->assign('data',$data);
+//        $map['od.order_id'] = I('order_id');
+//        $order_detail = D('OrderDetail');
+//        $data = $order_detail->getGoodsDetail($map);
+//
+//        $this->assign('data',$data);
+        $map['order_id'] = I('order_id');
+        M('order_detail')->where($map)-
         $this->display();
     }
 
