@@ -220,12 +220,14 @@ class VipCenterController extends CommonController
     // 净水记录
     public function purificationNotes()
     {
-        $info = session('user');
-        if( empty($info['did']) ){
-            $id = M('user_device')->where(['uid'=>$info['id'],'status'=>1])->getField('did');
-            session('user.did',$id);
-        }
-        $map['dcode'] = M('devices')->where('id='.$id)->getField('device_code');
+        $did = session('user.did');
+        
+        // if( empty($did) ){
+        //     $did = M('user_device')->where(['uid'=> session('user.id'),'status'=>1])->getField('did');
+        //     session('user.did',$did);
+        // }
+    
+        $map['dcode'] = M('devices')->where('id='.$did)->getField('device_code');
         $map['date'] = date("Ym", time());
         $data = M('Tds')->where($map)->select();
         // dump($data);

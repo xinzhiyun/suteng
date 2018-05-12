@@ -798,34 +798,6 @@ class ShopController extends CommonController
      */
     public function ship()
     {
-//         Array
-// (
-//     [orderid] => 571896555985218
-//     [express] => Array
-//         (
-//             [0] => Array
-//                 (
-//                     [cid] => 2
-//                     [express_value] => 4325345
-//                 )
-
-//             [1] => Array
-//                 (
-//                     [cid] => 8
-//                     [express_value] => 54333333333335
-//                 )
-
-//             [2] => Array
-//                 (
-//                     [cid] => 10
-//                     [express_value] => 544444444453453
-//                 )
-
-//         )
-
-// )
-
-
         if (IS_AJAX) {
             try{
                 // $id = I('post.orderid');
@@ -865,7 +837,12 @@ class ShopController extends CommonController
         $order['order_id'] = I('get.id');
         $userInfo = $orders->getUserInfo($order);
         $map['od.order_id'] = $order['order_id'];
-        $data = $orderDetail->getInfo($map);
+        if($userInfo['g_type'] == 2){
+            $data = $orderDetail->getLvxinInfo($map);
+        } else {
+            $data = $orderDetail->getInfo($map);
+        }
+        
         $assign = [
             'userInfo' => $userInfo,
             'data'     => $data,
