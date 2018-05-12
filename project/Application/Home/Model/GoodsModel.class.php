@@ -20,6 +20,7 @@ class GoodsModel extends Model
             ->join('__PRICE__ pr ON g.id=pr.gid', 'LEFT')
             ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
             ->field('g.name,g.addtime,g.updatetime,av.*,g.cid,c.name cname,a.attr,gd.is_install,gd.is_hire,gd.desc,p.path,pr.price')
+            ->limit(1)
             ->select();
         return $goods;
     }
