@@ -36,7 +36,7 @@ class ShopController extends CommonController
                 'cate' => $cate,
                 'cartInfo' => $cartInfo,
                 'goods' => $goodsList,
-                'banner' => $banner
+                'banner' => $banner,
             ];
             return $this->ajaxReturn($assign);
         } else {
@@ -64,7 +64,8 @@ class ShopController extends CommonController
         $map['g.status'] = array('neq', 2);
         $arr = [];
         $goodsDetail = $goods->getGoodsList($map);
-    	foreach($goodsDetail as $val){
+    	foreach($goodsDetail as $key => $val){
+            $goodsDetail[$key]['pics'] = D('Pic')->field('path')->where(['gid'=>$val['gid']])->select();
     		$key = $val['gid'];
     		if(isset($arr[$key])) {
     			$arr[$key]['attr'] .= $val['attr'].':'.$val['val'].'|';
@@ -75,7 +76,7 @@ class ShopController extends CommonController
     	}
 
         // dump($goodsDetail);
-    	$goodsDetail = array_values($arr);
+    	// $goodsDetail = array_values($arr);
         // dump($goodsDetail);
 
         //查询商品对应的快递运费信息
@@ -84,10 +85,8 @@ class ShopController extends CommonController
 
 
         //获取评论数据
-        $commentInfo = $goods->getComment($map['g.id']);
         $data = [
             'goodsDetail' => $goodsDetail,
-            'commentInfo' => $commentInfo,
             // 'goodsCourier' => $goodsCourier,
         ];
 
