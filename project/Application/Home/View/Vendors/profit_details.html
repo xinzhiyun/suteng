@@ -53,7 +53,7 @@
           font-size: 0.68rem;
         }
         .shouyuan>span{
-          width: 50%;
+          width: 36%;
           color: #303030;
         }
 
@@ -75,7 +75,6 @@
         float: left;
         font-size: 0.68rem;
         color: #5a5a5a;
-        margin-left:1.1rem;
       }
        .rewardFoot ul li span{
         float: left;
@@ -86,7 +85,7 @@
         letter-spacing: 0.02rem;
         /*background: red;*/
         display: inline-block;
-        width:45%;
+        width:30%;
         white-space: nowrap;
         overflow: hidden;
         margin-right:6%;
@@ -109,6 +108,20 @@
         right:0.5rem;
         top:0rem;
       }
+    .countto {
+        margin-right: 2rem;
+    }
+      .profitdata {
+          display: block;
+          box-sizing: border-box;
+      }
+    .profitdata:after {
+        content: "";
+        height: 0;
+        display: block;
+        clear: both;
+
+    }
 </style>
 </head>
 <body>
@@ -135,14 +148,22 @@
                 <else /> 
                 <foreach name="data" item="vo">
                     <li>
-                        <a href="{{:U('Home/Vendors/income_detailed',array('order_id'=>$vo['order_id']))}}"><!--需要添加连接参数-->
+                        <!--<a href="{{:U('Home/Vendors/income_detailed',array('order_id'=>$vo['order_id']))}}" class="profitdata">&lt;!&ndash;需要添加连接参数&ndash;&gt;-->
                             <!--<span class="iconBig" style="color:#337DE6">{{$vo.describe}}</span>-->
-                            <span class="iconBig" style="color:#337DE6">{{$vo.name}}</span>
+                            <span class="iconBig" style="color:#337DE6">
+                                <switch name="vo.type">
+                                <case value="1">商品购买</case>
+                                <case value="2">租金</case>
+                                 <case value="3">充值年费</case>
+                                <default />null
+                                </switch>
+                            </span>
                             <span class="countto">{{$vo.abonus}}</span>
                             <!--<span>{{:date("Y-m-d",$vo['addtime'])}}</span>-->
                             <span>{{$vo.create_time}}</span>
-                        </a>
-                        <i class="iconfont icon-dayuhao-copy-copy detailicon"></i>
+                            <i class="iconfont icon-dayuhao-copy-copy detailicon"></i>
+                        <!--</a>-->
+
                     </li>
                 </foreach>
             </empty> 

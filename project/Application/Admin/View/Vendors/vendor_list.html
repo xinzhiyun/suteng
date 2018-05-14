@@ -83,11 +83,18 @@
                                             <td>{{$val.name}}</td>
                                             <td>{{$val.leavel}}</td>
                                             <td>{{$val.company}}</td>
+                                            <if condition="$val.status == 审批成功">
                                             <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_a}}" alt="A级邀请"></td>
                                             <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_b}}" alt="B级邀请"></td>
                                             <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_c}}" alt="C级邀请"></td>
                                             <td><img width="150" height="150" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_user}}" alt="C级邀请"></td>
-                                            <td>{{$val.user}}</td>
+                                            <else />
+                                                <td>未审核成功(暂无)</td>
+                                                <td>未审核成功(暂无)</td>
+                                                <td>未审核成功(暂无)</td>
+                                                <td>未审核成功(暂无)</td>
+                                            </if>
+                                                <td>{{$val.user}}</td>
                       <!--                       <switch name="val.status">
                                                 <case value="0"><td>待审核</td></case>
                                                 <case value="1"><td>使用中</td></case>

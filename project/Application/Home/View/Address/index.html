@@ -100,7 +100,7 @@
 		            </select>
 		    	</div>
 			</div>
-			<span class="pDetail">
+			<span class="pDetail">  
 				<p>详细地址：</p>
 				<textarea name="" id="" cols="30" rows="5" placeholder="请输入详细地址"></textarea>
 			</span>
@@ -172,8 +172,21 @@
 						//如果有订单号
 						// 选择默认地址后，返回订单确认界面
 						setTimeout(function(){
-            				// 默认地址设置成功，返回上一页
-							location.href = '{{:U("Pay/payConfirm")}}';
+            				
+							// 获取上一页面的路径
+							var referUrl = document.referrer;
+							if(referUrl) {
+								// 滤芯传来
+								if(referUrl.indexOf("lvxinPay") != -1) {
+									// 默认地址设置成功，返回上一页
+									location.href = "{{:U('Pay/lvxinPay')}}";
+								
+								// 商城传来
+								}else if(referUrl.indexOf("payConfirm") != -1) {
+									// 默认地址设置成功，返回上一页
+									location.href = '{{:U("Pay/payConfirm")}}';
+								}
+							}
             			},500);
 					}
 				},
@@ -184,6 +197,7 @@
 			});
 			console.log(address_id)
 		})
+		console.log(document.referrer);
         /*
         	点击按钮设置默认地址
          */
@@ -215,8 +229,20 @@
 							//如果有订单号
 							// 选择默认地址后，返回订单确认界面
 							setTimeout(function(){
-	            				// 默认地址设置成功，返回上一页
-								location.href = '{{:U("Pay/payConfirm")}}';
+	            				// 获取上一页面的路径
+								var referUrl = document.referrer;
+								if(referUrl) {
+									// 滤芯传来
+									if(referUrl.indexOf("lvxinPay") != -1) {
+										// 默认地址设置成功，返回上一页
+										location.href = "{{:U('Pay/lvxinPay')}}";
+									
+									// 商城传来
+									}else if(referUrl.indexOf("payConfirm") != -1) {
+										// 默认地址设置成功，返回上一页
+										location.href = '{{:U("Pay/payConfirm")}}';
+									}
+								}
 	            			},500);
 						}
 					}else{
@@ -267,8 +293,21 @@
 			editAddress['address'] = editAddress['address'].slice(_4address.length);
 			//记录当前点击编辑的地址数据
 			sessionStorage.setItem("editAddressOld",JSON.stringify(editAddress));
-			//跳转到地址编辑界面
-			location.href = '{{:U("Address/newAddress")}}';
+
+			// 获取上一页面的路径
+			var referUrl = document.referrer;
+			if(referUrl) {
+				// 滤芯传来
+				if(referUrl.indexOf("lvxinPay") != -1) {
+					location.href = '{{:U("Address/newAddress")}}' + '?index=0';
+				
+				// 商城传来
+				}else if(referUrl.indexOf("payConfirm") != -1) {
+					// 默认地址设置成功，返回上一页
+					location.href = '{{:U("Address/newAddress")}}' + '?index=1';
+				}
+					
+			}
 		})
 
         /*
@@ -317,8 +356,21 @@
         $("#footer").click(function(){
         	// 清除历史编辑数据
         	sessionStorage.setItem('editAddressOld','');
-        	// 跳转到新建地址页面
-        	location.href = "{{:U('Home/Address/newAddress')}}";
+        	var referUrl = document.referrer;
+        	// 0-滤芯  1-商城
+        	if(referUrl) {
+				// 滤芯传来
+				if(referUrl.indexOf("lvxinPay") != -1) {
+					// 跳转到新建地址页面
+        			location.href = "{{:U('Home/Address/newAddress')}}" + "?index=0";
+
+				// 商城传来
+				}else if(referUrl.indexOf("payConfirm") != -1) {
+					// 跳转到新建地址页面
+        			location.href = "{{:U('Home/Address/newAddress')}}" + "?index=1";
+				}
+			}
+        	
         })
         // 将数据输出为JSON对象数组格式
         // var arr = [];

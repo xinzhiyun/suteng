@@ -133,6 +133,7 @@
 		$('.method').on('change', function(){
 			method_index = $(this)[0].selectedIndex;
 			console.log(method_index)
+
 			// 仅退款（未发货）
 			if(method_index == 1){	// 不需要图片凭证
 				$(".sendpic").hide();
@@ -213,7 +214,12 @@
 		 	 				parent.layer.msg('提交成功！');
 		 	 				setTimeout(function(){
 		 	 					history.replaceState({}, null, '{{:U("VipCenter/index")}}');
-		 	 					// location.href = '{{:U("Order/index")}}';
+		 	 					if(sessionStorage.getItem("g_type") == "1"){
+		 	 						location.href = '{{:U("Order/index")}}'+'?tab=4';
+		 	 					}else if(sessionStorage.getItem("g_type") == "2"){
+		 	 						location.href = '{{:U("Order/consumable")}}'+'?tab=3';
+		 	 					}
+		 	 					// location.href = '{{:U("Order/index")}}'+'?tab=4';
 		 	 				},500)
 		 	 			}
 		 	 		},

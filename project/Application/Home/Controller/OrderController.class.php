@@ -13,6 +13,7 @@ class OrderController extends CommonController
 
     {
         $openId = $_SESSION['open_id'];
+
         $this->wx_info();
 
         $this->assign('openId',$openId);
@@ -34,7 +35,11 @@ class OrderController extends CommonController
             $status = I('post.status');
             $sta =implode(',',$status);
             // 查询用户
-            $_SESSION['user']['id'] = 27;
+
+            $_SESSION['user']['id'];
+
+            // $_SESSION['user']['id'] = 27;
+ 
             $uid  = $_SESSION['user']['id'];
             // 订单类型
             $showData['g_type'] = $g_type;
@@ -66,14 +71,32 @@ class OrderController extends CommonController
                 // 订单详情表
                 $dWhere = array('d.order_id'=>$value['order_id']);
                 // 订单详情
-                $waitpaylist[$i]['productList'] = M('order_detail')
-                                                    ->alias('d')
-                                                    ->where($dWhere)
-                                                    ->join('__GOODS__ g ON g.id = d.gid','LEFT')
-                                                    ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
-                                                    ->join('__PIC__ p ON g.id = p.gid','LEFT')
-                                                    ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire','d.cprice'))
-                                                    ->select();
+                switch($g_type){
+                    case 0;
+                        break;
+                    case 1;
+                        $waitpaylist[$i]['productList'] = M('order_detail')
+                        ->alias('d')
+                        ->where($dWhere)
+                        ->join('__GOODS__ g ON g.id = d.gid','LEFT')
+                        ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
+                        ->join('__PIC__ p ON g.id = p.gid','LEFT')
+                        ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire','d.cprice'))
+                        ->select();
+                        break;
+                    case 2;
+                                            // 订单详情
+                        $waitpaylist[$i]['productList'] = M('order_detail')
+                        ->alias('d')
+                        ->where($dWhere)
+                        ->join('__FILTERS__ f ON f.id = d.gid','LEFT')
+                        ->field(array('f.picpath'=>'orderimg','f.filtername'=>'productname','f.introduce'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','d.cprice'))
+                        ->select();
+                        break;
+                    case 3;
+                        break;
+                }
+
                 $i++;
             }
 
@@ -88,10 +111,6 @@ class OrderController extends CommonController
             // 返回JSON格式数据
             $this->ajaxReturn($message); 
         }
-    }
-
-    public function getOrders(){
-        
     }
 
     public function exchange_record()
@@ -154,7 +173,6 @@ class OrderController extends CommonController
             $info = M('shop_order')->where($map)->save($data);
 
 
-
             if ($info) {
 //                  $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.g_cost,a.g_price,a.g_num,b.vid,c.id ccid,c.code,c.invitation_code,c.superiors_code,c.superior_code,c.abonus,b.name')->join
 //                  ('st_goods b on a.gid = b.id')->join('st_vendors c on b.vid = c.id')->where(['a
@@ -164,7 +182,12 @@ class OrderController extends CommonController
                   ('st_goods b on a.gid = b.id')->where(['a
                 .g_type'=>1,'a.status'=>3,'a.order_id'=>$map['order_id']])->find();
 
+                //多个商品
+                if($list) {
+                    $list['detail'] =  M('order_detail')->where(['order_id'=>$list['order_id']])->select();
 
+                }
+              
                 if ($list['invitation_code'] != null) {
 
                     if ($list['g_price'] < $list['g_cost']) {
@@ -172,7 +195,6 @@ class OrderController extends CommonController
                     } else {
                         $money = $list['g_price']-$list['g_cost'];
                     }
-
 
                     //查询分配比例
                     $butros = M('butros')->find();
@@ -186,24 +208,18 @@ class OrderController extends CommonController
                     $com_t =  $money*(($butros['com_a']/ 100)*(50/ 100));
                     //团队管理奖 A级加盟商
                     $com_ta =  $money*(($butros['com_a']/100)*((100-50)/100));
-//                dump($com_c);
-//                dump($com_d);
-//                dump($com_p);
-//                dump($com_t);
-//                dump($com_ta);
-//                dump($money);exit;
                     //查出当前推荐商人
                     $c_info = M('vendors')->where(['code'=>$list['invitation_code']])->find();
-
-                    //查出推荐人的推荐人
+                   //查出推荐人的推荐人
                     $f_info = M('vendors')->where(['code'=>$c_info['office_code']])->find();
+
                     //销售奖(卖商品的经销商)
                     if ($f_info) {
                         $earnings_comc = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_c);
 
                         //销售奖收益记录
                         if ($earnings_comc) {
-                            M('earnings')->add(['name'=>$list['name'],'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
                         }
                     }
 
@@ -213,9 +229,10 @@ class OrderController extends CommonController
                     if ($c_info){
 
                         $earnings_comd = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_d);
+
                         //销售奖收益记录
                         if ($earnings_comd) {
-                            M('earnings')->add(['name'=>$list['name'],'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
                         }
                     }
                     //查找直系推荐关系中的最近B级加盟商(包括自己)
@@ -228,7 +245,7 @@ class OrderController extends CommonController
                         $earnings_comp = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_p);
                         //市场培育收益记录
                         if ($earnings_comp) {
-                            M('earnings')->add(['name'=>$list['name'],'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
                         }
 
                     } else {
@@ -245,7 +262,7 @@ class OrderController extends CommonController
                                 M('vendors')->where(['id'=>$my_level_info['id']])->setInc('abonus',$com_p);
 //
                                 if ($earnings_comc) {
-                                    M('earnings')->add(['name'=>$list['name'],'opoen_id'=>$list['open_id'],'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
                             }
                         }
@@ -262,7 +279,7 @@ class OrderController extends CommonController
                         $earnings_ta = M('vendors')->where(['id'=>$in_info['id']])->setInc('abonus',$com_t);
                         //市场培育收益记录
                         if ($earnings_ta) {
-                            M('earnings')->add(['name'=>$list['name'],'opoen_id'=>$list['open_id'],'vid'=>$in_info['id'],'abonus'=>$com_t,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$in_info['id'],'abonus'=>$com_t,'create_time'=>date('Y-m-d H:i:s')]);
                         }
                     }
                     //B级加盟商受益人
@@ -274,7 +291,7 @@ class OrderController extends CommonController
 
                         //市场培育收益记录
                         if ($earnings_ta) {
-                            M('earnings')->add(['name'=>$list['name'],'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
                         }
 
                     } else {
@@ -290,7 +307,7 @@ class OrderController extends CommonController
 //                            M('vendors')->where(['id'=>$path_info_A['id']])->save(['updatetime'=>time()]);
                                 $earnings_ta = M('vendors')->where(['id'=>$path_info_A['id']])->setInc('abonus',$com_ta);
                                 if ($earnings_ta) {
-                                    M('earnings')->add(['name'=>$list['name'],'opoen_id'=>$list['open_id'],'vid'=>$path_info_A['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$path_info_A['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
                             }
                         }
@@ -429,8 +446,15 @@ class OrderController extends CommonController
             // $refund = D('refund_goods')->field('oid,gid')->select(false);
             // echo $refund;die;
             // $data = M('shop_order')->alias('so')->where('order_id='.$orderid)->select();
-            $subsql = D('refund_goods')->where(['oid'=>$orderid])->field('gid')->select(false);
-            $data = M('order_detail')                        
+            $order = D('shopOrder')->where(['order_id'=>$orderid])->field('g_type')->find();
+            switch ($order['g_type']) {
+                case 0:
+                    # code...
+                    break;
+                
+                case 1:
+                        $subsql = D('refund_goods')->where(['oid'=>$orderid])->field('gid')->select(false);
+                        $data = M('order_detail')                        
                         ->alias('d')
                         // ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'d.gid'=>['NEQ','rg.gid'],'rg.oid'=>['NEQ',$orderid]])
                         ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'g.id'=>['exp',"NOT IN ($subsql)"]])
@@ -441,6 +465,29 @@ class OrderController extends CommonController
                         // // ->table($refund.' a')
                         ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire'))
                         ->select();
+                    break;
+
+                case 2:
+                        $subsql = D('refund_goods')->where(['oid'=>$orderid])->field('gid')->select(false);
+                        $data = M('order_detail')                        
+                        ->alias('d')
+                        // ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'d.gid'=>['NEQ','rg.gid'],'rg.oid'=>['NEQ',$orderid]])
+                        ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'f.id'=>['exp',"NOT IN ($subsql)"]])
+                        ->join('st_shop_order so ON d.order_id = so.order_id','LEFT')
+                        ->join('__FILTERS__ f ON f.id = d.gid','LEFT')
+                        // // ->table($refund.' a')
+                        ->field(array('f.picpath'=>'orderimg','f.filtername'=>'productname','f.introduce'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber'))
+                        ->select();
+                    break;
+
+                case 3:
+                    # code...
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+
             if ($data) {
                 return $this->ajaxReturn(['code'=>200,'data'=>$data]);
             }

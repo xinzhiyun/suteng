@@ -195,7 +195,7 @@
                                 </th>
                                 <td>
                                     <div class="form-group">
-                                        <input class="input-medium form-control" type="file" name="pic">
+                                        <input class="input-medium form-control" type="file" name="pic[]" multiple accept="image/*">
                                     </div>
                                 </td>
                             </tr>
@@ -373,7 +373,7 @@
                 }
             });
         })
-
+        console.log()
         //显示单价详细
         $("td").on('click','.select', function(e){
             $('#myModal6').modal('show');
@@ -384,20 +384,40 @@
                 type:'post',
                 data:{'gid':gid},
                 success:function(res){
+                    console.log(res);
+                    console.log(res.length)
                     for (var i = res.length - 1; i >= 0; i--) {
                         var g;
+                        // switch(res[i]['grade']){
+                        //     case '0':
+                        //         g = "非企业会员";
+                        //         break;
+                        //     case '1':
+                        //         g = "普通会员";
+                        //         break;
+                        //     case '2':
+                        //         g = "VIP会员";
+                        //         break;
+                        //     case '3':
+                        //         g = "标准会员";
+                        //         break;
+                        //     case '4':
+                        //         g = "钻石会员";
+                        //         break;
+                        // }
+                        
                         switch(res[i]['grade']){
                             case '0':
-                                g = "非企业会员";
-                                break;
-                            case '1':
                                 g = "普通会员";
                                 break;
+                            case '1':
+                                g = "个人会员";
+                                break;
                             case '2':
-                                g = "VIP会员";
+                                g = "非会员";
                                 break;
                             case '3':
-                                g = "标准会员";
+                                g = "黄金会员";
                                 break;
                             case '4':
                                 g = "钻石会员";
@@ -409,7 +429,8 @@
                 }
             });
         });
-
+        // 普通6600  钻石6400  黄金6500   非会员6300  个人6700      
+        // 0 2 3 4 1
 
         //显示运费详细
         $("td").on('click','.cselect', function(e){

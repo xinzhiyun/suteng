@@ -14,15 +14,24 @@ class RefundController extends CommonController
            $data = D('Refund')->relation(['goods'])->where(['uid'=>$_SESSION['user']['id']])->select();
 
             foreach ($data as $key => $value) {
-                foreach ($value['goods'] as $k => $val) {                                  
-                    $data[$key]['goods'][$k] = M('order_detail')
+                foreach ($value['goods'] as $k => $val) {
+                    if(I('g_type') == 1){
+                        $data[$key]['goods'][$k] = M('order_detail')
+                            ->alias('d')
+                            ->where(['d.order_id'=>$val['oid'],'d.gid'=>(int)$val['gid']])
+                            ->join('__GOODS__ g ON g.id = d.gid','LEFT')
+                            ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
+                            ->join('__PIC__ p ON g.id = p.gid','LEFT')
+                            ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire'))
+                            ->find();
+                    } elseif(I('g_type') == 2){
+                        $data[$key]['goods'][$k] = M('order_detail')
                         ->alias('d')
                         ->where(['d.order_id'=>$val['oid'],'d.gid'=>(int)$val['gid']])
-                        ->join('__GOODS__ g ON g.id = d.gid','LEFT')
-                        ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
-                        ->join('__PIC__ p ON g.id = p.gid','LEFT')
-                        ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire'))
+                        ->join('__FILTERS__ f ON f.id = d.gid','LEFT')
+                        ->field(array('f.picpath'=>'orderimg','f.filtername'=>'productname','f.introduce'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber'))
                         ->find();
+                    }
                } 
             }
             if ($data) {

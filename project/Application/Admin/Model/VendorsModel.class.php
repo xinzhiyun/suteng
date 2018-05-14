@@ -131,7 +131,7 @@ class VendorsModel extends BaseModel
 
     public function formatData($list){
         $leavel = array('超级管理员','分公司','A级分销商','B级分销商','C级分销商');
-        $status = array('身份信息填写','公司信息填写','签署协议','等待审批','身份证审批失败','公司信息审批失败','协议审批失败','审批成功','禁用分销商');
+        $status = array('身份信息填写','公司信息填写','签署协议','等待审批','身份证审批失败','公司信息审批失败','协议审批失败','审批成功','禁用分销商','未付款');
         foreach ($list as $key => $val) {
             $list[$key]['leavel'] = $leavel[$val['leavel']];
             $list[$key]['status'] = $status[$val['status']];

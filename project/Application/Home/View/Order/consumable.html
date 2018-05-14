@@ -263,7 +263,7 @@
         	url:"{{:U('Home/Order/order_list')}}",
         	data:{
             	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-            	"status":8
+            	"status":[8]
             },
             dataType:"json",
             type: 'post',
@@ -271,7 +271,7 @@
             	// console.dir(res)
             	if(res.code == 200){
                 	// 查询有数据
-                	// console.dir(res.data)
+                	console.dir(res.data)
                 	var waitpaylist=res.data;
                 	for(var i=0;i<waitpaylist.length;i++){//待付款数据遍历
                 		dingdanDaifukuan1+='<div class="goods">'+
@@ -305,8 +305,8 @@
 						dingdanDaifukuan1+=dingdanDaifukuan2+'<div class="calc">'+
 						'<div>'+
 						'共'+ waitpaylist[i]['totalnumber'] +'件商品&emsp;'+
-						'合计：<b class="price">￥'+(Number(waitpaylist[i]['totalprice'])+Number(waitpaylist[i]['postage']))+'</b>'+
-						'<span class="postage">&nbsp;(含邮费￥'+waitpaylist[i]['postage']+')</span>'+
+						'合计：<b class="price">￥'+(Number(waitpaylist[i]['totalprice']))+'</b>'+
+						// '<span class="postage">&nbsp;(含邮费￥'+waitpaylist[i]['postage']+')</span>'+
 						'</div>'+
 						'<div>'+
 						'<div class="cancel start1" name='+waitpaylist[i]['orderid']+'>'+
@@ -399,7 +399,7 @@
 				url:"{{:U('Home/Order/order_list')}}",
 				data:{
 	            	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单},
-	            	"status":9
+	            	"status":[9]
 	            },
 	            dataType:"json",
 	            type: 'post',
@@ -443,8 +443,8 @@
 							dingdanDaifahuo1+=dingdanDaifahuo2+'<div class="calc">'+
 							'<div>'+
 							'共'+ waitsendlist[i]['totalnumber'] +'件商品&emsp;'+
-							'合计：<b class="price">￥'+(Number(waitsendlist[i]['totalprice']) + Number(waitsendlist[i]['postage']))+'</b>'+
-							'<span class="postage">&nbsp;(含邮费￥'+waitsendlist[i]['postage']+')</span>'+
+							'合计：<b class="price">￥'+(Number(waitsendlist[i]['totalprice']))+'</b>'+
+							// '<span class="postage">&nbsp;(含邮费￥'+waitsendlist[i]['postage']+')</span>'+
 							'</div>'+
 							'<div>'+
 							'<div class="cancel">'+
@@ -464,7 +464,7 @@
 						$(".waitRejected").click(function(){
 							var order_id = $(this).attr('order_id');
 							location.href = "{{:U('Home/Order/choiceRefund')}}?order_id="+ order_id;
-
+							sessionStorage.setItem('g_type', 2);
 							sessionStorage.setItem('order_status', 9);
 						});
 						// 提醒发货
@@ -488,12 +488,12 @@
 				url:"{{:U('Home/Order/order_list')}}",
 				data:{
 	            	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-	            	"status":2
+	            	"status":[2]
 	            },
 	            dataType:"json",
 	            type: 'post',
 	            success:function(res){
-	                // console.dir(res);
+	                console.dir(res);
 	                if(res.code == 200){
 	                	// 查询有数据
 	                	var waitgainlist=res.data;
@@ -501,9 +501,10 @@
 	                	for(var i=0;i<waitgainlist.length;i++){//待收货数据遍历
 	                		dingdanDaishouhuo1+='<div class="goods">'+
 	                		'<p>订单编号：'+waitgainlist[i]['orderid']+'</p>'+
-	                		'<p>下单时间：'+waitgainlist[i]['ordertime'] +
-	                		'<span>卖家已发货</span>'+
-	                		'</p>';
+	                		'<p>下单时间：'+waitgainlist[i]['ordertime'];
+	                		// '<p>快递单号：'+"12121212121212" +
+	                		// '<span>卖家已发货</span>'+
+	                		// '</p>';
 							for(var k=0;k<waitgainlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
 								// 无图片时显示
 								var noimg_show = waitgainlist[i]['productList'][k]['orderimg']
@@ -513,7 +514,9 @@
 								var productName = waitgainlist[i]['productList'][k]['productname'];
 								productBrief = productBrief ? productBrief : "暂无描述";
 								productName = productName ? productName : "暂无标题";
-								dingdanDaishouhuo2+='<div class="goodsItem">'+
+								dingdanDaishouhuo2+='<p>快递单号：'+"524125498241" +
+	                			'<span>卖家已发货</span>'+
+	                			'</p>'+'<div class="goodsItem">'+
 								'<div class="giPicture">'+
 								'<img src="'+ noimg_show +'" alt="">'+
 								'</div>'+
@@ -530,8 +533,8 @@
 							dingdanDaishouhuo1+=dingdanDaishouhuo2+'<div class="calc">'+
 							'<div>'+
 							'共'+ waitgainlist[i]['totalnumber'] +'件商品&emsp;'+
-							'合计：<b class="price">￥'+(Number(waitgainlist[i]['totalprice'])+Number(waitgainlist[i]['postage']))+'</b>'+
-							'<span class="postage">&nbsp;(含邮费￥'+waitgainlist[i]['postage']+')</span>'+
+							'合计：<b class="price">￥'+(Number(waitgainlist[i]['totalprice']))+'</b>'+
+							// '<span class="postage">&nbsp;(含邮费￥'+waitgainlist[i]['postage']+')</span>'+
 							'</div>'+
 							'<div>'+
 							'<div class="cancel">'+
@@ -552,7 +555,7 @@
 						$(".Rejected").click(function(){
 							var order_id=$(this).attr("order_id");
 							location.href="{{:U('Home/Order/choiceRefund')}}?order_id="+order_id;
-
+							sessionStorage.setItem('g_type', 2);
 							sessionStorage.setItem('order_status', 2);
 						});
 						//确认收货 模态框的js
@@ -596,7 +599,7 @@
 				url:"{{:U('Home/Order/order_list')}}",
 				data:{
 	            	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-	            	"status":3
+	            	"status":[3]
 	            },
 	            dataType:"json",
 	            type: 'post',
@@ -688,11 +691,11 @@
 	            type: 'get',
 	            success:function(res){
 	            	// alert(123);
-	                // console.dir(res);
+	                console.dir(res);
 	                if(res.code == 200){
 	                	// 查询有数据
 	                	// alert(123);
-	                	// console.log(res);
+	                	console.log(res);
 	                	for(var i=0;i<res.data.length;i++){
 	                		if(res.data[i]['status']=='0'){//商家未同意
 	                			// console.log(res.data[i]['goods'].length);
@@ -831,7 +834,7 @@
 	        	url:"{{:U('Home/Order/install')}}",
 	        	data:{
 	            	"g_type":2,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-	            	"status":5
+	            	"status":[5]
 	            },
 	            dataType:"json",
 	            type: 'get',
@@ -899,3 +902,4 @@
 </script>
 </body>
 </html>
+

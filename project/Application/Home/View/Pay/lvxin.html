@@ -10,7 +10,8 @@
 
 </head>
 <body>
-    <input type="hidden" value={{$data['res']}} class="lvxin_data"><!--滤芯寿命-->
+	
+	<input type="hidden" value='<?php echo json_encode($res); ?>' class="lvxin_data"><!--滤芯寿命-->
     <input type="hidden" value={{$data['data']}} class="filterData"><!--滤芯当前数据-->
 	<header id="header">
 		<span class="tabTitle" index="0">滤芯详情</span>
@@ -66,7 +67,8 @@
         <div>合计：<span>￥0</span></div>
         <span id="pay">去结算</span>
         <button class="_btn" type="button">确定复位</button>
-    </footer>
+	</footer>
+
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<script src="__PUBLIC__/Home/js/filterpage.js"></script>
     <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
@@ -138,7 +140,7 @@
     		$("#footer>div>span").text('￥'+priceAll)
     	});
         var lvxin_data = JSON.parse($(".lvxin_data").val()).filterInfo;
-        // console.log(lvxin_data);
+        console.log(lvxin_data);
     	//加载滤芯项
         var lvxinDetail_html='',lvxinReset_html='',lvxinBuy_html=''; 
         if(lvxin_data){

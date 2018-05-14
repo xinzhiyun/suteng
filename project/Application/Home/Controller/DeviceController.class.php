@@ -78,12 +78,17 @@ class DeviceController extends CommonController
             }
             $arr = max($arr);
 
-            // 根据会员级别更新等级
-            if($arr < $leavel){
-                // 更新用户表会员等级
-                M('Users')->where('id='.$uid)->save(['grade'=>$leavel]);
-                // 更新缓存会员等级
-                $_SESSION['user']['grade'] = $leavel;
+            // 根据会员级别更新等级 4是最高级 不参与
+            $grade_info =  M('Users')->field('grade')->where('id='.$uid)->find();
+
+            if ($grade_info['grade']!=4) {
+
+                // 根据会员级别更新等级
+                if($arr < $leavel){
+                    // 更新用户表会员等级
+                    M('Users')->where('id='.$uid)->save(['grade'=>$leavel]);
+                    $_SESSION['user']['grade'] = $leavel;
+                }
             }
 
 

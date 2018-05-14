@@ -18,6 +18,7 @@ class CommonController extends Controller
     public function _initialize()
     {
 
+
         // $_SESSION = null;
         // 实例化微信JSSDK
         $weixin = new WeixinJssdk;
@@ -26,11 +27,12 @@ class CommonController extends Controller
         if(empty($_SESSION['open_id'])){
 
             // 如果不存在则，跳转获取open_id,并缓存
-            //  $_SESSION['open_id'] = $weixin->GetOpenid();
+              $_SESSION['open_id'] = $weixin->GetOpenid();
             // 前端调试通道
-           $_SESSION['open_id'] = 'onLe70R11Z2SaaV_Z60hjUQH-hTY';
+//           $_SESSION['open_id'] = 'onLe70UOYRAS057fUzuCbyTYKRFo';
 
         }
+
         // 获取用户open_id
         $showData['open_id'] = $_SESSION['open_id'];
 
@@ -44,6 +46,7 @@ class CommonController extends Controller
         $action = $wechat["action"];
         // 查询用户信息
         $info = M('users')->where(['open_id'=>$showData['open_id']])->find();
+
 
         // 判断用户是否存在
         if($info){
@@ -304,6 +307,7 @@ class CommonController extends Controller
                             $userWhere['open_id'] = $_SESSION['open_id'];
                             // 查询用户信息,并缓存
                             $_SESSION['user'] = M('users')->where($userWhere)->find();
+
                             if(empty(session('device.did'))){
                                 $this->redirect("Device/index");
                             }
@@ -333,6 +337,8 @@ class CommonController extends Controller
                         $addData['open_id'] = $_SESSION['open_id'];
                         // 分公司
                         $addData['office_code']     = $vendor['office_code'];
+                        //
+                        $addData['invitation_code'] = $vendor['invitation_code'];
                         // A级分销商
                         $addData['vendora_code']    = 0;
                         // B级分销商
@@ -378,6 +384,7 @@ class CommonController extends Controller
                 // }
                 break;
             default:
+
                 // 未关注
                 // $this->follow();
                 $this->redirect('Home/Wechat/follow');

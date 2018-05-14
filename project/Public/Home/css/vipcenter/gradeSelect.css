@@ -14,17 +14,30 @@ body {
 }
 /* 会员选择 */
 .gradeSelect {
-	display: flex;
+	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;      /* TWEENER - IE 10 */
+    display: -webkit-flex;     /* NEW - Chrome */
+    display: flex;       
 	justify-content: space-between;
 	position: relative;
 }
-
+.putong{
+	position:absolute;
+	top:8vh;
+	/*left:0;*/
+}
 /* 黄金会员 普通会员 */
 .goldGrade {
 	padding: .8rem .3rem 1rem .3rem;
 	position:relative;
 	border: 3px solid rgb(117, 183, 253);
+	/*border:3px solid #f00;*/
 	border-radius: 7px;
+	-moz-border-radius:7px;
+	-ms-border-radius:7px;
+	-o-border-radius:7px;
+	-webkit-appearance:none;
 	width: 40vw;
 	text-align: center;
 }
@@ -74,12 +87,12 @@ body {
 .goldInfo {
 	display: none;
 	position: absolute;
-	width: 40vw;
+	width: 41vw;
 	background-color: white;
 	border-radius: 4px;
 	z-index: 20;
 	/* box-shadow: 0px 0px 10px #a0a0a0; */
-	top:6.5rem;
+	top:6rem;
 	left: -.2rem;
 	padding: .6rem .4rem;
 	background: rgb(234, 235, 236);
@@ -91,7 +104,7 @@ body {
 	border: 10px solid transparent;
 	border-bottom-color: rgb(234, 235, 236);
 	left: 3.5rem;
-	top: -1.2rem;
+	top: -1rem;
 	position:absolute;
 }
 .goldInfo > p:nth-child(1) {

@@ -722,7 +722,7 @@ class VendorsController extends CommonController
         // 审核-责任人
         $data['auditing'] = $_SESSION['adminInfo']['user'];
         // 执行更新
-        $res = D('vendors')->where($saveData)->save($data);
+        $res = D('vendors')->where($saveData)->find($data);
 
         // 判断信息是否修改成功
         if($res){
@@ -730,8 +730,9 @@ class VendorsController extends CommonController
                 $where['id'] = I('post.id');
 
                 $info = M('vendors')->field('invitation_code,id')->where($where)->find();
-               
+
                 $path = M('vendors')->field('path,id,leavel')->where(['code'=>$info['invitation_code']])->find();
+
 
                 if ($path['path']==null) {
                     //当他推荐人是最大的时候
@@ -760,9 +761,7 @@ class VendorsController extends CommonController
                             M('vendors')->where(['code'=>$info['invitation_code']])->save(['leavel'=>2]);
                         }
                     }
-                    $this->ajaxReturn(['code'=>200,'msg'=>'审核成功']);
-                } else {
-                    $this->ajaxReturn(['code'=>400,'msg'=>'审核失败']);
+
                 }
             }
             // 查询成功，设置返回前端的数据

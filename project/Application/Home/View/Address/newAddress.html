@@ -69,13 +69,6 @@
     <script type="text/javascript" src="__PUBLIC__/Home/js/jquery.citys.js"></script>
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script>
-		// 如果存在订单id，则返回订单确认界面；否则回到‘我的’界面
-		if(sessionStorage.getItem("order_id")){
-			history.replaceState({}, null, '{{:U("Pay/payConfirm")}}');
-
-		}else{
-			history.replaceState({}, null, '{{:U("VipCenter/index")}}');
-		}
 		var editAddressOld;
 		//获取编辑地址的数据
 		if(sessionStorage.getItem("editAddressOld")){
@@ -190,16 +183,29 @@
 				    			// console.log('成功！',res);
 				    			if(res.code == 200){
 				    				layHint('保存成功！');
-				    				// sessionStorage.setItem("editAddressObj", JSON.stringify(editAddressObj));
+				    				sessionStorage.setItem("editAddressObj", JSON.stringify(editAddressObj));
 				    				// 如果存在订单号则跳回订单确认界面
 				    				if(sessionStorage.getItem("order_id")){
+				    					// 判断页面来源(滤芯和商城);
+										var buyType = window.location.search;
+										
 					    				setTimeout(function(){
-					    					location.href = '{{:U("Home/Pay/payConfirm")}}';
+					    					// 滤芯
+											if(buyType.substr(-1, 1) == '0') {
+												history.replaceState({}, null, '{{:U("Pay/lvxinPay")}}');
+												location.href = '{{:U("Pay/lvxinPay")}}';
+											// 商城
+											}else if(buyType.substr(-1, 1) == '1') {
+												history.replaceState({}, null, '{{:U("Pay/payConfirm")}}');
+												location.href = '{{:U("Pay/payConfirm")}}';
+												
+											}
 					    				},500);
 									}else{
-										// 没有订单号则返回地址管理界面
+										// 没有订单号则返回到‘我的’界面
 										setTimeout(function(){
-					    					location.href = '{{:U("Home/Address/index")}}';
+					    					history.replaceState({}, null, '{{:U("VipCenter/index")}}');
+					    					location.href = '{{:U("VipCenter/index")}}';
 					    				},500);
 									}
 				    			}else{
@@ -280,13 +286,29 @@
 			    			if(res.code == 200){
 				    			// 如果有订单号,自动跳回去订单提交那里
 				    			if(sessionStorage.getItem("order_id")){
+				    				// console.log("当前页面路径", window.location.search)
+									
 				    				// 如果有商品数据
 				    				if(goods_data || lvxinData || shopCar_data){
-				    					location.href = "{{:U('Pay/payConfirm')}}";
+				    					// 判断页面来源(滤芯和商城);
+										var buyType = window.location.search;
+										// 滤芯
+										if(buyType.substr(-1, 1) == '0') {
+											history.replaceState({}, null, '{{:U("Pay/lvxinPay")}}');
+											location.href = '{{:U("Pay/lvxinPay")}}';
+											
+										// 商城
+										}else if(buyType.substr(-1, 1) == '1') {
+											history.replaceState({}, null, '{{:U("Pay/payConfirm")}}');
+											location.href = '{{:U("Pay/payConfirm")}}';
+											
+										}
+				    					
 				    				}
 				    			}else{
-				    				//调回地址列表界面
-			    					location.href = "{{:U('Address/index')}}";
+				    				// 无订单号， 回到‘我的’界面
+			    					history.replaceState({}, null, '{{:U("VipCenter/index")}}');
+			    					location.href = '{{:U("VipCenter/index")}}';
 			    				}
 				    		}else if(res.code == 605){
 		    					layHint('添加失败，请稍后再试！');
