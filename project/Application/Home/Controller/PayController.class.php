@@ -325,6 +325,7 @@ class PayController extends Controller
             'data' => json_encode($data),
         ];
         $this->assign('data',$assign);
+        $this->assign('res',$res);
         $this->display();
     }
 

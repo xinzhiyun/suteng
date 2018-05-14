@@ -272,7 +272,7 @@
             dataType:"json",
             type: 'post',
             success:function(res){
-            	// console.dir(res)
+            	console.dir(res)
             	if(res.code == 200){
                 	// 查询有数据
                 	// console.dir(res.data)
@@ -307,12 +307,13 @@
 							'</div>'+
 							'</div>'; 
 							// postage += parseFloat(waitsendlist[i]['productList'][k]['cprice']); // 邮费统计
-							postage += parseFloat(waitpaylist[i]['productList'][k]['cprice']); // 邮费统计
+							postage += parseFloat(waitpaylist[i]['productList'][k]['cprice'] * waitpaylist[i]['productList'][k]['productnumber']); // 邮费统计
 						}
 						dingdanDaifukuan1+=dingdanDaifukuan2+'<div class="calc">'+
 						'<div>'+
 						'共'+ waitpaylist[i]['totalnumber'] +'件商品&emsp;'+
-						'合计：<b class="price">￥'+(Number(waitpaylist[i]['totalprice'])+Number(waitpaylist[i]['postage']))+'</b>'+
+						// '合计：<b class="price">￥'+(Number(waitpaylist[i]['totalprice'])+Number(waitpaylist[i]['postage']))+'</b>'+
+						'合计：<b class="price">￥'+(Number(waitpaylist[i]['totalprice'])+Number(postage))+'</b>'+
 						'<span class="postage">&nbsp;(含邮费￥'+postage+')</span>'+
 						'</div>'+
 						'<div>'+
@@ -404,7 +405,7 @@
             dataType:"json",
             type: 'post',
             success:function(res){
-                // console.dir(res);
+                console.dir(res);
                 if(res.code == 200){
                 	// 查询有数据
                 	
@@ -442,12 +443,14 @@
 							'</div>'+
 							'</div>';
 
-							postage += parseFloat(waitsendlist[i]['productList'][k]['cprice']); // 邮费统计
+							// postage += parseFloat(waitsendlist[i]['productList'][k]['cprice']); // 邮费统计
+							postage += parseFloat(waitsendlist[i]['productList'][k]['cprice'] * waitsendlist[i]['productList'][k]['productnumber']); // 邮费统计
 						}
 						dingdanDaifahuo1+=dingdanDaifahuo2+'<div class="calc">'+
 						'<div>'+
 						'共'+ waitsendlist[i]['totalnumber'] +'件商品&emsp;'+
-						'合计：<b class="price">￥'+(Number(waitsendlist[i]['totalprice']) + Number(waitsendlist[i]['postage']))+'</b>'+
+						// '合计：<b class="price">￥'+(Number(waitsendlist[i]['totalprice']) + Number(waitsendlist[i]['postage']))+'</b>'+
+						'合计：<b class="price">￥'+(Number(waitsendlist[i]['totalprice'])+Number(postage))+'</b>'+
 						'<span class="postage">&nbsp;(含邮费￥'+postage+')</span>'+
 						'</div>'+
 						'<div>'+
@@ -468,7 +471,7 @@
 					$(".waitRejected").click(function(){
 						var order_id = $(this).attr('order_id');
 						location.href = "{{:U('Home/Order/choiceRefund')}}?order_id="+ order_id;
-
+						sessionStorage.setItem('g_type', 1);
 						sessionStorage.setItem('order_status', 9);
 					});
 					// 提醒发货
@@ -504,9 +507,10 @@
 
                 		dingdanDaishouhuo1+='<div class="goods">'+
                 		'<p>订单编号：'+waitgainlist[i]['orderid']+'</p>'+
-                		'<p>下单时间：'+waitgainlist[i]['ordertime'] +
-                		'<span>卖家已发货</span>'+
-                		'</p>';
+                		'<p>下单时间：'+waitgainlist[i]['ordertime'];
+                		// '<p>快递单号：'+123456782563215 +
+                		// '<span>卖家已发货</span>'+
+                		// '</p>';
 						for(var k=0;k<waitgainlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
 							// 无图片时显示
 							var noimg_show = waitgainlist[i]['productList'][k]['orderimg']
@@ -516,7 +520,10 @@
 							var productName = waitgainlist[i]['productList'][k]['productname'];
 							productBrief = productBrief ? productBrief : "暂无描述";
 							productName = productName ? productName : "暂无标题";
-							dingdanDaishouhuo2+='<div class="goodsItem">'+
+							dingdanDaishouhuo2+='<p>快递单号：'+123456782563215 +
+	                		'<span>卖家已发货</span>'+
+	                		'</p>'+
+							'<div class="goodsItem">'+
 							'<div class="giPicture">'+
 							'<img src="'+ noimg_show +'" alt="">'+
 							'</div>'+
@@ -529,12 +536,14 @@
 							'</div>'+
 							'</div>'+
 							'</div>';
-							postage += parseFloat(waitgainlist[i]['productList'][k]['cprice']); // 邮费统计
+							// postage += parseFloat(waitgainlist[i]['productList'][k]['cprice']); // 邮费统计
+							postage += parseFloat(waitgainlist[i]['productList'][k]['cprice'] * waitgainlist[i]['productList'][k]['productnumber']); // 邮费统计
 						}
 						dingdanDaishouhuo1+=dingdanDaishouhuo2+'<div class="calc">'+
 						'<div>'+
 						'共'+ waitgainlist[i]['totalnumber'] +'件商品&emsp;'+
-						'合计：<b class="price">￥'+(Number(waitgainlist[i]['totalprice'])+Number(waitgainlist[i]['postage']))+'</b>'+
+						// '合计：<b class="price">￥'+(Number(waitgainlist[i]['totalprice'])+Number(waitgainlist[i]['postage']))+'</b>'+
+						'合计：<b class="price">￥'+(Number(waitgainlist[i]['totalprice'])+Number(postage))+'</b>'+
 						'<span class="postage">&nbsp;(含邮费￥'+postage+')</span>'+
 						'</div>'+
 						'<div>'+
@@ -556,7 +565,7 @@
 					$(".Rejected").click(function(){
 						var order_id=$(this).attr("order_id");
 						location.href="{{:U('Home/Order/choiceRefund')}}?order_id="+order_id;
-
+						sessionStorage.setItem('g_type', 1);
 						sessionStorage.setItem('order_status', 2);
 					});
 					//确认收货 模态框的js
@@ -603,7 +612,7 @@
             dataType:"json",
             type: 'post',
             success:function(res){
-                // console.dir(res);
+                console.log(res.data);
                 if(res.code == 200){
                 	// 查询有数据
                 	var waitcommentlist=res.data;
@@ -640,12 +649,14 @@
 							'</div>'+
 							'</div>';
 
-							postage += parseFloat(waitcommentlist[i]['productList'][k]['cprice']); // 邮费统计
+							// postage += parseFloat(waitcommentlist[i]['productList'][k]['cprice']); // 邮费统计
+							postage += parseFloat(waitcommentlist[i]['productList'][k]['cprice'] * waitcommentlist[i]['productList'][k]['productnumber']); // 邮费统计
 						}
 						dingdanDaipinglun1+=dingdanDaipinglun2+'<div class="calc">'+
 						'<div>'+
 						'共'+ waitcommentlist[i]['totalnumber'] +'件商品&emsp;'+
-						'合计：<b class="price">￥'+(Number(waitcommentlist[i]['totalprice'])+Number(waitcommentlist[i]['postage']))+'</b>'+
+						// '合计：<b class="price">￥'+(Number(waitcommentlist[i]['totalprice'])+Number(waitcommentlist[i]['postage']))+'</b>'+
+						'合计：<b class="price">￥'+(Number(waitcommentlist[i]['totalprice'])+Number(postage))+'</b>'+
 						'<span class="postage">&nbsp;(含邮费￥'+postage+')</span>'+
 						'</div>'+
 						'<div>'+
@@ -914,7 +925,7 @@
 					$(".returned6").html(returned6);
 					Rejectednum = Rejectednum + proDucts;
 				}
-				console.log("数量", Rejectednum, res.data.length, proDucts)
+				// console.log("数量", Rejectednum, res.data.length, proDucts)
 				$(".waitdrawback").html(Rejectednum);//退换货与售后数量显示				
 			},
 			error: function(res) {
