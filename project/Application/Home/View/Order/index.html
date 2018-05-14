@@ -471,7 +471,7 @@
 					$(".waitRejected").click(function(){
 						var order_id = $(this).attr('order_id');
 						location.href = "{{:U('Home/Order/choiceRefund')}}?order_id="+ order_id;
-
+						sessionStorage.setItem('g_type', 1);
 						sessionStorage.setItem('order_status', 9);
 					});
 					// 提醒发货
@@ -565,7 +565,7 @@
 					$(".Rejected").click(function(){
 						var order_id=$(this).attr("order_id");
 						location.href="{{:U('Home/Order/choiceRefund')}}?order_id="+order_id;
-
+						sessionStorage.setItem('g_type', 1);
 						sessionStorage.setItem('order_status', 2);
 					});
 					//确认收货 模态框的js
