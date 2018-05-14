@@ -364,8 +364,15 @@ class CommonController extends Controller
                         // 更新时间
                         $addData['addtime'] = $addData['updatetime'] = time();
                         // 分销商会员级别
-                        $addData['grade']            = 4;
-                        $newData['original_grade'] = 4;
+                        if ($vendor['status'] == 7) {
+                            $addData['grade']            = 4;
+                            $newData['original_grade'] = 4;
+                        } else {
+                            $addData['grade']            = 1;
+                            $newData['original_grade'] = 1;
+                        }
+
+
                         // 创建用户
                         $addRes = M('users')->add($addData);
 

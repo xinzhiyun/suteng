@@ -639,6 +639,7 @@ class VendorsController extends CommonController
         // ---- 【end】
         $data = D('vendors')->vendorList($map);
 
+
         $assign = [
             'data' => $data['list'],
         ];
