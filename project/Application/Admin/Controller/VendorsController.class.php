@@ -761,9 +761,7 @@ class VendorsController extends CommonController
                             M('vendors')->where(['code'=>$info['invitation_code']])->save(['leavel'=>2]);
                         }
                     }
-                    $this->ajaxReturn(['code'=>200,'msg'=>'审核成功']);
-                } else {
-                    $this->ajaxReturn(['code'=>400,'msg'=>'审核失败']);
+
                 }
             }
             // 查询成功，设置返回前端的数据
