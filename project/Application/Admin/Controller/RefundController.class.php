@@ -49,7 +49,9 @@ class RefundController extends CommonController
      */
     public function editStatus($id,$status)
     {
-        
+        // （0：未处理 1：同意退款 2：不同意退款 3：同意退货 4：不同意退货 5：已退款 6：正在退货 7：已收货 ）
+        // 0：已下单，1：已取消，2：已发货，3：已收货，4：退货处理中，5：已退货，6：申诉中，7：订单完成，8：未支付，9：已支付',
+
         if (!is_numeric($id) || !is_numeric($status)){ 
             return $this->ajaxReturn(['code'=>400,'msg'=>'id和状态必须为数字']);
         }
@@ -69,21 +71,66 @@ class RefundController extends CommonController
             
             $orderid = $d[0]['oid'];
 
-            D('order_detail')->where(['order_id'=>$orderid])->setField('status',$statu);
+            // D('order_detail')->where(['order_id'=>$orderid])->setField('status',$statu);
             // 装B的代码开始了
             
             $status = D('shop_order')->alias('so')->where(['so.order_id'=>$orderid])->join('st_order_detail od ON so.order_id = od.order_id','RIGHT')->field('od.status')->select();
-            foreach($status as $v){
-                if($v['status'] !== 4 && $v['status'] !== 5){
-                    $rs = D('shop_order')->where(['order_id'=>$orderid])->setField(['status'=>5]);
-                    if($rs) {
-                        $refund->commit();
-                        return $this->ajaxReturn(['code'=>200,'msg'=>'修改成功2']);
-                    }
+
+            $order = D('shopOrder')->where(['order_id'=>$orderid])->field('g_type')->find();
+            switch ($order['g_type']) {
+                case 0:
+                    # code...
                     break;
+                
+                case 1:
+                        $subsql = D('refund_goods')->where(['oid'=>$orderid])->field('gid')->select(false);
+                        $goods_count = M('order_detail')                        
+                        ->alias('d')
+                        // ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'d.gid'=>['NEQ','rg.gid'],'rg.oid'=>['NEQ',$orderid]])
+                        ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'g.id'=>['exp',"NOT IN ($subsql)"]])
+                        ->join('st_shop_order so ON d.order_id = so.order_id','LEFT')
+                        ->join('__GOODS__ g ON g.id = d.gid','LEFT')
+                        ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
+                        ->join('__PIC__ p ON g.id = p.gid','LEFT')
+                        // // ->table($refund.' a')
+                        ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire'))
+                        ->count();
+                    break;
+
+                case 2:
+                        $subsql = D('refund_goods')->where(['oid'=>$orderid])->field('gid')->select(false);
+                        $goods_count = M('order_detail')                        
+                        ->alias('d')
+                        // ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'d.gid'=>['NEQ','rg.gid'],'rg.oid'=>['NEQ',$orderid]])
+                        ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'f.id'=>['exp',"NOT IN ($subsql)"]])
+                        ->join('st_shop_order so ON d.order_id = so.order_id','LEFT')
+                        ->join('__FILTERS__ f ON f.id = d.gid','LEFT')
+                        // // ->table($refund.' a')
+                        ->field(array('f.picpath'=>'orderimg','f.filtername'=>'productname','f.introduce'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber'))
+                        ->count();
+                    break;
+
+                case 3:
+                    # code...
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+            // p($goods_count);
+            // p($d);die;
+            if($goods_count < 1){
+                foreach($status as $v){
+                    if($v['status'] !== 4 && $v['status'] !== 5){
+                        $rs = D('shop_order')->where(['order_id'=>$orderid])->setField(['status'=>5]);
+                        if($rs) {
+                            $refund->commit();
+                            return $this->ajaxReturn(['code'=>200,'msg'=>'修改成功2']);
+                        }
+                        break;
+                    }
                 }
             }
-
 
             if ($res) {
                 $refund->commit();

@@ -120,6 +120,10 @@ class VendorsModel extends BaseModel
             $pageButton =$page->show();
             $list = $this->limit($page->firstRow.','.$page->listRows)->where('`leavel`>1')->order('updatetime desc')->select();
         }
+        foreach ($list as $k => $v) {
+           $list[$k]['offce_name'] = $this->field('company')->where(['code'=>$v['office_code']])->find();
+        }
+
         // 返回格式化后数据
         $data = [
             'list' => $this->formatData($list),

@@ -18,8 +18,7 @@
                     </div>
                 <form method="get" action="">
                     <div class="input-group col-md-4" id='searchdiv'>
-                        <select name="key" class="form-control" name="account" >
-                            <option value="name">姓名</option>
+                        <select name="key" class="form-control" name="account" > <option value="name">姓名</option>
                             <option value="code">编号</option>
                             <option value="user">用户名</option>
                         </select>
@@ -37,8 +36,7 @@
                                     <th>分公司名称</th>
                                     <th>姓名</th>
                                     <th>编号</th>
-                                    <th>A级分销商邀请</th>
-                                    <th>B级分销商邀请</th>
+
                                     <th>C级分销商邀请</th>
                                     <th>邀请会员注册</th>
                                     <th>分配用户名</th>
@@ -59,8 +57,6 @@
                                             <td>{{$val.name}}</td>
                                             <td>{{$val.code}}</td>
                                             <td><img width="80" height="80" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_a}}" alt="A级邀请"></td>
-                                            <td><img width="80" height="80" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_b}}" alt="B级邀请"></td>
-                                            <td><img width="80" height="80" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_c}}" alt="C级邀请"></td>
                                             <td><img width="80" height="80" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_user}}" alt="C级邀请"></td>
                                             <td>{{$val.user}}</td>
                                             <td>{{$val.status}}</td>
