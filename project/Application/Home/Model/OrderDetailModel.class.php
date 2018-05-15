@@ -1,8 +1,21 @@
 <?php
 namespace Home\Model;
-use Think\Model;
-class OrderDetailModel extends Model
+use Think\Model\RelationModel;
+class OrderDetailModel extends RelationModel
 {
+
+    protected $_link = array(
+
+        'pic'=>array(
+            'mapping_type'  => self::HAS_MANY,
+            'class_name'    => 'pic',
+            'foreign_key'   => 'gid',
+            'mapping_name'  => 'pics',
+            'mapping_fields' => 'path'
+        ),
+
+    );
+
     // 查询订单数据
     public function getGoodsDetail($map=array())
     {
