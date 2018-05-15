@@ -827,7 +827,10 @@ class ShopController extends CommonController
                         break;
     
                     case 2:
-
+                           $res = $orderDetail
+                            ->data(['cid'=>$postData['express'][0]['cid'],'express_name'=>$postData['express'][0]['express_name'],'express'=>$postData['express'][0]['express_value']])
+                            ->where(['order_id'=>$postData['orderid']])
+                            ->save();                          
                         break;
     
                     case 3:
@@ -837,7 +840,6 @@ class ShopController extends CommonController
                         # code...
                         break;
                 }
-
                 $res2 = D('shopOrder')->where(['order_id'=>$postData['orderid']])->setField('status',2);
                 $orderDetail->commit();
                 return $this->ajaxReturn(['code'=>200,'msg'=>'发货成功']);
@@ -868,7 +870,6 @@ class ShopController extends CommonController
             'userInfo' => $userInfo,
             'data'     => $data,
         ];
-        p($assign);
         $this->assign($assign);
         $this->display('orderDetail');
     }

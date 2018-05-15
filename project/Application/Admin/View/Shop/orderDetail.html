@@ -75,6 +75,9 @@
                                     商品金额
                                 </th>
                                 <th>
+                                    快递费
+                                </th>
+                                <th>
                                     快递公司
                                 </th>
                                 <th>
@@ -108,6 +111,9 @@
                                         </td>
                                         <td>
                                             {{$v['num']*$v['price']|number_format=2}}元
+                                        </td>
+                                        <td>
+                                            {{$v['cprice'] ? $v['cprice'] : 0}}元
                                         </td>
                                         <td>
                                             {{$v['express_name']}}
