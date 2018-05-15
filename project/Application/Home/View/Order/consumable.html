@@ -30,10 +30,10 @@
 		<div id="dingdanDaishouhuo">		
 		</div>
 		<!-- 待评论 -->
-		<div id="dingdanDaipinglun">
-		</div>
+		<!-- <div id="dingdanDaipinglun"> -->
+		<!-- </div> -->
 		<!-- 退款/售后 -->
-		<div id="saleAfter">
+		<div id="saleAfter" style="left:300vw">
 			<div class="goods">
 				<!-- 商家未同意退款 -->
 				<div class="tuikuangall returned1">
@@ -493,7 +493,7 @@
 	            dataType:"json",
 	            type: 'post',
 	            success:function(res){
-	                console.dir(res);
+	                // console.dir(res);
 	                if(res.code == 200){
 	                	// 查询有数据
 	                	var waitgainlist=res.data;
