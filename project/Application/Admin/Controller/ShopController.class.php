@@ -114,7 +114,7 @@ class ShopController extends CommonController
             // 'show' => $goodsList['show'],
         ];
 
-//         dump($assign);
+        // dump($goodsList);
         $this->assign($assign);
         $this->display();
     }
@@ -136,7 +136,7 @@ class ShopController extends CommonController
         $cate = D('Category');
         $cateInfo = $cate->where('pid=0')->select();
         $goods = D('Goods');
-        $attr = D('Attr');
+        $attr = D('Attr'); 
         $attrInfo = $attr->select();
         $goodsList = $goods->select();  //暂时无用
 
@@ -811,12 +811,33 @@ class ShopController extends CommonController
                 $postData = I('post.');
                 $orderDetail = D('orderDetail');
                 $orderDetail->startTrans();
-                foreach($postData['express'] as $val){
-                    $orderDetail
-                            ->data(['express_name'=>$val['express_name'],'express'=>$val['express_value']])
-                            ->where(['order_id'=>$postData['orderid'],'cid'=>$val['cid']])
-                            ->save();
+                $order = D('shopOrder')->where(['order_id'=>$postData['orderid']])->field('g_type')->find();
+                switch ($order['g_type']) {
+                    case 0:
+                        # code...
+                        break;
+                    
+                    case 1:
+                            foreach($postData['express'] as $val){
+                                $orderDetail
+                                        ->data(['express_name'=>$val['express_name'],'express'=>$val['express_value']])
+                                        ->where(['order_id'=>$postData['orderid'],'cid'=>$val['cid']])
+                                        ->save();
+                            }
+                        break;
+    
+                    case 2:
+
+                        break;
+    
+                    case 3:
+                        # code...
+                        break;
+                    default:
+                        # code...
+                        break;
                 }
+
                 $res2 = D('shopOrder')->where(['order_id'=>$postData['orderid']])->setField('status',2);
                 $orderDetail->commit();
                 return $this->ajaxReturn(['code'=>200,'msg'=>'发货成功']);
@@ -847,6 +868,7 @@ class ShopController extends CommonController
             'userInfo' => $userInfo,
             'data'     => $data,
         ];
+        p($assign);
         $this->assign($assign);
         $this->display('orderDetail');
     }

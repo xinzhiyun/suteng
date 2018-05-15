@@ -71,7 +71,7 @@ class RefundController extends CommonController
             
             $orderid = $d[0]['oid'];
 
-            // D('order_detail')->where(['order_id'=>$orderid])->setField('status',$statu);
+            D('order_detail')->where(['order_id'=>$orderid])->setField('status',$statu);
             // 装B的代码开始了
             
             $status = D('shop_order')->alias('so')->where(['so.order_id'=>$orderid])->join('st_order_detail od ON so.order_id = od.order_id','RIGHT')->field('od.status')->select();
@@ -87,7 +87,7 @@ class RefundController extends CommonController
                         $goods_count = M('order_detail')                        
                         ->alias('d')
                         // ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'d.gid'=>['NEQ','rg.gid'],'rg.oid'=>['NEQ',$orderid]])
-                        ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'g.id'=>['exp',"NOT IN ($subsql)"]])
+                        ->where(['d.order_id'=>$orderid,'g.id'=>['exp',"NOT IN ($subsql)"]])
                         ->join('st_shop_order so ON d.order_id = so.order_id','LEFT')
                         ->join('__GOODS__ g ON g.id = d.gid','LEFT')
                         ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
@@ -102,7 +102,7 @@ class RefundController extends CommonController
                         $goods_count = M('order_detail')                        
                         ->alias('d')
                         // ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'d.gid'=>['NEQ','rg.gid'],'rg.oid'=>['NEQ',$orderid]])
-                        ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'f.id'=>['exp',"NOT IN ($subsql)"]])
+                        ->where(['d.order_id'=>$orderid,'f.id'=>['exp',"NOT IN ($subsql)"]])
                         ->join('st_shop_order so ON d.order_id = so.order_id','LEFT')
                         ->join('__FILTERS__ f ON f.id = d.gid','LEFT')
                         // // ->table($refund.' a')

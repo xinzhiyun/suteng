@@ -42,6 +42,14 @@ class GoodsModel extends RelationModel
                 'mapping_fields' => 'id,cid,cprice,cname'
         ),
 
+        'pic'=>array(
+            'mapping_type'  => self::HAS_MANY,
+            'class_name'    => 'pic',
+            'foreign_key'   => 'gid',
+            'mapping_name'  => 'pics',
+            'mapping_fields' => 'path'
+        ),
+
         'goods_detail'=>array(
                 'mapping_type'  => self::HAS_MANY,
                 'class_name'    => 'goods_detail',
@@ -110,13 +118,15 @@ class GoodsModel extends RelationModel
             ->join('__ATTR_VAL__ av ON g.id=av.gid', 'LEFT')
             ->join('__ATTR__ a ON av.aid=a.id', 'LEFT')
             ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
-            ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
+            // ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
             ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
             ->join('__INVENTORY__ i on i.gid=g.id' , 'LEFT')
-            ->field('p.*,g.*,c.name cname,av.val,a.attr,gd.*,p.path,i.allnum,i.abnormalnum')
+            ->field('g.*,c.name cname,av.val,a.attr,gd.*,i.allnum,i.abnormalnum')
             ->order(' addtime desc')
             ->limit($Page->firstRow.','.$Page->listRows)
+            ->relation('pics')
             ->select();
+            // p($goodsData);
         $goodsData = [
             'goodsData' => $goodsData,
             // 'show' => $show,
