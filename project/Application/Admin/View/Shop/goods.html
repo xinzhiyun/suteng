@@ -99,10 +99,10 @@
                                             {{$v['name']}}
                                         </td>
                                         <td>
-                                            <empty name="v.path">
+                                            <empty name="v.pics">
                                                 <a class="btn btn-white" href="javascript:;" goodsId="{{$v['gid']}}" onclick="addpic(this)">添加图片</a>
                                             <else />
-                                                <a class="" href="javascript:;" goodsId="{{$v['gid']}}" onclick="addpic(this)"><img src="/Uploads/{{$v['path']}}"></a>
+                                                <a class="" href="javascript:;" goodsId="{{$v['gid']}}" onclick="addpic(this)"><img src="/Uploads/{{$v['pics'][0].path}}"></a>
                                                 
                                             </empty>
                                         </td>
