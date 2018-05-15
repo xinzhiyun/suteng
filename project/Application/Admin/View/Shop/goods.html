@@ -348,30 +348,59 @@
             });
         })
 
-        // 上架、下架
+        // 上架、下架 状态status: 1-下架 0-上架
         $("td").on('click','.disable-button',function(e){
             var status = $(this).attr('st');
             var id = $(this).parent().siblings().eq(0).find('input[type="hidden"]').attr('name');
             // console.log(status);
             if(status == 1){
                 status = 0;
+                parent.layer.confirm("确定上架吗？", {
+                    btn: ['确认', '取消'], //按钮
+                    shade: false //不显示遮罩
+                }, function() {
+                    // alert(status);
+                    $.ajax({
+                        url:'edidStatus',
+                        data:{'id':id,'status':status},
+                        type:'post',
+                        dataType:'json',
+                        success:function(res){
+                            console.log(res);
+                            if(res.code == 200){
+                                location.reload();
+                                parent.layer.msg(res.msg);
+                            }
+                        }
+                    });
+                }, function() {
+                    parent.layer.msg("已取消", {shift: 6});
+                })
             } else {
                 status = 1;
+                parent.layer.confirm("确定下架吗？", {
+                    btn: ['确认', '取消'], //按钮
+                    shade: false //不显示遮罩
+                }, function() {
+                    // alert(status);
+                    $.ajax({
+                        url:'edidStatus',
+                        data:{'id':id,'status':status},
+                        type:'post',
+                        dataType:'json',
+                        success:function(res){
+                            console.log(res);
+                            if(res.code == 200){
+                                location.reload();
+                                parent.layer.msg(res.msg);
+                            }
+                        }
+                    });
+                }, function() {
+                    parent.layer.msg("已取消", {shift: 6});
+                })
             } 
-            // alert(status);
-            $.ajax({
-                url:'edidStatus',
-                data:{'id':id,'status':status},
-                type:'post',
-                dataType:'json',
-                success:function(res){
-                    console.log(res);
-                    if(res.code == 200){
-                        location.reload();
-                        parent.layer.msg(res.msg);
-                    }
-                }
-            });
+            
         })
         console.log()
         //显示单价详细
