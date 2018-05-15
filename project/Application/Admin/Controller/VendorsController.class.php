@@ -725,6 +725,7 @@ class VendorsController extends CommonController
         // 执行更新
         $res = D('vendors')->where($saveData)->find($data);
 
+
         // 判断信息是否修改成功
         if($res){
             if ($data['reviewed'] == 3) {

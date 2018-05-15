@@ -270,6 +270,8 @@ class PayController extends Controller
             case '4':
                 $grade['grade'] = '0';
                 break;
+            default:
+                $grade['grade'] = '3';
         }
 
         $annual = M('annual')->find();

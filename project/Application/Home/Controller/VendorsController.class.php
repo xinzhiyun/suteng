@@ -45,6 +45,10 @@ class VendorsController extends Controller
 
         // 根据分销商级别匹配查询条件
         switch ($vendor_leavel) {
+            case '1':
+                // 分公司
+                $vendor_code = 'vendora_code';
+                break;
             case '2':
                 // A级分销商
                 $vendor_code = 'vendora_code';
@@ -1076,14 +1080,27 @@ class VendorsController extends Controller
         // 用户级别2:A级分销商 3:B级分销商 4:C级分销商
         $leavel = $_SESSION['vendorInfo']['leavel'];
 
+
         // 分销商标识
         $code = $_SESSION['vendorInfo']['code'];
 
+
         // 接收获取数据类型
         $type = I('post.type');
-        $showDataA['invitation_code'] = $code;
+
+
+
         $showDataA['leavel'] = array(array('egt',2),array('elt',4));
-        $vendor_a = M('vendors')->where($showDataA)->select();
+        if ($leavel == 1) {
+            $showDataA['office_code'] = $code;
+            $vendor_a = M('vendors')->where($showDataA)->select();
+
+        } else {
+            $showDataA['invitation_code'] = $code;
+            $vendor_a = M('vendors')->where($showDataA)->select();
+        }
+
+
 
 
 

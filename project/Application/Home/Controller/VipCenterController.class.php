@@ -3,7 +3,22 @@ namespace Home\Controller;
 
 class VipCenterController extends CommonController
 {
-	/**
+    public function _initialize()
+    {
+        parent::_initialize();
+        // 准备查询条件
+        $showUser['open_id'] = $_SESSION['open_id'];
+        $vendors = M('vendors')->field('status,reviewed')->where(['open_id'=>$showUser['open_id']])->find();
+
+        if ($vendors) {
+            //审核完毕 更改钻石会员经销商
+            if ($vendors['status'] == 7 && $vendors['reviewed']==3) {
+                M('users')->where($showUser)->save(['grade'=>4]);
+            }
+        }
+    }
+
+    /**
 	 * [index 会员中心首页]
 	 * @return [type] [description]
 	 */
@@ -14,6 +29,7 @@ class VipCenterController extends CommonController
         $showUser['open_id'] = $_SESSION['open_id'];
         // // 执行查询
         $user = M('users')->where($showUser)->find();
+
 
         // 查询会员收益合计
         $showCommission['user_code'] = $user['code'];
