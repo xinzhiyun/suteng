@@ -261,7 +261,7 @@
     // refundStatus   处理进度（0：未处理 1：同意退款 2：不同意退款 3：同意退货 4：不同意退货 5：已退款 6：正在退货 7：已收货 ）
     (function unpaid_order(){
     	var imgpath = '/Uploads/';
-    	var noimg = '__PUBLIC___/images/noimg.jpg'
+    	var noimg = '__PUBLIC__/images/noimg.jpg'
 		var Rejectednum=0;//退货数量
         $.ajax({//8：未支付
         	url:"{{:U('Home/Order/order_list')}}",
@@ -612,7 +612,7 @@
             dataType:"json",
             type: 'post',
             success:function(res){
-                console.log(res.data);
+                // console.log(res.data);
                 if(res.code == 200){
                 	// 查询有数据
                 	var waitcommentlist=res.data;
@@ -721,6 +721,8 @@
                 				var noimg_show = res.data[i]['goods'][k]['orderimg']
                 				? (imgpath + res.data[i]['goods'][k]['orderimg'])
                 				: noimg;
+								// 无标题是显示暂无标题显示
+								var infoTitle = res.data[i]['goods'][k]['productname'] ? res.data[i]['goods'][k]['productname'] : "暂无标题"; 
                 				// console.log(res.data[i]['dw_time']);
                 				returned1+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
@@ -728,7 +730,7 @@
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
-                				'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+                				'<span>'+ infoTitle +'</span>'+
                 				'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
                 				'</div>'+
                 				'</div>'+
@@ -741,13 +743,15 @@
                 				var noimg_show = res.data[i]['goods'][k]['orderimg']
                 				? (imgpath + res.data[i]['goods'][k]['orderimg'])
                 				: noimg;
+								// 无标题是显示暂无标题显示
+								var infoTitle = res.data[i]['goods'][k]['productname'] ? res.data[i]['goods'][k]['productname'] : "暂无标题"; 
                 				returned4+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft ">'+
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
-                				'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+                				'<span>'+ infoTitle +'</span>'+
                 				'<p><b>￥'+ res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
                 				'</div>'+
                 				'</div>'+
@@ -762,13 +766,15 @@
                 				var noimg_show = res.data[i]['goods'][k]['orderimg']
                 				? (imgpath + res.data[i]['goods'][k]['orderimg'])
                 				: noimg;
+								// 无标题是显示暂无标题显示
+								var infoTitle = res.data[i]['goods'][k]['productname'] ? res.data[i]['goods'][k]['productname'] : "暂无标题"; 
                 				returned2+='<p>信息更新时间：'+timestampToTime(res.data[i]['create_time'])+'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft ">'+
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
-                				'<span>'+res.data[i]['goods'][k]['productname']+'</span>'+
+                				'<span>'+infoTitle+'</span>'+
                 				'<p><b>￥'+res.data[i]['goods'][k]['price']+'</b><span>x'+res.data[i]['goods'][k]['productnumber']+'</span></p>'+
                 				'</div>'+
                 				'</div>'+
@@ -797,13 +803,15 @@
                 				var noimg_show = res.data[i]['goods'][k]['orderimg']
                 				? (imgpath + res.data[i]['goods'][k]['orderimg'])
                 				: noimg;
+								// 无标题是显示暂无标题显示
+								var infoTitle = res.data[i]['goods'][k]['productname'] ? res.data[i]['goods'][k]['productname'] : "暂无标题"; 
                 				returned4+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft ">'+
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
-                				'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+                				'<span>'+ infoTitle +'</span>'+
                 				'<p><b>￥'+ res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
                 				'</div>'+
                 				'</div>'+
@@ -817,13 +825,15 @@
                 				var noimg_show = waitpaylist[i]['productList'][k]['orderimg']
                 				? (imgpath + waitpaylist[i]['productList'][k]['orderimg'])
                 				: noimg;
+								// 无标题是显示暂无标题显示
+								var infoTitle = res.data[i]['goods'][k]['productname'] ? res.data[i]['goods'][k]['productname'] : "暂无标题"; 
                 				returned3+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft ">'+
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
-                				'<span>'+ res.data[i]['goods'][k]['productname'] +'</span>'+
+                				'<span>'+ infoTitle +'</span>'+
                 				'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
                 				'</div>'+
                 				'</div>'+
@@ -835,13 +845,15 @@
                 				// 无图片时显示
                 				var noimg_show = res.data[i][productList][0]['orderimg']
                 				? (imgpath + res.data[i][productList][0]['orderimg']) : noimg;
+								// 无标题是显示暂无标题显示
+								var infoTitle = res.data[i][productList][0]['productname'] ? res.data[i][productList][0]['productname'] : "暂无标题";
                 				returned4+='<p>信息更新时间：'+ res.data[i]['ordertime'] +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft ">'+
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
-                				'<span>'+ res.data[i][productList][0]['productname'] +'</span>'+
+                				'<span>'+ infoTitle +'</span>'+
                 				'<p><b>￥'+ res.data[i][productList][0]['price'] +'</b><span>x '+ res.data[i][productList][0]['productnumber'] +'</span></p>'+
                 				'</div>'+
                 				'</div>'+
@@ -902,7 +914,7 @@
 						// console.log("产品数量", productLists)
 						// 产品列表循环
 						for(var j = 0; j < productLists; j++) {
-							console.log(res.data[i].productList[j])
+							// console.log(res.data[i].productList[j])
 						
 							// 无图片时显示
 							var noimg_show = res.data[i].productList[j].orderimg
