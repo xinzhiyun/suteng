@@ -438,11 +438,12 @@ body {
 .shangpingnei>.tuikuangLeft{
 	
 	width: 28%;
+	height: 3.3rem;
 	/*background: red;*/
 }
 .shangpingnei>.tuikuangLeft>img{
 	width: 100%;
-		 padding: 0.5rem;
+	height: 100%;
 }
 .shangpingnei>.tuikuangRight{
 	/*background: green;*/
