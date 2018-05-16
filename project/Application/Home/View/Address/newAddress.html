@@ -199,6 +199,9 @@
 												history.replaceState({}, null, '{{:U("Pay/payConfirm")}}');
 												location.href = '{{:U("Pay/payConfirm")}}';
 												
+											}else {
+												history.replaceState({}, null, '{{:U("Address/index")}}');
+												location.href = '{{:U("VipCenter/index")}}';
 											}
 					    				},500);
 									}else{

@@ -305,6 +305,9 @@
 				}else if(referUrl.indexOf("payConfirm") != -1) {
 					// 默认地址设置成功，返回上一页
 					location.href = '{{:U("Address/newAddress")}}' + '?index=1';
+				}else {
+					// 个人中心的收货地址管理来的
+					location.href = '{{:U("Address/newAddress")}}';
 				}
 					
 			}
@@ -368,6 +371,9 @@
 				}else if(referUrl.indexOf("payConfirm") != -1) {
 					// 跳转到新建地址页面
         			location.href = "{{:U('Home/Address/newAddress')}}" + "?index=1";
+				}else {
+				// 个人中心收货地址管理而来
+					location.href = "{{:U('Home/Address/newAddress')}}";
 				}
 			}
         	
