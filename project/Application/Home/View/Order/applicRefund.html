@@ -99,7 +99,7 @@
 		}
 		// console.log(gidArr);
 		/*
-			遍历数据
+			遍历商品数据
 		 */
 		var html = '';
 		var money = 0;
@@ -183,11 +183,11 @@
 
 		 	if(method[0].index != 0 && reason[0].index != 0 && description){
 		 		// 需要图片凭证
-		 		if(formData.getAll('UploadForm[]').length <= 0 && method_index == 2 || method_index == 3){
-					parent.layer.msg('请上传凭证！');
-		 			return false;	
-			 	}
-		 		console.log('通过!');
+		 		// if(formData.getAll('UploadForm[]').length <= 0 && method_index == 2 || method_index == 3){
+				// 	parent.layer.msg('请上传凭证！');
+		 		// 	return false;	
+			 	// }
+		 		// console.log('通过!');
 
 			 	console.log('order_id: ',formData.getAll('order_id'));
 			 	console.log('gid[]: ',formData.getAll('gid[]'));
@@ -243,9 +243,10 @@
 			 	console.log('请填写退款说明！');
 			 	return false;
 
-			}else if(formData.getAll('UploadForm[]').length <= 0 && method_index == 2 || method_index == 3){
-				parent.layer.msg('请上传凭证！');
 			}
+			// else if(formData.getAll('UploadForm[]').length <= 0 && method_index == 2 || method_index == 3){
+			// 	parent.layer.msg('请上传凭证！');
+			// }
 		 	
 		 })
 	</script>
