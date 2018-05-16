@@ -132,12 +132,12 @@
                                             </switch>
                                         </td>
                                         <td>
-                                            <switch name="v.status">
+                                            <switch name="v.gdstatus">
                                                 <case value="0">
-                                                    <a st="0" class="btn btn-sm btn-default disable-button">上架</a>
+                                                    <a st="1" class="btn btn-sm btn-default disable-button">上架</a>
                                                 </case>
                                                 <case value="1">
-                                                    <a st="1" class="btn btn-sm btn-success disable-button">下架</a>
+                                                    <a st="0" class="btn btn-sm btn-success disable-button">下架</a>
                                                 </case>
                                             </switch>
                                         </td>
@@ -353,9 +353,8 @@
             var status = $(this).attr('st');
             var id = $(this).parent().siblings().eq(0).find('input[type="hidden"]').attr('name');
             // console.log(status);
-            if(status == 1){
-                status = 0;
-                parent.layer.confirm("确定上架吗？", {
+            status == 0 ? msg = '上架' : msg = '下架';
+                parent.layer.confirm("确定"+ msg +"吗？", {
                     btn: ['确认', '取消'], //按钮
                     shade: false //不显示遮罩
                 }, function() {
@@ -376,30 +375,7 @@
                 }, function() {
                     parent.layer.msg("已取消", {shift: 6});
                 })
-            } else {
-                status = 1;
-                parent.layer.confirm("确定下架吗？", {
-                    btn: ['确认', '取消'], //按钮
-                    shade: false //不显示遮罩
-                }, function() {
-                    // alert(status);
-                    $.ajax({
-                        url:'edidStatus',
-                        data:{'id':id,'status':status},
-                        type:'post',
-                        dataType:'json',
-                        success:function(res){
-                            console.log(res);
-                            if(res.code == 200){
-                                location.reload();
-                                parent.layer.msg(res.msg);
-                            }
-                        }
-                    });
-                }, function() {
-                    parent.layer.msg("已取消", {shift: 6});
-                })
-            } 
+ 
             
         })
         console.log()

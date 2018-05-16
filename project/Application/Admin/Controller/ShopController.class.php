@@ -367,7 +367,7 @@ class ShopController extends CommonController
             $data['status'] = I('post.status');
             $res = $goods->where($where)->save($data);
             // echo $goods->_sql();
-            // dump($res);die;
+            // p(I(''));die;
             if($res){
                 E('状态已发生改变',200);
             } else {
