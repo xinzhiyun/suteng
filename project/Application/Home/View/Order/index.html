@@ -520,7 +520,8 @@
 							var productName = waitgainlist[i]['productList'][k]['productname'];
 							productBrief = productBrief ? productBrief : "暂无描述";
 							productName = productName ? productName : "暂无标题";
-							dingdanDaishouhuo2+='<p>快递单号：'+123456782563215 +
+							// 快递单号
+							dingdanDaishouhuo2+='<p>'+waitgainlist[i]['productList'][k]['express_name'] +':'+ waitgainlist[i]['productList'][k]['express']  +
 	                		'<span>卖家已发货</span>'+
 	                		'</p>'+
 							'<div class="goodsItem">'+
