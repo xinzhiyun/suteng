@@ -362,36 +362,37 @@
 		       	});
 		      	//点击支付
 		      	$(".payBtn").on("click",function(){
-		      		var _thisname = JSON.parse($(this).siblings().attr("name"));
-		      		// var paymoney = parseFloat($(this).parents(".calc").find(".postage").text().substr(6));	//邮费
-		      		var price = parseInt($(this).parents(".calc").find(".price").text().substr(1)*100)/100;
-		      		// console.log(_thisname,price);
-		      		$.ajax({
-		      			url:"{{:U('Home/PaymentSystem/orderPay')}}",
-		      			type:"post",
-		      			data:{
-		      				order: _thisname,
-		      				paymoney: price
-		      			},
-		      			success:function(res){
-		      				if(res == -1){
-								// console.log('支付错误！');
-								parent.layer.msg('支付错误！');
-							}else{
+		   //    		var _thisname = JSON.parse($(this).siblings().attr("name"));
+		   //    		// var paymoney = parseFloat($(this).parents(".calc").find(".postage").text().substr(6));	//邮费
+		   //    		var price = parseInt($(this).parents(".calc").find(".price").text().substr(1)*100)/100;
+		   //    		// console.log(_thisname,price);
+		   //    		$.ajax({
+		   //    			url:"{{:U('Home/PaymentSystem/orderPay')}}",
+		   //    			type:"post",
+		   //    			data:{
+		   //    				order: _thisname,
+		   //    				paymoney: price
+		   //    			},
+		   //    			success:function(res){
+		   //    				if(res == -1){
+					// 			// console.log('支付错误！');
+					// 			parent.layer.msg('支付错误！');
+					// 		}else{
 								
-								// 调用微信支付方法
-								weixinPay(res);
+					// 			// 调用微信支付方法
+					// 			weixinPay(res);
 								
-							}
-							// weixinPay(res);
-						},
-						error: function(res) {
-							console.log("出错", res)
-						}
+					// 		}
+					// 		// weixinPay(res);
+					// 	},
+					// 	error: function(res) {
+					// 		console.log("出错", res)
+					// 	}
 
 
-					});
-
+					// });
+					var order_id = $(this).prev().attr("name");
+					location.href="{{:U('home/pay/payConfirm')}}?order_id=" + order_id;
 		      	});
 	        }
 	    });
