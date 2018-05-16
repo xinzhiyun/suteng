@@ -664,6 +664,10 @@
 			}
 			
 			/******** 付款过程--结束--	**********/
+			$.get('getGoodsByOrder',{'order_id':123805159113826},function(data){
+				console.log('商品：');
+				console.log(data);
+			})
 			
 		})
 
