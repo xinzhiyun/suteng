@@ -68,19 +68,28 @@ class PayController extends Controller
 
         $orderid = $_SESSION['order']['orderid'];
 
-        $gids = M('OrderDetail')->where('order_id='.$orderid)->field('gid')->select();
-
+        $OrderDetail = M('OrderDetail')
+                        ->alias('od')
+                        ->where('order_id='.$orderid)
+                        ->join('st_goods g ON od.gid = g.id','LEFT')
+                        ->join('st_goods_detail gd ON od.gid = gd.gid','LEFT')
+                        ->field('od.*,g.name,gd.desc')
+                        ->select();
+        $order = D('shop_order')->where(['order_id'=>$orderid])->find();
         $where['status'] = 0;
         $data = $address->where($where)->find();
         //查询商品对应的快递运费信息
-        foreach ($gids as $key => $value) {
+        foreach ($OrderDetail as $key => $value) {
             // echo $value."<br>";
+            $OrderDetail[$key]['path'] = D('pic')->where(['gid'=>$value['gid']])->find()['path'];
             $goodsCourier[$value['gid']] = M('goods_courier')->where('gid='.$value['gid'])->field('gid,cid,cname,cprice')->select();
         }
-        
+        p($OrderDetail);
         $assign = [
             'data' => json_encode($data),
             'goodsCourier' => json_encode($goodsCourier),
+            'OrderDetail' => $OrderDetail,
+            'gtype' => $order['gtype']
         ];
         $this->wx_info();
 
