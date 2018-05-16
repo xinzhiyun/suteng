@@ -122,9 +122,14 @@
 				var goodsDetail_html = ''
 				desc = !goodsDetail.desc ? '商品暂无描述' : goodsDetail.desc;
 				goodsDetail.attr = !goodsDetail.attr ? '' : goodsDetail.attr;
-
-				// 商品图片
-				goodsPicArr.push(goodsDetail.path);
+				
+				// 轮播图片
+				for(var i = 0; i < goodsDetail.pics.length; i++) {
+					console.log(goodsDetail.pics[i].path)
+					// 商品图片
+					goodsPicArr.push(goodsDetail.pics[i].path);
+				}
+				
 				// 输出商品详情
 				
 				goodsDetail_html = '<div class="detailpic"><ul id="wrapul"></ul><span class="closepicshow">X</span><span class="picnum"><b>1</b><span></span></span></div>'+
@@ -191,6 +196,7 @@
 						console.log('双击', res);
 						// 当前图片
 						var imgnow = res.elem.childNodes[nowpic];
+						console.log("当前图片",imgnow);
 						var oldstyle = 'width:'+ imgnow.style.width +';';
 						console.log('imgnow: ', imgnow);
 						// 放大缩小
