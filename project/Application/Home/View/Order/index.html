@@ -646,7 +646,16 @@
 							'<p>'+waitcommentlist[i]['productList'][k]['productbrief']+'</p>'+
 							'<div>'+
 							'<b>￥'+ waitcommentlist[i]['productList'][k]['price'] +'</b>'+
-							'<span>X&nbsp;'+waitcommentlist[i]['productList'][k]['productnumber']+'</span>'+
+							'<span>X&nbsp;'+waitcommentlist[i]['productList'][k]['productnumber']+'&nbsp;</span>'+
+							'<div>'+
+							// 评价
+							'<div class="cancel">'+
+							'</div>'+
+							'<a href="javascript:;" class="pay commentBtn" name='+ waitcommentlist[i]['orderid'] +' gid='+ waitcommentlist[i].productList[k].gid +'>'+
+							'<span>评&nbsp;价</span>'+
+							'</a>'+
+							'</div>'+
+							// 评价
 							'</div>'+
 							'</div>'+
 							'</div>';
@@ -664,9 +673,9 @@
 						'<div>'+
 						'<div class="cancel">'+
 						'</div>'+
-						'<a href="javascript:;" class="pay commentBtn" name='+ waitcommentlist[i]['orderid'] +' gid='+ waitcommentlist[i].productList[0].gid +'>'+
-						'<span>评&nbsp;价</span>'+
-						'</a>'+
+						// '<a href="javascript:;" class="pay commentBtn" name='+ waitcommentlist[i]['orderid'] +' gid='+ waitcommentlist[i].productList[0].gid +'>'+
+						// '<span>评&nbsp;价</span>'+
+						// '</a>'+
 						'</div>'+
 						'</div>'+
 						'</div>';
@@ -691,10 +700,11 @@
                 	var pinglunObj = {};	//存储带评论的订单编号
                 	pinglunObj['order_id'] = $(this).attr("name");
                 	pinglunObj['gid'] = $(this).attr("gid");
-                	pinglunObj['pic'] = $(this).parents(".goods").find('.giPicture>img').attr('src');
+                	pinglunObj['pic'] =$(this).parents(".goodsItem").find('.giPicture>img').attr('src');
                 	//将点击的带评论商品数据存到本地存储中
                 	sessionStorage.setItem("pinglunObj",JSON.stringify(pinglunObj));
                 	location.href = '{{:U("Comment/index")}}?orderid=' + $(this).attr('name');
+                	
                 }) 
             }
         });  
