@@ -175,8 +175,17 @@
 				'chooseWXPay'
 				]
 			});
+			// /******** 付款过程--结束--	**********/
+			order_id = JSON.parse(sessionStorage.getItem("order_id"));
+			// $.get('getGoodsByOrder',{'order_id':order_id},function(data){
+			// 	console.log('商品：');
+			// 	console.log(data);
+			// 	sessionStorage.setItem("shopCar_data",JSON.stringify(data));
+			// })
+			
 			// 快递数据
 			var postage = JSON.parse($("#goodsCourier").val());
+			console.log(postage)
 			var addressInfo = $("#addressInfo").val();//收货数据
 			var selectPostage = "";//快递选择
 			var posOption = "";//option添入内容
@@ -244,13 +253,6 @@
 			*/
 			// 从本地sessionStorage中获取订单数据
 			var lvxinData, goods_data, shopCar_data, goods_dataArr;
-			/******** 付款过程--结束--	**********/
-			order_id = JSON.parse(sessionStorage.getItem("order_id"));
-			$.get('getGoodsByOrder',{'order_id':order_id},function(data){
-				console.log('商品：');
-				console.log(data);
-				sessionStorage.setItem("shopCar_data",JSON.stringify(data));
-			})
 			if(sessionStorage.getItem("lvxinData")){
 				// 从滤芯购买传来
 				lvxinData = JSON.parse(sessionStorage.getItem("lvxinData"));
@@ -384,7 +386,7 @@
 				postageArr[i] = 0;
 				$(".goods").eq(i).attr("data", i);
 			}
-			// sessionStorage.setItem("origin",$(".postage").html());
+			sessionStorage.setItem("origin",$(".postage").html());
 			// 存储快递信息
 			var storageAll = [];
 			for(var i = 0;i<sessionStorage.length;i++){
