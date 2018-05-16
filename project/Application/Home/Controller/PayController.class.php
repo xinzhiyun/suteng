@@ -122,6 +122,7 @@ class PayController extends Controller
         foreach ($OrderDetail as $key => $value) {
             // echo $value."<br>";
             $OrderDetail[$key]['path'] = D('pic')->where(['gid'=>$value['gid']])->find()['path'];
+            $OrderDetail[$key]['Courier'] = M('goods_courier')->where('gid='.$value['gid'])->field('gid,cid,cname,cprice')->select();
         }
         // p($OrderDetail);
          return $this->ajaxReturn($OrderDetail);
