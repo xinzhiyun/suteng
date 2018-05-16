@@ -392,6 +392,7 @@
 
 					// });
 					var order_id = $(this).prev().attr("name");
+					sessionStorage.setItem("order_id",order_id);
 					location.href="{{:U('home/pay/payConfirm')}}?order_id=" + order_id;
 		      	});
 	        }
