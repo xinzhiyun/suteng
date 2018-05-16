@@ -91,7 +91,7 @@ class OrderController extends CommonController
                         ->alias('d')
                         ->where($dWhere)
                         ->join('__FILTERS__ f ON f.id = d.gid','LEFT')
-                        ->field(array('f.picpath'=>'orderimg','f.filtername'=>'productname','f.introduce'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','d.cprice'))
+                        ->field(array('f.picpath'=>'orderimg','f.filtername'=>'productname','f.introduce'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','d.cprice','d.express_name','d.express'))
                         ->select();
                         break;
                     case 3;
