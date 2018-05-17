@@ -404,9 +404,10 @@
 			            	console.log('商品：');
 							console.log(res);
 							sessionStorage.setItem("shopCar_data",JSON.stringify(res));
+							location.href="{{:U('home/pay/payConfirm')}}?order_id=" + order_id;
 			            },
 					})
-					location.href="{{:U('home/pay/payConfirm')}}?order_id=" + order_id;
+					
 		      	});
 	        }
 	    });
