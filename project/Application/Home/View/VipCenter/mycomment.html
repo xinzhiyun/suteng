@@ -172,7 +172,7 @@
 					// 所评论的商品详细信息   
 					commetHTML += '<div class="mycomItem-first clearfix">'+
 							'<div class="itemgoodsTop">'+
-								'<h3><span>'+ dateformat(res.data[i].addtime) +'</span></h3>'+
+								'<h3><span>'+ timestampToTime(res.data[i].addtime) +'</span></h3>'+
 								'<div class="goodspic clearfix">'+
 									'<div class="mygoodsLeft"><img src="/Uploads/'+res.data[i].good.pic+'" alt="图片加载中"></div>'+
 									'<div class="mygoodsRight">'+
@@ -195,6 +195,7 @@
 						picArr.push({'picHTML':picStr});
 					}
 				}
+				console.log(picArr)
 				if(commetHTML){
 					$(".mycommentContain").html(commetHTML);		//评价的内容
 					//遍历评价的图片
@@ -207,8 +208,18 @@
 			},
 			error: function(res){
 				console.log('失败！ ',res);
-			}
+			} 
 		})
+		function timestampToTime(timestamp) {
+			var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+			Y = date.getFullYear() + '-';
+			M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+			D = date.getDate() + ' ';
+			h = date.getHours() + ':';
+			m = date.getMinutes() + ':';
+			s = date.getSeconds();
+			return Y+M+D+h+m+s;
+		}
 		// $('.mycommentContain').on('click','.mysaleBot>p>i',function(){
 		// 	var index = $(this).attr("index");
 		// 	console.log(index);
