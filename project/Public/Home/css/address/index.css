@@ -256,9 +256,10 @@ body {
     margin: 0 20px;
     left: 0;
     border-radius: 4px;
+    -webkit-appearance:none;
     border: none;
     color: #fff;
-    /*line-height: 7vmin;*/
+    line-height: 7.5vmin;
     vertical-align: middle;
     font-size: 1.5rem;
     text-align: center;

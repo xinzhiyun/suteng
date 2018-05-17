@@ -388,27 +388,68 @@
 					// 	error: function(res) {
 					// 		console.log("出错", res)
 					// 	}
-
-
 					// });
-					var order_id = $(this).prev().attr("name");
-					sessionStorage.setItem("order_id",order_id);
-					$.ajax({
-						url:"{{:U('Home/pay/getGoodsByOrder')}}",
-						data:{
-							'order_id':order_id
-						},
-						dataType:"json",
-			            type: 'post',
-			            success:function(res){
-			            	console.log('商品：');
-							console.log(res);
-							sessionStorage.setItem("shopCar_data",JSON.stringify(res));
-							location.href="{{:U('home/pay/payConfirm')}}?order_id=" + order_id;
-			            },
-					})
 					
-		      	});
+					// console.log($(this).parent().prev(children("span").html());
+					var a = $(this).parent().prev().children("span").html();
+					if(a == "&nbsp;(含邮费￥0)"){
+						var urlImg = "/Uploads/";
+						var order_id = $(this).prev().attr("name");
+						sessionStorage.setItem("order_id",order_id);
+						$.get("{{:U('Home/pay/getGoodsByOrder')}}",{'order_id':order_id},function(data){
+							console.log('商品：');
+							console.log(data);
+							for(var i = 0; i < data.length;i++){
+								data[i].path=urlImg+data[i].path;
+							}
+							sessionStorage.setItem("shopCar_data",JSON.stringify(data));
+							location.href="{{:U('home/pay/payConfirm')}}?order_id=" + order_id;
+						})
+						console.log("邮费0")
+					}else{
+			      		var _thisname = JSON.parse($(this).siblings().attr("name"));
+			      		// var paymoney = parseFloat($(this).parents(".calc").find(".postage").text().substr(6));	//邮费
+			      		var price = parseInt($(this).parents(".calc").find(".price").text().substr(1)*100)/100;
+			      		// console.log(_thisname,price);
+			      		$.ajax({
+			      			url:"{{:U('Home/PaymentSystem/orderPay')}}",
+			      			type:"post",
+			      			data:{
+			      				order: _thisname,
+			      				paymoney: price
+			      			},
+			      			success:function(res){
+			      				if(res == -1){
+									// console.log('支付错误！');
+									parent.layer.msg('支付错误！');
+								}else{
+									
+									// 调用微信支付方法
+									weixinPay(res);
+									
+								}
+								// weixinPay(res);
+							},
+							error: function(res) {
+								console.log("出错", res)
+							}
+						});
+						console.log("邮费值")
+					}
+				// 	var urlImg = "/Uploads/";
+				// 	var order_id = $(this).prev().attr("name");
+				// 	sessionStorage.setItem("order_id",order_id);
+				// 	$.get("{{:U('Home/pay/getGoodsByOrder')}}",{'order_id':order_id},function(data){
+				// 		console.log('商品：');
+				// 		console.log(data);
+				// 		for(var i = 0; i < data.length;i++){
+				// 			data[i].path=urlImg+data[i].path;
+				// 		}
+				// 		sessionStorage.setItem("shopCar_data",JSON.stringify(data));
+				// 		location.href="{{:U('home/pay/payConfirm')}}?order_id=" + order_id;
+				// 	})		      	
+				});
+
 	        }
 	    });
 
