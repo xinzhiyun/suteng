@@ -201,6 +201,7 @@
 			点击顶部导航栏，切换订单状态
 		*/ 
 		$(".tab").on("click",function(){
+			$('body').scrollTop(0);
 			var href = location.href.substr(0, location.href.indexOf('?tab='));
 			// 显示loading
 			$("#loading").fadeIn('fast');
