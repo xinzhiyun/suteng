@@ -86,6 +86,7 @@ class UsersController extends Controller
         // dump($result);
         if ($result['Message'] == 'OK') {
             $this->set('code', $code);
+            // dump($_SESSION);
             $this->ajaxReturn(array('msg'=>'短信已发送到您手机，请注意查收','code'=>'200'));
         } else {
             $this->ajaxReturn(array('msg'=>'短信请求次数超过当天请求次数，请改天再来','code'=>'201'));
@@ -108,7 +109,7 @@ class UsersController extends Controller
                 //验证码通过后将该用户手机号写入数据库
                 $data['phone'] = $_POST['phone'];
                 if (M('users')->add($data)) {
-                    $_SESSION['phone'] = $_POST['phone'];
+                    $_SESSION['user']['phone'] = $_POST['phone'];
                     $this->ajaxReturn(array('msg'=>'注册成功','code'=>'200'));
                 } else {
                     $this->ajaxReturn(array('msg'=>'注册失败','code'=>'201'));
@@ -136,7 +137,9 @@ class UsersController extends Controller
         $repass = md5($_POST['repassword']);
 
         if ($data['password'] == $repass) {
-            if (M('users')->where('phone='.$_SESSION['phone'])->save($data)) {
+            if (M('users')->where('phone='.$_SESSION['user']['phone'])->save($data)) {
+                $info = M('users')->where("phone=".$_SESSION['user']['phone'])->find();
+                $_SESSION['user'] = $info;
                 $this->ajaxReturn(array('msg'=>'信息完善完成','code'=>'200'));
             } else {
                 $this->ajaxReturn(array('msg'=>'信息完善失败','code'=>'201'));
@@ -148,22 +151,43 @@ class UsersController extends Controller
     }
 
     /**
+     * [checkPcname 验证用户名是否存在]
+     * @return [type] [description]
+     */
+    public function checkPcname()
+    {
+        $pcname = $_POST['pcname'];
+
+        $info = M('users')->where("pcname='{$pcname}'")->find();
+
+        if ($info) {
+            $data[] = $pcname.$this->rand_string(3);
+            $data[] = $pcname.$this->rand_string(3);
+            $data[] = $pcname.$this->rand_string(3);
+            $this->ajaxReturn(array('msg'=>$data,'code'=>'201'));
+        } else {
+            $this->ajaxReturn(array('msg'=>'该用户名可用','code'=>'200'));
+        }
+    }
+
+    /**
      * [login 用户登录]
      * @return [type] [description]
      */
     public function login()
     {
-        //接受前端用户登录信息
-        $phone = $_POST['phone'];
+        //接受前端用户手机号或者用户名
+        $name = $_POST['name'];
+
         $password = md5($_POST['password']);
 
         $user = M('users');
 
-        $info = $user->where('phone='.$phone)->find();
+        $info = $user->where("phone='{$name}' or pcname='{$name}'")->find();
 
         if ($info) {
             if ($info['password'] == $password) {
-                $_SESSION['phone'] = $phone;
+                $_SESSION['user'] = $info;
                 $this->ajaxReturn(array('msg'=>'登录成功','code'=>'200'));
 
             } else {
@@ -172,7 +196,7 @@ class UsersController extends Controller
 
             }
         } else {
-            $this->ajaxReturn(array('msg'=>'该手机号未注册','code'=>'201'));
+            $this->ajaxReturn(array('msg'=>'该账号未注册','code'=>'201'));
         }
 
 
@@ -184,7 +208,7 @@ class UsersController extends Controller
      */
     public function logout()
     {
-        unset($_SESSION['phone']);
+        unset($_SESSION['user']);
         unset($_SESSION['weixin']);
         $this->ajaxReturn(array('msg'=>'退出成功','code'=>'200'));
 
