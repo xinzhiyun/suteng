@@ -51,6 +51,21 @@ class ShopController extends CommonController
         }
 
     }
+
+    public function appendChildCategory(){
+        $pid = I('post.pid');
+        $cateName = I('post.catename');
+        if(!$pid || strlen($cateName) < 1){
+            $this->ajaxReturn(['code'=>'-1','msg'=>'参数错误']);
+        }
+        $res = D('Category')->data(['name'=>trim($cateName),'pid'=>$pid])->add();
+        if($res) {
+            $this->ajaxReturn(['code'=>'200','msg'=>'添加成功','data'=>I('')]);
+        } else {
+            $this->ajaxReturn(['code'=>'-1','msg'=>'添加失败']);
+        }
+    }
+
     // 修改分类
     public function cateGoryEdit()
     {
@@ -367,7 +382,7 @@ class ShopController extends CommonController
             $data['status'] = I('post.status');
             $res = $goods->where($where)->save($data);
             // echo $goods->_sql();
-            // dump($res);die;
+            // p(I(''));die;
             if($res){
                 E('状态已发生改变',200);
             } else {
@@ -766,11 +781,10 @@ class ShopController extends CommonController
      */
     public function orders()
     {
-        // $map = '';
+        $map = '';
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
             $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
         }
-
         $order = D('ShopOrder');
         $data = $order->getOrders($map);
 
