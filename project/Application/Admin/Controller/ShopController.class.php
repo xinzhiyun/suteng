@@ -126,7 +126,7 @@ class ShopController extends CommonController
         $assign = [
             'data' => $goodsList['goodsData'],
             'cateInfo'=>$cateInfo,
-            // 'show' => $goodsList['show'],
+            'show' => $goodsList['show'],
         ];
 
         // dump($goodsList);
