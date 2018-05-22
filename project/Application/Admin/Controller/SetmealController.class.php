@@ -43,6 +43,7 @@ class SetmealController extends CommonController
                     ->limit($page->firstRow.','.$page->listRows)
                     ->join(' LEFT JOIN st_type ON st_setmeal.tid = st_type.id')
                     ->field('st_setmeal.*,st_type.typename')
+                    ->order('addtime desc')
                     ->select();
 
         // dump($list);die;

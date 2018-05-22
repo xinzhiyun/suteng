@@ -59,7 +59,7 @@ class DevicesController extends CommonController
             ->join('__USERS__ u ON ud.uid=u.id', 'LEFT')
             ->limit($Page->firstRow.','.$Page->listRows)
             ->field('d.device_code,d.type_id,d.vid,d.addtime,v.user,ud.uid,d.device_statu,t.typename,ds.AliveStause,u.nickname')
-            ->order('d.id desc')
+            ->order('d.addtime desc,d.id desc')
             ->select();
         $filterType = M('type')->where(['status'=>0])->select();
         // dump($devices);

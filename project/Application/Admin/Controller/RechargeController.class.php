@@ -461,7 +461,7 @@ class RechargeController extends CommonController
         $page  = new \Think\Page($total,8);
         page_config($page);
         $pageButton =$page->show();
-        $data = M('gold')->where($map)->limit($page->firstRow.','.$page->listRows)->select();
+        $data = M('gold')->where($map)->limit($page->firstRow.','.$page->listRows)->order('addtime desc,updatetime desc')->select();
         $assign = [
 			'data' => $data,
 			'page' =>bootstrap_page_style($pageButton)
@@ -495,7 +495,7 @@ class RechargeController extends CommonController
         $page  = new \Think\Page($total,8);
         page_config($page);
         $pageButton =$page->show();
-        $data = M('silver')->where($map)->limit($page->firstRow.','.$page->listRows)->select();
+        $data = M('silver')->where($map)->limit($page->firstRow.','.$page->listRows)->order('addtime desc,updatetime desc')->select();
         $assign = [
 			'data' => $data,
 			'page' =>bootstrap_page_style($pageButton)
@@ -528,7 +528,7 @@ class RechargeController extends CommonController
         $page  = new \Think\Page($total,8);
         page_config($page);
         $pageButton =$page->show();
-        $data = M('gold_silver')->where($map)->limit($page->firstRow.','.$page->listRows)->select();
+        $data = M('gold_silver')->where($map)->limit($page->firstRow.','.$page->listRows)->order('addtime desc,updatetime desc')->select();
         $assign = [
 			'data' => $data,
 			'page' =>bootstrap_page_style($pageButton)

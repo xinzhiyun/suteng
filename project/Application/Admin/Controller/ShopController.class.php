@@ -701,7 +701,6 @@ class ShopController extends CommonController
             ];
             $this->ajaxReturn($err);
         }
-
     }
 
     // 产品属性
@@ -1332,7 +1331,7 @@ class ShopController extends CommonController
         $total = $comment->count();
         $page  = new \Think\Page($total,10);
         $pageButton =$page->show();
-        $data = $comment2->relation(['user','good','pics'])->limit($page->firstRow.','.$page->listRows)->select();
+        $data = $comment2->relation(['user','good','pics'])->limit($page->firstRow.','.$page->listRows)->order('addtime desc')->select();
   
         $this->assign('list',$data);
         $this->assign('page',bootstrap_page_style($pageButton));
