@@ -27,7 +27,7 @@ class ShopController extends CommonController
         }
         $data = D('Category')->getTreeData('tree','id, name',$name='name',$child='id',$parent='pid',$map);
         $assign = [
-            'data' => $data,
+            'data' => $data['data']
         ];
         $this->assign($assign);
         $this->display();

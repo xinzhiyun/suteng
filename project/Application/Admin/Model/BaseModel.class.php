@@ -70,12 +70,28 @@ class BaseModel extends Model{
      * @param  string $order 排序方式
      * @return array         结构数据
      */
-    public function getTreeData($type='tree',$order='',$name='name',$child='id',$parent='pid',$map=''){
-        // 判断是否需要排序
-        if(empty($order)){
-            $data=$this->where($map)->select();
-        }else{
-            $data=$this->where($map)->order($order.' is null,'.$order)->select();
+    public function getTreeData($type='tree',$order='',$name='name',$child='id',$parent='pid',$map='',$isPage = false){
+        if($isPage){
+                    // 判断是否需要排序
+            if(empty($order)){
+                $count=$this->where($map)->count();            
+                $Page  = new \Think\Page($count,8   );
+                $pageButton =$Page->show();
+                $data=$this->where($map)->limit($Page->firstRow.','.$Page->listRows)->select();
+            }else{
+                $count=$this->where($map)->order($order.' is null,'.$order)->count();            
+                $Page  = new \Think\Page($count,8   );
+                $pageButton =$Page->show();
+                $data=$this->where($map)->order($order.' is null,'.$order)->limit($Page->firstRow.','.$Page->listRows)->select();
+                // $data=$this->where($map)->order($order.' is null,'.$order)->select();
+            }
+        } else {
+            // 判断是否需要排序
+            if(empty($order)){
+                $data=$this->where($map)->select();
+            }else{
+                $data=$this->where($map)->order($order.' is null,'.$order)->select();
+            }
         }
         // 获取树形或者结构数据
         if($type=='tree'){
@@ -83,7 +99,11 @@ class BaseModel extends Model{
         }elseif($type="level"){
             $data=\Org\Nx\Data::channelLevel($data,0,'&nbsp;',$child);
         }
-        return $data;
+        
+        if($pageButton) {
+            return ['data'=>$data,'show'=>bootstrap_page_style($pageButton)];
+        }
+        return ['data'=>$data];
     }
 
     /**
