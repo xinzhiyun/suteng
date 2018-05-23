@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>验证码</title>
+	<link rel="stylesheet" href="__PUBLIC__/Pc/css/bootstrap.min.3.3.7.css">
+	<link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+	<style>
+		*{
+			padding: 0;
+			margin: 0;
+		}
+		/*头部样式*/
+		.header{
+			padding: 15px 0;
+			border-bottom: 1px solid #ccc;
+		}
+		/*LOGO盒子*/
+		.logo-box{
+			width: 1210px;
+			height: 80px;
+			margin:auto;
+		}
+		a.logo{
+			display: block;
+			float: left;
+			width: 60px;
+			height: 80px;
+			background: rgba(0,0,0,0) url(__PUBLIC__/Pc/images/logo-bg.png) repeat scroll 0 0;
+		}
+
+		.logotitle{
+			float: left;
+			width: 300px;
+			height: 80px;
+			margin-left: 10px;
+			line-height: 80px;
+			font-size: 24px;
+			color: #333;
+		}
+
+		.have-account{
+			width: 400px;
+			height: 80px;
+			line-height: 80px;
+			font-size: 16px;
+			color: #666;
+			float: right;
+			text-align: right;
+		}
+		.have-account>a{
+			color:red;
+			text-decoration: none;
+		}
+		.validate-box{
+			width: 1210px;
+			height: 500px;
+			background: #fff;
+			margin:-420px auto 0;
+			position: relative;
+			display: none;
+			z-index: 100;
+		}
+		.validate{
+			width: 350px;
+			height: 365px;
+			background: rgba(0,0,0,0) url(__PUBLIC__/Pc/code/image/mask.png) repeat scroll 0 0;
+    		padding: 5px;
+    		position: absolute;
+    		left:427px;
+    		z-index: 1000;
+    		background: #fff;
+		}
+		.validate>.top{
+			width: 350px;
+			height: 36px;
+			background: #fff;
+		}
+		.validate>.top>.close{
+		    background: url(__PUBLIC__/Pc/code/image/close.png) no-repeat scroll 0 0;
+		    float: right;
+		    height: 13px;
+		    line-height: normal;
+		    margin: 10px 10px 9px 0;
+		    overflow: hidden;
+		    text-decoration: none;
+		    width: 14px;
+		    box-sizing: border-box;
+		}
+
+		.validate>.content{
+			width: 350px;
+			height: 250px;
+			overflow: hidden;
+			position: relative;
+		}
+		
+		.validate>.content>img{
+			width:350px;
+		}
+		
+		.validate>.prompt{
+			width: 350px;
+			height: 40px;
+			background: #F5F6F8;	
+		}
+		.validate>.prompt>p{
+			height: 40px;
+			line-height: 40px;
+			float: left;
+			font-size: 14px;
+			padding-left: 10px;
+		}
+		.validate>.prompt>.code{
+			width: 70px;
+			height: 40px;
+			float: left;
+		}
+		.validate>.foot{
+			width: 350px;
+			height: 36px;
+			overflow: hidden;
+			background: #F5F6F8;
+		}
+		.validate>.foot>.left{
+			width: 157px;
+			height: 36px;
+		    float: left;
+		    background: url(__PUBLIC__/Pc/code/image/cc_left.png) repeat scroll 0 0;
+		    background-size: cover;
+		}
+		.validate>.foot>.shua{
+			width: 36px;
+			height: 36px;
+			float: left;
+    		background: url(__PUBLIC__/Pc/code/image/cc_mouseup.png) 0px 0px / cover no-repeat scroll;
+
+		}
+		.choice{
+			width: 55px;
+			height: 55px;
+			position: absolute;
+			z-index: 100;
+		}
+		.choice>img{
+			width: 55px;
+			height: 55px;
+		}
+		.contentbox{
+			width: 1210px;
+			height: 407px;
+			margin:80px auto 0px;
+		}
+		.yzqu{
+			width: 430px;
+			height: 407px;
+			margin:auto;
+		}
+		.yzqu-top{
+			width: 430px;
+			height: 55px;
+
+		}
+		.yzqu-top .pro-step{
+			float: left;
+   			text-align: center;
+   			font-size: 14px;
+   			color:#666;
+		}
+		.pro-step>span{
+			display: block;
+		    background-position: -45px -200px;
+		    color: #fff;
+			width: 24px;
+		    height: 24px;
+		    margin:0 18px;
+		    line-height: 24px;
+		    font-size: 12px;
+		    font-weight: 700; 
+		    text-align: center;
+			background-image:url(__PUBLIC__/Pc/images/reg-icon.png);
+			color:#ccc;
+		}
+		.pro-step>span.step-index {
+		    background-position: 0 -200px;  
+		    color:#fff; 
+		    
+		}
+		.pro-step>p{
+			margin-top: 10px;
+    		font-size: 12px;
+    		color:#999;
+		}
+		.pro-step>p.step-desc{
+			color: #3b4;
+		}
+		div.pro-line{
+		    width: 123px;
+		    height: 10px;
+		    margin-top:7px;
+		    float: left;
+		    background-position: 0 -100px;
+    		background-image:url(__PUBLIC__/Pc/images/reg-icon.png);
+		}
+		
+		div.input-group{
+			margin-top: 40px;
+		}
+		input.form-control{
+			font-size:14px;
+		}
+		button.btn-default,button.btn-danger{
+			margin-top: 40px;
+			width: 100%;
+		}
+		#phone-box,#pcname-box,#pcname-box,#password-box{
+			position: relative;
+		}
+		div.ts{
+			position: absolute;
+			top:50px;
+			left:0;
+			height: 20px;
+			line-height: 20px;
+			display: block;
+			padding-left: 20px;
+			color:#999;
+			font-size: 10px;
+			display: none;
+		}
+		div.ts>i{
+			position: absolute;
+			left: 0px;
+			top:1px;
+			width: 17px;
+			height: 17px;
+			display: inline-block;
+			font-style:normal;
+			background-image: url(__PUBLIC__/Pc/images/icon.png);
+			background-position: 0px -100px;
+
+
+		}
+		#pcname-box,#pcname-box,#password-box{
+			margin-bottom: 40px;
+		}
+		.weixin{
+			width: 430px;
+			height: 260px;
+			border: 1px solid #eee;
+			display: none;
+		}
+		.weixin>p{
+			height: 30px;
+			line-height: 30px;
+			font-size: 16px;
+			text-align: center;
+			margin:0;
+		}
+		.weixin>div.weixincode{
+			height: 200px;
+			width: 200px;
+			background: red;
+			margin-left:115px;
+		}
+		.weixin>div.weixincode>img{
+			width: 100%;
+		}
+		.checkname{
+			color:green;
+		}
+	</style>
+	
+	<script src="__PUBLIC__/Pc/code/jquery.min.js"></script>
+</head>
+<body>
+	<div class="header">
+		<div class="logo-box">
+			<a href="http://jiahuilian.cn" class="logo"></a>
+			<div class="logotitle">欢迎注册</div>
+			<div class="have-account">
+				已有账号？ <a href="{{:U('Pc/Users/login')}}">请登录></a>
+			</div>
+		</div>
+	</div>
+	<div class="contentbox">
+		<div class="yzqu">
+			<div class="yzqu-top">
+				<div class="pro-step">
+					<span class="step-index">1</span>
+					<p class="step-desc">手机号验证</p>
+				</div>
+				<div class="pro-line pro-line1"></div>
+
+				<div class="pro-step" id="pro-step">
+					<span >2</span>
+					<p>设置密码</p>
+				</div>
+
+				<div class="pro-line pro-line2"></div>
+
+				<div class="pro-step" id="pro-step2">
+					<span>3</span>
+					<p>修改完成</p>
+				</div>
+			</div>
+			<div class="input-group has-feedback" id="phone-box">
+				<div class="input-group-addon">手机</div>
+				<input type="text" id="phone" class="form-control input-lg" placeholder="请输入常用手机号码" maxlength="11">
+				<span class="glyphicon form-control-feedback"></span>
+				<div class="ts"><i></i><b></b></div>
+			</div>
+
+			<div class="input-group has-feedback" id="password-box">
+				<div class="input-group-addon">密码</div>
+				<input type="password" id="password" class="form-control input-lg" placeholder="请输入密码" maxlength="32">
+				<span class="glyphicon form-control-feedback"></span>
+				<div class="ts"><i></i><b></b></div>
+			</div>
+
+			<div class="input-group has-feedback" id="repassword-box">
+				<div class="input-group-addon">确认密码</div>
+				<input type="password" id="repassword" class="form-control input-lg" placeholder="请再次输入密码" maxlength="32">
+				<span class="glyphicon form-control-feedback"></span>
+				<div class="ts"><i></i><b></b></div>
+			</div>
+			<button class="btn btn-default  btn-lg" id="proving">点击按钮进行验证</button>
+			<div class="input-group has-feedback" id="phone-yzm">
+				<div class="input-group-addon">手机验证码</div>
+				<input type="text" id="yzm" class="form-control input-lg" placeholder="请输入验证码" maxlength="6">
+				<div class="input-group-addon" id="djs">120s后重新获取</div>
+			</div>
+			<button class="btn btn-danger  btn-lg" index="0" id="next">下一步</button>
+		</div>
+
+	</div>
+	<div class="validate-box">
+		<div class="validate">
+			<div class="top">
+				<div class="close"></div>
+			</div>
+			<div class="content">
+				<img src="" alt="验证码图片">
+
+			</div>
+			<div class="prompt">
+				<p>请依次点击上图中的</p>
+				<div class="code"></div>
+			</div>
+			<div class="foot">
+				<div class="left"></div>
+				<div class="shua"></div>
+				<div class="left"></div>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+<script>
+	$('#phone-yzm').hide();
+	$('#pcname-box').hide();
+	$('#password-box').hide();
+	$('#repassword-box').hide();
+
+	// 是否弹框
+	var tk = false;
+	var phone = '';
+	// 获取焦点事件
+	$('#phone').focus(function(){
+		// 初始话输入框状态
+		$('#phone-box').removeClass('has-success').removeClass('has-error');
+		$('#phone-box>span').removeClass('glyphicon-ok').removeClass('glyphicon-remove');
+		$('#phone-box>div.ts>b').html('验证完后，可以重新设置登录密码');
+		$('#phone-box>div.ts>i').css({'backgroundPosition': '0px -100px'});
+		$('#phone-box>div.ts').show();
+	});
+
+	// 获取手机号码
+	$('#phone').blur(function(){
+		phone = $(this).val();
+		if(phone.length>0){
+			// 正则验证
+			if(isPhoneNo(phone)){
+				// 异步请求服务器
+				$.ajax({
+				   type: "POST",
+				   url: "{{:U('Api/Users/register')}}",
+				   data: {phone:phone},
+				   dataType: "json",
+				   success: function(data){
+				   		if(data.code==200){
+
+				   			// 手机号码不可用状态
+				   			$('#phone-box').addClass('has-error');
+				   			$('#phone-box>span').addClass('glyphicon-remove');
+				   			$('#phone-box>div.ts>b').html('该手机号未被使用，请先注册 <a href="{{:U("Pc/Users/register")}}">立即注册</a>');
+				   			$('#phone-box>div.ts>i').css({'backgroundPosition': '-17px -100px'});
+				   			$('#phone-box>div.ts').show();
+				   			tk = false;
+				   		}else{
+				   			// 手机号码可用状态
+				   			$('#phone-box').addClass('has-success');
+				   			$('#phone-box>span').addClass('glyphicon-ok');
+				   			$('div.ts').hide();
+				   			tk = true;
+				   		}
+				   }
+				});
+			}else{
+				// 手机号码格式错误
+				$('#phone-box').addClass('has-error');
+				$('#phone-box>span').addClass('glyphicon-remove');
+				$('#phone-box>div.ts>b').html('手机号码格式错误');
+				$('#phone-box>div.ts>i').css({'backgroundPosition': '-17px -100px'});
+				$('#phone-box>div.ts').show();
+				tk = false;
+			}
+		}
+	});
+
+
+	// 正则验证手机号码
+	function isPhoneNo(phone) { 
+		var pattern = /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/; 
+	 	return pattern.test(phone);
+	}
+
+	// 正则验证用户名
+	function ispcname(pcname) { 
+		var pattern = /^[a-zA-Z][\w]{5,29}$/; 
+	 	return pattern.test(pcname);
+	}
+
+	// 获取焦点事件
+	$('#pcname').focus(function(){
+		// 初始话输入框状态
+		$('#pcname-box').removeClass('has-success').removeClass('has-error');
+		$('#pcname-box>span').removeClass('glyphicon-ok').removeClass('glyphicon-remove');
+		$('#pcname-box>div.ts>b').html('验证完后，可以使用该用户名登录');
+		$('#pcname-box>div.ts>i').css({'backgroundPosition': '0px -100px'});
+		$('#pcname-box>div.ts').show();
+	});
+
+	// 显示验证码窗口
+	$('#proving').click(function(){
+		if(tk){
+			$('.validate-box').show();
+			shua();
+		}else{
+			// 手机号码格式错误
+			$('#phone-box').addClass('has-error');
+			$('#phone-box>span').addClass('glyphicon-remove');
+		}
+	});
+	
+	// 刷新验证码
+	$('.shua').click(function(){
+		shua();
+	});
+
+	var obj = [];
+	// 点击验证区域
+	$('.content').click(function(e){
+		// 获取鼠标点击位置
+  		var xx = e.originalEvent.x || e.originalEvent.layerX || 0;
+        var yy = e.originalEvent.y || e.originalEvent.layerY || 0;
+        // 获取验证框相当位置
+        var top = parseInt($(this).offset().top);
+        var left = parseInt($(this).offset().left);
+        // 将鼠标0,0 点对应入验证框
+        var x = parseInt(xx - left);
+        var y = parseInt(yy - top);
+
+        $(this).append('<div class="choice" style="top:'+(y-25)+'px;left:'+(x-25)+'px;"><img src="__PUBLIC__/Pc/code/image/cc_cover.png"></div>');
+        obj[obj.length] = {"x":x,"y":y};
+        var b=JSON.stringify(obj)
+        
+        if(obj.length==2){
+        	// console.dir(b);
+			$.ajax({
+			   type: "POST",
+			   url: "{{:U('Pc/Users/yz')}}",
+			   data: {obj:b},
+			   success: function(data){
+			   		// 验证验证码
+			    	if(data==1){
+			    		// alert(phone)
+						// 异步请求服务器
+						$.ajax({
+						   type: "POST",
+						   url: "{{:U('Api/Users/sendMsg')}}",
+						   data: {phone:phone},
+						   dataType: "json",
+						   success: function(data){
+						   		// data = {msg: "短信已发送到您手机，请注意查收", code: "200"};
+						   		// console.dir(data);
+						   		if(data.code==200){
+						   			// 下一步按钮
+						   			$('#next').attr('index',1);
+					    			// 隐藏验证框
+					    			$('.validate-box').hide();
+						    		// 隐藏验证按钮
+						    		$('#proving').hide();
+						    		// 显示验证码输入框
+						    		$('#phone-yzm').show();
+						    		var time = 120;
+						    		timename=setInterval(function(){
+						    			$('#djs').html(time+'s后重新获取');
+						    			time--;
+						    			if(time==0){
+						    				// 倒计时时间还原
+						    				time = 120;
+						    				// 重新获取链接
+						    				$('#djs').html('<a href="javascript:getyzm()">重新获取</a>');
+						    				// 清除定时器
+						    				window.clearInterval(timename);
+						    			}
+						    		},1000);
+						   		}else{
+						   			swal("验证码获取失败", data.msg, "success");
+						   			setTimeout('myrefresh()',2000);
+						   		}
+						   }
+						});
+
+			    	}else{
+			    		shua();	
+			    	}
+			   }
+			});
+        }
+	});
+
+	// 动态读秒
+	function getyzm(){
+		// 异步请求服务器
+		$.ajax({
+		   type: "POST",
+		   url: "{{:U('Api/Users/sendMsg')}}",
+		   data: {phone:phone},
+		   dataType: "json",
+		   success: function(data){
+		   		if(data.code==200){
+		   			return true;
+		   		}else{
+		   			return false;
+		   		}
+		   }
+		});
+	}
+
+	// 下一步按钮
+	$('#next').click(function(){
+		var index = $(this).attr('index');
+
+		if(index==0){
+			if(tk){
+				$('.validate-box').show();
+				shua();
+			}else{
+				// 手机号码格式错误
+				$('#phone-box').addClass('has-error');
+				$('#phone-box>span').addClass('glyphicon-remove');
+			}
+		}else if(index==1){
+			var code = $('#yzm').val();
+			$.ajax({
+			   type: "POST",
+			   url: "{{:U('Api/Users/confirmMsg')}}",
+			   data: {phone:phone,code:code},
+			   dataType: "json",
+			   success: function(data){
+			   		// console.dir(data)
+			   		if(data.code==200){
+			   			// 下一步按钮
+			   			$('#next').attr('index',2);
+			    		// 显示验证码输入框
+			    		$('#phone-yzm').hide();
+			    		// 设置索引
+						$('#pro-step>span').addClass('step-index');
+						$('#pro-step>p').addClass('step-desc');
+						$('div.pro-line1').css({'backgroundPosition': '0 -130px'});
+						$('#pcname-box').show();
+						$('#pcname-box').show();
+						$('#password-box').show();
+						$('#repassword-box').show();
+			    		// alert('验证码正确');
+			   		}else{
+			   			swal("验证失败", data.msg, "success");
+			   		}
+			   }
+			});
+		}else if(index==2){
+			// 提交用户信息
+			var password = $('#password').val();
+			var repassword = $('#repassword').val();
+
+			$.ajax({
+			   type: "POST",
+			   url: "{{:U('Api/Users/userUpdate')}}",
+			   data: {phone:phone,password:password,repassword:repassword},
+			   dataType: "json",
+			   success: function(data){
+			   		// console.dir(data)
+			   		if(data.code==200){
+			   			// 修改下一步按钮
+			   			$('#next').attr('index',3);
+			   			// 设置索引
+						$('#pro-step2>span').addClass('step-index');
+						$('#pro-step2>p').addClass('step-desc');
+						$('div.pro-line2').css({'backgroundPosition': '0 -130px'});
+			   			// 隐藏信息
+			   			$('#phone-box').hide();
+						$('#pcname-box').hide();
+						$('#password-box').hide();
+						$('#repassword-box').hide();
+						swal("修改成功", "赶紧去采购吧！", "success");
+						setTimeout('myrefresh()',2000);
+			   		}else{
+			   			swal("修改失败",data.msg, "success");
+			   		}
+			   }
+			});
+		}else if(index==3){
+			swal("修改成功", "赶紧去采购吧！", "success");
+			setTimeout('myrefresh()',2000);
+		}
+
+	});
+
+	// 跳转
+	function myrefresh(){ 
+	    // window.history.back(-1);
+	    window.location.href="{{:U('Pc/Index/index')}}";
+	} 
+
+	// 刷新验证码
+	function shua(){
+		$('.choice').remove();
+		var id = Math.floor(Math.random() * 100000);
+		$('.content>img').attr('src','{{:U("Pc/Users/yzm")}}?id='+id);
+		$('.code').css('background','url({{:U("Pc/Users/yzm")}}?id='+id+') 0px -250px');
+		obj = [];
+	}
+
+	// 关闭
+	$('.close').click(function(){
+		$('.validate-box').hide(); 
+	});
+</script>
+</html>

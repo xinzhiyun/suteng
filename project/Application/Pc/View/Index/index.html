@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>index</title>
+	<link rel="stylesheet" href="__PUBLIC__/Pc/css/bootstrap.css">
+    <link rel="stylesheet" href="__PUBLIC__/Pc/css/layui.css">
+	<link rel="stylesheet" href="__PUBLIC__/Pc/css/resetstyle.css">
+	<link rel="stylesheet" href="__PUBLIC__/Pc/css/index.css">
+	<link rel="stylesheet" href="http://at.alicdn.com/t/font_635737_7z2zeg0lbmd9529.css">
+	<script src="__PUBLIC__/Pc/js/jquery-1.10.1.js"></script>
+	<script src="__PUBLIC__/Pc/js/bootstrap.min.js"></script>
+</head>
+<style>
+
+
+
+</style>
+<body>
+   <script src="__PUBLIC__/Pc/js/layui.js"></script>
+   <div class="content">
+	   		<!-- 导航开始 -->
+	   	 <div class="_nav">
+	   	 	<div class="_log ">
+	   	 	</div>
+			<h3>消费能赚钱的购物平台</h3>
+
+	   	 	<div class="navcont">
+	   	 		<!-- <ul class="clearfix">
+					 <li class=" "><a>消费能赚钱的购物平台</a></li>
+					 <li class=""><a class="_about" href="#about">关于我们</a></li>
+
+			   	 	 <li class=""><a class="_culture" href="#culture">企业文化</a></li>
+					 <li class=""><a class="_shop" href="#shop">惠商城</a></li>
+					 <li class=""><a class="_news" href="#news">新闻中心</a></li>
+					 <li class=""><a class="_call" href="#call">联系我们</a></li>
+				 </ul> -->
+				<div class="find_nav">
+				    <div class="find_nav_left">
+				        <div class="find_nav_list">
+				            <ul>
+							<foreach name="navs" item="vo" >	
+								<if condition="$key lt 1 "><li  class="find_nav_cur"><a href="{{$vo.navlink}}">{{$vo.navname}}</a></li>
+								    <else /> <li><a href="{{$vo.navlink}}">{{$vo.navname}}</a></li><!-- 菜单栏 -->
+								</if>
+						    </foreach>
+
+				                <!-- <li>消费能赚钱的购物平台</li> -->
+<!-- 				                <li class="find_nav_cur"><a href="#about">关于我们</a></li>
+				                <li><a href="#culture">企业文化</a></li>
+				                <li><a href="#shop">惠商城</a></li>
+				                <li><a href="#news">新闻中心</a></li>
+				                <li><a href="#call">联系我们</a></li> -->
+
+				                <li class="sideline"></li>
+				            </ul>
+				        </div>
+				    </div>
+				</div>
+		   	 </div>
+			   	 
+	   	 </div><!-- 导航结束 -->
+	   	 <!-- 轮播图 -->
+	   	 <div class="lunbo bg4 small_width">
+	   	 	<div class="layui-carousel" id="test1">
+			  <div carousel-item>
+				<foreach name="banner" item="vo" >
+					<div><a href="{{$vo.link}}"><img src="__PUBLIC__/Pc/images/{{$vo.image}}" alt="{{$vo.title}}"></a></div>	
+				</foreach>
+			    <!-- <div><img src="__PUBLIC__/Pc/img/lb_01.jpg" alt=""></div> -->
+			  </div>
+			</div>
+			<div class="bgimg">
+				<img src="__PUBLIC__/Pc/img/line_bg.png" alt="">
+			</div>
+	   	 </div> <!-- 轮播图结束 -->
+	   	 <!-- 锚点开始 -->
+	   	 <div class="maodian">
+	   	 	<div class="about clearfix" id="about">
+	   	 		<h3>关于我们</h3>
+	   	 		<div class="aboutall _width">
+	   	 			<div class="aboutLeft ">
+	   	 				<img src="__PUBLIC__/Pc/img/index_001.png" alt="">
+	   	 			</div>
+	   	 			<div class="aboutRight">
+	   	 				<div class="aboutTxt">
+	   	 					<h3><i>企业简介与理念</i></h3>
+		   	 				<p>
+						     基于大树享其供养展其护荫，广东世舟网络科技有限公司是以国家战略互联网+的物联众享为发展理念打造的“家惠联”新型网络平台生态圈，以健康智慧家电物联网净水器为切入点，紧抓国家战略互联网+为发展机遇，重金打造唯一性的人工智能物联网为基础的“家惠联”全新网络平台。平台宗旨是引领高端智能消费、日用刚性需求等百货商品流通至批发商（平台代理商）、各行各业零售商（企业型会员），最终服务于终端用户群体（消费型会员）。让销售—服务—体验于一体，真正做到互联互通，让商品与销售和服务真正落地生根。“家惠联”物联网平台给予各级经销商提供了零风险、零库存、零投入、数据共享、资源整合、团队经营的众享经营平台；“家惠联”商城以现金购买或积分兑换商品的形式面向会员，会员以消费增值、分享经济的形式在“家惠联”物联网平台里享用各种优质商品的体验与服务，“一次消费终身受益”！“家惠联”物联网平台颠覆了传统生产者与消费者的贸易往来关系，“线上销售线下服务”不是一句口号，以市场消费需求为导向，精准锁定不同的消费层次需求，以人工智能的“家惠联”物联网科技平台为众多会员“消费增值”。畅享品质生活，世舟网络科技先行驱动！
+		   	 				</p>
+	   	 				</div>
+	   	 				<div class="about">
+	   	 					<span><img src="" alt=""></span>
+	   	 				</div>
+	   	 				
+	   	 			</div>
+	   	 		</div>
+	   	 		
+
+				<div class="mao_bgimg"></div>
+	   	 	</div>
+		   	<div class="culture bg5" id="culture">
+	   	 		<h3>企业文化</h3>
+				<div class="mao_bgimg"></div>
+		   	</div>
+		   	<div class="shop bg4" id="shop">
+	   	 		<h3>惠商城</h3>
+				<div class="mao_bgimg"></div>
+		   	</div>
+		   	<div class="news bg3" id="news">
+	   	 		<h3>新闻中心</h3>
+				<div class="mao_bgimg"></div>
+				
+		   	</div>
+	   	 	<div class="call bg1" id="call">
+	   	 		<h3>联系我们</h3>
+	   	 	</div>
+	   	 </div><!-- 锚点 -->
+	   	 <div class="foot small_width">
+	   	 	<div class="footmain">
+	   	 		<div class="fmTop clearfix">
+	   	 			<div class="fmtLeft">
+	   	 				<h4>零成本销售，等你来!约吗</h4>
+	   	 			</div>
+	   	 			<div class="fmtMain" >
+	   	 				<ul>
+	   	 					<li><a href="#"><span class="iconfont icon-qq1"></span></a></li>
+	   	 					<li><a href="#"><span class="iconfont icon-msnui-qr-code"></span></a></li>
+	   	 					<li><a href="#"><span class="iconfont icon-hezuoguanxi"></span></a></li>
+	   	 				</ul>
+	   	 			</div>
+	   	 			<div class="fmtRight" >
+	   	 				<h4>欢迎联系我们：440-0136-819</h4>
+	   	 				
+	   	 			</div>
+	   	 		</div>
+	   	 		<div class="fmBott">
+	   	 			<h4>家惠联企业@版权所有</h4>
+	   	 		</div>
+	   	 	</div>
+	   	 </div>
+
+	   	 
+	</div>
+
+</body>
+	<script>
+		// 轮播
+		layui.use('carousel', function(){
+		  var carousel = layui.carousel;
+		  //建造实例
+		  carousel.render({
+		    elem: '#test1'
+		    ,height: '680px'
+		    ,width: '100%' //设置容器宽度
+		    //,arrow: 'always' 始终显示箭头
+		    //,anim: 'updown' //切换动画方式
+		  });
+		});
+
+	
+	</script>
+	<script>
+	$(function(){
+    $(".find_nav_list").css("left",sessionStorage.left+"px");
+    $(".find_nav_list li").each(function(){
+        if($(this).find("a").text()==sessionStorage.pagecount){
+            $(".sideline").css({left:$(this).position().left+22});
+            $(".sideline").css({width:$(this).outerWidth()});
+            $(this).addClass("find_nav_cur").siblings().removeClass("find_nav_cur");
+            navName(sessionStorage.pagecount);
+            return false
+        }
+        else{
+            $(".sideline").css({left:0});
+            $(".find_nav_list li").eq(0).addClass("find_nav_cur").siblings().removeClass("find_nav_cur");
+        }
+    });
+    var nav_w=$(".find_nav_list li").first().width()-55;
+    $(".sideline").width(nav_w);
+    $(".find_nav_list li").on('click', function(){
+        nav_w=$(this).width();
+        $(".sideline").stop(true);
+        $(".sideline").animate({left:$(this).position().left+18},300);
+        $(".sideline").animate({width:nav_w});
+        $(this).addClass("find_nav_cur").siblings().removeClass("find_nav_cur");
+        var fn_w = ($(".find_nav").width() - nav_w) / 2;
+        var fnl_l;
+        var fnl_x = parseInt($(this).position().left);
+        if (fnl_x <= fn_w) {
+            fnl_l = 0;
+        } else if (fn_w - fnl_x <= flb_w - fl_w) {
+            fnl_l = flb_w - fl_w;
+        } else {
+            fnl_l = fn_w - fnl_x;
+        }
+        $(".find_nav_list").animate({
+            "left" : fnl_l
+        }, 300);
+        sessionStorage.left=fnl_l;
+        var c_nav=$(this).find("a").text();
+        navName(c_nav);
+    });
+    var fl_w=$(".find_nav_list").width();
+    var flb_w=$(".find_nav_left").width();
+    $(".find_nav_list").on('touchstart', function (e) {
+        var touch1 = e.originalEvent.targetTouches[0];
+        x1 = touch1.pageX;
+        y1 = touch1.pageY;
+        ty_left = parseInt($(this).css("left"));
+    });
+    $(".find_nav_list").on('touchmove', function (e) {
+        var touch2 = e.originalEvent.targetTouches[0];
+        var x2 = touch2.pageX;
+        var y2 = touch2.pageY;
+        if(ty_left + x2 - x1>=0){
+            $(this).css("left", 0);
+        }else if(ty_left + x2 - x1<=flb_w-fl_w){
+            $(this).css("left", flb_w-fl_w);
+        }else{
+            $(this).css("left", ty_left + x2 - x1);
+        }
+        if(Math.abs(y2-y1)>0){
+            e.preventDefault();
+        }
+    });
+});
+function navName(c_nav) {
+    switch (c_nav) {
+        case "关于我们":
+            sessionStorage.pagecount = "关于我们";
+            break;
+        case "企业文化":
+            sessionStorage.pagecount = "企业文化";
+            break;
+        case "惠商城":
+            sessionStorage.pagecount = "惠商城";
+            break;
+        case "新闻中心":
+            sessionStorage.pagecount = "新闻中心";
+            break;
+        case "联系我们":
+            sessionStorage.pagecount = "联系我们";
+            break;
+      
+    }
+}
+	// 锚点
+		$(document).ready(function() {  
+			$(".find_nav>.find_nav_left>.find_nav_list>ul>li:last-child").click(function() {  
+				alert();
+				$("html, body").animate({  
+				scrollTop: $("#call").offset().top-38},800);  
+				return false;  
+			});  
+			$(".find_nav>.find_nav_left>.find_nav_list>ul>li:nth-of-type(4)").click(function() {  
+				$("html, body").animate({  
+				scrollTop: $("#news").offset().top-38}, 800);  
+				return false;  
+			});  
+			$(".find_nav>.find_nav_left>.find_nav_list>ul>li:nth-of-type(3)").click(function() {  
+				$("html, body").animate({  
+				scrollTop: $("#shop").offset().top-38 }, 800);  
+				return false;  
+			}); 
+			$(".find_nav>.find_nav_left>.find_nav_list>ul>li:nth-of-type(2)").click(function() {  
+				$("html, body").animate({  
+				scrollTop: $("#culture").offset().top-38 }, 800);  
+				return false;  
+			});  
+			$(".find_nav>.find_nav_left>.find_nav_list>ul>li:first-child").click(function() {  
+				$("html, body").animate({  
+				scrollTop: $("#about").offset().top-40 }, 800);  
+				return false;  
+			});   
+		}); 
+</script>
+
+</html>

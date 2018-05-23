@@ -261,6 +261,15 @@ class UsersController extends Controller
 
     }
 
+    public function test()
+    {
+
+        $redirect_url = urlencode("test.dianqiukj.com/index.php/Pc/Users/login.html");
+        $this->assign('url',$redirect_url);
+        $this->display();
+
+    }
+
     /***************************************************辅助方法*************************************************/
     //设置session有效期
     public function set($name, $data, $expire=600){  
