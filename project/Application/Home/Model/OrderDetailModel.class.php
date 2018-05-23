@@ -7,11 +7,19 @@ class OrderDetailModel extends RelationModel
     protected $_link = array(
 
         'pic'=>array(
-            'mapping_type'  => self::HAS_MANY,
+            'mapping_type'  => self::BELONGS_TO,
             'class_name'    => 'pic',
             'foreign_key'   => 'gid',
             'mapping_name'  => 'pics',
             'mapping_fields' => 'path'
+        ),
+
+        'good'=>array(
+            'mapping_type'  => self::BELONGS_TO,
+            'class_name'    => 'goods',
+            'foreign_key'   => 'gid',
+            'mapping_name'  => 'product',
+            'mapping_fields' => 'name,desc'
         ),
 
     );

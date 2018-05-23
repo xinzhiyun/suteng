@@ -18,7 +18,28 @@ class OrderController extends CommonController
 
         $this->assign('openId',$openId);
 
-    	$this->display();
+        // $this->display('mynoindent');
+        $this->display('');
+    }
+
+    public function getOrders($page_index = 1, $page_size = 10, $condition = [], $order = '')
+    {
+        // IS_AJAX ? : $this->ajaxReturn(['code'=>-1,'msg'=>'非法请求']);
+        $map = [];
+        isset($condition['g_type']) ? $map['so.g_type'] = $condition['g_type']: '';
+        isset($condition['status']) ? $map['so.status'] = array('in',\implode(',',$condition['status'])): '';
+        $order = D('OrderDetail');
+        $order->alias('od');
+        $order->join('st_shop_order so ON so.order_id = od.order_id','LEFT');
+        $order->relation(['pics','product']);
+        $order->field(array(
+            'od.order_id','od.gid','od.num','od.price','od.cprice','so.status','od.addtime'
+        ));
+        $order->page($page_index,$page_size);
+        $order->where($map);
+        $order->order('od.addtime desc');
+        $data = $order->select();
+        $this->ajaxReturn(['code'=>200,'msg'=>empty($data) ? '暂无数据':'查询成功','data'=>$data,'g_type'=>$map]);
     }
 
     /**
@@ -455,16 +476,17 @@ class OrderController extends CommonController
                 
                 case 1:
                         $subsql = D('refund_goods')->where(['oid'=>$orderid])->field('gid')->select(false);
-                        $data = M('order_detail')                        
+                        $data = D('order_detail')                        
                         ->alias('d')
                         // ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'d.gid'=>['NEQ','rg.gid'],'rg.oid'=>['NEQ',$orderid]])
                         ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'g.id'=>['exp',"NOT IN ($subsql)"]])
                         ->join('st_shop_order so ON d.order_id = so.order_id','LEFT')
                         ->join('__GOODS__ g ON g.id = d.gid','LEFT')
                         ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
-                        ->join('__PIC__ p ON g.id = p.gid','LEFT')
+                        // ->join('__PIC__ p ON g.id = p.gid','LEFT')
+                        ->relation(['pics'])
                         // // ->table($refund.' a')
-                        ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire'))
+                        ->field(array('g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire'))
                         ->select();
                     break;
 

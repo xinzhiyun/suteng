@@ -275,7 +275,7 @@
 							// 存储每条评论的图片
 							picPathArr = res.data[i].pics;
 							for(var k=0; k<picPathArr.length; k++){
-								commPicArr[i].push({'img':'<span><img class="commPic" src="'+ picPathArr[k].path +'" alt="图片加载中"></span>'});
+								commPicArr[i].push({'img':'<span><img class="commPic" src="/Public'+ picPathArr[k].path +'" alt="图片加载中"></span>'});
 							}
 							
 						}

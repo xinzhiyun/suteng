@@ -201,7 +201,6 @@
 			点击顶部导航栏，切换订单状态
 		*/ 
 		$(".tab").on("click",function(){
-			$('body').scrollTop(0);
 			var href = location.href.substr(0, location.href.indexOf('?tab='));
 			// 显示loading
 			$("#loading").fadeIn('fast');
@@ -288,7 +287,7 @@
 						for(var k=0;k<waitpaylist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
 							// 无图片时显示
 							var noimg_show = waitpaylist[i]['productList'][k]['pics']
-							? (imgpath + waitpaylist[i]['productList'][k]['pics'][0]['path'])
+							? (imgpath + waitpaylist[i]['productList'][k]['pics']['path'])
 							: noimg;
 							var gainBrief = waitpaylist[i]['productList'][k]['productbrief'];
 							var gainName = waitpaylist[i]['productList'][k]['productname'];
@@ -480,7 +479,7 @@
 						for(var k=0;k<waitsendlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
 							// 无图片时显示
 							var noimg_show = waitsendlist[i]['productList'][k]['pics']
-							? (imgpath + waitsendlist[i]['productList'][k]['pics'][0]['path'])
+							? (imgpath + waitsendlist[i]['productList'][k]['pics']['path'])
 							: noimg;
 							// alert(orderList[i]['productList'].length);
 							var sendBrief = waitsendlist[i]['productList'][k]['productbrief'];
@@ -572,7 +571,7 @@
 						for(var k=0;k<waitgainlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
 							// 无图片时显示
 							var noimg_show = waitgainlist[i]['productList'][k]['pics']
-							? (imgpath + waitgainlist[i]['productList'][k]['pics'][0]['path'])
+							? (imgpath + waitgainlist[i]['productList'][k]['pics']['path'])
 							: noimg;
 							var productBrief = waitgainlist[i]['productList'][k]['productbrief'];
 							var productName = waitgainlist[i]['productList'][k]['productname'];
@@ -687,7 +686,7 @@
 						for(var k=0;k<waitcommentlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
 							// 无图片时显示
 							var noimg_show = waitcommentlist[i]['productList'][k]['pics']
-							? (imgpath + waitcommentlist[i]['productList'][k]['pics'][0]['path'])
+							? (imgpath + waitcommentlist[i]['productList'][k]['pics']['path'])
 							: noimg;
 							// 产品名字
 							waitcommentlist[i]['productList'][k]['productname'] = waitcommentlist[i]['productList'][k]['productname'] ? waitcommentlist[i]['productList'][k]['productname'] : "暂无标题";
@@ -987,7 +986,7 @@
 						
 							// 无图片时显示
 							var noimg_show = res.data[i].productList[j]['pics']
-							? (imgpath + res.data[i].productList[j]['pics'][0]['path'])
+							? (imgpath + res.data[i].productList[j]['pics']['path'])
 							: noimg;
 							returned6+='<p>信息更新时间：'+ res.data[i].ordertime +'</p>'+
 							'<div class="shangpingnei clearfix">'+
