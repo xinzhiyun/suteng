@@ -123,7 +123,7 @@ class GoodsModel extends RelationModel
             // ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
             ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
             ->join('__INVENTORY__ i on i.gid=g.id' , 'LEFT')
-            // ->field('c.name cname,av.val,a.attr,gd.*,i.allnum,i.abnormalnum,g.*,gd.status gdstatus')
+            ->field('c.name cname,gd.*,i.allnum,i.abnormalnum,g.*,gd.status gdstatus')
             ->order(' addtime desc')
             ->limit($Page->firstRow.','.$Page->listRows)
             ->relation(['pics','attr_val'])
@@ -143,9 +143,6 @@ class GoodsModel extends RelationModel
         //     }
         // }
         // $goodsData['goodsData'] = array_values($arr);
-
-
-        // dump($goodsData);
         return $goodsData;
     }
 
