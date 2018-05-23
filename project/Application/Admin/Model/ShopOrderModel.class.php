@@ -24,7 +24,7 @@ class ShopOrderModel extends BaseModel
             ->join('__ADDRESS__ a ON o.address_id=a.id', 'LEFT')
             ->join('__USERS__ u ON o.uid=u.id', 'LEFT')
             ->field('a.address,a.phone,a.name,o.order_id,o.g_cost,o.g_price,o.g_num,o.addtime,o.status,o.mode,o.g_type')
-            ->order('o.addtime')
+            ->order('o.addtime desc')
             ->limit($Page->firstRow.','.$Page->listRows)
             ->select();
         $data = [

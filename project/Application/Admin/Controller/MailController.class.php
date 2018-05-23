@@ -244,7 +244,7 @@ class MailController extends CommonController
         $page  = new \Think\Page($total,8);
         page_config($page);
         $pageButton =$page->show();
-    	$data = M('mail')->where($map)->limit($page->firstRow.','.$page->listRows)->select();
+    	$data = M('mail')->where($map)->limit($page->firstRow.','.$page->listRows)->order('addtime desc,updatetime desc')->select();
 
 	    $assign = [
 			'data' => $data,

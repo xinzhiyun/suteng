@@ -27,7 +27,7 @@ class ShopController extends CommonController
         }
         $data = D('Category')->getTreeData('tree','id, name',$name='name',$child='id',$parent='pid',$map);
         $assign = [
-            'data' => $data,
+            'data' => $data['data']
         ];
         $this->assign($assign);
         $this->display();
@@ -51,6 +51,21 @@ class ShopController extends CommonController
         }
 
     }
+
+    public function appendChildCategory(){
+        $pid = I('post.pid');
+        $cateName = I('post.catename');
+        if(!$pid || strlen($cateName) < 1){
+            $this->ajaxReturn(['code'=>'-1','msg'=>'参数错误']);
+        }
+        $res = D('Category')->data(['name'=>trim($cateName),'pid'=>$pid])->add();
+        if($res) {
+            $this->ajaxReturn(['code'=>'200','msg'=>'添加成功','data'=>I('')]);
+        } else {
+            $this->ajaxReturn(['code'=>'-1','msg'=>'添加失败']);
+        }
+    }
+
     // 修改分类
     public function cateGoryEdit()
     {
@@ -111,7 +126,7 @@ class ShopController extends CommonController
         $assign = [
             'data' => $goodsList['goodsData'],
             'cateInfo'=>$cateInfo,
-            // 'show' => $goodsList['show'],
+            'show' => $goodsList['show'],
         ];
 
         // dump($goodsList);
@@ -367,7 +382,7 @@ class ShopController extends CommonController
             $data['status'] = I('post.status');
             $res = $goods->where($where)->save($data);
             // echo $goods->_sql();
-            // dump($res);die;
+            // p(I(''));die;
             if($res){
                 E('状态已发生改变',200);
             } else {
@@ -686,7 +701,6 @@ class ShopController extends CommonController
             ];
             $this->ajaxReturn($err);
         }
-
     }
 
     // 产品属性
@@ -766,11 +780,10 @@ class ShopController extends CommonController
      */
     public function orders()
     {
-        // $map = '';
+        $map = '';
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
             $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
         }
-
         $order = D('ShopOrder');
         $data = $order->getOrders($map);
 
@@ -1318,7 +1331,7 @@ class ShopController extends CommonController
         $total = $comment->count();
         $page  = new \Think\Page($total,10);
         $pageButton =$page->show();
-        $data = $comment2->relation(['user','good','pics'])->limit($page->firstRow.','.$page->listRows)->select();
+        $data = $comment2->relation(['user','good','pics'])->limit($page->firstRow.','.$page->listRows)->order('addtime desc')->select();
   
         $this->assign('list',$data);
         $this->assign('page',bootstrap_page_style($pageButton));

@@ -107,7 +107,9 @@
                                             </empty>
                                         </td>
                                         <td>
-                                            {{$v['attr']}}
+                                            <foreach name="v.attr_val" item="vo" >
+                                                {{$vo['aname']}}:{{$vo['val']}}|
+                                            </foreach>
                                         </td>
                                         <td>
                                             <span goods="{{$v.gid}}" class="btn btn-success select">查看单价</span>
