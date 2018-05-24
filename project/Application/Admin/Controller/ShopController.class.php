@@ -805,6 +805,11 @@ class ShopController extends CommonController
         $this->assign('where',$where);
         $this->display();
     }
+    
+    public function getinvoice($id){
+        $data = D('Invoice')->find($id);
+        $this->ajaxReturn(['code'=>200,'msg'=>'success','data'=>$data]);
+    }
 
     /**
      * 为订单发货
