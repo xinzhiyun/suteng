@@ -109,7 +109,7 @@ class PaymentSystemController extends CommonController
         $result=[];
         foreach($data as $val){
             $result[] =  [
-                    'status'=> D('inventory')->where(['gid'=>$val['gid'],'allnum'=>['LT',$val['num']]])->select()?'pass':'fail',
+                    'status'=> D('inventory')->where(['gid'=>$val['gid'],'allnum'=>['LT',$val['num']]])->count()?'fail':'pass',
                     'gid'=>$val['gid']
             ];
         }
