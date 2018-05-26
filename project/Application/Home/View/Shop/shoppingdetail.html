@@ -448,8 +448,13 @@
 				data: {'data': JSON.stringify(goods_dataArr)},
 				success: function(res){
 					console.log('成功！', res);
-					sessionStorage.setItem('order_id',res);
+					if(res.code == 604){
+						parent.layer.msg(res.msg);
+						return;
+					}
+					
 					if(typeof JSON.parse(res) == 'number'){
+						sessionStorage.setItem('order_id',res);
 						// alert('{{:U("Pay/payConfirm/order_id/'+res+'")}}')
 
 						// 跳转到订单确认页面
@@ -458,6 +463,7 @@
 						//支付发生错误，无法生成订单号
 						parent.layer.msg('系统发生错误，请稍后再试！');
 					}
+
 				},
 				error: function(res){
 					console.log('失败！', res);

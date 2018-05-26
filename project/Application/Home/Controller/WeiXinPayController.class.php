@@ -298,7 +298,7 @@ class WeiXinPayController extends Controller
                 $jbbl = 0.01;
                 // 银币比例
                 $ybbl = 0.02;
- 
+
                 // 佣金
                 $yj = ($profit*$yjbl)>0?($profit*$yjbl):0;
                 // 金币
@@ -312,46 +312,52 @@ class WeiXinPayController extends Controller
                 // 分配佣金
                 $this->branch_commission($open_id,$order_id,$yj,$jb,$yb);
 
-
+                
+                
                 /*
                     处理订单状态修改，及减库存（yi）
                    */
                   $order_id = $order_id;
                   $uid = $showAddres['uid'];
-      
+
                   $shopOrder = D('ShopOrder');
                   $orderDetail = D('OrderDetail');
                   $inventory = D('inventory');
-                  
+
                   $rs = $shopOrder->where(['order_id'=>$order_id,'uid'=>$uid])->setField(['status'=>9]);
                   $order_goods = $orderDetail->field('gid,num')->where(['order_id'=>$order_id])->select();
+
+                  // 发票金额录入
+                  D('invoice')->where(['oid'=>$order_id])->save(['oprice'=>$orderData['g_price']]);
                   Log::write($order_goods,'微信支付的解析');
                   // $goods = \array_column($order_goods,'gid');
                   foreach($order_goods as $good){
                     //   $inventory->where(['gid'=>$good['gid']])->setDec('allnum',$good['num']);
                       $display_order[$good['gid']] = $good['num'];
                   }
-                  
-                  // $display_order = array( 
-                  //     1 => 4, 
-                  //     2 => 1, 
-                  //     3 => 2, 
-                  //     4 => 3, 
-                  //     5 => 9, 
-                  //     6 => 5, 
-                  //     7 => 8, 
-                  //     8 => 9 
-                  // ); 
-                  $ids = implode(',', array_keys($display_order)); 
-                  $sql = "UPDATE st_inventory SET allnum = CASE gid "; 
-                  foreach ($display_order as $id => $ordinal) { 
-                      $sql .= sprintf("WHEN %d THEN allnum - %d ", $id, $ordinal); 
-                  } 
-                  $sql .= "END WHERE id IN ($goods)"; 
+
+                  // $display_order = array(
+                  //     1 => 4,
+                  //     2 => 1,
+                  //     3 => 2,
+                  //     4 => 3,
+                  //     5 => 9,
+                  //     6 => 5,
+                  //     7 => 8,
+                  //     8 => 9
+                  // );
+                  $ids = implode(',', array_keys($display_order));
+
+                  $sql = "UPDATE st_inventory SET allnum = CASE gid ";
+                  foreach ($display_order as $id => $ordinal) {
+                      $sql .= sprintf("WHEN %d THEN allnum - %d ", $id, $ordinal);
+                  }
+                  $sql .= "END WHERE gid IN ($ids)";
+                  file_put_contents('./wxcallback.txt',$sql."\r\n\r\n", FILE_APPEND);
                   // echo $sql;
                   $Model = new \Think\Model(); // 实例化一个model对象 没有对应任何数据表
                   $res = $Model->execute($sql);
-      
+
             }
         }
     }
@@ -935,12 +941,12 @@ class WeiXinPayController extends Controller
                             if ($f_info) {
                                 $earnings_comc = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_c);
 
-                                // file_put_contents('./wx2_payFee.txt', M('vendors')->getLastSql()."\r\n", FILE_APPEND);
+                                file_put_contents('./wx2_payFee.txt', M('vendors')->getLastSql()."\r\n", FILE_APPEND);
 
                                 //销售奖收益记录
                                 if ($earnings_comc) {
 
-                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$f_info['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d 
+                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$f_info['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d
                                     H:i:s')]);
                                     // file_put_contents('./wx2_payFee.txt', M('earnings')->getLastSql()."\r\n", FILE_APPEND);
 

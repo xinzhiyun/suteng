@@ -103,12 +103,25 @@ class PaymentSystemController extends CommonController
     // 信息确认并生成订单
     public function information()
     {   
-        // dump($_POST);die;
+        // echo json_decode($_POST['data']);
+        $data = json_decode($_POST['data'],'true');
+        // 库存检测
+        $result=[];
+        foreach($data as $val){
+            $result[] =  [
+                    'status'=> D('inventory')->where(['gid'=>$val['gid'],'allnum'=>['LT',$val['num']]])->select()?'pass':'fail',
+                    'gid'=>$val['gid']
+            ];
+        }
+        if(in_array('fail',\array_column($result,'status'))){
+            $this->ajaxReturn(['code'=>604,'msg'=>'商品库存不足','data'=>$result]);
+        }
+
         try {
             $goods = D('Goods');
             $orders = D('ShopOrder');
             $order_detail = D('OrderDetail');
-            $data = json_decode($_POST['data'],'true');
+            
             $orders->startTrans();
             $order['uid'] = session('user.id');
             $order['order_id'] = gerOrderId();

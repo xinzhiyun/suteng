@@ -19,6 +19,7 @@ class ShopController extends CommonController
             $map['pr.grade'] = session('user.grade');
             $map['gd.status'] = 0;
             $map['g.status'] = array('neq', 2);
+            // p($map);die;
             $goodsList = $goods->getGoodsList($map);
             foreach($goodsList as $val){
                 $key = $val['gid'];

@@ -20,6 +20,7 @@ class CommentController extends CommonController
      */
     public function commentsucceed()
     {
+        p(I(''));die;
         try {
             $comment = D('Comment');
             $data = I('post.');
@@ -113,6 +114,56 @@ class CommentController extends CommonController
             $this->ajaxReturn($err);
             // $this->error('评论失败');                     
         }
+    }
+
+    public function comment(){
+        // 1.获取参数
+        $status = I('status');
+        $content = I('content');
+        $orderid = I('orderid');        
+        $gid = 149;
+        $pics = I('pic');
+        $uid = session('user.id');
+
+        $comment = D('Comment');
+        // 2.验证参数
+        // 3.判断是否已经评论过
+        if($comment->where(['uid'=>$uid,'gid'=>$gid,'order_id'=>$orderid])->find()){
+            $this->ajaxReturn(['code'=>605,'msg'=>'你已经评论过了，不能再次评论！']);
+        }
+        // 4.判断图片，处理文件上传
+        if(!empty($pics)){
+            $info = $this->downloadPic($pics);           
+        }
+        
+        // 5.处理添加评论
+        $comment->startTrans();
+            // 根据订单获取所有商品
+            $data = array(
+                'status' => $status,
+                'order_id' => $orderid,
+                'uid' => $uid,
+                'gid' => $gid,
+                'content' => $content,
+                'addtime' => time()
+            );
+            $comment->data($data)->save();
+
+            D("ComPic")->data(['path'=>$info])->save();   
+            $res = D('Order_detail')->where(['uid'=>$uid,'order_id'=>$orderid])->setField(['status'=>7]);
+        
+        if($res){                
+            $comment->commit();
+            E('评论成功', 200);
+            $this->success('评论成功');
+        } else {
+            $comment->rollback();
+            E('评论失败', 603);
+            // $this->error('评论失败');
+        }
+
+        // 6.判断处理订单状态
+
     }
 
     //下载图片

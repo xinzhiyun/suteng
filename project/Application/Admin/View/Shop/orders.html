@@ -538,8 +538,8 @@ function invoice(id)
             res.data.associated ? $('#invoice_associated').html(res.data.associated) : $('#invoice_associated').html('');
             res.data.phone ? $('#invoice_phone').html(res.data.phone) : $('#invoice_phone').html('');
             res.data.email ? $('#invoice_email').html(res.data.email) : $('#invoice_email').html('');
-            res.data.secpAddr ? $('#invoice_secpAddr').html(res.data.secpAddr) : $('#invoice_secpAddr').html('');
-
+            res.data.secpaddr ? $('#invoice_secpAddr').html(res.data.secpaddr) : $('#invoice_secpAddr').html('');
+            console.log(res.data.secpaddr);
         }
     });
 }

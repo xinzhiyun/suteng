@@ -15,16 +15,17 @@ class DevicesController extends CommonController
      */
     public function devicesList()
     {
+        
         $device = D('Devices');
         // 查询条件
-        $map = '';
+        $map = [];
         // if(!empty($_GET['code'])) $map['device_code'] = array('like',"%{$_GET['code']}%");
         if(!empty($_GET)){
             if($_GET['key'] == 'device_code'){
-                $map['d.device_code'] = array('like',"%{$_GET['keywords']}%");
+                $map['d.device_code'] = array('like',"%".trim($_GET['keywords'])."%");
             }
             if($_GET['key'] == 'typename'){
-                $map['t.typename'] = array('like',"%{$_GET['keywords']}%");
+                $map['t.typename'] = array('like',"%".trim($_GET['keywords'])."%");
             }
         }
         $where['key'] = $_GET['key'];
