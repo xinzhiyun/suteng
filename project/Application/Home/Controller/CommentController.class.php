@@ -121,7 +121,7 @@ class CommentController extends CommonController
         $status = I('status');
         $content = I('content');
         $orderid = I('orderid');        
-        $gid = 149;
+        $gid = 153;
         $pics = I('pic');
         $uid = session('user.id');
 
@@ -135,7 +135,7 @@ class CommentController extends CommonController
         if(!empty($pics)){
             $info = $this->downloadPic($pics);           
         }
-        
+        // p(I(''));die;
         // 5.处理添加评论
         $comment->startTrans();
             // 根据订单获取所有商品
@@ -147,18 +147,23 @@ class CommentController extends CommonController
                 'content' => $content,
                 'addtime' => time()
             );
-            $comment->data($data)->save();
+           $a = $comment->data($data)->add();
 
             D("ComPic")->data(['path'=>$info])->save();   
-            $res = D('Order_detail')->where(['uid'=>$uid,'order_id'=>$orderid])->setField(['status'=>7]);
-        
+            $res = D('Order_detail')->where(['order_id'=>$orderid,'gid'=>$gid])->setField(['status'=>7]);
+
+            $count = D('Order_detail')->where(['order_id'=>$orderid,'status'=>['NEQ',7]])->count();
+            if($count < 1){
+                D('ShopOrder')->where(['uid'=>$uid,'order_id'=>$orderid])->setField(['status'=>7]);
+            }
+
         if($res){                
             $comment->commit();
-            E('评论成功', 200);
-            $this->success('评论成功');
+            $this->ajaxReturn(['code'=>200,'msg'=>'评论成功']);
         } else {
             $comment->rollback();
-            E('评论失败', 603);
+            // E('评论失败', 603);
+            $this->ajaxReturn(['code'=>603,'msg'=>'评论失败']);
             // $this->error('评论失败');
         }
 
