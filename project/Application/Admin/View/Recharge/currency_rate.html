@@ -1,0 +1,99 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/switchery.min.css" rel="stylesheet">
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                    <h5>套餐管理 <small>添加银币兑换套餐</small></h5>
+                </div>
+                    <div class="ibox-content">
+                        <form method="post" action="" class="form-horizontal" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">人民币币率</label>
+                                <div class="col-md-3">
+                                    <input type="text" disabled value="1.00" name="rmb_rate" class="form-control" placeholder="标准费率格式，例如：1.00">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">金币币率</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="gold_rate" value="{{$rate.gold_rate}}" class="form-control" placeholder="标准费率格式，例如：1.00">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">银币币率</label>
+                                <div class="col-md-3">
+                                    <input type="text"  name="silver_rate" value="{{$rate.silver_rate}}" class="form-control" placeholder="标准费率格式，例如：1.00">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-md-3">
+                                    <span style="color: red">* </span>
+                                    <!-- 金银币费率设置，是以人民币未基准。</br> -->
+                                        例如：  1元 = 10 银币 </br>
+                                            &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   
+                                            0.1（费率） = 1（人民币） / 10（银币）
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="button">设置</button>
+                                    <button class="btn btn-white" type="reset">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>             
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</block>
+<block name="myjs">
+<script src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="__PUBLIC__/Admin/js/switchery.min.js"></script>
+<script>
+
+    /**
+     * [获取表单数据]
+     * @param  {[type]} )
+     * @return {[type]}     [description]
+     */
+    $('.btn-primary').click(function(){
+        // 获取表单数据
+        var data = {};
+            data.rmb_rate = $("input[name='rmb_rate']").val();
+            data.gold_rate = $("input[name='gold_rate']").val();
+            data.silver_rate = $("input[name='silver_rate']").val();
+        //  异不请求
+        $.ajax({
+            url:"{{:U('Admin/Recharge/update_currency_rate')}}",
+            data:data,
+            dataType:"json",
+            type: 'post',
+            success:function(res){
+                console.dir(res);
+                if(res.code == 200){
+                    // 添加成功
+                    swal(res.msg,res.msg, "success");
+                    location.reload();
+                    // window.location.reload();
+                }else{
+                    // 添加失败
+                    swal(res.msg, "请重新提交！", "success");
+                }
+            }
+        });
+    });
+
+</script>
+</block>

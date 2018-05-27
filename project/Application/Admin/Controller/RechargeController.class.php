@@ -701,5 +701,47 @@ class RechargeController extends CommonController
 
         // 返回JSON数据
         $this->ajaxReturn($data);
-    }
+	}
+	
+	public function currency_rate(){
+
+		$rate = D('website')->field('rmb_rate,gold_rate,silver_rate')->find();
+		$this->assign('rate',$rate);
+		$this->display();
+	}
+
+	public function update_currency_rate()
+	{
+		if(IS_POST){
+			// p(I(''));
+			$rules = array(
+				array('rmb_rate','require','人民币必须！'), //默认情况下用正则进行验证
+				array('rmb_rate','\is_numeric','人民币必须为数字',1,'function'), // 自定义函数验证密码格式
+				array('gold_rate','require','金币必须！'), //默认情况下用正则进行验证
+				array('gold_rate','\is_numeric','金币必须为数字',1,'function'), // 自定义函数验证密码格式
+				array('silver_rate','require','银币必须！'), //默认情况下用正则进行验证.
+				array('silver_rate','\is_numeric','银币必须为数字',1,'function'), // 自定义函数验证密码格式
+		   );
+		   $rate = D("website"); // 实例化User对象
+		   if (!$rate->validate($rules)->create()){
+				// 如果创建失败 表示验证没有通过 输出错误提示信息
+				$this->ajaxReturn(['code'=>300,'mag'=>$rate->getError()]);
+		   }else{
+				// 验证通过 可以进行其他数据操作
+				if($rate->count()){
+					$savedata = [
+						'rmb_rate'=>I('rmb_rate'),
+						'gold_rate'=>I('gold_rate'),
+						'silver_rate'=>I('silver_rate')
+					];
+					$res = M('website')->where(1)->save($savedata);
+				} else {
+					$res = $rate->data(['rmb_rate'=>I('rmb_rate'),'gold_rate'=>I('gold_rate'),'silver_rate'=>I('silver_rate')])->add();
+				}
+				$this->ajaxReturn(['code'=>200,'mag'=>'success','data'=>$res]);
+		   }
+		   	
+			return;
+		} 
+	}
 }
