@@ -15,7 +15,7 @@ class ShopController extends CommonController
         if(IS_AJAX){
             $goods = D('Goods');
             $cartInfo = M('Cart')->where('uid='.session('user.id'))->count();
-            $cate = M('Category')->select();
+            $cate = M('Category')->where('pid=0')->select();
             $map['pr.grade'] = session('user.grade');
             $map['gd.status'] = 0;
             $map['g.status'] = array('neq', 2);
