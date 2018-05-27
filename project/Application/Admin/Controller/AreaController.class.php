@@ -9,6 +9,7 @@ class AreaController extends CommonController
      */
     public function index()
     {
+
         $this->display();
     }
 

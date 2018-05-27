@@ -150,7 +150,7 @@ class RuleController extends CommonController{
             $rule_data=D('AuthRule')->getTreeData('level','id','title');
             $assign=array(
                 'group_data'=>$group_data,
-                'rule_data'=>$rule_data
+                'rule_data'=>$rule_data['data']
                 );
             $this->assign($assign);
             $this->display();
