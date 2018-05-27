@@ -12,10 +12,11 @@ class OrderDetailModel extends BaseModel
             ->join('__SHOP_ORDER__ o ON od.order_id=o.order_id', 'LEFT')
             ->join('__GOODS__ g ON od.gid=g.id', 'LEFT')
             ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid','LEFT')
-            ->join('st_goods_courier gc ON gc.gid = od.gid AND gc.cid = od.cid','LEFT')
-            ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
-            ->join('__ADDRESS__ a ON o.address_id=a.id', 'LEFT')
-            ->field('g.name gname,od.num,od.price,od.express,od.express_name,gd.desc productbrief,a.name,a.phone,a.address,p.path,o.status os,gc.cprice')
+            // ->join('st_goods_courier gc ON gc.gid = od.gid AND gc.cid = od.cid','LEFT')
+            // ->join('__PIC__ p ON p.gid=g.id','LEFT')
+            // ->join('__ADDRESS__ a ON o.address_id=a.id', 'LEFT')
+            ->field('od.num,od.price,od.express,od.express_name,gd.desc productbrief,od.gname,od.gpic,od.cname,od.cprice,o.status os')
+
             ->select();
         return $data; 
     }

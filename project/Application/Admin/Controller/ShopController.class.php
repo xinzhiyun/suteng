@@ -787,6 +787,8 @@ class ShopController extends CommonController
         $order = D('ShopOrder');
         $data = $order->getOrders($map);
 
+        // dump($data);
+
         // $data = $order
         //             ->alias('o')
         //             ->join('st_users u ON o.uid = u.id','LEFT')
@@ -885,10 +887,16 @@ class ShopController extends CommonController
             $data = $orderDetail->getInfo($map);
         }
         
+        //将订单商品总价加上商品的快递费
+        foreach ($data as $key => $value) {
+            $userInfo['g_price'] += $value['cprice'];
+        }
+
         $assign = [
             'userInfo' => $userInfo,
             'data'     => $data,
         ];
+
         $this->assign($assign);
         $this->display('orderDetail');
     }
