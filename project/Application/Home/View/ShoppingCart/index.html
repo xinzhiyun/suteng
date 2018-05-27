@@ -96,6 +96,7 @@
 										'<input type="button" value="+" class="plus">'+
 									'</span>'+
 								'</p>'+
+								'<p class="'+res[i].gid+' stock">暂无库存</p>'+
 							'</div>'+
 						'</div>';
 					}
@@ -137,25 +138,39 @@
 				// 将购物车选中的商品存到本地sessionStorage, 给订单确认页面使用
 				sessionStorage.setItem("shopCar_data",JSON.stringify(shopCar_data));
 				console.log(shopCar_data)
-				
 				// 发送ajax请求让后台生成订单号
 				$.ajax({
 					url: '{{:U("PaymentSystem/information")}}',
 					type: 'post',
 					data: {'data':JSON.stringify(shopCar_data)},
 					success: function(res){
-						console.log('成功！', res);
-						if(typeof JSON.parse(res) == 'number'){
-							sessionStorage.setItem('order_id',res);
-
+						console.log('库存查询成功！', res);
+						var resType = typeof res;
+						// typeof JSON.parse(res): number--返回订单号  object--查询到某商品无库存
+						if(resType == 'string'){
+							sessionStorage.setItem('order_id',Number(res));
 							// 跳转到订单确认页面
 							location.href = '{{:U("Pay/payConfirm")}}?order_id=' + res;
-						} else {
+						} else if(resType == 'object') {
+							if(res.code == "604") {
+								for(var i = 0; i < res.data.length; i++) {
+									if(res.data[i].status == "fail") {
+										console.log(res.data[i].status)
+										// 显示无库存提示
+										$("."+res.data[i].gid).css("display", "block");
+										// 让无库存的商品去掉勾勾
+										$("."+res.data[i].gid).parent(".itemcarRight").siblings(".itemcarLeft").children(".xuanzhong").children("i").addClass("icon-kuang1").removeClass("icon-xuanze");
+									}
+								}
+
+							}
+						}else {
 							parent.layer.msg('系统异常');
 						}
 					},
 					error: function(res){
 						console.log('失败！', res);
+						parent.layer.msg('系统异常');
 					}
 				})
 			}else{
