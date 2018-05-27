@@ -11,8 +11,9 @@ class RuleController extends CommonController{
     public function index(){
         $data=D('AuthRule')->getTreeData('tree','id','title');
         $assign=array(
-            'data'=>$data
+            'data'=>$data['data']
             );
+
 
         $this->assign($assign);
         $this->display('Rule/index');
