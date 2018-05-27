@@ -102,8 +102,8 @@ class OrderController extends CommonController
                         ->join('__GOODS__ g ON g.id = d.gid','LEFT')
                         ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
                         // ->join('__PIC__ p ON g.id = p.gid','LEFT')
-                        ->field(array('g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','d.express_name','d.express','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire','d.cprice','d.gid'=>'id'))
-                        ->relation('pics')
+                        ->field(array('g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','d.express_name','d.express','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire','d.cprice','d.gid'=>'id','d.gpic'))
+                        // ->relation('pics')
                         ->select();
                         break;
                     case 2;
@@ -129,7 +129,7 @@ class OrderController extends CommonController
                 $message    = ['code' => 200, 'message' => '订单查询成功!','data'=>$waitpaylist];
             }
             // echo '<pre>';                         
-            // print_r($showData);
+            // print_r($message);
             // 返回JSON格式数据
             $this->ajaxReturn($message); 
         }
