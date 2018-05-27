@@ -40,7 +40,8 @@ class DeviceController extends CommonController
             $device = D('Devices');
             $user_device = D('UserDevice');
             $uid = session('user.id');
-            $code = I('post.device_code');
+            $code = trim(I('post.device_code'));
+
             $device->startTrans();
             $res = $device->where('device_code='.$code)->find();
             if(!$res) E('设备不存在',603);
@@ -97,6 +98,9 @@ class DeviceController extends CommonController
                 $_SESSION['device']['did'] = $did;
                 $_SESSION['user']['did'] = $did;
                 $device->commit();
+
+                // 激活设备
+                R('Api/Action/devices_init',[$code]);
                 
                 E('设备绑定成功',200);
             } else {

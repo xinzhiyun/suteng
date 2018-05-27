@@ -413,13 +413,13 @@ class ActionController extends Controller
     }
 
     /**
-     * 设备初始化  (待完善)
+     * 设备初始化
      * @param  [type] $dcode [description]
      * @return [type] [description]
      *
      * @Author 李振东 lzdong@foxmail.com 2018-04-02
      */
-    public function devices_init($dcode,$data)
+    public function devices_init($dcode,$data=[])
     {
         $message['DeviceID'] = $dcode;
         $message['PackType'] = "SetData";
@@ -429,29 +429,47 @@ class ActionController extends Controller
         $filter =  $this->get_filter_info($dcode);
         foreach ($filter as $key =>$value) {
             $i =$key+1;
-            $sdata[ 'ReFlowFilter'.$i]      =$value['flowlife'];
-            $sdata[ 'FlowLifeFilter'.$i]    =$value['flowlife'];
+            $sdata[ 'ReFlowFilter'.$i]      = $value['flowlife'];
+            $sdata[ 'FlowLifeFilter'.$i]    = $value['flowlife'];
 
-            $sdata[ 'ReDayFilter'.$i]       =$value['timelife'];
-            $sdata[ 'DayLifeFiter'.$i]      =$value['timelife'];
+            $sdata[ 'ReDayFilter'.$i]       = $value['timelife'];
+            $sdata[ 'DayLifeFiter'.$i]      = $value['timelife'];
         }
-
-//        $sdata['ReDay']     = '3';
-        $sdata['SumDay']    = 0;
-        $sdata['AliveStause']=1;
-        $sdata['FilterMode']=0;
-        $sdata['LeasingMode']=2;
-        $sdata['data_statu']=2;
-
         $message = array_merge($message,$sdata);
 
+        if(empty($data['ReDay'])){
+            $message['Reday']         = $sdata['Reday']           = '365';
+        }
+
+        if(empty($data['SumDay'])){
+            $message['SumDay']        = $sdata['SumDay']           = '0';
+        }
+
+        if(empty($data['AliveStause'])){
+            $message['AliveStause']   = $sdata['AliveStause']     = '1';
+        }
+
+        if(empty($data['FilterMode'])){
+            $message['FilterMode']    = $sdata['FilterMode']     = '0';
+        }
+
+        if(empty($data['LeasingMode'])){
+            $message['LeasingMode']   = $sdata['LeasingMode']     = '0';
+        }
+
+        if(empty($data['data_statu'])){
+            $sdata['data_statu']      = '2';
+        }
+
         $id = M('devicesStatu')->where('DeviceID='.$dcode)->getField('id');
+
         if(empty($id)) {
             $sdata['DeviceID'] = $dcode;
-            M('devicesStatu')->add($sdata);
+            $res = M('devicesStatu')->add($sdata);
         } else {
-            M('devicesStatu')->where('id='.$id)->save($sdata);
+            $res = M('devicesStatu')->where('id='.$id)->save($sdata);
         }
+
         $this->sendMsg($message);
     }
 
@@ -460,7 +478,7 @@ class ActionController extends Controller
         //$this->sysnc('868575025659808');
 //
 
-        $this->get_filter_info('868575025659808');
+        $this->devices_init('868575025659808');
 
 //        $message['DeviceID'] = '868575025672249';
 //        $message['PackType'] = "SetData";
