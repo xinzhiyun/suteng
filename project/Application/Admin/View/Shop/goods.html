@@ -157,7 +157,7 @@
                                                 <a href="javascript:;" onclick="edit({{$v['gid']}})" class="btn btn-outline btn-success">
                                                     商品描述
                                                 </a>
-                                                <a href="goodEdit?gid={{$v['gid']}}" class="btn btn-outline btn-success">
+                                                <a href="{{:U('goodEdit')}}?gid={{$v['gid']}}" class="btn btn-outline btn-success">
                                                     修改
                                                 </a>
                                             </div>
@@ -336,7 +336,7 @@
                 shade: true //不显示遮罩
             }, function(){
                 $.ajax({
-                    url:'goodsDel',
+                    url:'{{:U('goodsDel')}}',
                     type:'post',
                     dataType:'json',
                     data:{'id':goodsId},
@@ -362,7 +362,7 @@
                 }, function() {
                     // alert(status);
                     $.ajax({
-                        url:'edidStatus',
+                        url:'{{:U('edidStatus')}}',
                         data:{'id':id,'status':status},
                         type:'post',
                         dataType:'json',
@@ -387,7 +387,7 @@
             var gid = $(this).attr('goods');
             var html = "";
             $.ajax({
-                url:'price',
+                url:'{{:U('price')}}',
                 type:'post',
                 data:{'gid':gid},
                 success:function(res){
@@ -445,7 +445,7 @@
             var gid = $(this).attr('cgoods');
             var html = "";
             $.ajax({
-                url:'goodsCourierList',
+                url:'{{:U('goodsCourierList')}}',
                 type:'post',
                 data:{'gid':gid},
                 success:function(res){
