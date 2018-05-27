@@ -146,7 +146,7 @@ class ActionController extends Controller
             }
         }
 
-        Device::get_devices_info($message['DeviceID'],'sid');
+//        Device::get_devices_info($message['DeviceID'],'sid');
     }
 
     /**
@@ -221,6 +221,11 @@ class ActionController extends Controller
             if ($message['PackNum'] == 6 ) {  //激活
                 M('devices_statu')->where("id=" . $message['sid'])->save(['data_statu'=>0,
                     'AliveStause'=>1]);
+                $did = Device::get_devices_info($message['DeviceID'],'id');
+                if($did){
+                    M('devices')->where('id='.$did)->save(['device_statu'=>3]);
+                }
+
             }
 
             if ($message['PackNum'] == 4 ) { //定时任务

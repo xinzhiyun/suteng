@@ -59,11 +59,10 @@ class DevicesController extends CommonController
             ->join('__USER_DEVICE__ ud ON d.id=ud.did', 'LEFT')
             ->join('__USERS__ u ON ud.uid=u.id', 'LEFT')
             ->limit($Page->firstRow.','.$Page->listRows)
-            ->field('d.device_code,d.type_id,d.vid,d.addtime,v.user,ud.uid,d.device_statu,t.typename,ds.AliveStause,u.nickname')
+            ->field('d.device_code,d.type_id,d.vid,d.addtime,v.user,ud.uid,d.device_statu,t.typename,ds.alivestause,u.nickname')
             ->order('d.addtime desc,d.id desc')
             ->select();
         $filterType = M('type')->where(['status'=>0])->select();
-        // dump($devices);
         $assign = [
             'deviceInfo' => $devices,
             'deviceType' => $filterType,
