@@ -787,6 +787,10 @@ class ShopController extends CommonController
         $order = D('ShopOrder');
         $data = $order->getOrders($map);
 
+        foreach ($data['data'] as $key => $value) {
+            $data['data'][$key]['cprice'] = '订单详情查看';
+        }
+
         // dump($data);
 
         // $data = $order
