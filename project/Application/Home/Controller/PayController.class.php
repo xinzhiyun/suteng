@@ -85,10 +85,15 @@ class PayController extends Controller
             $goodsCourier[$value['gid']] = M('goods_courier')->where('gid='.$value['gid'])->field('gid,cid,cname,cprice')->select();
         }
         // p($OrderDetail);
+
+        $showUser['open_id'] = $_SESSION['open_id'];
+        // // 执行查询
+        $user = M('users')->where($showUser)->find();
         $assign = [
             'data' => json_encode($data),
             'goodsCourier' => json_encode($goodsCourier),
-            'gtype' => $order['gtype']
+            'gtype' => $order['gtype'],
+            'user' => $user
         ];
         $this->wx_info();
 
