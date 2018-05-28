@@ -667,7 +667,7 @@
 							return false
 						}
 						//如果有默认地址
-						if($("#addressInfo").val()){
+						if($("#addressInfo").val()){ 
 							//请求微信支付方法
 							$.ajax({
 								url: "{{:U('Home/PaymentSystem/orderPayBySilver')}}",
