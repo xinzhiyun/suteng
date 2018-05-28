@@ -292,7 +292,7 @@ class PaymentSystemController extends CommonController
             // $this->uniformOrder(100,123456,'content');
         }
     }
-    
+
   // 金币支付订单
   public function orderPayByGold(){
     if(IS_POST){
@@ -389,7 +389,101 @@ class PaymentSystemController extends CommonController
     }
 }
 
+ // 银币支付订单
+  public function orderPayBySilver(){
+    if(IS_POST){
+        // echo 1;
+        // // 准备订单查询数据
+        $showWhere['order_id'] = I('post.order');
+            
+        // // 查询订单表
+        $orderData = M('shop_order')->where($showWhere)->find();
+        $orders = M('OrderDetail')->where($showWhere)->field('cprice,num')->select();
+        $yunfei = 0;
+        foreach($orders as $key => $val){
+            $yunfei += $val['cprice'] * $val['num'];
+        }
+        
+        // p($orderData);
+        // 判断订单未支付
+        if($orderData['status']==8){
+            // 订单金额
+            $money = $orderData['g_price'];
+            $true_money = $money + $yunfei;
+            // 订单号码
+            $order_id = $orderData['order_id'];
 
+            // 1. 剩余金币检测，支付订单（减相应的金币）
+                // 1.1 剩余金币检测
+                $showUser['open_id'] = $_SESSION['open_id'];
+                $user = M('users');
+                $gold_num = $user->where($showUser)->field('silver')->find();
+
+                // 1.2 查询相应金币费率
+                $gold_rate = D('website')->field('silver_rate')->find();
+                // 1.3 订单金额与金币
+                $gold_num_true = (int)$gold_num['gold_num'] * (float)$gold_rate;
+                if((float)$true_money > $gold_num_true){
+                    $this->ajaxReturn(['code'=>1001,'msg'=>'金币不足']);
+                }
+
+                // 4.1 库存检测
+            
+            
+                // 1.4 支付订单
+            M()->startTrans();
+            try{
+                
+                $pay_res = $user->where($showUser)->setDec('silver',$true_money);
+                if(!$pay_res){
+                    E('支付失败',1002);
+                }
+            // 2. 更改订单状态，支付类型更新
+                $uid = $orderData['uid'];
+
+                $shopOrder = D('ShopOrder');
+                $orderDetail = D('OrderDetail');
+                $inventory = D('inventory');
+
+                $rs = $shopOrder->where(['order_id'=>$order_id,'uid'=>$uid])->setField(['status'=>9,'mode'=>3]);
+               
+            // 3. 表票金额录入
+                $order_goods = $orderDetail->field('gid,num')->where(['order_id'=>$order_id])->select();
+                // p($order_goods);die;
+                D('invoice')->where(['oid'=>$order_id])->save(['oprice'=>$orderData['g_price']]);
+                foreach($order_goods as $good){
+                    $display_order[$good['gid']] = $good['num'];
+                }
+            // 4. 库存检测，减库存
+                $ids = implode(',', array_keys($display_order));
+
+                $sql = "UPDATE st_inventory SET allnum = CASE gid ";
+                foreach ($display_order as $id => $ordinal) {
+                    $sql .= sprintf("WHEN %d THEN allnum - %d ", $id, $ordinal);
+                }
+                $sql .= "END WHERE gid IN ($ids)";
+                file_put_contents('./wxcallback.txt',$sql."\r\n\r\n", FILE_APPEND);
+                $Model = new \Think\Model(); // 实例化一个model对象 没有对应任何数据表
+                $res = $Model->execute($sql);
+            // 5. 订单支付完成返回信息
+
+                M()->commit(); 
+                $this->ajaxReturn(['code'=>200,'msg'=>'支付成功']);
+            }catch(\Exception $e){
+                M()->rollback();
+                $err = [
+                    'code' => $e->getCode(),
+                    'msg' => $e->getMessage()
+                ];
+                $this->ajaxReturn($err);
+            }
+        }else{
+            // 订单不存在
+            echo -1;
+        }
+        // $this->uniformOrder(100,123456,'content');
+    }
+}
     // 套餐支付
     public function choosePay()
     {
