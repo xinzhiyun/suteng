@@ -1,5 +1,16 @@
 <extend name="Public/base" />
 <block name="content">
+    <style>
+        #v_body tr .controlBtn{
+            position: relative;
+            display: inline-block;
+            vertical-align: middle;
+            left:50%;
+            font-size: 22px;
+            margin-left: -11px;
+
+        }
+    </style>
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row-fluid fl" id="main">
             <div class="tableBox">
@@ -25,30 +36,27 @@
                                 <th>操作</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="v_body">
                             <foreach name="data" item="v">
-                                <tr>
+                                <tr class="tr_{{$v.parentid}}" id="tr_{{$v.id}}" data-id="{{$v.id}}" sp_num="1">
                                     <td>
-                                        {{$v['_name']}}
+                                        <a class="fa fa-angle-double-right controlBtn"></a>
                                     </td>
-                                    <td>
-                                        {{$v['_name']}}
-                                    </td>
-                                    <td>
-                                        {{$v['name']}}
-                                    </td>
+                                    <td>{{$v.id}}</td>
+                                    <td>{{$v.areaname}}</td>
+                                    <td>{{$v.zipcode}}</td>
+                                    <td>{{$v.parentid}}</td>
+                                    <td>{{$v.sort}}</td>
                                     <td>
                                         <div class="btn-group">
-                                            <a class="btn btn-outline btn-success" href="javascript:;" ruleId="{{$v['id']}}" onclick="add_child(this)">
+                                            <a class="btn btn-outline btn-success _addChildBnt" href="javascript:;" >
                                                 添加子地址
                                             </a>
-                                            <a class="btn btn-outline btn-success" href="javascript:;" ruleId="{{$v['id']}}" ruleName="{{$v['name']}}" ruleTitle="{{$v['title']}}"
-                                            onclick="edit(this)">
+                                            <a class="btn btn-outline btn-success _editBnt" href="javascript:;">
                                                 修改
                                             </a>
-                                            <a class="btn btn-outline btn-success deletBnt" ruleId="{{$v['id']}}">
+                                            <a class="btn btn-outline btn-success _deletBnt" >
                                                 删除
-
                                             </a>
                                         </div>
                                     </td>
@@ -155,6 +163,72 @@
 <block name="myjs">
     <script src="__PUBLIC__/Admin/layui/layui.js"></script>
     <script>
+        $('#v_body').delegate('.controlBtn','click',function () {
+            var mark = $(this).parents('tr').attr('id');
+            if ($(this).is('.fa-angle-double-down')) {
+                $('.'+mark).remove();
+            }
+            $(this).toggleClass('fa-angle-double-right fa-angle-double-down');
+        });
+
+        $('#v_body').delegate('.fa-angle-double-right','click',function () {
+            var obj = $(this).parents('tr');
+            var parentid  = obj.attr('data-id');
+            var sp_num  = obj.attr('sp_num');
+            var new_sp_num = sp_num-0+1;
+
+            var pre = '';
+            for (let i = 0; i < sp_num; i++) {
+                pre += "&nbsp;&nbsp;&nbsp;&nbsp;";
+            }
+            pre += '|--';
+
+
+            // $('.tr_'+parentid).remove();
+            // console.log(obj.siblings())
+            // obj.siblings().fadeOut();
+
+            var url = "{{:U('Admin/Area/getNextArea')}}";
+            // 提交表单
+            $.ajax({
+                url: url,
+                type: "post",
+                data: {parentid:parentid},
+                success: function(res) {
+                    console.log("成功", res);
+                    if(res.status == 200) {
+                        var _html = "";
+                        $.each(res.data,function (key, value) {
+                            _html +='<tr class="tr_'+value.parentid+'" id="tr_'+value.id+'" data-id="'+value.id+'" sp_num="'+new_sp_num+'">';
+                            _html +='<td> <a class="fa fa-angle-double-right controlBtn"></a> </td>';
+                            _html +='<td>'+value.id+'</td>';
+                            _html +='<td>'+pre+value.areaname+'</td>';
+                            _html +='<td>'+value.zipcode+'</td>';
+                            _html +='<td>'+value.parentid+'</td>';
+                            _html +='<td>'+value.sort+'</td>';
+                            _html +='<td><div class="btn-group">' +
+                                '<a class="btn btn-outline btn-success _addChildBnt" href="javascript:;" >添加子地址</a>' +
+                                '<a class="btn btn-outline btn-success _editBnt" href="javascript:;">修改</a>' +
+                                '<a class="btn btn-outline btn-success _deletBnt" >删除</a></div></td>';
+                            _html +="</tr>";
+                        })
+                        obj.after(_html)
+
+
+                    }else {
+
+                    }
+                },
+                error: function(res) {
+                    console.log("失败", res);
+
+                }
+            })
+
+
+        });
+
+
         // 添加新地址
         function add() {
             $("input[name='title'],input[name='name']").val('');
