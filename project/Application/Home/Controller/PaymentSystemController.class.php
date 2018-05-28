@@ -383,7 +383,7 @@ class PaymentSystemController extends CommonController
             }
         }else{
             // 订单不存在
-            echo -1;
+            $this->ajaxReturn(['code'=>-1,'msg'=>'已支付']);
         }
         // $this->uniformOrder(100,123456,'content');
     }
