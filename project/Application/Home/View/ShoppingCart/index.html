@@ -160,6 +160,7 @@
 										$("."+res.data[i].gid).css("display", "block");
 										// 让无库存的商品去掉勾勾
 										$("."+res.data[i].gid).parent(".itemcarRight").siblings(".itemcarLeft").children(".xuanzhong").children("i").addClass("icon-kuang1").removeClass("icon-xuanze");
+											parent.layer.msg(res.msg);
 									}
 								}
 

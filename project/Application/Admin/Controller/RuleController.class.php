@@ -11,8 +11,9 @@ class RuleController extends CommonController{
     public function index(){
         $data=D('AuthRule')->getTreeData('tree','id','title');
         $assign=array(
-            'data'=>$data
+            'data'=>$data['data']
             );
+
 
         $this->assign($assign);
         $this->display('Rule/index');
@@ -149,7 +150,7 @@ class RuleController extends CommonController{
             $rule_data=D('AuthRule')->getTreeData('level','id','title');
             $assign=array(
                 'group_data'=>$group_data,
-                'rule_data'=>$rule_data
+                'rule_data'=>$rule_data['data']
                 );
             $this->assign($assign);
             $this->display();

@@ -116,14 +116,17 @@
 				点击提交
 			*/
 			var href = location.href;
-			var orderid;
+			var orderid,gid;
 			var successFlag = true;
 			if(href.indexOf('?orderid=') > -1){
 				orderid = href.substr(href.indexOf('?orderid=')+9);
+				gid = JSON.parse(sessionStorage.getItem("pinglunObj")).gid;
 			}
 			$("#submit").on('click',function(){
 				var formData = new FormData($('#form')[0]);	// 评论的数据
 				formData.append('orderid',orderid);
+				formData.append('orderid',gid);
+				console.log(formData)
 				var pic = $('#picShow>span').length;
 				if(!$("#shopping").val()){
 					layuiHint("请您对我们的商品做出评价呗");
