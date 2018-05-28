@@ -217,6 +217,25 @@ abstract class Controller
     }
 
     /**
+     * 接口返回
+     * @param $e
+     * @param string $msg
+     * @param int $status
+     */
+    public function toJson($res, $msg='', $status=200)
+    {
+        if(is_array($res)){
+            $res=array_merge($res,['status'=>$status,'msg'=>$msg]);
+        }else{
+            $res = [
+                'status' => $res->getCode(),
+                'msg' =>   $res->getMessage(),
+            ];
+        }
+        $this->ajaxReturn($res,'JSON');
+    }
+
+    /**
      * Ajax方式返回数据到客户端
      * @access protected
      * @param mixed $data 要返回的数据

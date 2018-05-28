@@ -20,6 +20,14 @@ class AddressController extends CommonController
         $this->display();
     }
 
+    public function getNextArea()
+    {
+        $parentid = I('parentid',0);
+        $data = M('area')->where('parentid='.$parentid)->select();
+
+        $this->toJson(['data'=>$data],'获取成功');
+    }
+
     /**
      * [newAddress 添加新地址]
      * @return [type] [description]
