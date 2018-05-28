@@ -64,7 +64,7 @@ body {
 #info>div>span:nth-of-type(2)>label {
 	color: #8b8787;
 }
-.area, .town {   
+.areabtn, .town {   
 	width: 96%;
 	margin-left: 10px;
 	border: none;
@@ -89,11 +89,11 @@ body {
 }
 .areaChoosebg {
 	width: 100vw;
-	height: 50vh;
+	height: 40vh;
 	background: rgba(0,0,0, .4);
 }
 .areaDiv {
-	height: 36vh;
+	height: 50vh;
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -103,46 +103,73 @@ body {
 	-webkit-box-align: center;
 	    -ms-flex-align: center;
 	        align-items: center;
+	flex-flow: column;
 	background: #fff;
 }
+
 /*弹出地区选择底部的确认按钮*/
 #confirmAreaChoose {
 	height: 14vh;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-pack: center;
-	    -ms-flex-pack: center;
-	        justify-content: center;
-	-webkit-box-align: center;
-	    -ms-flex-align: center;
-	        align-items: center;
+	width: 100%;
 	background: #fff;
 }
 #confirmAreaChoose>div {
 	width: 80%;
-	padding: 2%;
+	height: 6vh;
+	line-height: 6vh;
+	position: relative;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
 	text-align: center;
 	color: #fff;
 	border-radius: 4px;
 	background: #2EB6AA;
 }
-.areaDiv>p {
+.areaDiv>div {
+	width: 100%;
+	height: 12vmin;
+	line-height: 12vmin;
+	border-bottom: 1px solid #eee;
+}
+.areaDiv>div::after {
+	content: '';
+	visibility: hidden;
+	zoom: 1;
+	clear: both;
+}
+.areaDiv>div>span {
+	width: 33%;
+	float: left;
+	text-align: center;
+}
+.areaDiv>ul {
 	width: 80%;
+	height: 100%;
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
-	-webkit-box-orient: vertical;
-	-webkit-box-direction: normal;
-	    -ms-flex-flow: column;
-	        flex-flow: column;
+	height: 100%;
+	overflow-y: hidden;
 }
-.areaDiv>p>select {
+.areaDiv>ul>li {
+	flex: 1;
 	width: 80%;
+	height: 100%;
 	padding: 1% 2%;
 	margin: 10px auto;
 	border-radius: 4px;
 	background: #fff;
+	overflow-y: scroll;
+}
+.addrselect {
+	color: #2eb6aa;
+	font-weight: 600;
+}
+.areaDiv>ul p {
+	margin: 20px 0;
 }
 /*详细地址*/
 textarea {

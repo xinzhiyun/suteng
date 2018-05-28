@@ -20,7 +20,7 @@
 		<div>
 			<span>所在地区:</span>
 			<span>
-				<input type="text" id="areaID" class="area" onfocus="this.blur()" placeholder="请选择 >">
+				<input type="text" id="areaID" class="areabtn" onfocus="this.blur()" placeholder="请选择 >">
 			</span>
 			
 		</div>
@@ -36,20 +36,22 @@
 	<div id="areaChoose" class="citys">
 		<div class="areaChoosebg"></div>
         <div class="areaDiv">
-			<p>
-				<select name="province">
-                	<option value="440000" data-code="440000">广东省</option>
-                </select>
-                <select name="city">
-                	<option value="440100" data-code="440100">广州市</option>
-                </select>
-                <select name="area">
-                	<option value="440103" data-code="440103">番禺区</option>
-                </select>
-	            <select name="town">
-	            	<option value="440113015">钟村街道</option>
-	            </select>
-			</p>
+        	<div>
+        		<span>省份</span>
+        		<span>城市</span>
+        		<span>区县</span>
+        	</div>
+			<ul>
+				<li class='province'>
+					<p></p>
+				</li>
+				<li class='city'>
+					<p></p>
+				</li>
+				<li class='area'>
+					<p></p>
+				</li>
+			</ul>
     	</div>
     	<div id="confirmAreaChoose">
     		<div>确定</div>
@@ -62,7 +64,7 @@
 		<input id="normalAddrdess" type="checkbox">
 	</div>
 	<footer id="footer">
-		<input type="button" id="saveAddress" value="存储">
+		<input type="button" id="saveAddress" value="保存">
 	</footer>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
@@ -78,8 +80,7 @@
 			//将编辑的地址信息显示在编辑框中
 			$(".name").val(editAddressOld.name);
 			$(".phone").val(editAddressOld.phone);
-			$(".area").val(editAddressOld.province+editAddressOld.city+editAddressOld.area);
-			$(".town").val(editAddressOld.town);
+			$(".areabtn").val(editAddressOld.province+editAddressOld.city+editAddressOld.area);
 			$("#addressDetial").val(editAddressOld.address);
 			if(editAddressOld.status == 0){
 				//选的是默认地址
@@ -112,12 +113,11 @@
 	    phoneReg = /^1((((3[0-35-9])|([5|8][0-9])|(4[5|7|9])|66|(7[3|5-8])|(9[8|9]))\d)|(34[0-8]))\d{7}$/;
 	    areaReg = /^[\w\-\u4e00-\u9fa5]{2,255}$/u;
 
-	    // 点击’存储‘
+	    // 点击“保存”
 	    $("#saveAddress").click(function(){
 	    	var nameRes = nameReg.test($(".name").val());
 	    	var phoneRes = phoneReg.test($(".phone").val());
 	    	var areaIDRes = nameReg.test($("#areaID").val());
-	    	var townRes = nameReg.test($(".town").val());
 	    	var addressDetialRes = nameReg.test($("#addressDetial").val());
 
 	    	var editAddressObj = {};	//存储需要发送给后台的数据
@@ -135,10 +135,13 @@
 				}
 				if(addressChange){	//如果有修改地址
 
-					editAddressObj['province'] = $("select[name='province']").find("option:selected").text();
-					editAddressObj['city'] = $("select[name='city']").find("option:selected").text();
-					editAddressObj['area'] = $("select[name='area']").find("option:selected").text();
-					editAddressObj['town'] = $("select[name='town']").find("option:selected").text();
+			    	editAddressObj['province'] = province;
+			    	editAddressObj['city'] = city;
+			    	editAddressObj['area'] = area;
+
+					editAddressObj['province'] = $(".province").find(".addrselect").text();
+					editAddressObj['city'] = $(".city").find(".addrselect").text();
+					editAddressObj['area'] = $(".area").find(".addrselect").text();
 					editAddressObj['address'] = editAddressObj['province']+editAddressObj['city']+editAddressObj['area']+editAddressObj['town']+$("#addressDetial").val();
 					
 				}else{
@@ -148,7 +151,7 @@
 				// console.log('editAddressOld: ',editAddressOld)
 				console.log('editAddressObj: ', editAddressObj)
 				editAddressObj['id'] = editAddressOld.id;		//地址id
-				if(nameRes && phoneRes && areaIDRes && townRes && addressDetialRes && $(".town").val() != ''){
+				if(nameRes && phoneRes && areaIDRes && addressDetialRes){
 
 		    		console.log('通过！');
 			    	if($("#normalAddrdess").attr("checked")){
@@ -235,10 +238,6 @@
 		    		// console.log('请选择地区！');
 		    		layHint('请选择地区！')
 		    		
-		    	}else if(!townRes || !$(".town").val()){
-		    		// console.log('请选择街道！');
-		    		layHint('请选择街道！')
-		    		
 		    	}else if(!addressDetialRes){
 		    		// console.log('请输入详细地址！');
 		    		layHint('请输入详细地址！')
@@ -254,98 +253,97 @@
 		    	// 存储新建地址的个人信息
 		    	var nameRes = nameReg.test($(".name").val());
 		    	var phoneRes = phoneReg.test($(".phone").val());
-		    	var areaIDRes = nameReg.test($("#areaID").val());
-		    	var townRes = nameReg.test($(".town").val());
+		    	var areaI = $("#areaID").val();
 		    	var addressDetialRes = nameReg.test($("#addressDetial").val());
 
 			    // console.log($("#normalAddrdess")[0].checked)
 		    	var newAddressObj = {};
-		    	if(nameRes && phoneRes && areaIDRes && townRes && addressDetialRes && $(".town").val() != '请选择'){
-		    		console.log('通过！')
-
-			    	newAddressObj['name'] = $(".name").val();
-			    	newAddressObj['phone'] = $(".phone").val();
-			    	newAddressObj['province'] = province;
-			    	newAddressObj['city'] = city;
-			    	newAddressObj['area'] = area;
-			    	newAddressObj['town'] = $("#townID").val();
-			    	newAddressObj['addressDetial'] = $("#addressDetial").val();
-			    	if($("#normalAddrdess").attr("checked")){
-			    		//设为默认地址
-			    		newAddressObj['status'] = 0;
-			    	}else{
-			    		newAddressObj['status'] = 1;
-			    	}
-			    	console.log(newAddressObj);
-			    	// 全部判断通过则发送请求让后台添加到数据库
-			    	$.ajax({
-			    		url: "{{:U('Address/newAddress')}}",
-			    		type: 'post',
-			    		data: newAddressObj,
-			    		success: function(res){
-			    			console.log('成功！ ', res);
-			    			layHint('添加成功！');
-			    			//后台返回信息添加成功后的操作
-			    			if(res.code == 200){
-				    			// 如果有订单号,自动跳回去订单提交那里
-				    			if(sessionStorage.getItem("order_id")){
-				    				// console.log("当前页面路径", window.location.search)
-									
-				    				// 如果有商品数据
-				    				if(goods_data || lvxinData || shopCar_data){
-				    					// 判断页面来源(滤芯和商城);
-										var buyType = window.location.search;
-										// 滤芯
-										if(buyType.substr(-1, 1) == '0') {
-											history.replaceState({}, null, '{{:U("Pay/lvxinPay")}}');
-											location.href = '{{:U("Pay/lvxinPay")}}';
-											
-										// 商城
-										}else if(buyType.substr(-1, 1) == '1') {
-											history.replaceState({}, null, '{{:U("Pay/payConfirm")}}');
-											location.href = '{{:U("Pay/payConfirm")}}';
-											
-										}
-				    					
-				    				}
-				    			}else{
-				    				// 无订单号， 回到‘我的’界面
-			    					history.replaceState({}, null, '{{:U("VipCenter/index")}}');
-			    					location.href = '{{:U("VipCenter/index")}}';
-			    				}
-				    		}else if(res.code == 605){
-		    					layHint('添加失败，请稍后再试！');
-				    		}else{
-				    			layHint('很抱歉，系统遇到未知问题！');
-				    		}
-			    		},
-			    		error: function(res){
-			    			console.log('失败！ ', res);
-			    		}
-			    	})
-
-		    	}else if(!nameRes){
+		    	if(!nameRes){
 		    		// 验证姓名
 		    		console.log('请输入符合规范的姓名！');
-		    		layHint('请输入合法的姓名！')
+		    		layHint('请输入合法的姓名！');
+		    		return
 
 		    	}else if(!phoneRes){
 		    		console.log('请输入正确的电话号码！');
 		    		layHint('请输入正确的电话号码！')
+		    		return
 
-		    	}else if(!areaIDRes){
+		    	}else if(!area){
 		    		console.log('请选择地区！');
+		    		console.log('areaIDRes: ',areaIDRes, $("#areaID").val());
 		    		layHint('请选择地区！')
-		    		
-		    	}else if(!townRes || !$(".town").val()){
-		    		console.log('请选择街道！');
-		    		layHint('请选择街道！')
+		    		return
 		    		
 		    	}else if(!addressDetialRes){
 		    		console.log('请输入详细地址！');
 		    		layHint('请输入详细地址！')
+		    		return
 		    		
 		    	}
+
+		    	newAddressObj['name'] = $(".name").val();
+		    	newAddressObj['phone'] = $(".phone").val();
+		    	newAddressObj['province'] = province;
+		    	newAddressObj['city'] = city;
+		    	newAddressObj['area'] = area;
+		    	newAddressObj['province_id'] = province_id;
+		    	newAddressObj['city_id'] = city_id;
+		    	newAddressObj['area_id'] = area_id;
+		    	newAddressObj['addressDetial'] = $("#addressDetial").val();
+		    	if($("#normalAddrdess").attr("checked")){
+		    		//设为默认地址
+		    		newAddressObj['status'] = 0;
+		    	}else{
+		    		newAddressObj['status'] = 1;
+		    	}
+		    	console.log(newAddressObj);
+		    	// 全部判断通过则发送请求让后台添加到数据库
+		    	$.ajax({
+		    		url: "{{:U('Address/newAddress')}}",
+		    		type: 'post',
+		    		data: newAddressObj,
+		    		success: function(res){
+		    			console.log('成功！ ', res);
+		    			layHint('添加成功！');
+		    			//后台返回信息添加成功后的操作
+		    			if(res.code == 200){
+			    			// 如果有订单号,自动跳回去订单提交那里
+			    			if(sessionStorage.getItem("order_id")){
+			    				// console.log("当前页面路径", window.location.search)
+								
+			    				// 如果有商品数据
+			    				if(goods_data || lvxinData || shopCar_data){
+			    					// 判断页面来源(滤芯和商城);
+									var buyType = window.location.search;
+									// 滤芯
+									if(buyType.substr(-1, 1) == '0') {
+										history.replaceState({}, null, '{{:U("Pay/lvxinPay")}}');
+										location.href = '{{:U("Pay/lvxinPay")}}';
+										
+									// 商城
+									}else if(buyType.substr(-1, 1) == '1') {
+										history.replaceState({}, null, '{{:U("Pay/payConfirm")}}');
+										location.href = '{{:U("Pay/payConfirm")}}';
+										
+									}
+			    					
+			    				}
+			    			}else{
+			    				// 无订单号， 回到‘我的’界面
+		    					history.replaceState({}, null, '{{:U("VipCenter/index")}}');
+		    					location.href = '{{:U("VipCenter/index")}}';
+		    				}
+			    		}else if(res.code == 605){
+	    					layHint('添加失败，请稍后再试！');
+			    		}else{
+			    			layHint('很抱歉，系统遇到未知问题！');
+			    		}
+		    		},
+		    		error: function(res){
+		    			console.log('失败！ ', res);
+		    		}
+		    	})
 		   	}
 	    })
 	    //提示框函数
@@ -356,76 +354,127 @@
             });
 	    }
 
+	</script>
+	<script>
+		// 选择地区
+		$(".areabtn").on("click", function(){
+			$("#areaChoose").css({display: "block"});
+		});
 
-		var script = $("<script/>");
-		var scriptCode = `
-			// 选择地区
-			$(".area").on("click", function(){
-				$("#areaChoose").css({display: "block"});
-			});
+		// 获取地址数据
+		function getAddress(parentid, callback){
+			$.ajax({
+				url: '{{:U("Home/Address/getNextArea")}}',
+				type: 'post',
+				data: {parentid: parentid},
+				success: function(res){
+					console.log('res: ',res);
+					if(res.status == 200){
+						callback(res.data);	
+					}else{
+						layHint(res.msg);
+					}
+				},
+				error: function(err){
+					console.log('err: ',err);
+					layHint('系统遇到问题，请稍后再试');
+				}
+			})
+		}
 
-			var province,city,area,town;
+		// 获取省份数据
+		getAddress(0, function(res){
+			if(res.length){
+				var html = '';
+				for(var i=0; i<res.length; i++){
+					html += '<p aid='+ res[i].id +'>'+ res[i].areaname +'</p>';
+				}
+				$(".province").html(html);
+			}
+		});
 
-			// 关闭地区选择，并显示到对应区域
-			$("#confirmAreaChoose").on("click", function(){
-				
-				$("#areaID").val( (!province && !city && !area) ? '请选择' : province + city + area);
+		var province,city,area;
+		var province_id,city_id,area_id;
+		// 选择省份，城市，区县
+		$('.areaDiv').on('click', 'p', function(){
+			var parent = $(this).parent()[0].className;
+			var aid = $(this).attr('aid');	// 省份id
+			var _this = $(this);
+			console.log('parent: ',parent);
 
-				// 获取 街道 选中的值
-				$("#townID")
-				.val(
-					!($('#areaChoose select[name="town"]').find("option:selected").text())
-					? '请选择'
-					: $('#areaChoose select[name="town"]').find("option:selected").text()
-				);
+			// 根据省份id 获取城市数据
+			getAddress(aid, function(res){
+				if(parent == 'province'){
+					province = _this.text();
+					province_id = _this.attr('aid');
+					console.log('cityres: ',res);
+					// 点击省份
+					console.log('city: ');
+					var cityhtml = '';
+					for(var i=0; i<res.length; i++){
+						cityhtml += '<p aid='+ res[i].id +'>'+ res[i].areaname +'</p>';
+					}
+					$('.city').html(cityhtml);
+					for(var j=0; j<$('.province>p').length; j++){
+						$('.province>p').eq(j).removeClass('addrselect');
+					}
+					_this.attr('class','addrselect');
 
-				$("#areaChoose").css({display: "none"});
-				// console.log($('#areaChoose select[name="town"]').find("option:selected"));
+				}else if(parent == 'city'){
+					city = _this.text();
+					city_id = _this.attr('aid');
+					// 点击城市
+					console.log('areares: ',res);
+					var areahtml = '';
+					for(var i=0; i<res.length; i++){
+						areahtml += '<p aid='+ res[i].id +'>'+ res[i].areaname +'</p>';
+					}
+					$('.area').html(areahtml);
+					for(var j=0; j<$('.city>p').length; j++){
+						$('.city>p').eq(j).removeClass('addrselect');
+					}
+					_this.attr('class','addrselect');
 
-			});
+				}else if(parent == 'area'){
+					area = _this.text();
+					area_id = _this.attr('aid');
+					// 点击区县
+					console.log('area: ',_this);
+					for(var j=0; j<$('.area>p').length; j++){
+						$('.area>p').eq(j).removeClass('addrselect');
+					}
+					_this.attr('class','addrselect');
+				}
+				console.log('province,city,area: ',province,city,area);
+				console.log('province_id,city_id,area_id: ',province_id,city_id,area_id);
+			})
+		})
 
-			// 生成选择地区~省市县街道四级联动
-			var $town = $('#areaChoose').find('select[name="town"]');
-		    var townFormat = function(info){
-			    $town.hide().empty();
-			    if(info['code']%1e4&&info['code']<7e6){	//是否为“区”且不是港澳台地区
-			    	$.ajax({
-			    		url:'http://passer-by.com/data_location/town/'+info['code']+'.json',
-			    		dataType:'json',
-			    		success:function(town){
-			    			$town.show();
-		    				// console.log(town);
-		    				var townHTML = '';
-			    			for(i in town){
-			    				townHTML += '<option value="'+i+'">'+town[i]+'</option>';
-			    			};
-			    			$town.append(townHTML);
-			    			// console.log($town)
+		// 确定
+		$('#confirmAreaChoose').on('touchend', function(){
+			if(!province){
+				layuiHint('请选择省份');
+				return
+			}
+			if(!city){
+				layuiHint('请选择城市');
+				return
+			}
+			if(!area){
+				layuiHint('请选择区县');
+				return
+			}
 
-					    	province = info.province;	//省、市、区在这里生成
-							city = info.city;
-							area = info.area;
-			    		},
-			    		err: function(res){
-			    			console.log(res);
-			    		}
-			    	});
-			    }
-		    };
-		    $('#areaChoose').citys({
-		    	required: false,
-		    	nodata: 'disabled',
-		        onChange:function(info){
-		        	townFormat(info);
-		        }
-		    },function(api){
-		        var info = api.getInfo();
-		        townFormat(info);
-		    });`
-		script.html(scriptCode);
-		$("body").append(script);
+			$('.areabtn').val(province +' '+ city +' '+ area);
+			setTimeout(function(){
+				$('#areaChoose').fadeOut('fast');
+			},300);
+		})
 
-
+		// 关闭地址选择
+		$('.areaChoosebg').click(function(){
+			$('#areaChoose').fadeOut('slow');
+		})
 	</script>
 </body>
 </html>
