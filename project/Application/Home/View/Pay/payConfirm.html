@@ -599,11 +599,13 @@
 				console.log(JSON.parse($("#jinyinbi").val()).gold_num, JSON.parse($("#rate").val()));
 				var gold_num = parseInt(JSON.parse($("#jinyinbi").val()).gold_num);
 				var silver = parseInt(JSON.parse($("#jinyinbi").val()).silver);
+				var gold_rate = JSON.parse($("#rate").val()).gold_rate;
+				var silver_rate = JSON.parse($("#rate").val()).silver_rate;
 				console.log("价格",$(".paytopRight>p").text().substr(1));
 				switch(index){
 					case '1':
 					console.log('金币');
-					if(gold_num < parseInt($(".paytopRight>p").text().substr(1))) {
+					if((gold_num * gold_rate) < parseInt($(".paytopRight>p").text().substr(1))) {
 						
 						parent.layer.msg('金币不足');
 						setTimeout(function(){
@@ -657,15 +659,12 @@
 					case '2':
 						console.log('银币');
 						console.log('银币乘', silver*0.5, parseInt($(".paytopRight>p").text().substr(1)))
-						if((silver*0.5) < parseInt($(".paytopRight>p").text().substr(1))) {
-						
+						if((silver * silver_rate) < parseInt($(".paytopRight>p").text().substr(1))) {
 							parent.layer.msg('银币不足l');
 							setTimeout(function(){
 								$(".paystyle").slideUp("slow");
 							}, 1000);
-							return false;
-						}else {
-							console.log("lskdfl")
+							return false
 						}
 						//如果有默认地址
 						if($("#addressInfo").val()){
