@@ -125,7 +125,7 @@
 			$("#submit").on('click',function(){
 				var formData = new FormData($('#form')[0]);	// 评论的数据
 				formData.append('orderid',orderid);
-				formData.append('orderid',gid);
+				formData.append('gid',gid);
 				console.log(formData)
 				var pic = $('#picShow>span').length;
 				if(!$("#shopping").val()){
