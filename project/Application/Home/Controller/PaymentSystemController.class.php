@@ -424,7 +424,7 @@ class PaymentSystemController extends CommonController
                 // 1.3 订单金额与金币
                 $gold_num_true = (int)$gold_num['gold_num'] * (float)$gold_rate;
                 if((float)$true_money > $gold_num_true){
-                    $this->ajaxReturn(['code'=>1001,'msg'=>'金币不足']);
+                    $this->ajaxReturn(['code'=>1001,'msg'=>'银币不足']);
                 }
 
                 // 4.1 库存检测
@@ -479,7 +479,7 @@ class PaymentSystemController extends CommonController
             }
         }else{
             // 订单不存在
-            echo -1;
+            $this->ajaxReturn(['code'=>-1,'msg'=>'已支付']);
         }
         // $this->uniformOrder(100,123456,'content');
     }
