@@ -441,7 +441,7 @@
 			sessionStorage.setItem("goods_dataArr",JSON.stringify(goods_dataArr));
 			// console.dir(goods_dataArr);return false;
 
-			// 发送ajax请求让后台生成订单号
+			// 发送ajax请求让后台生成订单号    
 			$.ajax({ 
 				url: '{{:U("PaymentSystem/information")}}',
 				type: 'post',
