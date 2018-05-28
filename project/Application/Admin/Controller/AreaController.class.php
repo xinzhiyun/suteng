@@ -14,6 +14,9 @@ class AreaController extends CommonController
         $this->display();
     }
 
+    /**
+     * 加载下一级的地址库
+     */
     public function getNextArea()
     {
         $parentid = I('parentid');

@@ -21,7 +21,7 @@ class Redis
 
     public static function connect(){
         if(!(self::$_instance instanceof Redis)){
-            self::$_instance = new Redis;
+            self::$_instance = new self;
         }
         return self::$_instance;
     }

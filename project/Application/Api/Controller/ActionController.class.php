@@ -101,7 +101,7 @@ class ActionController extends Controller
 
             default:
                 $data['NetStause']=1;
-                if(empty($message['sid'])){
+                if(!empty($message['sid'])){
                     M('devices_statu')->where("id=" . $message['sid'])->save($data);
                 }
                 break;
@@ -131,9 +131,10 @@ class ActionController extends Controller
             'Loaction'    => $message['Loaction'],
             'NetStause'   =>1,
         ];
+        var_export($message['sid']);
 
         if( empty($message['sid']) ){
-            $data['DeviceID']=$dcode;
+            $data['DeviceID']=$message['DeviceID'];
             $res = $this->saveData($data);
             if($res){
                 $data['updatetime'] = time();
