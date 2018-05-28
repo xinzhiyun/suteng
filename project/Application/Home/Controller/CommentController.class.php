@@ -121,7 +121,7 @@ class CommentController extends CommonController
         $status = I('status');
         $content = I('content');
         $orderid = I('orderid');        
-        $gid = 153;
+        $gid = I('gid');
         $pics = I('pic');
         $uid = session('user.id');
 
