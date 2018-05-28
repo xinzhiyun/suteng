@@ -890,10 +890,10 @@ class ShopController extends CommonController
         } else {
             $data = $orderDetail->getInfo($map);
         }
-        
+        // dump($data);
         //将订单商品总价加上商品的快递费
         foreach ($data as $key => $value) {
-            $userInfo['g_price'] += $value['cprice'];
+            $userInfo['g_price'] += $value['cprice']*$value['num'];
         }
 
         $assign = [

@@ -117,9 +117,11 @@
 		$("#toPay").click(function(){
 			var shopCar_data = [];
 			var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
+			priceAll = 0; //清空价格
 			
 			if($(".priceAll>span").text() != 0){
 				for(var i=0; i<chooseGoods.length; i++){
+					// 将选中商品的详细信息传到后台
 					shopCar_data.push({
 						'path': chooseGoods.eq(i).parents(".itemCar").find(".carpic>img").attr("src"),
 						'desc': chooseGoods.eq(i).parents(".itemCar").find(".roTxt").text(),
@@ -129,6 +131,8 @@
 						'price': chooseGoods.eq(i).parents(".itemCar").find(".price>span").text(),
 						'money': parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text())*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number").val())
 					});
+					
+					
 				}
 
 				//清除其他页面的sessionStorage
@@ -153,16 +157,25 @@
 							location.href = '{{:U("Pay/payConfirm")}}?order_id=' + res;
 						} else if(resType == 'object') {
 							if(res.code == "604") {
+								console.log(typeof res.data)
 								for(var i = 0; i < res.data.length; i++) {
+									console.log(res.data[i],i)
 									if(res.data[i].status == "fail") {
-										console.log(res.data[i].status)
 										// 显示无库存提示
 										$("."+res.data[i].gid).css("display", "block");
 										// 让无库存的商品去掉勾勾
-										$("."+res.data[i].gid).parent(".itemcarRight").siblings(".itemcarLeft").children(".xuanzhong").children("i").addClass("icon-kuang1").removeClass("icon-xuanze");
+										$("."+res.data[i].gid).parent(".itemcarRight").siblings(".itemcarLeft").children(".xuanzhong").children("i").removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 									}
 								}
-
+								// 重新计算商品的价格
+								var noStock = $(".itemCar").find("i[class='iconfont icon-xuanze']");
+								console.log(noStock)
+								for(var i = 0; i < noStock.length; i++) {
+									priceAll += parseFloat($(noStock).eq(i).parent().parent().siblings(".itemcarRight").children(".roPrice").children(".price").children("span").text()) * parseFloat($(noStock).eq(i).parent().parent().siblings(".itemcarRight").children(".roPrice").children(".num").children(".number").val());
+									console.log(priceAll, $(noStock).eq(i).parent().parent().siblings(".itemcarRight").children(".roPrice").children(".num").children(".number").val())
+								}
+								$(".priceAll>span").text(priceAll);
+								console.log(priceAll);
 							}
 						}else {
 							parent.layer.msg('系统异常');
@@ -258,9 +271,6 @@
 
 							var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
 							priceAll = 0;	//合计归零，后面重新计算
-							// 获取数量
-							// var value = $(".number").val();
-							// $(this).siblings(".number")[0].value++;
 
 							// 将金额实时更新到合计
 							for(var i=0; i<chooseGoods.length; i++){
@@ -268,8 +278,6 @@
 									var itemCar = $(".shpingcarAll").find(".itemCar").eq(i);
 									priceAll += parseFloat(itemCar.find(".price>span").text())*parseFloat(itemCar.find(".number").val())
 								}
-								// console.log('price: ',itemCar.find(".price>span").text())
-								// console.log('num: ',itemCar.find(".number").val())
 							}
 							$(".priceAll>span").text(priceAll);
 
@@ -294,6 +302,7 @@
 		// 选中框
 		$('.shpingcarAll').on('click','.itemcarLeft>.xuanzhong',function(){
 			var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
+			
 			var _class=$(this).children().attr('class');
 
 			// 无选择商品
@@ -306,9 +315,6 @@
 				for(var i=0; i<chooseGoods.length; i++){
 					
 					priceAll += parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value)*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
-
-					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value);
-					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
 				} 
 				// 将价格显示到合计
 				$(".priceAll>span").text(priceAll);
@@ -321,9 +327,6 @@
 				for(var i=0; i<chooseGoods.length; i++){
 					
 					priceAll += parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value)*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
-
-					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value);
-					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
 				} 
 				// 将价格显示到合计
 				$(".priceAll>span").text(priceAll);
@@ -333,7 +336,6 @@
 				console.log('没了');
 				$(".priceAll>span").text(0);
 			}
-
 			// 全部选中了
 			if($(".itemCar").find(".icon-xuanze").length == $(".itemCar").length){
 				$('.shoppingcarBott>p>i').removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
@@ -349,18 +351,16 @@
 			// 全选
 			if(_quanclass.indexOf('icon-kuang1') > -1){
 				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
-				var _class=$('.itemcarLeft>.xuanzhong>i').attr('class');
-				$('.itemcarLeft>.xuanzhong>i').removeClass(_class).addClass('iconfont icon-xuanze');
+				var _class=$('.itemcarLeft>.xuanzhong>i');
 
+				for(var i = 0; i < _class.length; i++) {
+					_class.eq(i).removeClass(_class.eq(i).attr("class")).addClass('iconfont icon-xuanze');
+				}
 				priceAll = 0;
 				var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
 				// 实时将总价格更新到合计
 				for(var i=0; i<chooseGoods.length; i++){
-					
 					priceAll += parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value)*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
-
-					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value);
-					// console.log(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
 				} 
 				// 将价格显示到合计
 				$(".priceAll>span").text(priceAll);
@@ -368,6 +368,7 @@
 				// 全不选
 				$(this).removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 				var _class=$('.itemcarLeft>.xuanzhong>i').attr('class');
+				console.log("全部不选的", _class)
 				$('.itemcarLeft>.xuanzhong>i').removeClass(_class).addClass('iconfont icon-kuang1');
 
 				priceAll = 0;

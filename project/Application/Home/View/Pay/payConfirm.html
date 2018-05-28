@@ -586,6 +586,42 @@
 				switch(index){
 					case '1':
 					console.log('金币');
+					//如果有默认地址
+					if($("#addressInfo").val()){
+						//请求微信支付方法
+						$.ajax({
+							url: "{{:U('Home/PaymentSystem/orderPayByGold')}}",
+							type: 'post',
+							data: {order: order_id, voiceArr: voiceArr},
+							success: function(res){
+								console.log(res);
+								if(res == -1){
+									console.log('支付错误！');
+									parent.layer.msg('支付错误！');
+								}else{
+									if($("#addressInfo").val()){
+										// 调用微信支付方法
+										// weixinPay(res);
+									}else{
+										//无地址
+										parent.layer.msg('请添加一个地址');
+										setTimeout(function(){
+											location.href = '{{:U("Address/newAddress")}}';
+										},500);
+									}
+								}
+							},
+							error: function(res){
+								console.log('失败！ ',res);
+								parent.layer.msg('系统出了一点小问题，请稍后再试！');
+							}
+						});
+					}else{
+						parent.layer.msg('请添加一个地址');
+						setTimeout(function(){
+							location.href = '{{:U("Address/newAddress")}}';
+						},500);
+					}
 					break;
 					case '2':
 					console.log('银币');
