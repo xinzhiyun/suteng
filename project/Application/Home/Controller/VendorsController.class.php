@@ -115,7 +115,7 @@ class VendorsController extends Controller
                     break;
                 case '5':
                     // 公司信息审批失败
-                    $this->company_refillings();
+                    $this->company();
                     break;
                 case '6':
                     // 协议审批失败
