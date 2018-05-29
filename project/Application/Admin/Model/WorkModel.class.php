@@ -136,25 +136,38 @@ class WorkModel extends RelationModel
      * @return array            分页数据
      */
     public function getPage($model,$map,$order='',$limit=10,$field=''){
-        $count=$model
-            ->where($map)
-            ->count();
+        // $count=$model
+        //     ->where($map)
+        //     ->count();
+            
         $page=new_page($count,$limit);
         // setPageConf($page);
         // 获取分页数据
         if (empty($field)) {
-            $list=$model
-                ->where($map)
-                ->order($order)
-                ->limit($page->firstRow.','.$page->listRows)
-                ->select();
+            if($map['leavel'] != null && $map['leavel'] > 0){
+                $table = $model->getTableName();
+                // $model->join('st_users u ON '.$table.'.id = u.id','LEFT');
+                $model->join('st_current_devices cd ON '.$table.'.id = cd.id','LEFT');
+                $model->join('st_devices d ON d.id = cd.did','LEFT');
+                $model->join('st_vendors v ON v.id = d.vid','LEFT');
+            }
+            $model->where($map);
+            $model->order($order);
+            $model->limit($page->firstRow.','.$page->listRows);
+            $list=  $model->select();
         }else{
-            $list=$model
-                ->field($field)
-                ->where($map)
-                ->order($order)
-                ->limit($page->firstRow.','.$page->listRows)
-                ->select();
+            if($map['leavel'] != null && $map['leavel'] > 0){
+                $table = $model->getTableName();
+                // $model->join('st_users u ON '.$table.'.id = u.id','LEFT');
+                $model->join('st_current_devices cd ON '.$table.'.id = cd.id','LEFT');
+                $model->join('st_devices d ON d.id = cd.did','LEFT');
+                $model->join('st_vendors v ON v.id = d.vid','LEFT');
+            }
+            $model->field($field);
+            $model->where($map);
+            $model->order($order);
+            $model->limit($page->firstRow.','.$page->listRows);
+            $list=  $model->select();
         }
         $data=array(
             'data'=>$list,
