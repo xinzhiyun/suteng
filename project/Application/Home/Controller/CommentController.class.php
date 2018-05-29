@@ -137,7 +137,6 @@ class CommentController extends CommonController
             $info = $this->downloadPic($pics);      
             // file_put_contents('./com_pic.txt',$info."\r\n\r\n", FILE_APPEND);     
         }
-        Log::write($info,'商品评论的图片');
         
         // p(I(''));die;
         // 5.处理添加评论
