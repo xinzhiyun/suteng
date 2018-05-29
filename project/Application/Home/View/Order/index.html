@@ -395,6 +395,8 @@
 					if(a == "&nbsp;(含邮费￥0)"){
 						var urlImg = "/Uploads/";
 						var order_id = $(this).prev().attr("name");
+						sessionStorage.setItem("lvxinData", "");//清空滤芯数据
+						sessionStorage.setItem("goods_data", "");//清空商品数据
 						sessionStorage.setItem("order_id",order_id);
 						$.get("{{:U('Home/pay/getGoodsByOrder')}}",{'order_id':order_id},function(data){
 							console.log('商品：');
