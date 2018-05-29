@@ -162,8 +162,13 @@
                                                     查看
                                                 </a>
                                                 <switch name="v.status">
-                                                    <case value="9">                                                <a class="btn btn-outline btn-success" href="javascript:;" onclick="ship({{$v['order_id']}},{{$v['g_type']}})">
+                                                    <case value="9">                                                
+                                                        <a class="btn btn-outline btn-success" href="javascript:;" onclick="ship({{$v['order_id']}},{{$v['g_type']}})">
                                                     点击发货
+                                                </a></case>
+                                                <case value="6">                                                
+                                                        <a class="btn btn-outline btn-success" href="javascript:;" onclick="ship({{$v['order_id']}},{{$v['g_type']}})">
+                                                    同意退款
                                                 </a></case>
                                                 </switch>
                                             </div>
