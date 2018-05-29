@@ -596,7 +596,6 @@
 				// 判断选择的是什么支付方式
 				var index = $(".icon-xuanze").parents("li").attr("index");
 				// 用户金币数量：gold_num; 银币数量：silver; 金币换算：gold_rate; 银币换算：silver_rate;
-				console.log(JSON.parse($("#jinyinbi").val()).gold_num, JSON.parse($("#rate").val()));
 				var gold_num = parseInt(JSON.parse($("#jinyinbi").val()).gold_num);
 				var silver = parseInt(JSON.parse($("#jinyinbi").val()).silver);
 				var gold_rate = JSON.parse($("#rate").val()).gold_rate;
@@ -606,7 +605,6 @@
 					case '1':
 					console.log('金币');
 					if((gold_num * gold_rate) < parseInt($(".paytopRight>p").text().substr(1))) {
-						
 						parent.layer.msg('金币不足');
 						setTimeout(function(){
 							$(".paystyle").slideUp("slow");
@@ -625,6 +623,7 @@
 								if(res.code == 200) {
 									parent.layer.msg('支付成功');
 									setTimeout(function(){
+										history.replaceState({}, null, "{{:U('Shop/index')}}");//改变历史记录
 										location.href = '{{:U("PaymentSystem/paytosuccess")}}';
 									},500);
 								}else if(res.code == -1) {
@@ -658,7 +657,6 @@
 					break;
 					case '2':
 						console.log('银币');
-						console.log('银币乘', silver*0.5, parseInt($(".paytopRight>p").text().substr(1)))
 						if((silver * silver_rate) < parseInt($(".paytopRight>p").text().substr(1))) {
 							parent.layer.msg('银币不足l');
 							setTimeout(function(){
@@ -678,6 +676,7 @@
 									if(res.code == 200) {
 										parent.layer.msg('支付成功');
 										setTimeout(function(){
+											history.replaceState({}, null, "{{:U('Shop/index')}}");//改变历史记录
 											location.href = '{{:U("PaymentSystem/paytosuccess")}}';
 										},500);
 									}else if(res.code == -1) {
