@@ -190,7 +190,7 @@
 					}else {
 						picStr = '';	//先清空再生成
 						for(var j=0; j<res.data[i].pics.length; j++){
-							picStr += '<li><img src="'+res.data[i].pics[j].path+'" alt="图片加载中"></li>';
+							picStr += '<li><img src="'+'/Public/'+res.data[i].pics[j].path+'" alt="图片加载中"></li>';
 						}
 						picArr.push({'picHTML':picStr});
 					}
@@ -200,7 +200,8 @@
 					$(".mycommentContain").html(commetHTML);		//评价的内容
 					//遍历评价的图片
 					for(var i=0; i<picArr.length; i++){
-						$(".commpic").eq(i).children("ul").html(picArr[i].picHTML);			//评价的图片
+						$(".commpic").eq(i).children("ul").html(picArr[i].picHTML);	
+						// console.log(picArr[i].picHTML)		//评价的图片
 					}
 				}else{
 					$(".mycommentContain").html("<div style='width:100%;height:50vh;display:flex;justify-content:center;align-items:center;'>您还没有已评论的记录</div>");
