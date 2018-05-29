@@ -24,13 +24,13 @@
 			</span>
 			
 		</div>
-		<div>
+		<!-- <div>
 			<span>街&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道:</span>
 			<span>
 				<input type="button" id="townID" class="town" placeholder="请输入街道">
 			</span>
 			
-		</div>
+		</div> -->
 		<textarea name="" id="addressDetial" cols="2" rows="10" placeholder="请谨慎填写详细地址"></textarea>
 	</div>
 	<div id="areaChoose" class="citys">
@@ -117,7 +117,7 @@
 	    $("#saveAddress").click(function(){
 	    	var nameRes = nameReg.test($(".name").val());
 	    	var phoneRes = phoneReg.test($(".phone").val());
-	    	var areaIDRes = nameReg.test($("#areaID").val());
+	    	var areaIDRes = nameReg.test(trimFn($("#areaID").val()));
 	    	var addressDetialRes = nameReg.test($("#addressDetial").val());
 
 	    	var editAddressObj = {};	//存储需要发送给后台的数据
@@ -178,7 +178,7 @@
 			    			layHint('请重新选择地址！');
 			    			return false;
 			    		}
-				    	$.ajax({
+				    	$.ajax({ 
 				    		url: '{{:U("Home/Address/save_address")}}',
 				    		type: 'post',
 				    		data: editAddressObj,
@@ -236,7 +236,7 @@
 
 		    	}else if(!areaIDRes){
 		    		// console.log('请选择地区！');
-		    		layHint('请选择地区！')
+		    		layHint('请选择地区请选择地区！')
 		    		
 		    	}else if(!addressDetialRes){
 		    		// console.log('请输入详细地址！');
@@ -310,7 +310,7 @@
 		    			if(res.code == 200){
 			    			// 如果有订单号,自动跳回去订单提交那里
 			    			if(sessionStorage.getItem("order_id")){
-			    				// console.log("当前页面路径", window.location.search)
+			    				// console.log("当前页面路径", window.locatzion.search)
 								
 			    				// 如果有商品数据
 			    				if(goods_data || lvxinData || shopCar_data){
@@ -319,15 +319,27 @@
 									// 滤芯
 									if(buyType.substr(-1, 1) == '0') {
 										history.replaceState({}, null, '{{:U("Pay/lvxinPay")}}');
-										location.href = '{{:U("Pay/lvxinPay")}}';
+										setTimeout(function() {
+											location.href = '{{:U("Pay/lvxinPay")}}';
+										}, 500);
+										
 										
 									// 商城
 									}else if(buyType.substr(-1, 1) == '1') {
 										history.replaceState({}, null, '{{:U("Pay/payConfirm")}}');
-										location.href = '{{:U("Pay/payConfirm")}}';
+										setTimeout(function() {
+											location.href = '{{:U("Pay/payConfirm")}}';
+										}, 500);
+										
+										
+									}else {
+										// 从地址管理进来，回到‘我的’界面
+										history.replaceState({}, null, '{{:U("Address/index")}}');
+										setTimeout(function() {
+											location.href = '{{:U("VipCenter/index")}}';
+										}, 500);
 										
 									}
-			    					
 			    				}
 			    			}else{
 			    				// 无订单号， 回到‘我的’界面

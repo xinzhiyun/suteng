@@ -2,6 +2,7 @@
 namespace Home\Controller;
 use Think\Controller;
 use \Org\Util\WeixinJssdk;
+use Think\Log;
 class CommentController extends CommonController
 {
     /**
@@ -133,8 +134,10 @@ class CommentController extends CommonController
         }
         // 4.判断图片，处理文件上传
         if(!empty($pics)){
-            $info = $this->downloadPic($pics);           
+            $info = $this->downloadPic($pics);      
+            // file_put_contents('./com_pic.txt',$info."\r\n\r\n", FILE_APPEND);     
         }
+        
         // p(I(''));die;
         // 5.处理添加评论
         $comment->startTrans();
@@ -147,16 +150,16 @@ class CommentController extends CommonController
                 'content' => $content,
                 'addtime' => time()
             );
-           $a = $comment->data($data)->add();
+           $id = $comment->data($data)->add();
 
-            D("ComPic")->data(['path'=>$info])->save();   
+            D("ComPic")->add(['cid'=>$id,'path'=>$info]);   
             $res = D('Order_detail')->where(['order_id'=>$orderid,'gid'=>$gid])->setField(['status'=>7]);
 
             $count = D('Order_detail')->where(['order_id'=>$orderid,'status'=>['NEQ',7]])->count();
             if($count < 1){
                 D('ShopOrder')->where(['uid'=>$uid,'order_id'=>$orderid])->setField(['status'=>7]);
             }
-
+          
         if($res){                
             $comment->commit();
             $this->ajaxReturn(['code'=>200,'msg'=>'评论成功']);
@@ -200,7 +203,7 @@ class CommentController extends CommonController
         $file = curl_exec($ch);
         curl_close($ch);
 
-        $resource = fopen($path, 'a');
+        $resource = fopen($path, 'w');
         fwrite($resource, $file);
         fclose($resource);
         return $path_info;

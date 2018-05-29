@@ -143,9 +143,9 @@
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
-	<!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
+	<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
 	<script>
-		// var vConsole = new VConsole();
+		var vConsole = new VConsole();
 		
 		$(function(){
 			// 首页按钮
@@ -178,6 +178,13 @@
 				'chooseWXPay'
 				]
 			});
+			// 用户金币数量：gold_num; 银币数量：silver; 金币换算：gold_rate; 银币换算：silver_rate;
+			var gold_num = parseInt(JSON.parse($("#jinyinbi").val()).gold_num);
+			var silver = parseInt(JSON.parse($("#jinyinbi").val()).silver);
+			var gold_rate = JSON.parse($("#rate").val()).gold_rate;
+			var silver_rate = JSON.parse($("#rate").val()).silver_rate;
+
+			console.log("金银币数量", gold_num, silver);
 			// /******** 付款过程--结束--	**********/
 			order_id = JSON.parse(sessionStorage.getItem("order_id"));
 			// $.get('getGoodsByOrder',{'order_id':order_id},function(data){
@@ -307,7 +314,7 @@
 							$(".numAll").text(numAll);		//滤芯订单的总数量
 							$(".priceAll").text('￥'+priceAll);	//滤芯订单的总价格
 							$("#footerContain>div>span").text('￥'+priceAll);	//滤芯订单的总价格
-							$(".paytopRight>p").text('$'+priceAll);	//滤芯订单的总价格
+							$(".paytopRight>p").text('$'+ parseInt(priceAll));	//滤芯订单的总价格
 
 			}else if(goods_data){	// 如果有商品购买，从商品详情’立即购买‘过来
 				// 获取商品id
@@ -338,7 +345,7 @@
 				$(".numAll").text(numAll);		//订单的总数量
 				$(".priceAll").text('￥'+ (parseFloat(priceAll)).toFixed(2));	//订单的总价格
 				$("#footerContain>div>span").text('￥'+(parseFloat(priceAll)).toFixed(2));	//订单的总价格
-				$(".paytopRight>p").text('$'+(parseFloat(priceAll)).toFixed(2));	//订单的总价格
+				$(".paytopRight>p").text('$'+ parseInt(priceAll));	//订单的总价格
 
 			}else if(shopCar_data){	// 如果有商品购买，从购物车’结算‘过来
 				// console.log(shopCar_data.length)
@@ -381,7 +388,7 @@
 				$(".numAll").text(numAll);		//订单的总数量
 				$(".priceAll").text('￥'+ priceAll);	//订单的总价格
 				$("#footerContain>div>span").text('￥'+priceAll);	//订单的总价格
-				$(".paytopRight>p").text('$'+priceAll);	//订单的总价格
+				$(".paytopRight>p").text('$'+ parseInt(priceAll));	//订单的总价格
 			}
 			// 邮费放置
 			var postageArr = [];
@@ -468,7 +475,7 @@
 				$(".priceAll").attr('data',totalPub);
 				// console.log(totalPub);
 				$(".priceAll").text('￥'+ (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
-				$(".paytopRight>p").text('$'+(parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
+				$(".paytopRight>p").text('$'+(parseInt(priceAll) + parseInt(postageMoney)));	//订单的总价格
 				$("#footerContain>div>span").text('￥'+(parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
 				$(this).siblings(".youfei").text(postagePrice);
 				if($(this).find("option:selected").val() != "选择快递" && $(this).prev().html() == "配送方式") {
@@ -506,7 +513,7 @@
 			totalPub = sessionStorage.getItem("totalPub");
 			if(totalPub){
 				$(".priceAll").text('￥'+totalPub);
-				$(".paytopRight>p").text('$'+totalPub);
+				$(".paytopRight>p").text('$'+ parseInt(totalPub));
 				$("#footerContain>div>span").text('￥'+totalPub);
 			}
 			
@@ -549,10 +556,12 @@
 				
 				$("#payWay").animate({bottom: '-100vh'}).css({display: 'none'});
 			})
-			
+			var goodsPrice;
 			// 点击付款按钮
 			//支付方式
 			$('#footerContain').click(function(){
+				// 点击支付之前要求选择快递方式
+				// if() {}
 				if($("#hLeft>p").text() == "请选择地址或添加新地址"){
 					parent.layer.msg('请添加一个地址！');
 					setTimeout(function(){
@@ -568,19 +577,30 @@
 				}
 
 				$('.paystyle').slideDown("slow");
-			})
+				//获取商品价格
+				goodsPrice = parseInt($(".paytopRight>p").text().substr(1));
+			});
+			 
 			// 付款方式的单选框
 			$('.paymidd>ul>li>span').click(function(){
 				$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
-				var fuhao = $(this).parent().text();
+				var fuhao = $(this).parent().text();//获取购买方式
 				// 判断选择方式是否为：金币或者银币
-				if(fuhao == "金币" || fuhao == "银币") {
+				if(fuhao == "金币") {
+					// 金额兑换成金币
+					var goldPrice = (goodsPrice / gold_rate);
 					// 将￥替换成$符号
-					$(".paytopRight>p").text($(".paytopRight>p").text().replace("￥", "$"));
-				}else {
+					$(".paytopRight>p").text("$"+goldPrice);
+				}else if(fuhao == "银币") {
+					// 金额兑换成银币
+					var silverPrice = (goodsPrice / silver_rate);
+					// 将￥替换成$符号
+					$(".paytopRight>p").text("$"+silverPrice);
+				}
+				else {
 					// 将$替换成￥符号
-					$(".paytopRight>p").text($(".paytopRight>p").text().replace("$", "￥"));
+					$(".paytopRight>p").text("￥"+ goodsPrice + ".00");
 				}
 				console.log("选中的支付方式",$(this).parent().text());
 			})
@@ -589,23 +609,19 @@
 				$('.paystyle').slideUp("slow");
 			})
 			// 模态框的js
+			
 			/*
 			点击立即支付
 			*/
 			$(".payBott").click(function(){
 				// 判断选择的是什么支付方式
 				var index = $(".icon-xuanze").parents("li").attr("index");
-				// 用户金币数量：gold_num; 银币数量：silver; 金币换算：gold_rate; 银币换算：silver_rate;
-				var gold_num = parseInt(JSON.parse($("#jinyinbi").val()).gold_num);
-				var silver = parseInt(JSON.parse($("#jinyinbi").val()).silver);
-				var gold_rate = JSON.parse($("#rate").val()).gold_rate;
-				var silver_rate = JSON.parse($("#rate").val()).silver_rate;
 				console.log("价格",$(".paytopRight>p").text().substr(1));
 				switch(index){
 					case '1':
 					console.log('金币');
-					if((gold_num * gold_rate) < parseInt($(".paytopRight>p").text().substr(1))) {
-						parent.layer.msg('金币不足');
+					if((gold_num * gold_rate) < goodsPrice) {
+						parent.layer.msg('金币不足!');
 						setTimeout(function(){
 							$(".paystyle").slideUp("slow");
 						}, 1000);
@@ -657,8 +673,8 @@
 					break;
 					case '2':
 						console.log('银币');
-						if((silver * silver_rate) < parseInt($(".paytopRight>p").text().substr(1))) {
-							parent.layer.msg('银币不足l');
+						if((silver * silver_rate) < goodsPrice) {
+							parent.layer.msg('银币不足!');
 							setTimeout(function(){
 								$(".paystyle").slideUp("slow");
 							}, 1000);

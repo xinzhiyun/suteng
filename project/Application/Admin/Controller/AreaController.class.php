@@ -19,7 +19,9 @@ class AreaController extends CommonController
      */
     public function getNextArea()
     {
-        $parentid = I('parentid');
+
+        $parentid = I('parentid',0);
+
         $data = M('area')->where('parentid='.$parentid)->select();
 
         $this->toJson(['data'=>$data],'获取成功');

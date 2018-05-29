@@ -11,6 +11,8 @@ use Think\Auth;
 
 class CommonController extends Controller 
 {
+    protected $leavel = null;
+
 	/**
      * 初始化
      * @author 潘宏钢 <619328391@qq.com>
@@ -23,6 +25,12 @@ class CommonController extends Controller
         $bool = $this->rule_check(session('adminInfo.id'));
         if(!$bool){
             $this->error('权限不足');
+        }
+        
+        if(!S('st_vendor_leavel')){
+            $this->getLevel();
+        } else {
+            $this->leavel = S('st_vendor_leavel');
         }
 
         // 分配菜单权限
@@ -55,5 +63,14 @@ class CommonController extends Controller
         $name = MODULE_NAME."/".CONTROLLER_NAME."/".ACTION_NAME;
         // echo $name;die;
         return $auth->check($name, $uid);
+    }
+
+    private function getLevel(){
+        $vid = session('adminInfo.id');
+        $leavel = D('vendors')->where(['id'=>$vid])->field('leavel')->find();
+        if($leavel){
+            S('st_vendor_leavel',$leavel['leavel'],300);
+            $this->leavel = S('st_vendor_leavel');
+        }      
     }
 }
