@@ -133,7 +133,8 @@ class CommentController extends CommonController
         }
         // 4.判断图片，处理文件上传
         if(!empty($pics)){
-            $info = $this->downloadPic($pics);           
+            $info = $this->downloadPic($pics);      
+            file_put_contents('./com_pic.txt',$info."\r\n\r\n", FILE_APPEND);     
         }
         // p(I(''));die;
         // 5.处理添加评论
