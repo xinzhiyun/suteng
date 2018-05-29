@@ -48,7 +48,7 @@ class RefundController extends CommonController
             // $orderDetail->join('st_pic ON st_order_detail.gid = st_pic.gid','LEFT');
             $orderDetail->where('st_order_detail.id < 0');
         $goods = $orderDetail->select();
-        dump($goods);
+        // dump($goods);
         $this->assign('goods',$goods);
         $this->assign('data',$data);
         $this->display();
