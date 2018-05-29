@@ -24,13 +24,13 @@
 			</span>
 			
 		</div>
-		<div>
+		<!-- <div>
 			<span>街&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道:</span>
 			<span>
 				<input type="button" id="townID" class="town" placeholder="请输入街道">
 			</span>
 			
-		</div>
+		</div> -->
 		<textarea name="" id="addressDetial" cols="2" rows="10" placeholder="请谨慎填写详细地址"></textarea>
 	</div>
 	<div id="areaChoose" class="citys">
@@ -178,7 +178,7 @@
 			    			layHint('请重新选择地址！');
 			    			return false;
 			    		}
-				    	$.ajax({
+				    	$.ajax({ 
 				    		url: '{{:U("Home/Address/save_address")}}',
 				    		type: 'post',
 				    		data: editAddressObj,
