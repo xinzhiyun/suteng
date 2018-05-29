@@ -143,9 +143,9 @@
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
-	<!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
+	<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
 	<script>
-		// var vConsole = new VConsole();
+		var vConsole = new VConsole();
 		
 		$(function(){
 			// 首页按钮
@@ -183,6 +183,8 @@
 			var silver = parseInt(JSON.parse($("#jinyinbi").val()).silver);
 			var gold_rate = JSON.parse($("#rate").val()).gold_rate;
 			var silver_rate = JSON.parse($("#rate").val()).silver_rate;
+
+			console.log("金银币数量", gold_num, silver);
 			// /******** 付款过程--结束--	**********/
 			order_id = JSON.parse(sessionStorage.getItem("order_id"));
 			// $.get('getGoodsByOrder',{'order_id':order_id},function(data){
@@ -554,10 +556,12 @@
 				
 				$("#payWay").animate({bottom: '-100vh'}).css({display: 'none'});
 			})
-			
+			var goodsPrice;
 			// 点击付款按钮
 			//支付方式
 			$('#footerContain').click(function(){
+				// 点击支付之前要求选择快递方式
+				// if() {}
 				if($("#hLeft>p").text() == "请选择地址或添加新地址"){
 					parent.layer.msg('请添加一个地址！');
 					setTimeout(function(){
@@ -573,9 +577,10 @@
 				}
 
 				$('.paystyle').slideDown("slow");
+				//获取商品价格
+				goodsPrice = parseInt($(".paytopRight>p").text().substr(1));
 			});
-			//获取商品价格
-			var goodsPrice = parseInt($(".paytopRight>p").text().substr(1)); 
+			 
 			// 付款方式的单选框
 			$('.paymidd>ul>li>span').click(function(){
 				$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
@@ -615,8 +620,8 @@
 				switch(index){
 					case '1':
 					console.log('金币');
-					if((gold_num * gold_rate) < parseInt($(".paytopRight>p").text().substr(1))) {
-						parent.layer.msg('金币不足');
+					if((gold_num * gold_rate) < goodsPrice) {
+						parent.layer.msg('金币不足!');
 						setTimeout(function(){
 							$(".paystyle").slideUp("slow");
 						}, 1000);
@@ -668,8 +673,8 @@
 					break;
 					case '2':
 						console.log('银币');
-						if((silver * silver_rate) < parseInt($(".paytopRight>p").text().substr(1))) {
-							parent.layer.msg('银币不足l');
+						if((silver * silver_rate) < goodsPrice) {
+							parent.layer.msg('银币不足!');
 							setTimeout(function(){
 								$(".paystyle").slideUp("slow");
 							}, 1000);
