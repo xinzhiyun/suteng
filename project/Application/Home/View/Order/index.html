@@ -107,6 +107,50 @@
 		<img src="__PUBLIC__/Home/images/loading.gif" alt="加载中...">
 	</div>
 
+	<!-- 支付方式选择部分开始 -->
+		<div class="paystyle">
+			<div class="paystyleTop"></div>
+			<div class="payContain">
+				<div class="paytop clearfix">
+					<div class="paytopLeft"><i class="iconfont icon-cuohao"></i></div>
+					<div class="paytopRight">
+						<h3>付款</h3>
+						<p>￥3620.00</p>
+					</div>
+				</div>
+				<div class="paymidd">
+					<h3>选择支付方式</h3>
+					<ul class="clearfix">
+						<li index="1"><i class="iconfont icon-tubiao207"></i>金币<span class="iconfont icon-xuanze"></span></li>
+						<li index="2"><i class="iconfont icon-tubiao207-copy"></i>银币<span class="iconfont icon-kuang1"></span></li>
+						<li index="3"><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-kuang1"></span></li>
+						<li index="4"><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
+						<li index="5"><i class="iconfont icon-yinlian"></i>银联<span class="iconfont icon-kuang1"></span></li>
+					</ul>
+				</div>
+				<div class="payBott">
+					<input class=" start" type="button" value="立即支付">
+				</div>
+			</div>
+		</div>
+		
+		<!-- 模态框的内容 -->
+		<!-- <div class="modelAll"> -->
+			<!-- <a class="start" href="javascript:;">点击</a> -->
+			<!-- <div class="modal fade">
+				<div class="modal-body">
+					<div class="modal-content">
+						<p>您没有绑定银行卡</p>
+						<p><a href="#">去绑定</a></p>
+						<p><a href="#">其他支付方式</a></p>
+						<p><input class="close" type="submit" value="取消"></p>
+					</div>
+				</div>
+			</div>
+			<div class="modal-backup"></div>
+		</div> -->
+	<!-- 支付方式选择部分结束 -->
+
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<!-- 微信支付支持JS部分代码 -->
@@ -407,34 +451,36 @@
 						})
 						console.log("邮费0")
 					}else{
-			      		var _thisname = JSON.parse($(this).siblings().attr("name"));
-			      		// var paymoney = parseFloat($(this).parents(".calc").find(".postage").text().substr(6));	//邮费
-			      		var price = parseInt($(this).parents(".calc").find(".price").text().substr(1)*100)/100;
-			      		// console.log(_thisname,price);
-			      		$.ajax({
-			      			url:"{{:U('Home/PaymentSystem/orderPay')}}",
-			      			type:"post",
-			      			data:{
-			      				order: _thisname,
-			      				paymoney: price
-			      			},
-			      			success:function(res){
-			      				if(res == -1){
-									// console.log('支付错误！');
-									parent.layer.msg('支付错误！');
-								}else{
+						$('.paystyle').slideDown("slow");
+						console.log($(".price").html())
+			   //    		var _thisname = JSON.parse($(this).siblings().attr("name"));
+			   //    		// var paymoney = parseFloat($(this).parents(".calc").find(".postage").text().substr(6));	//邮费
+			   //    		var price = parseInt($(this).parents(".calc").find(".price").text().substr(1)*100)/100;
+			   //    		// console.log(_thisname,price);
+			   //    		$.ajax({
+			   //    			url:"{{:U('Home/PaymentSystem/orderPay')}}",
+			   //    			type:"post",
+			   //    			data:{
+			   //    				order: _thisname,
+			   //    				paymoney: price
+			   //    			},
+			   //    			success:function(res){
+			   //    				if(res == -1){
+						// 			// console.log('支付错误！');
+						// 			parent.layer.msg('支付错误！');
+						// 		}else{
 									
-									// 调用微信支付方法
-									weixinPay(res);
+						// 			// 调用微信支付方法
+						// 			weixinPay(res);
 									
-								}
-								// weixinPay(res);
-							},
-							error: function(res) {
-								console.log("出错", res)
-							}
-						});
-						console.log("邮费值")
+						// 		}
+						// 		// weixinPay(res);
+						// 	},
+						// 	error: function(res) {
+						// 		console.log("出错", res)
+						// 	}
+						// });
+						// console.log("邮费值")
 					}
 				// 	var urlImg = "/Uploads/";
 				// 	var order_id = $(this).prev().attr("name");
@@ -452,6 +498,11 @@
 
 	        }
 	    });
+
+		// 付款方式页面隐藏
+		$('.paytop>.paytopLeft>i').click(function(){
+			$('.paystyle').slideUp("slow");
+		})
 
 		$.ajax({//9：待发货
 				url:"{{:U('Home/Order/order_list')}}",
