@@ -93,7 +93,7 @@
 				wxuploadimg(function(res){
 				    console.log('res: ',res);
 
-				    var $span = $("<span></span>");
+				    var $span = $("<span class='fuPic'></span>");
 				    var $span1 = $("<span>X</span>");
 				    var $img = $('<img src="" alt="" />');
 
@@ -110,8 +110,13 @@
 				    $('#picShow').append($span);
 				    // 待发送给后台的图片id
 				    $('input[name="pic"]').val(res.media_Id);
+				    // 删除图片
+				    $("#picShow").on("click",".delPic",function(){
+						$(this).parent(".fuPic").remove();
+					})
 				});
 			})
+
 			/**
 				点击提交
 			*/
