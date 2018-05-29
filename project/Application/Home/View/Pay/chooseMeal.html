@@ -161,7 +161,7 @@
 		$(".payBott").click(function(){
 			console.log(dingdanID)
 			$.ajax({
-				url: '{{:U("Home/PaymentSystem/choosePay")}}',
+				url: '{{:U("Home/PaymentSystem/choosePayByGold")}}',
 				type: 'post',
 				async: false,
 				data: {order: dingdanID},
