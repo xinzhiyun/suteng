@@ -5,7 +5,7 @@ $(function(){
 	//页面加载时获取滤芯数据
 	var data = JSON.parse($(".filterData").val());//滤芯剩余量数据
 	var res = JSON.parse($(".lvxin_data").val()).filterInfo;//滤芯详情数据
-	// console.dir(data);
+	console.dir('data: ',data);
 	// console.log(res);
 
 	// 当当前设备为零售模式时候，不显示滤芯购买页面
@@ -13,19 +13,25 @@ $(function(){
 		deviceId = data.deviceid;
 		filtermode = data.filtermode;
 		if(data.leasingmode=="0"){
+			$('#lvxinReset_base').show();
 			$("#filterBuy").hide();
 			$("#line").css({"width":"50%","marginLeft":"50%"});
 			$("#header span").css("width","33.33%");
-			$("#content").css("left","-100vw");
+			// $("#content").css("left","-100vw");
 			$("#footer div").hide();
 			$("#footer span").hide();
 			$("#footer button").show();
+			$('#content').css({transform: 'translateX(-100vw)'});
 		}else{
 			$("#footer div").show();
 			$("#footer span").show();
 			$("#footer button").hide();
 			$("#line").css({marginLeft: "66.66%"});
+			// 显示当前模块
+			$(lvxinArr[2]).fadeIn();
 		}
+
+
 	}else{
 		filtermode = '';
 		deviceId = '';
@@ -69,18 +75,22 @@ $(function(){
 		// 内容切换
 		$("#content").css({transform: 'translateX(-'+ $(this).attr("index") +'00vw)'});
 		
-		//滤芯选中状态样式
-		$("#lvxinReset").on("click","li",function(){
-			$(this).children(".progress").children(".iconfont").removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
-			$(this).siblings().children(".progress").children(".iconfont").removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-			filterName=$(this).children("p").children().eq(0).text();
-			filterNumber=$(this).index();
-		})
 		
 	})
-	
-	console.log(data);
-	
+	//滤芯选中状态样式
+	$("#lvxinReset").on("click","li",function(){
+		// console.log($(this));
+		$(this).children(".progress").children(".iconfont").removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+		$(this).siblings().children(".progress").children(".iconfont").removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+		filterName=$(this).children("p").children().eq(0).text();
+		filterNumber=$(this).index();
+	})
+	function layHint(text){
+		layui.use('layer', function(){
+			  var layer = layui.layer;
+			  layer.msg(text);
+		});
+	}
 	var filtermode;
 	var moHTML = '',lvxinIntroduceHTML='';//html box
 	var timelife;//滤芯总时间
@@ -101,9 +111,10 @@ $(function(){
 				redaypercent = (((data['redayfilter'+(i+1)]/res[i].timelife)*100).toFixed(2)>100)?100:(((data['redayfilter'+(i+1)]/res[i].timelife)*100).toFixed(2));
 				reflowpercent = (((data['reflowfilter'+(i+1)]/res[i].flowlife)*100).toFixed(0)>100)?100:(((data['reflowfilter'+(i+1)]/res[i].flowlife)*100).toFixed(0));
 				if(filtermode == ''){
+					layHint('没有滤芯模式');
 					return
 				}
-				// console.log('filtermode: ',filtermode);
+				console.log('filtermode: ',filtermode);
 			    if(filtermode == 0){//时长
 			        // 遍历膜的详情, 不存在则不遍历
 			        if(res[i].filtername){
@@ -251,10 +262,13 @@ $(function(){
 			    }
 			}
 		}
+		setTimeout(function(){
+			console.log('moHTML: ',moHTML);
+			$("#lvxinDetailUL").html(moHTML);
+			$("#lvxinReset").html(moHTML);
+			$("#lvxinIntroduce").html(lvxinIntroduceHTML);
+		},0)
 	}
-	$("#lvxinDetailUL").html(moHTML);
-	$("#lvxinReset").html(moHTML);
-	$("#lvxinIntroduce").html(lvxinIntroduceHTML);
 	 //websoket
     var timer=null;
     var identify=0;
