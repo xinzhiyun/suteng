@@ -338,7 +338,7 @@ class PaymentSystemController extends CommonController
             M()->startTrans();
             try{
                 
-                $pay_res = $user->where($showUser)->setDec('gold_num',$true_money);
+                $pay_res = $user->where($showUser)->setDec('gold_num',$gold_num_true);
                 if(!$pay_res){
                     E('支付失败',1002);
                 }
@@ -426,7 +426,6 @@ class PaymentSystemController extends CommonController
                 if((float)$true_money > $silver_true){
                     $this->ajaxReturn(['code'=>1001,'msg'=>'银币不足']);
                 }
-
                 // 4.1 库存检测
             
             
@@ -434,7 +433,7 @@ class PaymentSystemController extends CommonController
             M()->startTrans();
             try{
                 
-                $pay_res = $user->where($showUser)->setDec('silver',$true_money);
+                $pay_res = $user->where($showUser)->setDec('silver',$silver_true);
                 if(!$pay_res){
                     E('支付失败',1002);
                 }
@@ -543,7 +542,7 @@ class PaymentSystemController extends CommonController
             M()->startTrans();
             try{
                 
-                $pay_res = $user->where($showUser)->setDec('silver',$true_money);
+                $pay_res = $user->where($showUser)->setDec('silver',$silver_true);
                 if(!$pay_res){
                     E('支付失败',1002);
                 }
@@ -962,16 +961,15 @@ class PaymentSystemController extends CommonController
                 // 1.1 剩余金币检测
                 $showUser['open_id'] = $_SESSION['open_id'];
                 $user = M('users');
-                $silver = $user->where($showUser)->field('silver')->find();
+                $gold_num = $user->where($showUser)->field('gold_num')->find();
 
                 // 1.2 查询相应金币费率
-                $silver_rate = D('website')->field('silver_rate')->find();
+                $gold_rate = D('website')->field('gold_rate')->find();
                 // 1.3 订单金额与金币
-                $silver_true = (float)$silver['silver'] * (float)$silver_rate['silver_rate'];
-                if((float)$true_money > $silver_true){
-                    $this->ajaxReturn(['code'=>1001,'msg'=>'银币不足']);
+                $gold_true = (float)$gold_num['gold_num'] * (float)$gold_rate['gold_rate'];
+                if((float)$true_money > $gold_true){
+                    $this->ajaxReturn(['code'=>1001,'msg'=>'金币不足']);
                 }
-
                 // 4.1 库存检测
             
             
@@ -979,7 +977,7 @@ class PaymentSystemController extends CommonController
             M()->startTrans();
             try{
                 
-                $pay_res = $user->where($showUser)->setDec('silver',$true_money);
+                $pay_res = $user->where($showUser)->setDec('silver',$gold_true);
                 if(!$pay_res){
                     E('支付失败',1002);
                 }
