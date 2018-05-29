@@ -445,7 +445,7 @@ class PaymentSystemController extends CommonController
                 $orderDetail = D('OrderDetail');
                 $inventory = D('inventory');
 
-                $rs = $shopOrder->where(['order_id'=>$order_id,'uid'=>$uid])->setField(['status'=>9,'mode'=>3]);
+                $rs = $shopOrder->where(['order_id'=>$order_id,'uid'=>$uid])->setField(['status'=>9,'mode'=>4]);
                
             // 3. 表票金额录入
                 $order_goods = $orderDetail->field('gid,num')->where(['order_id'=>$order_id])->select();
@@ -507,7 +507,443 @@ class PaymentSystemController extends CommonController
             echo -1;
         }
     }
+// 套餐银币支付
+    public function choosePayBySilver(){
+        $showWhere['order_id'] = I('post.order');
+        // p(I(''));die;
+        // // 查询订单表
+        $orderData = M('order_setmeal')->where($showWhere)->find();
 
+        // 判断订单未支付
+        if($orderData['status']==0){
+            // 订单金额
+            $money = $orderData['goods_price'];
+            $true_money = $money;
+            // 订单号码
+            $order_id = $orderData['order_id'];
+
+            // 1. 剩余金币检测，支付订单（减相应的金币）
+                // 1.1 剩余金币检测
+                $showUser['open_id'] = $_SESSION['open_id'];
+                $user = M('users');
+                $silver = $user->where($showUser)->field('silver')->find();
+
+                // 1.2 查询相应金币费率
+                $silver_rate = D('website')->field('silver_rate')->find();
+                // 1.3 订单金额与金币
+                $silver_true = (float)$silver['silver'] * (float)$silver_rate['silver_rate'];
+                if((float)$true_money > $silver_true){
+                    $this->ajaxReturn(['code'=>1001,'msg'=>'银币不足']);
+                }
+
+                // 4.1 库存检测
+            
+            
+                // 1.4 支付订单
+            M()->startTrans();
+            try{
+                
+                $pay_res = $user->where($showUser)->setDec('silver',$true_money);
+                if(!$pay_res){
+                    E('支付失败',1002);
+                }
+            // 2. 更改订单状态，支付类型更新
+               //$uid = M('Users')->where("open_id='{$result['']}'")->find()['id'];
+            //file_put_contents('./wx_pay1.txt',$xml."\r\n", FILE_APPEND);
+            // 如果订单号不为空
+                if($order_id){
+                //                $did =  $result['out_trade_no'];
+                
+                                $did = $order_id;
+                                //file_put_contents('./wx_pay1.txt',$result['out_trade_no']."\r\n", FILE_APPEND);
+                                //file_put_contents('./wx_pay1.txt',$uid."\r\n", FILE_APPEND);
+                                // 获取传回来的订单号
+                                $data['order_id'] = $did;
+                
+                
+                
+                
+                                // 查询订单是否已处理
+                                // 查询订单是否已处理
+                                $orderData = M('orders')->where($data)->field('is_pay,order_id,total_price,device_id')->find();
+                
+                                // 1分钱测试数据
+                                $orderData['total_price'] = 1;
+                
+                
+                                // dump($data);die;
+                                // 如果订单未处理，订单支付金额等于订单实际金额
+                                if(empty($orderData['is_pay']) && $orderData['total_price'] == $result['total_fee']){
+                
+                                    //file_put_contents('./wx_pay121.txt',$xml."\r\n", FILE_APPEND);
+                                    //                    dump($result);
+                                    // 处理订单
+                                    // 实例化订单对象
+                                    $orders = M('orders');
+                                    // 实例化订单滤芯对象
+                                    //                    $orderFilter = M('order_filter');
+                                    // 实例化订单套餐对象
+                                    $orderSetmeal = M('order_setmeal');
+                                    // 实例化设备详细信息对象
+                                    $devicesStatu = M('devices_statu');
+                                    // 实例化设备对象
+                                    $device = M('Devices');
+                                    // 实例化充值流水对象
+                                    $flowObj = M('Flow');
+                
+                //
+                
+                                    // 修改订单状态为已付款
+                                    $isPay['is_pay'] = 1;
+                
+                
+                                    //show($isPayRes);die;
+                                    // 查询订单包含的全部套餐
+                                    $orderSetmealData = $orderSetmeal->where($data)->select();
+                
+                
+                                    if($orderSetmealData){
+                                        $isPay['is_recharge'] = 1;
+                                    }
+                
+                                    $isPayRes = $orders->where($data)->save($isPay);
+                                    $isStatus = $orderSetmeal->where($data)->save(['status'=>1]);
+                //                         $isPayRes = $orders->where($data)->find();
+                //                     $isStatus = $orderSetmeal->where($data)->find();
+                
+                                    // dump($orderSetmealData);die;
+                                    // 充值状态
+                                    $status = 0;
+                
+                
+                                    if($orderSetmealData){
+                
+                
+                                        //查询当前用户
+                                        $user_info = M('users')->field('id,invitation_code,open_id')->where(['open_id'=> $result['openid']])->find();
+                
+                
+                //                        file_put_contents('./222222.txt',M('users')->getLastSql() ."\r\n", FILE_APPEND);
+                                        //show($orderSetmealData);die;
+                                        // 统计未处理套餐数量
+                                        $countNun = count($orderSetmealData);
+                
+                                        // 定义计数器
+                                        $num     = 0;
+                                        $flownum = 0;
+                                        //file_put_contents('./wx_pay1uid.txt',$result['out_trade_no']."\r\n", FILE_APPEND);
+                                        // 查询当前设备编号
+                                        //                        $deviceId['id'] = $did;
+                                        $deviceId['id'] = $orderData['device_id'];
+                
+                                        //file_put_contents('./wx_pay2uid.txt',$uid."\r\n", FILE_APPEND);
+                                        $deviceCode['DeviceID'] = $device->where($deviceId)->find()['device_code'];
+                
+                
+                                        foreach ($orderSetmealData as $value) {
+                
+                                            // 查询设备当前剩余流量
+                                            $devicesStatus = $devicesStatu->where($deviceCode)->find();
+                ////查找对应的租金总价
+                                            $setmeal_money = M('setmeal')->field('money,flow,tid,describe')->where(['id'=>$orderSetmealData[0]['setmeal_id']])->find();
+                                            //查找对应的滤芯成本
+                                            $setmeal = M('type')->where(['id'=>$setmeal_money['tid']])->find();
+                                            //计算出利润
+                //                               dump($setmeal_money['money']-($setmeal['money']+$setmeal['cost']*$setmeal_money['flow']));exit;
+                                            if ($orderData['total_price'] < $setmeal['money']) {
+                                                $money = 0;
+                                            } else {
+                                                $money =      $orderData['total_price']-($setmeal['money']+$setmeal['cost']*$setmeal_money['flow']);
+                                            }
+                                            // $devicesStatuReFlow = $devicesStatu->where($deviceCode)->find()['reflow']-0;
+                                            $devicesStatuReFlow = $devicesStatus['reflow'];
+                                            $devicesStatuReDay = $devicesStatus['reday'];
+                                            // file_put_contents('套餐模式',var_export($value['remodel'], true),FILE_APPEND);
+                                            //                             if ($value['remodel'] == 1) {
+                                            //                                 // 充值后流量应剩余天数
+                                            //                                 $Flow['ReDay'] = $devicesStatuReDay + ($value['flow']*$value['goods_num']);
+                                            //                             } else {
+                                            //                                 // 充值后流量应剩余流量
+                                            //                                 $Flow['ReFlow'] = $devicesStatuReFlow + ($value['flow']*$value['goods_num']);
+                                            //                             }
+                                            switch ($value['remodel']) {
+                                                case '0'://流量
+                                                    $Flow['ReFlow'] = $devicesStatuReFlow + ($value['flow']*$value['goods_num']);
+                                                    break;
+                                                case '1'://时长
+                                                    $Flow['ReDay'] =$devicesStatuReDay  + ($value['flow']*$value['goods_num']);
+                                                    break;
+                                                default:
+                                                    # code...
+                                                    break;
+                                            }
+                                            $Flow['data_statu']=1;
+                
+                                            Log::write(json_encode($Flow), '更新devicesStatu');
+                
+                                            // 修改设备剩余流量
+                                            $FlowRes = $devicesStatu->where($deviceCode)->save($Flow);
+                                            echo $devicesStatu->getlastsql();
+                
+                
+                                            // file_put_contents('jfdsk',var_export($devicesStatu->_sql(), true),FILE_APPEND);
+                                            // 准备发送指令
+                                            // if(empty($Flow['ReDay'])){
+                                            //     $msg = [
+                                            //         'DeviceID'=>$deviceCode['DeviceID'],
+                                            //         'PackType'=>'SetData',
+                                            //         'Vison'=>'0',
+                                            //         'ReFlow'=>$Flow['ReFlow'],
+                                            //     ];
+                                            // } else {
+                                            //     $msg = [
+                                            //         'DeviceID'=>$deviceCode['DeviceID'],
+                                            //         'PackType'=>'SetData',
+                                            //         'Vison'=>'0',
+                                            //         'ReDay'=>$Flow['ReDay'],
+                                            //     ];
+                                            // }
+                                            // dump($msg);die;
+                
+                                            // 写充值流水
+                                            // 订单编号
+                                            $flowData['order_id']       = $value['order_id'];
+                                            // 用户ID
+                                            $flowData['user_id']            = $user_info['id'];
+                                            // 充值金额
+                                            //
+                                            $flowData['money']          = $value['money'];
+                                            // 充值方式
+                                            $flowData['mode']           = 1;
+                                            // 充值流量
+                                            $flowData['flow']           = $value['flow'];
+                                            // 套餐数量
+                                            $flowData['num']            = $value['goods_num'];
+                                            // 套餐描述
+                                            $flowData['describe']       = $value['describe'];
+                                            // 当前流量
+                                            $flowData['currentflow']    = $Flow['ReFlow'];
+                                            // 充值时间
+                                            $flowData['addtime']           = time();
+                                            //show($flowData);die;
+                                            // 创建充值流水
+                                            $flowObjRes = $flowObj->add($flowData);
+                
+                                            // dump($orderData);
+                                            // dump($flowObjRes);die;
+                
+                                            // 判断流水是否创建成果
+                                            if($flowObjRes){
+                                                // 定时器++
+                                                $flownum++;
+                                            }
+                                            //                            dump($FlowRes);
+                
+                                            // 判断修改结果
+                                            if($FlowRes){
+                                                // 计数器++
+                                                $num++;
+                                            }
+                
+                                        }
+                
+                
+                                        //                         die;
+                                        // 全部套餐充值完成
+                                        if($countNun == $num && $countNun == $flownum){
+                
+                                            //查找对应的租金总价
+                                            $setmeal_money = M('setmeal')->field('money,flow,tid,describe')->where(['id'=>$orderSetmealData[0]['setmeal_id']])->find();
+                                            //查找对应的滤芯成本
+                                            $setmeal = M('type')->where(['id'=>$setmeal_money['tid']])->find();
+                                            //计算出利润
+                //                               dump($setmeal_money['money']-($setmeal['money']+$setmeal['cost']*$setmeal_money['flow']));exit;
+                                            if ($setmeal_money['money'] < $setmeal['money']) {
+                                                $money = 0;
+                                            } else {
+                                                $money =      $setmeal_money['money']-($setmeal['money']+$setmeal['cost']*$setmeal_money['flow']);
+                                            }
+                
+                                            //查询分配比例
+                                            $butros = M('butros')->find();
+                                            //销售奖(定义 卖商品的经销商)
+                                            $com_c = $money*($butros['com_c']/ 100);
+                                            //市场推广奖
+                                            $com_d = $money*(($butros['com_b']/ 100)*(50/ 100));
+                                            //市场培育将
+                                            $com_p = $money*(($butros['com_b']/100)*((50/100)));
+                                            //团队管理奖 B级加盟商
+                                            $com_t =  $money*(($butros['com_a']/ 100)*(50/ 100));
+                                            //团队管理奖 A级加盟商
+                                            $com_ta =  $money*(($butros['com_a']/100)*((100-50)/100));
+                //                                dump($com_c);
+                //                                dump($com_d);
+                //                                dump($com_p);
+                //                                dump($com_t);
+                //                                dump($com_ta);
+                //                                dump($money);exit;
+                                            //查出当前推荐商人
+                
+                                            $c_info = M('vendors')->where(['code'=>$user_info['invitation_code']])->find();
+                                            // echo M('vendors')->getLastSql();
+                
+                                            // file_put_contents('./wx3333333_payFee.txt',M('vendors')->getLastSql()."\r\n", FILE_APPEND);
+                                            //查出推荐人的分公司
+                                            $f_info = M('vendors')->where(['code'=>$c_info['office_code']])->find();
+                                            //销售奖(卖商品的经销商 分公司)
+                                            if ($f_info) {
+                                                $earnings_comc = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_c);
+                
+                                                file_put_contents('./wx2_payFee.txt', M('vendors')->getLastSql()."\r\n", FILE_APPEND);
+                
+                                                //销售奖收益记录
+                                                if ($earnings_comc) {
+                
+                                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$f_info['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d
+                                                    H:i:s')]);
+                                                    // file_put_contents('./wx2_payFee.txt', M('earnings')->getLastSql()."\r\n", FILE_APPEND);
+                
+                                                }
+                                            }
+                
+                                            //市场推广奖(定义 卖商品的经销商推荐人) 只查询存在的
+                                            if ($c_info){
+                                                $earnings_comd = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_d);
+                                                //销售奖收益记录
+                                                if ($earnings_comd) {
+                                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$c_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+                                                }
+                                            }
+                                            //查找直系推荐关系中的最近B级加盟商(包括自己)
+                                            //                    $my_level_info = M('vendors')->field('id,leavel,code,path,updatetime')->where(['id'=>$list['ccid']])->find();
+                                            //如果自己是B级 利润给自己 不是的话 给最近的加盟商呢( 市场培育将)
+                                            if ($c_info['leavel'] == 3) {
+                
+                                                //                         //市场培育奖励
+                                                //                    M('vendors')->where(['id'=>$my_level_info['id']])->save(['updatetime'=>time()]);
+                                                $earnings_comp = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_p);
+                                                //市场培育收益记录
+                                                if ($earnings_comp) {
+                                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$c_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
+                                                }
+                
+                                            } else {
+                                                if ($c_info['path'] != null) {
+                
+                                                    //查找直系推荐关系中的最近B级经销商(包括自己)
+                                                    $path = explode('-',$c_info['path']);
+                                                    $in_B['id']  = array('in',$path);
+                                                    $in_B['leavel'] = 3;
+                                                    //查找最近的B级经销商
+                                                    $my_level_info = M('vendors')->field('id,leavel,code,path,updatetime,open_id')->order('id desc')->where($in_B)->find();
+                                                    if ($my_level_info) {
+                                                        //                            M('vendors')->where(['id'=>$my_level_info['id']])->save(['updatetime'=>time()]);
+                                                        M('vendors')->where(['id'=>$my_level_info['id']])->setInc('abonus',$com_p);
+                                                        //
+                                                        if ($earnings_comc) {
+                                                            M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$my_level_info['open_id'],'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            //查找团队管理奖收益人
+                                            if ($c_info['path'] != null) {
+                
+                                                //查找直系推荐关系中的最近B级经销商(包括自己)
+                                                $path = explode('-',$c_info['path']);
+                                                $in_B['id']  = array('in',$path);
+                                                $in_B['leavel'] = 3;
+                                                $in_B['updatetime'] = array('lt',$c_info['updatetime']);
+                                                $in_info = M('vendors')->where($in_B)->find();
+                                                $earnings_ta = M('vendors')->where(['id'=>$in_info['id']])->setInc('abonus',$com_t);
+                                                //市场培育收益记录
+                                                if ($earnings_ta) {
+                                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$in_info['open_id'],'vid'=>$in_info['id'],'abonus'=>$com_t,'create_time'=>date('Y-m-d H:i:s')]);
+                                                }
+                                            }
+                                            //B级加盟商受益人
+                                            //如果自己是A级 利润给自己 不是的话 给最近的加盟商呢
+                                            if ($c_info['leavel'] == 2) {
+                                                //团队管理奖 A级加盟商
+                                                M('vendors')->where(['id'=>$c_info['id']])->save(['updatetime'=>time()]);
+                                                $earnings_ta = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_ta);
+                
+                                                //市场培育收益记录
+                                                if ($earnings_ta) {
+                                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$c_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                                                }
+                
+                                            } else {
+                                                if ($c_info['path'] != null) {
+                
+                                                    //查找直系推荐关系中的最近B级加盟商(包括自己)
+                                                    $path = explode('-',$c_info['path']);
+                                                    $in_A['id']  = array('in',$path);
+                                                    $in_A['leavel'] = 2;
+                                                    $path_info_A = M('vendors')->field('id,leavel,code,path,open_id')->order('id desc')->where($in_A)->find();
+                
+                                                    if ($path_info_A) {
+                //                            M('vendors')->where(['id'=>$path_info_A['id']])->save(['updatetime'=>time()]);
+                                                        $earnings_ta = M('vendors')->where(['id'=>$path_info_A['id']])->setInc('abonus',$com_ta);
+                                                        if ($earnings_ta) {
+                                                            M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$path_info_A['open_id'],'vid'=>$path_info_A['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            // 充值和流水完成，状态设为1
+                                            $status = 1;
+                                        }
+                                        // echo 12;
+                                    }else{
+                                        // 没有套餐默认值，状态设为1
+                                        $status = 1;
+                                    }
+                
+                                    // show($msg);die;
+                                    // file_put_contents('saaa',$isPayRes .'jfdslajfds'. $status);
+                                    if($isPayRes && $status && $isStatus){
+                
+                
+
+                                        file_put_contents('./wx22223_payFee.txt',$b."\r\n", FILE_APPEND);
+                                        $sc=A("Api/Action");
+                
+                                        $sc->sysnc($deviceCode['DeviceID']);
+                                        //我觉得应该按订单的总价为标准
+                
+                
+                
+                
+                                    }else{
+                                        // file_put_contents('./wx_notifyEeor.txt','订单号：'.$result['attach']."充值失败 \r\n", FILE_APPEND);
+                                    }
+                                }else{
+                                    // 充值金额不匹配
+                                    // if($orderData['total_price'] != $result['total_fee']){
+                                    //    file_put_contents('./wx_notifymoney.txt','订单号：'.$result['attach']."充值失败,金额不匹配。订单金额：{$orderData['total_price']} ，充值金额：{$result['total_fee']} \r\n", FILE_APPEND);
+                                    // }
+                                }
+                            }
+            // 5. 订单支付完成返回信息
+
+                M()->commit(); 
+                $this->ajaxReturn(['code'=>200,'msg'=>'支付成功']);
+            }catch(\Exception $e){
+                M()->rollback();
+                $err = [
+                    'code' => $e->getCode(),
+                    'msg' => $e->getMessage()
+                ];
+                $this->ajaxReturn($err);
+            }
+        }else{
+            // 订单不存在
+            $this->ajaxReturn(['code'=>-1,'msg'=>'已支付']);
+        }
+    }
+
+    // 套餐金币支付
     public function choosePayByGold(){
         $showWhere['order_id'] = I('post.order');
         // p(I(''));die;
@@ -551,7 +987,7 @@ class PaymentSystemController extends CommonController
                //$uid = M('Users')->where("open_id='{$result['']}'")->find()['id'];
             //file_put_contents('./wx_pay1.txt',$xml."\r\n", FILE_APPEND);
             // 如果订单号不为空
-                if(!empty($result['attach'])){
+                if($order_id){
                 //                $did =  $result['out_trade_no'];
                 
                                 $did = $order_id;
