@@ -62,16 +62,11 @@
         </header>
         <div class="taocan">
             <notempty name="vendor.vendor_a">
-                <div class="taocanSelectNow" index="0">
-                    A级分销商
-                </div>
-                <div index="1" >
-                    B级分销商
-                </div>
-                <div index="2" >
+
+                <div index="0" >
                     C级分销商
                 </div>
-                <div index="3" >
+                <div index="1" >
                     会员邀请码
                 </div>
             </notempty>
@@ -102,18 +97,8 @@
             </empty>
         </div>
         <div class="money clearfix">
-            <notempty name="vendor.vendor_a">
-                <div class="moneySon">
-                    <p>A级邀请码：</p>
-                    <img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_a}}" alt=""><br/>
-                </div>
-            </notempty>
-            <notempty name="vendor.vendor_b">
-                <div class="moneySon">
-                    <p>B级邀请码：</p>
-                    <img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$vendor.vendor_b}}" alt=""><br/>
-                </div>
-            </notempty>
+
+
             <notempty name="vendor.vendor_c">
                 <div class="moneySon">
                     <p>C级邀请码:</p>
@@ -157,28 +142,15 @@
 
             var _index=$(this).attr("index");
             if(_index==0){
-                $(".moneySon").eq(0).animate({left: '0vw'}),
-                $(".moneySon").eq(1).animate({left: '100vw'}),
-                $(".moneySon").eq(2).animate({left: '200vw'}),
-                $(".moneySon").eq(3).animate({left: '300vw'})
+                $(".moneySon").eq(0).animate({left: '0vw'});
+                $(".moneySon").eq(1).animate({left: '100vw'});
+
 
             }else if(_index==1){
-                $(".moneySon").eq(0).animate({left: '-100vw'}),
-                $(".moneySon").eq(1).animate({left: '0vw'}),
-                $(".moneySon").eq(2).animate({left: '100vw'}),
-                $(".moneySon").eq(3).animate({left: '200vw'})
+                $(".moneySon").eq(0).animate({left: '-100vw'});
+                $(".moneySon").eq(1).animate({left: '0vw'});
 
-            }else if(_index==2){
-                $(".moneySon").eq(0).animate({left: '-200vw'}),
-                $(".moneySon").eq(1).animate({left: '-100vw'}),
-                $(".moneySon").eq(2).animate({left: '0vw'}),
-                $(".moneySon").eq(3).animate({left: '100vw'})
 
-            }else if(_index==3){
-                $(".moneySon").eq(0).animate({left: '-300vw'}),
-                $(".moneySon").eq(1).animate({left: '-200vw'}),
-                $(".moneySon").eq(2).animate({left: '-100vw'}),
-                $(".moneySon").eq(3).animate({left: '0vw'})
             }
             
         })

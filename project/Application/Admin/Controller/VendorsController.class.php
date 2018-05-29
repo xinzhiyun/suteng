@@ -723,7 +723,7 @@ class VendorsController extends CommonController
         // 审核-责任人
         $data['auditing'] = $_SESSION['adminInfo']['user'];
         // 执行更新
-        $res = D('vendors')->where($saveData)->find($data);
+        $res = D('vendors')->where($saveData)->save($data);
 
 
         // 判断信息是否修改成功
@@ -796,6 +796,7 @@ class VendorsController extends CommonController
             $message['res']     = ['code' => 403, 'message' => '查询失败'];
             $message['data']    = null;
         }
+
         // 返回JSON格式数据
         $this->ajaxReturn($message);
     }

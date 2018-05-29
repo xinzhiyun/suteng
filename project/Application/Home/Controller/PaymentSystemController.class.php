@@ -337,8 +337,8 @@ class PaymentSystemController extends CommonController
                 // 1.4 支付订单
             M()->startTrans();
             try{
-                
-                $pay_res = $user->where($showUser)->setDec('gold_num',$gold_num_true);
+                $gold_money = $true_money / (float)$gold_rate['gold_rate']; 
+                $pay_res = $user->where($showUser)->setDec('gold_num',$gold_money);
                 if(!$pay_res){
                     E('支付失败',1002);
                 }
@@ -428,12 +428,13 @@ class PaymentSystemController extends CommonController
                 }
                 // 4.1 库存检测
             
-            
+            $silver_money = $true_money / (float)$silver_rate['silver_rate'];
+
                 // 1.4 支付订单
             M()->startTrans();
             try{
                 
-                $pay_res = $user->where($showUser)->setDec('silver',$silver_true);
+                $pay_res = $user->where($showUser)->setDec('silver',$silver_money);
                 if(!$pay_res){
                     E('支付失败',1002);
                 }
@@ -541,8 +542,8 @@ class PaymentSystemController extends CommonController
                 // 1.4 支付订单
             M()->startTrans();
             try{
-                
-                $pay_res = $user->where($showUser)->setDec('silver',$silver_true);
+                $silver_money = (float)$true_money / (float)$silver_rate['silver_rate'];
+                $pay_res = $user->where($showUser)->setDec('silver',$silver_money);
                 if(!$pay_res){
                     E('支付失败',1002);
                 }
@@ -976,8 +977,8 @@ class PaymentSystemController extends CommonController
                 // 1.4 支付订单
             M()->startTrans();
             try{
-                
-                $pay_res = $user->where($showUser)->setDec('silver',$gold_true);
+                $gold_money = (float)$true_money / (float)$gold_rate['gold_rate'];
+                $pay_res = $user->where($showUser)->setDec('silver',$gold_money);
                 if(!$pay_res){
                     E('支付失败',1002);
                 }

@@ -412,8 +412,12 @@ class WeiXinPayController extends Controller
             $saveRes = M('vendors')->where($showData)->save($saveData);
 
             if($saveRes){
-                // 分红
-                // dump($result);die;
+                //  添加缴费记录
+                $data['open_id'] = $result['openid'];
+                $data['money'] = $result['attach'];
+                $data['status'] = 1;
+                $data['add_time'] = date('Y-m-d H:i:s');
+                $info = M('vendors_league')->add($data);
             }
 
 
