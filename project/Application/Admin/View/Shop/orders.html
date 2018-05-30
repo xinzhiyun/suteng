@@ -414,11 +414,13 @@
                     $.get("{{:U('admin/orders/getCourierByOrder')}}",{ order_id : orderid},function(res){
 
                         if(res.code == 200){
+                            console.log(res);
+
                             // var html = '<tr><th>快递名称</th><th>快递单号</th></tr>';
                             var html = '';
                             for(var i = 0;i<res.data.length;i++){
 
-                                html += '<tr><th>'+ res.data[i]['name'] +'</th><td><input class="input-medium express_input" type="text" name="express" cid="'+res.data[i]['cid']+'" class="form-control" value=""></td></tr>';
+                                html += '<tr><th>'+ res.data[i]['gname'] + ' ' + res.data[i]['cname'] +'</th><td><input class="input-medium express_input" type="text" name="express" cid="'+res.data[i]['cid']+'" class="form-control" value=""></td></tr>';
                             }
                             courier.find('tbody').eq(0).html(html);
                         }
