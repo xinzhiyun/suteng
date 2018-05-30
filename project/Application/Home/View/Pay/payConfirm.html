@@ -472,7 +472,8 @@
 				$(this).siblings(".youfei").text(postagePrice);
 				//获取商品价格
 				sessionStorage.setItem("goodsPrice", parseInt(priceAll) + parseInt(postageMoney));//支付面板的价格存储
-				
+				$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+				$('.paymidd>ul>li>span').eq(0).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');//切换会第一个
 				if($(this).find("option:selected").val() != "选择快递" && $(this).prev().html() == "配送方式") {
 					// 快递选择向右图标隐藏
 					$(this).siblings(".poselct").css("display", "none");
