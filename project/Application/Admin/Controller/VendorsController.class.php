@@ -733,16 +733,16 @@ class VendorsController extends CommonController
 
                 $info = M('vendors')->field('invitation_code,id')->where($where)->find();
 
-                $path = M('vendors')->field('path,id,leavel')->where(['code'=>$info['invitation_code']])->find();
+                $path_code = M('vendors')->field('path,id,leavel')->where(['code'=>$info['invitation_code']])->find();
 
 
-                if ($path['path']==null) {
+                if ($path_code['path']==null) {
                     //当他推荐人是最大的时候
-                    $path = $path['id'];
+                    $path = $path_code['id'];
 
                 } else{
                     //当他推荐人还有推荐人的时候
-                    $path = $path['path'].'-'.$path['id'];
+                    $path = $path_code['path'].'-'.$path_code['id'];
                 }
 
                 $buros_info = M('butros')->field('trader_a,trader_b')->find();
@@ -751,15 +751,22 @@ class VendorsController extends CommonController
                 $count = M('vendors')->where(['invitation_code'=>$info['invitation_code']])->count();
 
                 $save_path = M('vendors')->where($where)->save(['path'=>$path]);
+
                 if ($save_path) {
+
                     //查找多少个他下面多少个C级
                     $count_c = M('vendors')->where(['invitation_code'=>$info['invitation_code'],'leavel'=>4])->count();
+
                     if ($count_c >= $buros_info['trader_a']) {
                         M('vendors')->where(['code'=>$info['invitation_code']])->save(['leavel'=>3]);
                     }
-                    if ($path['leavel'] == 3) {
+
+                    if ($path_code['leavel'] == 3) {
+
                         $count_b = M('vendors')->where(['invitation_code'=>$info['invitation_code'],'leavel'=>3])->count();
+
                         if ($count_b >=$buros_info['trader_b'] ) {
+
                             M('vendors')->where(['code'=>$info['invitation_code']])->save(['leavel'=>2]);
                         }
                     }

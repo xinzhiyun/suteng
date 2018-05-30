@@ -188,7 +188,7 @@ class RegisteredVendorController extends Controller
                     $father->commit();
                     $newData['password'] = MD5($newData['password']);
                     $_SESSION['vendorInfo'] = $newData;
-                    $this->success('注册成功，请尽快完成认证！');
+                    $this->success('注册成功，请尽快完成认证！',U('Home/Login/index.html'));
                     return false;
                 }else{
                     // 事务回滚
