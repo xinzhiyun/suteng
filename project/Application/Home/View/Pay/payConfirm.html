@@ -185,13 +185,9 @@
 			var silver_rate = JSON.parse($("#rate").val()).silver_rate;
 
 			console.log("金银币数量", gold_num, silver);
+
 			// /******** 付款过程--结束--	**********/
 			order_id = JSON.parse(sessionStorage.getItem("order_id"));
-			// $.get('getGoodsByOrder',{'order_id':order_id},function(data){
-			// 	console.log('商品：');
-			// 	console.log(data);
-			// 	sessionStorage.setItem("shopCar_data",JSON.stringify(data));
-			// })
 			
 			// 快递数据
 			var postage = JSON.parse($("#goodsCourier").val());
@@ -238,7 +234,6 @@
 			
 			// 获取后台传来的默认地址
 			var addressInfo;
-			// console.log($("#addressInfo").val())
 			if(($("#addressInfo").val())!='null'){
 				// alert(1)
 				addressInfo = JSON.parse($("#addressInfo").val());
@@ -469,29 +464,26 @@
 					}
 				}
 				postageMoney = sum(postageArr);//总邮费
-				console.log(priceAll, numAll, num, postageMoney, postageArr);
 				totalPub = (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2);
 				sessionStorage.setItem("totalPub",totalPub);
-				$(".priceAll").attr('data',totalPub);
-				// console.log(totalPub);
 				$(".priceAll").text('￥'+ (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
 				$(".paytopRight>p").text('$'+(parseInt(priceAll) + parseInt(postageMoney)));	//订单的总价格
 				$("#footerContain>div>span").text('￥'+(parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
 				$(this).siblings(".youfei").text(postagePrice);
+				//获取商品价格
+				sessionStorage.setItem("goodsPrice", parseInt(priceAll) + parseInt(postageMoney));//支付面板的价格存储
+				$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+				$('.paymidd>ul>li>span').eq(0).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');//切换会第一个
 				if($(this).find("option:selected").val() != "选择快递" && $(this).prev().html() == "配送方式") {
 					// 快递选择向右图标隐藏
 					$(this).siblings(".poselct").css("display", "none");
 					$(this).siblings(".posway").css("display", "none");
-					// 快递费写入页面
-					// $(this).siblings(".youfei").text(postagePrice);
 				}else {
 					// 快递选择向右图标显示
 					$(this).siblings(".poselct").css("display", "block");
 					$(this).siblings(".posway").css("display", "block");
 					$(this).siblings(".youfei").text("");
 				}
-
-				// +
 				var opDom = $("option:selected",this);
 				opDom.attr("selected","selected").siblings().attr("selected",false);
 				sessionStorage.setItem("data_"+datanum,$(this).parents(".goods").html());
@@ -556,7 +548,6 @@
 				
 				$("#payWay").animate({bottom: '-100vh'}).css({display: 'none'});
 			})
-			var goodsPrice;
 			// 点击付款按钮
 			//支付方式
 			$('#footerContain').click(function(){
@@ -577,12 +568,11 @@
 				}
 
 				$('.paystyle').slideDown("slow");
-				//获取商品价格
-				goodsPrice = parseInt($(".paytopRight>p").text().substr(1));
+				
 			});
-			 
 			// 付款方式的单选框
 			$('.paymidd>ul>li>span').click(function(){
+				goodsPrice = sessionStorage.getItem("goodsPrice");//获取支付面板的总价格
 				$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
 				var fuhao = $(this).parent().text();//获取购买方式
@@ -614,6 +604,7 @@
 			点击立即支付
 			*/
 			$(".payBott").click(function(){
+				goodsPrice = sessionStorage.getItem("goodsPrice");//获取支付面板的总价格
 				// 判断选择的是什么支付方式
 				var index = $(".icon-xuanze").parents("li").attr("index");
 				console.log("价格",$(".paytopRight>p").text().substr(1));
@@ -640,6 +631,7 @@
 									parent.layer.msg('支付成功');
 									setTimeout(function(){
 										history.replaceState({}, null, "{{:U('Shop/index')}}");//改变历史记录
+										sessionStorage.setItem("goodsPrice", "");//清空总价格
 										location.href = '{{:U("PaymentSystem/paytosuccess")}}';
 									},500);
 								}else if(res.code == -1) {
@@ -693,6 +685,7 @@
 										parent.layer.msg('支付成功');
 										setTimeout(function(){
 											history.replaceState({}, null, "{{:U('Shop/index')}}");//改变历史记录
+											sessionStorage.setItem("goodsPrice", "");//清空总价格
 											location.href = '{{:U("PaymentSystem/paytosuccess")}}';
 										},500);
 									}else if(res.code == -1) {

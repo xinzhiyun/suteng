@@ -107,6 +107,50 @@
 		<img src="__PUBLIC__/Home/images/loading.gif" alt="加载中...">
 	</div>
 
+	<!-- 支付方式选择部分开始 -->
+		<!-- <div class="paystyle">
+			<div class="paystyleTop"></div>
+			<div class="payContain">
+				<div class="paytop clearfix">
+					<div class="paytopLeft"><i class="iconfont icon-cuohao"></i></div>
+					<div class="paytopRight">
+						<h3>付款</h3>
+						<p>￥3620.00</p>
+					</div>
+				</div>
+				<div class="paymidd">
+					<h3>选择支付方式</h3>
+					<ul class="clearfix">
+						<li index="1"><i class="iconfont icon-tubiao207"></i>金币<span class="iconfont icon-xuanze"></span></li>
+						<li index="2"><i class="iconfont icon-tubiao207-copy"></i>银币<span class="iconfont icon-kuang1"></span></li>
+						<li index="3"><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-kuang1"></span></li>
+						<li index="4"><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
+						<li index="5"><i class="iconfont icon-yinlian"></i>银联<span class="iconfont icon-kuang1"></span></li>
+					</ul>
+				</div>
+				<div class="payBott">
+					<input class=" start" type="button" value="立即支付">
+				</div>
+			</div>
+		</div> -->
+		
+		<!-- 模态框的内容 -->
+		<!-- <div class="modelAll"> -->
+			<!-- <a class="start" href="javascript:;">点击</a> -->
+			<!-- <div class="modal fade">
+				<div class="modal-body">
+					<div class="modal-content">
+						<p>您没有绑定银行卡</p>
+						<p><a href="#">去绑定</a></p>
+						<p><a href="#">其他支付方式</a></p>
+						<p><input class="close" type="submit" value="取消"></p>
+					</div>
+				</div>
+			</div>
+			<div class="modal-backup"></div>
+		</div> -->
+	<!-- 支付方式选择部分结束 -->
+
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<!-- 微信支付支持JS部分代码 -->
@@ -210,7 +254,7 @@
 			if(loadingEnd){		// 加载结束，移除loading
 				setTimeout(function(){
 					$("#loading").fadeOut('fast');
-				},600)
+				},600);
 			}
 		});
 		// 点击tab移动content的函数
@@ -261,7 +305,7 @@
     // refundStatus   处理进度（0：未处理 1：同意退款 2：不同意退款 3：同意退货 4：不同意退货 5：已退款 6：正在退货 7：已收货 ）
     (function unpaid_order(){
     	var imgpath = '/Uploads/';
-    	var noimg = '__PUBLIC__/images/noimg.jpg'
+    	var noimg = '__PUBLIC__/images/noimg.jpg';
 		var Rejectednum=0;//退货数量
         $.ajax({//8：未支付
         	url:"{{:U('Home/Order/order_list')}}",
@@ -391,51 +435,54 @@
 					// });
 					
 					// console.log($(this).parent().prev(children("span").html());
-					var a = $(this).parent().prev().children("span").html();
-					if(a == "&nbsp;(含邮费￥0)"){
+					// var a = $(this).parent().prev().children("span").html();
+					// if(a == "&nbsp;(含邮费￥0)"){
 						var urlImg = "/Uploads/";
 						var order_id = $(this).prev().attr("name");
+						sessionStorage.setItem("lvxinData", "");//清空滤芯数据
+						sessionStorage.setItem("goods_data", "");//清空商品数据
 						sessionStorage.setItem("order_id",order_id);
-						$.get("{{:U('Home/pay/getGoodsByOrder')}}",{'order_id':order_id},function(data){
-							console.log('商品：');
-							console.log(data);
+						$.get("{{:U('Home/Pay/getGoodsByOrder')}}",{'order_id':order_id},function(data){
+							console.log("付款",data);
 							for(var i = 0; i < data.length;i++){
 								data[i].path=urlImg+data[i].path;
 							}
 							sessionStorage.setItem("shopCar_data",JSON.stringify(data));
-							location.href="{{:U('home/pay/payConfirm')}}?order_id=" + order_id;
+							location.href="{{:U('Home/Pay/payConfirm')}}?order_id=" + order_id;
 						})
-						console.log("邮费0")
-					}else{
-			      		var _thisname = JSON.parse($(this).siblings().attr("name"));
-			      		// var paymoney = parseFloat($(this).parents(".calc").find(".postage").text().substr(6));	//邮费
-			      		var price = parseInt($(this).parents(".calc").find(".price").text().substr(1)*100)/100;
-			      		// console.log(_thisname,price);
-			      		$.ajax({
-			      			url:"{{:U('Home/PaymentSystem/orderPay')}}",
-			      			type:"post",
-			      			data:{
-			      				order: _thisname,
-			      				paymoney: price
-			      			},
-			      			success:function(res){
-			      				if(res == -1){
-									// console.log('支付错误！');
-									parent.layer.msg('支付错误！');
-								}else{
+						// console.log("邮费0")
+					// }else{      
+						// $('.paystyle').slideDown("slow");
+						// console.log($(".price").html())
+			   //    		var _thisname = JSON.parse($(this).siblings().attr("name"));
+			   //    		// var paymoney = parseFloat($(this).parents(".calc").find(".postage").text().substr(6));	//邮费
+			   //    		var price = parseInt($(this).parents(".calc").find(".price").text().substr(1)*100)/100;
+			   //    		// console.log(_thisname,price);
+			   //    		$.ajax({
+			   //    			url:"{{:U('Home/PaymentSystem/orderPay')}}",
+			   //    			type:"post",
+			   //    			data:{
+			   //    				order: _thisname,
+			   //    				paymoney: price
+			   //    			},
+			   //    			success:function(res){
+			   //    				if(res == -1){
+						// 			// console.log('支付错误！');
+						// 			parent.layer.msg('支付错误！');
+						// 		}else{
 									
-									// 调用微信支付方法
-									weixinPay(res);
+						// 			// 调用微信支付方法
+						// 			weixinPay(res);
 									
-								}
-								// weixinPay(res);
-							},
-							error: function(res) {
-								console.log("出错", res)
-							}
-						});
-						console.log("邮费值")
-					}
+						// 		}
+						// 		// weixinPay(res);
+						// 	},
+						// 	error: function(res) {
+						// 		console.log("出错", res)
+						// 	}
+						// });
+						// console.log("邮费值")
+					// }
 				// 	var urlImg = "/Uploads/";
 				// 	var order_id = $(this).prev().attr("name");
 				// 	sessionStorage.setItem("order_id",order_id);
@@ -453,11 +500,16 @@
 	        }
 	    });
 
+		// 付款方式页面隐藏
+		$('.paytop>.paytopLeft>i').click(function(){
+			$('.paystyle').slideUp("slow");
+		})
+
 		$.ajax({//9：待发货
 				url:"{{:U('Home/Order/order_list')}}",
 				data:{
             	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单},
-            	"status":[4,6,9]
+            	"status":[4,9,10]
             },
             dataType:"json",
             type: 'post',
@@ -641,7 +693,7 @@
 									order_id:_thisname
 								},
 								success:function(res){
-//									// 切换到待评价模块
+									// 切换到待评价模块
 			       	    			var href = location.href.substr(0, location.href.indexOf('?tab='));
 				       	   			location.href = href + '?tab=' + 3;
 			       	   				 console.log( res);
@@ -985,8 +1037,8 @@
 							// console.log(res.data[i].productList[j])
 						
 							// 无图片时显示
-							var noimg_show = res.data[i].productList[j]['pics']
-							? (imgpath + res.data[i].productList[j]['pics']['path'])
+							var noimg_show = res.data[i].productList[j]['gpic']
+							? (imgpath + res.data[i].productList[j]['gpic'])
 							: noimg;
 							returned6+='<p>信息更新时间：'+ res.data[i].ordertime +'</p>'+
 							'<div class="shangpingnei clearfix">'+
@@ -1082,25 +1134,16 @@
 			}
 		},10)
 	})();
-function timestampToTime(timestamp) {
-	var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-	Y = date.getFullYear() + '-';
-	M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-	D = date.getDate() + ' ';
-	h = date.getHours() + ':';
-	m = date.getMinutes() + ':';
-	s = date.getSeconds();
-	return Y+M+D+h+m+s;
-}
-// function aa(callback) {
-// 	success: function(res){
-// 		res.num;
-// 		callback({num: num})
-// 	}
-// }
-// aa(function(res){
-// 	res.num
-// })
+	function timestampToTime(timestamp) {
+		var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+		Y = date.getFullYear() + '-';
+		M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+		D = date.getDate() + ' ';
+		h = date.getHours() + ':';
+		m = date.getMinutes() + ':';
+		s = date.getSeconds();
+		return Y+M+D+h+m+s;
+	}
 </script>
 </body>
 </html>

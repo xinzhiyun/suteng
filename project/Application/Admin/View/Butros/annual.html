@@ -32,29 +32,29 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">钻石年费套餐描述</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="dia_describe" class="form-control" value="{{$data.dia_describe}}" placeholder="套餐简要描述50个字以内">
+                                    <input type="text" name="dia_describe" class="form-control dia_describe" value="{{$data.dia_describe}}" placeholder="套餐简要描述50个字以内">
                                 </div>
                             </div>
                             <h3>金牌年费设置 <small style="color: red"></small></h3>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">年费</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="medal_money" class="form-control"  value="{{$data.medal_money}}" placeholder="标准价钱格式，例如：2.00">
+                                    <input type="text" name="medal_money" class="form-control medal_money"  value="{{$data.medal_money}}" placeholder="标准价钱格式，例如：2.00">
 
                                 </div>
                             </div>
 
-                            <h3>金牌年费成本 <small style="color: red"></small></h3>
+                            <h3>金牌年费成本 <small style="color: red"></small></h3> 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">成本价</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="gold_money" class="form-control"  value="{{$data.gold_money}}" placeholder="标准价钱格式，例如：2.00">
+                                    <input type="text" name="gold_money" class="form-control gold_money"  value="{{$data.gold_money}}" placeholder="标准价钱格式，例如：2.00">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">金牌年费套餐描述</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="gold_describe" class="form-control"   value="{{$data.gold_describe}}" placeholder="套餐简要描述50个字以内">
+                                    <input type="text" name="gold_describe" class="form-control gold_describe"   value="{{$data.gold_describe}}" placeholder="套餐简要描述50个字以内">
                                 </div>
                             </div>
                             <h3>个人VIP年费设置 <small style="color: red"></small></h3>
@@ -76,7 +76,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">个人年费套餐描述</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="per_describe" class="form-control" value="{{$data.per_describe}}"  placeholder="套餐简要描述50个字以内">
+                                    <input type="text" name="per_describe" class="form-control per_describe" value="{{$data.per_describe}}"  placeholder="套餐简要描述50个字以内">
                                 </div>
                             </div>
                             <h3>金牌会员单次充值 <small style="color: red"></small></h3>
@@ -116,6 +116,10 @@
     <!-- iCheck -->
     <script src="__PUBLIC__/Admin/js/plugins/iCheck/icheck.min.js"></script>
 <script>
+
+$(".dia_describe").val(decodeURI('{{$data.dia_describe}}'));
+$(".gold_describe").val(decodeURI('{{$data.gold_describe}}'));
+$(".per_describe").val(decodeURI('{{$data.per_describe}}'));
     /**
      * [ajaxData 设置佣金分配]
      * @return {[type]}    [json数据]

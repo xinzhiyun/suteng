@@ -10,7 +10,7 @@
     <!-- <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet"> -->
     <link href="__PUBLIC__/Admin/css/style.css?v=4.1.0" rel="stylesheet">
 </head>
-
+ 
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
     <div id="wrapper">
         <!--左侧导航开始-->
@@ -21,14 +21,19 @@
                 <ul class="nav" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                            <span><img alt="image" class="img-circle" src="__PUBLIC__/Admin/img/profile_small.jpg" /></span>
+                            
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                <span class="clear">
-                                    <span class="block m-t-xs">
-                                        <strong class="font-bold">{{$_SESSION['adminInfo']['user']}}</strong>
+                                <div class="clear">
+                                    <span class='col-md-4'>
+                                        <img alt="image" class="img-circle" src="__PUBLIC__/Admin/img/profile_small.jpg" />
                                     </span>
-                                    <span class="text-muted text-xs block">{{$_SESSION['adminInfo']['name']}}</span>
-                                </span>
+                                    <div class='col-md-8' style='position: absolute;top: 50%;left: 36%;transform: translateY(-50%);'>
+                                        <span class="block m-t-xs">
+                                            <strong class="font-bold">{{$_SESSION['adminInfo']['user']}}</strong>
+                                        </span>
+                                        <span class="text-muted text-xs block">{{$_SESSION['adminInfo']['name']}}</span>
+                                    </div>
+                                </div>
                             </a>
                         </div>
                         <div class="logo-element">速腾

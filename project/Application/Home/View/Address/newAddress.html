@@ -6,6 +6,10 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/address/newAddress.css">
 	<title>添加新地址</title>
+    <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+    <script>
+        var vconsole = new VConsole();
+    </script>
 </head>
 <body>
 	<div id="info">
@@ -53,9 +57,9 @@
 				</li>
 			</ul>
     	</div>
-    	<div id="confirmAreaChoose">
+    	<!-- <div id="confirmAreaChoose">
     		<div>确定</div>
-    	</div>
+    	</div> -->
 	</div>
 	<div id="norAddrDiv">
 		<label for="normalAddrdess">
@@ -344,7 +348,10 @@
 			    			}else{
 			    				// 无订单号， 回到‘我的’界面
 		    					history.replaceState({}, null, '{{:U("VipCenter/index")}}');
-		    					location.href = '{{:U("VipCenter/index")}}';
+	    						layHint('保存成功');
+		    					setTimeout(function(){
+		    						location.href = '{{:U("VipCenter/index")}}';
+		    					},500)
 		    				}
 			    		}else if(res.code == 605){
 	    					layHint('添加失败，请稍后再试！');
@@ -456,14 +463,15 @@
 						$('.area>p').eq(j).removeClass('addrselect');
 					}
 					_this.attr('class','addrselect');
+					areaover();
 				}
 				console.log('province,city,area: ',province,city,area);
 				console.log('province_id,city_id,area_id: ',province_id,city_id,area_id);
 			})
 		})
 
-		// 确定
-		$('#confirmAreaChoose').on('touchend', function(){
+		// 选择完区县后自动消失
+		function areaover(){
 			if(!province){
 				layuiHint('请选择省份');
 				return
@@ -481,7 +489,7 @@
 			setTimeout(function(){
 				$('#areaChoose').fadeOut('fast');
 			},300);
-		})
+		}
 
 		// 关闭地址选择
 		$('.areaChoosebg').click(function(){
