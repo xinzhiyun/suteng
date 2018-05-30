@@ -371,6 +371,8 @@
     </div>
 </block>
 <block name="myjs">
+    <script src="__PUBLIC__/Home/js/public.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
     <script>
     // $('#affirm').modal('show'); 
     // $('#st-edit').modal('show');
@@ -445,14 +447,29 @@
             }    
             
         }
+    var regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im,
+    regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im;
 
     // 点击发货
-    $('#edit_submit').click(function(){  
+    $('#edit_submit').click(function(){ 
+        var danNum = $("input[name=express]");
+        for(var i = 0;i<danNum.length;i++){
+             if(danNum[i].value == ""){
+                 layuiHint("快递单号不能为空");
+                 return;
+            }else if(chineseCheck(danNum[i].value)){
+                layuiHint("快递单号不能有中文");
+                return;
+            }else if(regEn.test(danNum[i].value) || regCn.test(danNum[i].value)){
+                layuiHint("快递单号不能有特殊字符");
+                return;
+            }
+        }
         $('#st-edit').modal('hide');    
         $('#affirm').modal('show');  
     });
     // 取消
-    $('.cencel').click(function(){    
+    $('.cencel').click(function(){     
        $('#affirm').modal('hide'); 
        $('#st-edit').modal('show');
     });

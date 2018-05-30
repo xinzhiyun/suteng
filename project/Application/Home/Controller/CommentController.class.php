@@ -151,8 +151,11 @@ class CommentController extends CommonController
                 'addtime' => time()
             );
            $id = $comment->data($data)->add();
-
-            D("ComPic")->add(['cid'=>$id,'path'=>$info]);   
+            
+           if($info){
+                D("ComPic")->add(['cid'=>$id,'path'=>$info]);   
+           }
+            
             $res = D('Order_detail')->where(['order_id'=>$orderid,'gid'=>$gid])->setField(['status'=>7]);
 
             $count = D('Order_detail')->where(['order_id'=>$orderid,'status'=>['NEQ',7]])->count();
