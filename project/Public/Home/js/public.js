@@ -90,6 +90,16 @@ var trimFn = function(str){
     str += '';
     return str.replace(/^(\s)|(\s*)/g,'');
 }
+//验证中文
+var chineseCheck = function(val){
+    return /^[\u4e00-\u9fa5]{2,255}$/.test(val);
+}
+//验证特殊字符
+var specailCheck = function(val){
+    return /^[`~!@#$^&*()=|{}':;',\[\].<>/?~！@#￥……&*（）——|{}【】\s‘；：”“'。，、？]$/.test(val)
+}
+
+
 // 格式化日期时间
   function timetrans(date){
       var date = new Date(date*1000);//如果date为13位不需要乘1000
