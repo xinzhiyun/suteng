@@ -31,6 +31,7 @@ class VendorsController extends Controller
         $showData['id'] = $_SESSION['vendorInfo']['id'];
 
         $vendor = M('vendors')->where($showData)->find();
+
         if (empty($vendor)) {
             $this->error('暂无数据');
         }
