@@ -369,8 +369,23 @@ class PaymentSystemController extends CommonController
                 file_put_contents('./wxcallback.txt',$sql."\r\n\r\n", FILE_APPEND);
                 $Model = new \Think\Model(); // 实例化一个model对象 没有对应任何数据表
                 $res = $Model->execute($sql);
-            // 5. 订单支付完成返回信息
-
+            // 5.地址写入
+                    $saveOrder['order_id']  = $orderData['order_id'];
+                    // 用户ID
+                    $showAddres['uid']      = $orderData['uid'];
+                    // 默认的地址
+                    $showAddres['status']   = 0;
+                    // 快递地址ID
+                    $saveOrderDara['address_id'] = M('address')->where($showAddres)->find()['id'];
+                    // 准备更新数据
+                    $saveOrderDara['status'] = 9;
+                    // 支付类型
+                    $saveOrderDara['mode'] = 0;
+                    // 执行更新操作
+                //   Think\Log::write(json_encode($saveOrderDara),'地址写入');
+                    \Think\Log::write('地址'.json_encode($saveOrderDara));
+                    M('shop_order')->where($saveOrder)->save($saveOrderDara);
+            // 6. 订单支付完成返回信息
                 M()->commit(); 
                 $this->ajaxReturn(['code'=>200,'msg'=>'支付成功']);
             }catch(\Exception $e){
@@ -465,8 +480,23 @@ class PaymentSystemController extends CommonController
                 file_put_contents('./wxcallback.txt',$sql."\r\n\r\n", FILE_APPEND);
                 $Model = new \Think\Model(); // 实例化一个model对象 没有对应任何数据表
                 $res = $Model->execute($sql);
-            // 5. 订单支付完成返回信息
-
+            // 5.地址写入
+                $saveOrder['order_id']  = $orderData['order_id'];
+                // 用户ID
+                $showAddres['uid']      = $orderData['uid'];
+                // 默认的地址
+                $showAddres['status']   = 0;
+                // 快递地址ID
+                $saveOrderDara['address_id'] = M('address')->where($showAddres)->find()['id'];
+                // 准备更新数据
+                $saveOrderDara['status'] = 9;
+                // 支付类型
+                $saveOrderDara['mode'] = 0;
+                // 执行更新操作
+                //   Think\Log::write(json_encode($saveOrderDara),'地址写入');
+                \Think\Log::write('地址'.json_encode($saveOrderDara));
+                M('shop_order')->where($saveOrder)->save($saveOrderDara);
+            // 6. 订单支付完成返回信息
                 M()->commit(); 
                 $this->ajaxReturn(['code'=>200,'msg'=>'支付成功']);
             }catch(\Exception $e){
