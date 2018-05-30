@@ -202,7 +202,7 @@ body.body-small .navbar-top-links li:last-child {
 }
 
 .nav-header {
-    padding: 33px 25px;
+    padding: 10px 0;
     background: url("patterns/header-profile.png") no-repeat;
 }
 
@@ -227,7 +227,13 @@ body.body-small .navbar-top-links li:last-child {
 .nav-header a {
     color: #DFE4ED;
 }
-
+.pagination {
+    height: 30px;
+    line-height: 30px;
+}
+.pagination>li:last-child>a {
+    margin-right: 4px;
+}
 .nav-header .text-muted {
     color: #8095a8;
 }

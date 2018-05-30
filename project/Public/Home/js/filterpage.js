@@ -12,6 +12,7 @@ $(function(){
 	if(data){
 		deviceId = data.deviceid;
 		filtermode = data.filtermode;
+		console.log('leasingmode: ',data.leasingmode);
 		if(data.leasingmode=="0"){
 			$('#lvxinReset_base').show();
 			$("#filterBuy").hide();
