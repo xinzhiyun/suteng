@@ -1037,8 +1037,8 @@
 							// console.log(res.data[i].productList[j])
 						
 							// 无图片时显示
-							var noimg_show = res.data[i].productList[j]['pics']
-							? (imgpath + res.data[i].productList[j]['pics']['path'])
+							var noimg_show = res.data[i].productList[j]['gpic']
+							? (imgpath + res.data[i].productList[j]['gpic'])
 							: noimg;
 							returned6+='<p>信息更新时间：'+ res.data[i].ordertime +'</p>'+
 							'<div class="shangpingnei clearfix">'+
