@@ -7,10 +7,15 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/mall/chooseMeal.css">
-
+	<script>
+	var infos = {{$infos['user']}};
+	console.log("金银币",infos);
+	</script>
 </head>
 <body>
 	<input type="hidden" value='{{$list}}' id="meal">
+	<!-- <input type="hidden" value='{{$user}}' id="jinyinbi">
+	<input type="hidden" value='{{$rate}}' id="rate"> -->
 	<div class="_chooseMeal">
 		<div class="chooseMeal">
 			<div class="chooseContain">
@@ -20,7 +25,6 @@
 					<li>100元套餐含<b>1000天</b>流量</li> -->
 				</ul>
 			</div>
-
 		</div>
 		<div class="chooseFoot">
 			<input type="submit" value="立即购买">
@@ -33,17 +37,17 @@
 					<div class="paytopLeft"><i class="iconfont icon-cuohao"></i></div>
 					<div class="paytopRight">
 						<h3>付款</h3>
-						<p id="money">￥3620.00</p>
+						<p id="money" style='color:#f00'>￥3620.00</p>
 					</div>
 				</div>
 				<div class="paymidd">
 					<h3>选择支付方式</h3>
 					<ul class="clearfix">
-						<li><i class="iconfont icon-tubiao207"></i>金币<span class="iconfont icon-xuanze"></span></li>
-						<li><i class="iconfont icon-tubiao207-copy"></i>银币<span class="iconfont icon-kuang1"></span></li>
-						<li><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-kuang1"></span></li>
-						<li><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
-						<li><i class="iconfont icon-yinlian"></i>银联<span class="iconfont icon-kuang1"></span></li>
+						<li index="1"><i class="iconfont icon-tubiao207"></i>金币<span class="iconfont icon-xuanze"></span></li>
+						<li index="2"><i class="iconfont icon-tubiao207-copy"></i>银币<span class="iconfont icon-kuang1"></span></li>
+						<li index="3"><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-kuang1"></span></li>
+						<li index="4"><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
+						<li index="5"><i class="iconfont icon-yinlian"></i>银联<span class="iconfont icon-kuang1"></span></li>
 					</ul>
 				</div>
 				<div class="payBott start">
@@ -73,7 +77,9 @@
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<!-- 微信支付支持JS部分代码 -->
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
+	<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
 	<script>
+		var vConsole = new VConsole();
 		$(function(){
 			// 首页按钮
 			!function(){
@@ -122,10 +128,20 @@
 			$(".chooseContain>ul").html('<h3 style="width:100%;height:50vh;text-align:center;padding:20vh 0">暂无数据</h3>');
 		}
 
+
+		var money, tid, remodel;	
+		// 用户金币数量：gold_num;
+		var gold_num = parseInt(infos.gold_num);
+		// 用户银币数量：silver;
+		var silver = parseInt(infos.silver);
+		// {"gold_rate":"1.00","silver_rate":"0.50"}	
+		var gold_rate = "1.00";
+		var silver_rate = "0.50";
+		console.log(gold_num,silver)
 		/*
 			点击立即购买，选择支付方式
 		 */
-		var money, tid, remodel;		//获取需要传到后台的套餐价钱，id, 套餐类型
+		//获取需要传到后台的套餐价钱，id, 套餐类型
 		$('.chooseFoot>input').click(function(){
 			// console.log($(".taocanSelectNow"))
 			if($(".taocanSelectNow").length){
@@ -157,28 +173,144 @@
 		})
 		/*
 			点击立即支付
-		 */
+		*/
+		
 		$(".payBott").click(function(){
-			console.log(dingdanID)
-			$.ajax({
-				url: '{{:U("Home/PaymentSystem/choosePayByGold")}}',
-				type: 'post',
-				async: false,
-				data: {order: dingdanID},
-				success: function(res){
-					console.log('成功！ ', res);
-					if(res == -1){
-						console.log('支付错误！');
-						parent.layer.msg('支付错误！');
+			var index = $(".icon-xuanze").parents("li").attr("index");
+			console.log(index,money,dingdanID)
+			switch(index){
+				case '1':
+				console.log('金币');
+				if((gold_num * gold_rate) < money) {
+					parent.layer.msg('金币不足!');
+					setTimeout(function(){
+						$(".paystyle").slideUp("slow");
+					}, 1000);
+					return false;
+				}else{
+					$.ajax({
+						url: "{{:U('Home/PaymentSystem/orderPayByGold')}}",
+						type: 'post',
+						data: {order: dingdanID},
+						success: function(res){
+							sessionStorage.setItem("金银币",res)
+							console.log("金币支付",res);
+							if(res.code == 200) {
+								parent.layer.msg('支付成功');
+								setTimeout(function(){
+									history.replaceState({}, null, "{{:U('Index/index')}}");//改变历史记录
+									location.href = '{{:U("Index/index")}}';
+								},500);
+							}else if(res.code == -1) {
+								parent.layer.msg('已经支付过啦!');
+								setTimeout(function(){
+									location.href = '{{:U("Index/index")}}';
+								},500);
+							}else if(res.code == 1001) {
+								parent.layer.msg('金币不足');
+								setTimeout(function(){
+									$(".paystyle").slideUp("slow");
+								}, 1000);
+							}else {
+								parent.layer.msg('支付失败，请重试!');
+								setTimeout(function(){
+									$(".paystyle").slideUp("slow");
+								}, 1000);
+							}
+						},
+						error: function(res){
+							console.log('失败！ ',res);
+							parent.layer.msg('系统出了一点小问题，请稍后再试！');
+						}
+					});
+				};
+				break;
+				case '2':
+					console.log('银币');
+					if((silver * silver_rate) < money) {
+						parent.layer.msg('银币不足!');
+						setTimeout(function(){
+							$(".paystyle").slideUp("slow");
+						}, 1000);
+						return false
 					}else{
-						weixinPay(res);
-					}
-				},
-				error: function(res){
-					console.log('失败！ ', res);
-	       			parent.layer.msg('系统出了一点小问题，请稍后再试！');
-				}
-			})
+						$.ajax({
+							url: "{{:U('Home/PaymentSystem/choosePayBySilver')}}",
+							type: 'post',
+							data: {order: dingdanID},
+							success: function(res){
+								console.log("银币支付",res);
+								if(res.code == 200) {
+									parent.layer.msg('支付成功');
+									setTimeout(function(){
+										history.replaceState({}, null, "{{:U('Index/index')}}");//改变历史记录
+										location.href = '{{:U("Index/index")}}';
+									},500);
+								}else if(res.code == -1) {
+									parent.layer.msg('已经支付过啦!');
+									setTimeout(function(){
+										location.href = '{{:U("Shop/index")}}';
+									},500);
+								}else if(res.code == 1001) {
+									parent.layer.msg('银币不足');
+									setTimeout(function(){
+										$(".paystyle").slideUp("slow");
+									}, 1000);
+								}else {
+									parent.layer.msg('支付失败，请重试!');
+									setTimeout(function(){
+										$(".paystyle").slideUp("slow");
+									}, 1000);
+								}
+							},
+							error: function(res){
+								console.log('失败！ ',res);
+								parent.layer.msg('系统出了一点小问题，请稍后再试！');
+							}
+						});
+					};
+					break;
+					case '3':
+					console.log('微信支付');
+					$.ajax({
+						url: '{{:U("Home/PaymentSystem/choosePay")}}',
+						type: 'post',
+						async: false,
+						data: {order: dingdanID},
+						success: function(res){
+							console.log('成功！ ', res);
+							if(res == -1){
+								console.log('支付错误！');
+								parent.layer.msg('支付错误！');
+							}else{
+								weixinPay(res);
+							}
+						},
+						error: function(res){
+							console.log('失败！ ', res);
+			       			parent.layer.msg('系统出了一点小问题，请稍后再试！');
+						}
+					})
+			}
+			// $.ajax({
+			// 	url: '{{:U("Home/PaymentSystem/choosePayByGold")}}',
+			// 	type: 'post',
+			// 	async: false,
+			// 	data: {order: dingdanID},
+			// 	success: function(res){
+			// 		console.log('成功！ ', res);
+			// 		if(res == -1){
+			// 			console.log('支付错误！');
+			// 			parent.layer.msg('支付错误！');
+			// 		}else{
+			// 			weixinPay(res);
+			// 		}
+			// 	},
+			// 	error: function(res){
+			// 		console.log('失败！ ', res);
+	  //      			parent.layer.msg('系统出了一点小问题，请稍后再试！');
+			// 	}
+			// })
 		})
 
 		// 选中背景改变
@@ -190,11 +322,31 @@
 		$('.paymidd>ul>li>span').click(function(){
 			$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 			$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+			var fuhao = $(this).parent().text();//获取购买方式
+			// 判断选择方式是否为：金币或者银币
+			if(fuhao == "金币") {
+				// 金额兑换成金币
+				var goldPrice = (money / gold_rate);
+				// 将￥替换成$符号
+				$(".paytopRight>p").text("$"+goldPrice);
+			}else if(fuhao == "银币") {
+				// 金额兑换成银币
+				var silverPrice = (money / silver_rate);
+				// 将￥替换成$符号
+				$(".paytopRight>p").text("$"+silverPrice);
+			}
+			else {
+				// 将$替换成￥符号
+				$(".paytopRight>p").text("￥"+ money + ".00");
+			}
+			console.log("选中的支付方式",$(this).parent().text());
+
 		})
 		// 付款方式页面隐藏
 		$('.paytop>.paytopLeft>i').click(function(){
 			$('.paystyle').slideUp("slow");
 		})
+
 		// 模态框的js
 		// $(function(){
 		//   	$(".start").on("click",function(){
@@ -219,6 +371,7 @@
       			'getBrandWCPayRequest',
       			JSON.parse(res),
       			function(res){
+      				console.log("微信",res);
       				if(res.err_msg.substr(-2) == 'ok'){
 
        					parent.layer.msg('付款成功！');
@@ -226,7 +379,6 @@
       					setTimeout(function(){
       						location.href = '{{:U("PaymentSystem/paytosuccess")}}';
       					},500);
-
       				}else if(res.err_msg.substr(-6) == 'cancel'){
       					//取消订单操作
       				}else{
