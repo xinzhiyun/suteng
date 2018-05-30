@@ -98,9 +98,24 @@ class RefundController extends CommonController
             $refund->startTrans();
             // print_r($data);die;                    
             $result = D('Refund')->relation(true)->add($data);
-            // 将订单状态更改为退货处理中
-            D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>6]);
-            D('order_detail')->where(['order_id'=>$order_id])->setField(['status'=>6]);
+
+            //查看退货表中退货商品的总数
+            $rgNum = M('refund_goods')->where('oid='.$order_id)->count();
+            //查看订单表中所有的商品总数
+            $odNum = M('order_detail')->where('order_id='.$order_id)->count();
+
+            //如果退货数量小于总数，说明订单还有产品是要发的
+            if ($rgNum < $odNum) {
+                // 将订单状态更改为退货处理中
+                D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>10]);
+                D('order_detail')->where(['order_id'=>$order_id])->setField(['status'=>10]);
+            } else {
+                // 将订单状态更改为退货处理中
+                D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>6]);
+                D('order_detail')->where(['order_id'=>$order_id])->setField(['status'=>6]);
+            }
+
+            
             if($result){
                 $refund->commit();
                 E('申请成功', 200);

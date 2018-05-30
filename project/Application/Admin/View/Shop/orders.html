@@ -142,6 +142,7 @@
                                                 <case value="7"><span style="color:">订单完成</span></case>
                                                 <case value="8"><span style="color:red;">未支付</span></case>
                                                 <case value="9"><span style="color:green;">已支付</span></case>
+                                                <case value="10"><span style="color:blue;">部分商品退货中</span></case>
                                             </switch>
                                         </td>
                                         <td>
@@ -163,6 +164,9 @@
                                                 </a>
                                                 <switch name="v.status">
                                                     <case value="9">                                                <a class="btn btn-outline btn-success" href="javascript:;" onclick="ship({{$v['order_id']}},{{$v['g_type']}})">
+                                                    点击发货
+                                                </a></case>
+                                                <case value="10">                                                <a class="btn btn-outline btn-success" href="javascript:;" onclick="ship({{$v['order_id']}},{{$v['g_type']}})">
                                                     点击发货
                                                 </a></case>
                                                 </switch>
