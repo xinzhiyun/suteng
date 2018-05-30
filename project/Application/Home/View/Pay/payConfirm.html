@@ -185,13 +185,11 @@
 			var silver_rate = JSON.parse($("#rate").val()).silver_rate;
 
 			console.log("金银币数量", gold_num, silver);
+
+			var goodsPrice;//支付面板的价格显示
+
 			// /******** 付款过程--结束--	**********/
 			order_id = JSON.parse(sessionStorage.getItem("order_id"));
-			// $.get('getGoodsByOrder',{'order_id':order_id},function(data){
-			// 	console.log('商品：');
-			// 	console.log(data);
-			// 	sessionStorage.setItem("shopCar_data",JSON.stringify(data));
-			// })
 			
 			// 快递数据
 			var postage = JSON.parse($("#goodsCourier").val());
@@ -238,7 +236,6 @@
 			
 			// 获取后台传来的默认地址
 			var addressInfo;
-			// console.log($("#addressInfo").val())
 			if(($("#addressInfo").val())!='null'){
 				// alert(1)
 				addressInfo = JSON.parse($("#addressInfo").val());
@@ -469,15 +466,14 @@
 					}
 				}
 				postageMoney = sum(postageArr);//总邮费
-				console.log(priceAll, numAll, num, postageMoney, postageArr);
 				totalPub = (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2);
 				sessionStorage.setItem("totalPub",totalPub);
-				$(".priceAll").attr('data',totalPub);
-				// console.log(totalPub);
 				$(".priceAll").text('￥'+ (parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
 				$(".paytopRight>p").text('$'+(parseInt(priceAll) + parseInt(postageMoney)));	//订单的总价格
 				$("#footerContain>div>span").text('￥'+(parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
 				$(this).siblings(".youfei").text(postagePrice);
+				//获取商品价格
+				goodsPrice = parseInt(priceAll) + parseInt(postageMoney);
 				if($(this).find("option:selected").val() != "选择快递" && $(this).prev().html() == "配送方式") {
 					// 快递选择向右图标隐藏
 					$(this).siblings(".poselct").css("display", "none");
@@ -556,7 +552,6 @@
 				
 				$("#payWay").animate({bottom: '-100vh'}).css({display: 'none'});
 			})
-			var goodsPrice;
 			// 点击付款按钮
 			//支付方式
 			$('#footerContain').click(function(){
@@ -577,12 +572,12 @@
 				}
 
 				$('.paystyle').slideDown("slow");
-				//获取商品价格
-				goodsPrice = parseInt($(".paytopRight>p").text().substr(1));
+				
 			});
-			 
+			console.log("goodsprice",goodsPrice);
 			// 付款方式的单选框
 			$('.paymidd>ul>li>span').click(function(){
+				console.log("goodsprice",goodsPrice);
 				$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
 				var fuhao = $(this).parent().text();//获取购买方式

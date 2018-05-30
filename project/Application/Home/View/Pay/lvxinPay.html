@@ -10,6 +10,8 @@
 </head>
 <body>
 	<input type="hidden" value='{{$data}}' id="addressInfo">
+	<input type="hidden" value='{{$user}}' id="jinyinbi">
+	<input type="hidden" value='{{$rate}}' id="rate">
 	<div id="content">
 		<header id="header">
 			<div id="hLeft">
@@ -115,7 +117,12 @@
 				'chooseWXPay'
 				]
 			});
-
+			// 用户金币数量：gold_num; 银币数量：silver; 金币换算：gold_rate; 银币换算：silver_rate;
+			var gold_num = parseInt(JSON.parse($("#jinyinbi").val()).gold_num);
+			var silver = parseInt(JSON.parse($("#jinyinbi").val()).silver);
+			var gold_rate = JSON.parse($("#rate").val()).gold_rate;
+			var silver_rate = JSON.parse($("#rate").val()).silver_rate;
+			console.log("金银币数量", gold_num, silver);
 			// else {
 			// 	// 若无快递数据时友情提示
 			// 	selectPostage = "<p class='postage'><span class='posway'>暂无快递选择</span></p>";
@@ -211,7 +218,9 @@
 							$(".numAll").text(numAll);		//滤芯订单的总数量
 							$(".priceAll").text('￥'+priceAll);	//滤芯订单的总价格
 							$("#footerContain>div>span").text('￥'+priceAll);	//滤芯订单的总价格
-							$(".paytopRight>p").text('￥'+priceAll);	//滤芯订单的总价格
+							$(".paytopRight>p").text('$'+ parseInt(priceAll));	//滤芯订单的总价格
+							//获取商品价格
+							goodsPrice = parseInt(priceAll);
 
 			}else if(goods_data){	// 如果有商品购买，从商品详情’立即购买‘过来
 				// 获取商品id
@@ -241,7 +250,7 @@
 				$(".numAll").text(numAll);		//订单的总数量
 				$(".priceAll").text('￥'+ (parseFloat(priceAll)).toFixed(2));	//订单的总价格
 				$("#footerContain>div>span").text('￥'+(parseFloat(priceAll)).toFixed(2));	//订单的总价格
-				$(".paytopRight>p").text('￥'+(parseFloat(priceAll)).toFixed(2));	//订单的总价格
+				$(".paytopRight>p").text('$'+(parseInt(priceAll)));	//订单的总价格
 
 			}
 
@@ -296,19 +305,39 @@
 					},500);
 					return false;
 				}
-				for(var i = 0; i < $(".selectPostage").length; i++) {
-					if($(".selectPostage").eq(i).find("option:selected").val() == "选择快递") {
-						parent.layer.msg('请选择快递方式');
-						return false;
-					}
-				}
+				// for(var i = 0; i < $(".selectPostage").length; i++) {
+				// 	if($(".selectPostage").eq(i).find("option:selected").val() == "选择快递") {
+				// 		parent.layer.msg('请选择快递方式');
+				// 		return false;
+				// 	}
+				// }
 
 				$('.paystyle').slideDown("slow");
+				
 			})
 			// 付款方式的单选框
 			$('.paymidd>ul>li>span').click(function(){
 				$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+
+				var fuhao = $(this).parent().text();//获取购买方式
+				// 判断选择方式是否为：金币或者银币
+				if(fuhao == "金币") {
+					// 金额兑换成金币
+					var goldPrice = (goodsPrice / gold_rate);
+					// 将￥替换成$符号
+					$(".paytopRight>p").text("$"+goldPrice);
+				}else if(fuhao == "银币") {
+					// 金额兑换成银币
+					var silverPrice = (goodsPrice / silver_rate);
+					// 将￥替换成$符号
+					$(".paytopRight>p").text("$"+silverPrice);
+				}
+				else {
+					// 将$替换成￥符号
+					$(".paytopRight>p").text("￥"+ goodsPrice + ".00");
+				}
+				console.log("选中的支付方式",$(this).parent().text());
 			})
 			// 付款方式页面隐藏
 			$('.paytop>.paytopLeft>i').click(function(){
@@ -325,9 +354,109 @@
 				switch(index){
 					case '1':
 					console.log('金币');
+					if((gold_num * gold_rate) < goodsPrice) {
+						parent.layer.msg('金币不足!');
+						setTimeout(function(){
+							$(".paystyle").slideUp("slow");
+						}, 1000);
+						return false;
+					}
+					//如果有默认地址
+					if($("#addressInfo").val()){
+						//请求微信支付方法
+						$.ajax({
+							url: "{{:U('Home/PaymentSystem/orderPayByGold')}}",
+							type: 'post',
+							data: {order: order_id, voiceArr: voiceArr},
+							success: function(res){
+								console.log("金币支付",res);
+								if(res.code == 200) {
+									parent.layer.msg('支付成功');
+									setTimeout(function(){
+										history.replaceState({}, null, "{{:U('Pay/lvxin')}}");//改变历史记录
+										location.href = '{{:U("PaymentSystem/paytosuccess")}}';
+									},500);
+								}else if(res.code == -1) {
+									parent.layer.msg('已经支付过啦!');
+									setTimeout(function(){
+										location.href = '{{:U("Pay/lvxin")}}';
+									},500);
+								}else if(res.code == 1001) {
+									parent.layer.msg('金币不足');
+									setTimeout(function(){
+										$(".paystyle").slideUp("slow");
+									}, 1000);
+								}else {
+									parent.layer.msg('支付失败，请重试!');
+									setTimeout(function(){
+										$(".paystyle").slideUp("slow");
+									}, 1000);
+								}
+							},
+							error: function(res){
+								console.log('失败！ ',res);
+								parent.layer.msg('系统出了一点小问题，请稍后再试！');
+							}
+						});
+					}else{
+						parent.layer.msg('请添加一个地址');
+						setTimeout(function(){
+							location.href = '{{:U("Address/newAddress")}}';
+						},500);
+					}
 					break;
 					case '2':
 					console.log('银币');
+					if((silver * silver_rate) < goodsPrice) {
+						parent.layer.msg('银币不足!');
+						setTimeout(function(){
+							$(".paystyle").slideUp("slow");
+						}, 1000);
+						return false
+					}
+					//如果有默认地址
+					if($("#addressInfo").val()){ 
+						//请求微信支付方法
+						$.ajax({
+							url: "{{:U('Home/PaymentSystem/orderPayBySilver')}}",
+							type: 'post',
+							data: {order: order_id, voiceArr: voiceArr},
+							success: function(res){
+								console.log("银币支付",res);
+								if(res.code == 200) {
+									parent.layer.msg('支付成功');
+									setTimeout(function(){
+										history.replaceState({}, null, "{{:U('Pay/lvxin')}}");//改变历史记录
+										location.href = '{{:U("PaymentSystem/paytosuccess")}}';
+									},500);
+								}else if(res.code == -1) {
+									parent.layer.msg('已经支付过啦!');
+									setTimeout(function(){
+										location.href = '{{:U("Pay/lvxin")}}';
+									},500);
+								}else if(res.code == 1001) {
+									parent.layer.msg('银币不足');
+									setTimeout(function(){
+										$(".paystyle").slideUp("slow");
+									}, 1000);
+								}else {
+									parent.layer.msg('支付失败，请重试!');
+									setTimeout(function(){
+										$(".paystyle").slideUp("slow");
+									}, 1000);
+								}
+							},
+							error: function(res){
+								console.log('失败！ ',res);
+								parent.layer.msg('系统出了一点小问题，请稍后再试！');
+							}
+						});
+					}else{
+						parent.layer.msg('请添加一个地址');
+						setTimeout(function(){
+							location.href = '{{:U("Address/newAddress")}}';
+						},500);
+					}
 					break;
 					case '3':
 					console.log('微信支付');
