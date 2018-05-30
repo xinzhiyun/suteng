@@ -219,6 +219,8 @@
 							$(".priceAll").text('￥'+priceAll);	//滤芯订单的总价格
 							$("#footerContain>div>span").text('￥'+priceAll);	//滤芯订单的总价格
 							$(".paytopRight>p").text('$'+ parseInt(priceAll));	//滤芯订单的总价格
+							//获取商品价格
+							goodsPrice = parseInt(priceAll);
 
 			}else if(goods_data){	// 如果有商品购买，从商品详情’立即购买‘过来
 				// 获取商品id
@@ -303,16 +305,15 @@
 					},500);
 					return false;
 				}
-				for(var i = 0; i < $(".selectPostage").length; i++) {
-					if($(".selectPostage").eq(i).find("option:selected").val() == "选择快递") {
-						parent.layer.msg('请选择快递方式');
-						return false;
-					}
-				}
+				// for(var i = 0; i < $(".selectPostage").length; i++) {
+				// 	if($(".selectPostage").eq(i).find("option:selected").val() == "选择快递") {
+				// 		parent.layer.msg('请选择快递方式');
+				// 		return false;
+				// 	}
+				// }
 
 				$('.paystyle').slideDown("slow");
-				//获取商品价格
-				goodsPrice = parseInt($(".paytopRight>p").text().substr(1));
+				
 			})
 			// 付款方式的单选框
 			$('.paymidd>ul>li>span').click(function(){
