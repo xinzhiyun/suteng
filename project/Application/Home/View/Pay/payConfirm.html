@@ -186,8 +186,6 @@
 
 			console.log("金银币数量", gold_num, silver);
 
-			var goodsPrice;//支付面板的价格显示
-
 			// /******** 付款过程--结束--	**********/
 			order_id = JSON.parse(sessionStorage.getItem("order_id"));
 			
@@ -473,21 +471,18 @@
 				$("#footerContain>div>span").text('￥'+(parseFloat(priceAll) + parseFloat(postageMoney)).toFixed(2));	//订单的总价格
 				$(this).siblings(".youfei").text(postagePrice);
 				//获取商品价格
-				goodsPrice = parseInt(priceAll) + parseInt(postageMoney);
+				sessionStorage.setItem("goodsPrice", parseInt(priceAll) + parseInt(postageMoney));//支付面板的价格存储
+				
 				if($(this).find("option:selected").val() != "选择快递" && $(this).prev().html() == "配送方式") {
 					// 快递选择向右图标隐藏
 					$(this).siblings(".poselct").css("display", "none");
 					$(this).siblings(".posway").css("display", "none");
-					// 快递费写入页面
-					// $(this).siblings(".youfei").text(postagePrice);
 				}else {
 					// 快递选择向右图标显示
 					$(this).siblings(".poselct").css("display", "block");
 					$(this).siblings(".posway").css("display", "block");
 					$(this).siblings(".youfei").text("");
 				}
-
-				// +
 				var opDom = $("option:selected",this);
 				opDom.attr("selected","selected").siblings().attr("selected",false);
 				sessionStorage.setItem("data_"+datanum,$(this).parents(".goods").html());
@@ -574,10 +569,9 @@
 				$('.paystyle').slideDown("slow");
 				
 			});
-			console.log("goodsprice",goodsPrice);
 			// 付款方式的单选框
 			$('.paymidd>ul>li>span').click(function(){
-				console.log("goodsprice",goodsPrice);
+				goodsPrice = sessionStorage.getItem("goodsPrice");//获取支付面板的总价格
 				$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
 				var fuhao = $(this).parent().text();//获取购买方式
@@ -609,6 +603,7 @@
 			点击立即支付
 			*/
 			$(".payBott").click(function(){
+				goodsPrice = sessionStorage.getItem("goodsPrice");//获取支付面板的总价格
 				// 判断选择的是什么支付方式
 				var index = $(".icon-xuanze").parents("li").attr("index");
 				console.log("价格",$(".paytopRight>p").text().substr(1));
@@ -635,6 +630,7 @@
 									parent.layer.msg('支付成功');
 									setTimeout(function(){
 										history.replaceState({}, null, "{{:U('Shop/index')}}");//改变历史记录
+										sessionStorage.setItem("goodsPrice", "");//清空总价格
 										location.href = '{{:U("PaymentSystem/paytosuccess")}}';
 									},500);
 								}else if(res.code == -1) {
@@ -688,6 +684,7 @@
 										parent.layer.msg('支付成功');
 										setTimeout(function(){
 											history.replaceState({}, null, "{{:U('Shop/index')}}");//改变历史记录
+											sessionStorage.setItem("goodsPrice", "");//清空总价格
 											location.href = '{{:U("PaymentSystem/paytosuccess")}}';
 										},500);
 									}else if(res.code == -1) {
