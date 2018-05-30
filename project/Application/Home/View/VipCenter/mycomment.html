@@ -112,6 +112,7 @@
 			}()
 		})
 		var statusList = [100, 60, 0];		// 好评，中评，差评
+		var statusText = ['好评', '中评', '差评'];		// 好评，中评，差评
 		var ulogo = sessionStorage.getItem('ulogo');
 		var nickname = sessionStorage.getItem('nickname');
 		var commetHTML = '';	//存放评论相关商品的数据
@@ -136,8 +137,9 @@
 							'<div class="itemgoodsBott">'+
 								'<p class="cfix"><span class="fleft"><img src="'+ ulogo +'" alt="">'+
 								'</span>&nbsp;'+ nickname +'<span class="fright">'+ timestampToTime(res.data[i].addtime) +'</span></p>'+
-								'<p class="cfix">'+
-									'<i index="1" class="iconfont pingfen"><span style="width:'+ statusList[res.data[i].status] +'%"></span></i>'+
+								'<p class="cfix xingx">'+
+									'<i index="1" class="iconfont pingfen fleft"><span style="width:'+ statusList[res.data[i].status] +'%"></span></i>'+
+									'<span class="fleft">&emsp;'+ statusText[res.data[i].status] + '</span>'+
 								'</p>'+
 								'<p>'+ res.data[i].content +'</p>'+
 								'<div class="commpic">'+

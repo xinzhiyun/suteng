@@ -22,6 +22,10 @@ body{
 	/*background: gray;*/
 
 }
+.xingx {
+	height: 20px;
+	line-height: 20px;
+}
 .cfix::after {
 	content: '';
 	display: inline-block;
