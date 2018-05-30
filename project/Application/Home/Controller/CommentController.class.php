@@ -69,7 +69,7 @@ class CommentController extends CommonController
                     'order_id' => $orderid,
                     'gid' => $value['gid'],
                     'uid' => $data['uid'],
-                    // 'status' => $data['status'],
+                    'status' => $data['status'],
                     'content' => $data['content'],
                     'addtime' => time()
                 ];

@@ -111,6 +111,9 @@
 				// console.log(home)
 			}()
 		})
+		var statusList = [100, 60, 0];		// 好评，中评，差评
+		var ulogo = sessionStorage.getItem('ulogo');
+		var nickname = sessionStorage.getItem('nickname');
 		var commetHTML = '';	//存放评论相关商品的数据
 		/*
 			请求评论数据
@@ -131,6 +134,11 @@
 						// 用户对商品评论
 						text_html = '<!-- 评论内容 -->'+
 							'<div class="itemgoodsBott">'+
+								'<p class="cfix"><span class="fleft"><img src="'+ ulogo +'" alt="">'+
+								'</span>&nbsp;'+ nickname +'<span class="fright">'+ timestampToTime(res.data[i].addtime) +'</span></p>'+
+								'<p class="cfix">'+
+									'<i index="1" class="iconfont pingfen"><span style="width:'+ statusList[res.data[i].status] +'%"></span></i>'+
+								'</p>'+
 								'<p>'+ res.data[i].content +'</p>'+
 								'<div class="commpic">'+
 									'<ul></ul>'+
@@ -170,18 +178,19 @@
 					// 	'</div>' + text_html;
 
 					// 所评论的商品详细信息   
-					commetHTML += '<div class="mycomItem-first clearfix">'+
-							'<div class="itemgoodsTop">'+
-								'<h3><span>'+ timestampToTime(res.data[i].addtime) +'</span></h3>'+
-								'<div class="goodspic clearfix">'+
-									'<div class="mygoodsLeft"><img src="/Uploads/'+res.data[i].good.pic+'" alt="图片加载中"></div>'+
-									'<div class="mygoodsRight">'+
-										'<p style="margin-bottom: .4rem;">'+res.data[i].good.name+'</p>'+
-										'<b>'+res.data[i].good.price+'</b>'+
-									'</div>'+
-								'</div>'+
-							'</div>'+
-						'</div>' + text_html;
+					// commetHTML += '<div class="mycomItem-first clearfix">'+
+					// 		'<div class="itemgoodsTop">'+
+					// 			'<h3><span>'+ timestampToTime(res.data[i].addtime) +'</span></h3>'+
+					// 			'<div class="goodspic clearfix">'+
+					// 				'<div class="mygoodsLeft"><img src="/Uploads/'+res.data[i].good.pic+'" alt="图片加载中"></div>'+
+					// 				'<div class="mygoodsRight">'+
+					// 					'<p style="margin-bottom: .4rem;">'+res.data[i].good.name+'</p>'+
+					// 					'<b>'+res.data[i].good.price+'</b>'+
+					// 				'</div>'+
+					// 			'</div>'+
+					// 		'</div>'+
+					// 	'</div>' + text_html;
+					commetHTML += text_html;
 					
 					// 判断是否接收到图片数据
 					if(!res.data[i].pics.length) { 
@@ -211,38 +220,19 @@
 				console.log('失败！ ',res);
 			} 
 		})
+
+		// 时间戳转换
 		function timestampToTime(timestamp) {
 			var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-			Y = date.getFullYear() + '-';
-			M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-			D = date.getDate() + ' ';
-			h = date.getHours() + ':';
-			m = date.getMinutes() + ':';
-			s = date.getSeconds();
+			var Y = date.getFullYear() + '-';
+			var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+			var D = date.getDate() + ' ';
+			var h = (date.getHours() < 10 ? '0'+ date.getHours() : date.getHours()) + ':';
+			var m = (date.getMinutes() < 10 ? '0'+ date.getMinutes() : date.getMinutes()) + ':';
+			var s = date.getSeconds();
 			return Y+M+D+h+m+s;
 		}
-		// $('.mycommentContain').on('click','.mysaleBot>p>i',function(){
-		// 	var index = $(this).attr("index");
-		// 	console.log(index);
-		// 	var leiName=$(this).attr('class');
-		// 	//点击空五角星
-		// 	if(leiName=='iconfont icon-jingdiananli_kongwujiaoxing_shoucang'){
-		// 		$(this).removeClass(leiName)
-		// 		$(this).siblings('i').removeAttr("class").addClass('iconfont icon-jingdiananli_kongwujiaoxing_shoucang');
-		// 		for(var i=0; i<index; i++){
-		// 			$(this).parent().find('i').eq(i).removeAttr("class").addClass('iconfont icon-jingdiananli_wujiaoxing_shoucanghou')
-		// 		}
-			
-		// 	}else{
-		// 		$(this).removeClass(leiName)
-		// 		$(this).siblings('i').removeAttr("class").addClass('iconfont icon-jingdiananli_kongwujiaoxing_shoucang');
-		// 		for(var i=0; i<index; i++){
-		// 			$(this).parent().find('i').eq(i).removeAttr("class").addClass('iconfont icon-jingdiananli_wujiaoxing_shoucanghou')
-		// 		}
 
-		// 	}
-
-		// });
 	</script>
 </body>
 </html>

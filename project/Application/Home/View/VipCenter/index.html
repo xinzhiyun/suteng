@@ -182,6 +182,10 @@
 				// console.log(home)
 			}()
 		})
+		var ulogo = "{{$user['head']}}";
+		var nickname = "{{$user['nickname']}}";
+		sessionStorage.setItem('ulogo',ulogo);
+		sessionStorage.setItem('nickname',nickname);
 		/*
 			公告信息
 		 */
