@@ -8,6 +8,10 @@
   	<link rel="stylesheet" href="__PUBLIC__/Home/css/comment/index.css">
  	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<title>发表评论</title>
+	<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+    <script>
+        // var vconsole = new VConsole();
+    </script>
 </head>
 <body>
 	<div class="commentcontain">
@@ -165,7 +169,7 @@
 								// 替换历史记录
 								history.replaceState({},null,"{{:U('Home/VipCenter/index')}}");
 								setTimeout(function(){
-									location.href = "{{:U('Home/Order/index')}}";
+									location.href = "{{:U('Home/Order/index')}}" + '?tab=4';
 								},500); 
 							}else if(res.code == 605){
 								layuiHint('你已经评论过了！');

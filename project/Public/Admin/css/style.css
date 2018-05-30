@@ -202,7 +202,7 @@ body.body-small .navbar-top-links li:last-child {
 }
 
 .nav-header {
-    padding: 33px 25px;
+    padding: 10px 0;
     background: url("patterns/header-profile.png") no-repeat;
 }
 
@@ -210,7 +210,7 @@ body.body-small .navbar-top-links li:last-child {
     -webkit-transition: all 0.5s;
     transition: all 0.5s;
 }
-
+ 
 .nav > li.active {
     border-left: 4px solid #19aa8d;
     background: #293846;
@@ -227,7 +227,13 @@ body.body-small .navbar-top-links li:last-child {
 .nav-header a {
     color: #DFE4ED;
 }
-
+.pagination {
+    height: 30px;
+    line-height: 30px;
+}
+.pagination>li:last-child>a {
+    margin-right: 4px;
+}
 .nav-header .text-muted {
     color: #8095a8;
 }
