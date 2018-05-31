@@ -43,7 +43,6 @@
 					</label>
 					<span>
 						<i class="iconfont icon-tianjia"></i><em>限3张内</em>
-						<input type="hidden" name='pic'>
 						<div id="picShow"></div>
 					</span>
 					<input class="file_upload" name="pic[]" type="button" multiple="" accept="image/*" >
@@ -86,6 +85,7 @@
 			        'downloadImage'
 			    ]
 			});
+			var pic = [];	// 图片
 			// 点击选择图片
 			$('.file_upload').click(function(){
 				// 浏览上传图片
@@ -108,14 +108,18 @@
 				    // 显示图片
 				    $('#picShow').append($span);
 				    // 待发送给后台的图片id
-				    $('input[name="pic"]').val(res.media_Id);
-				    // 删除图片
-				    $("#picShow").on("click",".delPic",function(){
-						$(this).parent(".fuPic").remove();
-					})
+				    pic.push(res.media_Id);
 				});
 			})
 
+		    // 删除图片
+		    $("#picShow").on("click",".delPic",function(){
+				$(this).parent(".fuPic").remove();
+				var index = $('#picShow>span').index(this)+1;
+				console.log('index: ',index);
+				pic.splice(index,1);
+				console.log('pic: ',pic);
+			})
 			/**
 				点击提交
 			*/
@@ -130,19 +134,17 @@
 				var formData = new FormData($('#form')[0]);	// 评论的数据
 				formData.append('orderid',orderid);
 				formData.append('gid',gid);
+				formData.append('pic',pic);
 				var status = $('input[name="status"]:checked').val();
 				console.log('status: ',status);
 				console.log('orderid: ',orderid);
 				console.log('gid: ',gid);
-				var pic = $('#picShow>span').length;
+				console.log('uppic: ',pic);
 				if(!$("#shopping").val()){
 					layuiHint("请您对我们的商品做出评价呗");
 					return
 				} 
-				if(!pic){
-					// 没有图片
-					$('input[name="pic"]').attr('name','nopic');
-				}
+				
 				if(successFlag) {
 					// 防止多次提交
 					successFlag = false;
@@ -167,7 +169,7 @@
 								// 替换历史记录
 								history.replaceState({},null,"{{:U('Home/VipCenter/index')}}");
 								setTimeout(function(){
-									location.href = "{{:U('Home/Order/index')}}" + '?tab=4';
+									// location.href = "{{:U('Home/Order/index')}}" + '?tab=4';
 								},500); 
 							}else if(res.code == 605){
 								layuiHint('你已经评论过了！');
