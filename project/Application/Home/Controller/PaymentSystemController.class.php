@@ -996,7 +996,7 @@ class PaymentSystemController extends CommonController
             M()->startTrans();
             try{
                 $gold_money = (float)$true_money / (float)$gold_rate['gold_rate'];
-                $pay_res = $user->where($showUser)->setDec('silver',$gold_money);
+                $pay_res = $user->where($showUser)->setDec('gold_num',$gold_money);
                 if(!$pay_res){
                     E('支付失败',1002);
                 }
