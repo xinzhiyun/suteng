@@ -865,7 +865,7 @@ class WeiXinPayController extends Controller
                             //
                             $flowData['money']          = $value['money'];
                             // 充值方式
-                            $flowData['mode']           = 1;
+                            $flowData['mode']           = 2;
                             // 充值流量
                             $flowData['flow']           = $value['flow'];
                             // 套餐数量
