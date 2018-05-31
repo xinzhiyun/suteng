@@ -350,7 +350,7 @@ class PaymentSystemController extends CommonController
                 $inventory = D('inventory');
 
                 $rs = $shopOrder->where(['order_id'=>$order_id,'uid'=>$uid])->setField(['status'=>9,'mode'=>3]);
-               
+                \Think\Log::write('地址'.json_encode($rs));
             // 3. 表票金额录入
                 $order_goods = $orderDetail->field('gid,num')->where(['order_id'=>$order_id])->select();
                 // p($order_goods);die;
@@ -366,11 +366,20 @@ class PaymentSystemController extends CommonController
                     $sql .= sprintf("WHEN %d THEN allnum - %d ", $id, $ordinal);
                 }
                 $sql .= "END WHERE gid IN ($ids)";
-                file_put_contents('./wxcallback.txt',$sql."\r\n\r\n", FILE_APPEND);
+                // file_put_contents('./wxcallback.txt',$sql."\r\n\r\n", FILE_APPEND);
                 $Model = new \Think\Model(); // 实例化一个model对象 没有对应任何数据表
                 $res = $Model->execute($sql);
-            // 5. 订单支付完成返回信息
-
+            // 5.地址写入
+                    $saveOrder['order_id']  = $orderData['order_id'];
+                    // 用户ID
+                    $showAddres['uid']      = $orderData['uid'];
+                    // 默认的地址
+                    $showAddres['status']   = 0;
+                    // 快递地址ID
+                    $saveOrderDara['address_id'] = M('address')->where($showAddres)->find()['id'];
+                    // 准备更新数据                 
+                    M('shop_order')->where($saveOrder)->save($saveOrderDara);
+            // 6. 订单支付完成返回信息
                 M()->commit(); 
                 $this->ajaxReturn(['code'=>200,'msg'=>'支付成功']);
             }catch(\Exception $e){
@@ -462,11 +471,20 @@ class PaymentSystemController extends CommonController
                     $sql .= sprintf("WHEN %d THEN allnum - %d ", $id, $ordinal);
                 }
                 $sql .= "END WHERE gid IN ($ids)";
-                file_put_contents('./wxcallback.txt',$sql."\r\n\r\n", FILE_APPEND);
+                // file_put_contents('./wxcallback.txt',$sql."\r\n\r\n", FILE_APPEND);
                 $Model = new \Think\Model(); // 实例化一个model对象 没有对应任何数据表
                 $res = $Model->execute($sql);
-            // 5. 订单支付完成返回信息
-
+            // 5.地址写入
+                $saveOrder['order_id']  = $orderData['order_id'];
+                // 用户ID
+                $showAddres['uid']      = $orderData['uid'];
+                // 默认的地址
+                $showAddres['status']   = 0;
+                // 快递地址ID
+                $saveOrderDara['address_id'] = M('address')->where($showAddres)->find()['id'];
+                // 准备更新数据
+                M('shop_order')->where($saveOrder)->save($saveOrderDara);
+            // 6. 订单支付完成返回信息
                 M()->commit(); 
                 $this->ajaxReturn(['code'=>200,'msg'=>'支付成功']);
             }catch(\Exception $e){
@@ -551,6 +569,7 @@ class PaymentSystemController extends CommonController
                //$uid = M('Users')->where("open_id='{$result['']}'")->find()['id'];
             //file_put_contents('./wx_pay1.txt',$xml."\r\n", FILE_APPEND);
             // 如果订单号不为空
+
                 if($order_id){
                 //                $did =  $result['out_trade_no'];
                 
@@ -568,13 +587,13 @@ class PaymentSystemController extends CommonController
                                 $orderData = M('orders')->where($data)->field('is_pay,order_id,total_price,device_id')->find();
                 
                                 // 1分钱测试数据
-                                $orderData['total_price'] = 1;
-                
+                                // $orderData['total_price'] = 1;
                 
                                 // dump($data);die;
                                 // 如果订单未处理，订单支付金额等于订单实际金额
+                                $result['total_fee'] = $true_money;
                                 if(empty($orderData['is_pay']) && $orderData['total_price'] == $result['total_fee']){
-                
+
                                     //file_put_contents('./wx_pay121.txt',$xml."\r\n", FILE_APPEND);
                                     //                    dump($result);
                                     // 处理订单
@@ -620,8 +639,7 @@ class PaymentSystemController extends CommonController
                 
                 
                                         //查询当前用户
-                                        $user_info = M('users')->field('id,invitation_code,open_id')->where(['open_id'=> $result['openid']])->find();
-                
+                                        $user_info = M('users')->field('id,invitation_code,open_id')->where(['open_id'=> $_SESSION['open_id']])->find();
                 
                 //                        file_put_contents('./222222.txt',M('users')->getLastSql() ."\r\n", FILE_APPEND);
                                         //show($orderSetmealData);die;
@@ -679,11 +697,11 @@ class PaymentSystemController extends CommonController
                                             }
                                             $Flow['data_statu']=1;
                 
-                                            Log::write(json_encode($Flow), '更新devicesStatu');
+                                            \Think\Log::write(json_encode($Flow), '更新devicesStatu');
                 
                                             // 修改设备剩余流量
                                             $FlowRes = $devicesStatu->where($deviceCode)->save($Flow);
-                                            echo $devicesStatu->getlastsql();
+                                            // echo $devicesStatu->getlastsql();
                 
                 
                                             // file_put_contents('jfdsk',var_export($devicesStatu->_sql(), true),FILE_APPEND);
@@ -972,13 +990,13 @@ class PaymentSystemController extends CommonController
                     $this->ajaxReturn(['code'=>1001,'msg'=>'金币不足']);
                 }
                 // 4.1 库存检测
-            
+            // \Think\Log::write('111');die;
             
                 // 1.4 支付订单
             M()->startTrans();
             try{
                 $gold_money = (float)$true_money / (float)$gold_rate['gold_rate'];
-                $pay_res = $user->where($showUser)->setDec('silver',$gold_money);
+                $pay_res = $user->where($showUser)->setDec('gold_num',$gold_money);
                 if(!$pay_res){
                     E('支付失败',1002);
                 }
@@ -1003,13 +1021,14 @@ class PaymentSystemController extends CommonController
                                 $orderData = M('orders')->where($data)->field('is_pay,order_id,total_price,device_id')->find();
                 
                                 // 1分钱测试数据
-                                $orderData['total_price'] = 1;
+                                // $orderData['total_price'] = 1;
                 
                 
                                 // dump($data);die;
                                 // 如果订单未处理，订单支付金额等于订单实际金额
+                                $result['total_fee'] = $true_money;
                                 if(empty($orderData['is_pay']) && $orderData['total_price'] == $result['total_fee']){
-                
+
                                     //file_put_contents('./wx_pay121.txt',$xml."\r\n", FILE_APPEND);
                                     //                    dump($result);
                                     // 处理订单
@@ -1055,7 +1074,7 @@ class PaymentSystemController extends CommonController
                 
                 
                                         //查询当前用户
-                                        $user_info = M('users')->field('id,invitation_code,open_id')->where(['open_id'=> $result['openid']])->find();
+                                        $user_info = M('users')->field('id,invitation_code,open_id')->where(['open_id'=> $_SESSION['open_id']])->find();
                 
                 
                 //                        file_put_contents('./222222.txt',M('users')->getLastSql() ."\r\n", FILE_APPEND);
@@ -1114,11 +1133,11 @@ class PaymentSystemController extends CommonController
                                             }
                                             $Flow['data_statu']=1;
                 
-                                            Log::write(json_encode($Flow), '更新devicesStatu');
+                                            // Log::write(json_encode($Flow), '更新devicesStatu');
                 
                                             // 修改设备剩余流量
                                             $FlowRes = $devicesStatu->where($deviceCode)->save($Flow);
-                                            echo $devicesStatu->getlastsql();
+                                            // echo $devicesStatu->getlastsql();
                 
                 
                                             // file_put_contents('jfdsk',var_export($devicesStatu->_sql(), true),FILE_APPEND);
@@ -1149,7 +1168,7 @@ class PaymentSystemController extends CommonController
                                             //
                                             $flowData['money']          = $value['money'];
                                             // 充值方式
-                                            $flowData['mode']           = 1;
+                                            $flowData['mode']           = 0;
                                             // 充值流量
                                             $flowData['flow']           = $value['flow'];
                                             // 套餐数量

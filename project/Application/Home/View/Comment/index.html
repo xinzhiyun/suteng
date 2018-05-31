@@ -10,7 +10,7 @@
 	<title>发表评论</title>
 	<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
     <script>
-        // var vconsole = new VConsole();
+        var vconsole = new VConsole();
     </script>
 </head>
 <body>
@@ -43,7 +43,6 @@
 					</label>
 					<span>
 						<i class="iconfont icon-tianjia"></i><em>限3张内</em>
-						<input type="hidden" name='pic'>
 						<div id="picShow"></div>
 					</span>
 					<input class="file_upload" name="pic[]" type="button" multiple="" accept="image/*" >
@@ -61,13 +60,9 @@
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
   	<script src="__PUBLIC__/Home/js/public.js"></script>
-  	<!-- <script src="__PUBLIC__/Home/js/upFile.js"></script> -->
   	<script src="__PUBLIC__/Home/js/wx_imgUpload.js"></script>
-  	<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>	
 	<script>
-		// var vConsole = new VConsole();
-	  	console.log('VConsole is cool');
 	  	$(function(){
 			//将评论的商品信息显示到页面从我的订单~待评论传来
 			if(sessionStorage.getItem("pinglunObj")){
@@ -90,9 +85,9 @@
 			        'downloadImage'
 			    ]
 			});
+			var pic = [];	// 图片
 			// 点击选择图片
 			$('.file_upload').click(function(){
-				// takePicture();
 				// 浏览上传图片
 				wxuploadimg(function(res){
 				    console.log('res: ',res);
@@ -113,14 +108,18 @@
 				    // 显示图片
 				    $('#picShow').append($span);
 				    // 待发送给后台的图片id
-				    $('input[name="pic"]').val(res.media_Id);
-				    // 删除图片
-				    $("#picShow").on("click",".delPic",function(){
-						$(this).parent(".fuPic").remove();
-					})
+				    pic.push(res.media_Id);
 				});
 			})
 
+		    // 删除图片
+		    $("#picShow").on("click",".delPic",function(){
+				$(this).parent(".fuPic").remove();
+				var index = $('#picShow>span').index(this)+1;
+				console.log('index: ',index);
+				pic.splice(index,1);
+				console.log('pic: ',pic);
+			})
 			/**
 				点击提交
 			*/
@@ -135,16 +134,17 @@
 				var formData = new FormData($('#form')[0]);	// 评论的数据
 				formData.append('orderid',orderid);
 				formData.append('gid',gid);
-				console.log(formData)
-				var pic = $('#picShow>span').length;
+				formData.append('pic',pic);
+				var status = $('input[name="status"]:checked').val();
+				console.log('status: ',status);
+				console.log('orderid: ',orderid);
+				console.log('gid: ',gid);
+				console.log('uppic: ',pic);
 				if(!$("#shopping").val()){
 					layuiHint("请您对我们的商品做出评价呗");
 					return
 				} 
-				if(!pic){
-					// 没有图片
-					$('input[name="pic"]').attr('name','nopic');
-				}
+				
 				if(successFlag) {
 					// 防止多次提交
 					successFlag = false;
@@ -152,7 +152,7 @@
 					
 					//发送数据到后台
 					$.ajax({
-						url: '{{:U("Comment/comment")}}',
+						url: '{{:U("Home/Comment/comment")}}',
 						type: 'post',
 						data: formData,
 						async: false,
@@ -169,7 +169,7 @@
 								// 替换历史记录
 								history.replaceState({},null,"{{:U('Home/VipCenter/index')}}");
 								setTimeout(function(){
-									location.href = "{{:U('Home/Order/index')}}" + '?tab=4';
+									// location.href = "{{:U('Home/Order/index')}}" + '?tab=4';
 								},500); 
 							}else if(res.code == 605){
 								layuiHint('你已经评论过了！');
