@@ -143,7 +143,7 @@ class CommentController extends CommonController
         $comment->startTrans();
             // 根据订单获取所有商品
             $data = array(
-                'status' => $status,
+                'grade' => $status,
                 'order_id' => $orderid,
                 'uid' => $uid,
                 'gid' => $gid,
