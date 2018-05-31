@@ -412,8 +412,12 @@ class WeiXinPayController extends Controller
             $saveRes = M('vendors')->where($showData)->save($saveData);
 
             if($saveRes){
-                // 分红
-                // dump($result);die;
+                //  添加缴费记录
+                $data['open_id'] = $result['openid'];
+                $data['money'] = $result['attach'];
+                $data['status'] = 1;
+                $data['add_time'] = date('Y-m-d H:i:s');
+                $info = M('vendors_league')->add($data);
             }
 
 
@@ -557,14 +561,14 @@ class WeiXinPayController extends Controller
 
                     //销售奖(卖商品的经销商 分公司)
                     if ($f_info) {
-                        $earnings_comc = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_c);
+                        $earnings_comc = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_c);
 
                         // file_put_contents('./wx2_payFee.txt', M('vendors')->getLastSql()."\r\n", FILE_APPEND);
 
                         //销售奖收益记录
                         if ($earnings_comc) {
 
-                            M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>3,'open_id'=>$f_info['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>3,'open_id'=>$c_info['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
                             // file_put_contents('./wx2_payFee.txt', M('earnings')->getLastSql()."\r\n", FILE_APPEND);
 
                         }
@@ -572,10 +576,10 @@ class WeiXinPayController extends Controller
 
                     //市场推广奖(定义 卖商品的经销商推荐人) 只查询存在的
                     if ($c_info){
-                        $earnings_comd = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_d);
+                        $earnings_comd = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_d);
                         //销售奖收益记录
                         if ($earnings_comd) {
-                            M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>3,'open_id'=>$c_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>3,'open_id'=>$f_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
                         }
                     }
                     //查找直系推荐关系中的最近B级加盟商(包括自己)
@@ -861,7 +865,7 @@ class WeiXinPayController extends Controller
                             //
                             $flowData['money']          = $value['money'];
                             // 充值方式
-                            $flowData['mode']           = 1;
+                            $flowData['mode']           = 2;
                             // 充值流量
                             $flowData['flow']           = $value['flow'];
                             // 套餐数量
@@ -939,14 +943,14 @@ class WeiXinPayController extends Controller
                             $f_info = M('vendors')->where(['code'=>$c_info['office_code']])->find();
                             //销售奖(卖商品的经销商 分公司)
                             if ($f_info) {
-                                $earnings_comc = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_c);
+                                $earnings_comc = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_c);
 
                                 file_put_contents('./wx2_payFee.txt', M('vendors')->getLastSql()."\r\n", FILE_APPEND);
 
                                 //销售奖收益记录
                                 if ($earnings_comc) {
 
-                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$f_info['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d
+                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$c_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d
                                     H:i:s')]);
                                     // file_put_contents('./wx2_payFee.txt', M('earnings')->getLastSql()."\r\n", FILE_APPEND);
 
@@ -955,10 +959,10 @@ class WeiXinPayController extends Controller
 
                             //市场推广奖(定义 卖商品的经销商推荐人) 只查询存在的
                             if ($c_info){
-                                $earnings_comd = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_d);
+                                $earnings_comd = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_d);
                                 //销售奖收益记录
                                 if ($earnings_comd) {
-                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$c_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$f_info['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
                             }
                             //查找直系推荐关系中的最近B级加盟商(包括自己)

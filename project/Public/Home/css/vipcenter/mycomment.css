@@ -10,15 +10,32 @@ body{
 	border-bottom:6px solid #EBEBEB;
 	/*height: 5rem;*/
 }
+.itemgoodsTop>h3 {
+	text-align: right;
+}
 .itemgoodsTop>h3>span{
-	margin-right: 0.5rem;
-    color: #5A5A5A;
+    color: #a9a9a9;
 }
 .itemgoodsTop>.goodspic{
 	margin:1rem 0;
 	height: 4rem;
 	/*background: gray;*/
 
+}
+.xingx {
+	height: 20px;
+	line-height: 20px;
+}
+.cfix::after {
+	content: '';
+	display: inline-block;
+	clear: both;
+}
+.fleft {
+	float: left;
+}
+.fright {
+	float: right;
 }
 .goodspic>.mygoodsLeft{
 	padding: 5%;
@@ -53,18 +70,30 @@ body{
 }
 /*第一类item的底部评论设置开始*/
 .itemgoodsBott{
-	padding:0.666667rem 5% 0;
+	padding: 0 5%;
 	border-bottom:10px solid #EBEBEB;
 
 }
+.itemgoodsBott>p:nth-of-type(1), 
+.itemgoodsBott>p:nth-of-type(1)>span{
+	height: 1.4rem;
+	line-height: 1.4rem;
+}
 .itemgoodsBott>p{
-	line-height: 1.1rem;
-	color: #5A5A5A;
-
-
+	position: relative;
+	margin: 10px 0;
+	color: #929292;
+	font-size: .6rem;
+}
+.itemgoodsBott .ccontent {
+	color: #333;
+}
+.itemgoodsBott>p img {
+	height: 100%;
+	border-radius: 50%;
 }
 .itemgoodsBott>.commpic{
-	margin-top:1rem;
+	margin-top: 10px;
 }
 .itemgoodsBott>.commpic>ul>li{
 	display: inline-block;
@@ -72,8 +101,8 @@ body{
 	border-radius: 0.3rem;
 	-webkit-box-sizing: border-box;
 	        box-sizing: border-box;
-	width: 26%;
-	padding: 0.65rem;
+	width: 24%;
+	padding: 0 2vw;
 
 }
 .itemgoodsBott>.commpic>ul>li>img{
@@ -85,6 +114,28 @@ body{
 
 
 
+.itemgoodsBott .pingfen {
+	width: 28%;
+	display: block;
+	position: relative;
+	font-size: 20px;
+}
+.itemgoodsBott .pingfen>span {
+	width: 100%;
+	height: 100%;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+}
+
+.itemgoodsBott .pingfen>span:after {
+	content: "\e64a\e64a\e64a\e64a\e64a";
+	display: block;
+	position: absolute;
+	color: #FBC91D;
+}
 /*第二类五星好评开始*/
 .mycomItem-second{
 	border-bottom:10px solid #EBEBEB;

@@ -6,6 +6,10 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/address/newAddress.css">
 	<title>添加新地址</title>
+    <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+    <script>
+        var vconsole = new VConsole();
+    </script>
 </head>
 <body>
 	<div id="info">
@@ -24,13 +28,13 @@
 			</span>
 			
 		</div>
-		<div>
+		<!-- <div>
 			<span>街&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道:</span>
 			<span>
 				<input type="button" id="townID" class="town" placeholder="请输入街道">
 			</span>
 			
-		</div>
+		</div> -->
 		<textarea name="" id="addressDetial" cols="2" rows="10" placeholder="请谨慎填写详细地址"></textarea>
 	</div>
 	<div id="areaChoose" class="citys">
@@ -53,9 +57,9 @@
 				</li>
 			</ul>
     	</div>
-    	<div id="confirmAreaChoose">
+    	<!-- <div id="confirmAreaChoose">
     		<div>确定</div>
-    	</div>
+    	</div> -->
 	</div>
 	<div id="norAddrDiv">
 		<label for="normalAddrdess">
@@ -117,7 +121,7 @@
 	    $("#saveAddress").click(function(){
 	    	var nameRes = nameReg.test($(".name").val());
 	    	var phoneRes = phoneReg.test($(".phone").val());
-	    	var areaIDRes = nameReg.test($("#areaID").val());
+	    	var areaIDRes = nameReg.test(trimFn($("#areaID").val()));
 	    	var addressDetialRes = nameReg.test($("#addressDetial").val());
 
 	    	var editAddressObj = {};	//存储需要发送给后台的数据
@@ -178,7 +182,7 @@
 			    			layHint('请重新选择地址！');
 			    			return false;
 			    		}
-				    	$.ajax({
+				    	$.ajax({ 
 				    		url: '{{:U("Home/Address/save_address")}}',
 				    		type: 'post',
 				    		data: editAddressObj,
@@ -236,7 +240,7 @@
 
 		    	}else if(!areaIDRes){
 		    		// console.log('请选择地区！');
-		    		layHint('请选择地区！')
+		    		layHint('请选择地区请选择地区！')
 		    		
 		    	}else if(!addressDetialRes){
 		    		// console.log('请输入详细地址！');
@@ -310,7 +314,7 @@
 		    			if(res.code == 200){
 			    			// 如果有订单号,自动跳回去订单提交那里
 			    			if(sessionStorage.getItem("order_id")){
-			    				// console.log("当前页面路径", window.location.search)
+			    				// console.log("当前页面路径", window.locatzion.search)
 								
 			    				// 如果有商品数据
 			    				if(goods_data || lvxinData || shopCar_data){
@@ -319,20 +323,35 @@
 									// 滤芯
 									if(buyType.substr(-1, 1) == '0') {
 										history.replaceState({}, null, '{{:U("Pay/lvxinPay")}}');
-										location.href = '{{:U("Pay/lvxinPay")}}';
+										setTimeout(function() {
+											location.href = '{{:U("Pay/lvxinPay")}}';
+										}, 500);
+										
 										
 									// 商城
 									}else if(buyType.substr(-1, 1) == '1') {
 										history.replaceState({}, null, '{{:U("Pay/payConfirm")}}');
-										location.href = '{{:U("Pay/payConfirm")}}';
+										setTimeout(function() {
+											location.href = '{{:U("Pay/payConfirm")}}';
+										}, 500);
+										
+										
+									}else {
+										// 从地址管理进来，回到‘我的’界面
+										history.replaceState({}, null, '{{:U("Address/index")}}');
+										setTimeout(function() {
+											location.href = '{{:U("VipCenter/index")}}';
+										}, 500);
 										
 									}
-			    					
 			    				}
 			    			}else{
 			    				// 无订单号， 回到‘我的’界面
 		    					history.replaceState({}, null, '{{:U("VipCenter/index")}}');
-		    					location.href = '{{:U("VipCenter/index")}}';
+	    						layHint('保存成功');
+		    					setTimeout(function(){
+		    						location.href = '{{:U("VipCenter/index")}}';
+		    					},500)
 		    				}
 			    		}else if(res.code == 605){
 	    					layHint('添加失败，请稍后再试！');
@@ -444,14 +463,15 @@
 						$('.area>p').eq(j).removeClass('addrselect');
 					}
 					_this.attr('class','addrselect');
+					areaover();
 				}
 				console.log('province,city,area: ',province,city,area);
 				console.log('province_id,city_id,area_id: ',province_id,city_id,area_id);
 			})
 		})
 
-		// 确定
-		$('#confirmAreaChoose').on('touchend', function(){
+		// 选择完区县后自动消失
+		function areaover(){
 			if(!province){
 				layuiHint('请选择省份');
 				return
@@ -469,7 +489,7 @@
 			setTimeout(function(){
 				$('#areaChoose').fadeOut('fast');
 			},300);
-		})
+		}
 
 		// 关闭地址选择
 		$('.areaChoosebg').click(function(){

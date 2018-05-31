@@ -84,6 +84,21 @@ function layuiHint(text){
 var	nameReg = /^([a-zA-Z0-9_\u4e00-\u9fa5]){2,30}$/,
 	phoneReg = /^(1[3|4|5|7|8])\d{9}$/,
 	addressReg = /^(?=.*?[\u4E00-\u9FA5])[\dA-Za-z\u4E00-\u9FA5]{8,}/;
+	
+//去空格
+var trimFn = function(str){
+    str += '';
+    return str.replace(/^(\s)|(\s*)/g,'');
+}
+//验证中文
+var chineseCheck = function(val){
+    return /^[\u4e00-\u9fa5]{2,255}$/.test(val);
+}
+//验证特殊字符
+var specailCheck = function(val){
+    return /^[`~!@#$^&*()=|{}':;',\[\].<>/?~！@#￥……&*（）——|{}【】\s‘；：”“'。，、？]$/.test(val)
+}
+
 
 // 格式化日期时间
   function timetrans(date){

@@ -31,6 +31,7 @@ class VendorsController extends Controller
         $showData['id'] = $_SESSION['vendorInfo']['id'];
 
         $vendor = M('vendors')->where($showData)->find();
+
         if (empty($vendor)) {
             $this->error('暂无数据');
         }
@@ -110,16 +111,19 @@ class VendorsController extends Controller
                     $this->display('vendor_wait');
                     break;
                 case '4':
+                    $this->wx_info();
                     // 身份证审批失败
                     $this->identity_refillings();
                     break;
                 case '5':
+                    $this->wx_info();
                     // 公司信息审批失败
-                    $this->company_refillings();
+                    $this->company();
                     break;
                 case '6':
+                    $this->wx_info();
                     // 协议审批失败
-                    $this->display('protocol_refillings');
+                    $this->display('protocol');
                     break;
                 case '9':
                     // 交加盟费，传入分销商级别
@@ -832,48 +836,60 @@ class VendorsController extends Controller
     {
         // 获取微信用户唯一标识
         $open_id = $_SESSION['vendorInfo']['open_id'];
+        $info = M('vendors_league')->where(['open_id'=>$open_id,'status'=>1])->find();
+        if ($info) {
+            $status = M('vendors')->where(['open_id'=>$_SESSION['vendorInfo']['open_id']])->getField('status');
+            if ($status == 4 || $status == 5 || $status == 6) {
+                M('vendors')->where(['open_id'=>$_SESSION['vendorInfo']['open_id']])->save(['status'=>3]);
+                $this->display('vendor_wait');
+            }
 
-        // 准备查询条件
-        $showData['id'] = 1;
-        // 查询分销商加盟费
-        $vendor_fee = M('vendor_fee')->where($showData)->field('vendor_a,vendor_b,vendor_c')->find();
+        } else {
+            // 准备查询条件
+            $showData['id'] = 1;
+            // 查询分销商加盟费
+            $vendor_fee = M('vendor_fee')->where($showData)->field('vendor_a,vendor_b,vendor_c')->find();
 
-        // 匹配分销商级别
-        switch ($_SESSION['vendorInfo']['leavel']) {
-            case '2':
-                // A级分销商
-                $money = $vendor_fee['vendor_a'];
-                break;
-            case '3':
-                // B级分销商
-                $money = $vendor_fee['vendor_b'];
-            case '4':
-                // C级分销商
-                $money = $vendor_fee['vendor_c'];
-                break;
-            default:
-                # code...
-                break;
+            // 匹配分销商级别
+            switch ($_SESSION['vendorInfo']['leavel']) {
+                case '2':
+                    // A级分销商
+                    $money = $vendor_fee['vendor_a'];
+                    break;
+                case '3':
+                    // B级分销商
+                    $money = $vendor_fee['vendor_b'];
+                case '4':
+                    // C级分销商
+                    $money = $vendor_fee['vendor_c'];
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+
+            // 微信支付配置
+            $weixin = new WeixinJssdk;
+            $signPackage = $weixin->getSignPackage();
+            // 查询用户微信中的openid
+            // $openId = $weixin->GetOpenid();
+            $openId = $_SESSION['vendorInfo']['open_id'];
+            // 获取用户open_id
+            $showDataa['open_id'] = $openId;
+            // 查询分销商状态
+            $vendor = M('vendors')->where($showDataa)->find();
+            $this->assign('vendor',$vendor);
+
+            //分配数据
+            $this->assign('info',$signPackage);
+            $this->assign('openId',$openId);
+            $this->assign('money',$money);
+            // 显示模板
+            $this->display('protocol_fee');
         }
 
-        // 微信支付配置
-        $weixin = new WeixinJssdk;
-        $signPackage = $weixin->getSignPackage();
-        // 查询用户微信中的openid
-        // $openId = $weixin->GetOpenid();
-        $openId = $_SESSION['vendorInfo']['open_id'];
-        // 获取用户open_id
-        $showDataa['open_id'] = $openId;
-        // 查询分销商状态
-        $vendor = M('vendors')->where($showDataa)->find();
-        $this->assign('vendor',$vendor);
 
-        //分配数据
-        $this->assign('info',$signPackage);
-        $this->assign('openId',$openId);
-        $this->assign('money',$money);
-        // 显示模板
-        $this->display('protocol_fee');
+
     }
 
     // 收益明细

@@ -20,13 +20,13 @@ class WorkController extends CommonController
     public function index()
     {
        // 根据名称进行搜索
-        $map = '';
+        $map = [];
         if(strlen($_GET['number'])) $map['number'] = array('like',"%{$_GET['number']}%");
 
         strlen(I('get.type')) ? (int)$map['type'] = I('get.type'):'';
 
         strlen(I('get.result')) ? (int)$map['result'] = I('get.result'):'';
-
+        $map['leavel'] = $this->leavel;
         $work = D('work');
         $workList = $work->getPage($work,$map,'create_at desc');
         $where['number'] = $_GET['number'];

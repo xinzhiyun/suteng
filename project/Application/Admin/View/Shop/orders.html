@@ -118,7 +118,7 @@
                                                 <case value="1">支付宝</case>
                                                 <case value="2">银联</case>
                                                 <case value="3">金币</case>
-                                                <case value="2">银币</case>
+                                                <case value="4">银币</case>
                                             </switch>
                                         </td>
                                         <td>
@@ -142,6 +142,7 @@
                                                 <case value="7"><span style="color:">订单完成</span></case>
                                                 <case value="8"><span style="color:red;">未支付</span></case>
                                                 <case value="9"><span style="color:green;">已支付</span></case>
+                                                <case value="10"><span style="color:blue;">部分商品退货中</span></case>
                                             </switch>
                                         </td>
                                         <td>
@@ -163,6 +164,9 @@
                                                 </a>
                                                 <switch name="v.status">
                                                     <case value="9">                                                <a class="btn btn-outline btn-success" href="javascript:;" onclick="ship({{$v['order_id']}},{{$v['g_type']}})">
+                                                    点击发货
+                                                </a></case>
+                                                <case value="10">                                                <a class="btn btn-outline btn-success" href="javascript:;" onclick="ship({{$v['order_id']}},{{$v['g_type']}})">
                                                     点击发货
                                                 </a></case>
                                                 </switch>
@@ -367,6 +371,8 @@
     </div>
 </block>
 <block name="myjs">
+    <script src="__PUBLIC__/Home/js/public.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
     <script>
     // $('#affirm').modal('show'); 
     // $('#st-edit').modal('show');
@@ -408,11 +414,13 @@
                     $.get("{{:U('admin/orders/getCourierByOrder')}}",{ order_id : orderid},function(res){
 
                         if(res.code == 200){
+                            console.log(res);
+
                             // var html = '<tr><th>快递名称</th><th>快递单号</th></tr>';
                             var html = '';
                             for(var i = 0;i<res.data.length;i++){
 
-                                html += '<tr><th>'+ res.data[i]['name'] +'</th><td><input class="input-medium express_input" type="text" name="express" cid="'+res.data[i]['cid']+'" class="form-control" value=""></td></tr>';
+                                html += '<tr><th>'+ res.data[i]['gname'] + ' ' + res.data[i]['cname'] +'</th><td><input class="input-medium express_input" type="text" name="express" cid="'+res.data[i]['cid']+'" class="form-control" value=""></td></tr>';
                             }
                             courier.find('tbody').eq(0).html(html);
                         }
@@ -441,14 +449,29 @@
             }    
             
         }
+    var regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im,
+    regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im;
 
     // 点击发货
-    $('#edit_submit').click(function(){  
+    $('#edit_submit').click(function(){ 
+        var danNum = $("input[name=express]");
+        for(var i = 0;i<danNum.length;i++){
+             if(danNum[i].value == ""){
+                 layuiHint("快递单号不能为空");
+                 return;
+            }else if(chineseCheck(danNum[i].value)){
+                layuiHint("快递单号不能有中文");
+                return;
+            }else if(regEn.test(danNum[i].value) || regCn.test(danNum[i].value)){
+                layuiHint("快递单号不能有特殊字符");
+                return;
+            }
+        }
         $('#st-edit').modal('hide');    
         $('#affirm').modal('show');  
     });
     // 取消
-    $('.cencel').click(function(){    
+    $('.cencel').click(function(){     
        $('#affirm').modal('hide'); 
        $('#st-edit').modal('show');
     });

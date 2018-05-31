@@ -45,8 +45,16 @@ class PayController extends Controller
 
         $meal = M('setmeal')->where($type)->select();
 
+        $rate = D('website')->field('gold_rate,silver_rate')->find();
+        $showUser['open_id'] = $_SESSION['open_id'];
+        $user = M('users')->where($showUser)->find();
+        $assign = [
+            'user' => json_encode($user),
+            'rate' => json_encode($rate)
+        ];
         $this->wx_info();
         $this->assign('list',json_encode($meal));
+        $this->assign('infos', $assign);
         $this->display();
     }
 

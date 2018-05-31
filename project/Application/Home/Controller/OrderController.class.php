@@ -237,11 +237,13 @@ class OrderController extends CommonController
 
                     //销售奖(卖商品的经销商)
                     if ($f_info) {
-                        $earnings_comc = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_c);
+//                        $earnings_comc = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_c);
+                        $earnings_comc = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_c);
 
                         //销售奖收益记录
                         if ($earnings_comc) {
-                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
+//                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
                         }
                     }
 
@@ -250,11 +252,13 @@ class OrderController extends CommonController
                     //市场推广奖(定义 卖商品的经销商推荐人) 只查询存在的
                     if ($c_info){
 
-                        $earnings_comd = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_d);
+//                        $earnings_comd = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_d);
+                        $earnings_comd = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_d);
 
                         //销售奖收益记录
                         if ($earnings_comd) {
-                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+//                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
                         }
                     }
                     //查找直系推荐关系中的最近B级加盟商(包括自己)
@@ -484,9 +488,9 @@ class OrderController extends CommonController
                         ->join('__GOODS__ g ON g.id = d.gid','LEFT')
                         ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
                         // ->join('__PIC__ p ON g.id = p.gid','LEFT')
-                        ->relation(['pics'])
+                        // ->relation(['pics'])
                         // // ->table($refund.' a')
-                        ->field(array('g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire'))
+                        ->field(array('g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire','d.gpic'=>'gpic'))
                         ->select();
                     break;
 
