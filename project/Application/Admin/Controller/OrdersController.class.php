@@ -125,7 +125,7 @@ class OrdersController extends CommonController
         }
 
         //退货商品的快递的信息就不需要查询了
-        $jid = array_diff($ids,$rids);
+        $jid = array_diff_assoc($ids,$rids);
 
         $map['order_id'] = $order_id;
         $map['gid'] = array('in',$jid);
