@@ -350,7 +350,7 @@ class PaymentSystemController extends CommonController
                 $inventory = D('inventory');
 
                 $rs = $shopOrder->where(['order_id'=>$order_id,'uid'=>$uid])->setField(['status'=>9,'mode'=>3]);
-               
+                \Think\Log::write('地址'.json_encode($rs));
             // 3. 表票金额录入
                 $order_goods = $orderDetail->field('gid,num')->where(['order_id'=>$order_id])->select();
                 // p($order_goods);die;
@@ -366,7 +366,7 @@ class PaymentSystemController extends CommonController
                     $sql .= sprintf("WHEN %d THEN allnum - %d ", $id, $ordinal);
                 }
                 $sql .= "END WHERE gid IN ($ids)";
-                file_put_contents('./wxcallback.txt',$sql."\r\n\r\n", FILE_APPEND);
+                // file_put_contents('./wxcallback.txt',$sql."\r\n\r\n", FILE_APPEND);
                 $Model = new \Think\Model(); // 实例化一个model对象 没有对应任何数据表
                 $res = $Model->execute($sql);
             // 5.地址写入
@@ -377,13 +377,7 @@ class PaymentSystemController extends CommonController
                     $showAddres['status']   = 0;
                     // 快递地址ID
                     $saveOrderDara['address_id'] = M('address')->where($showAddres)->find()['id'];
-                    // 准备更新数据
-                    $saveOrderDara['status'] = 9;
-                    // 支付类型
-                    $saveOrderDara['mode'] = 0;
-                    // 执行更新操作
-                //   Think\Log::write(json_encode($saveOrderDara),'地址写入');
-                    \Think\Log::write('地址'.json_encode($saveOrderDara));
+                    // 准备更新数据                 
                     M('shop_order')->where($saveOrder)->save($saveOrderDara);
             // 6. 订单支付完成返回信息
                 M()->commit(); 
@@ -477,7 +471,7 @@ class PaymentSystemController extends CommonController
                     $sql .= sprintf("WHEN %d THEN allnum - %d ", $id, $ordinal);
                 }
                 $sql .= "END WHERE gid IN ($ids)";
-                file_put_contents('./wxcallback.txt',$sql."\r\n\r\n", FILE_APPEND);
+                // file_put_contents('./wxcallback.txt',$sql."\r\n\r\n", FILE_APPEND);
                 $Model = new \Think\Model(); // 实例化一个model对象 没有对应任何数据表
                 $res = $Model->execute($sql);
             // 5.地址写入
@@ -489,12 +483,6 @@ class PaymentSystemController extends CommonController
                 // 快递地址ID
                 $saveOrderDara['address_id'] = M('address')->where($showAddres)->find()['id'];
                 // 准备更新数据
-                $saveOrderDara['status'] = 9;
-                // 支付类型
-                $saveOrderDara['mode'] = 0;
-                // 执行更新操作
-                //   Think\Log::write(json_encode($saveOrderDara),'地址写入');
-                \Think\Log::write('地址'.json_encode($saveOrderDara));
                 M('shop_order')->where($saveOrder)->save($saveOrderDara);
             // 6. 订单支付完成返回信息
                 M()->commit(); 
