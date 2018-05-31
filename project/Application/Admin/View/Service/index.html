@@ -21,7 +21,7 @@
                         </div>
                     </div>
                 <form method="get" action="{{:U('index')}}" class="form-inline" id='searchdiv'>
-                    <div class="form-group">
+                    <div class="form-group where_area_box">
                         <label for="where_area">地区过滤</label>
                         <select name="province_id" class="form-control"  id="where_area">
                             <option value="">--请选择--</option>
@@ -30,13 +30,21 @@
                             </volist>
                         </select>
                         <select name="city_id" class="form-control "  style="min-width: 120px;">
+                            <option value="">--请选择--</option>
+                            <volist name="city" id="vl">
+                                <option value="{{$vl.id}}">{{$vl.areaname}}</option>
+                            </volist>
                         </select>
                         <select name="district_id" class="form-control "  style="min-width: 120px;">
+                            <option value="">--请选择--</option>
+                            <volist name="district" id="vl">
+                                <option value="{{$vl.id}}">{{$vl.areaname}}</option>
+                            </volist>
                         </select>
                     </div>
                     <div class="form-group " >
                         <select name="key" class="form-control where_key" >
-                            <option class="where_key_name" value="company">服务站名称</option>
+                            <option class="where_key_company" value="company">服务站名称</option>
                             <!--<option class="where_key_user" value="user">分配用户名</option>-->
                         </select>
                         <input type="text" name="keywords" placeholder="输入搜索关键字"  value="{{$_GET['keywords']}}"
@@ -200,7 +208,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th width="25%">第三方服务商：<span style="color: red;">*</span></th>
+                                <th width="25%">代管服务商：<span style="color: red;">*</span></th>
                                 <td >
                                     <select class="form-control" name="t_id" id="st_set_agent_sel">
                                         <option value="">--请选择--</option>
@@ -417,11 +425,12 @@
     </div>
     <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
     <script>
+        var where_map = JSON.parse(JSON.stringify({{$_GET|json_encode}}));
         var areaUrl = "{{:U('Admin/Area/getNextArea')}}";
         $("select[name='province_id']").change(function(){
             var _html = '<option value="">--请选择--</option>';
             var areaObj = $(this).parents('.form-inline');
-
+console.log(123);
             areaObj.find("select[name='city_id']").html(_html);
             areaObj.find("select[name='district_id']").html(_html);
             var parentid = $(this).val();
@@ -439,24 +448,32 @@
             },{parentid:parentid});
         });
         $("select[name='city_id']").change(function(){
+
+
             var _html = '<option value="">--请选择--</option>';
             var areaObj = $(this).parents('.form-inline')
             areaObj.find("select[name='district_id']").html(_html);
-
             var parentid = $(this).val();
+            console.log('city-1',parentid);
+
             if(parentid == '')return ;
 
             getInfo(areaUrl,function (res) {
+                console.log('city',res);
                 if(res.status == 200){
                     $.each(res.data,function (i,val) {
                         _html += '<option value="'+val.id+'">'+val.areaname+'</option>';
                     })
                     areaObj.find("select[name='district_id']").html(_html);
+                    console.log('city-ok');
                 }else{
                     parent.layer.msg(res.msg);
                 }
             },{parentid:parentid});
         });
+
+
+
 
         // 预设服务站
         $('#preset').click(function () {
@@ -623,6 +640,36 @@
                 });
             }
         }
+
+        // 搜索保持JSON.parse()
+        if(where_map.province_id){
+            $("#searchdiv select[name='province_id'] [value='"+where_map.province_id+"']").attr('selected',true);
+        }
+        if(where_map.city_id){
+            $("#searchdiv select[name='city_id'] [value='"+where_map.city_id+"']").attr('selected',true);
+        }
+        if(where_map.district_id){
+            $("#searchdiv select[name='district_id'] [value='" + where_map.district_id + "']").attr('selected', true);
+        }
+        
+        if(where_map.status){
+            $(".where_status_"+where_map.status).attr('selected',true);
+        }
+        if(where_map.key){
+            $(".where_key_company").attr('selected',true);
+        }
+        if(where_map.keywords){
+            $(".where_key_box").val(where_map.keywords);
+        }
+
+
+
+
+
+
+
+
+        console.log(where_map);
 
     </script>
 </block>
