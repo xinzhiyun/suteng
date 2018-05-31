@@ -139,13 +139,13 @@
 								'</span>&nbsp;'+ nickname +'<span class="fright">'+ timestampToTime(res.data[i].addtime) +'</span></p>'+
 								'<p class="cfix xingx">'+
 									'<i index="1" class="iconfont pingfen fleft"><span style="width:'+ statusList[res.data[i].status] +'%"></span></i>'+
-									'<span class="fleft">&emsp;'+ statusText[res.data[i].status] + '</span>'+
+									'<span class="fleft">&emsp;'+ statusText[Number(res.data[i].grade)-1] + '</span>'+
 								'</p>'+
 								'<p class="ccontent">'+ res.data[i].content +'</p>'+
 								'<div class="commpic">'+
 									'<ul></ul>'+
 								'</div>'+
-							'</div>';
+							'</div>';   
 					}else{		//安装评价
 						text_html = '<!-- 五星评分 -->'+
 							'<div class="mysaleContain">'+

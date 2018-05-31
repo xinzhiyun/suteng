@@ -442,7 +442,7 @@
 						sessionStorage.setItem("lvxinData", "");//清空滤芯数据
 						sessionStorage.setItem("goods_data", "");//清空商品数据
 						sessionStorage.setItem("order_id",order_id);
-						$.get("{{:U('Home/Pay/getGoodsByOrder')}}",{'order_id':order_id},function(data){
+						$.get("{{:U('Home/pay/getGoodsByOrder')}}",{'order_id':order_id},function(data){
 							console.log("付款",data);
 							for(var i = 0; i < data.length;i++){
 								data[i].path=urlImg+data[i].path;

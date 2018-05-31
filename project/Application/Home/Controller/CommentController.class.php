@@ -134,11 +134,16 @@ class CommentController extends CommonController
         }
         // 4.判断图片，处理文件上传
         if(!empty($pics)){
-            $info = $this->downloadPic($pics);      
+            $info = [];
+            $pics = explode(',',$pics);
+            foreach ($pics as $key => $val) {
+                array_push($info,$this->downloadPic($val)); 
+            }                
             // file_put_contents('./com_pic.txt',$info."\r\n\r\n", FILE_APPEND);     
         }
+        // p($info);
+        // file_put_contents('./comment.txt',json_encode($info)."\r\n\r\n", FILE_APPEND);die;   
         
-        // p(I(''));die;
         // 5.处理添加评论
         $comment->startTrans();
             // 根据订单获取所有商品
@@ -153,7 +158,10 @@ class CommentController extends CommonController
            $id = $comment->data($data)->add();
             
            if($info){
-                D("ComPic")->add(['cid'=>$id,'path'=>$info]);   
+                foreach ($info as $key => $path) {
+                    D("ComPic")->add(['cid'=>$id,'path'=>$path]);
+                }
+                   
            }
             
             $res = D('Order_detail')->where(['order_id'=>$orderid,'gid'=>$gid])->setField(['status'=>7]);

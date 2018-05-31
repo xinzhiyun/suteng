@@ -169,7 +169,7 @@
 								// 替换历史记录
 								history.replaceState({},null,"{{:U('Home/VipCenter/index')}}");
 								setTimeout(function(){
-									// location.href = "{{:U('Home/Order/index')}}" + '?tab=4';
+									location.href = "{{:U('Home/Order/index')}}" + '?tab=4';
 								},500); 
 							}else if(res.code == 605){
 								layuiHint('你已经评论过了！');
