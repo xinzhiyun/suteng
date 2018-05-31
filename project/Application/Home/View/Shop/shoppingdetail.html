@@ -49,6 +49,31 @@
 					<p>宝贝好喜欢好喜欢</p>
 				</div>  -->
 				<!-- 隐藏的评论 -->
+
+				<!-- 评论内容开始 -->
+					<!-- <div class="itemgoodsBott">
+						<p class="cfix">
+							<span class="fleft">
+								<img src="__PUBLIC__/Home/images/comm_02.png" alt="">
+							</span>
+							<span class="fright">2018/05/31 10:51</span>
+						</p>
+						<p class="cfix xingx">
+							<i index="1" class="iconfont pingfen fleft">
+								<span></span>
+							</i>
+							<span class="fleft">&emsp;中评</span>
+						</p>
+						<p class="ccontent">评论内容</p>
+						<div class="commpic">
+							<ul>
+								<li>
+									<img src="__PUBLIC__/Home/images/comm_02.png" alt="">
+								</li>
+							</ul>
+						</div>	
+					</div> -->
+				<!-- 评论内容结束 -->
 			</div>
 			<div class="pinglunshow"><p>查看更多<span class="iconfont icon-shuangxiajiantou"></span></p></div>
 		</div>
@@ -273,6 +298,9 @@
 			}
 		})
 		
+		var statusList = [100, 60, 0];		// 好评，中评，差评
+		var statusText = ['好评', '中评', '差评'];		// 好评，中评，差评
+		var commetHTML = '';	//存放评论相关商品的数据
 		// 请求评论数据
 		$.ajax({
 			url: '{{:U("Home/comment/getComments")}}',
@@ -281,76 +309,166 @@
 			data: {gid: goods_gid},
 			success: function(res){
 				console.log('请求评论成功： ',res);
-
+				var picStr = '';	//存放图片的html
+				var picArr = [];	//存放评论图片的数组
+				var text_html = '';		//商品评价
+				var nickname,head;
 				// 如果有评价则遍历出来
-				if(res.data.length){
-					if(res.data.length > 1){		// 有多条评论
-						for(var i=0; i<res.data.length; i++){
-							commPicArr[i] = []; //初始化
-							if(res.data[i].user == null) {
-								var nickname = '不知道是谁';
-								var head = '';
-							}else {
-								var nickname = res.data[i].user.nickname == null ? '不知道是谁' : res.data[i].user.nickname;
-								var head = !res.data[i].user.head ? '' : res.data[i].user.head;
-							}
-							var content = !res.data[i].content ? '该用户暂未评论' : res.data[i].content;
-							commentInfo_html += '<div class="detailItem">'+
-								'<p><em><img src="'+ head +'" alt=""></em><b>'+ nickname +'</b></p>'+
-								'<p>'+ content +'</p>'+
-								'<div></div>'+
+				for(var i=0; i<res.data.length; i++){
+					console.log("图片路径",res.data[i].pics.length)
+					if(res.data[i].user == null) {
+						nickname = '不知道是谁';
+						head = '';
+					}else {
+						nickname = res.data[i].user.nickname == null ? '不知道是谁' : res.data[i].user.nickname;
+						head = !res.data[i].user.head ? '' : res.data[i].user.head;
+					}
+					if(res.data[i].installer_graded == 0){	
+						// 用户对商品评论
+						text_html = '<!-- 评论内容 -->'+
+							'<div class="itemgoodsBott">'+
+								'<p class="cfix pos"><span class="fleft"><img src="'+ head +'" alt="">'+
+								'</span>&nbsp;'+ nickname +'<span class="fright">'+ timestampToTime(res.data[i].addtime) +'</span></p>'+
+								'<p class="cfix xingx">'+
+									'<i index="1" class="iconfont pingfen fleft"><span style="width:'+ statusList[res.data[i].status] +'%"></span></i>'+
+									'<span class="fleft">&emsp;'+ statusText[res.data[i].status] + '</span>'+
+								'</p>'+
+								'<p class="ccontent">'+ res.data[i].content +'</p>'+
+								'<div class="commpic">'+
+									'<ul></ul>'+
+								'</div>'+
 							'</div>';
-							// 存储每条评论的图片
-							picPathArr = res.data[i].pics;
-							for(var k=0; k<picPathArr.length; k++){
-								commPicArr[i].push({'img':'<span><img class="commPic" src="/Public'+ picPathArr[k].path +'" alt="图片加载中"></span>'});
-							}
-							
-						}
-					}else if(res.data.length == 1){		// 只有1条评论
-						var nickname = res.data[0].user.nickname == null ? '不知道是谁' : res.data[0].user.nickname;
-						var content = !res.data[0].content ? '该用户暂未评论' : res.data[0].content;
-						var head = !res.data[0].user.head ? '' : res.data[0].user.head;
-						commentInfo_html += '<div class="detailItem">'+
-							'<p><em><img src="'+ head +'" alt=""></em><b>'+ nickname +'</b></p>'+
-							'<p>'+ content +'</p>'+
-							'<div></div>'+
-						'</div>';
-						// 存储每条评论的图片
-						picPathArr = res.data[0].pics;
-						for(var j=0; j<res.data.length; j++){
-							commPicArr[j] = [];
-							for(var k=0; k<picPathArr.length; k++){
-								commPicArr[j].push({'img':'<span><img class="commPic" src="'+ picPathArr[k].path +'" alt=""></span>'});
-							}
-						}
-						// console.log(commPicArr);
+					}else{		//安装评价
+						text_html = '<!-- 五星评分 -->'+
+							'<div class="mysaleContain">'+
+								'<div class="mysaleBot">'+
+									'<p class=".clearfix">'+
+										'<b>安装人员评分</b>'+
+										'<i index="1" class="iconfont pingfen"><span style="width:'+ res.data[i].installer_graded*20 +'%"></span></i>'+
+									'</p>'+
+									'<p class=".clearfix">'+
+										'<b>服务态度评分</b>'+
+										'<i index="1" class="iconfont pingfen"><span style="width:'+ res.data[i].attitude*20 +'%"></span></i>'+
+									'</p>'+
+									'<p class=".clearfix">'+
+										'<b>着装评分</b>'+
+										'<i index="1" class="iconfont pingfen"><span style="width:'+ res.data[i].dressing*20 +'%"></span></i>'+
+									'</p>'+
+									'<p>安装师傅认真负责，很好的一次用户体现</p>'+
+								'</div>'+
+							'</div>';
 					}
-
-				}else{
-					commentInfo_html = '<div style="padding:10px 0;text-align:center;">暂无评价</div>';
+					commetHTML += text_html;
+					
+					// 判断是否接收到图片数据
+					if(!res.data[i].pics.length) { 
+						dataPic = "";
+						picArr.push({'picHTML':''}); //无图片， 则为空
+					}else {
+						picStr = '';	//先清空再生成
+						for(var j=0; j<res.data[i].pics.length; j++){
+							picStr += '<li><img src="'+'/Public/'+res.data[i].pics[j].path+'" alt="图片加载中"></li>';
+						}
+						picArr.push({'picHTML':picStr});
+					}
 				}
-
-				// 将评价添加到页面
-				$(".detailItemall").append(commentInfo_html);
-				// console.log(commPicArr);
-				var picHTML = '';
-				//	遍历评论的图片
-				for(var i=0; i<commPicArr.length; i++){
-					picHTML = '';	// 初始化
-					// 遍历多条评论的多个图片
-					for(var j=0; j<commPicArr[i].length; j++){
-						// console.log(commPicArr[i][j]);
-						picHTML += commPicArr[i][j].img;
+				console.log(picArr)
+				if(commetHTML){
+					$(".detailItemall").html(commetHTML);		//评价的内容
+					//遍历评价的图片
+					for(var i=0; i<picArr.length; i++){
+						$(".commpic").eq(i).children("ul").html(picArr[i].picHTML);	
+						// console.log(picArr[i].picHTML)		//评价的图片
 					}
-					// 各自评论的图片放到对应位置
-					$('.detailItemall .detailItem').eq(i).find('div').html(picHTML);
+				}else{
+					$(".detailItemall").html("<div style='width:100%;height:50vh;display:flex;justify-content:center;align-items:center;'>您还没有已评论的记录</div>");
 				}
 			},
 			error: function(err){
 				console.log('请求失败： ',err);
 			}
 		})
+
+
+
+		// 请求评论数据
+		// $.ajax({
+		// 	url: '{{:U("Home/comment/getComments")}}',
+		// 	type: 'get',
+		// 	// data: {gid: goods_gid},
+		// 	data: {gid: goods_gid},
+		// 	success: function(res){
+		// 		console.log('请求评论成功： ',res);
+
+		// 		// 如果有评价则遍历出来
+		// 		if(res.data.length){
+		// 			if(res.data.length > 1){		// 有多条评论
+		// 				for(var i=0; i<res.data.length; i++){
+		// 					commPicArr[i] = []; //初始化
+		// 					if(res.data[i].user == null) {
+		// 						var nickname = '不知道是谁';
+		// 						var head = '';
+		// 					}else {
+		// 						var nickname = res.data[i].user.nickname == null ? '不知道是谁' : res.data[i].user.nickname;
+		// 						var head = !res.data[i].user.head ? '' : res.data[i].user.head;
+		// 					}
+		// 					var content = !res.data[i].content ? '该用户暂未评论' : res.data[i].content;
+		// 					commentInfo_html += '<div class="detailItem">'+
+		// 						'<p><em><img src="'+ head +'" alt=""></em><b>'+ nickname +'</b></p>'+
+		// 						'<p>'+ content +'</p>'+
+		// 						'<div></div>'+
+		// 					'</div>';
+		// 					// 存储每条评论的图片
+		// 					picPathArr = res.data[i].pics;
+		// 					for(var k=0; k<picPathArr.length; k++){
+		// 						commPicArr[i].push({'img':'<span><img class="commPic" src="/Public'+ picPathArr[k].path +'" alt="图片加载中"></span>'});
+		// 					}
+							
+		// 				}
+		// 			}else if(res.data.length == 1){		// 只有1条评论
+		// 				var nickname = res.data[0].user.nickname == null ? '不知道是谁' : res.data[0].user.nickname;
+		// 				var content = !res.data[0].content ? '该用户暂未评论' : res.data[0].content;
+		// 				var head = !res.data[0].user.head ? '' : res.data[0].user.head;
+		// 				commentInfo_html += '<div class="detailItem">'+
+		// 					'<p><em><img src="'+ head +'" alt=""></em><b>'+ nickname +'</b></p>'+
+		// 					'<p>'+ content +'</p>'+
+		// 					'<div></div>'+
+		// 				'</div>';
+		// 				// 存储每条评论的图片
+		// 				picPathArr = res.data[0].pics;
+		// 				for(var j=0; j<res.data.length; j++){
+		// 					commPicArr[j] = [];
+		// 					for(var k=0; k<picPathArr.length; k++){
+		// 						commPicArr[j].push({'img':'<span><img class="commPic" src="'+ picPathArr[k].path +'" alt=""></span>'});
+		// 					}
+		// 				}
+		// 				// console.log(commPicArr);
+		// 			}
+
+		// 		}else{
+		// 			commentInfo_html = '<div style="padding:10px 0;text-align:center;">暂无评价</div>';
+		// 		}
+
+		// 		// 将评价添加到页面
+		// 		$(".detailItemall").append(commentInfo_html);
+		// 		// console.log(commPicArr);
+		// 		var picHTML = '';
+		// 		//	遍历评论的图片
+		// 		for(var i=0; i<commPicArr.length; i++){
+		// 			picHTML = '';	// 初始化
+		// 			// 遍历多条评论的多个图片
+		// 			for(var j=0; j<commPicArr[i].length; j++){
+		// 				// console.log(commPicArr[i][j]);
+		// 				picHTML += commPicArr[i][j].img;
+		// 			}
+		// 			// 各自评论的图片放到对应位置
+		// 			$('.detailItemall .detailItem').eq(i).find('div').html(picHTML);
+		// 		}
+		// 	},
+		// 	error: function(err){
+		// 		console.log('请求失败： ',err);
+		// 	}
+		// })
 		
 
 		//处理后台传过来的转义字符
@@ -499,7 +617,17 @@
 			})
 		})
 
-
+		// 时间戳转换
+		function timestampToTime(timestamp) {
+			var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+			var Y = date.getFullYear() + '/';
+			var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '/';
+			var D = date.getDate() + ' ';
+			var h = (date.getHours() < 10 ? '0'+ date.getHours() : date.getHours()) + ':';
+			var m = (date.getMinutes() < 10 ? '0'+ date.getMinutes() : date.getMinutes());
+			// var s = date.getSeconds();
+			return Y+M+D+h+m;
+		}
 
 
 
