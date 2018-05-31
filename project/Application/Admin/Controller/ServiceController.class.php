@@ -2,6 +2,8 @@
 namespace Admin\Controller;
 
 
+use Common\Tool\File;
+
 class ServiceController extends CommonController
 {
     /**
@@ -10,8 +12,28 @@ class ServiceController extends CommonController
     public function index()
     {
         $map = [];
-        $area = M('area')->where('parentid=0')->select();
+        
+        if(I('sou')){
+            $_GET['p'] = 1;
+            unset($_GET['sou']);
+        }
+        if(!empty($_GET['province_id'])){
+            $map['province_id'] = $_GET['province_id'];
+        }
+        if(!empty($_GET['city_id'])){
+            $map['city_id'] = $_GET['city_id'];
+        }
+        if(!empty($_GET['district_id'])){
+            $map['district_id'] = $_GET['district_id'];
+        }
+        if(!empty($_GET['status'])){
+            $map['status'] = $_GET['status'];
+        }
+        if(!empty($_GET['keywords'])){
+            $map[$_GET['key']] = array('like',"%".$_GET['keywords']."%");
+        }
 
+        $area = M('area')->where('parentid=0')->select();
 
         $count = M('service')->where($map)->count();
         $Page       = new \Think\Page($count,15);
@@ -31,12 +53,188 @@ class ServiceController extends CommonController
     }
 
     /**
+     * 开通服务站
+     */
+    public function addService()
+    {
+        try {
+            if(!empty($_FILES)){
+                $picinfo =  File::upload('service');
+                $_POST['pic'] = is_array($picinfo)?$picinfo[0]:$picinfo;
+            }
+
+            $_POST['addtime'] = time();
+            $_POST['updatetime'] = time();
+
+            $_POST['addressinfo'] = $_POST['province'].$_POST['city'].$_POST['district'].$_POST['address'];
+            $_POST['status'] = 1;
+
+            $res = M('service')->add($_POST);
+            if ($res) {
+                E('开通成功',200);
+            }
+            E('添加失败,请重试!',201);
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+    /**
+     * 开通服务站
+     */
+    public function openService()
+    {
+        try {
+            if(empty($_POST['id']))E('数据错误',201);
+
+            $old = M('service')->find($_POST['id']);
+            if(empty($old))E('服务站不存在',201);
+
+            if(!empty($_FILES)){
+                $picinfo =  File::upload('service');
+                $savedata['pic'] = is_array($picinfo)?$picinfo[0]:$picinfo;
+            }
+
+            $_POST['addtime'] = time();
+            $_POST['updatetime'] = time();
+
+            $savedata['addressinfo'] = $old['province'].$old['city'].$old['district'].$_POST['address'];
+            $savedata['address'] = $_POST['address'];
+            $savedata['status'] = 1;
+
+            M('service')->where('id='.$_POST['id'])->save($savedata);
+
+            E('开通成功',200);
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+    /**
+     * 设置代管
+     */
+    public function setAgent()
+    {
+        try {
+            $data = I('post.');
+
+            if(empty($data['id']) || empty($data['t_id']) || empty($data['mode']) || empty($data['t_company'])){
+                E('数据错误',40002);
+            }
+            $map['id'] = $data['id'];
+            $savetata['t_id']  = $data['t_id'];
+            $savetata['t_company'] = $data['t_company'];
+
+
+            if($data['mode']==1){
+                $savetata['status']  = 2;
+            }else{
+                $savetata['status']  = 3;
+            }
+            $res = M('service')->where($map)->save($savetata);
+            if($res) {
+                E('修改成功',200);
+            } else {
+                E('修改失败,请重试!',201);
+            }
+
+
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+    /**
+     * 代管加载
+     * mode 1 服务站 2 第三方
+     */
+    public function getAgent()
+    {
+        try {
+            $data = I('post.');
+
+            $map_list =array('province_id'=>'','city_id'=>'','district_id'=>'');
+            $map = array_intersect_key($data, $map_list);
+            $map['status'] = 1;
+
+            // 删除数组中为空的值
+            $map = array_filter($map, function ($v) {
+                if ($v != "") {
+                    return true;
+                }
+                return false;
+            });
+
+            if(I('mode',1)==1){
+                $list = M('service')->where($map)->select();
+            }else{
+                $list = M('service_other')->where($map)->select();
+            }
+
+            $this->toJson(['list'=>$list],'获取成功');
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+    /**
      * 服务站详情
      */
     public function detail()
     {
         $this->display();
     }
+
+    /**
+     * 第三方机构
+     */
+    public function other()
+    {
+        $area = M('area')->where('parentid=0')->select();
+
+
+        $count = M('service_other')->where($map)->count();
+        $Page       = new \Think\Page($count,15);
+        $data = M('service_other')->where($map)
+            ->limit($Page->firstRow.','.$Page->listRows)
+            ->select();
+        page_config($Page);
+        $show       = $Page->show();
+
+        $assign = [
+            'area' => $area,
+            'data' => $data,
+            'page'=> bootstrap_page_style($show),
+        ];
+        $this->assign($assign);
+        $this->display();
+    }
+
+    public function othrtAdd()
+    {
+        try {
+            if(!empty($_FILES)){
+                $picinfo =  File::upload('service');
+                $_POST['pic'] = is_array($picinfo)?$picinfo[0]:$picinfo;
+            }
+            $_POST['addtime'] = time();
+            $_POST['updatetime'] = time();
+            $_POST['addressinfo'] = $_POST['province'].$_POST['city'].$_POST['district'].$_POST['address'];
+            $_POST['status'] = 1;
+
+            M('service_other')->add($_POST);
+
+            E('创建成功',200);
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+
 
     /**
      * 设置预设服务站
