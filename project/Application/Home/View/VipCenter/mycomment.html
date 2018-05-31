@@ -141,7 +141,7 @@
 									'<i index="1" class="iconfont pingfen fleft"><span style="width:'+ statusList[res.data[i].status] +'%"></span></i>'+
 									'<span class="fleft">&emsp;'+ statusText[res.data[i].status] + '</span>'+
 								'</p>'+
-								'<p>'+ res.data[i].content +'</p>'+
+								'<p class="ccontent">'+ res.data[i].content +'</p>'+
 								'<div class="commpic">'+
 									'<ul></ul>'+
 								'</div>'+
@@ -197,7 +197,7 @@
 					// 判断是否接收到图片数据
 					if(!res.data[i].pics.length) { 
 						dataPic = "";
-						picArr.push({'picHTML':'<li></li>'}); //无图片， 则为空
+						picArr.push({'picHTML':''}); //无图片， 则为空
 					}else {
 						picStr = '';	//先清空再生成
 						for(var j=0; j<res.data[i].pics.length; j++){
@@ -226,13 +226,13 @@
 		// 时间戳转换
 		function timestampToTime(timestamp) {
 			var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-			var Y = date.getFullYear() + '-';
-			var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+			var Y = date.getFullYear() + '/';
+			var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '/';
 			var D = date.getDate() + ' ';
 			var h = (date.getHours() < 10 ? '0'+ date.getHours() : date.getHours()) + ':';
-			var m = (date.getMinutes() < 10 ? '0'+ date.getMinutes() : date.getMinutes()) + ':';
-			var s = date.getSeconds();
-			return Y+M+D+h+m+s;
+			var m = (date.getMinutes() < 10 ? '0'+ date.getMinutes() : date.getMinutes());
+			// var s = date.getSeconds();
+			return Y+M+D+h+m;
 		}
 
 	</script>
