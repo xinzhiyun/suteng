@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<title>代缴费</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/payment/css/payment.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/amazeui.min.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/common.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css">
+</head>
+<body>
+	<div id="app">
+		<div class="pubHead">
+			
+		</div>
+	<!-- 头部部分开始 -->
+		<div class="header">
+			<div class="line"></div>
+			<div>
+				<span class="iconfont icon-1" id="one"></span>
+				<p>选择设备</p>
+			</div>
+			<div>
+				<span class="iconfont icon-2" id="two"></span>
+				<p>套餐充值</p>
+			</div>
+			<div>
+				<span class="iconfont icon-3" id="three"></span>
+				<p>完成充值</p>
+			</div>
+		</div>
+	<!-- 头部部分结束 -->
+
+	<!-- 搜过部分开始 -->
+		<div class="search">
+			<input type="text" placeholder="请输入手机号码/设备编码" v-model="search">
+		</div>
+	<!-- 搜索部分结束 -->
+
+	<!-- 蒙版部分开始 -->
+		<div id="mask">
+			<div class="sel">
+				<p>相关设备</p>
+				<ul>
+					<li>
+						<span class="am-u-sm-10">868575025659808</span>
+						<span class="am-u-sm-2 iconfont icon-selectcircle"></span>
+					</li>
+					<li>
+						<span class="am-u-sm-10">868575025659808</span>
+						<span class="am-u-sm-2 iconfont icon-selectcircle"></span>
+					</li>
+				</ul>
+			</div>
+		</div> 
+	<!-- 蒙版部分结束 -->
+
+	<!-- 用户信息部分开始 -->
+		<div class="detail">
+			<!-- 用户信息 -->
+			<div class="user">
+				<ul>
+					<li class="link_b">
+						<span class="left">用&nbsp;户&nbsp;名</span>
+						<span class="right">建军</span>
+					</li>
+					<li class="link_b">
+						<span class="left">手&nbsp;机&nbsp;号</span>
+						<span class="right">13526325411</span>
+					</li>
+					<li class="link_b">
+						<span class="left">维护地址</span>
+						<span class="right">广州市番禺区创源路三楼</span>
+					</li>
+				</ul>
+			</div>
+			<!-- 套餐 -->
+			<div class="meal">
+				<div>
+					<p>套餐选择</p>
+				</div>
+				<ul>
+					<li class="am-u-sm-4">
+						<p>30天</p>
+						<p>售价：100.00元</p>
+					</li>
+					<li class="am-u-sm-4">
+						<p>30天</p>
+						<p>售价：100.00元</p>
+					</li>
+					<li class="am-u-sm-4">
+						<p>30天</p>
+						<p>售价：100.00元</p>
+					</li>
+				</ul>
+			</div>
+			<!-- 支付 -->
+			<div class="pay">
+				 <p class="am-u-sm-8">
+					<span>支付金额：</span>
+					<span>200.00元</span>
+				 </p>
+				 <p class="am-u-sm-4">立即支付</p>
+			</div>
+		</div>
+	<!-- 用户信息部分结束 -->
+
+	<!-- 支付方式选择部分开始 -->
+	<div class="mask2">
+		<div class="paystyle">
+			<div class="paytop link_b">
+				<p class="am-u-sm-4"><span class="iconfont icon-chacha"></span></p>
+				<p class="am-u-sm-8"><span>￥200.00</span></p>
+			</div>
+			<ul>
+				<li>选择支付方式</li>						
+				<li index="3">
+					<i class="iconfont icon-weixin2 am-u-sm-2"></i>
+					<span class="am-u-sm-8">微信支付</span>
+					<i class="iconfont icon-xuanzhongduigou am-u-sm-1"></i>
+				</li>
+				<li index="3">
+					<i class="iconfont icon-zhifubao am-u-sm-2"></i>
+					<span class="am-u-sm-8">支付宝支付</span>
+					<i class="iconfont icon-weixuanzhong am-u-sm-1"></i>
+				<li index="3">
+					<i class="iconfont icon-yinhang-yinlian- am-u-sm-2"></i>
+					<span class="am-u-sm-8">银联支付</span>
+					<i class="iconfont icon-weixuanzhong am-u-sm-1"></i>				</li>
+			</ul>
+			<div class="payBot">
+				<input type="botton" value="立即支付">
+			</div>
+		</div>
+	</div>
+	<!-- 支付方式选择部分结束 -->
+
+	<!-- 支付成功部分开始 -->
+		<div class="paySuc">
+			<div>
+				<i class="iconfont icon-dagouyouquan"></i>
+			</div>
+		</div>
+	<!-- 支付成功部分结束 -->
+	</div>
+	<script src="__PUBLIC__/Home/js/head.js"></script>
+	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<script src="__PUBLIC__/Home/js/amazeui.min.js"></script>
+	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
+	<script src="__PUBLIC__/Home/js/payment/payment.js"></script>
+	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
+	<script>
+		$(".loadingdiv").hide();
+	</script>
+</body>
+</html>

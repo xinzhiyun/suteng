@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<title>待办任务</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/Wait_task/css/wait_task.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/amazeui.min.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/common.css">
+</head>
+<body style="padding:0">
+<div id="app">
+<!-- 待办任务列表部分开始 -->
+	<div class="wrap">
+	<!-- 搜索部分开始 -->
+		<div class="header">
+			<div class="sub_head">
+				<label for="">
+					<span class="">0</span>
+					<input type="text" name="searchInfo" placeholder="请输入姓名/手机号码">
+				</label>
+			</div>
+		</div>
+
+	<!-- 用户列表 -->
+		<div class="list">
+			<ul class="link_b">
+				<li>
+					<span class="am-u-sm-3">用户名</span>
+					<span class="am-u-sm-4">手机号码</span>
+					<span class="am-u-sm-4">请求时间</span>
+					<i class="am-u-sm-1">&nbsp;</i>
+				</li>
+			</ul>
+			<ul>
+				<li class="link_b" v-for="(l,index) in list">
+					<span class="am-u-sm-3" v-text="l.name">沈腾</span>
+					<span class="am-u-sm-4" v-text="l.phone">135 263 25411</span>
+					<span class="am-u-sm-4" v-text="l.time">2018-06-01</span>
+					<i class="am-u-sm-1">></i>
+				</li>
+			</ul>
+		</div>
+	</div>
+<!-- 待办任务列表部分结束 -->
+
+<!-- 服务详情页面部分开始 -->
+	<div class="detail">
+		<div class="user">
+			<ul>
+				<li>用户信息</li>
+			</ul>
+			<ul>
+				<li class="link_b">
+					<span class="left">用户名</span>
+					<span class="right" v-text="detail.name">建军</span>
+				</li>
+				<li class="link_b">
+					<span class="left">手机号码</span>
+					<span class="right" v-text="detail.phone">13526325411</span>
+				</li>
+				<li class="link_b">
+					<span class="left">维护地址</span>
+					<span class="right" v-text="detail.add">广州市番禺区创源路三楼</span>
+				</li>
+			</ul>
+		</div>
+		<div class="user">
+			<ul>
+				<li>请求信息</li>
+			</ul>
+			<ul>
+				<li class="link_b">
+					<span class="left">设备型号</span>
+					<span class="right" v-text="detail.model">净水机BL(axl-114)</span>
+				</li>
+				<li class="link_b">
+					<span class="left">设备编码</span>
+					<span class="right" v-text="detail.code">868575025659808</span>
+				</li>
+				<li class="link_b">
+					<span class="left">请求时间</span>
+					<span class="right" v-text="detail.time">2018-06-01</span>
+				</li>
+				<li class="link_b">
+					<span class="left">服务类型</span>
+					<span class="right" v-text="detail.type">安装</span>
+				</li>
+				<li class="link_b">
+					<span class="left">来源</span>
+					<span class="right" v-text="detail.origin">用户</span>
+				</li>
+			</ul>
+		</div>
+		<!-- 完成按钮 -->
+		<div class="success">
+			<input type="button" value="完成" @click="openModal()">
+		</div>
+	</div>
+<!-- 服务详情页面部分结束 -->
+
+<!-- 模态框部分开始 -->
+	<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+        <div class="am-modal-dialog" style="border-radius:0.3rem;">  
+            <div class="am-modal-bd" style="fontSize:1rem;">  
+                确定提交任务？  
+            </div>  
+            <div class="am-modal-footer">  
+                <span class="am-modal-btn" style="fontSize:0.8rem;color:#aeaeae;">否</span>  
+                <span class="am-modal-btn" style="fontSize:0.8rem;color:#2eb6aa;">是</span> 
+            </div>  
+        </div>  
+    </div>  
+<!-- 模态框部分结束 -->
+</div>
+	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<script src="__PUBLIC__/Home/js/amazeui.min.js"></script>
+	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
+	<script src="__PUBLIC__/Home/js/wait_task/wait_task.js"></script>
+	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
+	<script>	
+		var infos = [
+			{
+				name:"沈腾",
+				phone:"13526325411",
+				time:"2018-06-01"
+			},
+			{
+				name:"古天乐",
+				phone:"13526325422",
+				time:"2018-06-02"
+			},
+		];
+		var detail = {
+			name:"沈腾",
+			phone:"13526325411",
+			add:"广州市番禺区创源路三楼",
+			model:"净水机BL(axl-114)",
+			code:"868575025659808",
+			time:"2018-06-01",
+			type:"安装",
+			origin:"用户",
+		}
+		take.list = infos;     //用户列表
+		take.detail = detail;  //服务详情
+	</script>
+</body>
+</html>
