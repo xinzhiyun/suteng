@@ -837,16 +837,18 @@ class ShopController extends CommonController
                 $orderDetail = D('orderDetail');
                 $orderDetail->startTrans();
                 $order = D('shopOrder')->where(['order_id'=>$postData['orderid']])->field('g_type')->find();
+
                 switch ($order['g_type']) {
                     case 0:
                         # code...
                         break;
                     
                     case 1:
+                            // dump($postData);die;
                             foreach($postData['express'] as $val){
                                 $orderDetail
                                         ->data(['express_name'=>$val['express_name'],'express'=>$val['express_value']])
-                                        ->where(['order_id'=>$postData['orderid'],'cid'=>$val['cid']])
+                                        ->where(['order_id'=>$postData['orderid'],'cid'=>$val['cid'],'gid'=>$val['gid']])
                                         ->save();
                             }
                         break;
