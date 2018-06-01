@@ -26,7 +26,7 @@ class WorkController extends CommonController
         strlen(I('get.type')) ? (int)$map['type'] = I('get.type'):'';
 
         strlen(I('get.result')) ? (int)$map['result'] = I('get.result'):'';
-        $map['leavel'] = $this->leavel;
+        // $map['leavel'] = $this->leavel;
         $work = D('work');
         $workList = $work->getPage($work,$map,'create_at desc');
         $where['number'] = $_GET['number'];

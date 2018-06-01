@@ -780,7 +780,8 @@ class ShopController extends CommonController
      */
     public function orders()
     {
-        $map = '';
+        $_GET['keywords'] = \urldecode($_GET['keywords']); 
+        $map = [];
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
             $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
         }

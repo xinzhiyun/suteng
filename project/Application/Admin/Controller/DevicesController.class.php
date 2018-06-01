@@ -15,7 +15,7 @@ class DevicesController extends CommonController
      */
     public function devicesList()
     {
-        
+       $_GET['keywords'] = \urldecode($_GET['keywords']); 
         $device = D('Devices');
         // 查询条件
         $map = [];
@@ -68,6 +68,8 @@ class DevicesController extends CommonController
             'deviceType' => $filterType,
             'page'=> bootstrap_page_style($show),
         ];
+        // p(I(''));
+        // p(bootstrap_page_style($show));
         $this->assign($assign);
         $this->assign('where',$where);
         $this->display('devicesList');

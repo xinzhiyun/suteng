@@ -148,6 +148,7 @@ class UsersController extends CommonController
         $list = $flow->where($map)->limit($page->firstRow.','.$page->listRows)
                                 ->join('st_users ON st_flow.user_id = st_users.id','LEFT')
                                 ->field('st_flow.*,st_users.nickname,st_users.balance')
+                                ->order('st_flow.addtime desc')
                                 ->select();
         // dump($list);die;
         $this->assign('list',$list);
