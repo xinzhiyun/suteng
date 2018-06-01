@@ -21,7 +21,7 @@ class ShopController extends CommonController
      */
     public function category()
     {
-        $map = '';
+        $map = [];
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
             $map[I('get.key')] = array('like',"%".trim(I('get.keywords'))."%");
         }
