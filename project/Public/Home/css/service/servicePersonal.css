@@ -1,0 +1,40 @@
+body {
+    width: 100vw;
+    height: 100vh;
+}
+.main {
+    width: inherit;
+    height: inherit;
+    background: #EDF2F2;
+}
+.main > ul > li {
+    background: white;
+    padding: 0 1rem 0 .5rem;
+    position: relative;
+}
+.main > ul > li > a {
+    height: 2rem;
+    line-height: 2rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: .7rem;
+}
+.main > ul > li > a > span:nth-child(1) {
+    color: #808080;
+}
+.main > ul > li > a > span:nth-child(2) {
+    color: #545454;
+}
+.main > ul > li:nth-child(2) {
+    border-top: 1px solid #EFEFEF;
+}
+.main > ul > li:nth-child(3) {
+    margin-top: .5rem;
+    border-bottom: 1px solid #EFEFEF;
+}
+.main > ul > li > a > i{
+    position: absolute;
+    right: .2rem;
+    font-size: .5rem;
+    color: #b3b3b3;
+}

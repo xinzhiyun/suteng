@@ -113,6 +113,7 @@ class OrdersController extends CommonController
         $od = M('order_detail')->where("order_id='{$order_id}'")->select();
 
         //订单中所有商品的id
+        $ids = array();
         foreach ($od as $key => $value) {
           $ids[] = $value['gid'];
         }
@@ -120,17 +121,20 @@ class OrdersController extends CommonController
         //2.查询退货订单的商品
         $rg = M('refund_goods')->where("oid='{$order_id}'")->select();
 
+        $rids = array();
         foreach ($rg as $key => $value) {
           $rids[] = $value['gid'];
         }
 
         //退货商品的快递的信息就不需要查询了
-        $jid = array_diff_assoc($ids,$rids);
-
+        $jid = array_diff($ids,$rids);
+      
         $map['order_id'] = $order_id;
         $map['gid'] = array('in',$jid);
 
-        $couriers = D('orderDetail')->field('gname,cid,cname')->where($map)->select();
+        // dump($map);die;
+
+        $couriers = D('orderDetail')->field('gid,gname,cid,cname')->where($map)->select();
 
         // dump($cinfo);
 

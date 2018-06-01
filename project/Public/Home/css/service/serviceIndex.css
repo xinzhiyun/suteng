@@ -1,0 +1,129 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    background: #EDF2F2;
+}
+img {
+    width: 100%;
+    height: 100%;
+}
+/* 背景图 */
+.backColor {
+    width: 100vw;
+    height: 40vh;
+    background: url("../../images/serviceIndex.png") no-repeat;
+    background-size: 100%;
+}
+.main {
+    width: 100vw;
+    position: fixed;
+    top: 1rem;
+}
+/* 用户信息 */
+.backImg {
+    text-align: center;
+    color: white;
+}
+.backImg > h1 {
+    font-size: .9rem;
+    font-weight: bold;
+}
+.backImg > p:nth-child(2) {
+    font-size: .8rem;
+    font-weight: bold;
+    margin: 2rem 0 .8rem 0;
+}
+.backImg > p:nth-child(3) {
+    font-size: .6rem;
+}
+.backImg > p:nth-child(3) > span{
+    padding: .1rem .7rem;
+    border-radius: 15px;
+    background: rgba(255,255,255,.2);
+}
+.backImg > p:nth-child(3) > span > i {
+    font-style: normal;
+}
+/* 任务和功能 */
+.services {
+    width: 90vw;
+    margin: 1rem auto 0;
+    text-align:center;
+}
+.myDuty {
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 1px 10px 0px rgba(72,72,72, .35);
+}
+.myDuty > p {
+    height: 1.7rem;
+    line-height: 1.7rem;
+    font-size: .7rem;
+    color: #545454;
+    font-weight: bold;
+    border-bottom: 1px solid #F2F4F6;
+}
+.myDuty > ul {
+    display: flex;
+}
+.myDuty > ul > li {
+    flex: 1;
+    padding: .7rem 1rem;
+}
+.myDuty > ul > li > a{
+    display: block;
+    text-align: center;
+    font-size: .6rem;
+    position: relative;
+}
+.myDuty > ul > li > a > p {
+    width: 1.8rem;
+    height: 1.8rem;
+    margin: 0 auto .3rem;
+}
+.myDuty > ul > li > a > i{
+    position: absolute;
+    top:-.7rem;
+    right:0;
+    font-size: .5rem;
+    color:white;
+    background-color: #FD5955;
+    border: 1px solid #fff;
+    border-radius: 11px;
+    font-style: normal;
+    padding: 0 .3rem;
+}
+/* 功能 */
+.funC {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.funC > li {
+    width: 30%;
+    background: white;
+    text-align: center;
+    border-radius: 6px;
+}
+.funC > li > a {
+    display: flex;
+    flex-direction: column;
+    padding: .5rem 0;
+}
+.funC > li > a > span:nth-child(1) {
+    font-size: 1.7rem;
+    margin-bottom: .3rem;
+}
+.funC > li > a > span:nth-child(2) {
+    font-size: .5rem;
+}
+.funC > li:nth-child(1) > a > span:nth-child(1) {
+    color: #56CFE5;
+}
+.funC > li:nth-child(2) > a > span:nth-child(1) {
+    color: #42D5B8;
+}
+.funC > li:nth-child(3) > a > span:nth-child(1) {
+    color: #55ABFF;
+}
