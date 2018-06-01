@@ -12,16 +12,18 @@ class ServiceController extends CommonController
     public function index()
     {
         $map = [];
-        
+
         if(I('sou')){
             $_GET['p'] = 1;
             unset($_GET['sou']);
         }
         if(!empty($_GET['province_id'])){
             $map['province_id'] = $_GET['province_id'];
+            $city = M('area')->where('parentid='.$_GET['province_id'])->select();
         }
         if(!empty($_GET['city_id'])){
             $map['city_id'] = $_GET['city_id'];
+            $district = M('area')->where('parentid='.$_GET['city_id'])->select();
         }
         if(!empty($_GET['district_id'])){
             $map['district_id'] = $_GET['district_id'];
@@ -32,6 +34,11 @@ class ServiceController extends CommonController
         if(!empty($_GET['keywords'])){
             $map[$_GET['key']] = array('like',"%".$_GET['keywords']."%");
         }
+        if(isset($_GET['status']) && $_GET['status'] != '' ){
+            $map['status'] = $_GET['status'];
+        }
+
+
 
         $area = M('area')->where('parentid=0')->select();
 
@@ -45,6 +52,8 @@ class ServiceController extends CommonController
 
         $assign = [
             'area' => $area,
+            'city'=>$city,
+            'district'=>$district,
             'data' => $data,
             'page'=> bootstrap_page_style($show),
         ];
