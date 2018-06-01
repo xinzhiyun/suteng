@@ -22,7 +22,7 @@
                     </div> -->
                 </div>
                 <form method="get" action="">
-                    <div class="input-group col-md-3" id='searchdiv'>
+                    <div class="input-group col-md-4" id='searchdiv'>
                         <select name="key" class="form-control" name="account">
                             <option <?php echo ($where['key']=="order_id")?'selected':''; ?> value="order_id">订单ID</option>
                             <option <?php echo ($where['key']=="name")?'selected':''; ?> value="name">收货人姓名</option>
@@ -30,8 +30,21 @@
                             <option <?php echo ($where['key']=="a.address")?'selected':''; ?> value="a.address">收货地址</option>
                         </select>
                         <input type="hidden" name="p" value="1">
-
-                        <input type="text" name="keywords" placeholder="输入搜索关键字" value="{{$where['keywords']}}" class="input form-control"   style="width:60%">
+                        <input type="text" name="keywords" placeholder="输入搜索关键字" value="{{$where['keywords']}}" class="input form-control"   style="width:40%">
+                        <select name="status" class="form-control" style="width: 20%;">
+                            <option value="">-- 状态 --</option>
+                            <option value="0">已下单</option>
+                            <option value="1">处理中</option>
+                            <option value="2">已发货</option>
+                            <option value="3">已收货</option>
+                            <option value="4">退货处理中</option>
+                            <option value="5">已退货</option>
+                            <option value="6">申诉中</option>
+                            <option value="7">订单完成</option>
+                            <option value="8">未支付</option>
+                            <option value="9">已支付</option>
+                            <option value="10">部分商品退货中</option>
+                        </select>
                         <span class="input-group-btn" style="display: inline-block;">
                                 <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
                         </span>

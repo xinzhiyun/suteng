@@ -785,6 +785,9 @@ class ShopController extends CommonController
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
             $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
         }
+        if(\strlen(I('status'))){
+            $map['o.status'] = I('status');
+        }
         $order = D('ShopOrder');
         $data = $order->getOrders($map);
 
