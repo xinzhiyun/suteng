@@ -43,9 +43,9 @@
 				<div class="paymidd">
 					<h3>选择支付方式</h3>
 					<ul class="clearfix">
-						<li index="1"><i class="iconfont icon-tubiao207"></i>金币<span class="iconfont icon-xuanze"></span></li>
+						<li index="1"><i class="iconfont icon-tubiao207"></i>金币<span class="iconfont icon-kuang1"></span></li>
 						<li index="2"><i class="iconfont icon-tubiao207-copy"></i>银币<span class="iconfont icon-kuang1"></span></li>
-						<li index="3"><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-kuang1"></span></li>
+						<li index="3"><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-xuanze"></span></li>
 						<li index="4"><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
 						<li index="5"><i class="iconfont icon-yinlian"></i>银联<span class="iconfont icon-kuang1"></span></li>
 					</ul>
@@ -188,12 +188,13 @@
 					}, 1000);
 					return false;
 				}else{
+					console.log(dingdanID)
 					$.ajax({
-						url: "{{:U('Home/PaymentSystem/orderPayByGold')}}",
+						url: "{{:U('Home/PaymentSystem/choosePayByGold')}}",
 						type: 'post',
 						data: {order: dingdanID},
 						success: function(res){
-							sessionStorage.setItem("金银币",res)
+							sessionStorage.setItem("金银币",JSON.stringify(res))
 							console.log("金币支付",res);
 							if(res.code == 200) {
 								parent.layer.msg('支付成功');
@@ -337,7 +338,7 @@
 			}
 			else {
 				// 将$替换成￥符号
-				$(".paytopRight>p").text("￥"+ money + ".00");
+				$(".paytopRight>p").text("￥"+ money);
 			}
 			console.log("选中的支付方式",$(this).parent().text());
 
@@ -373,7 +374,6 @@
       			function(res){
       				console.log("微信",res);
       				if(res.err_msg.substr(-2) == 'ok'){
-
        					parent.layer.msg('付款成功！');
       					//付款成功后的操作
       					setTimeout(function(){

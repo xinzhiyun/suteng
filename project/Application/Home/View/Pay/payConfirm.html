@@ -186,26 +186,31 @@
 
 			console.log("金银币数量", gold_num, silver);
 
+			
 			// /******** 付款过程--结束--	**********/
 			order_id = JSON.parse(sessionStorage.getItem("order_id"));
 			
 			// 快递数据
 			var postage = JSON.parse($("#goodsCourier").val());
-			console.log(postage)
+			// console.log(postage)
 			var addressInfo = $("#addressInfo").val();//收货数据
 			var selectPostage = "";//快递选择
 			var posOption = "";//option添入内容
 			var postageAll = []; //列入多个商品多个邮费
-			console.log("邮费",postage)
+			// console.log("邮费",postage)
 
 			// 循环快递对象
 			if(postage) {
 				for(var j in postage) {
 					if(postage[j].length != 0) {
 						for(var i=0; i < postage[j].length; i++) {
-							posOption = posOption + "<option cid='"+postage[j][i].cid+"' index='"+postage[j][i].cprice+"'>"+postage[j][i].cname+"</option>";
-
-						}
+							// if(postageSelect[i] == postage[j][i].cid) {
+							// 	// 从商品订单付款过来的默认邮费选择
+							// 	posOption = posOption + "<option cid='"+postage[j][i].cid+"' index='"+postage[j][i].cprice+"' selected='selected'>"+postage[j][i].cname+"</option>";
+							// }else {
+								posOption = posOption + "<option cid='"+postage[j][i].cid+"' index='"+postage[j][i].cprice+"'>"+postage[j][i].cname+"</option>";
+							}
+						// }
 						selectPostage = "<p class='postage'><span class='posway'>配送方式</span><select name='selectPostage' class='selectPostage'><option index='0' cid=''>选择快递</option>"+posOption+"</select><span class='youfei'></span><span class='iconfont icon-dayuhao-copy-copy poselct'></span></p>";
 
 						postageAll[j]=selectPostage;
@@ -266,14 +271,20 @@
 				// 从商品详情传来
 				goods_data = JSON.parse(sessionStorage.getItem("goods_data"));
 			}
+			var postageSelect = [];
 			if(sessionStorage.getItem("shopCar_data")){
 				// 购物车传来
 				shopCar_data = JSON.parse(sessionStorage.getItem("shopCar_data"));
-				console.log(shopCar_data)
+				// 商品订单付款的邮费选择
+				for(var i = 0; i < shopCar_data.length; i++) {
+					postageSelect[i] = shopCar_data[i].cid
+				}
+				console.log("postageSelect", postageSelect);
 			}
 			console.log('lvxinData： ',lvxinData);
 			console.log('goods_data： ',goods_data);
 			console.log('shopCar_data： ',shopCar_data);
+
 			var goodsHTML = '';	//存放需要支付的商品信息
 			var numAll = 0;		//存放订单的总数量
 			var priceAll = 0;	//存放订单的总价格
@@ -372,7 +383,6 @@
 						'</div>'+ postageAll[shopCar_data[i].gid]+
 						'</div>';
 					}
-
 					// 统计数量和价格 多个
 					numAll += parseInt(shopCar_data[i].num);
 					priceAll += parseInt((parseInt(shopCar_data[i].num) * parseInt(shopCar_data[i].price)));//总价，但不考虑邮费 选择邮费再加上
@@ -390,7 +400,33 @@
 			for(var i = 0; i < $(".goods").length; i++) {
 				postageArr[i] = 0;
 				$(".goods").eq(i).attr("data", i);
+				// 设置商品订单里已有的邮费选择
+				// var postageCid = $(".selectPostage").eq(i).children();//获取所有的邮费对象
+				// for(var j = 0; j < postageCid.length; j++) {
+				// 	if(postageSelect[i] == $(postageCid[j]).attr("cid")) {
+				// 		// console.log("选中的邮费cid",$(postageCid[j]).attr("cid"), "传过来邮费cid",postageSelect[i], i, $(".selectPostage").eq(i).children(), j);
+				// 		// var selectedObj = $(".selectPostage").eq(i).children()[cid=$(postageCid[j]).attr("cid")];
+				// 		var selectedObj = $(".goods").eq(i).children(".postage").children(".selectPostage").children()[cid=$(postageCid[j]).attr("cid")];
+				// 		var cids = postageSelect[i];
+				// 		var index = $(postageCid[j])[0].index;
+				// 		$(".selectPostage").eq(i).find("option").eq(index).attr("selected", "selected");
+				// 		console.log("123",$(postageCid[j]), index, $(".selectPostage").eq(i))
+				// 		// console.log("duixiang ", $(selectedObj).parent().parent(), selectedObj);
+				// 		// (function(selectedObj) {
+				// 		// 	console.log("youfei", selectedObj)
+				// 		// 	setTimeout(function() {
+				// 		// 		$(selectedObj).parent().children(selectedObj).attr("selected", "selected");
+				// 		// 	}, 0);
+							
+				// 		// })(selectedObj)
+						
+				// 	}
+					
+				// }
+				
 			}
+			
+			
 			sessionStorage.setItem("origin",$(".postage").html());
 			// 存储快递信息
 			var storageAll = [];
@@ -472,7 +508,8 @@
 				$(this).siblings(".youfei").text(postagePrice);
 				//获取商品价格
 				sessionStorage.setItem("goodsPrice", parseInt(priceAll) + parseInt(postageMoney));//支付面板的价格存储
-				
+				$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+				$('.paymidd>ul>li>span').eq(0).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');//切换会第一个
 				if($(this).find("option:selected").val() != "选择快递" && $(this).prev().html() == "配送方式") {
 					// 快递选择向右图标隐藏
 					$(this).siblings(".poselct").css("display", "none");

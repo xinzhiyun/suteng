@@ -393,3 +393,166 @@ ul, li {
 	background: #fff;
 	z-index: 1;
 }
+/*第一类item的底部评论设置开始*/
+.itemgoodsBott{
+	padding: 0 5%;
+	border-bottom:10px solid #EBEBEB;
+
+}
+.itemgoodsBott>p:nth-of-type(1), 
+.itemgoodsBott>p:nth-of-type(1)>span{
+	height: 1.4rem;
+	line-height: 1.4rem;
+}
+.itemgoodsBott>p{
+	position: relative;
+	margin: 10px 0;
+	color: #929292;
+	font-size: .6rem;
+}
+.itemgoodsBott .ccontent {
+	color: #333;
+}
+.itemgoodsBott>p img {
+	height: 100%;
+	border-radius: 50%;
+}
+.itemgoodsBott>.commpic{
+	margin-top: 10px;
+}
+.itemgoodsBott>.commpic>ul>li{
+	display: inline-block;
+	margin-bottom: 1rem;
+	border-radius: 0.3rem;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+	width: 24%;
+	padding: 0 2vw;
+
+}
+.itemgoodsBott>.commpic>ul>li>img{
+	width: 100%;
+   border: 1px solid #EBEBEB;
+    padding: 0.2rem;
+    border-radius: 0.2rem;
+}/*第一类item的底部评论设置结束*/
+
+
+
+.itemgoodsBott .pingfen {
+	width: 28%;
+	display: block;
+	position: relative;
+	font-size: 20px;
+}
+.itemgoodsBott .pingfen>span {
+	width: 100%;
+	height: 100%;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+}
+
+.itemgoodsBott .pingfen>span:after {
+	content: "\e64a\e64a\e64a\e64a\e64a";
+	display: block;
+	position: absolute;
+	color: #FBC91D;
+}
+/*第二类五星好评开始*/
+.mycomItem-second{
+	border-bottom:10px solid #EBEBEB;
+}
+/*第二累售后评论*/
+.mysaleContain{
+	width: 100%;
+}
+/*满五角星*/
+.pingfen>span {
+	width: 100%;
+	height: 100%;
+	display: inline-block;
+	position: absolute;
+	left: 0;
+	overflow: hidden;
+}
+/*空五角星，做背景*/
+.pingfen:before {
+	content: "\e64b\e64b\e64b\e64b\e64b";
+	display: block;
+	color: #FBC91D;    
+}
+.pingfen>span:after {
+	content: "\e64a\e64a\e64a\e64a\e64a";
+	display: block;
+	position: absolute;
+	color: #FBC91D;
+}
+.mysaleBot{
+	width: 90%;
+	padding:0.666667rem 5% 1rem;
+}
+.mysaleBot>p{
+	display: block;
+	height: 2rem;
+	line-height: 2rem;
+	overflow: hidden;
+}
+.mysaleBot>p>b{
+	display: inline-block;
+	height: 2rem;
+	width: 30%;
+	line-height: 2rem;
+	margin-right: 0.5rem;
+}
+.mysaleBot>p>i{
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	position: relative;
+	color:#FBC91D;
+	font-size: 1.2rem;
+
+}/*第二类五星好评结束*/
+
+/*底部待评商品开始*/
+.mycommentFoot{
+	padding:2rem 5%;
+}
+.mycommentFoot>h3{
+	display: inline-block;
+	width: 100%;
+	text-align: center;
+	margin-bottom: 0.8rem;
+	color:#5A5A5A;
+}
+.mycommentFoot>h3>span{
+	margin:0 0.8rem;
+	color:#5A5A5A;
+
+}
+.mycommentFoot>ul>li{
+	display: block;
+	float: left;
+	width: 33.3333%;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+	padding:5%;
+}
+.mycommentFoot>ul>li>a>img{
+	border: 1px solid #ccc;
+    padding: 0.2rem;
+    width: 92%;
+    border-radius: 0.3rem;
+}
+.pos{
+	position:relative;
+}
+.fright{
+	/*margin-left:4.5rem;*/
+	position:absolute;
+	right:0;
+	top:0.5rem;
+}

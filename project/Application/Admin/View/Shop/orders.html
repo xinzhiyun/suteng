@@ -244,6 +244,8 @@
                             <tr>
                                 <th>
                                 </th>
+                                <th>
+                                </th>
                                 <td>
                                     <input id="edit_submit" class="btn btn-success" type="button" value="确认发货">
                                 </td>
@@ -420,7 +422,7 @@
                             var html = '';
                             for(var i = 0;i<res.data.length;i++){
 
-                                html += '<tr><th>'+ res.data[i]['gname'] + ' ' + res.data[i]['cname'] +'</th><td><input class="input-medium express_input" type="text" name="express" cid="'+res.data[i]['cid']+'" class="form-control" value=""></td></tr>';
+                                html += '<tr><th>'+ res.data[i]['gname'] +'</th><th>'+ res.data[i]['cname'] +'</th><td><input class="input-medium express_input" type="text" name="express" cid="'+res.data[i]['cid']+'" gid="'+res.data[i]['gid']+'" class="form-control" value=""></td></tr>';
                             }
                             courier.find('tbody').eq(0).html(html);
                         }
@@ -488,8 +490,9 @@
                     for(var i = 0;i<express_input.length;i++){
                         data.express[i] = {
                             'cid':express_input.eq(i).attr('cid'),
+                            'gid':express_input.eq(i).attr('gid'),
                             'express_value':express_input.eq(i).val(),
-                            'express_name':express_input.eq(i).parent().parent().children().first().text()
+                            'express_name':express_input.eq(i).parent().parent().children().first().next().text()
                         }
                     }
                 break;

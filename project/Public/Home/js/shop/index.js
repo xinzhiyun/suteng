@@ -67,7 +67,7 @@ if(cate){
 		goodblockHTML += 
 			'<div class="goodsBlock" index='+i+'>'+
 			  '<div class="goods" >'+
-				<!-- /*所有商品*/ -->
+				 // 所有商品
 				'<div class="goodstitle">'+
 					'<h3><span>——</span> 特惠专区 <span>——</span></h3>'+
 				'</div>'+

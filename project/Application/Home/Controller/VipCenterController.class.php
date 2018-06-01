@@ -238,11 +238,10 @@ class VipCenterController extends CommonController
     {
         $did = session('user.did');
         
-        // if( empty($did) ){
-        //     $did = M('user_device')->where(['uid'=> session('user.id'),'status'=>1])->getField('did');
-        //     session('user.did',$did);
-        // }
-    
+        if( empty($did) ){
+            $did = M('user_device')->where(['uid'=> session('user.id'),'status'=>1])->getField('did');
+            session('user.did',$did);
+        }
         $map['dcode'] = M('devices')->where('id='.$did)->getField('device_code');
         $map['date'] = date("Ym", time());
         $data = M('Tds')->where($map)->select();
@@ -404,7 +403,10 @@ class VipCenterController extends CommonController
     // 会员订单
     public function user_order()
     {
-        $code = session('user.code');
+        $uid = session('user.id');
+        $code = D('users')->where(['id'=>$uid])->find();
+        $code = $code['code'];
+
         // 获取用户唯一标识
         $uWhere['c.user_code'] = array('EQ',$code);
         $uWhere['c.nexus_user'] = array('NEQ',$code);
@@ -416,11 +418,10 @@ class VipCenterController extends CommonController
             ->join('__SHOP_ORDER__ o ON o.order_id = c.order_id','LEFT')
             ->field('u.nickname,o.g_price,c.gold_num,c.silver,c.addtime')
             ->select();
-
+    
         $reData['tatal_num']    = 0;
         $reData['tatal_gold']   = 0;
         $reData['tatal_silver'] = 0;
-
         if($data){
             // 统计会员订单总数
             $reData['tatal_num'] = count($data);
@@ -431,10 +432,10 @@ class VipCenterController extends CommonController
             }
             $reData['data'] = $data;
 
-            $message    = ['code' => 200, 'message' => '会员订单数据查询成功！!', 'redata' => $reData];
+            $message    = ['code' => 200, 'message' => '会员订单数据查询成功！!', 'redata' => $reData,'data'=>$data];
         }else{
             // 没有会员订单
-            $message    = ['code' => 403, 'message' => '暂无会员订单，赶紧去邀请吧!', 'redata' => $reData];
+            $message    = ['code' => 403, 'message' => '暂无会员订单，赶紧去邀请吧!', 'redata' => $reData,'data'=>$data];
         }
 
         // echo '<pre>';

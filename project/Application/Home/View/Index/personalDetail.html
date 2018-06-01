@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+    <title>服务站</title>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/service/personalDetail.css">
+</head>
+<body>
+    <div class="main">
+        <input type="text" value="" class="infoDisplay">
+        <p class="save">
+            <input type="button" value="保存"> 
+        </p>
+    </div>
+</body>
+<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+<script src="__PUBLIC__/Home/js/public.js"></script>
+<!-- <script src="__PUBLIC__/Home/js/service/personalDetail.js"></script> -->
+<script>
+    console.log(location.search.substr(-1))
+    
+    // 用户名字index=0  用户密码index=1
+    var index = location.search.substr(-1);
+    if(index == "0") {
+        var originInfo;
+    }else if(index == "1") {
+        var originInfo;
+    }
+    
+    
+    // 点击保存
+    $(".save").click(function() {
+        var conVal = $(".infoDisplay").val();
+        if(conVal) {
+            if(index == "0") {
+                // if(nameReg.test(conVal)) {
+                //     parent.layer.msg('用户名格式错误!');
+                //     return false;
+                // }
+            }else if(index == "1") {
+                // if(nameReg.test(conVal)) {
+                //     parent.layer.msg('密码格式有误!');
+                //     return false;
+                // }
+            }
+        }else {
+            if(index == "0") {
+                parent.layer.msg('姓名不能为空!');
+            }else if(index == "1") {
+                parent.layer.msg('密码不能为空!');
+            }
+            return false;
+        }
+        if(!conVal == originInfo) {
+            $.ajax({
+                url: "",
+                type: "post",
+                data: "",
+                success: function(res) {
+                    // setTimeout(function() {
+                    //     location.href = "{{:U('Home/Index/servicePersonal')}}";
+                    // }, 1000);
+                },
+                error: function(res) {
+
+                }
+            });
+        }else {
+            parent.layer.msg("保存成功!");
+            // setTimeout(function() {
+            //     location.href = "{{:U('Home/Index/servicePersonal')}}";
+            // }, 1000);
+            
+        }
+        
+    });
+</script>
+</html>

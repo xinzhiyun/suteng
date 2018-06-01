@@ -70,22 +70,26 @@ body{
 }
 /*第一类item的底部评论设置开始*/
 .itemgoodsBott{
-	padding:0.666667rem 5% 0;
+	padding: 0 5%;
 	border-bottom:10px solid #EBEBEB;
 
 }
-.itemgoodsBott>p:nth-of-type(1){
-	height: 1.1rem;
-	line-height: 1.1rem;
+.itemgoodsBott>p:nth-of-type(1), 
+.itemgoodsBott>p:nth-of-type(1)>span{
+	height: 1.4rem;
+	line-height: 1.4rem;
 }
 .itemgoodsBott>p{
 	position: relative;
 	margin: 10px 0;
 	color: #929292;
+	font-size: .6rem;
+}
+.itemgoodsBott .ccontent {
+	color: #333;
 }
 .itemgoodsBott>p img {
-	height: 1.1rem;
-    line-height: 1.1rem;
+	height: 100%;
 	border-radius: 50%;
 }
 .itemgoodsBott>.commpic{
@@ -97,8 +101,8 @@ body{
 	border-radius: 0.3rem;
 	-webkit-box-sizing: border-box;
 	        box-sizing: border-box;
-	width: 26%;
-	padding: 0.65rem;
+	width: 24%;
+	padding: 0 2vw;
 
 }
 .itemgoodsBott>.commpic>ul>li>img{
@@ -111,9 +115,10 @@ body{
 
 
 .itemgoodsBott .pingfen {
-	width: 22%;
+	width: 28%;
 	display: block;
 	position: relative;
+	font-size: 20px;
 }
 .itemgoodsBott .pingfen>span {
 	width: 100%;
