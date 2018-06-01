@@ -690,8 +690,10 @@ class VendorsController extends CommonController
         $data['status'] = I('post.status');
         // 审核-责任人
         $data['auditing'] = $_SESSION['adminInfo']['user'];
+
         // 执行更新
         $res = D('vendors')->where($saveData)->save($data);
+
         // 判断信息是否修改成功
         if($res){
             // 查询成功，设置返回前端的数据
@@ -732,8 +734,8 @@ class VendorsController extends CommonController
                 $where['id'] = I('post.id');
 
                 $info = M('vendors')->field('invitation_code,id')->where($where)->find();
-
-                $path_code = M('vendors')->field('path,id,leavel')->where(['code'=>$info['invitation_code']])->find();
+                //它的上级
+                $path_code = M('vendors')->field('path,id,leavel,invitation_code')->where(['code'=>$info['invitation_code']])->find();
 
 
                 if ($path_code['path']==null) {
@@ -750,26 +752,47 @@ class VendorsController extends CommonController
                 //多少个儿子
                 $count = M('vendors')->where(['invitation_code'=>$info['invitation_code']])->count();
 
-                $save_path = M('vendors')->where($where)->save(['path'=>$path]);
+                $save_path = M('vendors')->where($where)->save(['path'=>$path,'updatetime'=>time()]);
 
                 if ($save_path) {
 
                     //查找多少个他下面多少个C级
                     $count_c = M('vendors')->where(['invitation_code'=>$info['invitation_code'],'leavel'=>4])->count();
 
+
                     if ($count_c >= $buros_info['trader_a']) {
-                        M('vendors')->where(['code'=>$info['invitation_code']])->save(['leavel'=>3]);
-                    }
 
-                    if ($path_code['leavel'] == 3) {
+                        if ($path_code['leavel'] > 3) {
+                            $day = M('vendors')->where(['code'=>$info['invitation_code']])->save(['leavel'=>3]);
+                        } else {
+                            $day = M('vendors')->where(['code'=>$info['invitation_code']])->find();
+                        }
 
-                        $count_b = M('vendors')->where(['invitation_code'=>$info['invitation_code'],'leavel'=>3])->count();
 
-                        if ($count_b >=$buros_info['trader_b'] ) {
+                        if ($day) {
 
-                            M('vendors')->where(['code'=>$info['invitation_code']])->save(['leavel'=>2]);
+                            $count_b = M('vendors')->where(['invitation_code'=>$path_code['invitation_code'],'leavel'=>3])->count();
+
+                            if ($count_b >=$buros_info['trader_b'] ) {
+
+                                M('vendors')->where(['code'=>$path_code['invitation_code']])->save(['leavel'=>2]);
+
+                            }
                         }
                     }
+
+//                    if ($path_code['leavel'] == 3) {
+//
+//                        $count_b = M('vendors')->where(['invitation_code'=>$info['invitation_code'],'leavel'=>3])->count();
+//                        // 查找父亲
+//                        $grandpa =  M('vendors')->where(['invitation_code'=>$path_code['invitation_code'],'leavel'=>3])->count();
+//
+//                        if ($count_b >=$buros_info['trader_b'] ) {
+//
+//
+//                            M('vendors')->where(['code'=>$info['invitation_code']])->save(['leavel'=>2]);
+//                        }
+//                    }
 
                 }
             }

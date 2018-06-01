@@ -83,12 +83,15 @@ class VendorsController extends Controller
         $this->assign('userNum',$userNum);
         $this->assign('verdorNum',$verdorNum);
         $this->assign('vendor',$vendor);
-        if($vendor){
+
+        if($vendor['status'] >= 0  ){
+
             // 获取分销商状态码
             $status = $vendor['status'];
             // 匹配分销商状态，安排后续操作
             switch ($status) {
                 case '0':
+
                     $this->wx_info();
                     // 身份证信息填写
                     $this->identity();
@@ -723,15 +726,29 @@ class VendorsController extends Controller
 
             if($info){
 
-                $info['status'] = 9;
+//                $info['status'] = 9;
                 // 更新条件
                 $saveData['open_id'] = $open_id;
-                // 更新分销商信息
-                $vandorRes = M('vendors')->where($saveData)->save($info);
+                $vendors_league = M('vendors_league')->where(['open_id'=>$open_id,'status'=>1])->find();
+                if ($vendors_league) {
+                    $info['status'] = 3;
+                    $vandorRes = M('vendors')->where($saveData)->save($info);
 
+                } else {
+                    $info['status'] = 9;
+                    $vandorRes = M('vendors')->where($saveData)->save($info);
+                }
 
+//
+//                if (empty($vandorRes)) {
+//                    $info['status'] = 9;
+//                    $vandorRes = M('vendors')->where($saveData)->save($info);
+//                } else {
+//                    $vandorRes =  M('vendors')->where($saveData)->find();
+//                }
 
                 if($vandorRes){
+
                     // $this->success('合同信息提交成功', U('Home/Vendors/index'));
                     $message['code'] = 200;
                     $message['res']  = '合同信息提交成功';
@@ -837,14 +854,20 @@ class VendorsController extends Controller
         // 获取微信用户唯一标识
         $open_id = $_SESSION['vendorInfo']['open_id'];
         $info = M('vendors_league')->where(['open_id'=>$open_id,'status'=>1])->find();
+
+
         if ($info) {
             $status = M('vendors')->where(['open_id'=>$_SESSION['vendorInfo']['open_id']])->getField('status');
-            if ($status == 4 || $status == 5 || $status == 6) {
-                M('vendors')->where(['open_id'=>$_SESSION['vendorInfo']['open_id']])->save(['status'=>3]);
+            if ($status == 3) {
                 $this->display('vendor_wait');
             }
+//            if ($status == 4 || $status == 5 || $status == 6) {
+//                M('vendors')->where(['open_id'=>$_SESSION['vendorInfo']['open_id']])->save(['status'=>3]);
+
+//            }
 
         } else {
+
             // 准备查询条件
             $showData['id'] = 1;
             // 查询分销商加盟费
