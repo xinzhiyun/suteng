@@ -27,7 +27,8 @@ class CartModel extends Model
             ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
             ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
             ->join('__PRICE__ pr ON g.id=pr.gid','LEFT')
-            ->field('p.picname,p.path,a.attr,av.val,gd.*,g.name,c.id,c.num,pr.price')
+            ->join('__INVENTORY__ i ON g.id = i.gid','LEFT')
+            ->field('p.picname,p.path,a.attr,av.val,gd.*,g.name,c.id,c.num,pr.price,i.allnum')
             ->select();
         return $data;
     }
