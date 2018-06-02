@@ -9,7 +9,7 @@ body {
 }
 .main > ul > li {
     background: white;
-    padding: 0 1rem 0 .5rem;
+    padding: 0 1.3rem 0 .5rem;
     position: relative;
 }
 .main > ul > li > a {
@@ -34,7 +34,7 @@ body {
 }
 .main > ul > li > a > i{
     position: absolute;
-    right: .2rem;
+    right: .4rem;
     font-size: .5rem;
     color: #b3b3b3;
 }

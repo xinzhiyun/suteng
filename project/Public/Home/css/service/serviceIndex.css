@@ -65,6 +65,7 @@ img {
 }
 .myDuty > ul {
     display: flex;
+    padding-top: .3rem;
 }
 .myDuty > ul > li {
     flex: 1;
