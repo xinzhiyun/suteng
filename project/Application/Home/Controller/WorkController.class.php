@@ -1,6 +1,8 @@
 <?php
 namespace Home\Controller;
 
+use Zend\Serializer\Adapter\AdapterInterface;
+
 class WorkController extends CommonController
 {
     /**
@@ -24,10 +26,12 @@ class WorkController extends CommonController
                 $data['orderid'] = $post['orderid'];
             }
 
-            $orderMap=array(
+            $orderMap=[
                 'order_id'=>$post['orderid'],
-                ''
-            );
+                'is_pay'=>1,
+                'is_work'=>0
+            ];
+
             M('orders')->where($orderMap)->find();
 
             $data['number'] = getWorkNumber();
