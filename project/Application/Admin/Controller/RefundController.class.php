@@ -109,20 +109,38 @@ class RefundController extends CommonController
                     $input->SetOp_user_id($merchid);  
                       
                     $result = \WxPayApi::refund($input); //退款操作  
-                    dump($result);
+                    // dump($result);
                     // 这句file_put_contents是用来查看服务器返回的退款结果 测试完可以删除了  
                     //file_put_contents(APP_ROOT.'/Api/wxpay/logs/log4.txt',arrayToXml($result),FILE_APPEND);  
                     if(($result['return_code']=='SUCCESS') && ($result['result_code']=='SUCCESS')){  
-                        //退款成功  
-                        echo 1;
-                    }else if(($result['return_code']=='FAIL') || ($result['result_code']=='FAIL')){  
-                        //退款失败  
-                        //原因  
-                        echo 2;
-                        $reason = (empty($result['err_code_des'])?$result['return_msg']:$result['err_code_des']);  
-                    }else{  
+                        //退款成功
+                        M('refund')->startTrans();
+                        M('shop_order')->startTrans();
+
+                        //修改退款订单的状态
+                        $refund['status'] = 5;
+                        $bool2 = M('refund')->where('id='.$id)->save($refund);
+
+                        //修改订单的状态
+                        $shop['status'] = 7;
+                        $bool3 = M('shop_order')->where("order_id='{$order_id}'")->save($shop);
+
+
+
+                        if ($bool2 && $bool3) {
+                            M('refund')->commit();
+                            M('shop_order')->commit();
+                            $this->ajaxReturn(array('code'=>'200','msg'=>'退款成功'));
+
+                        } else {
+                            M('refund')->rollback();
+                            M('shop_order')->rollback();
+                            $this->ajaxReturn(array('code'=>'400','msg'=>'退款失败'));
+                        }
+
+                    } else{  
                         //失败 
-                        echo 3;
+                        $this->ajaxReturn(array('code'=>'400','msg'=>'退款失败'));
                     } 
                     break;
 
@@ -138,100 +156,127 @@ class RefundController extends CommonController
 
                 case '3':
                     //金币
-                    echo '金币';
+                    //先查询商品订单总价
+                    $odetail = M('order_detail')->where("order_id='{$order_id}'")->select();
+
+                    foreach ($odetail as $key => $value) {
+                        //订单总价
+                        (int)$totalPrice += $value['price'];
+                    }
+                    
+                    //查询要退款的金额
+                    $refundInfo = M('refund')->where('id='.$id)->find();
+                    $refundPrice = (int)$refundInfo['total_amount'];
+
+
+                    //判断退款金额是否超过订单总额
+                    if ($refundPrice > $totalPrice) {
+                        $this->ajaxReturn(array('code'=>'400','msg'=>'退款金额超过订单总额'));
+                    } else {
+
+                        //先找出退款账号的openid
+                        $openid = M('users')->where('id='.$refundInfo['uid'])->find()['open_id'];
+
+                        M('Users')->startTrans();
+                        M('refund')->startTrans();
+                        M('shop_order')->startTrans();
+
+                        //修改用户表的金币数量
+                        //先查出该用户现有的金币总数
+                        $gold_num = M('users')->where("open_id='{$openid}'")->find()['gold_num'];
+                        $totlaNum = $gold_num + $refundPrice;
+
+                        // echo $totlaNum;die;
+                        $users['gold_num'] = $totlaNum;
+                        $bool1 = M('users')->where("open_id='{$openid}'")->save($users);
+
+                        //修改退款订单的状态
+                        $refund['status'] = 5;
+                        $bool2 = M('refund')->where('id='.$id)->save($refund);
+
+                        //修改订单的状态
+                        $shop['status'] = 7;
+                        $bool3 = M('shop_order')->where("order_id='{$order_id}'")->save($shop);
+
+                        if ($bool1 && $bool2 && $bool3) {
+                            M('Users')->commit();
+                            M('refund')->commit();
+                            M('shop_order')->commit();
+                            $this->ajaxReturn(array('code'=>'200','msg'=>'退款成功'));
+                        } else {
+                            M('Users')->rollback();
+                            M('refund')->rollback();
+                            M('shop_order')->rollback();
+                            $this->ajaxReturn(array('code'=>'400','msg'=>'退款失败'));
+                        }
+                    }
+
+
                     break;
 
                 case '4':
                     //银币
+                    //先查询商品订单总价
+                    $odetail = M('order_detail')->where("order_id='{$order_id}'")->select();
+
+                    foreach ($odetail as $key => $value) {
+                        //订单总价
+                        (int)$totalPrice += $value['price'];
+                    }
+                    
+                    //查询要退款的金额
+                    $refundInfo = M('refund')->where('id='.$id)->find();
+                    $refundPrice = (int)$refundInfo['total_amount'];
+
+                    
+                    //判断退款金额是否超过订单总额
+                    if ($refundPrice > $totalPrice) {
+                        $this->ajaxReturn(array('code'=>'400','msg'=>'退款金额超过订单总额'));
+                    } else {
+
+                        //先找出退款账号的openid
+                        $openid = M('users')->where('id='.$refundInfo['uid'])->find()['open_id'];
+
+                        M('Users')->startTrans();
+                        M('refund')->startTrans();
+                        M('shop_order')->startTrans();
+
+                        //修改用户表的金币数量
+                        //先查出该用户现有的金币总数
+                        $silver = M('users')->where("open_id='{$openid}'")->find()['silver'];
+                        $totlaNum = $silver + $refundPrice;
+
+                        // echo $totlaNum;die;
+                        $users['silver'] = $totlaNum;
+                        $bool1 = M('users')->where("open_id='{$openid}'")->save($users);
+
+                        //修改退款订单的状态
+                        $refund['status'] = 5;
+                        $bool2 = M('refund')->where('id='.$id)->save($refund);
+
+                        //修改订单的状态
+                        $shop['status'] = 7;
+                        $bool3 = M('shop_order')->where("order_id='{$order_id}'")->save($shop);
+
+                        if ($bool1 && $bool2 && $bool3) {
+                            M('Users')->commit();
+                            M('refund')->commit();
+                            M('shop_order')->commit();
+                            $this->ajaxReturn(array('code'=>'200','msg'=>'退款成功'));
+                        } else {
+                            M('Users')->rollback();
+                            M('refund')->rollback();
+                            M('shop_order')->rollback();
+                            $this->ajaxReturn(array('code'=>'400','msg'=>'退款失败'));
+                        }
+                    }
 
                     break;
             }
             
 
             die;
-            $refund = D('Refund');
-            $refund->startTrans();
-            $res = $refund->where('id='.$id)->setField('status',$status);
-            $d = D('Refund_goods')->field('distinct(oid)')->where('rf_id='.$id)->select();
-            // foreach ($d as $key => $value) {
-            //     $ids[] = $value['oid'];
-            // }
-            if ($status == 1 || $status == 3) {
-                $statu = 4;
-            } elseif ($status == 5) {
-                $statu = 5;
-            }
             
-            $orderid = $d[0]['oid'];
-
-            D('order_detail')->where(['order_id'=>$orderid])->setField('status',$statu);
-            // 装B的代码开始了
-            
-            $status = D('shop_order')->alias('so')->where(['so.order_id'=>$orderid])->join('st_order_detail od ON so.order_id = od.order_id','RIGHT')->field('od.status')->select();
-
-            $order = D('shopOrder')->where(['order_id'=>$orderid])->field('g_type')->find();
-            switch ($order['g_type']) {
-                case 0:
-                    # code...
-                    break;
-                
-                case 1:
-                        $subsql = D('refund_goods')->where(['oid'=>$orderid])->field('gid')->select(false);
-                        $goods_count = M('order_detail')                        
-                        ->alias('d')
-                        // ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'d.gid'=>['NEQ','rg.gid'],'rg.oid'=>['NEQ',$orderid]])
-                        ->where(['d.order_id'=>$orderid,'g.id'=>['exp',"NOT IN ($subsql)"]])
-                        ->join('st_shop_order so ON d.order_id = so.order_id','LEFT')
-                        ->join('__GOODS__ g ON g.id = d.gid','LEFT')
-                        ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
-                        ->join('__PIC__ p ON g.id = p.gid','LEFT')
-                        // // ->table($refund.' a')
-                        ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire'))
-                        ->count();
-                    break;
-
-                case 2:
-                        $subsql = D('refund_goods')->where(['oid'=>$orderid])->field('gid')->select(false);
-                        $goods_count = M('order_detail')                        
-                        ->alias('d')
-                        // ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'d.gid'=>['NEQ','rg.gid'],'rg.oid'=>['NEQ',$orderid]])
-                        ->where(['d.order_id'=>$orderid,'f.id'=>['exp',"NOT IN ($subsql)"]])
-                        ->join('st_shop_order so ON d.order_id = so.order_id','LEFT')
-                        ->join('__FILTERS__ f ON f.id = d.gid','LEFT')
-                        // // ->table($refund.' a')
-                        ->field(array('f.picpath'=>'orderimg','f.filtername'=>'productname','f.introduce'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber'))
-                        ->count();
-                    break;
-
-                case 3:
-                    # code...
-                    break;
-                default:
-                    # code...
-                    break;
-            }
-            // p($goods_count);
-            // p($d);die;
-            if($goods_count < 1){
-                foreach($status as $v){
-                    if($v['status'] !== 4 && $v['status'] !== 5){
-                        $rs = D('shop_order')->where(['order_id'=>$orderid])->setField(['status'=>5]);
-                        if($rs) {
-                            $refund->commit();
-                            return $this->ajaxReturn(['code'=>200,'msg'=>'修改成功2']);
-                        }
-                        break;
-                    }
-                }
-            }
-
-            if ($res) {
-                $refund->commit();
-                return $this->ajaxReturn(['code'=>200,'msg'=>'修改成功']);
-            } else{
-                $refund->rollback();
-                return $this->ajaxReturn(['code'=>400,'msg'=>'修改失败']);
-            }
         } catch (\Exception $e) {
             $err = [
                 'code' => $e->getCode(),
