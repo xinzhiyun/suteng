@@ -31,7 +31,6 @@ class WorkController extends CommonController
                 'is_pay'=>1,
                 'is_work'=>0
             ];
-
             
             M('orders')->where($orderMap)->find();
 
