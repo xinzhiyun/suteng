@@ -32,6 +32,7 @@ class WorkController extends CommonController
                 'is_work'=>0
             ];
             
+            
             M('orders')->where($orderMap)->find();
 
             $data['number'] = getWorkNumber();
