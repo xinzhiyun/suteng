@@ -69,6 +69,86 @@ class RefundController extends CommonController
             return $this->ajaxReturn(['code'=>400,'msg'=>'id和状态必须为数字']);
         }
         try {
+            //先查询该订单的支付类型
+            $order_id = M('refund_goods')->where('rf_id='.$id)->find()['oid'];
+
+            //根据订单号去查询订单支付类型
+            $orderData = M('shop_order')->where("order_id={$order_id}")->find();
+            // dump($payStatus);
+            $payStatus = $orderData['mode'];
+            switch ($payStatus) {
+                case '0':
+                    //微信
+                    //微信退款
+                    //微信examle的WxPay.JsApiPay.php
+                    vendor('WxPay.WxPay#Api');
+                    // vendor('WxPay.WxPay#Config');
+                    // include VENDOR_PATH."/Wxpay/WxPay.Api.php";  
+                    //查询订单,根据订单里边的数据进行退款  
+                    $order = M('refund')->where(array('id'=>$id,'status'=>0))->find(); 
+
+
+                    $orders = M('refund_goods')->where(array('rf_id'=>$id))->find()['oid'];
+
+                    $transaction_id = $orderData['transaction_id']; 
+
+                    $merchid = \WxPayConfig::MCHID;  
+                        
+                    if(!$order) return false;
+                    //生成随机退款单号  
+                    $refund_no = time();
+
+                    $input = new \WxPayRefund();  
+                    // $input->SetOut_trade_no($orders);         //自己的订单号  
+                    $input->SetTransaction_id($transaction_id);     //微信官方生成的订单流水 号，在支付成功中有返回  
+                    $input->SetOut_refund_no($refund_no);         //退款单号  
+                    // $input->SetTotal_fee($order['total_amount']);         //订单标价金额，单位为分  
+                    $input->SetTotal_fee(1);         //订单标价金额，单位为分  
+                    // $input->SetRefund_fee($order['total_amount']);            //退款总金额，订单总金额，单位为分，只能为整数  
+                    $input->SetRefund_fee(1);            //退款总金额，订单总金额，单位为分，只能为整数  
+                    $input->SetOp_user_id($merchid);  
+                      
+                    $result = \WxPayApi::refund($input); //退款操作  
+                    dump($result);
+                    // 这句file_put_contents是用来查看服务器返回的退款结果 测试完可以删除了  
+                    //file_put_contents(APP_ROOT.'/Api/wxpay/logs/log4.txt',arrayToXml($result),FILE_APPEND);  
+                    if(($result['return_code']=='SUCCESS') && ($result['result_code']=='SUCCESS')){  
+                        //退款成功  
+                        echo 1;
+                    }else if(($result['return_code']=='FAIL') || ($result['result_code']=='FAIL')){  
+                        //退款失败  
+                        //原因  
+                        echo 2;
+                        $reason = (empty($result['err_code_des'])?$result['return_msg']:$result['err_code_des']);  
+                    }else{  
+                        //失败 
+                        echo 3;
+                    } 
+                    break;
+
+                case '1':
+                    //支付宝
+                    
+                    break;
+
+                case '2':
+                    //银联
+
+                    break;
+
+                case '3':
+                    //金币
+                    echo '金币';
+                    break;
+
+                case '4':
+                    //银币
+
+                    break;
+            }
+            
+
+            die;
             $refund = D('Refund');
             $refund->startTrans();
             $res = $refund->where('id='.$id)->setField('status',$status);

@@ -157,6 +157,7 @@ class WxPayApi
 		$inputObj->SetMch_id(WxPayConfig::MCHID);//商户号
 		$inputObj->SetNonce_str(self::getNonceStr());//随机字符串
 		
+
 		$inputObj->SetSign();//签名
 		$xml = $inputObj->ToXml();
 		$startTimeStamp = self::getMillisecond();//请求开始时间
@@ -554,6 +555,8 @@ class WxPayApi
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
 		//运行curl
 		$data = curl_exec($ch);
+		// dump(WxPayConfig::SSLCERT_PATH);exit;
+
 		//返回结果
 		if($data){
 			curl_close($ch);

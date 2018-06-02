@@ -275,9 +275,10 @@ class WeiXinPayController extends Controller
                 // 快递地址ID
                 $saveOrderDara['address_id'] = M('address')->where($showAddres)->find()['id'];
                 // 准备更新数据
-               $saveOrderDara['status'] = 9;
+                $saveOrderDara['status'] = 9;
                 // 支付类型
                 $saveOrderDara['mode'] = 0;
+                $saveOrderDara['transaction_id'] = $result['transaction_id'];
                 // 执行更新操作
                 $order->where($saveOrder)->save($saveOrderDara);
                 // 准备佣金数据

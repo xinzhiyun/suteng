@@ -1275,3 +1275,20 @@ function onlyOrderId(){
 //  // 绝对唯一的32位订单ID号
 //  return $orderId;
 //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
