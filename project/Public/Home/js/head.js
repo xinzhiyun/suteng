@@ -190,3 +190,16 @@ var noticeFn = function(obj){
         },100);
     },obj.time);
 }
+
+//验证手机号码
+var phoneCheck = function(val){
+    return /^1[3,4,5,6,7,8]\d{9}$/.test(val)
+} 
+//验证email
+var emailCheck = function(val){
+    return /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(val)
+}
+//验证中文
+var chineseCheck = function(val){
+    return /^[\u4e00-\u9fa5]{2,255}$/.test(val);
+}
