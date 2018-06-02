@@ -238,11 +238,10 @@ class VipCenterController extends CommonController
     {
         $did = session('user.did');
         
-        // if( empty($did) ){
-        //     $did = M('user_device')->where(['uid'=> session('user.id'),'status'=>1])->getField('did');
-        //     session('user.did',$did);
-        // }
-    
+        if( empty($did) ){
+            $did = M('user_device')->where(['uid'=> session('user.id'),'status'=>1])->getField('did');
+            session('user.did',$did);
+        }
         $map['dcode'] = M('devices')->where('id='.$did)->getField('device_code');
         $map['date'] = date("Ym", time());
         $data = M('Tds')->where($map)->select();

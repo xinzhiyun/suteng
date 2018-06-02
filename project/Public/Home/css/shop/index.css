@@ -99,7 +99,13 @@ img {
 	-webkit-transition: left .4s ease-out;
 	transition: left .4s ease-out;
 }
-
+.pic.swiper-slide {
+	text-align: center;
+}
+.pic.swiper-slide>img {
+	height: 100%;
+	width: auto;
+}
 .goods{
 	width: 100%;
 }

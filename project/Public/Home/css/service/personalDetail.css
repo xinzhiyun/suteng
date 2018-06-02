@@ -1,0 +1,35 @@
+body {
+    width: 100vw;
+    height: 100vh;
+}
+.main {
+    width: inherit;
+    height: inherit;
+    background: #EDF2F2;
+    position: relative;
+}
+input[type='text'] {
+    width: 100%;
+    display: block;
+    border: none;
+    padding: .6rem .5rem;
+}
+.main > p {
+    position: absolute;
+    width: inherit;
+    bottom: 3rem;
+}
+input[type='button'] {
+    display: block;
+    width: 90vw;
+    height: 2rem;
+    line-height: 2rem;
+    background: #2EB6AA;
+    color: white;
+    font-size: .7rem;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    margin: 0 auto;
+}
+

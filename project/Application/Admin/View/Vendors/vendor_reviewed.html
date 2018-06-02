@@ -412,8 +412,11 @@
                 success:function(res){
                     console.dir(res);
                     if(res.code == 200){
-//                        swal("协议文件审核成功！", "分销商审核流程完成。", "success");
-//                        window.location.reload();
+                        swal("协议文件审核成功！", "分销商审核流程完成。", "success");
+                        setTimeout(function(){  //使用  setTimeout（）方法设定定时2000毫秒
+                            window.location.reload();//页面刷新
+                        },2000);
+
                     }else{
                         // 查询失败提示
                         // parent.layer.msg(resdata.res.message);
@@ -440,7 +443,9 @@
                     console.dir(res);
                     if(res.code == 200){
                         swal("协议文件审核成功！", "等待用户重新提交资料。", "success");
-                        window.location.reload();
+                        setTimeout(function(){  //使用  setTimeout（）方法设定定时2000毫秒
+                            window.location.reload();//页面刷新
+                        },2000)
                     }else{
                         // 查询失败提示
                         // parent.layer.msg(resdata.res.message);
@@ -498,7 +503,9 @@
                     console.dir(res);
                     if(res.code == 200){
                         swal("公司信息审核成功！", "请尽快完成协议文件审核。", "success");
-                        window.location.reload();
+                        setTimeout(function(){  //使用  setTimeout（）方法设定定时2000毫秒
+                            window.location.reload();//页面刷新
+                        },2000)
                     }else{
                         // 查询失败提示
                         // parent.layer.msg(resdata.res.message);
@@ -525,7 +532,9 @@
                     console.dir(res);
                     if(res.code == 200){
                         swal("公司信息审核成功！", "等待用户重新提交资料。", "success");
-                        window.location.reload();
+                        setTimeout(function(){  //使用  setTimeout（）方法设定定时2000毫秒
+                            window.location.reload();//页面刷新
+                        },2000)
                     }else{
                         // 查询失败提示
                         // parent.layer.msg(resdata.res.message);
@@ -552,7 +561,9 @@
                     console.dir(res);
                     if(res.code == 200){
                         swal("身份证审核成功！", "请尽快完成公司信息审核。", "success");
-                        // window.location.reload();
+                        setTimeout(function(){  //使用  setTimeout（）方法设定定时2000毫秒
+                            window.location.reload();//页面刷新
+                        },2000)
                     }else{
                         // 查询失败提示
                         // parent.layer.msg(resdata.res.message);
@@ -579,7 +590,9 @@
                     console.dir(res);
                     if(res.code == 200){
                         swal("身份证审核成功！", "等待用户重新提交资料。", "success");
-                        window.location.reload();
+                        setTimeout(function(){  //使用  setTimeout（）方法设定定时2000毫秒
+                            window.location.reload();//页面刷新
+                        },2000)
                     }else{
                         // 查询失败提示
                         // parent.layer.msg(resdata.res.message);

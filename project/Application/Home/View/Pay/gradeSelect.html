@@ -24,7 +24,7 @@
 				<p class="selectPrice">{{$annual.annual_money}}元</p>
 				<div class="goldInfo">
 					<p>钻石会员说明</p>
-					<p>{{$annual.dia_describe}}</p>
+					<p class="dia_describe"></p>
 					<p  class="gradeStatus"><input type="hidden" name="status"  value="{{$annual.dia_status}}"></p>
 					<p class="sanjiao"></p>
 					<span class="iconfont icon-shibai"></span>
@@ -39,7 +39,7 @@
 				<p class="selectPrice">{{$annual.medal_money}}元</p>
 				<div class="goldInfo">
 					<p>黄金会员说明</p>
-					<p>{{$annual.gold_describe}}</p>
+					<p class="gold"></p>
 					<p class="gradeStatus"><input type="hidden" name="status"  value="{{$annual.gold_status}}"></p>
 					<p class="sanjiao"></p>
 
@@ -72,7 +72,7 @@
 				<p class="selectPrice">{{$annual.personal_money}}元</p>
 				<div class="goldInfo">
 					<p>个人会员说明</p>
-					<p>{{$annual.per_describe}}</p>
+					<p class='per_describe'></p>
 					<p  class="gradeStatus"><input type="hidden" name="status"  value="{{$annual.per_status}}"></p>
 					<p class="sanjiao"></p>
 					<span class="iconfont icon-shibai"></span>
@@ -133,7 +133,9 @@
 <script src="__PUBLIC__/Home/js/vipCenter/gradeSelect.js"></script>
 
 <script>
-
+    $('.gold').text(decodeURI('{{$annual.gold_describe}}'))
+    $('.per_describe').text(decodeURI('{{$annual.per_describe}}'))
+    $('.dia_describe').text(decodeURI('{{$annual.dia_describe}}'))
     //微信接口
     wx.config({
         debug: false,
