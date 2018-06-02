@@ -67,10 +67,14 @@ window.onload = function(){
 
     machineStatus();//执行当前设备状态
 
-    $(".rawtdsVal").html(getdataList.rawtds?getdataList.rawtds:'--');//纯水值
+    // $(".rawtdsVal").html(getdataList.rawtds?getdataList.rawtds:'--');//纯水TDS
     $(".phVal").html(getdataList.phval?getdataList.phval:'--');//ph酸碱值
-    $(".rawtdsVal2").html(getdataList.puretds?getdataList.puretds:'--');//原水值
-    $(".puretdsVal").html(getdataList.rawtds?getdataList.rawtds:'--');//原水值
+    // $(".rawtdsVal2").html(getdataList.puretds?getdataList.puretds:'--');//原水值
+    // $(".puretdsVal").html(getdataList.rawtds?getdataList.rawtds:'--');//原水值
+
+    $(".puretds").html(getdataList.puretds?getdataList.puretds:'--');//纯水值
+    $(".rawtds").html(getdataList.rawtds?getdataList.rawtds:'--');//原水值
+
     $(".hotwater").html((getdataList.temperature?getdataList.temperature:'--')+"&#8451;");
     $(".coldwater").html(parseInt(Math.random()*10+10)+"&#8451;");
     $(".roomtemperature").html(parseInt(Math.random()*10+20)+"&#8451;");
@@ -126,7 +130,7 @@ window.onload = function(){
         //console.log(dataList.LeasingMode);
         _status=dataList.DeviceStause;
         machineStatus();//执行水机状态方法
-        // console.log(dataList);
+        console.log(dataList);
         
         if(dataList.PackType=="Select")//返回查询数据类型数据
          {	//console.log(dataList);
