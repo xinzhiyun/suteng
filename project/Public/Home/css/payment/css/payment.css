@@ -7,6 +7,12 @@
 .right {
   color: #545454;
 }
+.blue {
+  color: #2EB6AA;
+}
+.gray {
+  color: #B3B3B3;
+}
 .header {
   width: 100%;
   height: 6.54761905rem;
@@ -25,11 +31,10 @@
   position: absolute;
   top: 13%;
   left: 10%;
-  background: #EDEEF2;
 }
 .header div:nth-child(2) #one {
   font-size: 3rem;
-  color: #2eb6aa;
+  color: #B3B3B3;
 }
 .header div:nth-child(2) p {
   margin-top: -0.71428571rem;
@@ -40,7 +45,6 @@
   position: absolute;
   top: 13%;
   left: 40%;
-  background: #EDEEF2;
 }
 .header div:nth-child(3) #two {
   font-size: 3rem;
@@ -55,7 +59,6 @@
   position: absolute;
   top: 13%;
   left: 70%;
-  background: #EDEEF2;
 }
 .header div:nth-child(4) #three {
   font-size: 3rem;
@@ -168,8 +171,6 @@
   border: 0.04761905rem solid #cccccc;
   border-radius: 0.23809524rem;
   padding: 0 0.11904762rem;
-}
-.detail .meal ul li p {
   color: #999;
 }
 .detail .meal ul li p:nth-child(1) {
@@ -198,7 +199,7 @@
   color: #f00;
 }
 .pay p:nth-child(2) {
-  background: #2eb6aa;
+  background: #ccc;
   color: #fff;
 }
 .mask2 {
@@ -282,7 +283,9 @@
 .paySuc {
   display: none;
   width: 100%;
-  height: 50vh;
+  height: 69vh;
+  overflow-y: hidden;
+  overflow-x: hidden;
   line-height: 50vh;
 }
 .paySuc div {

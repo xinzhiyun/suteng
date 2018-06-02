@@ -83,3 +83,110 @@ function getURL(_home, _url){
     homeurl = href.substring(0, homeindex) + '/' + _url;
     return homeurl;
 }
+
+/*
+    生成提示框、确认取消框和loading 加载模块的页面元素
+    并添加样式到页面
+ */ 
+!function(){
+
+    // 顶部按钮
+    var go2Top = document.createElement('div');
+    go2Top.setAttribute('class', 'go2Top');
+    go2Top.setAttribute('ontouchstart', 'goTop()');
+    go2Top.innerHTML = '<i class="iconfont icon-xiangshang1"></i>';
+
+    // 生成提示框元素
+    var notice = document.createElement('div');
+    notice.setAttribute('id', 'noticeDiv');
+    notice.innerHTML = '<span></span>';
+
+    // 生成确认取消框元素
+    var confirm = document.createElement('div');
+    // 遮罩层
+    confirm.setAttribute('id','confirmPar');
+    var contain = '<div id="confirmDiv">'+
+        '<div>'+
+            '<p><i class="am-icon-question-circle-o"></i>&nbsp;'+
+            '<span class="text" style="color:#0d94f3;"></span>&nbsp;</p>'+
+        '</div>'+
+        '<div id="confirmdiv3">'+
+            '<span id="confirmfalse" >取消</span>'+
+            '<span id="confirmtrue" >确定</span>'+
+        '</div>'+
+    '</div>';
+    confirm.innerHTML = contain;
+
+    document.body.appendChild(confirm);
+    document.body.appendChild(notice);
+    document.body.appendChild(go2Top);
+}()
+
+/**
+ * 提示框函数 noticeFn()
+ * @param {字符串} obj.text 提示的文字内容
+ * @param {字符串} obj.fcolor 提示的文字颜色
+ * @param {字符串} obj.bgcolor 提示框背景颜色
+ * @param {字符串} obj.time 提示框消失的时间
+ */
+var noticeint;
+var noticeFn = function(obj){
+    // {text:'哈哈很少见哈' + $(this)[0].innerText,fcolor:'',bgcolor:'',time:''}
+    /*
+        用法：
+        noticeFn({text:'哈哈很少见哈' + $(this)[0].innerText});
+     */
+    //设置字体颜色 
+    obj.fcolor = obj.fcolor || '#fff';
+    //设置背景颜色
+    obj.bgcolor = obj.bgcolor || 'rgba(70,70,70,.9)';
+    // 消失时间
+    obj.time = obj.time || 1000;
+    // console.log(obj.time);
+    var notice = document.getElementById('noticeDiv');
+    var noticeSpan = notice.getElementsByTagName('span')[0];
+    
+    // 防止多次点击, 弹框跳动
+    if(noticeSpan.innerHTML){
+        
+        notice.setAttribute('style',
+            'transform:scale(1.4);'
+        );
+        setTimeout(function(){
+            notice.setAttribute('style',
+                'transition: .3s ease;transform:scale(1);'
+            );
+        },0)
+        
+        // 防止多次点击, 弹框跳动
+        clearTimeout(noticeint);
+        noticeSpan.innerHTML = obj.text;
+        // 自动消失
+        noticeint = setTimeout(function(){
+            notice.style.opacity = '.5';
+            notice.style.transform = 'scale(1.1)';
+            setTimeout(function(){
+                notice.style.transform = 'scale(0)';
+                noticeSpan.innerHTML = '';
+            },100);
+        },obj.time);
+        return
+    }
+    noticeSpan.innerHTML = obj.text;
+    noticeSpan.style.color = obj.fcolor;
+    noticeSpan.style.background = obj.bgcolor;
+
+    notice.setAttribute('style',
+        'display:block;opacity:1;transform:scale(1);'
+    );
+
+    // 自动消失
+    noticeint = setTimeout(function(){
+        notice.style.opacity = '.5';
+        notice.style.transform = 'scale(1.1)';
+        setTimeout(function(){
+            notice.style.transform = 'scale(0)';
+            noticeSpan.innerHTML = '';
+        },100);
+    },obj.time);
+}
