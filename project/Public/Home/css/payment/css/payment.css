@@ -274,11 +274,16 @@
   font-size: 1.19047619rem;
 }
 .mask2 ul li i:nth-child(3) {
-  color: #808080;
   font-size: 1.19047619rem;
+  font-weight: lighter;
 }
 .mask2 ul li span {
   font-size: 0.80952381rem;
+}
+.mask2 ul li img {
+  width: 1.42857143rem;
+  margin-top: 0.5952381rem;
+  margin-right: 0.95238095rem;
 }
 .mask2 ul li:nth-child(2) i:nth-child(1) {
   color: #149E23;
