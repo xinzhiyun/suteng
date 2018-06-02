@@ -100,7 +100,7 @@ class PayController extends Controller
         $assign = [
             'data' => json_encode($data),
             'goodsCourier' => json_encode($goodsCourier),
-            'gtype' => json_encode($order['gtype']),
+            'gtype' => json_encode($order['g_type']),
             'user' => json_encode($user),
             'rate' => json_encode($rate)
         ];
