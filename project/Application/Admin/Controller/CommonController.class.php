@@ -21,16 +21,16 @@ class CommonController extends Controller
     {	
     	// 登录检测
     	if(empty($_SESSION['adminInfo'])) $this->redirect('Login/index');
-
-        $bool = $this->rule_check(session('adminInfo.id'));
+        $vid = session('adminInfo.id');
+        $bool = $this->rule_check($vid);
         if(!$bool){
             $this->error('权限不足');
         }
         
-        if(!S('st_vendor_leavel')){
+        if(!S('st_vendor_leavel_'.$vid)){
             $this->getLevel();
         } else {
-            $this->leavel = S('st_vendor_leavel');
+            $this->leavel = S('st_vendor_leavel_'.$vid);
         }
 
         // 分配菜单权限
@@ -69,8 +69,8 @@ class CommonController extends Controller
         $vid = session('adminInfo.id');
         $leavel = D('vendors')->where(['id'=>$vid])->field('leavel')->find();
         if($leavel){
-            S('st_vendor_leavel',$leavel['leavel'],300);
-            $this->leavel = S('st_vendor_leavel');
+            S('st_vendor_leavel_'.$vid,$leavel['leavel'],300);
+            $this->leavel = S('st_vendor_leavel_'.$vid);
         }      
     }
 }
