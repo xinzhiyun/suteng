@@ -1276,7 +1276,25 @@ function onlyOrderId(){
 //  return $orderId;
 //}
 
+/**
+ * 生成工单编号
+ * @return [type] [description]
+ */
+function getWorkNumber()
+{
+    $date = new Org\Util\Date(time());
+    $string = new Org\Util\Strings;
+    $dateStr = $date->format("%Y%m%d%H");   // 根据时间戳生成的字符串
 
+    do {
+        $str2 = $string->randString(3,1);   // 生成数字随机字符
+        $workNumber = $dateStr.$str2;
+        $work = M('work')->where("`number`='{$workNumber}'")->field('id')->find();
+        $res = empty($work) ? false : true;
+        // 如果订单号已存在再重新获取一次
+    } while ($res);
+    return $workNumber;
+}
 
 
 
