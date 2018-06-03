@@ -7,16 +7,17 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/css/service.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/amazeui.min.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/common.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css">
 </head>
-<body style="padding:0">
+<body>
 <div id="app">
 	<div class="wrap">
 	<!-- 搜索部分开始 -->
 		<div class="header">
-			<div class="sub_head">
+			<div class="sub_head" @keyup.enter="lookup">
 				<label for="">
-					<span class="">0</span>
-					<input type="text" name="searchInfo" placeholder="请输入姓名/手机号码">
+					<i class="iconfont icon-sousuo" @click="subSea"></i>
+					<input type="text" name="searchInfo" placeholder="请输入姓名/手机号码" v-model="search">
 				</label>
 			</div>
 		</div>
@@ -33,9 +34,11 @@
 				</li>
 			</ul>
 			<ul>
-				<li class="link_b" v-for="(l,index) in list">
+				<li class="link_b" v-for="(l,index) in list" @click="userList(l.status)">
 					<span class="am-u-sm-3" v-text="l.name">沈腾</span>
-					<span class="am-u-sm-4" v-text="l.phone">135 263 25411</span>
+					<span class="am-u-sm-4" v-if="l.status == 0" style="color:#f43030">未处理</span>
+					<span class="am-u-sm-4" v-if="l.status == 1" style="color:#4398f0">进行中</span>
+					<span class="am-u-sm-4" v-if="l.status == 2" style="color:#32c97c">已处理</span>
 					<span class="am-u-sm-4" v-text="l.time">2018-06-01</span>
 					<i class="am-u-sm-1">></i>
 				</li>
@@ -101,6 +104,7 @@
 		</div>
 	<!-- 服务详情页面部分结束 -->
 </div>
+	<script src="__PUBLIC__/Home/js/head.js"></script>
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script src="__PUBLIC__/Home/js/amazeui.min.js"></script>
@@ -111,14 +115,19 @@
 		var infos = [
 			{
 				name:"沈腾",
-				phone:"13526325411",
+				status:"0",
 				time:"2018-06-01"
 			},
 			{
 				name:"古天乐",
-				phone:"13526325422",
+				status:"1",
 				time:"2018-06-02"
 			},
+			{
+				name:"黄渤",
+				status:"2",
+				time:"2018-06-03"
+			}
 		];
 		// status: 0未处理 1进行中 2已完成
 		var detail = {
@@ -134,6 +143,7 @@
 		}
 		service.list = infos;     //用户列表
 		service.detail = detail;  //服务详情
+		$(".loadingdiv").hide();
 	</script>
 </body>
 </html>
