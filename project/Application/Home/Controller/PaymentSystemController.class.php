@@ -266,7 +266,6 @@ class PaymentSystemController extends CommonController
     public function orderPay()
     {
         if(IS_POST){
-            // echo 1;
             // // 准备订单查询数据
             $showWhere['order_id'] = I('post.order');
                 
@@ -279,6 +278,9 @@ class PaymentSystemController extends CommonController
                 $money = $orderData['g_price'];
                 // 订单号码
                 $order_id = $orderData['order_id'];
+
+
+
                 // 订单描述
                 $content = '速腾商城商品购买';
                 $openId = $_SESSION['open_id'];
