@@ -69,6 +69,18 @@ class RefundController extends CommonController
             return $this->ajaxReturn(['code'=>400,'msg'=>'id和状态必须为数字']);
         }
         try {
+
+            //先判断用户退货方式  1.仅退款  2.退货退款
+            $refundList = M('refund')->where('id='.$id)->find();
+
+            dump($refundList);
+
+
+            die;
+
+
+
+
             //先查询该订单的支付类型
             $order_id = M('refund_goods')->where('rf_id='.$id)->find()['oid'];
 
@@ -379,10 +391,7 @@ class RefundController extends CommonController
                     }
 
                     break;
-            }
-            
-
-            die;
+            }       
             
         } catch (\Exception $e) {
             $err = [
