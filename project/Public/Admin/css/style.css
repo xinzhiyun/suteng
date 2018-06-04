@@ -7995,3 +7995,36 @@ body.skin-3 {
         font-size: 12px
     }
 }
+
+/* 商品管理添加图片 */
+.disPics {
+    position: relative;
+}
+.disPics > p {
+    width: 7rem;
+}
+.disPics > input[type='file'] {
+    position: absolute;
+    top: 0; 
+    left: .2rem;
+    width: 8rem;
+    opacity: 0;
+}
+.picShow > span{
+    display: inline-block;
+    width: 8rem;
+    height: 5rem;
+    text-align: center;
+    position: relative;
+    margin-right: .8rem;
+}
+.picShow > span > img {
+    height: 100%;
+    width: 100%;
+}
+.picShow > span > i {
+    position: absolute;
+    top: -1rem;
+    right: -.4rem;
+    color: red;
+}
