@@ -886,8 +886,8 @@ class ShopController extends CommonController
     // 查看订单详情
     public function selectOrder()
     {
-        $orderDetail = D('OrderDetail');
-        $orders = D("ShopOrder");
+        $orderDetail = D('ShopOrderDetail');
+        $orders = D('ShopOrder');
         $order['order_id'] = I('get.id');
         $userInfo = $orders->getUserInfo($order);
         $map['od.order_id'] = $order['order_id'];
