@@ -41,10 +41,12 @@ class RefundController extends CommonController
 
         $orderDetail = D('ShopOrderDetail');
         foreach ($data['goods'] as $key => $value) {
-            $orderDetail->union('select num,price,st_goods.name,st_order_detail.gpic from st_order_detail LEFT JOIN st_goods ON st_order_detail.gid = st_goods.id  where order_id = '.$value['oid'].' AND st_order_detail.gid ='.$value['gid']);
+            $orderDetail->union('select num,price,st_goods.name,st_shop_order_detail.gpic from st_shop_order_detail LEFT JOIN st_goods ON st_shop_order_detail.gid = st_goods.id  where order_id = 
+'.$value['oid'].' AND 
+st_shop_order_detail.gid ='.$value['gid']);
         } 
-            $orderDetail->field('num,price,st_goods.name,st_order_detail.gpic');
-            $orderDetail->join('st_goods ON st_order_detail.gid = st_goods.id','LEFT');
+            $orderDetail->field('num,price,st_goods.name,st_shop_order_detail.gpic');
+            $orderDetail->join('st_goods ON st_shop_order_detail.gid = st_goods.id','LEFT');
             // $orderDetail->join('st_pic ON st_order_detail.gid = st_pic.gid','LEFT');
             $orderDetail->where('st_shop_order_detail.id < 0');
         $goods = $orderDetail->select();
@@ -183,7 +185,7 @@ class RefundController extends CommonController
 
                                     // dump($map);die;
 
-                                    $couriers = D('orderDetail')->field('id')->where($map)->select();
+                                    $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
 
                                     if (empty($couriers)) {
                                         // echo 1;
@@ -292,7 +294,7 @@ class RefundController extends CommonController
 
                                     // dump($map);die;
 
-                                    $couriers = D('orderDetail')->field('id')->where($map)->select();
+                                    $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
 
                                     if (empty($couriers)) {
                                         // echo 1;
@@ -388,7 +390,7 @@ class RefundController extends CommonController
 
                                     // dump($map);die;
 
-                                    $couriers = D('orderDetail')->field('id')->where($map)->select();
+                                    $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
 
                                     if (empty($couriers)) {
                                         // echo 1;
@@ -499,7 +501,7 @@ class RefundController extends CommonController
 
                             // dump($map);die;
 
-                            $couriers = D('orderDetail')->field('id')->where($map)->select();
+                            $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
 
                             if (empty($couriers)) {
                                 // echo 1;
@@ -608,7 +610,7 @@ class RefundController extends CommonController
 
                             // dump($map);die;
 
-                            $couriers = D('orderDetail')->field('id')->where($map)->select();
+                            $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
 
                             if (empty($couriers)) {
                                 // echo 1;
@@ -704,7 +706,7 @@ class RefundController extends CommonController
 
                             // dump($map);die;
 
-                            $couriers = D('orderDetail')->field('id')->where($map)->select();
+                            $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
 
                             if (empty($couriers)) {
                                 // echo 1;
