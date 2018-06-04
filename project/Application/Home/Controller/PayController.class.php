@@ -86,6 +86,18 @@ class PayController extends Controller
         $order = D('shop_order')->where(['order_id'=>$orderid])->find();
         $where['status'] = 0;
         $data = $address->where($where)->find();
+
+        if(!empty($_SESSION['order']['orderid'])){
+            if(!empty($data)){
+                $addressWhere = ['order_id' => $_SESSION['order']['orderid']];
+                $addressInfo = [
+                    'addressinfo'=>json_encode($data),
+                    'address_id'=>$data['id'],
+                    'address'=>$data['province'].$data['city'].$data['area'].$data['address']
+                ];
+                M('ShopOrder')->where($addressWhere)->save($addressInfo);
+            }
+        }
         //查询商品对应的快递运费信息
         foreach ($OrderDetail as $key => $value) {
             // echo $value."<br>";
