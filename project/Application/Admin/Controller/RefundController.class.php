@@ -180,14 +180,14 @@ st_shop_order_detail.gid ='.$value['gid']);
                                     //退货商品的快递的信息就不需要查询了
                                     $jid = array_diff($ids,$rids);
                                   
-                                    $map['order_id'] = $order_id;
+                                    // $map['order_id'] = $order_id;
                                     $map['gid'] = array('in',$jid);
 
                                     // dump($map);die;
 
-                                    $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
+                                    // $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
 
-                                    if (empty($couriers)) {
+                                    if (empty($map)) {
                                         // echo 1;
                                         $shop['status'] = 7;
                                         $shop['updatetime'] = time();
@@ -289,14 +289,14 @@ st_shop_order_detail.gid ='.$value['gid']);
                                     //退货商品的快递的信息就不需要查询了
                                     $jid = array_diff($ids,$rids);
                                   
-                                    $map['order_id'] = $order_id;
+                                    // $map['order_id'] = $order_id;
                                     $map['gid'] = array('in',$jid);
 
                                     // dump($map);die;
 
-                                    $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
+                                    // $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
 
-                                    if (empty($couriers)) {
+                                    if (empty($map)) {
                                         // echo 1;
                                         $shop['status'] = 7;
                                         $shop['updatetime'] = time();
@@ -385,14 +385,14 @@ st_shop_order_detail.gid ='.$value['gid']);
                                     //退货商品的快递的信息就不需要查询了
                                     $jid = array_diff($ids,$rids);
                                   
-                                    $map['order_id'] = $order_id;
+                                    // $map['order_id'] = $order_id;
                                     $map['gid'] = array('in',$jid);
 
                                     // dump($map);die;
 
-                                    $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
+                                    // $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
 
-                                    if (empty($couriers)) {
+                                    if (empty($map)) {
                                         // echo 1;
                                         $shop['status'] = 7;
                                         $shop['updatetime'] = time();
@@ -496,14 +496,14 @@ st_shop_order_detail.gid ='.$value['gid']);
                             //退货商品的快递的信息就不需要查询了
                             $jid = array_diff($ids,$rids);
                           
-                            $map['order_id'] = $order_id;
+                            // $map['order_id'] = $order_id;
                             $map['gid'] = array('in',$jid);
 
                             // dump($map);die;
 
-                            $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
+                            // $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
 
-                            if (empty($couriers)) {
+                            if (empty($map)) {
                                 // echo 1;
                                 $shop['status'] = 7;
                                 $shop['updatetime'] = time();
@@ -605,14 +605,14 @@ st_shop_order_detail.gid ='.$value['gid']);
                             //退货商品的快递的信息就不需要查询了
                             $jid = array_diff($ids,$rids);
                           
-                            $map['order_id'] = $order_id;
+                            // $map['order_id'] = $order_id;
                             $map['gid'] = array('in',$jid);
 
                             // dump($map);die;
 
-                            $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
+                            // $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
 
-                            if (empty($couriers)) {
+                            if (empty($map)) {
                                 // echo 1;
                                 $shop['status'] = 7;
                                 $shop['updatetime'] = time();
@@ -701,14 +701,14 @@ st_shop_order_detail.gid ='.$value['gid']);
                             //退货商品的快递的信息就不需要查询了
                             $jid = array_diff($ids,$rids);
                           
-                            $map['order_id'] = $order_id;
+                            // $map['order_id'] = $order_id;
                             $map['gid'] = array('in',$jid);
 
                             // dump($map);die;
 
-                            $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
+                            // $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
 
-                            if (empty($couriers)) {
+                            if (empty($map)) {
                                 // echo 1;
                                 $shop['status'] = 7;
                                 $shop['updatetime'] = time();
