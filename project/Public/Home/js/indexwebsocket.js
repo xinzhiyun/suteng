@@ -146,10 +146,19 @@ window.onload = function(){
             var phval = dataList.phval; 
             var puretds = dataList.PureTDS;
             //1.设备状态页面数据显示
-            $(".rawtdsVal").html((rawtds?rawtds:'--'));//纯水值
+            // $(".rawtdsVal").html((rawtds?rawtds:'--'));//纯水值
+            // $(".phVal").html(phval?phval:'--');//ph酸碱值
+            // $(".puretdsVal").html((puretds?puretds:'--'));//原水值
+            // $(".rawtdsVal2").html((rawtds?rawtds:'--'));//纯水值
+
+            // $(".rawtdsVal").html(getdataList.rawtds?getdataList.rawtds:'--');//纯水TDS
             $(".phVal").html(phval?phval:'--');//ph酸碱值
-            $(".puretdsVal").html((puretds?puretds:'--'));//原水值
-            $(".rawtdsVal2").html((rawtds?rawtds:'--'));//纯水值
+            // $(".rawtdsVal2").html(getdataList.puretds?getdataList.puretds:'--');//原水值
+            // $(".puretdsVal").html(getdataList.rawtds?getdataList.rawtds:'--');//原水值
+
+            $(".puretds").html(puretds?puretds:'--');//纯水值
+            $(".rawtds").html(rawtds?rawtds:'--');//原水值
+
             $(".hotwater").html((hotwater?hotwater:'--')+"&#8451;");//热水温度
             // $(".coldwater").html((coldwater?coldwater:12)+"&#8451;");//冷水温度
             // $(".roomtemperature").html((roomtemperature?roomtemperature:45)+"&#8451;");//室内温度
