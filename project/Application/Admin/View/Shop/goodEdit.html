@@ -5,6 +5,7 @@
     <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="__PUBLIC__/Home/fonts/iconfontHome.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/style.css?v=4.1.0" rel="stylesheet">
@@ -27,7 +28,7 @@
                     <form id="form" onsubmit="false" class="form-horizontal">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">商品类别：</label>
-
+                            
                             <div class="col-sm-2">
                                 <select class="form-control m-b" name="firscate">
                                     <option value="--">--请选择--</option>
@@ -45,6 +46,17 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">商品图片：</label>
+                            <div class="col-sm-10 disPics">
+                                <p class="btn btn-outline btn-primary col-sm-2">选择图片</p>
+                                <input type="file" class="form-control" name="pics" multiple="multiple">
+                                <!-- 显示上传图片 -->
+                                <div class="picShow col-sm-10">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-2 control-label _attr">商品属性：</label>
                             <div class="col-sm-10">
                                 <div class="checkbox i-checks">
@@ -52,7 +64,7 @@
                                         <label class="attr">
                                             <input class="aattr" type="checkbox" data-name={{$vo.attr}} data-id="{{$vo.id}}" {{$vo.check}}  >
                                             {{$vo.attr}}
-                                           
+                                            
                                         </label>
                                     </volist>
                                     <label class="attrList">
@@ -70,7 +82,7 @@
                             <div class="col-sm-6 attr_val">
                             </div>
                         </div>
-
+                        
                         <!-- 快递运费新添加开始 -->
                         <div class="form-group">
                             <label class="col-sm-2 control-label ">快递公司：</label>
@@ -96,15 +108,15 @@
                             </div>
                         </div>
                         <!-- 快递运费新添加结束 -->
-
-
+                        
+                        
                         <div class="form-group">
                             <label class="col-sm-2 control-label">普通会员销售单价：</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="price[0]" placeholder="标准价钱格式，例如：2.00" value="{{$price.0.price}}">
                             </div>
                         </div>
-
+                        
                         <div class="form-group">
                             <label class="col-sm-2 control-label">VIP会员销售单价：</label>
                             <div class="col-sm-10">
@@ -129,9 +141,9 @@
                                 <input type="text" class="form-control" name="price[1]" placeholder="标准价钱格式，例如：2.00" value="{{$price.4.price}}">
                             </div>
                         </div>
-                    
-
-        
+                        
+                        
+                        
                         <div class="form-group">
                             <label class="col-sm-2 control-label">商品成本：</label>
                             <div class="col-sm-10">
@@ -148,8 +160,8 @@
                                 <input type="checkbox" name="is_hire" class="is_hire" {{$goodsDetail[0][is_hire] == 1 ? 'checked':''}}/>
                             </div>
                         </div>
-    
-
+                        
+                        
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">
                                 <button type="button" class="btn btn-primary goodsAdd">提交</button>
@@ -160,7 +172,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- 弹窗 -->
     <div class="modal inmodal" id="st-attr_add" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
@@ -197,7 +209,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- 删除属性弹窗 -->
     <div class="modal inmodal" id="st-attr_del" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
@@ -210,30 +222,30 @@
                         删除属性
                     </h4>
                 </div>
-
+                
                 <div class="modal-body">
-                <table class="table table-striped table-bordered table-hover table-condensed">
-                   <tr>
-                       <th>属性名称</th>
-                       <th>操作</th>
-                   </tr>
-                <volist name="attrInfo" id="vo">
-
-                   <tr>
-                        <label class="attr">
-                        <td data-name={{$vo.attr}} data-id="{{$vo.id}}"> <i></i> {{$vo.attr}}</td>
-                        </label>
-                        <td><div class="deldiv"><a class="attrdel" aid="{{$vo.id}}">删除属性</a></div></td>
-                   </tr>     
-                </volist>
-
-                </table>
+                    <table class="table table-striped table-bordered table-hover table-condensed">
+                        <tr>
+                            <th>属性名称</th>
+                            <th>操作</th>
+                        </tr>
+                        <volist name="attrInfo" id="vo">
+                            
+                            <tr>
+                                <label class="attr">
+                                    <td data-name={{$vo.attr}} data-id="{{$vo.id}}"> <i></i> {{$vo.attr}}</td>
+                                </label>
+                                <td><div class="deldiv"><a class="attrdel" aid="{{$vo.id}}">删除属性</a></div></td>
+                            </tr>     
+                        </volist>
+                        
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-
-
+    
+    
     <!-- 弹窗添加快递公司 -->
     <div class="modal inmodal" id="st_courier_add" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
@@ -270,7 +282,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- 删除快递 -->
     <div class="modal inmodal" id="st-courier_del" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
@@ -283,29 +295,29 @@
                         删除快递公司
                     </h4>
                 </div>
-
+                
                 <div class="modal-body">
-                <table class="table table-striped table-bordered table-hover table-condensed">
-                   <tr>
-                       <th>快递公司名称</th>
-                       <th>操作</th>
-                   </tr>
-                <volist name="courierList" id="vo">
-
-                   <tr>
-                        <label class="courier">
-                        <td data-name={{$vo.name}} data-id="{{$vo.id}}"> <i></i> {{$vo.name}}</td>
-                        </label>
-                        <td><div class="cdeldiv"><a class="courierdel" cid="{{$vo.id}}">删除快递公司</a></div></td>
-                   </tr>     
-                </volist>
-
-                </table>
+                    <table class="table table-striped table-bordered table-hover table-condensed">
+                        <tr>
+                            <th>快递公司名称</th>
+                            <th>操作</th>
+                        </tr>
+                        <volist name="courierList" id="vo">
+                            
+                            <tr>
+                                <label class="courier">
+                                    <td data-name={{$vo.name}} data-id="{{$vo.id}}"> <i></i> {{$vo.name}}</td>
+                                </label>
+                                <td><div class="cdeldiv"><a class="courierdel" cid="{{$vo.id}}">删除快递公司</a></div></td>
+                            </tr>     
+                        </volist>
+                        
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-
+    
 </block>
 <block name="myjs">
     <script>
@@ -359,6 +371,39 @@
                 })
             }
         })
+        
+        // 点击添加图片  每张filereader对象只能读取一张图片的路径
+        $("input[type='file']").on("change", function() {
+            // 获取文件
+            var file = $(this)[0].files;
+            var fileHtml = "";
+            for(var i = 0; i < file.length; i++) {
+                //创建读取文件的对象  
+                var reader = new FileReader();  
+                //创建文件读取相关的变量  
+                // var imgFile; 
+                reader.error = function() {
+                    console.log("文件读取异常");
+                } 
+                //为文件读取成功设置事件  
+                reader.onload = function(e) {  
+                    // imgFile = e.target.result;  
+                    fileHtml = "<span class='selectimg'><img src='"+ e.target.result +"' /><i class='iconfont icon-shibai'></i></span>";
+                    $(".picShow").append(fileHtml);
+                }; 
+                // 读取文件 
+                reader.readAsDataURL(file[i]);//发起异步请求
+            }
+        });
+        // 点击删除小图标删除图片
+        $(".picShow").on("click", ".icon-shibai", function() {
+            var _this = this;
+            layer.confirm('确认删除图片吗？', function(index){
+                $(_this).parent("span").remove();
+                layer.close(index);
+            }); 
+        });
+
 
         // 添加属性
         function add() {
@@ -386,13 +431,13 @@
                 }
             })
         });
-
+        
         // 删除属性
         function del() {
             $("input[name='attrname']").val('');
             $('#st-attr_del').modal('show');
         }
-
+        
         $('.deldiv').on('click','.attrdel',function(e){
             
             var aid = $(this).attr('aid');
@@ -415,8 +460,8 @@
                 parent.layer.msg('已取消', {shift: 6});
             });
         })
-
-
+        
+        
         // 添加快递公司
         function addcourier() {
             $("input[name='couriername']").val('');
@@ -443,13 +488,13 @@
                 }
             })
         });
-
+        
         // 删除快递公司
         function delcourier() {
             $("input[name='couriername']").val('');
             $('#st-courier_del').modal('show');
         }
-
+        
         //确认删除
         $('.cdeldiv').on('click','.courierdel',function(e){
             
@@ -473,7 +518,7 @@
                 parent.layer.msg('已取消', {shift: 6});
             });
         })
-
+        
     </script>
     <script src="__PUBLIC__/Admin/js/plugins/iCheck/icheck.min.js"></script>
     <!-- SUMMERNOTE -->
@@ -496,24 +541,24 @@
                 lang: 'zh-CN'
             });
             $("#form .attr").on("click", function(e){
-
+                
                 bindClick();
             });
             $(".attr .iCheck-helper").on("click", function(e){
                 bindClick();
             });
-
-
+            
+            
             /* 快递费设置 */
             $("#form .courier").on("click", function(e){
                 cbindClick();
             });
-
+            
             $(".courier .iCheck-helper").on("click", function(e){
                 cbindClick();
             });
             /* 快递费设置 */
-
+            
             // 按钮初始化
             var elem = document.querySelector('.is_install');
             var init = new Switchery(elem);
@@ -528,7 +573,7 @@
                 speed             : '0.1s', 
                 size              : 'default'
             }
-
+            
             var elem = document.querySelector('.is_hire');
             var init = new Switchery(elem);
             defaults = {
@@ -542,13 +587,13 @@
                 speed             : '0.1s', 
                 size              : 'default'
             }
-
+            
             showAttr();
             showCourier();
-
+            
         });
-
-
+        
+        
         //属性值设置
         function bindClick(){
             showAttr();
@@ -556,7 +601,7 @@
         function showAttr(){
             var attrId,attrName;
             var arr = new Array();
-
+            
             $('.attr').each(function(i,item){
                 var aa = $(item).children('div').hasClass('checked');
                 var obj = $(this).find('input');
@@ -572,10 +617,10 @@
             $('.attr_val').empty();
             var newattrVal = {{$newattrVal|json_encode}};
             for(var i=0;i<arr.length;i++){
-
+                
                 var astr = newattrVal[arr[i].attrId];
                 if (astr == undefined) astr = '';
-
+                
                 $('.attr_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].attrName+'</span><input type="text" placeholder="请输入'+arr[i].attrName+'的规格" name="attr['+arr[i].attrId+']" value="'+astr+'" class="form-control"><input type="hidden" name="attrName['+arr[i].attrId+']" value=' + arr[i].attrName + ' class="form-control"></div>');
             }
         }
@@ -586,7 +631,7 @@
         function showCourier(){
             var courierId,courierName;
             var arr = new Array();
-
+            
             $('.courier').each(function(i,item){
                 var aa = $(item).children('div').hasClass('checked');
                 var obj = $(this).find('input');
@@ -601,8 +646,8 @@
             })
             $('.courier_val').empty();
             var gcVal = {{$gcVal|json_encode}};
-
-
+            
+            
             for(var i=0;i<arr.length;i++){
                 var str = gcVal[arr[i].courierId];
                 if (str == undefined) str = '';
@@ -611,8 +656,8 @@
             }
         }
         /* 快递 */
-
-
+        
+        
         var edit = function () {
             $("#eg").addClass("no-padding");
             $('.click2edit').summernote({
@@ -625,13 +670,16 @@
             var aHTML = $('.click2edit').code(); //save HTML If you need(aHTML: array).
             $('.click2edit').destroy();
         };
-
+        
         $(".goodsAdd").click(function(){
-            var data = $("#form").serializeArray();
+            // var data = $("#form").serializeArray();
+            var data = new FormData($("#form")[0]);
             $.ajax({
                 url:'goodsEditAction',
                 type:'post',
                 data:data,
+                processData: false,
+                contentType: false,
                 success:function(res){
                     if(res.code == 200){
                         location.reload();
@@ -642,9 +690,9 @@
                 }
             });
         });
-
-
-
-                       
+        
+        
+        
+        
     </script>
 </block>
