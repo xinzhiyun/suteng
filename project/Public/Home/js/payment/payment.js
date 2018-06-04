@@ -2,15 +2,14 @@ var payment = new Vue({
 	el:"#app",
 	data(){
 		return{
-			blue:".blue",
-			gray:".gray",
 			search:"",			//搜索
 			deviceCode:[],		//设备编码
-			showModel: "" ,		//选择设备编码字体图标
+			showModel: "8" ,		//选择设备编码字体图标
 			userInfo:"",		//用户信息
 			setMeal:[],			//套餐
 			money:"0",			//支付金额
-			way:"微信支付",				//支付方式
+			index:"",			//支付方式的下标
+			way:["微信支付","支付宝支付","银联支付"],	//支付方式
 		}
 	},
 	methods:{
@@ -42,7 +41,6 @@ var payment = new Vue({
 					},
 					error:function(res){
 						console.log("失败",res);
-
 					}
 				});
 				console.log("成功查找数据!");
@@ -52,11 +50,11 @@ var payment = new Vue({
 		},
 		// 选择设备编码
 		select(even){
-			// var _this,e,el,index,deCode;
 			var _this = this;
 			var e = even || window.event;
 			e.preventDefault();
 			var el = e.target;
+			$(el).parent("li").css({"background":"#f5f5f5"}).siblings().css({"background":"#fff"});
 			var index = $(el).parent("li").attr("index");
 			switch(index){
 				case index:
@@ -64,8 +62,10 @@ var payment = new Vue({
 					break;
 			}
 			var deCode = $(el).parent("li").children().eq(0).text();
-			_this.urlPub("deCode",deCode);
-			$(".search").hide().next().hide().next().show();
+			setTimeout(function(){
+				_this.urlPub("deCode",deCode);
+				$(".search").hide().next().hide().next().show();
+			},1000);
 		},
 		// 选择套餐
 		mealSelect(money,even){
@@ -84,15 +84,17 @@ var payment = new Vue({
 				return false;
 			}
 			$(".mask2").show();
+			$("#two").css("color","#B3B3B3");
+			$("#three").css("color","#2EB6AA");
 		},
-		// 选择支付方式体图标
+		// 选择支付方式字体图标
 		Wayselect(even){
 			var _this = this;
 			var e = even || window.event;
 			e.preventDefault();
-			var el = e.target;
-			var index = $(el).parent("li").attr("index");
-			_this.way= $(el).text();
+			var el = e.currentTarget;
+			var index = $(el).attr("index");
+			_this.index = index;
 			switch(index){
 				case index:
 					_this.showModel = index;
@@ -106,15 +108,15 @@ var payment = new Vue({
 		// 立即支付
 		payBut(){
 			var _this = this;
-			if(_this.way == "微信支付"){
+			if(_this.way[_this.index] == "微信支付"){
 				console.log("微信支付");
 				_this.urlPub("Pay",1);
 				return false;
-			}else if(_this.way == "支付宝支付"){
+			}else if(_this.way[_this.index] == "支付宝支付"){
 				console.log("支付宝支付");
 				_this.urlPub("Pay",1);
 				return false;
-			}else if(_this.way == "银联支付"){
+			}else if(_this.way[_this.index] == "银联支付"){
 				console.log("银联支付");
 				_this.urlPub("Pay",1);
 				return false;
@@ -122,10 +124,6 @@ var payment = new Vue({
 				noticeFn({text:"请选择支付方式",time:"1500"});
 				return false;
 			}
-			setTimeout(function(){
-				var url = getURL("Home","Index/payment");
-				location.href = url;
-			},1000);
 		}
 	},
 	created:function(){
@@ -164,6 +162,10 @@ var payment = new Vue({
 				$("#three").css("color","#2EB6AA");
 				$(".search").hide().next().hide().next().hide().next().hide().next().show();
 				$("body").css({"background":"#fff"});
+				setTimeout(function(){
+					var url = getURL("Home","Index/payment");
+					location.href = url;
+				},1000);
 			}
 		}
 	},
