@@ -838,7 +838,7 @@ class ShopController extends CommonController
                 // $res = $order->where('order_id='.$id)->save($data);
 
                 $postData = I('post.');
-                $orderDetail = D('orderDetail');
+                $orderDetail = D('ShopOrderDetail');
                 $orderDetail->startTrans();
                 $order = D('shopOrder')->where(['order_id'=>$postData['orderid']])->field('g_type')->find();
 
