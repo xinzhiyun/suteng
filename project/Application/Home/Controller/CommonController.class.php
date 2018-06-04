@@ -22,13 +22,13 @@ class CommonController extends Controller
         $weixin = new WeixinJssdk;
 
         // 前端调试通道
-        $_SESSION['open_id'] = 'onLe70al8Nsr48CH4lpTPDhAuNVM';
+        $_SESSION['open_id'] = 'onLe70WUA8z0I_P5qqCmN66_Cl34';
 
         // 获取用户open_id
         if(empty($_SESSION['open_id'])){
 
             // 如果不存在则，跳转获取open_id,并缓存
-//              $_SESSION['open_id'] = $weixin->GetOpenid();
+              $_SESSION['open_id'] = $weixin->GetOpenid();
         }
 
         // 获取用户open_id

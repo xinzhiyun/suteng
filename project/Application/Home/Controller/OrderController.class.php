@@ -28,7 +28,7 @@ class OrderController extends CommonController
         $map = [];
         isset($condition['g_type']) ? $map['so.g_type'] = $condition['g_type']: '';
         isset($condition['status']) ? $map['so.status'] = array('in',\implode(',',$condition['status'])): '';
-        $order = D('OrderDetail');
+        $order = D('ShopOrderDetail');
         $order->alias('od');
         $order->join('st_shop_order so ON so.order_id = od.order_id','LEFT');
         $order->relation(['pics','product']);
@@ -96,7 +96,7 @@ class OrderController extends CommonController
                     case 0;
                         break;
                     case 1;
-                        $waitpaylist[$i]['productList'] = D('order_detail')
+                        $waitpaylist[$i]['productList'] = D('shop_order_detail')
                         ->alias('d')
                         ->where($dWhere)
                         ->join('__GOODS__ g ON g.id = d.gid','LEFT')
@@ -108,7 +108,7 @@ class OrderController extends CommonController
                         break;
                     case 2;
                                             // 订单详情
-                        $waitpaylist[$i]['productList'] = M('order_detail')
+                        $waitpaylist[$i]['productList'] = M('shop_order_detail')
                         ->alias('d')
                         ->where($dWhere)
                         ->join('__FILTERS__ f ON f.id = d.gid','LEFT')
@@ -206,7 +206,7 @@ class OrderController extends CommonController
 
                 //多个商品
                 if($list) {
-                    $list['detail'] =  M('order_detail')->where(['order_id'=>$list['order_id']])->select();
+                    $list['detail'] =  M('shop_order_detail')->where(['order_id'=>$list['order_id']])->select();
 
                 }
               
@@ -362,7 +362,7 @@ class OrderController extends CommonController
             $uid = $_SESSION['user']['id'];
             $data = D('shop_order')->alias('so')
                                 ->where(['so.uid'=>$uid,'gd.is_install'=>1])
-                                ->join('st_order_detail od ON od.order_id = so.order_id','LEFT')
+                                ->join('st_shop_order_detail od ON od.order_id = so.order_id','LEFT')
                                 ->join('st_pic pic ON od.gid = pic.gid','LEFT')
                                 ->join('st_goods g ON od.gid = g.id','LEFT')
                                 ->join('st_goods_detail gd ON od.gid = gd.gid','LEFT')
@@ -480,7 +480,7 @@ class OrderController extends CommonController
                 
                 case 1:
                         $subsql = D('refund_goods')->where(['oid'=>$orderid])->field('gid')->select(false);
-                        $data = D('order_detail')                        
+                        $data = D('shop_order_detail')
                         ->alias('d')
                         // ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'d.gid'=>['NEQ','rg.gid'],'rg.oid'=>['NEQ',$orderid]])
                         ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'g.id'=>['exp',"NOT IN ($subsql)"]])
@@ -496,7 +496,7 @@ class OrderController extends CommonController
 
                 case 2:
                         $subsql = D('refund_goods')->where(['oid'=>$orderid])->field('gid')->select(false);
-                        $data = M('order_detail')                        
+                        $data = M('shop_order_detail')
                         ->alias('d')
                         // ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'d.gid'=>['NEQ','rg.gid'],'rg.oid'=>['NEQ',$orderid]])
                         ->where(['d.order_id'=>$orderid,'so.uid'=>$_SESSION['user']['id'],'f.id'=>['exp',"NOT IN ($subsql)"]])

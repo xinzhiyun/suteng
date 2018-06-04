@@ -16,7 +16,7 @@ class RefundController extends CommonController
             foreach ($data as $key => $value) {
                 foreach ($value['goods'] as $k => $val) {
                     if(I('g_type') == 1){
-                        $data[$key]['goods'][$k] = M('order_detail')
+                        $data[$key]['goods'][$k] = M('shop_order_detail')
                             ->alias('d')
                             ->where(['d.order_id'=>$val['oid'],'d.gid'=>(int)$val['gid']])
                             ->join('__GOODS__ g ON g.id = d.gid','LEFT')
@@ -25,7 +25,7 @@ class RefundController extends CommonController
                             ->field(array('p.path'=>'orderimg','g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire'))
                             ->find();
                     } elseif(I('g_type') == 2){
-                        $data[$key]['goods'][$k] = M('order_detail')
+                        $data[$key]['goods'][$k] = M('shop_order_detail')
                         ->alias('d')
                         ->where(['d.order_id'=>$val['oid'],'d.gid'=>(int)$val['gid']])
                         ->join('__FILTERS__ f ON f.id = d.gid','LEFT')
@@ -102,17 +102,17 @@ class RefundController extends CommonController
             //查看退货表中退货商品的总数
             $rgNum = M('refund_goods')->where('oid='.$order_id)->count();
             //查看订单表中所有的商品总数
-            $odNum = M('order_detail')->where('order_id='.$order_id)->count();
+            $odNum = M('shop_order_detail')->where('order_id='.$order_id)->count();
 
             //如果退货数量小于总数，说明订单还有产品是要发的
             if ($rgNum < $odNum) {
                 // 将订单状态更改为退货处理中
                 D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>10]);
-                D('order_detail')->where(['order_id'=>$order_id])->setField(['status'=>10]);
+                D('shop_order_detail')->where(['order_id'=>$order_id])->setField(['status'=>10]);
             } else {
                 // 将订单状态更改为退货处理中
                 D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>6]);
-                D('order_detail')->where(['order_id'=>$order_id])->setField(['status'=>6]);
+                D('shop_order_detail')->where(['order_id'=>$order_id])->setField(['status'=>6]);
             }
 
             

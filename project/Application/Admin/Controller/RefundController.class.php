@@ -39,14 +39,14 @@ class RefundController extends CommonController
         // $goods = $orderDetail->select();
         
 
-        $orderDetail = D('orderDetail');
+        $orderDetail = D('ShopOrderDetail');
         foreach ($data['goods'] as $key => $value) {
             $orderDetail->union('select num,price,st_goods.name,st_order_detail.gpic from st_order_detail LEFT JOIN st_goods ON st_order_detail.gid = st_goods.id  where order_id = '.$value['oid'].' AND st_order_detail.gid ='.$value['gid']);
         } 
             $orderDetail->field('num,price,st_goods.name,st_order_detail.gpic');
             $orderDetail->join('st_goods ON st_order_detail.gid = st_goods.id','LEFT');
             // $orderDetail->join('st_pic ON st_order_detail.gid = st_pic.gid','LEFT');
-            $orderDetail->where('st_order_detail.id < 0');
+            $orderDetail->where('st_shop_order_detail.id < 0');
         $goods = $orderDetail->select();
         // dump($goods);
         $this->assign('goods',$goods);
@@ -69,6 +69,18 @@ class RefundController extends CommonController
             return $this->ajaxReturn(['code'=>400,'msg'=>'id和状态必须为数字']);
         }
         try {
+
+            //先判断用户退货方式  1.仅退款  2.退货退款
+            $refundList = M('refund')->where('id='.$id)->find();
+
+            dump($refundList);
+
+
+            die;
+
+
+
+
             //先查询该订单的支付类型
             $order_id = M('refund_goods')->where('rf_id='.$id)->find()['oid'];
 
@@ -123,7 +135,7 @@ class RefundController extends CommonController
 
                         //修改订单状态前先判断该订单下是否还有未发货的商品
                         //1.先查询订单中的商品
-                        $od = M('order_detail')->where("order_id='{$order_id}'")->select();
+                        $od = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
 
                         //订单中所有商品的id
                         $ids = array();
@@ -191,7 +203,7 @@ class RefundController extends CommonController
                 case '3':
                     //金币
                     //先查询商品订单总价
-                    $odetail = M('order_detail')->where("order_id='{$order_id}'")->select();
+                    $odetail = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
 
                     foreach ($odetail as $key => $value) {
                         //订单总价
@@ -232,7 +244,7 @@ class RefundController extends CommonController
                         
                         //修改订单状态前先判断该订单下是否还有未发货的商品
                         //1.先查询订单中的商品
-                        $od = M('order_detail')->where("order_id='{$order_id}'")->select();
+                        $od = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
 
                         //订单中所有商品的id
                         $ids = array();
@@ -289,7 +301,7 @@ class RefundController extends CommonController
                 case '4':
                     //银币
                     //先查询商品订单总价
-                    $odetail = M('order_detail')->where("order_id='{$order_id}'")->select();
+                    $odetail = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
 
                     foreach ($odetail as $key => $value) {
                         //订单总价
@@ -328,7 +340,7 @@ class RefundController extends CommonController
 
                         //修改订单状态前先判断该订单下是否还有未发货的商品
                         //1.先查询订单中的商品
-                        $od = M('order_detail')->where("order_id='{$order_id}'")->select();
+                        $od = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
 
                         //订单中所有商品的id
                         $ids = array();
@@ -379,10 +391,7 @@ class RefundController extends CommonController
                     }
 
                     break;
-            }
-            
-
-            die;
+            }       
             
         } catch (\Exception $e) {
             $err = [
@@ -402,7 +411,7 @@ class RefundController extends CommonController
         $data = D('shop_order')->alias('so')
                             ->where(['gd.is_install'=>1])
                             ->where($map)
-                            ->join('st_order_detail od ON od.order_id = so.order_id','LEFT')
+                            ->join('st_shop_order_detail od ON od.order_id = so.order_id','LEFT')
                             ->join('st_pic pic ON od.gid = pic.gid','LEFT')
                             ->join('st_goods g ON od.gid = g.id','LEFT')
                             ->join('st_users u ON so.uid = u.id','LEFT')
@@ -423,7 +432,7 @@ class RefundController extends CommonController
     public function updateInstalled($id,$status)
     {
         if (is_numeric($id) && is_numeric($status)){
-            $res = D('order_detail')->where('id='.$id)->setField('is_installed',$status);
+            $res = D('shop_order_detail')->where('id='.$id)->setField('is_installed',$status);
             if ($res) {
                 return $this->ajaxReturn(['code'=>200,'msg'=>'修改成功']);
             } else{
