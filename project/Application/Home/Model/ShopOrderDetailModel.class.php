@@ -13,7 +13,6 @@ class OrderDetailModel extends RelationModel
             'mapping_name'  => 'pics',
             'mapping_fields' => 'path'
         ),
-
         'good'=>array(
             'mapping_type'  => self::BELONGS_TO,
             'class_name'    => 'goods',
@@ -21,7 +20,6 @@ class OrderDetailModel extends RelationModel
             'mapping_name'  => 'product',
             'mapping_fields' => 'name,desc'
         ),
-
     );
 
     // 查询订单数据
