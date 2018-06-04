@@ -121,7 +121,7 @@ class PaymentSystemController extends CommonController
         try {
             $goods = D('Goods');
             $orders = D('ShopOrder');
-            $order_detail = D('OrderDetail');
+            $order_detail = D('ShopOrderDetail');
             
             $orders->startTrans();
             $order['uid'] = session('user.id');
@@ -195,7 +195,7 @@ class PaymentSystemController extends CommonController
             $uid = session('user.id');
 
             $shopOrder = D('ShopOrder');
-            $orderDetail = D('OrderDetail');
+            $orderDetail = D('ShopOrderDetail');
             $inventory = D('inventory');
             
             $shopOrder->startTrans();

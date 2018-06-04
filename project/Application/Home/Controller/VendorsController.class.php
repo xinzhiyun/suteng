@@ -964,7 +964,7 @@ class VendorsController extends Controller
 //
 //        $this->assign('data',$data);
         $map['order_id'] = I('order_id');
-        M('order_detail')->where($map)-
+        M('shop_order_detail')->where($map)-
         $this->display();
     }
 

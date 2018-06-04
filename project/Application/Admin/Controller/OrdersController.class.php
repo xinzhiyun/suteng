@@ -110,7 +110,7 @@ class OrdersController extends CommonController
 
         //逻辑修改
         //1.先查询订单中的商品
-        $od = M('order_detail')->where("order_id='{$order_id}'")->select();
+        $od = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
 
         //订单中所有商品的id
         $ids = array();
