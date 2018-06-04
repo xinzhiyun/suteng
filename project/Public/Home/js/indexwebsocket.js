@@ -108,6 +108,7 @@ window.onload = function(){
     // 获取设备id
     // var deviceId=228733445596778;
     websoket.onopen=function(){
+        console.log('websocket已连接');
         //包数据
         ajson={
             "DeviceID":deviceId,
@@ -130,7 +131,7 @@ window.onload = function(){
         //console.log(dataList.LeasingMode);
         _status=dataList.DeviceStause;
         machineStatus();//执行水机状态方法
-        console.log(dataList);
+        console.log('message: ',dataList);
         
         if(dataList.PackType=="Select")//返回查询数据类型数据
          {	//console.log(dataList);

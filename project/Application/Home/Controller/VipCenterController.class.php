@@ -30,6 +30,13 @@ class VipCenterController extends CommonController
         // // 执行查询
         $user = M('users')->where($showUser)->find();
 
+        //如果是分销商，则从分销商出获取会员分享码
+        if ($user['ticket'] == '0') {
+            $vInfo = M('vendors')->where($showUser)->find();
+
+            $user['ticket'] = $vInfo['vendor_user'];
+        }
+
 
         // 查询会员收益合计
         $showCommission['user_code'] = $user['code'];
@@ -55,6 +62,8 @@ class VipCenterController extends CommonController
             ->select();
         $orderNum = count($orderData);
         // 分配数据
+
+        // dump($user);
 
         $this->assign('user',$user);
         $this->assign('comData',$comData);

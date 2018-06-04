@@ -688,7 +688,15 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
         display: block !important;
     }
 }
-
+.magnify-modal {
+    width: 90% !important;
+    height: 90% !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    margin: auto !important;
+}
 .btn {
     border-radius: 3px;
 }
