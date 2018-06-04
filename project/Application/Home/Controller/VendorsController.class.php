@@ -964,7 +964,7 @@ class VendorsController extends Controller
 //
 //        $this->assign('data',$data);
         $map['order_id'] = I('order_id');
-        M('order_detail')->where($map)-
+        M('shop_order_detail')->where($map)-
         $this->display();
     }
 
@@ -1130,6 +1130,7 @@ class VendorsController extends Controller
 
 
         $showDataA['leavel'] = array(array('egt',2),array('elt',4));
+        $showDataA['status'] = 7;
         if ($leavel == 1) {
             $showDataA['office_code'] = $code;
             $vendor_a = M('vendors')->where($showDataA)->select();

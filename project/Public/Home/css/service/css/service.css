@@ -7,9 +7,6 @@
 .right {
   color: #545454;
 }
-.wrap {
-  display: none;
-}
 .wrap .header {
   width: 100%;
 }
@@ -23,15 +20,19 @@
 .wrap .header .sub_head label {
   width: 100%;
 }
-.wrap .header .sub_head label span {
+.wrap .header .sub_head label i {
   width: 15%;
-  height: 1.78571429rem;
+  height: 1.66666667rem;
+  line-height: 1.66666667rem;
+  text-align: center;
   display: inline-block;
+  color: #aeaeae;
 }
 .wrap .header .sub_head label input {
   width: 80%;
-  height: 1.78571429rem;
+  height: 1.66666667rem;
   border: none;
+  outline: none;
   font-size: 0.66666667rem;
   font-weight: normal;
 }
@@ -71,6 +72,9 @@
   line-height: 2.61904762rem;
   text-align: center;
   color: #808080;
+}
+.detail {
+  display: none;
 }
 .detail .user ul:nth-child(1) {
   width: 100%;

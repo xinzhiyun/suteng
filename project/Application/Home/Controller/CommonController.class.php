@@ -17,20 +17,18 @@ class CommonController extends Controller
      */
     public function _initialize()
     {
-
-
         // $_SESSION = null;
         // 实例化微信JSSDK
         $weixin = new WeixinJssdk;
+
+        // 前端调试通道
+        $_SESSION['open_id'] = 'onLe70WUA8z0I_P5qqCmN66_Cl34';
 
         // 获取用户open_id
         if(empty($_SESSION['open_id'])){
 
             // 如果不存在则，跳转获取open_id,并缓存
               $_SESSION['open_id'] = $weixin->GetOpenid();
-            // 前端调试通道
-//           $_SESSION['open_id'] = 'onLe70UOYRAS057fUzuCbyTYKRFo';
-
         }
 
         // 获取用户open_id

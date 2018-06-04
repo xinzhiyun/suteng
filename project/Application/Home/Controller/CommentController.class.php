@@ -57,7 +57,7 @@ class CommentController extends CommonController
            
             $comment->startTrans();
             // 根据订单获取所有商品
-            $goods = D('order_detail')->where(['order_id'=>$orderid])->field('gid')->select();
+            $goods = D('shop_order_detail')->where(['order_id'=>$orderid])->field('gid')->select();
             foreach($goods as $key => $value){
                 // 判断该用户是否已经对这个商品评价过，如果评价过，就不能评价了           
                 if($comment->where(['uid'=>$data['uid'],'gid'=>$value['gid'],'order_id'=>$orderid])->find()){                   
@@ -164,9 +164,9 @@ class CommentController extends CommonController
                    
            }
             
-            $res = D('Order_detail')->where(['order_id'=>$orderid,'gid'=>$gid])->setField(['status'=>7]);
+            $res = D('shop_order_detail')->where(['order_id'=>$orderid,'gid'=>$gid])->setField(['status'=>7]);
 
-            $count = D('Order_detail')->where(['order_id'=>$orderid,'status'=>['NEQ',7]])->count();
+            $count = D('shop_order_detail')->where(['order_id'=>$orderid,'status'=>['NEQ',7]])->count();
             if($count < 1){
                 D('ShopOrder')->where(['uid'=>$uid,'order_id'=>$orderid])->setField(['status'=>7]);
             }

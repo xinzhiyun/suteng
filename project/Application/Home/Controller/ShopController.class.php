@@ -119,7 +119,7 @@ class ShopController extends CommonController
         try {
             $fliter = D('Filters');
             $orders = D('shop_order');
-            $order_detail = D('OrderDetail');
+            $order_detail = D('ShopOrderDetail');
             $data = json_decode($_POST['data'],'true');
             $orders->startTrans();
             $order['uid'] = session('user.id');
@@ -260,7 +260,7 @@ class ShopController extends CommonController
     public function shoppingdetail()
     {
         
-        $sold_num = D('order_detail')->field('count(num) as sum')->where(['gid'=>I('gid')])->select();
+        $sold_num = D('shop_order_detail')->field('count(num) as sum')->where(['gid'=>I('gid')])->select();
         $cartInfo = M('Cart')->where('uid='.session('user.id'))->count();
         $this->assign('cartInfo',$cartInfo);
         $this->assign('sold_num',$sold_num[0]['sum']);

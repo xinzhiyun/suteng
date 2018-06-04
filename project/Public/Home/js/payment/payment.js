@@ -122,6 +122,10 @@ var payment = new Vue({
 				noticeFn({text:"请选择支付方式",time:"1500"});
 				return false;
 			}
+			setTimeout(function(){
+				var url = getURL("Home","Index/payment");
+				location.href = url;
+			},1000);
 		}
 	},
 	created:function(){
