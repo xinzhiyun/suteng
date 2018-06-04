@@ -1130,6 +1130,7 @@ class VendorsController extends Controller
 
 
         $showDataA['leavel'] = array(array('egt',2),array('elt',4));
+        $showDataA['status'] = 7;
         if ($leavel == 1) {
             $showDataA['office_code'] = $code;
             $vendor_a = M('vendors')->where($showDataA)->select();
