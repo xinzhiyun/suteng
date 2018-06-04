@@ -322,7 +322,7 @@ class WeiXinPayController extends Controller
                   $uid = $showAddres['uid'];
 
                   $shopOrder = D('ShopOrder');
-                  $orderDetail = D('OrderDetail');
+                  $orderDetail = D('ShopOrderDetail');
                   $inventory = D('inventory');
 
                   $rs = $shopOrder->where(['order_id'=>$order_id,'uid'=>$uid])->setField(['status'=>9]);

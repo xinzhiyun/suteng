@@ -28,7 +28,7 @@ class OrderController extends CommonController
         $map = [];
         isset($condition['g_type']) ? $map['so.g_type'] = $condition['g_type']: '';
         isset($condition['status']) ? $map['so.status'] = array('in',\implode(',',$condition['status'])): '';
-        $order = D('OrderDetail');
+        $order = D('ShopOrderDetail');
         $order->alias('od');
         $order->join('st_shop_order so ON so.order_id = od.order_id','LEFT');
         $order->relation(['pics','product']);

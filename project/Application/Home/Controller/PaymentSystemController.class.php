@@ -302,7 +302,7 @@ class PaymentSystemController extends CommonController
             
         // // 查询订单表
         $orderData = M('shop_order')->where($showWhere)->find();
-        $orders = M('OrderDetail')->where($showWhere)->field('cprice,num')->select();
+        $orders = M('ShopOrderDetail')->where($showWhere)->field('cprice,num')->select();
         $yunfei = 0;
         foreach($orders as $key => $val){
             $yunfei += $val['cprice'] * $val['num'];
@@ -346,7 +346,7 @@ class PaymentSystemController extends CommonController
                 $uid = $orderData['uid'];
 
                 $shopOrder = D('ShopOrder');
-                $orderDetail = D('OrderDetail');
+                $orderDetail = D('ShopOrderDetail');
                 $inventory = D('inventory');
 
                 $rs = $shopOrder->where(['order_id'=>$order_id,'uid'=>$uid])->setField(['status'=>9,'mode'=>3]);
@@ -407,7 +407,7 @@ class PaymentSystemController extends CommonController
             
         // // 查询订单表
         $orderData = M('shop_order')->where($showWhere)->find();
-        $orders = M('OrderDetail')->where($showWhere)->field('cprice,num')->select();
+        $orders = M('ShopOrderDetail')->where($showWhere)->field('cprice,num')->select();
         $yunfei = 0;
         foreach($orders as $key => $val){
             $yunfei += $val['cprice'] * $val['num'];
@@ -451,7 +451,7 @@ class PaymentSystemController extends CommonController
                 $uid = $orderData['uid'];
 
                 $shopOrder = D('ShopOrder');
-                $orderDetail = D('OrderDetail');
+                $orderDetail = D('ShopOrderDetail');
                 $inventory = D('inventory');
 
                 $rs = $shopOrder->where(['order_id'=>$order_id,'uid'=>$uid])->setField(['status'=>9,'mode'=>4]);

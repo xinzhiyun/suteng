@@ -76,7 +76,7 @@ class PayController extends Controller
 
         $orderid = $_SESSION['order']['orderid'];
 
-        $OrderDetail = M('OrderDetail')
+        $OrderDetail = M('ShopOrderDetail')
                         ->alias('od')
                         ->where('order_id='.$orderid)
                         ->join('st_goods g ON od.gid = g.id','LEFT')
@@ -122,7 +122,7 @@ class PayController extends Controller
 
         $orderid = $_SESSION['order']['orderid'];
 
-        $OrderDetail = M('OrderDetail')
+        $OrderDetail = M('ShopOrderDetail')
                         ->alias('od')
                         ->where('order_id='.$orderid)
                         ->join('st_goods g ON od.gid = g.id','LEFT')
@@ -159,7 +159,7 @@ class PayController extends Controller
 
         $orderid = $_SESSION['order']['orderid'];
 
-        $gids = M('OrderDetail')->where('order_id='.$orderid)->field('gid')->select();
+        $gids = M('ShopOrderDetail')->where('order_id='.$orderid)->field('gid')->select();
 
         $where['status'] = 0;
         $data = $address->where($where)->find();
@@ -192,7 +192,7 @@ class PayController extends Controller
         $data['cname'] = $_POST['postageData']['cname'];
 
         //更改订单快递信息
-        $so = M('OrderDetail');
+        $so = M('ShopOrderDetail');
 
         $info = $so->where('order_id='.$orderId.' AND gid='.$gid)->save($data);
 
