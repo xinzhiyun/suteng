@@ -134,7 +134,7 @@ class OrdersController extends CommonController
 
         // dump($map);die;
 
-        $couriers = D('orderDetail')->field('gid,gname,cid,cname')->where($map)->select();
+        $couriers = D('ShopOrderDetail')->field('gid,gname,cid,cname')->where($map)->select();
 
         // dump($cinfo);
 
