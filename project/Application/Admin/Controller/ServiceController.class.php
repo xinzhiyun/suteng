@@ -64,6 +64,36 @@ class ServiceController extends CommonController
     }
 
     /**
+     * 获取服务站
+     */
+    public function getService()
+    {
+        try {
+            $data = I('post.');
+            if(!empty($data['province_id'])){
+                $map['province_id'] = $data['province_id'];
+            }
+            if(!empty($data['city_id'])){
+                $map['city_id'] = $data['city_id'];
+            }
+            if(!empty($data['district_id'])){
+                $map['district_id'] = $data['district_id'];
+            }
+
+            $count = M('service')->where($map)->count();
+            $Page       = new \Think\Page($count,15);
+            $data = M('service')->where($map)
+                ->limit($Page->firstRow.','.$Page->listRows)
+                ->select();
+
+            $this->toJson(['data'=>$data],'获取成功!',200);
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+    /**
      * 添加服务站
      */
     public function addService()
@@ -358,5 +388,37 @@ class ServiceController extends CommonController
             $this->ajaxReturn(['code'=>400,'msg'=>'系统出现错误,请稍后重试......']); 
         }
     }
+
+
+    /**
+     * 服务站人员管理
+     */
+    public function people()
+    {
+        $area = M('area')->where('parentid=0')->select();
+
+        $count = M('service_users')->where($map)->count();
+        $Page       = new \Think\Page($count,15);
+        $data = M('service_users')->where($map)
+            ->alias('su')
+            ->join('__SERVICE__ s ON su.sid=s.id', 'LEFT')
+            ->limit($Page->firstRow.','.$Page->listRows)
+            ->field('su.*,s.company')
+            ->select();
+        page_config($Page);
+        $show       = $Page->show();
+
+        $assign = [
+            'area' => $area,
+            'city'=>$city,
+            'district'=>$district,
+            'data' => $data,
+            'page'=> bootstrap_page_style($show),
+        ];
+        $this->assign($assign);
+        $area = M('area')->where('parentid=0')->select();
+        $this->display();
+    }
+
 
 }

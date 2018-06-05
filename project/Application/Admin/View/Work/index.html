@@ -427,7 +427,7 @@
         var url = "{{:U('examine')}}";
         var id =  $(this).parents('tr').data('id');
         //询问框
-        parent.layer.confirm('您是如何看待前端开发？', {
+        parent.layer.confirm('工单审核', {
             btn: ['通过','不通过','取消'] //按钮
         }, function(){
             var is_examine = 1;
@@ -496,7 +496,7 @@
         $("#title").html(title);
         $('#edit_result').val(result);
 
-        
+
 
         // {{:U('Admin/work/edit_work','p='.I('get.p'))}}
 
