@@ -121,7 +121,7 @@
                                                     <if condition="empty($val['auid'])">
                                                         <a href="javascript:;" class="_set_account">设置账号</a>
                                                         <else/>
-                                                        <a href="javascript:;" class="_set_account">设置账号</a>
+                                                        <a href="javascript:;" onclick="_edit_account({{$val['auid']}})">修改密码</a>
                                                     </if>
                                                 </if>
                                                 <switch name="val.status">
@@ -472,6 +472,60 @@
             </div>
         </div>
     </div>
+    <div class="modal inmodal" id="st_edit_account" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" >
+                        修改账号密码
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div>下列表表单中，带 * 项表示必填项</div>
+                    <form id="setAccountformdata" method="post" >
+                        <input type="hidden" name="id" class="data_sid">
+                        <table class="table table-striped table-bordered table-hover table-condensed">
+                            <!-- <tr>
+                                <th width="25%">账号：<span style="color: red;">*</span></th>
+                                <td class="form-inline set_agent_search">
+                                    <input class="input-medium form-control" placeholder="请输入账号..." id="admin_user" type="text" name="company">
+                                </td>
+                            </tr> -->
+                            <tr>
+                                <th width="25%">旧密码：<span style="color: red;">*</span></th>
+                                <td class="form-inline set_agent_search set_agent_area_search">
+                                    <input class="input-medium form-control" placeholder="请输入密码..." id="edit_old_admin_password" type="password" name="company">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="25%">密码：<span style="color: red;">*</span></th>
+                                <td class="form-inline set_agent_search set_agent_area_search">
+                                    <input class="input-medium form-control" placeholder="请输入密码..." id="edit_admin_password" type="password" name="company">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="25%">确认密码：<span style="color: red;">*</span></th>
+                                <td >
+                                    <input class="input-medium form-control" placeholder="请再次输入密码..." id="edit_admin_repassword" type="password" name="company">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                </th>
+                                <td>
+                                    <input class="btn btn-success st-add" type="button" onclick="editAccount()" value="确认">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
     <script>
         var where_map = JSON.parse(JSON.stringify({{$_GET|json_encode}}));
@@ -775,10 +829,48 @@
                 }
             });
         }
+        
+        // 修改密码
+        function _edit_account(id)
+        {
+            admin_user_id = '';
+            window.admin_user_id = id;
+            $('#edit_old_admin_password').val('');
+            $('#edit_admin_password').val('');
+            $('#edit_admin_repassword').val('');
+            $('#st_edit_account').modal('show');
+        }
+        // 修改密码
+        function editAccount()
+        {
+            var old_password = $('#edit_old_admin_password').val();
+            var password = $('#edit_admin_password').val();
+            var repassword = $('#edit_admin_repassword').val();
 
-
-
-
+            $.ajax({
+                url:"{{:U('admin/Service/editpassword')}}",
+                type:'post',
+                dataType:'json',
+                // cache: false,
+                // contentType: false,
+                // processData: false,
+                data:{
+                    'admin_user_id' : admin_user_id,
+                    'oldpassword' : old_password,
+                    'password' : password,
+                    'repassword' : repassword
+                },
+                success:function(res){
+                    if(res.code == 200){
+                        location.reload();
+                        parent.layer.msg(res.msg);
+                    } else {
+                        parent.layer.close;
+                        parent.layer.msg(res.msg);
+                    }
+                }
+            });
+        }
 
         console.log(where_map);
 
