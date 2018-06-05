@@ -130,7 +130,7 @@
                                                         <a href="javascript:;" class="_agent">代管</a>
                                                     </case>
                                                     <case value="1">
-                                                        <a href="javascript:;" class="_edit">编辑</a>
+                                                        <!--<a href="javascript:;" class="_edit">编辑</a>-->
                                                         <a href="javascript:;" class="_agent">代管</a>
                                                         <a href="javascript:;" class="_close">关闭</a>
                                                     </case>
@@ -144,6 +144,7 @@
                                                     </case>
                                                     <case value="4">
                                                         <a href="javascript:;" class="_open">开通</a>
+                                                        <a href="javascript:;" class="_agent">代管</a>
                                                     </case>
                                                     <default />
                                                     <a href="javascript:;" class="_open">开通</a>
@@ -359,7 +360,7 @@
                                     <span style="color: red;">*</span>
                                 </th>
                                 <td>
-                                    <input class="input-medium form-control" placeholder="请输入服务站名称..." id="add_company" type="text" name="company">
+                                    <input class="input-medium form-control" placeholder="请输入服务站名称..." id="open_company" type="text" name="company">
                                 </td>
                             </tr>
                             <tr>
@@ -543,10 +544,35 @@ console.log(123);
         $("._open").click(function () {
             var tr = $(this).parents('tr');
 
-            $('#add_company').val(tr.data('company'));
+            $('#open_company').val(tr.data('company'));
             $('#add_area').val(tr.data('area'));
             $('#add_sid').val(tr.data('id'));
             $('#st-add').modal('show');
+        });
+
+        //关闭
+        $("._close").click(function () {
+            var tr = $(this).parents('tr');
+            var id = tr.data('id');
+
+            parent.layer.confirm('确定关闭服务站吗？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                var index = parent.layer.load(2, {
+                    shade: [0.6,'#ccc'] //0.1透明度的白色背景
+                });
+                getInfo("{{:U('setClose')}}",function (res) {
+                    if(res.status == 200){
+                        parent.layer.closeAll();
+                        location.reload();
+                        parent.layer.msg(res.msg);
+                    } else {
+                        parent.layer.closeAll();
+                        parent.layer.msg(res.msg);
+                    }
+                },{id:id})
+            });
+
         });
 
         //代管

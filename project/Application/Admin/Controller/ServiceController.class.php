@@ -62,7 +62,7 @@ class ServiceController extends CommonController
     }
 
     /**
-     * 开通服务站
+     * 添加服务站
      */
     public function addService()
     {
@@ -96,6 +96,10 @@ class ServiceController extends CommonController
     {
         try {
             if(empty($_POST['id']))E('数据错误',201);
+
+            if(empty($_POST['address']) || empty($_POST['phone']) || empty($_POST['name']) || empty($_POST['company']) || empty($_POST['telephone'])){
+                E('参数错误',40002);
+            }
 
             $old = M('service')->find($_POST['id']);
             if(empty($old))E('服务站不存在',201);
@@ -292,5 +296,26 @@ class ServiceController extends CommonController
         }
     }
 
+    /**
+     * 关闭
+     */
+    public function setClose()
+    {
+        try {
+            $data = I('post.');
+            if(empty($data['id'])){
+                E('数据错误',40001);
+            }
+            $res = M('service')->where('id='.$data['id'])->save(['status'=>4,'updatetime'=>time()]);
+            if($res){
+                E('关闭成功',200);
+            }else{
+                E('关闭失败',40002);
+            }
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
 
 }

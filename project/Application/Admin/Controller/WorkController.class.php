@@ -109,6 +109,36 @@ class WorkController extends CommonController
     }
 
     /**
+     * 审核工单
+     */
+    public function examine()
+    {
+        try {
+            $data = I('post.');
+
+            if(empty($data['id']) || empty($data['is_examine'])){
+                E('数据错误',40002);
+            }
+            $map['id'] = $data['id'];
+            if($data['is_examine'] ==2){
+                $savetata['result']=9;
+            }else{
+                $savetata['result']=0;
+            }
+            $savetata['is_examine'] = $data['is_examine'];
+            $res = M('work')->where($map)->save($savetata);
+            if($res) {
+                E('修改成功',200);
+            } else {
+                E('修改失败,请重试!',201);
+            }
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+    /**
      * 修改工单处理状态
      * @param  [type] $id     [description]
      * @param  [type] $result [description]

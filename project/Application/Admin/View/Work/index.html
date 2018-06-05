@@ -72,7 +72,8 @@
                                     <tr><td><h3>暂无工单.....</h3></td></tr>
                                 <else />
                                     <volist name="pageList.data" id="val">
-                                        <tr>
+                                        <tr data-id="{{$val.id}}" data-number="{{$val.number}}" data-title="{{$val.title}}"
+                                            data-type="{{$val.type}}" data-content="{{$val.content}}" data-result="{{$val['result']}}">
                                             <td>{{$val.number}}</td>
                                             <td>{{$val.title}}</td>
                                             <td>
@@ -87,20 +88,36 @@
                                             <td style="">{{$val.province}}&nbsp;{{$val.city}}&nbsp;{{$val.district}}</td>
                                             <td style="">{{$val.address}}</td>
                                             <td>
-                                                <switch name="val.result">
-                                                    <case value="0">未处理</case>
-                                                    <case value="1">正在处理</case>
-                                                    <case value="2">已处理</case>
-                                                    <default />
-                                                </switch>
+                                                <if condition="$val['is_examine'] eq 0">待审核
+                                                    <elseif condition="$val['is_examine'] eq 2"/>审核未通过
+                                                    <else />
+                                                    <switch name="val.result">
+                                                        <case value="0">待处理</case>
+                                                        <case value="1">正在处理</case>
+                                                        <case value="2">已处理</case>
+                                                        <default />
+                                                    </switch>
+                                                </if>
                                             </td>
                                             <td>{{$val.create_at|date='Y-m-d H:i:s',###}}</td>
                                             <td>{{$val['time'] ? $val.time|date='Y-m-d H:i:s',### : ''}}</td>
-                                            <td><lt name="val.result" value="2"><a class="btn btn-outline btn-success" data-id="{{$val.id}}" data-number="{{$val.number}}" data-title="{{$val.title}}" data-type="{{$val.type}}" data-content="{{$val.content}}" data-result="{{$val['result'] + 1}}" href="javascript:;" onclick="edit(this,{{$val.id}})"><switch name="val.result">
-                                                    <case value="0">委派</case>
-                                                    <case value="1">处理</case>
-                                                    <default />
-                                                </switch></a></lt></td>
+                                            <td>
+                                                <if condition="$val['is_examine'] eq 0">
+                                                    <a class="btn btn-outline btn-success acction_examine" href="javascript:;">审核</a>
+                                                    <elseif condition="$val['is_examine'] eq 2"/>
+                                                    <a class="btn btn-outline btn-success acction_examine" href="javascript:;">重新审核</a>
+                                                    <else />
+                                                    <switch name="val.result">
+                                                        <case value="0">
+                                                            <a class="btn btn-outline btn-success _edit" data-action="send">委派</a>
+                                                        </case>
+                                                        <case value="1">
+                                                            <a class="btn btn-outline btn-success _edit" data-action="over">完成</a></case>
+                                                        <default />
+                                                        <a class="btn btn-outline btn-success _edit" data-action="close">关闭</a></case>
+                                                    </switch>
+                                                </if>
+                                            </td>
                                         </tr>
                                     </volist>
                                 </empty>
@@ -242,7 +259,15 @@
                                             <p id="title"></p>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr class="edit_box edit_box_over">
+                                        <th>
+                                            客户反馈：
+                                        </th>
+                                        <td>
+                                            <textarea class="form-control" name="feedback" cols="55" rows="5"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr class="edit_box edit_box_send">
                                         <th>
                                             委派人：
                                         </th>
@@ -250,7 +275,7 @@
                                             <input class="input-medium" type="text" name="name" id="edit_name" class="form-control" value="">
                                         </td>
                                     </tr>
-                                     <tr>
+                                    <tr class="edit_box edit_box_send">
                                         <th>
                                             电话：
                                         </th>
@@ -398,47 +423,96 @@
         //     //    }
         //     // });
         // });
-    function edit(obj,id){
-        var id      = $(obj).data('id');
-            number  = $(obj).data('number');
-            title   = $(obj).data('title');
-            result    = $(obj).data('result');
-            p = "{{:I('get.p')}}";
-            $("input[name='id']").val(id);
-            $('#number').html(number);
-            $("#title").html(title); 
-            $('#edit_result').val(result);
+    $('.acction_examine').click(function () {
+        var url = "{{:U('examine')}}";
+        var id =  $(this).parents('tr').data('id');
+        //询问框
+        parent.layer.confirm('您是如何看待前端开发？', {
+            btn: ['通过','不通过','取消'] //按钮
+        }, function(){
+            var is_examine = 1;
+            getInfo(url,{id:id,is_examine:is_examine});
+        }, function(){
+            var is_examine = 2;
+            getInfo(url,{id:id,is_examine:is_examine});
+        });
 
-            if (result == 2) {
-                $('#edit_name').parent().parent().hide();
-                $('#edit_phone').parent().parent().hide();
-                $('#edit_submit').val('完成处理');
-                $('#edit-modal-title').text('确认工单');               
-            } else {
-                $('#edit_name').parent().parent().show();
-                $('#edit_phone').parent().parent().show();
-                $('#edit_submit').val('委派');
-                $('#edit-modal-title').text('委派工单');
-            }
+    });
 
-            // 表单验证
-
-            // {{:U('Admin/work/edit_work','p='.I('get.p'))}}
-
-            $('.edit_errmsg').text('');
-            $('#st-edit').modal('show');
-
+    function getInfo(url, data, Callback) {
+        if(url){
+            $.ajax({
+                url:url,
+                type:'post',
+                dataType:'json',
+                cache: false,
+                data:data,
+                success:function(res){
+                    if(res.status == 200){
+                        if(Callback){
+                            Callback(res);
+                        }else{
+                            location.reload();
+                            parent.layer.msg(res.msg);
+                        }
+                    } else {
+                        parent.layer.closeAll();
+                        parent.layer.msg(res.msg);
+                    }
+                }
+            });
+        }
     }
+
+    $('._edit').click(function(){
+        var obj = $(this).parents('tr');
+        var id = obj.data('id');
+        number  = obj.data('number');
+        title   = obj.data('title');
+        result    = obj.data('result');
+
+        var action = $(this).data('action');
+        $('.edit_box').hide();
+        var submit = "提交";
+        var pagetitle = "修改工单";
+        if(action == 'send'){//委派
+            pagetitle = "工单派遣";
+            $('.edit_box_send').show();
+
+        }else if(action == 'over'){//完成
+            var pagetitle = "工单完成";
+            $('.edit_box_over').show();
+        }else{//关闭
+
+        }
+
+         $('#edit_submit').val(submit);
+         $('#edit-modal-title').text(pagetitle);
+
+
+        // p = "{{:I('get.p')}}";
+        $("input[name='id']").val(id);
+        $('#number').html(number);
+        $("#title").html(title);
+        $('#edit_result').val(result);
+
+        
+
+        // {{:U('Admin/work/edit_work','p='.I('get.p'))}}
+
+        $('.edit_errmsg').text('');
+        $('#st-edit').modal('show');
+    });
     $('#edit_submit').click(function(){        
         var editdata = {
                 'id' : $('#edit_id').val(),
                 'result' : $('#edit_result').val()
             }
-            if (result === 1) {
+            if (result == 0) {
                 editdata.name = $('#edit_name').val();
                 editdata.phone = $('#edit_phone').val();
             }
-            // console.log(editdata);
+            console.log(editdata);
         $.ajax({
            type: "POST",
            url: "{{:U('Admin/work/edit')}}",
