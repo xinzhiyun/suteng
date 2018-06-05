@@ -431,26 +431,27 @@ body {
 .shangpingnei+p.noborder{
 	border:none;
 }
-.shangpingnei>.tuikuangLeft,.shangpingnei>.tuikuangRight{
+.shangpingnei .tuikuangLeft,
+.shangpingnei .tuikuangRight{
 	float: left;
 
 }
-.shangpingnei>.tuikuangLeft{
+.shangpingnei .tuikuangLeft{
 	
 	width: 28%;
 	height: 3.3rem;
 	/*background: red;*/
 }
-.shangpingnei>.tuikuangLeft>img{
+.shangpingnei .tuikuangLeft>img{
 	width: 100%;
 	height: 100%;
 }
-.shangpingnei>.tuikuangRight{
+.shangpingnei .tuikuangRight{
 	/*background: green;*/
 	width: 72%;
 		padding: 0.2rem;
 }
-.shangpingnei>.tuikuangRight>span{
+.shangpingnei .tuikuangRight>span{
 	line-height: 1.0rem;
 	display: inline-block;
     overflow: hidden;
@@ -463,14 +464,14 @@ body {
     color: #5A5A5A;
     font-size: 0.68rem;
 }
-.shangpingnei>.tuikuangRight>p{
+.shangpingnei .tuikuangRight>p{
 	padding: 0.24rem 0;
 }
-.shangpingnei>.tuikuangRight>p>b{
+.shangpingnei .tuikuangRight>p>b{
 	color:#fc2a2b;
 	font-size: 0.68rem;
 }
-.shangpingnei>.tuikuangRight>p>span{
+.shangpingnei .tuikuangRight>p>span{
 	float: right;
 	color:#fc2a2b;
 	font-size: 0.72rem;
