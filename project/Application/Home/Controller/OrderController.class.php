@@ -189,7 +189,7 @@ class OrderController extends CommonController
 
             $map['order_id'] = $map['order_id'];
 
-//            $map['order_id'] = '500985865733851';
+//            $map['order_id'] = '756742671570657';
             $data['status'] = 3;
 //            $data['addtime'] = '12';
             $info = M('shop_order')->where($map)->save($data);
@@ -204,12 +204,13 @@ class OrderController extends CommonController
                   ('st_goods b on a.gid = b.id')->where(['a
                 .g_type'=>1,'a.status'=>3,'a.order_id'=>$map['order_id']])->find();
 
+
                 //多个商品
                 if($list) {
                     $list['detail'] =  M('shop_order_detail')->where(['order_id'=>$list['order_id']])->select();
 
                 }
-              
+
                 if ($list['invitation_code'] != null) {
 
                     if ($list['g_price'] < $list['g_cost']) {
@@ -234,7 +235,8 @@ class OrderController extends CommonController
                     $c_info = M('vendors')->where(['code'=>$list['invitation_code']])->find();
                    //查出推荐人的推荐人
                     $f_info = M('vendors')->where(['code'=>$c_info['office_code']])->find();
-
+//                    dump($c_info);exit;
+                    
                     //销售奖(卖商品的经销商)
                     if ($f_info) {
 //                        $earnings_comc = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_c);
