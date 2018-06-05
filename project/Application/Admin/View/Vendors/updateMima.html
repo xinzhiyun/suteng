@@ -37,9 +37,10 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">密码<span class="mustbe">&nbsp;*</span></label>
 
-                                <div class="col-md-3">
+                                <div class="col-md-3" style='position: relative;'>
                                     <input type="password" name="password" class="form-control">
                                     <span class='warn'>请输入密码</span>
+                                    <span style='position: absolute;right:-50%;top:20%;'>(不能输入跟之前一样的密码)</span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -53,7 +54,7 @@
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-primary subbtn" type="button">确认修改</button>
+                                    <button class="btn btn-primary subbtn" type="submit">确认修改</button>
                                     <button class="btn btn-white" type="reset">重置</button>
                                 </div>
                             </div>
@@ -63,26 +64,25 @@
                         var form = document.querySelector('#form');
                         var subbtn = document.querySelector('.subbtn');
                         var warn = document.querySelectorAll('.warn');
-                        subbtn.onclick = function(){
-                            var pwd = $('input[name=password]');
-                            var repwd = $('input[name=repassword]');
+                        form.onsubmit = function(){
+                            var pwd = $('input[name="password"]');
+                            var repwd = $('input[name="repassword"]');
                             if(!pwd.val().trim()){
                                 warn[0].style.display = 'block';
-                                return
+                                return false
                             }else{
                                 warn[0].style.display = 'none';
                             }
                             if(!repwd.val().trim()){
                                 warn[1].style.display = 'block';
-                                return
+                                return false
                             }else{
                                 warn[1].style.display = 'none';
                             }
-                            if(pwd != repwd){
+                            if(pwd.val().trim() != repwd.val().trim()){
                                 alert('两次输入不一致');
-                                return
+                                return false
                             }
-                            form.onsubmit();
 
                         }
                     </script>
