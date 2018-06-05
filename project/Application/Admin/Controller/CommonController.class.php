@@ -18,7 +18,7 @@ class CommonController extends Controller
      * @author 潘宏钢 <619328391@qq.com>
      */
     public function _initialize()
-    {	
+    {
     	// 登录检测
     	if(empty($_SESSION['adminInfo'])) $this->redirect('Login/index');
         $vid = session('adminInfo.id');
@@ -56,9 +56,9 @@ class CommonController extends Controller
     {
         $auth = new \Think\Auth();
 
-        if( session('adminInfo.user') == 'admin' ){
+        if( session('adminInfo.type') == 1 ){
             return true;
-        }
+        } 
 
         $name = MODULE_NAME."/".CONTROLLER_NAME."/".ACTION_NAME;
         // echo $name;die;
