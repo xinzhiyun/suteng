@@ -45,7 +45,9 @@ class ServiceController extends CommonController
         $count = M('service')->where($map)->count();
         $Page       = new \Think\Page($count,15);
         $data = M('service')->where($map)
+            ->join('__ADMIN_USER__ ad ON st_service.auid=ad.id', 'LEFT')
             ->limit($Page->firstRow.','.$Page->listRows)
+            ->field('st_service.*,ad.user auser')
             ->select();
         page_config($Page);
         $show       = $Page->show();

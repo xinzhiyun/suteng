@@ -93,9 +93,9 @@
                                             <td>{{$val.address}}</td>
                                             <td>
                                                 <if condition="$val['status'] eq 1">
-                                                    <if condition="empty($val['user'])">
+                                                    <if condition="empty($val['auid'])">
                                                         无账号
-                                                        <else/>{{$val.user}}
+                                                        <else/>{{$val.auser}}
                                                     </if>
                                                     <elseif condition="$val['status'] eq 2"/>
                                                     代管:<a href="{{:U('detail')}}?id={{$val.t_id}}">{{$val.t_company}}</a>
