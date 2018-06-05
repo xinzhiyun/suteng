@@ -203,9 +203,27 @@
                             <tr>
                                 <th width="25%">所属服务站：<span style="color: red;">*</span></th>
                                 <td >
-                                    <select class="form-control" name="t_id" id="st_set_agent_sel">
+                                    <select class="form-control" name="t_id" id="st_top_add_form_service">
                                         <option value="">--请选择--</option>
                                     </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="25%">姓名：<span style="color: red;">*</span></th>
+                                <td >
+                                    <input class="input-medium form-control" placeholder="请输入姓名..." type="text" name="name">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="25%">密码：<span style="color: red;">*</span></th>
+                                <td >
+                                    <input class="input-medium form-control" placeholder="请输入姓名..." type="password" name="password">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="25%">确认密码：<span style="color: red;">*</span></th>
+                                <td >
+                                    <input class="input-medium form-control" placeholder="请输入姓名..." type="password" name="repassword">
                                 </td>
                             </tr>
 
@@ -468,15 +486,17 @@
     <script>
         var where_map = JSON.parse(JSON.stringify({{$_GET|json_encode}}));
         var areaUrl = "{{:U('Admin/Area/getNextArea')}}";
-        var areaUrl = "{{:U('Admin/Service/getService')}}";
+        var getServiceUrl = "{{:U('Admin/Service/getService')}}";
         var _html = '<option value="">--请选择--</option>';
         // 人员添加
         $('.top_add').click(function () { $('#st_top_add').modal('show'); });
         // 服务站检索
         $('.set_top_add_area_search select').change(function(){
+            var parentid = $(this).val();
+            $("#st_top_add_form_service").html(_html);
+            if(!parentid)return false;
             var index = $(this).index();
             if(index == 0){ $(this).nextAll().html(_html); }
-            var parentid = $(this).val();
             _this = this;
             getInfo(areaUrl,{parentid:parentid},function(res){
                 if(res.status == 200){
@@ -487,20 +507,27 @@
                     $(_this).next().html(new_html);
                 }
             });
-            getInfo(areaUrl,{parentid:parentid},function(res){
+
+
+            var serviceMap = {};
+            serviceMap.province_id = $('.set_top_add_area_search select').eq(0).val();
+            serviceMap.city_id     = $('.set_top_add_area_search select').eq(1).val();
+            serviceMap.district_id = $('.set_top_add_area_search select').eq(2).val();
+
+            getInfo(getServiceUrl,serviceMap,function(res){
                 if(res.status == 200){
                     var new_html = _html;
                     $.each(res.data,function (i,val) {
-                        new_html += '<option value="'+val.id+'">'+val.areaname+'</option>';
+                        new_html += '<option value="'+val.id+'">'+val.company+'</option>';
                     });
-                    $(_this).next().html(new_html);
+                    $("#st_top_add_form_service").html(new_html);
                 }
             });
 
         });
 
         // ajax
-        function getInfo(url, data, Callback) {
+        function getInfo(url, data, Callback,closeMode=false) {
             if(url){
                 $.ajax({
                     url:url,
@@ -517,7 +544,9 @@
                                 parent.layer.msg(res.msg);
                             }
                         } else {
-                            parent.layer.closeAll();
+                            if(closeMode){
+                                parent.layer.closeAll();
+                            }
                             parent.layer.msg(res.msg);
                         }
 

@@ -39,7 +39,6 @@ class ServiceController extends CommonController
         }
 
 
-
         $area = M('area')->where('parentid=0')->select();
 
         $count = M('service')->where($map)->count();
@@ -79,12 +78,16 @@ class ServiceController extends CommonController
             if(!empty($data['district_id'])){
                 $map['district_id'] = $data['district_id'];
             }
-
+            $map['status'] = 1;
             $count = M('service')->where($map)->count();
+            if(empty($count)){
+                $this->toJson(['data'=>[]],'无数据,请重试!',40001);
+            }
             $Page       = new \Think\Page($count,15);
             $data = M('service')->where($map)
                 ->limit($Page->firstRow.','.$Page->listRows)
                 ->select();
+
 
             $this->toJson(['data'=>$data],'获取成功!',200);
 

@@ -58,7 +58,7 @@ class CommonController extends Controller
 
         if( session('adminInfo.type') == 1 ){
             return true;
-        } 
+        }
 
         $name = MODULE_NAME."/".CONTROLLER_NAME."/".ACTION_NAME;
         // echo $name;die;
