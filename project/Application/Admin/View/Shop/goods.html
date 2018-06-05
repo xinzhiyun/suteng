@@ -99,12 +99,12 @@
                                             {{$v['name']}}
                                         </td>
                                         <td>
-                                            <empty name="v.pics">
+                                            <!-- <empty name="v.pics">
                                                 <a class="btn btn-white" href="javascript:;" goodsId="{{$v['gid']}}" onclick="addpic(this)">添加图片</a>
                                             <else />
                                                 <a class="" href="javascript:;" goodsId="{{$v['gid']}}" onclick="addpic(this)"><img src="/Uploads/{{$v['pics'][0].path}}"></a>
-                                                
-                                            </empty>
+                                            </empty> -->
+                                            <a class="" href="javascript:;" goodsId="{{$v['gid']}}"><img src="/Uploads/{{$v['pics'][0].path}}"></a>
                                         </td>
                                         <td>
                                             <foreach name="v.attr_val" item="vo" >
@@ -187,7 +187,7 @@
                         添加图片
                     </h4>
                 </div>
-                <div class="modal-body">
+                <!-- <div class="modal-body">
                     <form id="pic" onsubmit="false" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="gid" value="">
                         <table class="table table-striped table-bordered table-hover table-condensed">
@@ -210,7 +210,7 @@
                             </tr>
                         </table>
                     </form>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -300,32 +300,32 @@
                 }
             });
         })
-
-        $(".add-pic").click(function(){
-            $("#st-pic-add").modal('hide');
-            var formData = new FormData(document.getElementById("pic"));
-            var id = $("input[name='gid']").val();
-            $.ajax({
-                url: 'goodsAddPic?id='+id ,
-                type: 'post',
-                data: formData,
-                async: false,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (res) {
-                    if(res.code == 200){
-                        location.reload();
-                        parent.layer.msg(res.msg);
-                    } else {
-                        parent.layer.msg(res.msg);
-                    }
-                },
-                error: function (res) {
-                    parent.layer.msg(res.msg);
-                }
-            });
-        })
+        // 添加图片
+        // $(".add-pic").click(function(){
+        //     $("#st-pic-add").modal('hide');
+        //     var formData = new FormData(document.getElementById("pic"));
+        //     var id = $("input[name='gid']").val();
+        //     $.ajax({
+        //         url: 'goodsAddPic?id='+id ,
+        //         type: 'post',
+        //         data: formData,
+        //         async: false,
+        //         cache: false,
+        //         contentType: false,
+        //         processData: false,
+        //         success: function (res) {
+        //             if(res.code == 200){
+        //                 location.reload();
+        //                 parent.layer.msg(res.msg);
+        //             } else {
+        //                 parent.layer.msg(res.msg);
+        //             }
+        //         },
+        //         error: function (res) {
+        //             parent.layer.msg(res.msg);
+        //         }
+        //     });
+        // })
         
 
         $('.btn-group').on('click','.deletBnt',function(e){
@@ -336,7 +336,7 @@
                 shade: true //不显示遮罩
             }, function(){
                 $.ajax({
-                    url:'{{:U('goodsDel')}}',
+                    url:'{{:U("goodsDel")}}',
                     type:'post',
                     dataType:'json',
                     data:{'id':goodsId},
@@ -362,7 +362,7 @@
                 }, function() {
                     // alert(status);
                     $.ajax({
-                        url:'{{:U('edidStatus')}}',
+                        url:'{{:U("edidStatus")}}',
                         data:{'id':id,'status':status},
                         type:'post',
                         dataType:'json',
@@ -387,7 +387,7 @@
             var gid = $(this).attr('goods');
             var html = "";
             $.ajax({
-                url:'{{:U('price')}}',
+                url:'{{:U("price")}}',
                 type:'post',
                 data:{'gid':gid},
                 success:function(res){
@@ -445,7 +445,7 @@
             var gid = $(this).attr('cgoods');
             var html = "";
             $.ajax({
-                url:'{{:U('goodsCourierList')}}',
+                url:'{{:U("goodsCourierList")}}',
                 type:'post',
                 data:{'gid':gid},
                 success:function(res){

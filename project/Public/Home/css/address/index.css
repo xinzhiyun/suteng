@@ -249,19 +249,9 @@ body {
     width: 100%;
     display: block;
     color: #373737;
+    padding: 0 4%;
 }
-#footer>a>input {
-    width: 7vmin;
-    height: 7vmin;
-    margin: 0 20px;
-    left: 0;
-    border-radius: 4px;
-    -webkit-appearance:none;
-    border: none;
-    color: #fff;
-    line-height: 7.5vmin;
-    vertical-align: middle;
-    font-size: 1.5rem;
-    text-align: center;
-    background: #2EB6AA;
+#footer>a>i {
+    color: #2EB6AA;
+    font-size: .9rem;
 }    

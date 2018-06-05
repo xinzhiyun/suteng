@@ -1,7 +1,7 @@
 <?php
 namespace Home\Model;
 use Think\Model\RelationModel;
-class OrderDetailModel extends RelationModel
+class ShopOrderDetailModel extends RelationModel
 {
 
     protected $_link = array(

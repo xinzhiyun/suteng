@@ -74,7 +74,7 @@ class WorkController extends CommonController
             $data['city']       = I('post.city');
             $data['district']       = I('post.district');
             $data['address']    = I('post.address');
-            $data['number']     = $this->getWorkNumber();
+            $data['number']     = getWorkNumber();
             $data['create_at']  = time();
 
             $device_type = D('work');
@@ -172,18 +172,18 @@ class WorkController extends CommonController
     }
 
 
-    /**
-     * 生成工单编号
-     * @return [type] [description]
-     */
-    protected function getWorkNumber()
-    {
-        $date = new Date(time());
-        $string = new Strings;
-        $dateStr = $date->format("%Y%m%d%H%M");   // 根据时间戳生成的字符串
-        $str1 = $string->randString(3,0);   // 生成字母随机字符
-        $str2 = $string->randString(5,1);   // 生成数字随机字符
-        $workNumber = $str1.$dateStr.$str2;
-        return $workNumber;
-    }
+//    /**
+//     * 生成工单编号
+//     * @return [type] [description]
+//     */
+//    protected function getWorkNumber()
+//    {
+//        $date = new Date(time());
+//        $string = new Strings;
+//        $dateStr = $date->format("%Y%m%d%H%M");   // 根据时间戳生成的字符串
+//        $str1 = $string->randString(3,0);   // 生成字母随机字符
+//        $str2 = $string->randString(5,1);   // 生成数字随机字符
+//        $workNumber = $str1.$dateStr.$str2;
+//        return $workNumber;
+//    }
 }

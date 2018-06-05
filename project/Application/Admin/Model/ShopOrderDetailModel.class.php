@@ -1,7 +1,7 @@
 <?php
 namespace Admin\Model;
 use Think\Model;
-class OrderDetailModel extends BaseModel
+class ShopOrderDetailModel extends BaseModel
 {
     public function getInfo($where=array())
     {

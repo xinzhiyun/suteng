@@ -105,7 +105,7 @@ class PaymentSystemController extends CommonController
     {   
         // echo json_decode($_POST['data']);
         $data = json_decode($_POST['data'],'true');
-        // dump($data);die;
+//         dump($data);die;
         // 库存检测
         $result=[];
         foreach($data as $val){
@@ -142,9 +142,9 @@ class PaymentSystemController extends CommonController
                     ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
                     ->join('__PRICE__ pr ON g.id=pr.gid','LEFT')
                     ->join('__PIC__ p ON g.id=p.gid','LEFT')
-                    ->field('pr.price,gd.cost,g.name,g.desc,p.path')
+                    ->field('pr.price,gd.cost,g.name,gd.desc,p.path,gd.is_install')
                     ->find();
-                // dump($arr);die;
+
                 $order['g_cost'] += $value['num']*$arr['cost'];
                 $detail['order_id'] = $order['order_id'];
                 $detail['gid'] = $value['gid'];
@@ -155,6 +155,7 @@ class PaymentSystemController extends CommonController
                 $detail['gdes'] = $arr['desc'];
                 $detail['gpic'] = $arr['path'];
                 $detail['addtime'] = time();
+                $detail['is_install'] = $arr['is_install'];
                 $detail_statut = $order_detail->add($detail);
 
                 if(!$detail_statut) E('请重新结算',603);
@@ -265,7 +266,6 @@ class PaymentSystemController extends CommonController
     public function orderPay()
     {
         if(IS_POST){
-            // echo 1;
             // // 准备订单查询数据
             $showWhere['order_id'] = I('post.order');
                 
@@ -278,6 +278,9 @@ class PaymentSystemController extends CommonController
                 $money = $orderData['g_price'];
                 // 订单号码
                 $order_id = $orderData['order_id'];
+
+
+
                 // 订单描述
                 $content = '速腾商城商品购买';
                 $openId = $_SESSION['open_id'];

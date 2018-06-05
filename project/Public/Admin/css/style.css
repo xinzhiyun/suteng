@@ -688,7 +688,15 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
         display: block !important;
     }
 }
-
+.magnify-modal {
+    width: 90% !important;
+    height: 90% !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    margin: auto !important;
+}
 .btn {
     border-radius: 3px;
 }
@@ -7994,4 +8002,37 @@ body.skin-3 {
         width: 12.5%;
         font-size: 12px
     }
+}
+
+/* 商品管理添加图片 */
+.disPics {
+    position: relative;
+}
+.disPics > p {
+    width: 7rem;
+}
+.disPics > input[type='file'] {
+    position: absolute;
+    top: 0; 
+    left: .2rem;
+    width: 8rem;
+    opacity: 0;
+}
+.picShow > span{
+    display: inline-block;
+    width: 8rem;
+    height: 5rem;
+    text-align: center;
+    position: relative;
+    margin-right: .8rem;
+}
+.picShow > span > img {
+    height: 100%;
+    width: 100%;
+}
+.picShow > span > i {
+    position: absolute;
+    top: -1rem;
+    right: -.4rem;
+    color: red;
 }

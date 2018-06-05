@@ -8,7 +8,7 @@
 	<title>添加新地址</title>
     <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
     <script>
-        var vconsole = new VConsole();
+        // var vconsole = new VConsole();
     </script>
 </head>
 <body>
@@ -131,6 +131,7 @@
 				/*
 					编辑地址
 				 */
+
 				if(editName != editAddressOld.name){		//如果修改了姓名
 					editAddressObj['name'] = editName;
 				}
@@ -143,13 +144,13 @@
 			    	editAddressObj['city'] = city;
 			    	editAddressObj['area'] = area;
 
-					editAddressObj['province'] = $(".province").find(".addrselect").text();
-					editAddressObj['city'] = $(".city").find(".addrselect").text();
-					editAddressObj['area'] = $(".area").find(".addrselect").text();
-					editAddressObj['address'] = editAddressObj['province']+editAddressObj['city']+editAddressObj['area']+editAddressObj['town']+$("#addressDetial").val();
+			    	editAddressObj['province_id'] = province_id;
+			    	editAddressObj['city_id'] = city_id;
+			    	editAddressObj['area_id'] = area_id;
+					editAddressObj['address'] = editAddressObj['province']+editAddressObj['city']+editAddressObj['area']+$("#addressDetial").val();
 					
 				}else{
-					editAddressObj['address'] = editAddressOld['province']+editAddressOld['city']+editAddressOld['area']+editAddressOld['town']+$("#addressDetial").val();
+					editAddressObj['address'] = editAddressOld['province']+editAddressOld['city']+editAddressOld['area']+$("#addressDetial").val();
 				}
 				// console.log(addressChange)
 				// console.log('editAddressOld: ',editAddressOld)
@@ -291,9 +292,9 @@
 		    	newAddressObj['province'] = province;
 		    	newAddressObj['city'] = city;
 		    	newAddressObj['area'] = area;
-		    	newAddressObj['province_id'] = province_id;
-		    	newAddressObj['city_id'] = city_id;
-		    	newAddressObj['area_id'] = area_id;
+		    	newAddressObj['province_id'] = window.province_id;
+		    	newAddressObj['city_id'] = window.city_id;
+		    	newAddressObj['area_id'] = window.area_id;
 		    	newAddressObj['addressDetial'] = $("#addressDetial").val();
 		    	if($("#normalAddrdess").attr("checked")){
 		    		//设为默认地址
@@ -375,6 +376,7 @@
 
 	</script>
 	<script>
+		var province_id,city_id,area_id;
 		// 选择地区
 		$(".areabtn").on("click", function(){
 			$("#areaChoose").css({display: "block"});
@@ -413,7 +415,6 @@
 		});
 
 		var province,city,area;
-		var province_id,city_id,area_id;
 		// 选择省份，城市，区县
 		$('.areaDiv').on('click', 'p', function(){
 			var parent = $(this).parent()[0].className;

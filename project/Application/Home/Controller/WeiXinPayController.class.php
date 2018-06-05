@@ -162,11 +162,11 @@ class WeiXinPayController extends Controller
                 // 用户ID
                 $showAddres['uid']      = $orderData['uid'];
                 // 默认的地址
-                $showAddres['status']   = 0;
+//                $showAddres['status']   = 0;
                 // 快递地址ID
-                $saveOrderDara['address_id'] = M('address')->where($showAddres)->find()['id'];
+//                $saveOrderDara['address_id'] = M('address')->where($showAddres)->find()['id'];
                 // 准备更新数据
-//                $saveOrderDara['status'] = 9;
+                $saveOrderDara['status'] = 9;
                 // 支付类型
                 $saveOrderDara['mode'] = 0;
                 // 执行更新操作
@@ -199,7 +199,7 @@ class WeiXinPayController extends Controller
                 //商品销售佣金
                 $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.g_cost,a.g_price,a.g_num,b.vid,c.id ccid,c.code,c.invitation_code,c.superiors_code,c.superior_code,c.abonus')->join('st_goods b on a.gid = b.id')->join('st_vendors c on b.vid = c.id')->where(['a
                 .g_type'=>1,'a.status'=>7,'a.order_id'=>$saveOrder['order_id']])->select();
-                echo M('ShopOrder as a')->getLastSql();
+//                echo M('ShopOrder as a')->getLastSql();
                 // echo $open_id.'-'.$yj.'-'.$jb.'-'.$yb;die;
                 // 分配佣金
                 $this->branch_commission($open_id,$order_id,$yj,$jb,$yb);
