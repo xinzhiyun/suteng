@@ -43,10 +43,10 @@
 			<div class="sel">
 				<p>相关设备</p>
 				<ul @click="select">
-					<li v-for="(d,index) in deviceCode" :index="index">
+					<li v-for="(d,num) in deviceCode" :index="num">
 						<span class="am-u-sm-10" v-text="d.code">868575025659808</span>
-						<span class="am-u-sm-2 iconfont icon-selectcircle" v-if="showModel == index ? true : false"></span>
-						<span class="am-u-sm-2 iconfont icon-emptycircle" v-if="showModel == index ? false : true"></span>
+						<span class="am-u-sm-2 iconfont icon-selectcircle" v-if="showModel == num ? true : false"></span>
+						<span class="am-u-sm-2 iconfont icon-emptycircle" v-if="showModel == num ? false : true"></span>
 					</li>
 				</ul>
 			</div>
@@ -106,27 +106,27 @@
 				<p class="am-u-sm-4" @click="close"><span class="iconfont icon-chacha"></span></p>
 				<p class="am-u-sm-8"><span>￥200.00</span></p>
 			</div>
-			<ul @click="Wayselect">
+			<ul>
 				<li>选择支付方式</li>						
-				<li index="0">
+				<li index="0" @click="Wayselect">
 					<i class="iconfont icon-weixin2 am-u-sm-2"></i>
 					<span class="am-u-sm-8">微信支付</span>
 					<i class="iconfont icon-xuanzhongduigou am-u-sm-1" v-if="showModel == 0 ? true : false" style="color:#56AAF1;"></i>
 					<i class="iconfont icon-fangxingweixuanzhong am-u-sm-1" v-if="showModel == 0 ? false : true"></i>
 				</li>
-				<li index="1">
+				<li index="1" @click="Wayselect">
 					<i class="iconfont icon-zhifubao am-u-sm-2"></i>
 					<span class="am-u-sm-8">支付宝支付</span>
 					<i class="iconfont icon-xuanzhongduigou am-u-sm-1" v-if="showModel == 1 ? true : false" style="color:#56AAF1;"></i>
 					<i class="iconfont icon-fangxingweixuanzhong am-u-sm-1" v-if="showModel == 1 ? false : true"></i>
-				<li index="2">
+				<li index="2" @click="Wayselect">
 					<img src="__PUBLIC__/Home/images/yl.png" alt="" class="am-u-sm-2">
 					<span class="am-u-sm-8">银联支付</span>
 					<i class="iconfont icon-xuanzhongduigou am-u-sm-1" v-if="showModel == 2 ? true : false" style="color:#56AAF1;"></i>
 					<i class="iconfont icon-fangxingweixuanzhong am-u-sm-1" v-if="showModel == 2 ? false : true"></i>			
 				</li>
 			</ul>
-			<div class="payBot" @click="payBut" :way="way">
+			<div class="payBot" @click="payBut" :index="index">
 				<input type="botton" value="立即支付">
 			</div>
 		</div>

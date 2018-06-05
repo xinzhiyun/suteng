@@ -423,6 +423,8 @@ class ShopController extends CommonController
         $goodsCourier = $goodsInfo['goods_courier'];
         $goodsDetail = $goodsInfo['goods_detail'];
 
+        $goodsPics = D('pic')->where(['gid'=>$id])->select();
+        p($goodsPics);
         //处理属性所属
         foreach ($attrVal as $value) {
             $attrValArr[]=$value['aid'];
@@ -485,8 +487,22 @@ class ShopController extends CommonController
     public function goodsEditAction()
     {
 
-
-        // dump($_POST);
+        if(!empty($_FILES)){
+            $upload = new \Think\Upload();// 实例化上传类
+            $upload->maxSize   =     3145728 ;// 设置附件上传大小
+            $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
+            $upload->rootPath  =     './Uploads/'; // 设置附件上传根目录
+            $upload->savePath  =     ''; // 设置附件上传（子）目录
+            // 上传文件 
+            $info   =   $upload->upload();
+            if(!$info) {// 上传错误提示错误信息
+                // $this->error($upload->getError());
+            }else{// 上传成功
+                // $this->success('上传成功！');
+            }
+            p($info);
+        }
+        p($_FILES);die;
 
         // die;
         try{

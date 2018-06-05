@@ -276,6 +276,7 @@
 .mask2 ul li i:nth-child(3) {
   font-size: 1.19047619rem;
   font-weight: lighter;
+  color: #3333;
 }
 .mask2 ul li span {
   font-size: 0.80952381rem;

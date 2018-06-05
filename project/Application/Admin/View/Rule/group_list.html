@@ -29,6 +29,9 @@
                                     用户名
                                 </th>
                                 <th>
+                                    用户类型
+                                </th>
+                                <th>
                                     操作
                                 </th>
                             </tr>
@@ -44,6 +47,14 @@
                                         </th>
                                         <td>
                                             {{$v['user']}}
+                                        </td>
+                                        <td>
+                                            <switch name="v.type">
+                                                <case value="1">超级管理员</case>
+                                                <case value="2">经销商</case>
+                                                <case value="3">服务站</case>
+                                                <default />
+                                            </switch>
                                         </td>
                                         <td>
                                             <if condition="$v['id'] eq 1 && $v['user'] eq 'admin'">

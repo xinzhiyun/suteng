@@ -318,4 +318,43 @@ class ServiceController extends CommonController
         }
     }
 
+    public function addAccount()
+    {
+        $service_id = I('post.service_id');
+        $data['user'] = I('post.user');
+        $data['password'] = I('post.password');
+        $data['repassword'] = I('post.repassword');
+        $rules = array(
+            array('user','','帐号名称已经存在！',0,'unique',1), // 在新增的时候验证name字段是否唯一
+            array('repassword','password','确认密码不正确',0,'confirm'), // 验证确认密码是否和密码一致
+            array('password','checkPwd','密码格式不正确',0,'function'), // 自定义函数验证密码格式
+       );
+       $User = M("adminUser"); // 实例化User对象
+       if (!$User->validate($rules)->create($data)){
+            // 如果创建失败 表示验证没有通过 输出错误提示信息
+            $this->ajaxReturn(['code'=>10001,'msg'=>$User->getError()]);
+       }else{
+            // 验证通过 可以进行其他数据操作
+       }
+        // 判断账号是否注册过
+        $auid = D('service')->find($service_id);    
+        if($auid['auid']){
+            $this->ajaxReturn(['code'=>10002,'msg'=>'该服务站已经注册过后台账号']);
+        }
+        // 注册账号
+        $uid = $User->add([
+            'user'=>I('post.user'),
+            'password'=>md5(I('password')),
+            'type'=>3,
+            'addtime'=>time(),
+            'updatetime'=>time()
+        ]);
+        $res = D('service')->where(['id'=>$service_id])->setField(['auid'=>$uid]);
+        if($res){
+            $this->ajaxReturn(['code'=>200,'msg'=>'用户添加成功','data'=>$data]);
+        }else{
+            $this->ajaxReturn(['code'=>400,'msg'=>'系统出现错误,请稍后重试......']); 
+        }
+    }
+
 }
