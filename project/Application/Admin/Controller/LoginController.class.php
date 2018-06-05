@@ -14,7 +14,7 @@ class LoginController extends Controller
             if(!$res) $this->error('验证码不对');
 
             $password = md5($_POST['password']);
-            $info = M('vendors')->where("user='{$_POST['name']}'")->find();
+            $info = M('adminUser')->where("user='{$_POST['name']}'")->find();
 
             if($info){
                 if ($info['password'] == $password) {
