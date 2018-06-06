@@ -441,7 +441,8 @@ class ServiceController extends CommonController
                 empty($post['name']) ||
                 empty($post['password']) ||
                 empty($post['repassword']) ||
-                empty($post['phone']))
+                empty($post['phone']) ||
+                empty($post['sn']) )
             {
                 E('数据不完整', 201);
             }
