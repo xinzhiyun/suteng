@@ -384,13 +384,14 @@ class PayController extends Controller
                     ];
                     break;
             }
+
             $this->assign('grade',$grade);
             $this->assign('annual',$pp);
             $this->display();
         } else {
 
             $annual = M('annual')->find();
-             
+
             $this->assign('grade',$grade);
             $this->assign('annual',$annual);
             $this->display();
