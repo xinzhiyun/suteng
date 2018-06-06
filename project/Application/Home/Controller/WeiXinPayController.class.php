@@ -328,8 +328,11 @@ class WeiXinPayController extends Controller
                 foreach ($install_list as $ins){
                     $install_data['gid'] = $ins['gid'];
                     $install_data['gname'] = $ins['gname'];
-                    $install_data['gnum'] = $ins['num'];
-                    $dataList[] = $install_data;
+                    $ins['num'] = $ins['num']?:1;
+//                    $install_data['gnum'] = $ins['num'];
+                    for ($i=0;$i<$ins['num'];$i++){
+                        $dataList[] = $install_data;
+                    }
                 }
                 $device_install->addAll($dataList);
 
