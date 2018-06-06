@@ -39,13 +39,14 @@ class ServiceController extends CommonController
         }
 
 
-
         $area = M('area')->where('parentid=0')->select();
 
         $count = M('service')->where($map)->count();
         $Page       = new \Think\Page($count,15);
         $data = M('service')->where($map)
+            ->join('__ADMIN_USER__ ad ON st_service.auid=ad.id', 'LEFT')
             ->limit($Page->firstRow.','.$Page->listRows)
+            ->field('st_service.*,ad.user auser')
             ->select();
         page_config($Page);
         $show       = $Page->show();
@@ -62,7 +63,41 @@ class ServiceController extends CommonController
     }
 
     /**
-     * 开通服务站
+     * 获取服务站
+     */
+    public function getService()
+    {
+        try {
+            $data = I('post.');
+            if(!empty($data['province_id'])){
+                $map['province_id'] = $data['province_id'];
+            }
+            if(!empty($data['city_id'])){
+                $map['city_id'] = $data['city_id'];
+            }
+            if(!empty($data['district_id'])){
+                $map['district_id'] = $data['district_id'];
+            }
+            $map['status'] = 1;
+            $count = M('service')->where($map)->count();
+            if(empty($count)){
+                $this->toJson(['data'=>[]],'无数据,请重试!',40001);
+            }
+            $Page       = new \Think\Page($count,15);
+            $data = M('service')->where($map)
+                ->limit($Page->firstRow.','.$Page->listRows)
+                ->select();
+
+
+            $this->toJson(['data'=>$data],'获取成功!',200);
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+    /**
+     * 添加服务站
      */
     public function addService()
     {
@@ -96,6 +131,10 @@ class ServiceController extends CommonController
     {
         try {
             if(empty($_POST['id']))E('数据错误',201);
+
+            if(empty($_POST['address']) || empty($_POST['phone']) || empty($_POST['name']) || empty($_POST['company']) || empty($_POST['telephone'])){
+                E('参数错误',40002);
+            }
 
             $old = M('service')->find($_POST['id']);
             if(empty($old))E('服务站不存在',201);
@@ -292,6 +331,29 @@ class ServiceController extends CommonController
         }
     }
 
+    /**
+     * 关闭
+     */
+    public function setClose()
+    {
+        try {
+            $data = I('post.');
+            if(empty($data['id'])){
+                E('数据错误',40001);
+            }
+            $res = M('service')->where('id='.$data['id'])->save(['status'=>4,'updatetime'=>time()]);
+            if($res){
+                E('关闭成功',200);
+            }else{
+                E('关闭失败',40002);
+            }
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+    // 设置服务站后台登录账号
     public function addAccount()
     {
         $service_id = I('post.service_id');
@@ -329,7 +391,73 @@ class ServiceController extends CommonController
         }else{
             $this->ajaxReturn(['code'=>400,'msg'=>'系统出现错误,请稍后重试......']); 
         }
-        
     }
 
+
+    /**
+     * 服务站人员管理
+     */
+    public function people()
+    {
+        $area = M('area')->where('parentid=0')->select();
+
+        $count = M('service_users')->where($map)->count();
+        $Page       = new \Think\Page($count,15);
+        $data = M('service_users')->where($map)
+            ->alias('su')
+            ->join('__SERVICE__ s ON su.sid=s.id', 'LEFT')
+            ->limit($Page->firstRow.','.$Page->listRows)
+            ->field('su.*,s.company')
+            ->select();
+        page_config($Page);
+        $show       = $Page->show();
+
+        $assign = [
+            'area' => $area,
+            'city'=>$city,
+            'district'=>$district,
+            'data' => $data,
+            'page'=> bootstrap_page_style($show),
+        ];
+        $this->assign($assign);
+        $area = M('area')->where('parentid=0')->select();
+        $this->display();
+    }
+
+
+    // 修改服务站后台账号密码
+    public function editpassword()
+    {
+        $id = I('post.admin_user_id');
+        $data['oldpassword'] = I('post.oldpassword');
+        $data['password'] = I('post.password');
+        $data['repassword'] = I('post.repassword');
+        $rules = array(
+            array('repassword','password','确认密码不正确',0,'confirm'), // 验证确认密码是否和密码一致
+            array('password','checkPwd','密码格式不正确',0,'function'), // 自定义函数验证密码格式
+            array('oldpassword','checkPwd','密码格式不正确',0,'function'), // 自定义函数验证密码格式
+       );
+       $User = M("adminUser"); // 实例化User对象
+       if (!$User->validate($rules)->create($data)){
+            // 如果创建失败 表示验证没有通过 输出错误提示信息
+            $this->ajaxReturn(['code'=>10001,'msg'=>$User->getError()]);
+       }else{
+            // 验证通过 可以进行其他数据操作
+       }
+        // 判断旧密码是否正确
+        $userinfo = $User->find($id);
+        if($userinfo['password'] != md5($data['oldpassword'])){
+            $this->ajaxReturn(['code'=>10002,'msg'=>'旧密码不正确']);
+        }
+        // 注册账号
+        $uid = $User->where(['id'=>$id])->save([
+            'password'=>md5($data['password']),
+            'updatetime'=>time()
+        ]);
+        if($uid){
+            $this->ajaxReturn(['code'=>200,'msg'=>'修改密码成功','data'=>$data]);
+        }else{
+            $this->ajaxReturn(['code'=>400,'msg'=>'系统出现错误,请稍后重试......']); 
+        }
+    }
 }

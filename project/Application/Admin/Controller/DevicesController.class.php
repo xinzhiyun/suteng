@@ -641,7 +641,7 @@ class DevicesController extends CommonController
             $type = D('Type');
             $where = I('post.');
             $map['type_id'] = I('post.id');
-            $device_code = M('devices')->where()->getField('device_code');
+            $device_code = M('devices')->where($map)->getField('device_code');
             if(!empty($device_code))E('该类型被设备:'.$device_code.'使用中', 603);
             
             $type->startTrans();

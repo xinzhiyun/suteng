@@ -78,7 +78,7 @@
                                     <tr><td><h3>暂无消息</h3></td></tr>
                                 <else />
                                     <volist name="data" id="val">
-                                        <tr>
+                                        <tr data-id="{{$val['id']}}">
                                             <td>{{$i}}</td>
                                             <td>{{$val.name}}</td>
                                             <td>{{$val.leavel}}</td>
@@ -107,8 +107,12 @@
                                            <!--  <td>
                                                 <a href="#">查看</a>
                                             </td> -->
-                                            <td>
-                                                <a href="updateMima/id/{{$val.id}}  ">修改密码</a>
+                                            <td> 
+                                                <if condition="empty($val['auid'])">
+                                                    <a href="javascript:;" class="_set_account">设置账号</a>
+                                                    <else/>
+                                                    <a href="javascript:;" onclick="_edit_account({{$val['auid']}})">修改密码</a>
+                                                </if>
                                             </td>
                                         </tr>
                                     </volist>
@@ -119,6 +123,53 @@
                             {{$page}}
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal" id="st_set_account" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" >
+                        设置账号
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div>下列表表单中，带 * 项表示必填项</div>
+                    <form id="setAccountformdata" method="post" >
+                        <table class="table table-striped table-bordered table-hover table-condensed">
+                            <tr>
+                                <th width="25%">账号：<span style="color: red;">*</span></th>
+                                <td class="form-inline set_agent_search">
+                                    <input class="input-medium form-control" placeholder="请输入账号..." id="admin_user" type="text" name="company">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="25%">密码：<span style="color: red;">*</span></th>
+                                <td class="form-inline set_agent_search set_agent_area_search">
+                                    <input class="input-medium form-control" placeholder="请输入密码..." id="admin_password" type="password" name="company">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="25%">确认密码：<span style="color: red;">*</span></th>
+                                <td >
+                                    <input class="input-medium form-control" placeholder="请再次输入密码..." id="admin_repassword" type="password" name="company">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                </th>
+                                <td>
+                                    <input class="btn btn-success st-add" type="button" onclick="setAccount()" value="确认">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
                 </div>
             </div>
         </div>
@@ -144,6 +195,45 @@
             $('.where_key_box').hide();
             $('.where_key_box_'+key).show();
         });
+        
+         // 设置后台登录账号
+         $('._set_account').click(function(){
+            window.vendor_id = $(this).parent().parent().data().id;
+            $('#admin_user').val('');
+            $('#admin_password').val('');
+            $('#admin_repassword').val('');
+            $('#st_set_account').modal('show');
+        });
+        // 设置后台登录账号
+        function setAccount(){
+            var user = $('#admin_user').val();
+            var password = $('#admin_password').val();
+            var repassword = $('#admin_repassword').val();
+            // 前端验证。。。
 
+            $.ajax({
+                url:"{{:U('admin/vendors/addAccount')}}",
+                type:'post',
+                dataType:'json',
+                // cache: false,
+                // contentType: false,
+                // processData: false,
+                data:{
+                    'vendor_id' : vendor_id,
+                    'user' : user,
+                    'password' : password,
+                    'repassword' : repassword
+                },
+                success:function(res){
+                    if(res.code == 200){
+                        location.reload();
+                        parent.layer.msg(res.msg);
+                    } else {
+                        parent.layer.close;
+                        parent.layer.msg(res.msg);
+                    }
+                }
+            });
+        }
     </script>
 </block>

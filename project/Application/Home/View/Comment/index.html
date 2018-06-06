@@ -10,7 +10,7 @@
 	<title>发表评论</title>
 	<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
     <script>
-        var vconsole = new VConsole();
+        // var vconsole = new VConsole();
     </script>
 </head>
 <body>
@@ -35,6 +35,10 @@
 			        <label for="item3"></label>
 			        <span>差</span>
 			    </div>
+			    <div class='pintext'>
+					<i index="1" class="iconfont pingfen fleft"><span></span></i>
+					<span>质量非常好，与卖家描述一致，非常满意</span>
+				</div>
 			</div>
 			<div class="shangping">
 				<div class="shangpingpic">
@@ -69,7 +73,12 @@
 				pinglunObj = JSON.parse(sessionStorage.getItem("pinglunObj"));
 				// console.log(pinglunObj)
 				$(".pingpic>img").attr("src",pinglunObj.pic);
+				$(".pingpic").attr("gid",pinglunObj.gid);
 			}
+			$(".pingpic").click(function(){
+				var gid = $(this).attr('gid');
+				location.href = '{{:U("Home/Shop/shoppingdetail")}}' + '?gid=' + gid;
+			})
 			//微信接口
 			wx.config({
 			    debug: false,
@@ -85,6 +94,22 @@
 			        'downloadImage'
 			    ]
 			});
+			// 选择好评，中评，差评
+			$('input[name="status"]').on('change', function(){
+				var val = $(this).val();	// 1好评，2中评，3差评
+				console.log('value: ',val);
+				if(val == 1){
+					$('.pintext>span').text('质量非常好，与卖家描述一致，非常满意');
+					$('.pintext>i>span').css({width: '100%'});
+				}else if(val == 2){
+					$('.pintext>span').text('质量一般，没有卖家描述那么好');
+					$('.pintext>i>span').css({width: '60%'});
+
+				}else{
+					$('.pintext>span').text('差的太离谱了，与卖家描述严重不符');
+					$('.pintext>i>span').css({width: '0%'});
+				}
+			})
 			var pic = [];	// 图片
 			// 点击选择图片
 			$('.file_upload').click(function(){
