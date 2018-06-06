@@ -148,6 +148,11 @@
             'chooseWXPay'
         ]
     });
+    var status = '{{$status}}';
+    $('.goldGrade').eq(status).show();
+    if(status == 1){
+    	alert('恭喜达到修改等级，钻石会员');
+    }
     // var gradePanduan = $(".gradePanduan").val();//获取会员等级
     var dingdanID;
     // 点击提交
