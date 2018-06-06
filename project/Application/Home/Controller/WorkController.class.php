@@ -12,9 +12,7 @@ class WorkController extends CommonController
     {
         try {
             $post = I('post.');
-//            if (empty($post['sid'])) {
-//                E('请选择服务站', 40103);
-//            }
+
             if (!isset($post['type'])) {
                 E('请选择服务类型', 40102);
             } else {
@@ -24,10 +22,8 @@ class WorkController extends CommonController
                 if(empty($post['install_id']))E('请选择设备进行安装', 40102);
             }
 
-
-
-            if (!empty($post['install_id'])) {
-                $data['install_id'] = $post['install_id'];
+            if (empty($post['kphone']) || empty($post['kname'])) {
+                E('请确认联系方式',400022);
             }
 
             if (empty($post['province']) ||
@@ -49,7 +45,17 @@ class WorkController extends CommonController
             $data['city_id'] = $post['city_id'];
             $data['district_id'] = $post['district_id'];
 
-            $data['address'] =$post['address'];
+            $data['address'] = $post['address'];
+
+
+            $data['kname'] = $post['kname'];
+            $data['kphone'] = $post['kphone'];
+
+            $data['uid'] = session('user.id');
+
+            if (!empty($post['install_id'])) {
+                $data['install_id'] = $post['install_id'];
+            }
 
             $data['number'] = getWorkNumber();
 
@@ -57,13 +63,19 @@ class WorkController extends CommonController
                 $data['content'] = '新购设备-安装';
                 $data['title']   = '设备安装';
             }
+            $data['is_examine'] = 0;
             $data['create_at']=time();
             $data['update_at']=time();
             $res = M('work')->add($data);
 
             if ($res) {
+                if( $data['type']==0 && !empty($data['install_id']) ){
+                    M('shop_order_device_install')->where('id='.$data['install_id'])->save(['status'=>1,'updatetime'=>time()]);
+                }
 
                 E('工单开启成功,请等待安装服务人员联系',200);
+            }else{
+                E('添加失败请重试',200);
             }
 
         } catch (\Exception $e) {

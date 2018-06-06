@@ -29,7 +29,6 @@ class RepairController extends CommonController
         $signPackage = $weixin->getSignPackage();
         $this->assign('info',$signPackage);
 
-
         $this->display();
     }
 
