@@ -603,7 +603,7 @@ class WeiXinPayController extends Controller
                         $earnings_comd = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_d);
                         //销售奖收益记录
                         if ($earnings_comd) {
-                            M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>3,'open_id'=>$c_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>3,'open_id'=>$f_info['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
                         }
                     }
                     //查找直系推荐关系中的最近B级加盟商(包括自己)
