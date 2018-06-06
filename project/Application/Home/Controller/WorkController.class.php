@@ -50,6 +50,15 @@ class WorkController extends CommonController
             $this->toJson($e);
         }
     }
+
+    public function getDeviceInstallList()
+    {
+        $map['uid'] = session('user.id');
+        $map['status'] = I('status',0);
+        $list = M('shop_order_device_install')->where($map)->select();
+
+        $this->toJson(['data'=>$list],'获取成功',200);
+    }
     
 }   
 
