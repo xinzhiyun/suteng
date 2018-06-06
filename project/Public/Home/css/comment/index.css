@@ -17,6 +17,37 @@ body{
 	border-bottom:10px solid #f3f3f3;
 
 }
+.pintext {
+	width: 100%;
+    overflow: hidden;
+}
+.pintext>span {
+	display: inline-block;
+}
+.pingfen {
+    width: 24%;
+    display: block;
+    position: relative;
+    font-size: 20px;
+}
+.pingfen:before {
+    content: "\e64b\e64b\e64b\e64b\e64b";
+    display: inline-block;
+    position: absolute;
+    color: #FBC91D;
+}
+.pingfen>span {
+	width: 100%;
+	display: inline-block;
+	overflow: hidden;
+}
+.pingfen>span:after {
+    content: "\e64a\e64a\e64a\e64a\e64a";
+    display: block;
+    position: relative;
+    top: 0;
+    color: #FBC91D;
+}
 .xuanping>.pingpic{
 	box-sizing: border-box;
 	padding:0.1rem;

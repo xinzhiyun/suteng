@@ -97,7 +97,8 @@
 						         html += '关闭加热';
 						         break;
 						 }						
-						
+						res.data[i].hour = res.data[i].hour < 10 ? '0'+res.data[i].hour : res.data[i].hour;
+						res.data[i].minute = res.data[i].minute < 10 ? '0'+res.data[i].minute : res.data[i].minute;
 						html += '</span><span class="sRight"><b>'+res.data[i].hour+'</b>时：<b>'+res.data[i].minute+'</b>分';
 
 						if(res.data[i].repeat==1){

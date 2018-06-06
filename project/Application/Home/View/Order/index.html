@@ -338,7 +338,7 @@
 							gainBrief = gainBrief ? gainBrief : "暂无描述";
 							gainName = gainName ? gainName : "暂无标题";
 							dingdanDaifukuan2+='<div class="goodsItem">'+
-							'<div class="giPicture">'+
+							'<div class="giPicture" gid="'+ waitpaylist[i]['productList'][k].gid +'">'+
 							'<img src="'+ noimg_show +'" alt="">'+
 							'</div>'+
 							'<div class="giDescription">'+
@@ -539,7 +539,7 @@
 							sendBrief = sendBrief ? sendBrief : "暂无描述";
 							sendName = sendName ? sendName : "暂无描述";
 							dingdanDaifahuo2+='<div class="goodsItem">'+
-							'<div class="giPicture">'+
+							'<div class="giPicture" gid="'+ waitsendlist[i]['productList'][k].gid +'">'+
 							'<img src="'+ noimg_show +'" alt="">'+
 							'</div>'+
 							'<div class="giDescription">'+
@@ -634,7 +634,7 @@
 	                		'<span>卖家已发货</span>'+
 	                		'</p>'+
 							'<div class="goodsItem">'+
-							'<div class="giPicture">'+
+							'<div class="giPicture" gid="'+ waitgainlist[i]['productList'][k]['gid'] +'">'+
 							'<img src="'+ noimg_show +'" alt="">'+
 							'</div>'+
 							'<div class="giDescription">'+
@@ -693,7 +693,7 @@
 									order_id:_thisname
 								},
 								success:function(res){
-									 //切换到待评价模块
+									// 切换到待评价模块
 			       	    			var href = location.href.substr(0, location.href.indexOf('?tab='));
 				       	   			location.href = href + '?tab=' + 3;
 			       	   				 console.log( res);
@@ -746,7 +746,7 @@
 							waitcommentlist[i]['productList'][k]['productbrief'] = waitcommentlist[i]['productList'][k]['productbrief'] ? waitcommentlist[i]['productList'][k]['productbrief'] : "暂无描述";
 							// 拼接数据
 							dingdanDaipinglun2+='<div class="goodsItem">'+
-							'<div class="giPicture">'+
+							'<div class="giPicture" gid="'+ waitcommentlist[i]['productList'][k].gid +'">'+
 							'<img src="'+ noimg_show +'" alt="">'+
 							'</div>'+
 							'<div class="giDescription">'+
@@ -867,7 +867,7 @@
 								var infoTitle = res.data[i]['goods'][k]['productname'] ? res.data[i]['goods'][k]['productname'] : "暂无标题"; 
                 				returned4+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
-                				'<div class="tuikuangLeft ">'+
+                				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i]['goods'][k].gid +'">'+
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -890,7 +890,7 @@
 								var infoTitle = res.data[i]['goods'][k]['productname'] ? res.data[i]['goods'][k]['productname'] : "暂无标题"; 
                 				returned2+='<p>信息更新时间：'+timestampToTime(res.data[i]['create_time'])+'</p>'+
                 				'<div class="shangpingnei clearfix">'+
-                				'<div class="tuikuangLeft ">'+
+                				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i]['goods'][k].gid +'">'+
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -927,7 +927,7 @@
 								var infoTitle = res.data[i]['goods'][k]['productname'] ? res.data[i]['goods'][k]['productname'] : "暂无标题"; 
                 				returned4+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
-                				'<div class="tuikuangLeft ">'+
+                				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i]['goods'][k].gid +'">'+
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -949,7 +949,7 @@
 								var infoTitle = res.data[i]['goods'][k]['productname'] ? res.data[i]['goods'][k]['productname'] : "暂无标题"; 
                 				returned3+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
-                				'<div class="tuikuangLeft ">'+
+                				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i][productList][0].gid +'">'+
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -969,7 +969,7 @@
 								var infoTitle = res.data[i][productList][0]['productname'] ? res.data[i][productList][0]['productname'] : "暂无标题";
                 				returned4+='<p>信息更新时间：'+ res.data[i]['ordertime'] +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
-                				'<div class="tuikuangLeft ">'+
+                				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i][productList][0].gid +'">'+
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -977,7 +977,7 @@
                 				'<p><b>￥'+ res.data[i][productList][0]['price'] +'</b><span>x '+ res.data[i][productList][0]['productnumber'] +'</span></p>'+
                 				'</div>'+
                 				'</div>'+
-                				'<p><b>退款退货成功剁你小JJ</b></p>';
+                				'<p><b>退款退货成功</b></p>';
                 			}
 							tuihuo += res.data[i]['goods'].length;
                 		}
@@ -1042,7 +1042,7 @@
 							: noimg;
 							returned6+='<p>信息更新时间：'+ res.data[i].ordertime +'</p>'+
 							'<div class="shangpingnei clearfix">'+
-							'<div class="tuikuangLeft ">'+
+							'<div class="tuikuangLeft giPicture" gid="'+ res.data[i].gid +'">'+
 							'<img src="'+ noimg_show +'" alt="">'+
 							'</div>'+
 							'<div class="tuikuangRight">'+
@@ -1082,7 +1082,7 @@
                 		: noimg;
                 		returned5+='<p>信息更新时间：'+ res.data[i]['addtime'] +'</p>'+
                 		'<div class="shangpingnei clearfix">'+
-                		'<div class="tuikuangLeft ">'+
+                		'<div class="tuikuangLeft giPicture" gid="'+ res.data[i].gid +'">'+
                 		'<img src="'+ noimg_show +'" alt="">'+
                 		'</div>'+
                 		'<div class="tuikuangRight">'+
@@ -1144,6 +1144,12 @@
 		s = date.getSeconds();
 		return Y+M+D+h+m+s;
 	}
+
+	// 点击图片跳到商品详情界面
+	$('body').on('click', '.giPicture', function(){
+		var gid = $(this).attr('gid');
+		location.href = '{{:U("Home/Shop/shoppingdetail")}}' + '?gid=' + gid;
+	})
 </script>
 </body>
 </html>
