@@ -32,6 +32,7 @@ body {
 	padding: .8rem .3rem 1rem .3rem;
 	position:relative;
 	border: 3px solid rgb(117, 183, 253);
+	display: none;
 	/*border:3px solid #f00;*/
 	border-radius: 7px;
 	-moz-border-radius:7px;

@@ -175,7 +175,6 @@ $(function(){
 			var nickname,head;
 			// 如果有评价则遍历出来
 			for(var i=0; i<res.data.length; i++){
-				console.log("图片路径",res.data[i].pics.length)
 				if(res.data[i].user == null) {
 					nickname = '不知道是谁';
 					head = '';
@@ -184,14 +183,14 @@ $(function(){
 					head = !res.data[i].user.head ? '' : res.data[i].user.head;
 				}
 				if(res.data[i].installer_graded == 0){	
-					// 用户对商品评论
+					// 用户对商品评论,
 					text_html = '<!-- 评论内容 -->'+
 						'<div class="itemgoodsBott">'+
 							'<p class="cfix pos"><span class="fleft"><img src="'+ head +'" alt="">'+
-							'</span>&nbsp;'+ nickname +'<span class="fright">'+ timestampToTime(res.data[i].addtime) +'</span></p>'+
+							'</span><span>&nbsp;'+ nickname +'</span><span class="fright">'+ timestampToTime(res.data[i].addtime) +'</span></p>'+
 							'<p class="cfix xingx">'+
-								'<i index="1" class="iconfont pingfen fleft"><span style="width:'+ statusList[res.data[i].status] +'%"></span></i>'+
-								'<span class="fleft">&emsp;'+ statusText[Number(res.data[i].grade)-1] + '</span>'+
+								'<i index="1" class="iconfont pingfen fleft"><span style="width:'+ statusList[res.data[i].status-0-1] +'%"></span></i>'+
+								'<span class="fleft">&emsp;'+ statusText[res.data[i].status-0-1] + '</span>'+
 							'</p>'+
 							'<p class="ccontent">'+ res.data[i].content +'</p>'+
 							'<div class="commpic">'+
@@ -227,7 +226,7 @@ $(function(){
 				}else {
 					picStr = '';	//先清空再生成
 					for(var j=0; j<res.data[i].pics.length; j++){
-						picStr += '<li><img src="'+'/Public/'+res.data[i].pics[j].path+'" alt="图片加载中"></li>';
+						picStr += '<li><img class="compic" index="'+ (j-0+i-0) +'" src="'+'/Public/'+res.data[i].pics[j].path+'" alt="图片加载中"></li>';
 					}
 					picArr.push({'picHTML':picStr});
 				}
@@ -243,12 +242,50 @@ $(function(){
 			}else{
 				$(".detailItemall").html("<div style='width:100%;height:50vh;display:flex;justify-content:center;align-items:center;'>您还没有已评论的记录</div>");
 			}
+			// 图片浏览
+			setTimeout(function(){
+				picview();
+			},0)
 		},
 		error: function(err){
 			console.log('请求失败： ',err);
 		}
 	})
 
+	function picview(){
+		var items = [];
+		var pswpElement = document.querySelectorAll('.pswp')[0];
+		var compic = $('.compic');
+		console.log('compic: ',compic);
+		for(var i=0; i<compic.length; i++){
+			// console.log('src: ',compic[i].getAttribute('src'));
+			// 查看的图片
+			items.push({
+				index: i,
+				src: compic[i].getAttribute('src'),
+				w: 320,
+				h: 640
+			})
+		}
+		// console.log('items: ',items);
+		// Initializes and opens PhotoSwipe
+
+		// define options (if needed)
+		var options = {
+		    // optionName: 'option value'
+		    // for example:
+		    history: true,
+		    index: 0 // start at first slide
+		};
+		$('body').on('click', '.compic', function(){
+			var index = $(this).attr('index');
+			options.index = +index;
+			console.log('options: ',options);
+			var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+			gallery.init();
+
+		})
+	}
 	//处理后台传过来的转义字符
 	var escape2Html = function(str) {
 		 var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
@@ -285,7 +322,7 @@ $(function(){
 	// 数量输入
 	$('.number').on('keyup', function(e){
 		var val = $(this).val();
-		if(val.length == 1){
+		if(val.length == 0){
 			$(this).val(val.replace(/^[0-9]/g,''));
 		}else{
 			$(this).val(val.replace(/\D/g, ''));
@@ -325,7 +362,6 @@ $(function(){
 	 */
 	$("#add2ShopCart").click(function(){
 		
-
 		var num = $(".number").val();	//选择的数量
 		var addtime = new Date().getTime();	//添加进购物车的时间
 		// var expressMoney = $(".postagename").text();	//快递费
@@ -362,6 +398,15 @@ $(function(){
 		sessionStorage.setItem("lvxinData", '');
 		sessionStorage.setItem("shopCar_data", '');
 		var num = $(".number").val();	//选择的数量
+
+		console.log('num: ',num);
+		if(!num){
+			parent.layer.msg('商品数量不能是0');
+			return
+		}else if(num < 0){
+			parent.layer.msg('商品数量不能小于0');
+			return
+		}
 		// var expressMoney = $(".postagename").text();	//快递费
 		// var postageInfo = goodsCourier[postageNum];
 		/*
@@ -377,8 +422,6 @@ $(function(){
 		goods_dataArr.push({'num':num,'gid': goodsDetail.gid,'money': money});
 
 		sessionStorage.setItem("goods_dataArr",JSON.stringify(goods_dataArr));
-		// console.dir(goods_dataArr);return false;
-
 		// 发送ajax请求让后台生成订单号    
 		$.ajax({ 
 			url: getURL('Home', 'PaymentSystem/information'),

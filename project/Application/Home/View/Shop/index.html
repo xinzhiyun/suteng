@@ -119,12 +119,10 @@
 				sessionStorage.setItem('shopCid', $(this).attr('cid'));
 			})
 			//点击轮播图片
-			$("#slider").on('click','.pic',function(){
-
-				// 将当前商品id拼接到地址URL
-				$(this).attr("href", "{{:U('Shop/shoppingdetail')}}?gid=" + $(this).attr("goods_gid"));
+			$("#wrapper").on('click','.pic',function(){
+				
 				// 跳转到商品详情页面
-				location.href = $(this).attr("href");
+				location.href = "{{:U('Home/Shop/shoppingdetail')}}?gid=" + $(this).attr("goods_gid");
 			})
 			/*
 				点击商品旁边的购物车图标
