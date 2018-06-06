@@ -35,6 +35,14 @@ body{
     border-radius: 50%;
     background: rgba(0,0,0,.5);
 }
+.pswp__img {
+	width: 100%;
+    height: auto !important;
+    position: relative;
+    display: block;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
 /*商品说明*/
 .detailTxt{
 	width: 100%;
@@ -374,6 +382,17 @@ ul, li {
 	height: 1.4rem;
 	line-height: 1.4rem;
 }
+.pos {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.pos>span:nth-of-type(2) {
+	width: 56%;
+	position: absolute;
+	left: 10%;
+	overflow: hidden;
+}
 .itemgoodsBott>p{
 	position: relative;
 	margin: 10px 0;
@@ -396,13 +415,15 @@ ul, li {
 	border-radius: 0.3rem;
 	-webkit-box-sizing: border-box;
 	        box-sizing: border-box;
-	width: 24%;
+	width: 20vw;
+    height: 20vw;
 	padding: 0 2vw;
 
 }
 .itemgoodsBott>.commpic>ul>li>img{
 	width: 100%;
-   border: 1px solid #EBEBEB;
+	height: 100%;
+   	border: 1px solid #EBEBEB;
     padding: 0.2rem;
     border-radius: 0.2rem;
 }/*第一类item的底部评论设置结束*/

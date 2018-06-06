@@ -160,6 +160,7 @@ $(function(){
 	
 	var statusList = [100, 60, 0];		// 好评，中评，差评
 	var statusText = ['好评', '中评', '差评'];		// 好评，中评，差评
+	var statusDesc = ['质量非常好，与卖家描述一致，非常满意', '质量一般，没有卖家描述那么好', '差的太离谱了，与卖家描述严重不符'];		// 好评，中评，差评
 	var commetHTML = '';	//存放评论相关商品的数据
 	// 请求评论数据
 	$.ajax({
@@ -188,10 +189,10 @@ $(function(){
 					text_html = '<!-- 评论内容 -->'+
 						'<div class="itemgoodsBott">'+
 							'<p class="cfix pos"><span class="fleft"><img src="'+ head +'" alt="">'+
-							'</span><span>&nbsp;'+ nickname +'</span><span class="fright">'+ timestampToTime(res.data[i].addtime) +'</span></p>'+
+							'</span><span>&nbsp;'+ nickname +'</span><span>'+ timestampToTime(res.data[i].addtime) +'</span></p>'+
 							'<p class="cfix xingx">'+
-								'<i index="1" class="iconfont pingfen fleft"><span style="width:'+ statusList[res.data[i].status-0-1] +'%"></span></i>'+
-								'<span class="fleft">&emsp;'+ statusText[res.data[i].status-0-1] + '</span>'+
+								'<i index="1" class="iconfont pingfen fleft"><span style="width:'+ statusList[res.data[i].grade-0-1] +'%"></span></i>'+
+								'<span class="fleft">&emsp;'+ statusText[res.data[i].grade-0-1] + '<span>（'+ statusDesc[res.data[i].grade-0-1] +'）</span></span>'+
 							'</p>'+
 							'<p class="ccontent">'+ res.data[i].content +'</p>'+
 							'<div class="commpic">'+
@@ -227,9 +228,7 @@ $(function(){
 					picStr = '';	//先清空再生成
 					for(var j=0; j<res.data[i].pics.length; j++){
 						numindex++;
-						console.log('numindex',numindex);
-						console.log('j: ', Number(j));
-						console.log('i: ', Number(i));
+						// console.log('numindex',numindex);
 						picStr += '<li><img class="compic" index="'+ numindex +'" src="'+'/Public/'+res.data[i].pics[j].path+'" alt="图片加载中"></li>';
 					}
 					picArr.push({'picHTML':picStr});
@@ -260,7 +259,7 @@ $(function(){
 		var items = [];
 		var pswpElement = document.querySelectorAll('.pswp')[0];
 		var compic = $('.compic');
-		console.log('compic: ',compic);
+		// console.log('compic: ',compic);
 		for(var i=0; i<compic.length; i++){
 			// console.log('src: ',compic[i].getAttribute('src'));
 			// 查看的图片
@@ -284,7 +283,7 @@ $(function(){
 		$('body').on('click', '.compic', function(){
 			var index = $(this).attr('index');
 			options.index = +index-1;
-			console.log('options: ',options);
+			// console.log('options: ',options);
 			var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
 			gallery.init();
 
@@ -325,7 +324,7 @@ $(function(){
 			$(this).val(val.replace(/\D/g, ''));
 		}
 		if(val.length >= 6){
-			$(this).css({width: val.length*16 + '%'});
+			$(this).css({width: val.length-0+18 + 'vw'});
 		}else{
 			$(this).css({width: 'auto'});
 		}
