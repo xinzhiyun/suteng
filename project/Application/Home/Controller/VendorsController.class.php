@@ -726,6 +726,7 @@ class VendorsController extends Controller
 
             if($info){
 
+
 //                $info['status'] = 9;
                 // 更新条件
                 $saveData['open_id'] = $open_id;
