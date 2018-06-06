@@ -391,7 +391,7 @@ class PayController extends Controller
         } else {
 
             $annual = M('annual')->find();
-            $annual['status'] = 0
+            $annual['status'] = 0;
             $this->assign('grade',$grade);
             $this->assign('annual',$annual);
             $this->display();
