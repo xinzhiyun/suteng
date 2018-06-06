@@ -313,8 +313,31 @@ class WeiXinPayController extends Controller
                 // 分配佣金
                 $this->branch_commission($open_id,$order_id,$yj,$jb,$yb);
 
-                
-                
+                // 设备的安装数据
+                $device_install = M('shop_order_device_install');
+
+                $install_list = M('shop_order_detail')->where(['order_id'=>$order_id,'is_install'=>1])->select();
+
+                $install_data['order_id'] = $order_id;
+                $install_data['oid'] = $orderData['id'];
+                $install_data['uid'] = $orderData['uid'];
+                $install_data['addressinfo'] =$orderData['addressinfo'];
+                $install_data['status'] = 0;
+                $install_data['updatetime'] = time();
+
+                foreach ($install_list as $ins){
+                    $install_data['gid'] = $ins['gid'];
+                    $install_data['gname'] = $ins['gname'];
+                    $ins['num'] = $ins['num']?:1;
+//                    $install_data['gnum'] = $ins['num'];
+                    for ($i=0;$i<$ins['num'];$i++){
+                        $dataList[] = $install_data;
+                    }
+                }
+                $device_install->addAll($dataList);
+
+
+
                 /*
                     处理订单状态修改，及减库存（yi）
                    */

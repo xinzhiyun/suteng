@@ -399,9 +399,17 @@ class ServiceController extends CommonController
      */
     public function people()
     {
+        if(!empty($_GET['key']) && !empty($_GET['keywords'])) {
+            switch ($_GET['key']){
+                case 'company':
+                    $map['s.company']=['like',"%".$_GET['keywords']."%"];
+                    break;
+            }
+        }
+
         $area = M('area')->where('parentid=0')->select();
 
-        $count = M('service_users')->where($map)->count();
+        $count = M('service_users')->alias('su')->where($map)->join('__SERVICE__ s ON su.sid=s.id', 'LEFT')->count();
         $Page       = new \Think\Page($count,15);
         $data = M('service_users')->where($map)
             ->alias('su')
@@ -422,6 +430,64 @@ class ServiceController extends CommonController
         $this->assign($assign);
         $area = M('area')->where('parentid=0')->select();
         $this->display();
+    }
+    
+    // 添加人员
+    public function addServicePeople()
+    {
+        try {
+            $post = I('post.');
+            if (empty($post['sid']) ||
+                empty($post['name']) ||
+                empty($post['password']) ||
+                empty($post['repassword']) ||
+                empty($post['phone']))
+            {
+                E('数据不完整', 201);
+            }
+
+            if($post['password'] != $post['repassword']) E('两次的输入的密码不同,请重试!',400001);
+
+            $re = M('service_users')->where('phone='.$post['phone'])->find();
+            if(!empty($re)) E('手机号已被注册,请重试',400002);
+
+            $post['password'] = md5($post['password']);
+            $post['addtime'] = time();
+            $post['updatetime'] = time();
+
+
+            $res = M('service_users')->add($post);
+            if($res) {
+                E('添加成功',200);
+            }else{
+                E('添加失败,请重试',40009);
+
+            }
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+    // 设置人员状态
+    public function setStatus()
+    {
+        try {
+            $post = I('post.');
+            if (empty($post['id']) || !isset($post['status']) ) {
+                E('数据不完整', 201);
+            }
+
+            $res = M('service_users')->save($post);
+            if($res) {
+                E('修改成功',200);
+            }else{
+                E('修改失败,请重试',40009);
+
+            }
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
     }
 
 

@@ -140,7 +140,6 @@ body{
 
 /*商品数量*/
 .num {
-	width: 30%;
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -152,7 +151,7 @@ body{
 	align-items: stretch;
 }
 
-.num>input {
+.num>input[type="button"] {
 	width: 1.2rem;
 	height: 1.4rem;
 	line-height: 1.4rem;
@@ -177,7 +176,7 @@ body{
 	padding-bottom: 0.06rem;
 }
 .num>.number {
-	width: 33%;
+	min-width: 33%;
 	margin: 0 4px;
 	text-align: center;
 	border-radius: 4px;

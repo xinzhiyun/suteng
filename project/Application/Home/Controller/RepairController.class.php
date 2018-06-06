@@ -9,7 +9,12 @@ class RepairController extends CommonController
      * @return [type] [description]
      */
     public function index()
-    {   
+    {
+        $map['uid'] = session('user.id');
+        $map['status'] = I('status',0);
+        $installList = M('shop_order_device_install')->where($map)->select();
+        $this->assign('installList',$installList);
+
 
         // 调试用默认用户
         $openId = $_SESSION['user']['open_id'];
