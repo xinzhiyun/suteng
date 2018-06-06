@@ -173,6 +173,7 @@ $(function(){
 			var picArr = [];	//存放评论图片的数组
 			var text_html = '';		//商品评价
 			var nickname,head;
+			var numindex = 0;
 			// 如果有评价则遍历出来
 			for(var i=0; i<res.data.length; i++){
 				if(res.data[i].user == null) {
@@ -218,7 +219,6 @@ $(function(){
 						'</div>';
 				}
 				commetHTML += text_html;
-				
 				// 判断是否接收到图片数据
 				if(!res.data[i].pics.length) { 
 					dataPic = "";
@@ -226,10 +226,11 @@ $(function(){
 				}else {
 					picStr = '';	//先清空再生成
 					for(var j=0; j<res.data[i].pics.length; j++){
-						console.log('j+i',Number(j)+Number(i));
+						numindex++;
+						console.log('numindex',numindex);
 						console.log('j: ', Number(j));
 						console.log('i: ', Number(i));
-						picStr += '<li><img class="compic" index="'+ (Number(j)+Number(i)) +'" src="'+'/Public/'+res.data[i].pics[j].path+'" alt="图片加载中"></li>';
+						picStr += '<li><img class="compic" index="'+ numindex +'" src="'+'/Public/'+res.data[i].pics[j].path+'" alt="图片加载中"></li>';
 					}
 					picArr.push({'picHTML':picStr});
 				}
@@ -282,20 +283,13 @@ $(function(){
 		};
 		$('body').on('click', '.compic', function(){
 			var index = $(this).attr('index');
-			options.index = +index;
+			options.index = +index-1;
 			console.log('options: ',options);
 			var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
 			gallery.init();
 
 		})
 	}
-	//处理后台传过来的转义字符
-	var escape2Html = function(str) {
-		 var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
-		 return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,i){
-		 	return arrEntities[i];
-		 });
-	};
 	var price;
 	/*
 		 按加'+'号

@@ -150,11 +150,17 @@
     });
     var status = '{{$annual["status"]}}';
     console.log('status: ',status);
+    if(status == 0){
+    	$('.goldGrade').eq(0).show();
+    	$('.goldGrade').eq(1).show();
+    	$('.goldGrade').eq(2).show();
+    }
     if(status == 3){
     	$('.goldGrade').eq(0).show();
     	$('.goldGrade').eq(1).show();
+
     }else if(status == 2){	// 黄金，可以升钻石
-    	$('.goldGrade').eq(status).show();
+    	$('.goldGrade').eq(0).show();
 
     }else if(status == 1){
     	alert('恭喜达到最高等级"钻石会员"');
