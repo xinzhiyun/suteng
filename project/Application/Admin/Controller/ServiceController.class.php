@@ -406,7 +406,7 @@ class ServiceController extends CommonController
                     break;
             }
         }
-        
+
         $area = M('area')->where('parentid=0')->select();
 
         $count = M('service_users')->alias('su')->where($map)->join('__SERVICE__ s ON su.sid=s.id', 'LEFT')->count();
