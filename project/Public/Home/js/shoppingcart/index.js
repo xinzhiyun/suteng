@@ -224,15 +224,20 @@ $(function(){
 	// 数量输入
 	$('.shpingcarAll').on('keyup', '.number', function(e){
 		var val = $(this).val();
-		if(val.length == 1){
+		if(val.length == 0){
 			$(this).val(val.replace(/^[0-9]/g,''));
 		}else{
 			$(this).val(val.replace(/\D/g, ''));
 		}
-		if(val.length >= 4){
-			$(this).css({width: val.length-0+25 + 'vw'});
+		if(val.length >= 6){
+			$(this).css({width: val.length*16 + '%'});
 		}else{
 			$(this).css({width: 'auto'});
+		}
+	})
+	$('.shpingcarAll').on('blur', '.number', function(e){
+		if(!$(this).val() || $(this).val == 0){
+			$(this).val(1);
 		}
 	})
 

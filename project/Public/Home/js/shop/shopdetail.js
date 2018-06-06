@@ -226,7 +226,10 @@ $(function(){
 				}else {
 					picStr = '';	//先清空再生成
 					for(var j=0; j<res.data[i].pics.length; j++){
-						picStr += '<li><img class="compic" index="'+ (j-0+i-0) +'" src="'+'/Public/'+res.data[i].pics[j].path+'" alt="图片加载中"></li>';
+						console.log(Number(j)+Number(i));
+						console.log('j: ', Number(j));
+						console.log('i: ', Number(i));
+						picStr += '<li><img class="compic" index="'+ (Number(j)+Number(i)) +'" src="'+'/Public/'+res.data[i].pics[j].path+'" alt="图片加载中"></li>';
 					}
 					picArr.push({'picHTML':picStr});
 				}
@@ -333,6 +336,12 @@ $(function(){
 			$(this).css({width: 'auto'});
 		}
 	})
+	$('.number').on('blur', function(e){
+		console.log('num: ',$(this).val());
+		if(!$(this).val() || $(this).val == 0){
+			$(this).val(1);
+		}
+	})
 	// 点击‘更多’展开评论或者收起
 	$('.pinglunshow>p').click(function(){
 		// console.dir($(this).find("span").attr('class'));
@@ -400,8 +409,8 @@ $(function(){
 		var num = $(".number").val();	//选择的数量
 
 		console.log('num: ',num);
-		if(!num){
-			parent.layer.msg('商品数量不能是0');
+		if(num == 0 || !num){
+			parent.layer.msg('商品数量不能是0或者为空');
 			return
 		}else if(num < 0){
 			parent.layer.msg('商品数量不能小于0');

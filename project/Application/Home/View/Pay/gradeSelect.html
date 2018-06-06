@@ -151,7 +151,7 @@
     var status = '{{$status}}';
     $('.goldGrade').eq(status).show();
     if(status == 1){
-    	alert('恭喜达到修改等级，钻石会员');
+    	alert('恭喜达到最高等级"钻石会员"');
     }
     // var gradePanduan = $(".gradePanduan").val();//获取会员等级
     var dingdanID;
@@ -168,8 +168,8 @@
                 success: function(res){
 
                     console.log('成功！ ', res);
-//                    $("#money").text('￥'+money);
-//                    //如果返回的是订单号
+                    //$("#money").text('￥'+money);
+                    //如果返回的是订单号
                     if(typeof JSON.parse(res) == 'number'){
 
                         // 显示付款面板

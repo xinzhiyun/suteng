@@ -266,7 +266,7 @@ body{
 /*底部*/
 .shopdetailBott{
 	width: 100%;
-	height: 8vh;
+	height: 13vmin;
 	position: fixed;
 	display: -webkit-box;
 	display: -ms-flexbox;
@@ -280,18 +280,18 @@ body{
 }
 .shopdetailBott>div{
 	width: 80%;
-	height: 8vh;
+	height: 13vmin;
 	display: inline-block;
-	line-height: 8vh;
+	line-height: 13vmin;
 	white-space: nowrap;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
 .shopdetailBott>a {
 	width: 20%;
-	height: 8vh;
+	height: 13vmin;
 	display: inline-block;
-	line-height: 8vh;
+	line-height: 13vmin;
 	text-align: center;
 }
 .shopdetailBott>a:active>i{
@@ -303,8 +303,8 @@ body{
 }
 .shopdetailBott>div>input{
 	width: 50%;
-	height: 8vh;
-	line-height: 8vh;
+	height: 13vmin;
+	line-height: 13vmin;
 	border: none;
 	color:#fff;
 	border-radius: 0px!important;
