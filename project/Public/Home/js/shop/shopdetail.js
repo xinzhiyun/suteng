@@ -226,7 +226,7 @@ $(function(){
 				}else {
 					picStr = '';	//先清空再生成
 					for(var j=0; j<res.data[i].pics.length; j++){
-						console.log(Number(j)+Number(i));
+						console.log('j+i',Number(j)+Number(i));
 						console.log('j: ', Number(j));
 						console.log('i: ', Number(i));
 						picStr += '<li><img class="compic" index="'+ (Number(j)+Number(i)) +'" src="'+'/Public/'+res.data[i].pics[j].path+'" alt="图片加载中"></li>';

@@ -148,9 +148,15 @@
             'chooseWXPay'
         ]
     });
-    var status = '{{$status}}';
-    $('.goldGrade').eq(status).show();
-    if(status == 1){
+    var status = '{{$annual["status"]}}';
+    console.log('status: ',status);
+    if(status == 3){
+    	$('.goldGrade').eq(0).show();
+    	$('.goldGrade').eq(1).show();
+    }else if(status == 2){	// 黄金，可以升钻石
+    	$('.goldGrade').eq(status).show();
+
+    }else if(status == 1){
     	alert('恭喜达到最高等级"钻石会员"');
     }
     // var gradePanduan = $(".gradePanduan").val();//获取会员等级
