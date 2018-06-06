@@ -57,6 +57,8 @@ body{
 }
 /*一个商品的样式*/
 .itemCar{
+	height: 26vh;
+	position: relative;
 	padding: 1rem 3%;
 	border-bottom: 10px solid #E5E5E5;
 }
@@ -76,6 +78,7 @@ body{
     width: 15%;
     text-align: center;
     /*color: #56AAF1;*/
+    z-index: 99;
 }
 .itemcarLeft>.xuanzhong>.icon-kuang1{
 	color:#ccc;
@@ -110,7 +113,7 @@ body{
 }
 .itemcarRight>.roTxt{
 	font-size: 0.6rem;
-		line-height: 1rem;
+	line-height: 1rem;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -121,11 +124,17 @@ body{
     color: #5A5A5A;
 }
 .itemcarRight>.roPrice{
+	width: 56%;
 	display: inline-block;
-	padding: 0.7rem 0rem;
-	width: 100%;
+    position: absolute;
+    bottom: 1rem;
+    right: 3%;
+    z-index: 10;
 }
 .itemcarRight>.roPrice>b{
+	display: block;
+	text-align: right;
+	margin: 10px 0;
 	color: #F00;
 }
 .itemcarRight>.roPrice>span{
@@ -145,6 +154,7 @@ body{
     width: 100%;
     background: #FFF;	    
     border-top: 1px solid #e0e0e0;   
+    z-index: 999;
  }
  .shoppingcarBott>p{
  	display: inline-block;
@@ -191,7 +201,7 @@ body{
  }
   /*商品数量*/
 .num {
-    width: 40%;
+	min-width: 33%;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -203,8 +213,9 @@ body{
             align-items: stretch;
 }
 
-.num>input {
+.num>input[type="button"] {
     width: 33%;
+    min-width: 24px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -222,7 +233,7 @@ body{
     /*background: #fff;*/
 }
 .num>.number {
-    width: 33%;
+	min-width: 33%;
     margin: 0 4px;
     text-align: center;
     border-radius: 4px;
