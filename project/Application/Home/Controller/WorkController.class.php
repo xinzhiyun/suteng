@@ -82,37 +82,6 @@ class WorkController extends CommonController
             $this->toJson($e);
         }
     }
-
-
-    // 获取用户信息 (工单安装)
-    public function getUserInfo()
-    {
-        try {
-            $post = I('post.');
-
-            if (!isset($post['type'])) {
-                E('请选择服务类型', 40102);
-            }
-
-            if($post['type']==0){
-                if(empty($post['install_id']))E('请选择设备', 40102);
-                $resinfo =  M('shop_order_device_install')->where('id='.$post['install_id'])->find();
-                if(empty($resinfo))E('安装单不存在',40001);
-                $res = $resinfo['addressinfo'];
-            } else {
-
-            }
-
-
-
-
-            $this->toJson(['data'=>$res]);
-
-        } catch (\Exception $e) {
-            $this->toJson($e);
-        }
-    }
-    
-}   
+}
 
 
