@@ -454,24 +454,25 @@ class WeiXinPayController extends Controller
         $xml=file_get_contents('php://input', 'r');
         // file_put_contents('./wx_payFee.txt',$xml."\r\n", FILE_APPEND);
 // //
-//         $xml= '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
-// <attach><![CDATA[642095402778539]]></attach>
-// <bank_type><![CDATA[CFT]]></bank_type>
-// <cash_fee><![CDATA[1]]></cash_fee>
-// <fee_type><![CDATA[CNY]]></fee_type>
-// <is_subscribe><![CDATA[Y]]></is_subscribe>
-// <mch_id><![CDATA[1501254081]]></mch_id>
-// <nonce_str><![CDATA[l9vsahb2lhpdnipmtcmgbdarmgi7lujb]]></nonce_str>
-// <openid><![CDATA[onLe70fYcrqU71RjzfYUjkNf90_E]]></openid>
-// <out_trade_no><![CDATA[660206065870525]]></out_trade_no>
-// <result_code><![CDATA[SUCCESS]]></result_code>
-// <return_code><![CDATA[SUCCESS]]></return_code>
-// <sign><![CDATA[74DC70A12EEA05D5E3ED1091C457A2C4]]></sign>
-// <time_end><![CDATA[20180424203103]]></time_end>
-// <total_fee>1</total_fee>
-// <trade_type><![CDATA[JSAPI]]></trade_type>
-// <transaction_id><![CDATA[4200000066201804245357066132]]></transaction_id>
-// </xml>';
+         $xml= '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
+<attach><![CDATA[981295124171958]]></attach>
+<bank_type><![CDATA[CFT]]></bank_type>
+<cash_fee><![CDATA[1]]></cash_fee>
+<fee_type><![CDATA[CNY]]></fee_type>
+<is_subscribe><![CDATA[Y]]></is_subscribe>
+<mch_id><![CDATA[1501254081]]></mch_id>
+<nonce_str><![CDATA[s3xzlzsjlx1z1mlaimnm42chxf3xwaf7]]></nonce_str>
+<openid><![CDATA[onLe70fYcrqU71RjzfYUjkNf90_E]]></openid>
+<out_trade_no><![CDATA[606491600042752]]></out_trade_no>
+<result_code><![CDATA[SUCCESS]]></result_code>
+<return_code><![CDATA[SUCCESS]]></return_code>
+<sign><![CDATA[884A5E374A4B2B887AB62C85231ED1F8]]></sign>
+<time_end><![CDATA[20180607162205]]></time_end>
+<total_fee>1</total_fee>
+<trade_type><![CDATA[JSAPI]]></trade_type>
+<transaction_id><![CDATA[4200000112201806078111837812]]></transaction_id>
+</xml>
+';
         if ($xml) {
             //解析微信返回数据数组格式
             $result = $this->notifyData($xml);
@@ -480,8 +481,8 @@ class WeiXinPayController extends Controller
             $data['order_id'] = $result['attach'];
             $orderData = M('users_order')->where($data)->field('is_pay,order_id,user_id,annual_status,name')->find();
 
-            if (empty($orderData['is_pay'])) {
-                $save_info =M('users_order')->where($data)->save(['is_pay'=>1]);
+            if (!empty($orderData['is_pay'])) {
+//                $save_info =M('users_order')->where($data)->save(['is_pay'=>1]);
                 $save_info =M('users_order')->where($data)->find();
                 if ($save_info) {
                     //查找对应的租金总价
@@ -509,7 +510,8 @@ class WeiXinPayController extends Controller
 
 
 
-                    $users_info =  $users_info = M('users')->where(['id'=>$orderData['user_id']])->find();
+                $users_info =  $users_info = M('users')->where(['id'=>$orderData['user_id']])->find();
+
                 }
                 if ($save_info && $users_info) {
 
@@ -539,9 +541,8 @@ class WeiXinPayController extends Controller
                         $money =    $data['price'];
                     }
 
-
+                   
                     $users_info = M('users')->where(['id'=>$orderData['user_id']])->save(['grade'=>$data['grade'],'start_time'=>time(),'end_time'=>strtotime("+1 year")]);
-                    // dump($users_info);
 
 //                    if ($orderData['annual_status'] > $user_info['grade']) {
 //
