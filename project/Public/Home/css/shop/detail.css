@@ -134,9 +134,9 @@ body{
 }
 /*评论内容*/
 .detailContain{
-	height: 100vh;
+	height: 70vh;
     min-width: 300px;
-    padding-bottom: 12vh;
+    padding-bottom: 20vh;
     overflow: hidden;
     -webkit-transform: translate3d(0,0,0);
             transform: translate3d(0,0,0);
@@ -274,7 +274,7 @@ body{
 	position: fixed;
 	bottom: 0rem;
 	right: 0;
-	padding: 5vmin 0;
+	padding: 2vmin 0;
 	color: #F04B7E;
 	background: -webkit-linear-gradient(rgba(230,230,230,.1) 20%, #fff 49%);
 }
@@ -359,6 +359,30 @@ body{
 	border-radius: 50%;
 	font-size: 16px;
 	background: #f00;
+}
+.slide {
+	width: 24vmin;
+    height: 10vmin;
+    padding: 2vmin 1vmin;
+    text-align: center;
+    display: none;
+	position: absolute;
+    top: 10%;
+    left: 50%;
+    margin-left: -12vmin;
+    border-radius: 6px;
+    color: #fff;
+    background: #6e6d6d;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+	animation: slide .6s infinite alternate;
+}
+@keyframes slide {
+	from {
+		transform: translateY(10%);
+	}
+	to {
+		transform: translateY(-10%);
+	}
 }
 /*加入购物车*/
 #add2ShopCart {
@@ -594,7 +618,9 @@ ul, li {
 .moredetail>div {
 	width: 100%;
 	display: block;
-	margin-top: -2px;
+}
+.moredetail>div li {
+	margin-top: -4px;
 }
 .moredetail img {
 	width: 100%;

@@ -378,8 +378,12 @@ $(function(){
 
 			$(this).find("span").removeClass('iconfont icon-shuangxiajiantou').addClass('iconfont icon-xiangshangjiantou');
 
-			$('.pinglunshow b').text('收起');
-			$('.detailItemall').css({height: '90vh',overflowY: 'scroll'});
+			$('.pinglunshow b').text('收起评论');
+			$('.slide').show();
+			$('.detailItemall').css({height: '70vh',overflowY: 'scroll'});
+			setTimeout(function(){
+				$('.slide').hide();
+			},3000);
 		}else{
 			$(this).find("span").removeClass('iconfont icon-xiangshangjiantou').addClass('iconfont icon-shuangxiajiantou');
 
@@ -390,6 +394,7 @@ $(function(){
 			$('.detailItem').eq(0).css('display','block');
 			$('.detailItem').eq(1).css('display','block');
 			$('.detailItemall').css({height: 'auto',overflowY: 'hidden'});
+			$('.slide').hide();
 			$('.pinglunshow b').text('查看更多');
 
 		}
