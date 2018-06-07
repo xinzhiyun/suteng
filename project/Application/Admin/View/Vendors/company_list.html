@@ -36,7 +36,6 @@
                                     <th>分公司名称</th>
                                     <th>姓名</th>
                                     <th>编号</th>
-
                                     <th>C级分销商邀请</th>
                                     <th>邀请会员注册</th>
                                     <th>分配用户名</th>
@@ -56,8 +55,8 @@
                                             <td>{{$val.company}}</td>
                                             <td>{{$val.name}}</td>
                                             <td>{{$val.code}}</td>
-                                            <td><img width="80" height="80" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_a}}" alt="A级邀请"></td>
-                                            <td><img width="80" height="80" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_user}}" alt="C级邀请"></td>
+                                            <td><img width="80" height="80" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_c}}" alt="C级邀请"></td>
+                                            <td><img width="80" height="80" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$val.vendor_user}}" alt="会员邀请"></td>
                                             <td>{{$val.user}}</td>
                                             <td>{{$val.status}}</td>
                                             <td>{{$val.addtime|date="Y-m-d H:i:s",###}}</td>

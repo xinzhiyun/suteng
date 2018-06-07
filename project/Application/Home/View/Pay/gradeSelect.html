@@ -148,6 +148,24 @@
             'chooseWXPay'
         ]
     });
+    var status = '{{$annual["status"]}}';
+    console.log('status: ',status);
+    status = 0;
+    if(status == 0){
+    	$('.goldGrade').eq(0).show();
+    	$('.goldGrade').eq(1).show();
+    	$('.goldGrade').eq(2).show();
+    }
+    if(status == 3){
+    	$('.goldGrade').eq(0).show();
+    	$('.goldGrade').eq(1).show();
+
+    }else if(status == 2){	// 黄金，可以升钻石
+    	$('.goldGrade').eq(0).show();
+
+    }else if(status == 1){
+    	alert('恭喜达到最高等级"钻石会员"');
+    }
     // var gradePanduan = $(".gradePanduan").val();//获取会员等级
     var dingdanID;
     // 点击提交
@@ -163,8 +181,8 @@
                 success: function(res){
 
                     console.log('成功！ ', res);
-//                    $("#money").text('￥'+money);
-//                    //如果返回的是订单号
+                    //$("#money").text('￥'+money);
+                    //如果返回的是订单号
                     if(typeof JSON.parse(res) == 'number'){
 
                         // 显示付款面板

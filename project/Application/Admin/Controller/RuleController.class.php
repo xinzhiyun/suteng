@@ -170,7 +170,7 @@ class RuleController extends CommonController{
         if(empty($username)){
             $user_data='';
         }else{
-            $user_data=M('Vendors')->where(array('user'=>$username))->select();
+            $user_data=M('adminUser')->where(array('user'=>$username))->select();
         }
         $assign=array(
             'group_name'=>$group_name,
@@ -219,7 +219,7 @@ class RuleController extends CommonController{
         $res = M('auth_group_access')->where($map)->select();
         $res = array_column($res, 'uid');
         if(!empty($res)){
-            $data = M('vendors')->where(['id' => array('in', $res)])->field('id, user')->select();
+            $data = M('adminUser')->where(['id' => array('in', $res)])->field('id, user, type')->select();
             $empty = null;
         } else {
             $data = array();

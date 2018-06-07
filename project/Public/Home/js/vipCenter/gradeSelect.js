@@ -5,7 +5,7 @@ var selectName;
 // 选中会员识别号
 var selectStatus
 var gradePanduan = $(".gradePanduan").val();//获取会员等级
-$(".goldGrade").on("touchstart", function() {
+$(".goldGrade").on("touchend", function() {
 
     // 钻石会员 其他会员不可以选
     if(gradePanduan == 0) {
@@ -44,6 +44,12 @@ $(".goldGrade").on("touchstart", function() {
         $(".confirmBtn > p").css("background", "#A2A2A2");
 
     }
+    for(var i=0; i<$(".goldGrade").length; i++){
+        $(".goldGrade").eq(i).removeClass('selectChange');
+        $(".goldGrade").eq(i).find(".goldInfo").css("display", "none");
+    }
+    $(this).addClass("selectChange");
+    $(this).find(".goldInfo").css("display", "block");
 })
 // 阻止事件冒泡
 $(".goldInfo").on("touchstart", function(e) {

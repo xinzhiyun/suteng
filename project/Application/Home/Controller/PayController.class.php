@@ -320,7 +320,8 @@ class PayController extends Controller
         $this->wx_info();
         //查出当前会员等级
         $map['id'] = $_SESSION['user']['id'];
-        $grade = M('users')->where($map)->field('id,grade')->find();
+        $grade = M('users')->where($map)->field('id,grade,end_time')->find();
+
 
         switch ($grade['grade']) {
             case '1':
@@ -338,12 +339,108 @@ class PayController extends Controller
             default:
                 $grade['grade'] = '3';
         }
+        //查找最后一条用户充值会员的记录
+        $orderData = M('users_order')->where(['user_id'=>$grade['id']])->field('id,is_pay,order_id,user_id,annual_status,name')->order('id desc')->find();
 
-        $annual = M('annual')->find();
+        if ($orderData) {
 
-        $this->assign('grade',$grade);
-        $this->assign('annual',$annual);
-        $this->display();
+            $annual_money = M('annual')->find();
+            switch ($orderData['annual_status']) {
+                case '1':
+                    $pp = [
+                        'status'=>1
+                    ];
+                    break;
+                case '2':
+                    $data['annual_ey'] = $annual_money['annual_money']/365;
+                    $data['medal_ey'] = $annual_money['medal_money']/365;
+                    //计算出当前会员剩余天数
+                    $time = intval(($grade['end_time']-time())/86400);
+                    //钻石会员剩下的钱
+                    $annual_money= (round($data['annual_ey'], 2)-round($data['medal_ey'], 2)) * $time;
+                    $pp = [
+                        'annual_money'=>$annual_money,
+                        'dia_describe' => $annual_money['dia_describe'],
+                        'status' => 2
+                    ];
+                    break;
+                case '3':
+                    //个人会员继续省钱 所补交的费用
+                    $data['annual_ey'] = $annual_money['annual_money']/365;
+                    $data['medal_ey'] = $annual_money['medal_money']/365;
+                    $data['mo_ey'] = $annual_money['personal_money']/365;
+                    //计算出当前会员剩余天数
+                    $time = intval(($grade['end_time']-time())/86400);
+                    //钻石会员剩下的钱
+                    $annual_money= (round($data['annual_ey'], 2)-round($data['mo_ey'], 2)) * $time;
+                    //黄金会员剩下的钱
+                    $medal_money= (round($data['medal_ey'], 2)-round($data['mo_ey'], 2)) * $time;
+                    $pp = [
+                        'annual_money'=>$annual_money,
+                        'medal_money'=>$medal_money,
+                        'dia_describe' => $annual_money['dia_describe'],
+                        'gold_describe'=>$annual_money['gold_describe'],
+                        'status' => 3
+                    ];
+                    break;
+            }
+
+            $this->assign('grade',$grade);
+            $this->assign('annual',$pp);
+            $this->display();
+        } else {
+
+            $annual = M('annual')->find();
+            $annual['status'] = 0;
+            $this->assign('grade',$grade);
+            $this->assign('annual',$annual);
+            $this->display();
+        }
+
+//        if ($grade['grade'] > 1) {
+//            $annual_money = M('annual')->find();
+//            $orderData = M('users_order')->where(['user_id'=>$grade['id'],'annual_status'=>$grade['grade']])->field('is_pay,order_id,user_id,annual_status,name')->find();
+//
+//            switch ($orderData['annual_status']) {
+//                case '1':
+//                    $data['price'] = $annual_money['annual_money']-$annual_money['cost_money'];
+//                    //每天的会员费
+//                    $data['mon_ey'] = $annual_money['annual_money']/365;
+//                    $data['grade'] = 4;
+//                    break;
+//                case '2':
+//                    $data['price'] = $annual_money['medal_money']-$annual_money['gold_money'];
+//                    $data['mon_ey'] = $annual_money['medal_money']/365;
+//                    $data['grade'] = 3;
+//                    break;
+//                case '3':
+//                    $data['price'] = $annual_money['personal_money']-$annual_money['per_money'];
+//                    $data['mon_ey'] = $annual_money['personal_money']/365;
+//                    $data['grade'] = 2;
+//                    break;
+//            }
+//            switch ($grade['grade']) {
+//                case '4':
+//                    //每天的会员费
+//                    $data['mo_ey'] = $annual_money['annual_money']/365;
+//                    break;
+//                case '3':
+//                    $data['mo_ey'] = $annual_money['medal_money']/365;
+//                    break;
+//                case '2':
+//                    $data['mo_ey'] = $annual_money['personal_money']/365;
+//                    break;
+//            }
+//            //计算出当前会员剩余天数
+//            $time = intval(($grade['end_time']-time())/86400);
+//            $money= (round($data['mon_ey'], 2)-round($data['mo_ey'], 2)) * $time ;
+//            dump($money);
+//        }
+//        $annual = M('annual')->find();
+//
+//        $this->assign('grade',$grade);
+//        $this->assign('annual',$annual);
+//        $this->display();
     }
     /*
      * 会员升级充值

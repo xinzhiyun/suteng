@@ -1,0 +1,551 @@
+<extend name="Public/base" />
+
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>服务站人员管理 <small>人员列表</small></h5>
+                        <div class="ibox-tools">
+                            <a href="javascript:;" class="close-link top_add">
+                                <i class="fa fa-user-plus"></i>
+                                添加服务站人员
+                            </a>
+                        </div>
+                        <!--<div class="ibox-tools">-->
+                            <!--<a href="javascript:;" class="close-link" id="preset">-->
+                                <!--<i class="fa fa-user-plus"></i>-->
+                                <!--预设服务站-->
+                            <!--</a>-->
+                        <!--</div>-->
+                    </div>
+                <form method="get" action="{{:U('people')}}" class="form-inline" id='searchdiv'>
+                    <!--<div class="form-group where_area_box">-->
+                        <!--<label for="where_area">地区过滤</label>-->
+                        <!--<select name="province_id" class="form-control"  id="where_area">-->
+                            <!--<option value="">&#45;&#45;请选择&#45;&#45;</option>-->
+                            <!--<volist name="area" id="vl">-->
+                                <!--<option value="{{$vl.id}}">{{$vl.areaname}}</option>-->
+                            <!--</volist>-->
+                        <!--</select>-->
+                        <!--<select name="city_id" class="form-control "  style="min-width: 120px;">-->
+                            <!--<option value="">&#45;&#45;请选择&#45;&#45;</option>-->
+                            <!--<volist name="city" id="vl">-->
+                                <!--<option value="{{$vl.id}}">{{$vl.areaname}}</option>-->
+                            <!--</volist>-->
+                        <!--</select>-->
+                        <!--<select name="district_id" class="form-control "  style="min-width: 120px;">-->
+                            <!--<option value="">&#45;&#45;请选择&#45;&#45;</option>-->
+                            <!--<volist name="district" id="vl">-->
+                                <!--<option value="{{$vl.id}}">{{$vl.areaname}}</option>-->
+                            <!--</volist>-->
+                        <!--</select>-->
+                    <!--</div>-->
+                    <div class="form-group " >
+                        <select name="key" class="form-control where_key" >
+                            <option class="where_key_company" value="company">服务站名称</option>
+                            <!--<option class="where_key_user" value="user">分配用户名</option>-->
+                        </select>
+                        <input type="text" name="keywords" placeholder="输入搜索关键字"  value="{{$_GET['keywords']}}"
+                               class="input form-control where_key_box where_key_box_name where_key_box_user"
+                               style="width:40%">
+                        <select name="status" class="form-control where_status" name="status" style="width:30%;">
+                            <option  class="where_status_"  value="">-- 状态 --</option>
+                            <option  class="where_status_0" value="1">启用</option>
+                            <option  class="where_status_1" value="0">禁用</option>
+
+                        </select>
+                        <!--状态{0:未开通 1:已开通 2:被代管(服务站代管) 3:被代管(第三方代管) 4:被关闭 }-->
+                    </div>
+                    <button type="submit" class="btn btn btn-primary submitbtn" name="sou" value="1">搜索</button>
+
+
+                </form>
+                    <div class="ibox-content">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>服务站名称</th>
+                                    <!--<th>地区(省)</th>-->
+                                    <!--<th>地区(市)</th>-->
+                                    <!--<th>地区(区)</th>-->
+                                    <th>姓名</th>
+                                    <th>手机号(账号)</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <empty name="data">
+                                    <tr><td><h3>暂无服务站</h3></td></tr>
+                                <else />
+                                    <volist name="data" id="val">
+                                        <tr data-id="{{$val.id}}" data-company="{{$val.company}}" data-area="{{$val.province}} - {{$val.city}} - {{$val.district}}" >
+                                            <td>{{$i}}</td>
+                                            <td><a href="{{:U('detail')}}?id={{$val.id}}">{{$val.company}}</a></td>
+                                            <td>{{$val.name}}</td>
+                                            <td>{{$val.phone}}</td>
+
+                                            <switch name="val.status">
+                                                <case value="0"><td>禁用</td></case>
+                                                <case value="1"><td>启用</td></case>
+                                                <default />
+                                                <td>禁用</td>
+                                            </switch>
+
+                                            <td>
+                                                <switch name="val.status">
+                                                    <case value="1">
+                                                        <a href="javascript:;" class="_set_action" data-status="0">禁用</a>
+                                                    </case>
+                                                    <case value="0">
+                                                        <a href="javascript:;" class="_set_action" data-status="1">启用</a>
+                                                    </case>
+                                                    <default /><a href="javascript:;" class="_set_action" data-status="1">启用</a>
+                                                </switch>
+                                                <!--<a href="javascript:;" class="_set_edit">编辑</a>-->
+                                                <a href="javascript:;" class="_set_action" data-status="2">删除</a>
+                                                <!--<a href="javascript:;" class="_set_action" data-status="9">强制删除</a>-->
+                                            </td>
+                                        </tr>
+                                    </volist>
+                                </empty>
+                            </tbody>
+                        </table>
+                        <div>
+                            {{$page}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--人员添加-->
+    <div class="modal inmodal" id="st_top_add" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" >
+                        人员添加
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div>下列表表单中，带 * 项表示必填项</div>
+                    <form id="st_top_add_form" method="post" >
+                        <table class="table table-striped table-bordered table-hover table-condensed">
+                            <tr>
+                                <th width="25%">服务站检索：</th>
+                                <td class="form-inline set_top_add_area_search">
+                                    <select class="form-control" style="width: 32%;" name="province_id">
+                                        <option value="">--请选择--</option>
+                                        <volist name="area" id="vl">
+                                            <option value="{{$vl.id}}">{{$vl.areaname}}</option>
+                                        </volist>
+                                    </select>
+                                    <select class="form-control" style="width: 32%;" name="city_id">
+                                        <option value="">--请选择--</option>
+                                    </select>
+                                    <select class="form-control" style="width: 32%;" name="district_id">
+                                        <option value="">--请选择--</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="25%">所属服务站：<span style="color: red;">*</span></th>
+                                <td >
+                                    <select class="form-control" name="sid" id="st_top_add_form_service">
+                                        <option value="">--请选择--</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="25%">姓名：<span style="color: red;">*</span></th>
+                                <td >
+                                    <input class="input-medium form-control" placeholder="请输入真实姓名..." type="text" name="name">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="25%">工号：<span style="color: red;">*</span></th>
+                                <td >
+                                    <input class="input-medium form-control" placeholder="请输入工号..." type="text" name="sn">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="25%">手机号码：<span style="color: red;">*</span></th>
+                                <td >
+                                    <input class="input-medium form-control" placeholder="请输入手机号码..." type="text" name="phone">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="25%">密码：<span style="color: red;">*</span></th>
+                                <td >
+                                    <input class="input-medium form-control" placeholder="请输入密码..." type="password" name="password">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="25%">确认密码：<span style="color: red;">*</span></th>
+                                <td >
+                                    <input class="input-medium form-control" placeholder="请输入密码..." type="password" name="repassword">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                </th>
+                                <td>
+                                    <input class="btn btn-success st-add" type="button" onclick="addServicePeople()" value="确认">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal" id="st-company_add" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" >
+                        添加服务站
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div>下列表表单中，带 * 项表示必填项</div>
+                    <form id="addformdata" method="post" enctype="multipart/form-data">
+                        <table class="table table-striped table-bordered table-hover table-condensed">
+                            <tr>
+                                <th width="25%">服务站地址：</th>
+                                <td class="form-inline">
+                                    <select class="form-control add_province_id" style="width: 32%;" name="province_id">
+                                        <option value="--">--请选择--</option>
+                                        <volist name="area" id="vl">
+                                            <option value="{{$vl.id}}">{{$vl.areaname}}</option>
+                                        </volist>
+                                    </select>
+                                    <input type="hidden" name="province">
+                                    <input type="hidden" name="city">
+                                    <input type="hidden" name="district">
+                                    <select class="form-control add_city_id" style="width: 32%;" name="city_id">
+                                        <option value="--">--请选择--</option>
+                                    </select>
+                                    <select class="form-control add_district_id" style="width: 32%;" name="district_id">
+                                        <option value="--">--请选择--</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>服务站名称：
+                                    <span style="color: red;">*</span>
+                                </th>
+                                <td>
+                                    <input class="input-medium form-control" placeholder="请输入服务站名称..." id="add_company" type="text" name="company">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>详细地址：<span style="color: red;">*</span></th>
+                                <td><input class="input-medium form-control" type="text" name="address" value="" placeholder="请输入详细地址(不包含省市区)..."></td>
+                            </tr>
+                            <tr>
+                                <th>联系人：<span style="color: red;">*</span></th>
+                                <td>
+                                    <input class="input-medium form-control" type="text" name="name" placeholder="请输入服务站负责人...">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>联系人电话：<span style="color: red;">*</span></th>
+                                <td>
+                                    <input class="input-medium form-control" type="text" name="phone" placeholder="请输入服务站负责人电话...">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>客服电话：<span style="color: red;">*</span></th>
+                                <td>
+                                    <input class="input-medium form-control" type="text" name="telephone" placeholder="请输入服务站客户服务电话...">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>服务站图片<span style="color: red;">*</span>
+                                </th>
+                                <td>
+                                    <input class="input-medium form-control" type="file" name="pic">
+                                </td>
+                            </tr>
+                            <!--<tr>-->
+                                <!--<th>-->
+                                    <!--账号(后台)：-->
+                                    <!--<span style="color: red;">*</span>-->
+                                <!--</th>-->
+                                <!--<td>-->
+                                    <!--<input class="input-medium form-control checkuser" placeholder="请输入用于登录后台的账号..." type="text" name="user">-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                                <!--<th>-->
+                                    <!--密码(后台)：-->
+                                    <!--<span style="color: red;">*</span>-->
+                                <!--</th>-->
+                                <!--<td>-->
+                                    <!--<input class="input-medium form-control checkpwd" placeholder="请输入用于登录后台的账号..." type="text" name="password">-->
+                                <!--</td>-->
+                            <!--</tr>-->
+
+                            <tr>
+                                <th>
+                                </th>
+                                <td>
+                                    <input class="btn btn-success st-add" type="button" onclick="addService()" value="确认">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal" id="st-add" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        开通服务站
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div>下列表表单中，带 * 项表示必填项</div>
+                    <form id="openformdata" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="id" id="add_sid">
+                        <table class="table table-striped table-bordered table-hover table-condensed">
+                            <tr>
+                                <th width="25%">服务站地址：</th>
+                                <td><input class="input-medium form-control" type="text" value="" readonly id="add_area"></td>
+                            </tr>
+                            <tr>
+                                <th>服务站名称：
+                                    <span style="color: red;">*</span>
+                                </th>
+                                <td>
+                                    <input class="input-medium form-control" placeholder="请输入服务站名称..." id="open_company" type="text" name="company">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>详细地址：<span style="color: red;">*</span></th>
+                                <td><input class="input-medium form-control" type="text" name="address" value="" placeholder="请输入详细地址(不包含省市区)..."></td>
+                            </tr>
+                            <tr>
+                                <th>联系人：<span style="color: red;">*</span></th>
+                                <td>
+                                    <input class="input-medium form-control" type="text" name="name" placeholder="请输入服务站负责人...">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>联系人电话：<span style="color: red;">*</span></th>
+                                <td>
+                                    <input class="input-medium form-control" type="text" name="phone" placeholder="请输入服务站负责人电话...">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>客服电话：<span style="color: red;">*</span></th>
+                                <td>
+                                    <input class="input-medium form-control" type="text" name="telephone" placeholder="请输入服务站客户服务电话...">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>服务站图片<span style="color: red;">*</span>
+                                </th>
+                                <td>
+                                    <input class="input-medium form-control" type="file" name="pic">
+                                </td>
+                            </tr>
+                            <!--<tr>-->
+                                <!--<th>-->
+                                    <!--账号(后台)：-->
+                                    <!--<span style="color: red;">*</span>-->
+                                <!--</th>-->
+                                <!--<td>-->
+                                    <!--<input class="input-medium form-control checkuser" placeholder="请输入用于登录后台的账号..." type="text" name="user">-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                                <!--<th>-->
+                                    <!--密码(后台)：-->
+                                    <!--<span style="color: red;">*</span>-->
+                                <!--</th>-->
+                                <!--<td>-->
+                                    <!--<input class="input-medium form-control checkpwd" placeholder="请输入用于登录后台的账号..." type="text" name="password">-->
+                                <!--</td>-->
+                            <!--</tr>-->
+
+                            <tr>
+                                <th>
+                                </th>
+                                <td>
+                                    <input class="btn btn-success st-add" type="button" onclick="openService()" value="确认">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal" id="st_set_account" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" >
+                        设置账号
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div>下列表表单中，带 * 项表示必填项</div>
+                    <form id="setAccountformdata" method="post" >
+                        <input type="hidden" name="id" class="data_sid">
+                        <table class="table table-striped table-bordered table-hover table-condensed">
+                            <tr>
+                                <th width="25%">账号：<span style="color: red;">*</span></th>
+                                <td class="form-inline set_agent_search">
+                                    <input class="input-medium form-control" placeholder="请输入账号..." id="admin_user" type="text" name="company">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="25%">密码：<span style="color: red;">*</span></th>
+                                <td class="form-inline set_agent_search set_agent_area_search">
+                                    <input class="input-medium form-control" placeholder="请输入密码..." id="admin_password" type="password" name="company">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="25%">确认密码：<span style="color: red;">*</span></th>
+                                <td >
+                                    <input class="input-medium form-control" placeholder="请再次输入密码..." id="admin_repassword" type="password" name="company">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                </th>
+                                <td>
+                                    <input class="btn btn-success st-add" type="button" onclick="setAccount()" value="确认">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+    <script>
+        var where_map = JSON.parse(JSON.stringify({{$_GET|json_encode}}));
+        var areaUrl = "{{:U('Admin/Area/getNextArea')}}";
+        var getServiceUrl = "{{:U('Admin/Service/getService')}}";
+        var addServicePeopleUrl = "{{:U('Admin/Service/addServicePeople')}}";
+        var _html = '<option value="">--请选择--</option>';
+        // 人员添加
+        $('.top_add').click(function () {
+            document.getElementById('st_top_add_form').reset();
+            $('#st_top_add').modal('show');
+            loadService();
+        });
+        // 服务站检索
+        $('.set_top_add_area_search select').change(function(){
+            var parentid = $(this).val();
+            $("#st_top_add_form_service").html(_html);
+            if(!parentid)return false;
+            var index = $(this).index();
+            if(index == 0){ $(this).nextAll().html(_html); }
+            _this = this;
+            getInfo(areaUrl,{parentid:parentid},function(res){
+                if(res.status == 200){
+                    var new_html = _html;
+                    $.each(res.data,function (i,val) {
+                        new_html += '<option value="'+val.id+'">'+val.areaname+'</option>';
+                    });
+                    $(_this).next().html(new_html);
+                }
+            });
+            loadService();
+        });
+        
+        function loadService() {
+            var serviceMap = {};
+            serviceMap.province_id = $('.set_top_add_area_search select').eq(0).val();
+            serviceMap.city_id     = $('.set_top_add_area_search select').eq(1).val();
+            serviceMap.district_id = $('.set_top_add_area_search select').eq(2).val();
+
+            getInfo(getServiceUrl,serviceMap,function(res){
+                if(res.status == 200){
+                    var new_html = _html;
+                    $.each(res.data,function (i,val) {
+                        new_html += '<option value="'+val.id+'">'+val.company+'</option>';
+                    });
+                    $("#st_top_add_form_service").html(new_html);
+                }
+            });
+        }
+
+        function addServicePeople() {
+            var data = {};
+            data.sid = $("#st_top_add_form select[name='sid']").val();
+            data.name = $("#st_top_add_form input[name='name']").val();
+            data.phone = $("#st_top_add_form input[name='phone']").val();
+            data.password = $("#st_top_add_form input[name='password']").val();
+            data.repassword = $("#st_top_add_form input[name='repassword']").val();
+
+            getInfo(addServicePeopleUrl,data)
+        }
+        
+        $("._set_action").click(function () {
+            var id = $(this).parents('tr').data('id');
+            var status = $(this).data('status');
+            var url = "{{:U('Admin/Service/setStatus')}}";
+            getInfo(url,{status:status,id:id});
+        });
+        // ajax
+        function getInfo(url, data, Callback,closeMode=false) {
+            if(url){
+                $.ajax({
+                    url:url,
+                    type:'post',
+                    dataType:'json',
+                    cache: false,
+                    data:data,
+                    success:function(res){
+                        if(res.status == 200){
+                            if(Callback){
+                                Callback(res);
+                            }else{
+                                location.reload();
+                                parent.layer.msg(res.msg);
+                            }
+                        } else {
+                            if(closeMode){
+                                parent.layer.closeAll();
+                            }
+                            parent.layer.msg(res.msg);
+                        }
+
+                    }
+                });
+            }
+        }
+
+
+    </script>
+</block>

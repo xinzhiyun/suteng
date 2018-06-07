@@ -48,16 +48,16 @@
                                 <input type="text" class="form-control" name="name" placeholder="定义商品的名称">
                             </div>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label class="col-sm-2 control-label">商品图片：</label>
                             <div class="col-sm-10 disPics">
                                 <p class="btn btn-outline btn-primary col-sm-2">选择图片</p>
-                                <input type="file" class="form-control" name="pics[]" multiple="multiple">
+                                <input type="file" class="form-control" name="pics[]" multiple="multiple"> -->
                                 <!-- 显示上传图片 -->
-                                <div class="picShow col-sm-10">
+                                <!-- <div class="picShow col-sm-10">
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <label class="col-sm-2 control-label _attr">商品属性：</label>
                             <div class="col-sm-10">
@@ -364,36 +364,36 @@
         })
         
         // 点击添加图片  每张filereader对象只能读取一张图片的路径
-        $("input[type='file']").on("change", function() {
-            // 获取文件
-            var file = $(this)[0].files;
-            var fileHtml = "";
-            for(var i = 0; i < file.length; i++) {
-                //创建读取文件的对象  
-                var reader = new FileReader();  
-                //创建文件读取相关的变量  
-                // var imgFile; 
-                reader.error = function() {
-                    console.log("文件读取异常");
-                } 
-                //为文件读取成功设置事件  
-                reader.onload = function(e) {  
-                    // imgFile = e.target.result;  
-                    fileHtml = "<span class='selectimg'><img src='"+ e.target.result +"' /><i class='iconfont icon-shibai'></i></span>";
-                    $(".picShow").append(fileHtml);
-                }; 
-                // 读取文件 
-                reader.readAsDataURL(file[i]);//发起异步请求
-            }
-        });
+        // $("input[type='file']").on("change", function() {
+        //     // 获取文件
+        //     var file = $(this)[0].files;
+        //     var fileHtml = "";
+        //     for(var i = 0; i < file.length; i++) {
+        //         //创建读取文件的对象  
+        //         var reader = new FileReader();  
+        //         //创建文件读取相关的变量  
+        //         // var imgFile; 
+        //         reader.error = function() {
+        //             console.log("文件读取异常");
+        //         } 
+        //         //为文件读取成功设置事件  
+        //         reader.onload = function(e) {  
+        //             // imgFile = e.target.result;  
+        //             fileHtml = "<span class='selectimg'><img src='"+ e.target.result +"' /><i class='iconfont icon-shibai'></i></span>";
+        //             $(".picShow").append(fileHtml);
+        //         }; 
+        //         // 读取文件 
+        //         reader.readAsDataURL(file[i]);//发起异步请求
+        //     }
+        // });
         // 点击删除小图标删除图片
-        $(".picShow").on("click", ".icon-shibai", function() {
-            var _this = this;
-            layer.confirm('确认删除图片吗？', function(index){
-                $(_this).parent("span").remove();
-                layer.close(index);
-            }); 
-        });
+        // $(".picShow").on("click", ".icon-shibai", function() {
+        //     var _this = this;
+        //     layer.confirm('确认删除图片吗？', function(index){
+        //         $(_this).parent("span").remove();
+        //         layer.close(index);
+        //     }); 
+        // });
         // 添加属性
         function add() {
             $("input[name='attrname']").val('');
@@ -638,8 +638,8 @@
             $('.click2edit').destroy();
         };
         $(".goodsAdd").click(function(){
-            // var data = $("#form").serializeArray();
-            var data = new FormData($("#form")[0]);
+            var data = $("#form").serializeArray();
+            // var data = new FormData($("#form")[0]);
             $.ajax({
                 url:'goodsAction',
                 type:'post',
