@@ -105,6 +105,8 @@ class OrderController extends CommonController
                         ->field(array('g.name'=>'productname','g.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','d.express_name','d.express','d.status','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire','d.cprice','d.gid'=>'id','d.gpic'))
                         // ->relation('pics')
                         ->select();
+
+
                         break;
                     case 2;
                                             // 订单详情
@@ -121,6 +123,30 @@ class OrderController extends CommonController
 
                 $i++;
             }
+            
+
+            foreach ($waitpaylist as $key => $value) {
+                //先处理数据再给前端分配数据
+                
+                foreach ($value['productList'] as $k => $v) {
+        
+                    //查找退货的商品id
+                    $refund_goods =  M('refund_goods')->where('oid='."'{$value['orderid']}'")->select();
+                    foreach ($refund_goods as $rd => $rdvalue) {
+                        $rids[] = $rdvalue['gid'];
+                    }
+                    //id去重
+                    $ids = array_unique($rids);
+
+                    // dump($ids);
+                    if (in_array($v['gid'],$ids)) {
+                        // dump();
+                        $waitpaylist[$key]['productList'][$k]['tuihuo']='1';
+                    } 
+                }
+
+            }
+            // dump($waitpaylist);
 
             // 返回数据
             if(empty($waitpaylist)){
