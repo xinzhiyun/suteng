@@ -75,12 +75,12 @@ $(function(){
 			}
 			console.log(norms)
 			// 输出商品详情
-			goodsDetail_html = '<div class="detailpic"><ul id="wrapul"></ul><span class="closepicshow">X</span><span class="picnum"><b>1</b><span></span></span></div>'+
+			goodsDetail_html = '<div class="detailpic"><ul id="wrapul" class="my-gallery" data-pswp-uid="001"></ul><span class="closepicshow">X</span><span class="picnum"><b>1</b><span></span></span></div>'+
 				'<!-- /*商品说明*/ -->'+
 				'<div class="detailTxt">'+
 					'<span><b>￥'+ goodsDetail.price +'</b><em>已售： '+ sold_num +'</em></span>'+
 					'<b>'+ goodsDetail.name +'</b>'+
-					'<p>'+emHTML+'</p>'+
+					'<p>'+ emHTML +'</p>'+
 					// '<em>'+ emHTML+'</em>'+
 				'</div>'+
 				'<!-- /*商品选择，数量，邮费*/ -->'+
@@ -101,9 +101,10 @@ $(function(){
 			$('.picnum>span').text('/'+ goodsPicArr.length);
 			var goodsPicHTML = '';
 			goodsPicArr.map(function(value,index){
-				goodsPicHTML += '<li><img src="/Uploads/'+ value +'" alt=""></li>';
+				goodsPicHTML += '<li index="'+ index +'" src="/Uploads/'+ value +'"><img data-src="/Uploads/'+ value +'" src="/Public/Home/images/loading.gif" alt="加载中..."></li>';
 			})
 			$('.detailpic>ul').html(goodsPicHTML);
+			$('.moredetail>div').html(goodsPicHTML);	// 详情介绍图片
 			// 设置图片宽度
 			$('.detailpic>ul')[0].style.width = goodsPicArr.length*100 + '%';
 			$('.detailpic>ul').find('li').css({width: 100/goodsPicArr.length + '%'});
@@ -134,7 +135,7 @@ $(function(){
 				
 			});
 			// 点击查看
-			
+			view();
 			/* 顶部图片滑动部分 -- 结束 */
 
 			// console.log(picPathArr, '\n', commPicArr);
@@ -157,15 +158,48 @@ $(function(){
 			console.log('失败！ ',res)
 		}
 	})
-	
+	function view(){
+		var items = [];
+		var pswpElement = document.querySelectorAll('.pswp')[0];
+		var lipic = $('#wrapul>li');
+		// console.log('lipic: ',lipic);
+		for(var i=0; i<lipic.length; i++){
+			// console.log('src: ',lipic[i].getAttribute('src'));
+			// 查看的图片
+			items.push({
+				index: i,
+				src: lipic[i].getAttribute('src'),
+				w: 320,
+				h: 640
+			})
+		}
+		// console.log('items: ',items);
+		// Initializes and opens PhotoSwipe
+
+		// define options (if needed)
+		var options = {
+		    // optionName: 'option value'
+		    // for example:
+		    history: true,
+		    index: 0 // start at first slide
+		};
+		$('#wrapul').on('click', 'li', function(){
+			var index = $(this).attr('index');
+			options.index = +index;
+			// console.log('options: ',options);
+			var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+			gallery.init();
+
+		})
+	}
 	var statusList = [100, 60, 0];		// 好评，中评，差评
 	var statusText = ['好评', '中评', '差评'];		// 好评，中评，差评
+	var statusDesc = ['质量非常好，与卖家描述一致，非常满意', '质量一般，没有卖家描述那么好', '差的太离谱了，与卖家描述严重不符'];		// 好评，中评，差评
 	var commetHTML = '';	//存放评论相关商品的数据
 	// 请求评论数据
 	$.ajax({
 		url: getURL('Home', 'Comment/getComments'),
 		type: 'get',
-		// data: {gid: goods_gid},
 		data: {gid: goods_gid},
 		success: function(res){
 			console.log('请求评论成功： ',res);
@@ -188,10 +222,10 @@ $(function(){
 					text_html = '<!-- 评论内容 -->'+
 						'<div class="itemgoodsBott">'+
 							'<p class="cfix pos"><span class="fleft"><img src="'+ head +'" alt="">'+
-							'</span><span>&nbsp;'+ nickname +'</span><span class="fright">'+ timestampToTime(res.data[i].addtime) +'</span></p>'+
+							'</span><span>&nbsp;'+ nickname +'</span><span>'+ timestampToTime(res.data[i].addtime) +'</span></p>'+
 							'<p class="cfix xingx">'+
-								'<i index="1" class="iconfont pingfen fleft"><span style="width:'+ statusList[res.data[i].status-0-1] +'%"></span></i>'+
-								'<span class="fleft">&emsp;'+ statusText[res.data[i].status-0-1] + '</span>'+
+								'<i index="1" class="iconfont pingfen fleft"><span style="width:'+ statusList[res.data[i].grade-0-1] +'%"></span></i>'+
+								'<span class="fleft">&emsp;'+ statusText[res.data[i].grade-0-1] + '<span>（'+ statusDesc[res.data[i].grade-0-1] +'）</span></span>'+
 							'</p>'+
 							'<p class="ccontent">'+ res.data[i].content +'</p>'+
 							'<div class="commpic">'+
@@ -227,9 +261,7 @@ $(function(){
 					picStr = '';	//先清空再生成
 					for(var j=0; j<res.data[i].pics.length; j++){
 						numindex++;
-						console.log('numindex',numindex);
-						console.log('j: ', Number(j));
-						console.log('i: ', Number(i));
+						// console.log('numindex',numindex);
 						picStr += '<li><img class="compic" index="'+ numindex +'" src="'+'/Public/'+res.data[i].pics[j].path+'" alt="图片加载中"></li>';
 					}
 					picArr.push({'picHTML':picStr});
@@ -260,7 +292,7 @@ $(function(){
 		var items = [];
 		var pswpElement = document.querySelectorAll('.pswp')[0];
 		var compic = $('.compic');
-		console.log('compic: ',compic);
+		// console.log('compic: ',compic);
 		for(var i=0; i<compic.length; i++){
 			// console.log('src: ',compic[i].getAttribute('src'));
 			// 查看的图片
@@ -284,7 +316,7 @@ $(function(){
 		$('body').on('click', '.compic', function(){
 			var index = $(this).attr('index');
 			options.index = +index-1;
-			console.log('options: ',options);
+			// console.log('options: ',options);
 			var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
 			gallery.init();
 
@@ -325,14 +357,13 @@ $(function(){
 			$(this).val(val.replace(/\D/g, ''));
 		}
 		if(val.length >= 6){
-			$(this).css({width: val.length*16 + '%'});
+			$(this).css({width: val.length-0+18 + 'vw'});
 		}else{
 			$(this).css({width: 'auto'});
 		}
 	})
-	$('.number').on('blur', function(e){
-		console.log('num: ',$(this).val());
-		if(!$(this).val() || $(this).val == 0){
+	$('.number').on('change', function(e){
+		if(!$(this).val() || $(this).val() == 0){
 			$(this).val(1);
 		}
 	})
@@ -341,12 +372,18 @@ $(function(){
 		// console.dir($(this).find("span").attr('class'));
 		var _class=$(this).find("span").attr('class');
 
-		if(_class=='iconfont icon-shuangxiajiantou'){
+		if(_class=='iconfont icon-shuangxiajiantou'){ // 收起状态 -> 展开
 			// $('.detailItem:nth-of-type(1)').css('display','block');
 			$('.detailItem').slideDown('slow');
 
 			$(this).find("span").removeClass('iconfont icon-shuangxiajiantou').addClass('iconfont icon-xiangshangjiantou');
 
+			$('.pinglunshow b').text('收起评论');
+			$('.slide').show();
+			$('.detailItemall').css({height: '70vh',overflowY: 'scroll'});
+			setTimeout(function(){
+				$('.slide').hide();
+			},3000);
 		}else{
 			$(this).find("span").removeClass('iconfont icon-xiangshangjiantou').addClass('iconfont icon-shuangxiajiantou');
 
@@ -356,6 +393,9 @@ $(function(){
 			// $('.detailItem').eq(1).slideDown('slow');
 			$('.detailItem').eq(0).css('display','block');
 			$('.detailItem').eq(1).css('display','block');
+			$('.detailItemall').css({height: 'auto',overflowY: 'hidden'});
+			$('.slide').hide();
+			$('.pinglunshow b').text('查看更多');
 
 		}
 	})
@@ -460,7 +500,7 @@ $(function(){
 		var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
 		var Y = date.getFullYear() + '/';
 		var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '/';
-		var D = date.getDate() + ' ';
+		var D = date.getDate() < 10 ? '0'+date.getDate() + ' ' : date.getDate()+' ';
 		var h = (date.getHours() < 10 ? '0'+ date.getHours() : date.getHours()) + ':';
 		var m = (date.getMinutes() < 10 ? '0'+ date.getMinutes() : date.getMinutes());
 		// var s = date.getSeconds();
@@ -468,3 +508,59 @@ $(function(){
 	}
 
 })
+setTimeout(function(){
+	console.log($('img[data-src]'));
+	lazyLoad($('img[data-src]'));
+	
+},0);
+// 监听页面滚动
+document.body.onscroll = function(e){
+	e = event || window.event;
+	var scheight = window.innerHeight;
+	var scrollHeight = document.body.scrollHeight || document.documentElement.scrollHeight;
+	var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+	// console.log('scrollHeight: ',scrollHeight);
+	// console.log('scrollTop + height: ',scrollTop + scheight);
+	console.log($('.moredetail').scrollTop());
+	if($('.moredetail').scrollTop() == 0){
+		// 详情介绍顶部
+		$('.moredetail').css({
+			// transform: 'translateY(0%)',
+		});
+	}
+	if(scrollHeight <= scrollTop + scheight + 10){
+		console.log('滑到底部了');
+		getDetail();
+	}else{
+	}
+}
+
+// 获取商品详情介绍
+function getDetail(){
+	// $.ajax({
+	// 	url: '{{:U("")}}',
+	// 	type: 'get',
+	// 	success: function(res){
+	// 		console.log('res: ',res);
+	// 	},
+	// 	error: function(err){
+	// 		console.log('err: ',err);
+	// 	}
+	// })
+	
+	$('.moredetail').css({
+		// transform: 'translateY(0)'
+	});
+}
+
+// 图片懒加载
+function lazyLoad(img){
+	for(var i=0; i< img.length; i++){
+		(function(img){
+			setTimeout(function(){
+				// console.log('img: ',img);
+				img.setAttribute('src', img.getAttribute('data-src'));
+			},500)
+		})(img[i])
+	}
+}

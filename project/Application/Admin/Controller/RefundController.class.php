@@ -233,7 +233,7 @@ st_shop_order_detail.gid ='.$value['gid']);
 
                                 foreach ($odetail as $key => $value) {
                                     //订单总价
-                                    (int)$totalPrice += $value['price'];
+                                    (int)$totalPrice += $value['price'] * $value['num'];
                                 }
                                 
                                 //查询要退款的金额
@@ -331,7 +331,7 @@ st_shop_order_detail.gid ='.$value['gid']);
 
                                 foreach ($odetail as $key => $value) {
                                     //订单总价
-                                    (int)$totalPrice += $value['price'];
+                                    (int)$totalPrice += $value['price']*$value['num'];
                                 }
                                 
                                 //查询要退款的金额
@@ -549,7 +549,7 @@ st_shop_order_detail.gid ='.$value['gid']);
 
                         foreach ($odetail as $key => $value) {
                             //订单总价
-                            (int)$totalPrice += $value['price'];
+                            (int)$totalPrice += $value['price']*$value['num'];
                         }
                         
                         //查询要退款的金额
@@ -647,9 +647,10 @@ st_shop_order_detail.gid ='.$value['gid']);
 
                         foreach ($odetail as $key => $value) {
                             //订单总价
-                            (int)$totalPrice += $value['price'];
+                            (int)$totalPrice += $value['price'] * $value['num'];
                         }
                         
+
                         //查询要退款的金额
                         $refundInfo = M('refund')->where('id='.$id)->find();
                         $refundPrice = (int)$refundInfo['total_amount'];

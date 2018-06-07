@@ -1,5 +1,6 @@
 <?php
 namespace Admin\Controller;
+use Common\Tool\Work;
 use Org\Util\Date;
 use Org\Util\Strings;
 /**
@@ -11,7 +12,6 @@ use Org\Util\Strings;
 
 class WorkController extends CommonController
 {
-
 	/**
      * 工单列表
      *
@@ -26,12 +26,15 @@ class WorkController extends CommonController
         strlen(I('get.type')) ? (int)$map['type'] = I('get.type'):'';
 
         strlen(I('get.result')) ? (int)$map['result'] = I('get.result'):'';
+        strlen(I('get.is_examine')) ? (int)$map['is_examine'] = I('get.is_examine'):'';
         // $map['leavel'] = $this->leavel;
         $work = D('work');
         $workList = $work->getPage($work,$map,'create_at desc');
         $where['number'] = $_GET['number'];
         $where['type'] = I('get.type');
         $where['result'] = I('get.result');
+
+        Work::add('24174', 4);
 
         $this->assign('pageList',$workList);
         $this->assign('where',$where);
@@ -61,7 +64,7 @@ class WorkController extends CommonController
     }
 
     /**
-     * 添加工单
+     *  添加工单
      */
     public function add()
     {
@@ -201,19 +204,48 @@ class WorkController extends CommonController
 
     }
 
+    // 自动派遣
+    public function autoService($wid)
+    {
+        $work_data =  M('work')->where('id='.$wid)->find();
 
-//    /**
-//     * 生成工单编号
-//     * @return [type] [description]
-//     */
-//    protected function getWorkNumber()
-//    {
-//        $date = new Date(time());
-//        $string = new Strings;
-//        $dateStr = $date->format("%Y%m%d%H%M");   // 根据时间戳生成的字符串
-//        $str1 = $string->randString(3,0);   // 生成字母随机字符
-//        $str2 = $string->randString(5,1);   // 生成数字随机字符
-//        $workNumber = $str1.$dateStr.$str2;
-//        return $workNumber;
-//    }
+        if(!empty($work_data) && empty($work_data['sid'])){
+            $map['province_id'] = $work_data['province_id'];
+            $map['city_id'] = $work_data['city_id'];
+            $map['district_id'] = $work_data['district_id'];
+
+//            $map['status'][] = ['GT',0];
+//            $map['status'][] = ['LT',4];
+            $service = M('service')->where($map)->find();
+
+
+            if(empty($service)){
+                return false;
+            }
+            //状态{0:未开通 1:已开通 2:被代管(服务站代管) 3:被代管(第三方代管) 4:被关闭 }
+            if($service['status']==0 || $service['status']==4 ){
+                return false;
+            }
+            $sid = $service['id'];
+            $name = $service['company'];
+            $service_mode = 0;
+
+            if ($service['status'] >1 ) {
+                $sid = $service['t_id'];
+                $name = $service['t_company'];
+            }
+
+            if ($service['status'] == 3) {
+                $service_mode = 1;
+            }
+
+            $work_res = M('work')->where('id='.$wid)->save( ['sid'=>$sid,'service_mode'=>$service_mode] );
+
+            if($work_res){
+                // 写工单记录
+                Work::add($wid, 3);
+            }
+        }
+    }
+
 }

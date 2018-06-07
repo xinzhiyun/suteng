@@ -846,7 +846,7 @@
                 				// console.log(res.data[i]['dw_time']);
                 				returned1+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
-                				'<div class="tuikuangLeft ">'+
+                				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i]['goods'][k].gid +'">'+
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -949,7 +949,7 @@
 								var infoTitle = res.data[i]['goods'][k]['productname'] ? res.data[i]['goods'][k]['productname'] : "暂无标题"; 
                 				returned3+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
-                				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i][productList][0].gid +'">'+
+                				'<div class="tuikuangLeft giPicture" gid="'+ waitpaylist[i]['productList'][k].gid +'">'+
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -1042,7 +1042,7 @@
 							: noimg;
 							returned6+='<p>信息更新时间：'+ res.data[i].ordertime +'</p>'+
 							'<div class="shangpingnei clearfix">'+
-							'<div class="tuikuangLeft giPicture" gid="'+ res.data[i].gid +'">'+
+							'<div class="tuikuangLeft giPicture" gid="'+ res.data[i].productList[j].gid +'">'+
 							'<img src="'+ noimg_show +'" alt="">'+
 							'</div>'+
 							'<div class="tuikuangRight">'+
@@ -1148,6 +1148,7 @@
 	// 点击图片跳到商品详情界面
 	$('body').on('click', '.giPicture', function(){
 		var gid = $(this).attr('gid');
+		if(!gid) return;
 		location.href = '{{:U("Home/Shop/shoppingdetail")}}' + '?gid=' + gid;
 	})
 </script>

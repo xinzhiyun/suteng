@@ -30,21 +30,26 @@
                         </div>
                     </div>
                 <form method="get" action="">
-                    <div class="input-group col-md-6" id='searchdiv'>
+                    <div class="input-group " id='searchdiv'>
                         <label class="form-control" style="width:20%">工单编号</label>
                         <input type="hidden" name="p" value="1">
                         <input type="text" name="number" placeholder="输入搜索关键字" value="{{$where['number']}}" class="input form-control"   style="width:30%">
-                        <select name="type" class="form-control" name="account" style="width:20%">
+                        <select name="type" class="form-control" style="width:15%">
                             <option <?php echo ($where['type']=="")?'selected':''; ?> value="">维护类型</option>
                             <option <?php echo ($where['type']=="0")?'selected':''; ?> value="0">安装</option>
                             <option <?php echo ($where['type']==1)?'selected':''; ?> value="1">维修</option>
                             <option <?php echo ($where['type']==2)?'selected':''; ?> value="2">维护</option>
                         </select>
-                        <select name="result" class="form-control" name="account" style="width:20%">
+                        <select name="result" class="form-control" style="width:15%">
                             <option  <?php echo ($where['result']=="")?'selected':''; ?>  value="">处理结果</option>
                             <option <?php echo ($where['result']=="0")?'selected':''; ?> value="0">未处理</option>
                             <option <?php echo ($where['result']==1)?'selected':''; ?> value="1">正在处理</option>
                             <option <?php echo ($where['result']==2)?'selected':''; ?> value="2">已处理</option>
+                        </select>
+                        <select name="is_examine" class="form-control"  style="width:15%">
+                            <option  <?php echo ($where['result']=="")?'selected':''; ?>  value="">审核状态</option>
+                            <option <?php echo ($where['result']=="0")?'selected':''; ?> value="0">待审核</option>
+                            <option <?php echo ($where['result']==1)?'selected':''; ?> value="1">未通过</option>
                         </select>
                         <span class="input-group-btn" style="display: inline-block;">
                                 <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>

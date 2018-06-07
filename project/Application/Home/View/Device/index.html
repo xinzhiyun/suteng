@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/device/index.css">
     <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
     <script>
-        var vconsole = new VConsole();
+        // var vconsole = new VConsole();
     </script>
 </head>
 <body>
@@ -29,12 +29,12 @@
 									<!-- <img src="__PUBLIC__/Home/images/yoo_01.png" alt=""> -->
 								</div>
 								<div class="deviceitemRight ">
-									<p><span>设备编码：</span><span class="device_code">{{$vo.device_code}}</span></p>
+									<p><span>设备编码：</span><span class="device_code" money>{{$vo.device_code}}</span></p>
 									<switch name="vo.status">
 										<case value="0"><i class="iconfont icon-kuang1"></i></case>
 										<case value="1"><i class="iconfont icon-xuanze"></i></case>
 									</switch>
-									<div class="devicepay"><span>租赁机转个人<em>￥3620</em></span><i>付款</i></div>
+									<div class="devicepay"><span>租赁机转个人<em>￥ 5000<span>{{$vo.money}}</span></em></span><i>付款</i></div>
 								</div>
 							</div>
 						</volist>
@@ -64,20 +64,20 @@
 								<div class="paytopLeft"><i class="iconfont icon-cuohao"></i></div>
 								<div class="paytopRight">
 									<h3>付款</h3>
-									<p>￥3620.00</p>
+									<p class='paymoney'>￥3620.00</p>
 								</div>	
 							</div>
 							<div class="paymidd">
 								<h3>选择支付方式</h3>
 								<ul class="clearfix">
 									
-									<li><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-kuang1"></span></li>
-									<li><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
-									<li><i class="iconfont icon-yinlian"></i>银联<span class="iconfont icon-kuang1"></span></li>
+									<li><i class="iconfont icon-z-weixin"></i><em>微信支付</em><span class="iconfont icon-kuang1"></span></li>
+									<li><i class="iconfont icon-zhifubao"></i><em>支付宝支付</em><span class="iconfont icon-kuang1"></span></li>
+									<li><i class="iconfont icon-yinlian"></i><em>银联</em><span class="iconfont icon-kuang1"></span></li>
 								</ul>
 							</div>
 							<div class="payBott">
-								<input class=" start" type="submit" value="立即支付">
+								<input class="start" type="button" value="立即支付">
 							</div>
 						</div>
 					</div>
@@ -101,9 +101,8 @@
 		</div>
 		<!-- 模态框的内容 -->
 		
-		<div class="modal-backup">
+		<!-- <div class="modal-backup">
 			<div class="modelAll" >
-				<!-- <a class="start" href="javascript:;">点击</a> -->
 				<div class="modal fade">
 					<div class="modal-body">
 						<div class="modal-content">
@@ -115,13 +114,63 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		
 	</div>
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>	
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>	
 	<script>
+
+		//微信接口
+		wx.config({
+		    debug: false,
+		    appId: '{{$wxinfo["appId"]}}',
+		    timestamp: '{{$wxinfo["timestamp"]}}',
+		    nonceStr: '{{$wxinfo["nonceStr"]}}',
+		    signature: '{{$wxinfo["signature"]}}',
+		    jsApiList: [
+		      // 所有要调用的 API 都要加到这个列表中
+		      'configWXDeviceWiFi', 
+		      'scanQRCode',
+		      'chooseWXPay'
+		    ]
+		});	
+		/*
+		微信支付方法
+		*/
+		function weixinPay(res){
+			var obj = Object.prototype.toString.call(res);
+			if(Object.prototype.toString.call(res) == obj){
+				res = JSON.stringify(res);
+			}
+			WeixinJSBridge.invoke(
+				'getBrandWCPayRequest',
+				JSON.parse(res),
+				function(res){
+					if(res.err_msg.substr(-2) == 'ok'){
+
+						parent.layer.msg('付款成功！');
+						//付款成功后的操作
+						setTimeout(function(){
+							
+							location.href = getURL('Home', 'PaymentSystem/paytosuccess');
+						},500);
+					
+				}else if(res.err_msg.substr(-6) == 'cancel'){
+					//取消订单操作
+				}else{
+					parent.layer.msg('付款失败！');
+					//付款失败操作
+					setTimeout(function(){
+						location.href = getURL('Home', 'PaymentSystem/paytofailed');
+					},500);
+					
+				}
+			}
+			)
+		}
 		$(function(){
 			// 首页按钮
 		    !function(){
@@ -142,113 +191,139 @@
 			   }
 		      // console.log(home)
 		    }()
-		})
-		// 选中当前的设备
-		$('.deviceitemRight>i').click(function(){
-			var _this = $(this);
-			// console.log(location.href)
-			var code = $(this).parents(".deviceitemRight ").find(".device_code").text()
-			// console.log(device_code)
-			$.ajax({
-				url: "{{:U('Device/setDefault')}}",
-				type: 'post',
-				data: {'code':code},
-				success: function(res){
-					console.log('成功！',res);
-					if(res.code == 200){
-						$('.deviceitemRight>i').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-						_this.removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
-						$('.devicepay').hide();
-						layuiHint("切换成功！");
-						setTimeout(function(){
-							//替换当前地址为首页地址，防止后退后再回到设备界面
-							history.replaceState({},null,'{{:U("Index/index")}}');
 
-							location.href = '{{:U("VipCenter/minepack")}}';
-						},500)
-					}else{
-						layuiHint("切换失败，请稍后再试！")
+			// 选中当前的设备
+			$('.deviceitemRight>i').click(function(){
+				var _this = $(this);
+				// console.log(location.href)
+				var code = $(this).parents(".deviceitemRight ").find(".device_code").text()
+				// console.log(device_code)
+				$.ajax({
+					url: "{{:U('Device/setDefault')}}",
+					type: 'post',
+					data: {'code':code},
+					success: function(res){
+						console.log('成功！',res);
+						if(res.code == 200){
+							$('.deviceitemRight>i').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+							_this.removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+							$('.devicepay').hide();
+							layuiHint("切换成功！");
+							setTimeout(function(){
+								//替换当前地址为首页地址，防止后退后再回到设备界面
+								history.replaceState({},null,'{{:U("Index/index")}}');
+
+								location.href = '{{:U("VipCenter/minepack")}}';
+							},500)
+						}else{
+							layuiHint("切换失败，请稍后再试！")
+						}
+					},
+					error: function(res){
+						console.log('失败！',res);
+						layuiHint("遇到未知问题，请稍后再试！")
 					}
-				},
-				error: function(res){
-					console.log('失败！',res);
-					layuiHint("遇到未知问题，请稍后再试！")
-				}
+				})
+				
 			})
-			
-		})
-		
-		// 查看当前设备的所属情况
-		$('.deviceitemRight>p').click(function(){
-			$('.devicepay').hide();
-			var bb=$(this).next().attr('class');
-			 if(bb=='iconfont icon-xuanze'){
-			 	console.dir($(this).nextAll().fadeIn("slow"))
-			 	$(this).nextAll().fadeIn("slow");
-		 		$('.devicepay>i').click(function(){
-		 			// console.dir(0);
-		 			
-		 			$('.paystyle').slideDown("slow");
-		 			$('.deviceFoot').hide();
-		 		})
-			 }
-			 
-		})
-		//隐藏租赁机转个人的弹框
-		$('.devicepay>span').click(function(){
-			$('.devicepay').hide();
-		})
-		// 付款方式的单选框
-		$('.paymidd>ul>li>span').click(function(){
-			$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-			$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
-		})
-		// 付款方式页面隐藏
-		$('.paytop>.paytopLeft>i').click(function(){
-			$('.paystyle').slideUp("slow");
-			$('.deviceFoot').css('display','block');
-		})
+			var deviceid_now;
+			var money = $('.devicepay>em').text();
+			money = 5000;
+			// 查看当前设备的所属情况
+			$('.deviceitemRight>p').click(function(){
+				deviceid_now = $(this).find('.device_code').text();
+				$('.devicepay').hide();
+				var bb=$(this).next().attr('class');
+				 if(bb=='iconfont icon-xuanze'){
+				 	console.dir($(this).nextAll().fadeIn("slow"))
+				 	$(this).nextAll().fadeIn("slow");
+			 		$('.devicepay>i').click(function(){
+			 			// console.dir(0);
+			 			
+						$('.paymoney').text('￥' + money);
+			 			$('.paystyle').slideDown("slow");
+			 			$('.deviceFoot').hide();
+			 		})
+				 }
+				 
+			})
+			//隐藏租赁机转个人的弹框
+			$('.devicepay>span').click(function(){
+				$('.devicepay').hide();
+			})
+			// 付款方式的单选框
+			$('.paymidd>ul>li').click(function(){
+				$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+				$(this).find('span').removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+			})
+			// 付款方式页面隐藏
+			$('.paytop>.paytopLeft>i').click(function(){
+				$('.paystyle').slideUp("slow");
+				$('.deviceFoot').css('display','block');
+			})
 
-		// 没有设备时的页面显示
-		// alert($('.deviceItem').length);
-		if($('.deviceItem').length==0){
-			$('.haveDevice').css('display','none');
-			$('.noDevice').css('display','block');
-		}
+			// 没有设备时的页面显示
+			if($('.deviceItem').length==0){
+				$('.haveDevice').css('display','none');
+				$('.noDevice').css('display','block');
+			}
 		
-		
-
-		// 模态框的js
-		$(function(){
+			// 点击立即支付
 	      	$(".start").on("click",function(){
-	       	   $(".modelAll").css('display','block');
-	       	   $(".modal").addClass("in");
-	       	   $(".modal").css('z-index','1001');
-	       	   $(".modal-backup").css('display','block');
-	       });
+	      		var check = $('.paymidd').find('.icon-xuanze');
+	      		var type = check.siblings('em').text();	// 支付方式
+	      		console.log('deviceid_now: ',deviceid_now);
+	      		console.log('money: ',money);
+	      		console.log('type: ',type);
+	      		if(!check.length){
+	      			layuiHint('请选择支付方式');
+	      			return
+	      		}
+	      		switch (type) {
+	      			case '微信支付': 
+	      				getPayinfo({
+	      					device_id: deviceid_now,
+	      					money: money
+	      				}, function(res){
+	      					console.log('res: ',res);
+	      					// 调用微信支付接口
+	      					weixinPay(res);
+	      				})
+	      				break;
+	      			case '支付宝支付':
+	      				break;
+	      			case '银联':
+	      				break;
+	      		}
+				$(".modal").addClass("in");
+				$(".modal").css('z-index','1001');
+	       	});
 	      	$(".close").on("click",function(){
-	       	   $(".modal").removeClass('in');
-	       	   $(".modal").css('z-index','-1');
-	       	   $(".modal-backup").fadeOut('slow');
-	       });
+	       	    $(".modal").removeClass('in');
+	       	    $(".modal").css('z-index','-1');
+	       	    $(".modal-backup").fadeOut('slow');
+	        });
       	})
 
+		// 获取微信支付的数据
+		function getPayinfo(data, callback){
+			$.ajax({
+				url: '{{:U("Home/Device/index")}}',
+				type: 'post',
+				data: data,
+				success: function(res){
+					console.log('res: ',res);
+					if(res.status == 200){
+						callback(res);
+					}
+				},
+				error:function(err){
+					console.log('err: ',err);
+				}
+			})
+		}
 	</script>
-	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>	
 	<script>
-		//微信接口
-		wx.config({
-		    debug: false,
-		    appId: '{{$wxinfo["appId"]}}',
-		    timestamp: '{{$wxinfo["timestamp"]}}',
-		    nonceStr: '{{$wxinfo["nonceStr"]}}',
-		    signature: '{{$wxinfo["signature"]}}',
-		    jsApiList: [
-		      // 所有要调用的 API 都要加到这个列表中
-		      'configWXDeviceWiFi', 
-		      'scanQRCode'
-		    ]
-		});	
 		// 扫码绑定设备
 		$("#devices-add").on('click','p',function(){
 			wx.scanQRCode({

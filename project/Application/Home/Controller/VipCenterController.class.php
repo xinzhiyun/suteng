@@ -164,6 +164,10 @@ class VipCenterController extends CommonController
      */
     public function personalInformation()
     {
+        if(!empty($_GET['machineNo'])){
+            $device = M('devices')->where('device_code='.$_GET['machineNo'])->find();
+            if(empty($device))$this->error('改设备不存在,请联系经销商.');
+        }
         $map['uid'] = session('user.id');
         $map['status'] = 1;
         $user_device = M('user_device')->where($map)->find();

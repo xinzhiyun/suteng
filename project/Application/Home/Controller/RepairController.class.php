@@ -11,8 +11,12 @@ class RepairController extends CommonController
     public function index()
     {
         $map['uid'] = session('user.id');
-        $map['status'] = I('status',0);
-        $installList = M('shop_order_device_install')->where($map)->select();
+
+        $maps['uid'] = session('user.id');
+        $maps['status'] = I('status',0);
+
+
+        $installList = M('shop_order_device_install')->where($maps)->select();
         $this->assign('installList',$installList);
 
 

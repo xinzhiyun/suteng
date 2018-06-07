@@ -18,8 +18,9 @@ class WorkController extends CommonController
             } else {
                 $data['type'] = $post['type'];
             }
-            if($data['type']==0){
-                if(empty($post['install_id']))E('请选择设备进行安装', 40102);
+
+            if ( empty($post['device_code']) ) {
+                E('请确认设备信息',400022);
             }
 
             if (empty($post['kphone']) || empty($post['kname'])) {
@@ -53,16 +54,16 @@ class WorkController extends CommonController
 
             $data['uid'] = session('user.id');
 
-            if (!empty($post['install_id'])) {
-                $data['install_id'] = $post['install_id'];
-            }
-
             $data['number'] = getWorkNumber();
 
             if($data['type']==0){
                 $data['content'] = '新购设备-安装';
                 $data['title']   = '设备安装';
+                $data['install_id'] = $post['device_code'];
+            }else{
+                $data['device_code'] = $post['device_code'];
             }
+
             $data['is_examine'] = 0;
             $data['create_at']=time();
             $data['update_at']=time();
@@ -82,19 +83,6 @@ class WorkController extends CommonController
             $this->toJson($e);
         }
     }
-
-//    /**
-//     *  获取用户的设备安装列表
-//     */
-//    public function getDeviceInstallList()
-//    {
-//        $map['uid'] = session('user.id');
-//        $map['status'] = I('status',0);
-//        $list = M('shop_order_device_install')->where($map)->select();
-//
-//        $this->toJson(['data'=>$list],'获取成功',200);
-//    }
-    
-}   
+}
 
 
