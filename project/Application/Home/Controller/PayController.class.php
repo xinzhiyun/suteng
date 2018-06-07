@@ -365,12 +365,14 @@ class PayController extends Controller
                     ];
                     break;
                 case '3':
+
                     //个人会员继续省钱 所补交的费用
                     $data['annual_ey'] = $annual_money['annual_money']/365;
                     $data['medal_ey'] = $annual_money['medal_money']/365;
                     $data['mo_ey'] = $annual_money['personal_money']/365;
                     //计算出当前会员剩余天数
                     $time = intval(($grade['end_time']-time())/86400);
+
                     //钻石会员剩下的钱
                     $annual_money= (round($data['annual_ey'], 2)-round($data['mo_ey'], 2)) * $time;
                     //黄金会员剩下的钱
