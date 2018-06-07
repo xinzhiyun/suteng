@@ -21,7 +21,7 @@
 					<span><img src="__PUBLIC__/Home/images/zssjx.png" alt=""></span>
 					<span class="gradeName">钻石会员</span>
 				</p>
-				<p class="selectPrice">{{$annual.annual_money}}元</p>
+				<p class="selectPrice" money='{{$annual.annual_money}}' status='1'>{{$annual.annual_money}}元</p>
 				<div class="goldInfo">
 					<p>钻石会员说明</p>
 					<p class="dia_describe"></p>
@@ -36,7 +36,7 @@
 					<span><img src="__PUBLIC__/Home/images/hjsjx.png" alt=""></span>
 					<span class="gradeName">黄金会员</span>
 				</p>
-				<p class="selectPrice">{{$annual.medal_money}}元</p>
+				<p class="selectPrice" money='{{$annual.medal_money}}' status='2'>{{$annual.medal_money}}元</p>
 				<div class="goldInfo">
 					<p>黄金会员说明</p>
 					<p class="gold"></p>
@@ -69,7 +69,7 @@
 					<span><img src="__PUBLIC__/Home/images/ptsjx.png" alt=""></span>
 					<span class="gradeName">普通会员</span>
 				</p>
-				<p class="selectPrice">{{$annual.personal_money}}元</p>
+				<p class="selectPrice" money='{{$annual.personal_money}}' status='3'>{{$annual.personal_money}}元</p>
 				<div class="goldInfo">
 					<p>个人会员说明</p>
 					<p class='per_describe'></p>
@@ -170,6 +170,8 @@
     var dingdanID;
     // 点击提交
     $(".confirmBtn").on("touchstart", function() {
+    	var money = $('.selectChange').find('.selectPrice').attr('money');
+    	var status = $('.selectChange').find('.selectPrice').attr('status');
 
         if($(".goldGrade").hasClass("selectChange")) {
             $.ajax({
@@ -177,11 +179,9 @@
                 type: 'post',
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 async: false,
-                data: {'name':selectName,'price':selectPrice,'annual_status':selectStatus},
+                data: {'name':selectName,'price':money,'annual_status':status},
                 success: function(res){
-
                     console.log('成功！ ', res);
-                    //$("#money").text('￥'+money);
                     //如果返回的是订单号
                     if(typeof JSON.parse(res) == 'number'){
 
