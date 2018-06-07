@@ -101,9 +101,10 @@ $(function(){
 			$('.picnum>span').text('/'+ goodsPicArr.length);
 			var goodsPicHTML = '';
 			goodsPicArr.map(function(value,index){
-				goodsPicHTML += '<li index="'+ index +'" src="/Uploads/'+ value +'"><img src="/Uploads/'+ value +'" alt=""></li>';
+				goodsPicHTML += '<li index="'+ index +'" src="/Uploads/'+ value +'"><img data-src="/Uploads/'+ value +'" src="/Public/Home/images/loading.gif" alt="加载中..."></li>';
 			})
 			$('.detailpic>ul').html(goodsPicHTML);
+			$('.moredetail>div').html(goodsPicHTML);	// 详情介绍图片
 			// 设置图片宽度
 			$('.detailpic>ul')[0].style.width = goodsPicArr.length*100 + '%';
 			$('.detailpic>ul').find('li').css({width: 100/goodsPicArr.length + '%'});
@@ -184,7 +185,7 @@ $(function(){
 		};
 		$('#wrapul').on('click', 'li', function(){
 			var index = $(this).attr('index');
-			options.index = +index-1;
+			options.index = +index;
 			// console.log('options: ',options);
 			var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
 			gallery.init();
@@ -371,12 +372,14 @@ $(function(){
 		// console.dir($(this).find("span").attr('class'));
 		var _class=$(this).find("span").attr('class');
 
-		if(_class=='iconfont icon-shuangxiajiantou'){
+		if(_class=='iconfont icon-shuangxiajiantou'){ // 收起状态 -> 展开
 			// $('.detailItem:nth-of-type(1)').css('display','block');
 			$('.detailItem').slideDown('slow');
 
 			$(this).find("span").removeClass('iconfont icon-shuangxiajiantou').addClass('iconfont icon-xiangshangjiantou');
 
+			$('.pinglunshow b').text('收起');
+			$('.detailItemall').css({height: '90vh',overflowY: 'scroll'});
 		}else{
 			$(this).find("span").removeClass('iconfont icon-xiangshangjiantou').addClass('iconfont icon-shuangxiajiantou');
 
@@ -386,6 +389,8 @@ $(function(){
 			// $('.detailItem').eq(1).slideDown('slow');
 			$('.detailItem').eq(0).css('display','block');
 			$('.detailItem').eq(1).css('display','block');
+			$('.detailItemall').css({height: 'auto',overflowY: 'hidden'});
+			$('.pinglunshow b').text('查看更多');
 
 		}
 	})
@@ -498,3 +503,59 @@ $(function(){
 	}
 
 })
+setTimeout(function(){
+	console.log($('img[data-src]'));
+	lazyLoad($('img[data-src]'));
+	
+},0);
+// 监听页面滚动
+document.body.onscroll = function(e){
+	e = event || window.event;
+	var scheight = window.innerHeight;
+	var scrollHeight = document.body.scrollHeight || document.documentElement.scrollHeight;
+	var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+	// console.log('scrollHeight: ',scrollHeight);
+	// console.log('scrollTop + height: ',scrollTop + scheight);
+	console.log($('.moredetail').scrollTop());
+	if($('.moredetail').scrollTop() == 0){
+		// 详情介绍顶部
+		$('.moredetail').css({
+			// transform: 'translateY(0%)',
+		});
+	}
+	if(scrollHeight <= scrollTop + scheight + 10){
+		console.log('滑到底部了');
+		getDetail();
+	}else{
+	}
+}
+
+// 获取商品详情介绍
+function getDetail(){
+	// $.ajax({
+	// 	url: '{{:U("")}}',
+	// 	type: 'get',
+	// 	success: function(res){
+	// 		console.log('res: ',res);
+	// 	},
+	// 	error: function(err){
+	// 		console.log('err: ',err);
+	// 	}
+	// })
+	
+	$('.moredetail').css({
+		// transform: 'translateY(0)'
+	});
+}
+
+// 图片懒加载
+function lazyLoad(img){
+	for(var i=0; i< img.length; i++){
+		(function(img){
+			setTimeout(function(){
+				// console.log('img: ',img);
+				img.setAttribute('src', img.getAttribute('data-src'));
+			},500)
+		})(img[i])
+	}
+}

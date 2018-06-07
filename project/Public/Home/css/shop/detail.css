@@ -5,6 +5,7 @@ body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, fo
 body{
 	font-size: 0.7rem;
 	color: #373737;
+	overflow-x: hidden;
 }
 .shopdetailContain{
 	padding-bottom: 2rem;
@@ -41,7 +42,8 @@ body{
     position: relative;
     display: block;
     top: 50% !important;
-    transform: translateY(-50%) !important;
+    -webkit-transform: translateY(-50%) !important;
+            transform: translateY(-50%) !important;
 }
 /*商品说明*/
 .detailTxt{
@@ -95,8 +97,12 @@ body{
 	padding:0.7rem 0;
 	border-bottom:1px solid #E5E5E5;
 	color: #5a5a5a;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	justify-content: space-between;
+	-webkit-box-pack: justify;
+	    -ms-flex-pack: justify;
+	        justify-content: space-between;
 }
 .selectPostage > span > select {
 	-webkit-appearance:none;
@@ -128,12 +134,22 @@ body{
 }
 /*评论内容*/
 .detailContain{
-	padding: 2rem 0;
+	height: 100vh;
+    min-width: 300px;
+    padding-bottom: 12vh;
+    overflow: hidden;
+    -webkit-transform: translate3d(0,0,0);
+            transform: translate3d(0,0,0);
 }
 /*个人评论标题*/
 .detailtitle{
+	width: 90%;
 	position: relative;
+    left: 50%;
+    margin-left: -45%;
+	margin-bottom: 4vmin;
 	text-align: center;
+	border-bottom: 1px solid #eee;
 	font-size: 0.72rem;
 }
 .detailtitle>p{
@@ -254,22 +270,25 @@ body{
 }
 /*查看更多*/
 .detailContain>.pinglunshow{
-	position: relative;
-	top: 0rem;
+	width: 100%;
+	position: fixed;
+	bottom: 0rem;
 	right: 0;
-	padding: 0.8rem 0 5%;
+	padding: 5vmin 0;
 	color: #F04B7E;
+	background: -webkit-linear-gradient(rgba(230,230,230,.1) 20%, #fff 49%);
 }
 
 .pinglunshow>p{
-	display: block;
+	width: 100%; 
 	height: 2rem;
-	width: 25%;
+	display: block;
+	line-height: 2rem;
 	font-size: 0.7rem;
-	float: right;
+	text-align: center;
 }
 .pinglunshow>p>span{
-	padding-left: 5%;
+	padding-left: 4px;
 }
 /*底部*/
 .shopdetailBott{
@@ -357,13 +376,19 @@ ul, li {
 	list-style: none;
 }
 .detailpic {width: 100vw;height: 40vh;position: relative;background: #fff;overflow: hidden;}
-.detailpic>ul {height: 100%;position: relative;transition: .3s linear;}
+.detailpic>ul {height: 100%;position: relative;-webkit-transition: .3s linear;transition: .3s linear;}
 .detailpic>ul::after {content: '';display: block;clear: both;}
 .detailpic>ul>li {
 	height: 100%;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-    align-items: center;
-    justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
     float: left;
     text-align: center;
     vertical-align: baseline;
@@ -383,9 +408,15 @@ ul, li {
 	line-height: 1.4rem;
 }
 .pos {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
+	-webkit-box-pack: justify;
+	    -ms-flex-pack: justify;
+	        justify-content: space-between;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 }
 .pos>span:nth-of-type(2) {
 	width: 56%;
@@ -546,4 +577,26 @@ ul, li {
 	position:absolute;
 	right:0;
 	top:0.5rem;
+}
+/*商品详情介绍*/
+.moredetail {
+	width: 100%;
+	padding-bottom: 2vmin;
+	box-sizing: border-box;
+	padding: 2vmin 1vmin;
+	color: #fff;
+	background: rgb(55, 55, 55);
+}
+.moredetail>p {
+	margin-bottom: 4vmin;
+	text-align: center;
+}
+.moredetail>div {
+	width: 100%;
+	display: block;
+	margin-top: -2px;
+}
+.moredetail img {
+	width: 100%;
+	height: auto;
 }
