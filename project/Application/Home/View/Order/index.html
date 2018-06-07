@@ -533,6 +533,7 @@
 							var noimg_show = waitsendlist[i]['productList'][k]['gpic']
 							? (imgpath + waitsendlist[i]['productList'][k]['gpic'])
 							: noimg;
+							var tuihou = waitsendlist[i]['productList'][k]['tuihuo'] ? '已退货' : '';
 							// alert(orderList[i]['productList'].length);
 							var sendBrief = waitsendlist[i]['productList'][k]['productbrief'];
 							var sendName = waitsendlist[i]['productList'][k]['productname'];
@@ -540,6 +541,7 @@
 							sendName = sendName ? sendName : "暂无描述";
 							dingdanDaifahuo2+='<div class="goodsItem">'+
 							'<div class="giPicture" gid="'+ waitsendlist[i]['productList'][k].gid +'">'+
+							'<em class="tuihuo">'+ tuihou +'</em>'+ 
 							'<img src="'+ noimg_show +'" alt="">'+
 							'</div>'+
 							'<div class="giDescription">'+
@@ -625,16 +627,18 @@
 							var noimg_show = waitgainlist[i]['productList'][k]['gpic']
 							? (imgpath + waitgainlist[i]['productList'][k]['gpic'])
 							: noimg;
+							var tuihou = waitgainlist[i]['productList'][k]['tuihuo'] ? '已退货' : '';
 							var productBrief = waitgainlist[i]['productList'][k]['productbrief'];
 							var productName = waitgainlist[i]['productList'][k]['productname'];
 							productBrief = productBrief ? productBrief : "暂无描述";
 							productName = productName ? productName : "暂无标题";
 							// 快递单号
-							dingdanDaishouhuo2+='<p>'+waitgainlist[i]['productList'][k]['express_name'] +':'+ waitgainlist[i]['productList'][k]['express']  +
+							dingdanDaishouhuo2+='<p>'+waitgainlist[i]['productList'][k]['express_name'] +'单号:'+ waitgainlist[i]['productList'][k]['express']  +
 	                		'<span>卖家已发货</span>'+
 	                		'</p>'+
 							'<div class="goodsItem">'+
 							'<div class="giPicture" gid="'+ waitgainlist[i]['productList'][k]['gid'] +'">'+
+							'<em class="tuihuo">'+ tuihou +'</em>'+ 
 							'<img src="'+ noimg_show +'" alt="">'+
 							'</div>'+
 							'<div class="giDescription">'+
@@ -736,6 +740,7 @@
                 		'<span>交易完成</span>'+
                 		'</p>';
 						for(var k=0;k<waitcommentlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
+							var tuihou = waitcommentlist[i]['productList'][k]['tuihuo'] ? '已退货' : '';
 							// 无图片时显示
 							var noimg_show = waitcommentlist[i]['productList'][k]['gpic']
 							? (imgpath + waitcommentlist[i]['productList'][k]['gpic'])
@@ -747,6 +752,7 @@
 							// 拼接数据
 							dingdanDaipinglun2+='<div class="goodsItem">'+
 							'<div class="giPicture" gid="'+ waitcommentlist[i]['productList'][k].gid +'">'+
+							'<em class="tuihuo">'+ tuihou +'</em>'+ 
 							'<img src="'+ noimg_show +'" alt="">'+
 							'</div>'+
 							'<div class="giDescription">'+
@@ -841,12 +847,14 @@
                 				var noimg_show = res.data[i]['goods'][k]['orderimg']
                 				? (imgpath + res.data[i]['goods'][k]['orderimg'])
                 				: noimg;
+                				var tuihou = res.data[i]['goods'][k]['tuihuo'] ? '已退货' : '';
 								// 无标题是显示暂无标题显示
 								var infoTitle = res.data[i]['goods'][k]['productname'] ? res.data[i]['goods'][k]['productname'] : "暂无标题"; 
                 				// console.log(res.data[i]['dw_time']);
                 				returned1+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i]['goods'][k].gid +'">'+
+                				'<em class="tuihuo">'+ tuihou +'</em>'+ 
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -859,6 +867,7 @@
 							tuihuo += res.data[i]['goods'].length;
                 		}else if(res.data[i]['status']=='1'){
                 			for(var k=0;k<res.data[i]['goods'].length;k++){
+                				var tuihou = res.data[i]['goods'][k]['tuihuo'] ? '已退货' : '';
                 				// 无图片时显示
                 				var noimg_show = res.data[i]['goods'][k]['orderimg']
                 				? (imgpath + res.data[i]['goods'][k]['orderimg'])
@@ -868,6 +877,7 @@
                 				returned4+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i]['goods'][k].gid +'">'+
+                				'<em class="tuihuo">'+ tuihou +'</em>'+ 
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -882,6 +892,7 @@
                 		}else if(res.data[i]['status']=='3'){//商家已同意
                 			// console.log(1111);
                 			for(var k=0;k<res.data[i]['goods'].length;k++){
+                				var tuihou = res.data[i]['goods'][k]['tuihuo'] ? '已退货' : '';
                 				// 无图片时显示
                 				var noimg_show = res.data[i]['goods'][k]['orderimg']
                 				? (imgpath + res.data[i]['goods'][k]['orderimg'])
@@ -891,6 +902,7 @@
                 				returned2+='<p>信息更新时间：'+timestampToTime(res.data[i]['create_time'])+'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i]['goods'][k].gid +'">'+
+                				'<em class="tuihuo">'+ tuihou +'</em>'+ 
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -919,6 +931,7 @@
 
                 		}else if(res.data[i]['status']=='5'){
                 			for(var k=0;k<res.data[i]['goods'].length;k++){
+                				var tuihou = res.data[i]['goods'][k]['tuihuo'] ? '已退货' : '';
                 				// 无图片时显示
                 				var noimg_show = res.data[i]['goods'][k]['orderimg']
                 				? (imgpath + res.data[i]['goods'][k]['orderimg'])
@@ -928,6 +941,7 @@
                 				returned4+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i]['goods'][k].gid +'">'+
+                				'<em class="tuihuo">'+ tuihou +'</em>'+ 
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -941,6 +955,7 @@
                 		}else if(res.data[i]['status']=='6'){//正在退货
                 			
                 			for(var k=0;k<res.data[i]['goods'].length;k++){
+                				var tuihou = waitpaylist[i]['productList'][k]['tuihuo'] ? '已退货' : '';
                 				// 无图片时显示
                 				var noimg_show = waitpaylist[i]['productList'][k]['orderimg']
                 				? (imgpath + waitpaylist[i]['productList'][k]['orderimg'])
@@ -950,6 +965,7 @@
                 				returned3+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft giPicture" gid="'+ waitpaylist[i]['productList'][k].gid +'">'+
+                				'<em class="tuihuo">'+ tuihou +'</em>'+ 
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -962,6 +978,7 @@
 							tuihuo += res.data[i]['goods'].length;
                 		}else if(res.data[i]['status']=='7'){
                 			for(var k=0;k<res.data[i].length;k++){
+                				var tuihou = res.data[i][productList][0]['tuihuo'] ? '已退货' : '';
                 				// 无图片时显示
                 				var noimg_show = res.data[i][productList][0]['orderimg']
                 				? (imgpath + res.data[i][productList][0]['orderimg']) : noimg;
@@ -970,6 +987,7 @@
                 				returned4+='<p>信息更新时间：'+ res.data[i]['ordertime'] +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i][productList][0].gid +'">'+
+                				'<em class="tuihuo">'+ tuihou +'</em>'+ 
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -1035,7 +1053,7 @@
 						// 产品列表循环
 						for(var j = 0; j < productLists; j++) {
 							// console.log(res.data[i].productList[j])
-						
+							var tuihou = res.data[i].productList[j]['tuihuo'] ? '已退货' : '';
 							// 无图片时显示
 							var noimg_show = res.data[i].productList[j]['gpic']
 							? (imgpath + res.data[i].productList[j]['gpic'])
@@ -1043,6 +1061,7 @@
 							returned6+='<p>信息更新时间：'+ res.data[i].ordertime +'</p>'+
 							'<div class="shangpingnei clearfix">'+
 							'<div class="tuikuangLeft giPicture" gid="'+ res.data[i].productList[j].gid +'">'+
+							'<em class="tuihuo">'+ tuihou +'</em>'+ 
 							'<img src="'+ noimg_show +'" alt="">'+
 							'</div>'+
 							'<div class="tuikuangRight">'+

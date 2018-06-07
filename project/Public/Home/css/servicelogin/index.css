@@ -1,0 +1,13 @@
+/*GLOBALS*/
+*{margin:0; padding:0; list-style:none;box-sizing:border-box;}
+#sTop {
+	height: 30vh;
+}
+#sBot {
+	display: flex;
+	padding: 2vmin;
+	background: #EDF2F2;
+}
+#sBot>li {
+	flex: 1 0;
+}

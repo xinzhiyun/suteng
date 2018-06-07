@@ -7,6 +7,10 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/gradeSelect.css">
 	<title>会员升级</title>
+    <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+    <script>
+        var vconsole = new VConsole();
+    </script>
 </head>
 <body>
 <div class="main">
@@ -150,7 +154,6 @@
     });
     var status = '{{$annual["status"]}}';
     console.log('status: ',status);
-    status = 0;
     if(status == 0){
     	$('.goldGrade').eq(0).show();
     	$('.goldGrade').eq(1).show();
@@ -190,7 +193,7 @@
 
                         $(".payKuan").css("display", "block");
                         // 选中会员价格
-                        $(".selectFinall").html(selectPrice);
+                        $(".selectFinall").html(money);
                     }
                 },
                 error: function(res){
