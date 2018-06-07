@@ -1,0 +1,38 @@
+/*GLOBALS*/
+*{margin:0; padding:0; list-style:none;-webkit-box-sizing:border-box;box-sizing:border-box;}
+body {
+	overflow-x: hidden;
+	background: #EDF2F2;
+}
+#servicedetail {
+	padding: 2vh 4vw;
+}
+.dTop,
+.dBot {
+	position: relative;
+	padding: 4% 2%;
+	margin-bottom: 2vh;
+	border-radius: 4px;
+	background: #fff;
+}
+.info {
+	color: #00d4c2;
+}
+.addworker {
+	display: inline-block;
+	padding: 4px 8px;
+	border: 1px solid red;
+	border-radius: 4px;
+}
+.cfix::after {
+	content: '';
+	clear: both;
+	display: block;
+	visibility: hidden;
+}
+.fl {
+	float: left;
+}
+.fr {
+	float: right;
+}
