@@ -108,38 +108,65 @@ class OrdersController extends CommonController
             return $this->ajaxReturn(['code'=>-1,'msg'=>'参数错误']);
         }
 
-        //逻辑修改
-        //1.先查询订单中的商品
-        $od = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
 
-        //订单中所有商品的id
-        $ids = array();
-        foreach ($od as $key => $value) {
-          $ids[] = $value['gid'];
-        }
+        //先判断售后审核通过审核再过滤数据
+        $rid = M('refund_goods')->where('oid='.$order_id)->find()['rf_id'];
+
+        $rinfo = M('refund')->where('id='.$rid)->find();
+
+        if ($rinfo['status'] == '5') {
+          //已同意退货
+          //逻辑修改
+          //1.先查询订单中的商品
+          $od = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
+
+          //订单中所有商品的id
+          $ids = array();
+          foreach ($od as $key => $value) {
+            $ids[] = $value['gid'];
+          }
+          
+          //2.查询退货订单的商品
+          $rg = M('refund_goods')->where("oid='{$order_id}'")->select();
+
+          $rids = array();
+          foreach ($rg as $key => $value) {
+            $rids[] = $value['gid'];
+          }
+
+          //退货商品的快递的信息就不需要查询了
+          $jid = array_diff($ids,$rids);
         
-        //2.查询退货订单的商品
-        $rg = M('refund_goods')->where("oid='{$order_id}'")->select();
+          $map['order_id'] = $order_id;
+          $map['gid'] = array('in',$jid);
 
-        $rids = array();
-        foreach ($rg as $key => $value) {
-          $rids[] = $value['gid'];
+          // dump($map);die;
+
+          $couriers = D('ShopOrderDetail')->field('gid,gname,cid,cname')->where($map)->select();
+          
+        } else {
+          
+          //还没审核
+          //1.先查询订单中的商品
+          $od = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
+
+          //订单中所有商品的id
+          $ids = array();
+          foreach ($od as $key => $value) {
+            $ids[] = $value['gid'];
+          }
+          
+        
+          $map['order_id'] = $order_id;
+          $map['gid'] = array('in',$ids);
+
+          // dump($map);die;
+
+          $couriers = D('ShopOrderDetail')->field('gid,gname,cid,cname')->where($map)->select();
+
         }
 
-        //退货商品的快递的信息就不需要查询了
-        $jid = array_diff($ids,$rids);
       
-        $map['order_id'] = $order_id;
-        $map['gid'] = array('in',$jid);
-
-        // dump($map);die;
-
-        $couriers = D('ShopOrderDetail')->field('gid,gname,cid,cname')->where($map)->select();
-
-        // dump($cinfo);
-
-        // $couriers = D('orderDetail')->where(['order_id'=>$order_id])->field('distinct(st_order_detail.cid),st_courier.name')->join('st_courier ON st_courier.id = st_order_detail.cid','LEFT')->select();
-        // dump($couriers);die;
 
         //在这里先处理改订单是否有退货商品，如果有退货商品，先过滤退货的商品，再发货
         // dump($couriers);die;
