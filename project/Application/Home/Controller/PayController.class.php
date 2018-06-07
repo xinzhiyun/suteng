@@ -340,7 +340,7 @@ class PayController extends Controller
                 $grade['grade'] = '3';
         }
         //查找最后一条用户充值会员的记录
-        $orderData = M('users_order')->where(['user_id'=>$grade['id']])->field('id,is_pay,order_id,user_id,annual_status,name')->order('id desc')->find();
+        $orderData = M('users_order')->where(['user_id'=>$grade['id'],'is_pay'=>1])->field('id,is_pay,order_id,user_id,annual_status,name')->order('id desc')->find();
 
         if ($orderData) {
 
