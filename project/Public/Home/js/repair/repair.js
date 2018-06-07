@@ -12,8 +12,8 @@
     // 点击上传图片
     $(".file_upload").click(function(){
         var len = $("#picShow>span").length;
-        if(len == 1){
-            layuiHint("暂时只支持一张图片！");
+        if(len == 3){
+            layuiHint("暂时只支持三张图片！");
             return
         } 
         // takePicture(1);
@@ -23,11 +23,12 @@
             
             var $span = $("<span></span>");
             var $span1 = $("<span>X</span>");
-            var $img = $('<img src="" alt="" />');
+            var $img = $('<img src="" alt="" index="" />');
             
             $img[0].width = "100%";
             $img[0].height = "90%";
             $img[0].src = res['src'];
+            $(img)[0].attr("index", res.media_Id);
             
             $span1.addClass("delPic");
             $span1.css({zIndex: '999'});
@@ -37,14 +38,16 @@
             // 显示图片
             $('#picShow').append($span);
             // 待发送给后台的图片id
-            $('input[name="pic"]').val(res.media_Id);
+            // $('input[name="pic"]').val(res.media_Id);
+            console.log("传给后台的id",$('input[name="pic"]').val(), res.media_Id);
         });
     })
     var formData = new FormData($('#form')[0]);
     // 删除图片
     $("#picShow").on("click", ".delPic", function(){
         $(this).parent().remove();
-        formData.delete('pic');
+        $(this).siblings().attr("index", "");
+        // formData.delete('pic');
     })
     // 点击服务选择
     $(".selService").on("click", function() {
@@ -332,7 +335,14 @@
         var Detailadd = $("#Laddr").val(); //详细地址
         var content = $("textarea[name='content']").val();//问题描述/备注
         console.log(province,city,area,province_id,city_id,area_id, service_code, username, userphone, Detailadd, content);
-        var filePic = $('input[name="pic"]').val();//上传图片的id
+        var filePic = [];//存放图片的id
+        var picImgs = $('#picShow>span>img')
+        if(picImgs.length) {
+            for(var i = 0; i < picImgs.length; i++) {
+                filePic[i] = picImgs.eq(i).attr("index");
+            }
+        }
+        console.log("图片id",filePic)
         //清空，防止多次点击提交
         formData.delete('device_code');
         formData.delete('username');
@@ -428,9 +438,9 @@
                     layuiHint(res.msg);
                     // 将当前历史记录替换为水机首页
                     history.pushState({}, null, getURL("Home", "Index/index"));
-                    setTimeout(function(){
-                        location.href = getURL("Home", "VipCenter/minepack");
-                    },900);
+                    // setTimeout(function(){
+                    //     location.href = getURL("Home", "VipCenter/minepack");
+                    // },900);
                 }else {
                     layuiHint(res.msg);
                 }
