@@ -7,9 +7,12 @@ use \Org\Util\WeixinJssdk;
 
 class ServiceController extends ServiceCommonController
 {
-
+    // 主页
     public function index()
     {
+        $sid = $_SESSION['serviceInfo']['id'];
+
+
 
         $this->display();
     }

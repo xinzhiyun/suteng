@@ -10,11 +10,17 @@ class ServiceLoginController extends Controller
         if (IS_POST) {
 
             $password = md5($_POST['password']);
-            $info = M('vendors')->where("user='{$_POST['name']}'")->find();
+            $info = M('admin_user')
+                ->alias('au')
+                ->where("user='{$_POST['name']}'")
+                ->join('__SERVICE__ s ON s.auid=au.id', 'LEFT')
+                ->field('s.id,s.company')
+                ->find();
 
             if($info){
                 if ($info['password'] == $password) {
                     unset($info['password']);
+
                     // 万事大吉
                     $_SESSION['serviceInfo'] = $info;
                     // 主页
