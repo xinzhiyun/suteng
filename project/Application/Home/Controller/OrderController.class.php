@@ -126,20 +126,19 @@ class OrderController extends CommonController
             
 
             foreach ($waitpaylist as $key => $value) {
-                //先处理数据再给前端分配数据
-                
-                foreach ($value['productList'] as $k => $v) {
-        
-                    //查找退货的商品id
-                    $refund_goods =  M('refund_goods')->where('oid='."'{$value['orderid']}'")->select();
-                    foreach ($refund_goods as $rd => $rdvalue) {
-                        $rids[] = $rdvalue['gid'];
-                    }
-                    //id去重
-                    $ids = array_unique($rids);
 
+                $rids = array();
+                $refund_goods =  M('refund_goods')->where('oid='."'{$value['orderid']}'")->select();
+
+                //查找退货的商品id
+                foreach ($refund_goods as $rd => $rdvalue) {
+                    $rids[] = $rdvalue['gid'];
+                }
+               
+                //先处理数据再给前端分配数据
+                foreach ($value['productList'] as $k => $v) {
                     // dump($ids);
-                    if (in_array($v['gid'],$ids)) {
+                    if (in_array($v['gid'],$rids)) {
                         // dump();
                         $waitpaylist[$key]['productList'][$k]['tuihuo']='1';
                     } 
