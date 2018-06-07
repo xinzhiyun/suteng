@@ -83,17 +83,35 @@ class WorkController extends CommonController
         }
     }
 
-//    /**
-//     *  获取用户的设备安装列表
-//     */
-//    public function getDeviceInstallList()
-//    {
-//        $map['uid'] = session('user.id');
-//        $map['status'] = I('status',0);
-//        $list = M('shop_order_device_install')->where($map)->select();
-//
-//        $this->toJson(['data'=>$list],'获取成功',200);
-//    }
+
+    // 获取用户信息 (工单安装)
+    public function getUserInfo()
+    {
+        try {
+            $post = I('post.');
+
+            if (!isset($post['type'])) {
+                E('请选择服务类型', 40102);
+            }
+
+            if($post['type']==0){
+                if(empty($post['install_id']))E('请选择设备', 40102);
+                $resinfo =  M('shop_order_device_install')->where('id='.$post['install_id'])->find();
+                if(empty($resinfo))E('安装单不存在',40001);
+                $res = $resinfo['addressinfo'];
+            } else {
+
+            }
+
+
+
+
+            $this->toJson(['data'=>$res]);
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
     
 }   
 

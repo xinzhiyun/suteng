@@ -2,7 +2,146 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.7.3 - TBD
+## 2.10.0 - TBD
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
+## 2.9.1 - TBD
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
+## 2.9.0 - 2018-05-16
+
+### Added
+
+- [#93](https://github.com/zendframework/zend-i18n/pull/93) adds two methods to `Translator`, `getCacheId(string $textDomain, string $locale)`,
+  and `clearCache(string $textDomain, string $locale)`.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#96](https://github.com/zendframework/zend-i18n/pull/96) ensures that the `TranslatorServiceFactory` injects the configured `TranslatorPluginManager`,
+  if any, before returning it. This ensures that configured remote loaders can be utilized.
+
+## 2.8.0 - 2018-04-25
+
+### Added
+
+- [#71](https://github.com/zendframework/zend-i18n/pull/71) adds a new option to the `IsInt` validator, `strict`. When set to boolean
+  true, comparisons will use strict type validations. The default, `false`, retains the current
+  behavior of non-strict comparisons. The class also exposes a `setStrict($flag)` method for
+  enabling/disabling the behavior.
+
+- [#78](https://github.com/zendframework/zend-i18n/pull/78) and [#91](https://github.com/zendframework/zend-i18n/pull/91) add support for PHP 7.2.
+
+### Changed
+
+- [#81](https://github.com/zendframework/zend-i18n/pull/81) updates the list of allowed mobile prefixes for Chinese phones to match
+  current changes to their systems.
+
+- [#80](https://github.com/zendframework/zend-i18n/pull/80) updates the PostCode validator to allow prefixing Latvian postal
+  codes using the string `LV-`, which is now mandatory within Latvia. For BC purposes, the
+  prefix is considered optional.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- [#78](https://github.com/zendframework/zend-i18n/pull/78) removes support for HHVM.
+
+### Fixed
+
+- [#75](https://github.com/zendframework/zend-i18n/pull/75) fixes an issue with formatting currency values where
+  the currency indicator is at the end of the value.
+
+## 2.7.4 - 2017-05-17
+
+### Added
+
+- Nothing.
+
+### Changes
+
+- [#65](https://github.com/zendframework/zend-i18n/pull/65) updates the
+  `PostCode` validation for Ireland to support Eircode
+  (https://www.eircode.ie/what-is-eircode)
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#74](https://github.com/zendframework/zend-i18n/pull/74) fixes how the
+  `LoaderPluginManagerFactory` factory initializes the plugin manager instance,
+  ensuring it is injecting the relevant configuration from the `config` service
+  and thus seeding it with configured translator loader services. This means
+  that the `translator_plugins` configuration will now be honored in
+  non-zend-mvc contexts.
+- [#56](https://github.com/zendframework/zend-i18n/pull/56) adds more aliases to
+  the `LoaderPluginManager` to ensure different cAsIng strategies will still
+  resolve translation loaders under zend-servicemanager v3.
+- [#62](https://github.com/zendframework/zend-i18n/pull/62) fixes an issue with
+  how the gettext adapter resolves `PoEdit` source keywords when a text_domain is
+  defined.
+- [#73](https://github.com/zendframework/zend-i18n/pull/73) provides a
+  workaround within the `CurrencyFormat` view helper for an ICU bug
+  (http://bugs.icu-project.org/trac/ticket/10997).
+
+## 2.7.3 - 2016-06-07
 
 ### Added
 
