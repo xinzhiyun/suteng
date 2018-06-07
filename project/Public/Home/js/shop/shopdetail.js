@@ -75,12 +75,12 @@ $(function(){
 			}
 			console.log(norms)
 			// 输出商品详情
-			goodsDetail_html = '<div class="detailpic"><ul id="wrapul"></ul><span class="closepicshow">X</span><span class="picnum"><b>1</b><span></span></span></div>'+
+			goodsDetail_html = '<div class="detailpic"><ul id="wrapul" class="my-gallery" data-pswp-uid="001"></ul><span class="closepicshow">X</span><span class="picnum"><b>1</b><span></span></span></div>'+
 				'<!-- /*商品说明*/ -->'+
 				'<div class="detailTxt">'+
 					'<span><b>￥'+ goodsDetail.price +'</b><em>已售： '+ sold_num +'</em></span>'+
 					'<b>'+ goodsDetail.name +'</b>'+
-					'<p>'+emHTML+'</p>'+
+					'<p>'+ emHTML +'</p>'+
 					// '<em>'+ emHTML+'</em>'+
 				'</div>'+
 				'<!-- /*商品选择，数量，邮费*/ -->'+
@@ -101,7 +101,7 @@ $(function(){
 			$('.picnum>span').text('/'+ goodsPicArr.length);
 			var goodsPicHTML = '';
 			goodsPicArr.map(function(value,index){
-				goodsPicHTML += '<li><img src="/Uploads/'+ value +'" alt=""></li>';
+				goodsPicHTML += '<li index="'+ index +'" src="/Uploads/'+ value +'"><img src="/Uploads/'+ value +'" alt=""></li>';
 			})
 			$('.detailpic>ul').html(goodsPicHTML);
 			// 设置图片宽度
@@ -134,7 +134,7 @@ $(function(){
 				
 			});
 			// 点击查看
-			
+			view();
 			/* 顶部图片滑动部分 -- 结束 */
 
 			// console.log(picPathArr, '\n', commPicArr);
@@ -157,7 +157,40 @@ $(function(){
 			console.log('失败！ ',res)
 		}
 	})
-	
+	function view(){
+		var items = [];
+		var pswpElement = document.querySelectorAll('.pswp')[0];
+		var lipic = $('#wrapul>li');
+		// console.log('lipic: ',lipic);
+		for(var i=0; i<lipic.length; i++){
+			// console.log('src: ',lipic[i].getAttribute('src'));
+			// 查看的图片
+			items.push({
+				index: i,
+				src: lipic[i].getAttribute('src'),
+				w: 320,
+				h: 640
+			})
+		}
+		// console.log('items: ',items);
+		// Initializes and opens PhotoSwipe
+
+		// define options (if needed)
+		var options = {
+		    // optionName: 'option value'
+		    // for example:
+		    history: true,
+		    index: 0 // start at first slide
+		};
+		$('#wrapul').on('click', 'li', function(){
+			var index = $(this).attr('index');
+			options.index = +index-1;
+			// console.log('options: ',options);
+			var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+			gallery.init();
+
+		})
+	}
 	var statusList = [100, 60, 0];		// 好评，中评，差评
 	var statusText = ['好评', '中评', '差评'];		// 好评，中评，差评
 	var statusDesc = ['质量非常好，与卖家描述一致，非常满意', '质量一般，没有卖家描述那么好', '差的太离谱了，与卖家描述严重不符'];		// 好评，中评，差评
@@ -166,7 +199,6 @@ $(function(){
 	$.ajax({
 		url: getURL('Home', 'Comment/getComments'),
 		type: 'get',
-		// data: {gid: goods_gid},
 		data: {gid: goods_gid},
 		success: function(res){
 			console.log('请求评论成功： ',res);
@@ -329,9 +361,8 @@ $(function(){
 			$(this).css({width: 'auto'});
 		}
 	})
-	$('.number').on('blur', function(e){
-		console.log('num: ',$(this).val());
-		if(!$(this).val() || $(this).val == 0){
+	$('.number').on('change', function(e){
+		if(!$(this).val() || $(this).val() == 0){
 			$(this).val(1);
 		}
 	})
@@ -459,7 +490,7 @@ $(function(){
 		var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
 		var Y = date.getFullYear() + '/';
 		var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '/';
-		var D = date.getDate() + ' ';
+		var D = date.getDate() < 10 ? '0'+date.getDate() + ' ' : date.getDate()+' ';
 		var h = (date.getHours() < 10 ? '0'+ date.getHours() : date.getHours()) + ':';
 		var m = (date.getMinutes() < 10 ? '0'+ date.getMinutes() : date.getMinutes());
 		// var s = date.getSeconds();

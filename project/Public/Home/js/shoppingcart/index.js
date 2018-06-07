@@ -56,6 +56,7 @@ $(function(){
 		
 		if($(".priceAll>span").text() != 0){
 			for(var i=0; i<chooseGoods.length; i++){
+				
 				// 将选中商品的详细信息传到后台
 				shopCar_data.push({
 					'path': chooseGoods.eq(i).parents(".itemCar").find(".carpic>img").attr("src"),
@@ -66,7 +67,6 @@ $(function(){
 					'price': chooseGoods.eq(i).parents(".itemCar").find(".price>span").text(),
 					'money': parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text())*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number").val())
 				});
-				
 			}
 
 			//清除其他页面的sessionStorage
@@ -235,10 +235,12 @@ $(function(){
 			$(this).css({width: 'auto'});
 		}
 	})
-	$('.shpingcarAll').on('blur', '.number', function(e){
-		if(!$(this).val() || $(this).val == 0){
+	$('.shpingcarAll').on('change', '.number', function(e){
+		if(!$(this).val() || $(this).val() == 0){
 			$(this).val(1);
 		}
+		// 计算总金额
+		getMoney();
 	})
 
 	// 点击图片跳到商品详情
@@ -315,27 +317,14 @@ $(function(){
 		if(_class=='iconfont icon-xuanze'){
 			$(this).children().removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 			
-			priceAll = 0;
-			var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
-			// 实时将总价格更新到合计
-			for(var i=0; i<chooseGoods.length; i++){
-				
-				priceAll += parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value)*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
-			} 
-			// 将价格显示到合计
-			$(".priceAll>span").text(priceAll);
+			// 计算总金额
+			getMoney();
 		// 有选择商品
 		}else{
 			$(this).children().removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
-			priceAll = 0;
-			var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
-			// 实时将总价格更新到合计
-			for(var i=0; i<chooseGoods.length; i++){
-				
-				priceAll += parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value)*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
-			} 
-			// 将价格显示到合计
-			$(".priceAll>span").text(priceAll);
+			
+			// 计算总金额
+			getMoney();
 		}
 		// 如果没有一个选中
 		if(!$(".icon-xuanze").length){
@@ -350,6 +339,19 @@ $(function(){
 			$('.shoppingcarBott>p>i').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 		}
 	})
+
+	// 计算总金额
+	function getMoney(){
+		priceAll = 0;
+		var chooseGoods = $(".itemCar").find("i[class='iconfont icon-xuanze']");
+		// 实时将总价格更新到合计
+		for(var i=0; i<chooseGoods.length; i++){
+			
+			priceAll += parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".number")[0].value)*parseFloat(chooseGoods.eq(i).parents(".itemCar").find(".price>span").text());
+		} 
+		// 将价格显示到合计
+		$(".priceAll>span").text(priceAll);
+	}
 	// 全选事件
 	$('.shoppingcarBott>p>i').click(function(){
 		var _quanclass=$(this).attr('class');
