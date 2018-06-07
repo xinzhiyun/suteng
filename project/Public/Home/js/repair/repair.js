@@ -15,7 +15,7 @@
         if(len == 1){
             layuiHint("暂时只支持一张图片！");
             return
-        }
+        } 
         // takePicture(1);
         // 浏览上传图片
         wxuploadimg(function(res){
