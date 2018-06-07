@@ -52,6 +52,26 @@ class ServiceController extends ServiceCommonController
         $this->toJson(['data'=>$list],'获取成功');
     }
 
+    // 工单详情
+    public function detail()
+    {
+        $this->display();
+    }
+    // 详情页
+    public function getDetail()
+    {
+        try {
+            $number = I('number');
+            if(empty($number)){
+                E('工单号错误',400001);
+            }
+            $info = M('work')->where('number='.$number)->find();
+            $this->toJson(['data'=>$info],'获取成功');
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+
+    }
 
 
 }

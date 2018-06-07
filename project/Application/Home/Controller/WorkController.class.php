@@ -1,6 +1,7 @@
 <?php
 namespace Home\Controller;
 
+use Common\Tool\File;
 use Zend\Serializer\Adapter\AdapterInterface;
 
 class WorkController extends CommonController
@@ -48,6 +49,12 @@ class WorkController extends CommonController
 
             $data['address'] = $post['address'];
 
+            if(!empty($post['pic'])){
+                foreach ($post['pic'] as $pic) {
+                    $pic[] = File::upload($pic);
+                }
+                $data['pic'] = json_encode($pic);
+            }
 
             $data['kname'] = $post['kname'];
             $data['kphone'] = $post['kphone'];
