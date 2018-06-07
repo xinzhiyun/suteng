@@ -14,10 +14,52 @@
 			<p v-text='service_name'></p>
 		</div>
 		<ul id='sBot'>
-			<li></li>
+			<li class='worktype' @click='getList(1)' type='1'>
+				<i></i>
+				<span></span>
+				<p>待办工单</p>
+			</li>
+			<li class='worktype' @click='getList(2)' type='2'>
+				<i></i>
+				<span></span>
+				<p>处理中工单</p>
+			</li>
+			<li class='worktype' @click='getList(3)' type='3'>
+				<i></i>
+				<span></span>
+				<p>待验收工单</p>
+			</li>
+			<li class='worktype' @click='getList(4)' type='4'>
+				<i></i>
+				<span></span>
+				<p>已完成工单</p>
+			</li>
+			<li class='worktype' @click='getList(0)' type='0'>
+				<i></i>
+				<span></span>
+				<p>全部工单</p>
+			</li>
 		</ul>
 	</div>
-	<script></script>
-	<script src='__PUBLIC__/Home/js/servicelogin/index.js'></script>
+	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+	<script>
+		var service = new Vue({
+			el: '#service',
+			data () {
+				return {
+					service_name: ''
+				}
+			},
+			methods: {
+				// 获取订单
+				getList (type) {
+					console.log('type: ',type);
+					// type: 1待办，2处理中，3待验收，4已完成，0全部
+					location.href = '{{:U("Home/ServiceLogin/list")}}' + '?type=' + type;
+					
+				}
+			}
+		})
+	</script>
 </body>
 </html>

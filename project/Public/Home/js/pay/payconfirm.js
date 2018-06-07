@@ -348,7 +348,7 @@ $(function(){
 		
 		// 提交后台
 		$.ajax({
-			url: "{{:U('Pay/updateOrder')}}",
+			url: getURL('Home', 'Pay/updateOrder'),
 			data: {orderId: order_id, postageData: postageData, good_id: gid},//将订单id和邮费id传递
 			type: "post",
 			success: function(res) {
