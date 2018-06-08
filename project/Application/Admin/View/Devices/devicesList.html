@@ -18,6 +18,7 @@
                     </div> 
                 </div>
                 <form method="get" action="">
+                    <button type="submit" name="output" value="1" class="btn btn btn-primary" style="margin-left: 2rem"> <i class="fa fa-search"></i> 导出</button>
                     <div class="input-group col-md-6" id='searchdiv'>
                         <select name="key" class="form-control" name="account">
                             <option <?php echo ($where['key']=="device_code")?'selected':''; ?> value="device_code">设备编码</option>
@@ -31,7 +32,7 @@
                             <option value="1">已激活</option>
                         </select> -->
                         <span class="input-group-btn" style="display: inline-block;">
-                                <input type="submit" class="btn btn btn-primary" name="sou"> <i class="fa fa-search"></i> 搜索</button>
+                                <button type="submit" class="btn btn btn-primary" name="sou"> <i class="fa fa-search"></i> 搜索</button>
                         </span>
                     </div>
                 </form>
