@@ -1082,6 +1082,11 @@ class ShopController extends CommonController
             $id = $_POST['id'];
 
             $inventory = M('inventory');
+            //比较异常库存与总库存
+            $allnum = $inventory->where(['gid'=>$id])->find();
+            if($data['abnormalnum'] > $allnum['allnum']){
+                E('超过总库存了',203);
+            }
             //修改库存数据
             $info = $inventory->where('gid='.$id)->save($data);
 
