@@ -27,6 +27,9 @@ body {
 	display: flex;
 	padding: 2vmin;
 }
+.worktype {
+	text-align: center;
+}
 .botOne>li, .botTwo>li {
 	width: 31vw;
     height: 30vw;
@@ -47,12 +50,19 @@ body {
 	border-radius: 10px;
 	background-color: red;
 	color: white;
+	border: 2px solid #fff;
+    box-sizing: content-box;
 }
 .botOne>li > span {
-	width: 2rem;
-	height: 2rem;
+	width: 86%;
+    height: 80%;
+    display: block;
+    position: relative;
+    left: 50%;
+    top: 10%;
+    margin-left: -43%;
 }
 .botOne>li > span > img{
-	width: 100%;
-	height: 100%;
+	width: 70%;
+    height: auto;
 }

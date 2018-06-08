@@ -14,7 +14,7 @@
 		<div class='search'>
 			<span>
 				<i></i>
-				<input type="text" placeholder="请输入工单号/设备编码">
+				<input type="text" placeholder="请输入工单号/设备编码" v-model='word'>
 			</span>
 		</div>
 		<div class='title spli'>
@@ -37,11 +37,12 @@
 			el: '#servicelist',
 			data () {
 				return {
-					status: '',
-					service_name: '',
-					list: [],
-					result: '',
-					page: '',
+					word: '',			// 搜索框value
+					status: '',			// 工单状态
+					service_name: '',	// 服务站名称
+					list: [],			// 数据列表
+					result: '',			// 工单类型 0待处理 1处理中 2待验收 3(完成)
+					page: '',			// 分页
 				}
 			},
 			created (){
@@ -52,7 +53,7 @@
 				var statusList = ['状态', '作业人员', '作业人员', '作业人员', '状态'];
 				document.title = titleList[!this.result ? 4 : +this.result] + '工单';
 				this.status = statusList[!this.result ? 4 : +this.result];
-				// 0：待处理 1处理中 2待验收 3(完成)
+				// result: 0待处理 1处理中 2待验收 3(完成)
 				if(this.result == 'undefined'){
 					this.getList(function(res){
 						for(var i=0; i<res.data.length; i++){
@@ -60,6 +61,7 @@
 							res.data[i].create_at = timetrans(res.data[i].create_at);
 						}
 						servicelist.list = res.data;
+						servicelist.page = 1;
 					});
 					
 				}else{
@@ -71,12 +73,14 @@
 							res.data[i].create_at = timetrans(res.data[i].create_at);
 						}
 						servicelist.list = res.data;
+						servicelist.page = 1;
 					}, this.result);
 				}
 			},
 			methods: {
+				// 获取列表数据
 				getList (callback, result, page) {
-					// 全部（不传result）
+					
 					var option = {
 						url: '{{:U("Home/Service/getList")}}',
 						type: 'get',
@@ -96,18 +100,26 @@
 							console.log('err: ',err);
 						}
 					}
+					// 全部（result: 11）
+					// result: 0待处理 1处理中 2待验收 3(完成)
 					if(result){
 						option['data'] = {result: result};
 					}
 					if(page){
-						option['page'] = servicelist.page;
+						// 请求分页数据
+						option['data'] = {result: result, p: servicelist.page};
 					}
 					// 获取数据
 					$.ajax(option);
 				},
+				// 跳到详情界面
 				getDetail (workid, result) {
-					// 跳到详情界面
-					location.href = '{{:U("Home/Service/detail")}}' + '?result='+ result + '&workid=' + workid;
+					location.href = '{{:U("Home/Service/detail")}}'+'?result='+ result +'&workid='+ workid;
+				},
+				// 搜索
+				search () {
+					var vm = this;
+					this.getList(function(){}, vm.word);
 				}
 			}
 		})
