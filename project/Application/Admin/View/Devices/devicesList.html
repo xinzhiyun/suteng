@@ -23,6 +23,8 @@
                         <select name="key" class="form-control" name="account">
                             <option <?php echo ($where['key']=="device_code")?'selected':''; ?> value="device_code">设备编码</option>
                             <option <?php echo ($where['key']=="typename")?'selected':''; ?> value="typename">设备类型</option>
+                            <option <?php echo ($where['key']=="v.user")?'selected':''; ?> value="v.user">经销商</option>
+                            <option <?php echo ($where['key']=="u.nickname")?'selected':''; ?> value="u.nickname">用户</option>
                         </select>
                         <input type="hidden" name="p" value="1">
                         <input type="text" name="keywords"  placeholder="输入搜索关键字" value="{{$where['keywords']}}"class="input form-control"   style="width:50%">
