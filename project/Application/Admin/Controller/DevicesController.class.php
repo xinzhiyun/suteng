@@ -27,7 +27,14 @@ class DevicesController extends CommonController
             if($_GET['key'] == 'typename'){
                 $map['t.typename'] = array('like',"%".trim($_GET['keywords'])."%");
             }
+            if($_GET['key'] == 'v.user'){
+                $map['v.user'] = array('like',"%".trim($_GET['keywords'])."%");
+            }
+            if($_GET['key'] == 'u.nickname'){
+                $map['u.nickname'] = array('like',"%".trim($_GET['keywords'])."%");
+            }
         }
+
         $where['key'] = $_GET['key'];
         $where['keywords'] = $_GET['keywords'];
         // ---- 解决非第一页搜索条件$_GET['p']不等于1的情况【start】
