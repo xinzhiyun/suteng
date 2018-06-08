@@ -443,9 +443,9 @@
                     layuiHint(res.msg);
                     // 将当前历史记录替换为水机首页
                     history.pushState({}, null, getURL("Home", "Index/index"));
-                    // setTimeout(function(){
-                    //     location.href = getURL("Home", "VipCenter/minepack");
-                    // },900);
+                    setTimeout(function(){
+                        location.href = getURL("Home", "VipCenter/minepack");
+                    },900);
                 }else {
                     layuiHint(res.msg);
                 }
