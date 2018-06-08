@@ -11,6 +11,10 @@
 <body>
 	<div id='servicedetail'>
 		<div class='dTop'>
+			<div>
+				工单：<span v-text='info.number'></span>
+				<div class='fr addworker' v-if='info.name == "未派工"' @click='addworker'>派工</div>
+			</div>
 			<div class='cfix'>
 				<h2 class='fl bigf' v-text='info.phone'>手机号码</h2>
 				<span class='fr info' v-text='type'>待办工单</span>
@@ -27,7 +31,7 @@
 						工单审核：&emsp;<span v-text='info.update_at'></span>
 					</p>
 				</li>
-				<li class='fr addworker' v-if='info.name == "未派工"'>派工</li>
+				
 			</ul>
 		</div>
 		<div class='dBot'>
@@ -41,7 +45,7 @@
 				<li>设备型号：&emsp;<span v-text='info.kphone'></span></li>
 				<li class='len'>
 					<span>详细地址：&emsp;</span>
-					<span v-text='info.address'></span>
+					<span v-text='info.province+info.city+info.address'></span>
 				</li>
 			</ul>
 			<ul class='ques'>
@@ -55,7 +59,15 @@
 				</li>
 			</ul>
 		</div>
-		<button class='btnup' @click='getit'>我要接单</button>
+		<button class='btnup' @click='getit'>提交</button>
+		<div class='panel' :style='pstyle'>
+			<div class='pTop' @click='topClk'></div>
+			<div class='pBot' :class='panelclass' >
+				<div v-for='w in workList'>
+					<span v-text='w'></span>
+				</div>
+			</div>
+		</div>
 	</div>
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<script src='__PUBLIC__/Home/js/public.js'></script>
@@ -68,6 +80,9 @@
 					result: '',
 					workid: '',
 					info: {},
+					pstyle: '',
+					panelclass: '',
+					workList: ['郭德纲', '杰诺斯', '小李飞刀']
 				} 
 			},
 			created (){
@@ -106,6 +121,18 @@
 							console.log('err: ',err);
 						}
 					})
+				},
+				// 派工
+				addworker () {
+					this.pstyle = 'display: block;';
+					this.panelclass = 'upup';
+				},
+				topClk () {
+					var vm = this;
+					this.panelclass = "downdown"; 
+					setTimeout(function(){
+						vm.pstyle = "display:none;"
+					},300);
 				},
 				getit () {
 					// 我要接单
