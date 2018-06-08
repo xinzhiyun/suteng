@@ -14,33 +14,41 @@
 			<p v-text='service_name'></p>
 		</div>
 		<ul id='sBot' class="botOne">
-			<li class='worktype' @click='getList(0)' result='1'>
-				<i>15</i>
+			<li class='worktype' @click='getList(0)' result='0'>
+				<i>{{ num.waitnum }}</i>
 				<span>
 					<img src="__PUBLIC__/Home/images/pg.png" alt="">
 				</span>
 				<p>待办工单</p>
 			</li>
-			<li class='worktype' @click='getList(1)' result='2'>
-				<i></i>
-				<span></span>
+			<li class='worktype' @click='getList(1)' result='1'>
+				<i>{{ num.processnum }}</i>
+				<span>
+					<img src="__PUBLIC__/Home/images/clz.png" alt="">
+				</span>
 				<p>处理中工单</p>
 			</li>
-			<li class='worktype' @click='getList(2)' result='3'>
-				<i></i>
-				<span></span>
+			<li class='worktype' @click='getList(2)' result='2'>
+				<i>{{ num.waitcomfirmnum }}</i>
+				<span>
+					<img src="__PUBLIC__/Home/images/dys.png" alt="">
+				</span>
 				<p>待验收工单</p>
 			</li>
 		</ul>
 		<ul class="botTwo">
-			<li class='worktype' @click='getList(3)' result='4'>
-				<i></i>
-				<span></span>
+			<li class='worktype' @click='getList(3)' result='3'>
+				<i>{{ num.oknum }}</i>
+				<span>
+					<img src="__PUBLIC__/Home/images/pg.png" alt="">
+				</span>
 				<p>已完成工单</p>
 			</li>
-			<li class='worktype' @click='getList(11)' >
-				<i></i>
-				<span></span>
+			<li class='worktype' @click='getList(11)' result='11'>
+				<i>{{ num.allnum }}</i>
+				<span>
+					<img src="__PUBLIC__/Home/images/qbgd.png" alt="">
+				</span>
 				<p>全部工单</p>
 			</li>
 		</ul>
@@ -51,7 +59,8 @@
 			el: '#service',
 			data () {
 				return {
-					service_name: '广州番禺服务站'
+					service_name: '广州番禺服务站',
+					num: {waitnum: 12, processnum: 16, waitcomfirmnum: 14, oknum: 15, allnum: 57}
 				}
 			},
 			methods: {

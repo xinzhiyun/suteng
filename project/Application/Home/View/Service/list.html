@@ -5,6 +5,7 @@
 	<meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
 	<title>服务站</title>
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/station/list.css">
 	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
 	<script src='__PUBLIC__/Home/js/public.js'></script>
@@ -13,8 +14,8 @@
 	<div id='servicelist'>
 		<div class='search'>
 			<span>
-				<i></i>
-				<input type="text" placeholder="请输入工单号/设备编码" v-model='word'>
+				<i class='iconfont icon-sousuo' @click='search(word)'></i>
+				<input type="text" placeholder="请输入工单号/设备编码" v-model='word' @keyup.enter='search(word)'>
 			</span>
 		</div>
 		<div class='title spli'>
@@ -29,8 +30,11 @@
 				<span v-if='result == 1 || result == 2 || result == 3' v-text='li.name'></span>
 				<span v-text='li.create_at'></span>
 			</li>
+			<div class='loadmore' @click='loadmore' :style='{display: loadstyle}'>加载更多</div>
 		</ul>
+		<p class='notice' :style='{display: noticestyle}' v-text='notice'></p>
 	</div>
+	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<script>
 		var servicelist = new Vue({
@@ -43,61 +47,64 @@
 					list: [],			// 数据列表
 					result: '',			// 工单类型 0待处理 1处理中 2待验收 3(完成)
 					page: '',			// 分页
+					loadstyle: 'block',
+					colorList: ['color:#f16e65;', 'color:#2196F3;', 'color:#2196F3;', 'color:#00d4c2;'],
+					titleList: ['未派工', '处理中', '待验收', '已完成', '全部'],
+					statusList: ['状态', '作业人员', '作业人员', '作业人员', '状态'],
+					notice: '正在加载...',
+					noticestyle: 'block',
 				}
 			},
 			created (){
+				var vm = this;
 				this.result = GetQueryString('result');
 				console.log('result: ',this.result);
-				var colorList = ['color:#f16e65;', 'color:#2196F3;', 'color:#2196F3;', 'color:#00d4c2;'];
-				var titleList = ['未派工', '处理中', '待验收', '已完成', '全部'];
-				var statusList = ['状态', '作业人员', '作业人员', '作业人员', '状态'];
-				document.title = titleList[!this.result ? 4 : +this.result] + '工单';
-				this.status = statusList[!this.result ? 4 : +this.result];
+				document.title = vm.titleList[!this.result ? 4 : +this.result] + '工单';
+				this.status = vm.statusList[!this.result ? 4 : +this.result];
 				// result: 0待处理 1处理中 2待验收 3(完成)
-				if(this.result == 'undefined'){
-					this.getList(function(res){
+				// 获取列表
+				this.getList(function(res){
+					console.log('res: ',res);
+					if(res.data.length){
 						for(var i=0; i<res.data.length; i++){
-							res.data[i]['text'] = titleList[+res.data[i].type];
-							res.data[i].create_at = timetrans(res.data[i].create_at);
+							vm.list.push({
+								name: res.data[i].name,
+								number: res.data[i].number,
+								text: vm.titleList[+res.data[i].type],
+								style: vm.colorList[+res.data[i].type],
+								create_at: timetrans(res.data[i].create_at)
+							});
 						}
-						servicelist.list = res.data;
-						servicelist.page = 1;
-					});
-					
-				}else{
-					// 获取列表
-					this.getList(function(res){
-						for(var i=0; i<res.data.length; i++){
-							res.data[i]['text'] = titleList[+res.data[i].type];
-							res.data[i]['style'] = colorList[+res.data[i].type];
-							res.data[i].create_at = timetrans(res.data[i].create_at);
-						}
-						servicelist.list = res.data;
-						servicelist.page = 1;
-					}, this.result);
-				}
+						vm.noticestyle = 'none';
+					}else{
+						vm.notice = '查无数据';
+						vm.loadstyle = 'none';
+						layuiHint('查无数据');
+
+					}
+					servicelist.page = 1;
+				}, this.result);
 			},
 			methods: {
 				// 获取列表数据
 				getList (callback, result, page) {
-					
+					var vm = this;
 					var option = {
-						url: '{{:U("Home/Service/getList")}}',
+						url: getURL('Home', 'Service/getList'),
 						type: 'get',
 						success: function(res){
-							console.log('res: ',res);
+							// console.log('res: ',res);
 							if(res.status == 200){
-								if(res.data.length){
-									callback(res);
-								}else{
-									alert('查无数据');
-								}
+								callback(res);
+								
 							}else{
-								alert('查无数据');
+								vm.loadstyle = 'none';
+								layuiHint('查无数据');
 							}
 						},
 						error: function(err){
 							console.log('err: ',err);
+							layuiHint('系统出错，请稍后再试');
 						}
 					}
 					// 全部（result: 11）
@@ -114,12 +121,73 @@
 				},
 				// 跳到详情界面
 				getDetail (workid, result) {
-					location.href = '{{:U("Home/Service/detail")}}'+'?result='+ result +'&workid='+ workid;
+					location.href = getURL('Home', 'Service/detail')+'?result='+ result +'&workid='+ workid;
+				},
+				// 加载更多
+				loadmore () {
+					var vm = this;
+					console.log('result: ', vm.result);
+					console.log('page: ', vm.page);
+					// 请求分页数据
+					this.getList(function(res){
+						console.log('res: ',res);
+
+						if(res.data.length){
+							for(var i=0; i<res.data.length; i++){
+								vm.list.push({
+									name: res.data[i].name,
+									number: res.data[i].number,
+									text: vm.titleList[+res.data[i].type],
+									style: vm.colorList[+res.data[i].type],
+									create_at: timetrans(res.data[i].create_at)
+								});
+							}
+							vm.page++;
+						}else{
+							vm.loadstyle = 'none';
+							layuiHint('无更多数据');
+
+						}
+					}, vm.result, vm.page);
 				},
 				// 搜索
-				search () {
+				search (word) {
 					var vm = this;
-					this.getList(function(){}, vm.word);
+					console.log('word: ',word);
+					if(!word){
+						layuiHint('请输入工单号');
+						return
+					}
+					$.ajax({
+						url: getURL('Home', 'Service/getList'),
+						type: 'get',
+						data: {result: vm.result, word: word},
+						success: function(res){
+							console.log('res: ',res);
+							if(res.status == 200){
+								vm.list = [];
+								if(res.data.length){
+									for(var i=0; i<res.data.length; i++){
+										vm.list.push({
+											name: res.data[i].name,
+											number: res.data[i].number,
+											text: vm.titleList[+res.data[i].type],
+											style: vm.colorList[+res.data[i].type],
+											create_at: timetrans(res.data[i].create_at)
+										});
+									}
+								}else{
+									layuiHint('查无数据');
+								}
+							}else{
+								layuiHint('查无数据');
+							}
+						},
+						error: function(err){
+							console.log('err: ',err);
+							layuiHint('系统出错，请稍后再试');
+						}
+					})
 				}
 			}
 		})
