@@ -428,6 +428,18 @@
                     // courier.prepend('');
                     $.get("{{:U('admin/orders/getCourierByOrder')}}",{ order_id : orderid},function(res){
 
+                        if (res.code == 201) {
+                            // var html = '<tr><th>快递名称</th><th>快递单号</th></tr>';
+                            var html = '';
+                           
+
+                            html = res.data;
+                            courier.css({border:'none'});
+                            courier.find('tbody').eq(0).html('<div style="text-align:center; color:red; font-size:25px;">'+html+'</div>');
+                            courier.find('tbody').eq(1).hide();
+                        }
+
+
                         if(res.code == 200){
                             console.log(res);
 

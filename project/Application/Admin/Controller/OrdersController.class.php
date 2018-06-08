@@ -109,8 +109,11 @@ class OrdersController extends CommonController
         }
 
 
+
         //先判断售后审核通过审核再过滤数据
         $rid = M('refund_goods')->where('oid='.$order_id)->find()['rf_id'];
+
+
 
         if(empty($rid)) {
           //1.先查询订单中的商品
@@ -131,9 +134,17 @@ class OrdersController extends CommonController
             $couriers = D('ShopOrderDetail')->field('gid,gname,cid,cname')->where($map)->select();
 
         } else {
-            $rinfo = M('refund')->where('id='.$rid)->find();
+          
 
-          if ($rinfo['status'] == '5') {
+          $rinfo = M('refund')->where('id='.$rid)->find();
+
+          if ($rinfo['status'] == '0') {
+            //如果订单中有退货的商品未处理，先提示处理退货，在继续发货
+            $this->ajaxReturn(array('code'=>'201','data'=>'该订单还有退货商品未处理，请先处理再发货'));
+          
+            
+          } else {
+            
             //已同意退货
             //逻辑修改
             //1.先查询订单中的商品
@@ -158,26 +169,6 @@ class OrdersController extends CommonController
           
             $map['order_id'] = $order_id;
             $map['gid'] = array('in',$jid);
-
-            // dump($map);die;
-
-            $couriers = D('ShopOrderDetail')->field('gid,gname,cid,cname')->where($map)->select();
-            
-          } else {
-            
-            //还没审核
-            //1.先查询订单中的商品
-            $od = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
-
-            //订单中所有商品的id
-            $ids = array();
-            foreach ($od as $key => $value) {
-              $ids[] = $value['gid'];
-            }
-            
-          
-            $map['order_id'] = $order_id;
-            $map['gid'] = array('in',$ids);
 
             // dump($map);die;
 

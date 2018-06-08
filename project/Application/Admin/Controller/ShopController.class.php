@@ -912,9 +912,29 @@ class ShopController extends CommonController
         } else {
             $data = $orderDetail->getInfo($map);
         }
-        // dump($data);
-        //将订单商品总价加上商品的快递费
+
+
+
+        $rids = array();
+        $refund_goods =  M('refund_goods')->where('oid='."'{$order['order_id']}'")->select();
+
+        //查找退货的商品id
+        foreach ($refund_goods as $rd => $rdvalue) {
+            $rids[] = $rdvalue['gid'];
+        }
+
+        //将订单商品总价加上商品的快递费 及判断该订单是否有退货商品
         foreach ($data as $key => $value) {
+           
+            if (in_array($value['gid'],$rids)) {
+                    
+                $data[$key]['tuihuo'] = '退货';     
+                
+            } else {
+                $data[$key]['tuihuo'] = '正常';
+            }
+
+            
             $userInfo['g_price'] += $value['cprice']*$value['num'];
         }
 
