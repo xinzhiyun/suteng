@@ -107,6 +107,7 @@ class WechatController extends Controller
     /**
      * 生成自定义菜单
      * @return bool true or false
+     *  http://test.dianqiukj.com/index.php/Home/Wechat/create_menu
      */
     public function create_menu()
     {
@@ -141,6 +142,16 @@ class WechatController extends Controller
             {
 			   "name":"用户入口",
 			           "sub_button":[
+			            {
+			               "type":"view",
+			                "name":"服务站",
+			                "url":"http://test.dianqiukj.com/index.php/Home/Service/index"
+			            },
+			            {
+			               "type":"view",
+			                "name":"服务人员",
+			                "url":"http://test.dianqiukj.com/index.php/Home/People/index"
+			            },
 			            {
 			               "type":"view",
 			                "name":"分销中心",

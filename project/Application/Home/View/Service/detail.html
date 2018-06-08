@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
+	<title>工单详情</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/station/detail.css">
+	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
+	<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
+</head>
+<body>
+	<div id='servicedetail'>
+		<div class='dTop'>
+			<div>
+				工单：<span v-text='info.number'></span>
+				<div class='fr addworker' v-if='info.name == "未派工"' @click='addworker'>派工</div>
+			</div>
+			<!-- <div class='cfix'>
+				<h2 class='fl bigf' v-text='info.phone'>手机号码</h2>
+				<span class='fr info' v-text='type'>待办工单</span>
+			</div> -->
+			<!-- <ul class='cfix'>
+				<li class='fl'>
+					<p>
+						年月日：&emsp;<span v-text='info.name'></span>
+					</p>
+					<p>
+						时间段：&emsp;<span v-text='info.create_at'></span>
+					</p>
+					<p>
+						安装工人：&emsp;<span v-text='info.update_at'></span>
+					</p>
+				</li>
+				
+			</ul> -->
+			<ul class='cfixed'>
+				<li class='fled'>
+					<p>
+						<span>年月日：&emsp;</span> 
+						<input type="text" class="currentdate" id="currentdate" name="date" value="" placeholder="-- 请选择服务日期 --" readonly="readonly">
+					</p>
+					<p>
+						<span>时间段：&emsp;</span>
+						<!-- <span>请选择</span> -->
+						<select name="nyr" id="">
+							<option value="0">请选择</option>
+							<option value="0">上午：9:00  -  12:00</option>
+							<option value="0">请选择</option>
+						</select>
+					</p>
+					<p>
+						<span>安装工人：&emsp;</span>
+						<!-- <span>请选择</span> -->
+						<select name="nyr" id="">
+							<option value="0">请选择</option>
+							<option value="0">请选择</option>
+							<option value="0">请选择</option>
+						</select>
+					</p>
+				</li>
+			</ul>
+		</div>
+		<div class='dBot'>
+			<!-- <div class='cfix'>
+				<h2 class='fl bigf' v-text='info.kname'></h2>
+				<span class='info fr'>用户信息</span>
+			</div> -->
+			<ul>
+				<li>用户名：&emsp;<span v-text='info.kphone'></span></li>
+				<li>手机号码：&emsp;<span v-text='info.kphone'></span></li>
+				<li>服务类型：&emsp;<span v-text='info.type'></span></li>
+				<li>设备型号：&emsp;<span v-text='info.kphone'></span></li>
+				<li class='len'>
+					<span>详细地址：&emsp;</span>
+					<span v-text='info.province+info.city+info.address'></span>
+				</li>
+			</ul>
+			<ul class='ques'>
+				<li class='len'>
+					<span>问题描述：&emsp;</span>
+					<span v-text='info.content'></span></li>
+					<li>
+						<span v-for='i in info.pic'>
+							<img :src="i" alt="">
+						</span>
+					</li>
+				</ul>
+			</div>
+			<button class='btnup' @click='getit'>提交</button>
+			<div class='panel' :style='pstyle'>
+				<div class='pTop' @click='topClk'></div>
+				<div class='pBot' :class='panelclass' >
+					<div v-for='w in workList'>
+						<span v-text='w'></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+		<script src='__PUBLIC__/Home/js/public.js'></script>
+		<script src="__PUBLIC__/Home/js/laydate.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+		<script>
+			var servicedetail = new Vue({
+				el: '#servicedetail',
+				data () {
+					return {
+						type: '',
+						result: '',
+						workid: '',
+						info: {},
+						pstyle: '',
+						panelclass: '',
+						workList: ['郭德纲', '杰诺斯', '小李飞刀']
+					} 
+				},
+				created (){
+					this.workid = GetQueryString('workid');
+					this.result = GetQueryString('result');
+					console.log('result: ',this.result);
+					var titleList = ['待办', '处理中', '待验收', '已完成'];
+					var statusList = ['状态', '作业人员', '作业人员', '作业人员', '状态'];
+					this.type = titleList[this.result == 'undefined' ? 4 : +this.result] + '工单';
+					this.getDetail(this.workid);
+				},
+				methods: {
+					getDetail (workid){
+						// 获取详情
+						$.ajax({
+							url: '{{:U("Home/Service/getDetail")}}',
+							type: 'post',
+							data: {number: workid},
+							success: function(res){
+								console.log('res: ',res);
+								if(res.status == 200){
+									var typeList = ['安装', '维修', '维护'];
+									res.data.name = res.data.name ? res.data.name : '未派工';
+									res.data.create_at = dateformat(res.data.create_at);
+									res.data.update_at = res.data.update_at ? dateformat(res.data.update_at) : '-- -- --';
+									res.data.type = typeList[res.data.type];
+									
+									res.data.pic = ['/Uploads/2018-05-08/5af1372be2437.png','/Uploads/2018-05-08/5af1373180e6c.png'];
+									servicedetail.info = res.data;
+									
+								}else{
+									alert(res.msg);
+								}
+							},
+							error: function(err){
+								console.log('err: ',err);
+							}
+						})
+					},
+					// 派工
+					addworker () {
+						this.pstyle = 'display: block;';
+						this.panelclass = 'upup';
+					},
+					topClk () {
+						var vm = this;
+						this.panelclass = "downdown"; 
+						setTimeout(function(){
+							vm.pstyle = "display:none;"
+						},300);
+					},
+					getit () {
+						// 我要接单
+					}
+				}
+			})
+		</script>
+	</body>
+	</html>

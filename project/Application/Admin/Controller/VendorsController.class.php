@@ -639,7 +639,6 @@ class VendorsController extends CommonController
         // ---- 【end】
         $data = D('vendors')->vendorList($map);
 
-
         $assign = [
             'data' => $data['list'],
         ];
@@ -914,8 +913,12 @@ class VendorsController extends CommonController
          $data['repassword'] = I('post.repassword');
          $rules = array(
              array('user','','帐号名称已经存在！',0,'unique',1), // 在新增的时候验证name字段是否唯一
+             array('user','require','帐号名称必须！'), //默认情况下用正则进行验证
+             array('user', '3,150', '帐号名称必须长于3位', '0', 'length'),
              array('repassword','password','确认密码不正确',0,'confirm'), // 验证确认密码是否和密码一致
+             array('password','require','密码必须！'), //默认情况下用正则进行验证
              array('password','checkPwd','密码格式不正确',0,'function'), // 自定义函数验证密码格式
+             array('password', '5,50', '密码必须长于5位', '0', 'length'),
         );
         $User = M("adminUser"); // 实例化User对象
         if (!$User->validate($rules)->create($data)){
@@ -924,6 +927,7 @@ class VendorsController extends CommonController
         }else{
              // 验证通过 可以进行其他数据操作
         }
+        die;
          // 判断账号是否注册过
          $auid = D('vendors')->find($service_id);
          if($auid['auid']){
@@ -944,4 +948,43 @@ class VendorsController extends CommonController
              $this->ajaxReturn(['code'=>400,'msg'=>'系统出现错误,请稍后重试......']); 
          }
      }
+    
+     // 修改服务站后台账号密码
+    public function editpassword()
+    {
+        $id = I('post.admin_user_id');
+        $data['oldpassword'] = I('post.oldpassword');
+        $data['password'] = I('post.password');
+        $data['repassword'] = I('post.repassword');
+   
+       $rules = array(
+            array('oldpassword','require','旧密码必须！'), //默认情况下用正则进行验证
+            array('repassword','password','确认密码不正确',0,'confirm'), // 验证确认密码是否和密码一致
+            array('password','require','密码必须！'), //默认情况下用正则进行验证
+            array('password','checkPwd','密码格式不正确',0,'function'), // 自定义函数验证密码格式
+            array('password', '5,50', '密码必须长于5位', '0', 'length'),
+        );
+       $User = M("adminUser"); // 实例化User对象
+       if (!$User->validate($rules)->create($data)){
+            // 如果创建失败 表示验证没有通过 输出错误提示信息
+            $this->ajaxReturn(['code'=>10001,'msg'=>$User->getError()]);
+       }else{
+            // 验证通过 可以进行其他数据操作
+       }
+        // 判断旧密码是否正确
+        $userinfo = $User->find($id);
+        if($userinfo['password'] != md5($data['oldpassword'])){
+            $this->ajaxReturn(['code'=>10002,'msg'=>'旧密码不正确']);
+        }
+        // 注册账号
+        $uid = $User->where(['id'=>$id])->save([
+            'password'=>md5($data['password']),
+            'updatetime'=>time()
+        ]);
+        if($uid){
+            $this->ajaxReturn(['code'=>200,'msg'=>'修改密码成功','data'=>$data]);
+        }else{
+            $this->ajaxReturn(['code'=>400,'msg'=>'系统出现错误,请稍后重试......']); 
+        }
+    }
 }

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
+	<title>服务站</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/station/list.css">
+	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
+	<script src='__PUBLIC__/Home/js/public.js'></script>
+</head>
+<body>
+	<div id='servicelist'>
+		<div class='search'>
+			<span>
+				<i></i>
+				<input type="text" placeholder="请输入工单号/设备编码">
+			</span>
+		</div>
+		<div class='title spli'>
+			<span>工单号</span>
+			<span v-text='status'>状态</span>
+			<span>生成时间</span>
+		</div>
+		<ul class='content'>
+			<li class='spli' v-for='li in list' @click='getDetail(li.number, li.type)'>
+				<span v-text='li.number'></span>
+				<span v-if='result == 0 || result == "undefined"' :style='li.style' v-text='li.text'></span>
+				<span v-if='result == 1 || result == 2 || result == 3' v-text='li.name'></span>
+				<span v-text='li.create_at'></span>
+			</li>
+		</ul>
+	</div>
+	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+	<script>
+		var servicelist = new Vue({
+			el: '#servicelist',
+			data () {
+				return {
+					status: '',
+					service_name: '',
+					list: [],
+					result: '',
+					page: '',
+				}
+			},
+			created (){
+				this.result = GetQueryString('result');
+				console.log('result: ',this.result);
+				var colorList = ['color:#f16e65;', 'color:#2196F3;', 'color:#2196F3;', 'color:#00d4c2;'];
+				var titleList = ['未派工', '处理中', '待验收', '已完成', '全部'];
+				var statusList = ['状态', '作业人员', '作业人员', '作业人员', '状态'];
+				document.title = titleList[!this.result ? 4 : +this.result] + '工单';
+				this.status = statusList[!this.result ? 4 : +this.result];
+				// 0：待处理 1处理中 2待验收 3(完成)
+				if(this.result == 'undefined'){
+					this.getList(function(res){
+						for(var i=0; i<res.data.length; i++){
+							res.data[i]['text'] = titleList[+res.data[i].type];
+							res.data[i].create_at = timetrans(res.data[i].create_at);
+						}
+						servicelist.list = res.data;
+					});
+					
+				}else{
+					// 获取列表
+					this.getList(function(res){
+						for(var i=0; i<res.data.length; i++){
+							res.data[i]['text'] = titleList[+res.data[i].type];
+							res.data[i]['style'] = colorList[+res.data[i].type];
+							res.data[i].create_at = timetrans(res.data[i].create_at);
+						}
+						servicelist.list = res.data;
+					}, this.result);
+				}
+			},
+			methods: {
+				getList (callback, result, page) {
+					// 全部（不传result）
+					var option = {
+						url: '{{:U("Home/Service/getList")}}',
+						type: 'get',
+						success: function(res){
+							console.log('res: ',res);
+							if(res.status == 200){
+								if(res.data.length){
+									callback(res);
+								}else{
+									alert('查无数据');
+								}
+							}else{
+								alert('查无数据');
+							}
+						},
+						error: function(err){
+							console.log('err: ',err);
+						}
+					}
+					if(result){
+						option['data'] = {result: result};
+					}
+					if(page){
+						option['page'] = servicelist.page;
+					}
+					// 获取数据
+					$.ajax(option);
+				},
+				getDetail (workid, result) {
+					// 跳到详情界面
+					location.href = '{{:U("Home/Service/detail")}}' + '?result='+ result + '&workid=' + workid;
+				}
+			}
+		})
+	</script>
+</body>
+</html>

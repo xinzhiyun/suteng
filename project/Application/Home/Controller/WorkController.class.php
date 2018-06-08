@@ -1,6 +1,8 @@
 <?php
 namespace Home\Controller;
 
+use Common\Tool\File;
+use Think\Log;
 use Zend\Serializer\Adapter\AdapterInterface;
 
 class WorkController extends CommonController
@@ -48,6 +50,18 @@ class WorkController extends CommonController
 
             $data['address'] = $post['address'];
 
+
+            if(!empty($post['pic'])){
+                if(is_string($post['pic'])){
+                    $post['pic'] = explode(',',$post['pic']);
+                }
+                if( is_array($post['pic']) ){
+                    foreach ($post['pic'] as $pic) {
+                        $pics[] = File::downloadPic('work',$pic);
+                    }
+                }
+                $data['pic'] = json_encode($pics);
+            }
 
             $data['kname'] = $post['kname'];
             $data['kphone'] = $post['kphone'];

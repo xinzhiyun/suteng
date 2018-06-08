@@ -24,7 +24,7 @@ class ServiceCommonController extends Controller
 
 
         if(empty($_SESSION['serviceInfo'])){
-            $this->redirect("Home/SericeLogin/index");
+//            $this->redirect("Home/SericeLogin/index");
         }
     }
 

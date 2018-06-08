@@ -9,42 +9,47 @@
     var selectResult = "";
     // 服务类型
     var serviceType;
+
+    console.log($('<img src="" alt="" index="" />'));
     // 点击上传图片
     $(".file_upload").click(function(){
         var len = $("#picShow>span").length;
-        if(len == 1){
-            layuiHint("暂时只支持一张图片！");
+        if(len == 3){
+            layuiHint("暂时只支持三张图片！");
             return
         } 
         // takePicture(1);
-        // 浏览上传图片
+        // 浏览上传图片 
         wxuploadimg(function(res){
             console.log('res: ',res);
             
             var $span = $("<span></span>");
             var $span1 = $("<span>X</span>");
-            var $img = $('<img src="" alt="" />');
+            var $img = $('<img src="" alt="" index="" />');
             
             $img[0].width = "100%";
             $img[0].height = "90%";
             $img[0].src = res['src'];
+            $img[0].setAttribute("index", res.media_Id);
             
             $span1.addClass("delPic");
-            $span1.css({zIndex: '999'});
+            $span1.css({zIndex: '9'});
             $span.append($span1);
             $span.append($img[0]);
             
             // 显示图片
             $('#picShow').append($span);
             // 待发送给后台的图片id
-            $('input[name="pic"]').val(res.media_Id);
+            // $('input[name="pic"]').val(res.media_Id);
+            console.log("传给后台的id",res.media_Id);
         });
     })
     var formData = new FormData($('#form')[0]);
     // 删除图片
     $("#picShow").on("click", ".delPic", function(){
         $(this).parent().remove();
-        formData.delete('pic');
+        $(this).siblings().attr("index", "");
+        // formData.delete('pic');
     })
     // 点击服务选择
     $(".selService").on("click", function() {
@@ -97,7 +102,7 @@
                 if(service_code == installList[i].id) {
                     var userInfo = JSON.parse(installList[i].addressinfo);
                     console.log("该设备的用户的信息", userInfo);
-                    $(".repaireName").text(userInfo.name);//写入用户名
+                    $(".repaireName").val(userInfo.name);//写入用户名
                     $("input[name='phone']").val(userInfo.phone);//写入电话
                     $(".repaireAdd").html('<span>报修地址：</span><span id="areaID" class="areabtn">'+userInfo.province + userInfo.city + userInfo.area +'</span>');//写入省市区
                     $("textarea[name='address']").val(userInfo.address);//写入详细地址
@@ -115,7 +120,7 @@
                 if(service_code == bindInfo[i].device_code) {
                     var userInfo = JSON.parse(bindInfo[i].addressinfo);
                     console.log("该设备的用户的信息", userInfo);
-                    $(".repaireName").text(userInfo.name);//写入用户名
+                    $(".repaireName").val(userInfo.name);//写入用户名
                     $("input[name='phone']").val(userInfo.phone);//写入电话
                     $(".repaireAdd").html('<span>报修地址：</span><span id="areaID" class="areabtn">'+userInfo.province + userInfo.city + userInfo.area +'</span>');//写入省市区
                     $("textarea[name='address']").val(userInfo.address);//写入详细地址
@@ -129,8 +134,6 @@
                 }
             }
         }
-        
-        
     })
     // 设备列表选择
     $(".serviceNum").on("click", function() {
@@ -327,12 +330,19 @@
         var phoneReg = /^1[3|4|5|8][0-9]\d{4,8}$/;
         var addressReg = /^(?=.*?[\u4E00-\u9FA5])[\dA-Za-z\u4E00-\u9FA5]{6,}/;
 
-        var username = $(".repaireName").text();//用户名
+        var username = $(".repaireName").val();//用户名
         var userphone = $("input[name='phone']").val();//电话
         var Detailadd = $("#Laddr").val(); //详细地址
         var content = $("textarea[name='content']").val();//问题描述/备注
         console.log(province,city,area,province_id,city_id,area_id, service_code, username, userphone, Detailadd, content);
-        var filePic = $('input[name="pic"]').val();//上传图片的id
+        var filePic = [];//存放图片的id
+        var picImgs = $('#picShow>span>img')
+        if(picImgs.length) {
+            for(var i = 0; i < picImgs.length; i++) {
+                filePic[i] = picImgs.eq(i).attr("index");
+            }
+        }
+        console.log("图片id",filePic)
         //清空，防止多次点击提交
         formData.delete('device_code');
         formData.delete('username');
@@ -366,6 +376,11 @@
                 layuiHint('请上传报修图片！');
                 return;
             }
+        }
+        if(!username) {
+            console.log("请输入名字")
+            layuiHint("请输入名字");
+            return ;
         }
         if(userphone) {
             if(!phoneReg.test(userphone)) {

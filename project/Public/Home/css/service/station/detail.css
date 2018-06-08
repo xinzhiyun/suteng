@@ -1,0 +1,140 @@
+/*GLOBALS*/
+*{margin:0; padding:0; list-style:none;-webkit-box-sizing:border-box;box-sizing:border-box;}
+body {
+	min-height: 100vh;
+	padding-bottom: 4vh;
+	overflow-x: hidden;
+	background: #EDF2F2;
+	font-size: 0.66rem;
+}
+#servicedetail {
+	padding: 2vh 4vw;
+} 
+.dTop,
+.dBot {
+	position: relative;
+	padding: 10px;
+	margin-bottom: 2vh;
+	border-radius: 4px;
+	background: #fff;
+}
+.dTop p,
+.dBot li {
+	margin: 10px 0;
+} 
+.info {
+	color: #00d4c2;
+}
+.addworker {
+	display: inline-block;
+	position: absolute;
+	padding: 4px 20px;
+	right: 10px;
+	bottom: 20px;
+	border: 1px solid #f16e65;
+	border-radius: 4px;
+	color: #f16e65;
+}
+.addworker:active {
+	color: #fff;
+	background: #f16e65;
+	opacity: .9;
+}
+.cfix::after {
+	content: '';
+	clear: both;
+	display: block;
+	visibility: hidden;
+}
+.fl {
+	float: left;
+}
+.fr {
+	float: right;
+}
+.bigf {
+	margin-bottom: 10px;
+	font-size: 1rem;
+	font-weight: 600;
+}
+.ques {
+	border-top: 1px solid #eee;
+}
+.len {
+	display: flex;
+}
+.len>span:nth-of-type(1) {
+	flex: 2;
+}
+.len>span:nth-of-type(2) {
+	flex: 5;
+}
+.btnup {
+	width: 88vw;
+	padding: 10px 0;
+	position: fixed;
+	bottom: 4vh;
+	border: none;
+	color: #fff;
+	font-size: .7rem;
+	border-radius: 6px;
+	background: #59d6cb;
+}
+.btnup:active::after {
+	content: '';
+	width: 100%;
+	height: 100%;
+	display: inline-block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	border-radius: 6px;
+	background: rgba(0,0,0,.08);
+}
+.panel {
+	width: 100%;
+	height: 100vh;
+	display: none;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	text-align: center;
+	background: rgba(0,0,0,.5);
+	z-index: 99;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+.panel>div{
+	width: 100%;
+	height: 50vh;
+	text-align: center;
+}
+.pBot {
+	background: #fff;
+	transform: translateY(100%);
+}
+.upup {
+	animation: upup .3s ease forwards;
+}
+@keyframes upup {
+	from {transform: translateY(100%);}
+	to {transform: translateY(0%);}
+}
+.downdown {
+	animation: downdown .3s ease forwards;
+}
+@keyframes downdown {
+	from {transform: translateY(0%);}
+	to {transform: translateY(100%);}
+}
+.cfixed {
+	/* background-color: white; */
+}
+.fled > p {
+	display: flex;
+	justify-content: space-between;
+}
+.fled > p > select{
+	direction: rtl;
+	border: none;
+}

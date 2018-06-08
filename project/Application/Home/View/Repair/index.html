@@ -13,7 +13,7 @@
     var installList ={{$installList|json_encode}};
     // 报修设备列表
     var bindInfo = {{$bindInfo|json_encode}};
-    console.log("安装",installList, "报修",bindInfo)
+
   </script>
 </head>
 <body>
@@ -45,10 +45,24 @@
           <p>上传截图</p>
           <div class="repairPic">
             <i class="iconfont icon-jiahao"></i>
-            <span></span>
+            <span></span> 
             <input class="repair-sendpic file_upload" multiple="true" type="button" accept="image/png, image/jpeg, image/gif, image/jpg" >
             <input type="hidden" name='pic'>
-            <div id="picShow"></div>
+            <div id="picShow">
+              <!-- <span>
+                <span class="delPic">X</span>
+                <img src="__PUBLIC__/Home/images/1a.jpg" alt="" index="35435435435">
+              </span>
+              <span>
+                <span class="delPic">X</span>
+                <img src="__PUBLIC__/Home/images/1a.jpg" alt="" index="2468468468465">
+              </span>
+              <span>
+                <span class="delPic">X</span>
+                <img src="__PUBLIC__/Home/images/1a.jpg" alt="" index="2468468468465">
+              </span> -->
+              
+            </div>
             <div class="hide"></div>
             <span class="picnum">最多上传3张</span>
           </div>
@@ -59,7 +73,8 @@
             <li>
               <p>
                 <span>报修人：</span>
-                <span class="repaireName"></span>
+                <!-- <span ></span> -->
+                <input type="text" class="repaireName" placeholder="请输入姓名">
               </p>
             </li>
             <li>
@@ -140,6 +155,7 @@
     <script type="text/javascript">
       $(function(){
         var vConsole = new VConsole();
+          console.log("安装",installList, "报修",bindInfo)
         //微信接口
         wx.config({
           debug: false,
