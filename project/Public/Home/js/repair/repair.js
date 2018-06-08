@@ -41,7 +41,6 @@
             // $('input[name="pic"]').val(res.media_Id);
             console.log("传给后台的id",res.media_Id);
         });
-        console.log($("#picShow>span>img").attr("index"));
     })
     var formData = new FormData($('#form')[0]);
     // 删除图片
