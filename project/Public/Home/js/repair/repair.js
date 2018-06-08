@@ -17,7 +17,7 @@
             return
         } 
         // takePicture(1);
-        // 浏览上传图片
+        // 浏览上传图片 
         wxuploadimg(function(res){
             console.log('res: ',res);
             
