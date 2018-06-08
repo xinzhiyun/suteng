@@ -33,7 +33,7 @@
             $img[0].setAttribute("index", res.media_Id);
             
             $span1.addClass("delPic");
-            $span1.css({zIndex: '999'});
+            $span1.css({zIndex: '9'});
             $span.append($span1);
             $span.append($img[0]);
             
