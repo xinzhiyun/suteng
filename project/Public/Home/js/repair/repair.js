@@ -102,7 +102,7 @@
                 if(service_code == installList[i].id) {
                     var userInfo = JSON.parse(installList[i].addressinfo);
                     console.log("该设备的用户的信息", userInfo);
-                    $(".repaireName").text(userInfo.name);//写入用户名
+                    $(".repaireName").val(userInfo.name);//写入用户名
                     $("input[name='phone']").val(userInfo.phone);//写入电话
                     $(".repaireAdd").html('<span>报修地址：</span><span id="areaID" class="areabtn">'+userInfo.province + userInfo.city + userInfo.area +'</span>');//写入省市区
                     $("textarea[name='address']").val(userInfo.address);//写入详细地址
@@ -120,7 +120,7 @@
                 if(service_code == bindInfo[i].device_code) {
                     var userInfo = JSON.parse(bindInfo[i].addressinfo);
                     console.log("该设备的用户的信息", userInfo);
-                    $(".repaireName").text(userInfo.name);//写入用户名
+                    $(".repaireName").val(userInfo.name);//写入用户名
                     $("input[name='phone']").val(userInfo.phone);//写入电话
                     $(".repaireAdd").html('<span>报修地址：</span><span id="areaID" class="areabtn">'+userInfo.province + userInfo.city + userInfo.area +'</span>');//写入省市区
                     $("textarea[name='address']").val(userInfo.address);//写入详细地址
