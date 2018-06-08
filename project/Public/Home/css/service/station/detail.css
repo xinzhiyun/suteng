@@ -30,7 +30,7 @@ body {
 	position: absolute;
 	padding: 4px 20px;
 	right: 10px;
-    bottom: 20px;
+	bottom: 20px;
 	border: 1px solid #f16e65;
 	border-radius: 4px;
 	color: #f16e65;
@@ -126,4 +126,15 @@ body {
 @keyframes downdown {
 	from {transform: translateY(0%);}
 	to {transform: translateY(100%);}
+}
+.cfixed {
+	/* background-color: white; */
+}
+.fled > p {
+	display: flex;
+	justify-content: space-between;
+}
+.fled > p > select{
+	direction: rtl;
+	border: none;
 }
