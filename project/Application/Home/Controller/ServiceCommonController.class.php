@@ -12,7 +12,7 @@ class ServiceCommonController extends Controller
 
     public function _initialize()
     {
-        $_SESSION['open_id'] = 'onLe70UOYRAS057fUzuCbyTYKRFo'; // 前端调试通道
+        $_SESSION['open_id'] = C('open_id'); // 前端调试通道
 
         // 获取用户open_id
         if (empty($_SESSION['open_id'])) {
