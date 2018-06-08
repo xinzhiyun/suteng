@@ -9,9 +9,6 @@
 	<title>订单确认</title>
 </head>
 <body>
-	<input type="hidden" value='{{$data}}' id="addressInfo">
-	<input type="hidden" value='{{$user}}' id="jinyinbi">
-	<input type="hidden" value='{{$rate}}' id="rate">
 	<div id="content">
 		<header id="header">
 			<div id="hLeft">
@@ -21,7 +18,6 @@
 		</header>
 		<div id="main">
 
-			
 		</div>
 		
 		<div id="calc">
@@ -117,11 +113,17 @@
 				'chooseWXPay'
 				]
 			});
+
 			// 用户金币数量：gold_num; 银币数量：silver; 金币换算：gold_rate; 银币换算：silver_rate;
-			var gold_num = parseInt(JSON.parse($("#jinyinbi").val()).gold_num);
-			var silver = parseInt(JSON.parse($("#jinyinbi").val()).silver);
-			var gold_rate = JSON.parse($("#rate").val()).gold_rate;
-			var silver_rate = JSON.parse($("#rate").val()).silver_rate;
+			// var gold_num = parseInt(JSON.parse($("#jinyinbi").val()).gold_num);
+			// var silver = parseInt(JSON.parse($("#jinyinbi").val()).silver);
+			// var gold_rate = JSON.parse($("#rate").val()).gold_rate;
+			// var silver_rate = JSON.parse($("#rate").val()).silver_rate;
+			var gold_num, silver, gold_rate, silver_rate;
+			gold_num = JSON.parse('{{$user|json_encode}}') ? JSON.parse('{{$user|json_encode}}')['gold_num'] : 0;
+			silver = JSON.parse('{{$user|json_encode}}') ? JSON.parse('{{$user|json_encode}}')['silver'] : 0;
+			gold_rate = JSON.parse('{{$rate|json_encode}}') ? JSON.parse('{{$rate|json_encode}}')['gold_rate'] : 0;
+			silver_rate = JSON.parse('{{$rate|json_encode}}') ? JSON.parse('{{$rate|json_encode}}')['silver_rate'] : 0;
 			console.log("金银币数量", gold_num, silver);
 			// else {
 			// 	// 若无快递数据时友情提示
@@ -141,12 +143,10 @@
 			}
 			
 			// 获取后台传来的默认地址
-			var addressInfo;
-			// console.log($("#addressInfo").val())
-			if(($("#addressInfo").val())!='null'){
+			var addressInfo = JSON.parse('{{$data}}') ? JSON.parse('{{$data}}') : '';
+			console.log('addressInfo: ',addressInfo);
+			if(addressInfo){
 				// alert(1)
-				addressInfo = JSON.parse($("#addressInfo").val());
-				console.log(addressInfo);
 				if(addressInfo){
 					var addresssHTML = '<p>'+
 					'<span>收货人：'+ addressInfo.name +'</span>'+
@@ -362,7 +362,7 @@
 						return false;
 					}
 					//如果有默认地址
-					if($("#addressInfo").val()){
+					if(addressInfo){
 						//请求微信支付方法
 						$.ajax({
 							url: "{{:U('Home/PaymentSystem/orderPayByGold')}}",
@@ -415,7 +415,7 @@
 						return false
 					}
 					//如果有默认地址
-					if($("#addressInfo").val()){ 
+					if(addressInfo){ 
 						//请求微信支付方法
 						$.ajax({
 							url: "{{:U('Home/PaymentSystem/orderPayBySilver')}}",
@@ -461,7 +461,7 @@
 					case '3':
 					console.log('微信支付');
 					//如果有默认地址
-					if($("#addressInfo").val()){
+					if(addressInfo){
 						//请求微信支付方法
 						$.ajax({
 							url: "{{:U('Home/PaymentSystem/orderPay')}}",
@@ -473,7 +473,7 @@
 									console.log('支付错误！');
 									parent.layer.msg('支付错误！');
 								}else{
-									if($("#addressInfo").val()){
+									if(addressInfo){
 										// 调用微信支付方法
 										weixinPay(res);
 									}else{
