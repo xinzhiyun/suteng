@@ -1,0 +1,54 @@
+/*GLOBALS*/
+*{margin:0; padding:0; list-style:none;-webkit-box-sizing:border-box;box-sizing:border-box;}
+body {
+	overflow-x: hidden;
+}
+.search {
+	height: 14vmin;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	line-height: 14vmin;
+	background: #EDF2F2;
+}
+.search>span {
+	width: 96%;
+	height: 68%;
+	display: flex;
+	position: relative;
+	padding-left: 16%;
+	background: #fff;
+}
+.search input {
+	width: 80%;
+	height: 100%;
+	border: none;
+	background: none;
+}
+.title {
+	color: #00d4c2;
+}
+.title>span {
+	flex: 1 0 33%;
+	text-align: center;
+}
+.spli {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 4% 0;
+	border-bottom: 1px solid #f6f6f6;
+}
+.content {
+	padding: 0 8px;
+}
+.content .spli>span{
+	flex: 1 0 33%;
+	text-align: center;
+}
