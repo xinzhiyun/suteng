@@ -28,7 +28,7 @@
             $img[0].width = "100%";
             $img[0].height = "90%";
             $img[0].src = res['src'];
-            $img[0].attr("index", res.media_Id);
+            $img[0].setAttribute("index", res.media_Id);
             
             $span1.addClass("delPic");
             $span1.css({zIndex: '999'});
