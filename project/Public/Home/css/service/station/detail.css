@@ -1,28 +1,44 @@
 /*GLOBALS*/
 *{margin:0; padding:0; list-style:none;-webkit-box-sizing:border-box;box-sizing:border-box;}
 body {
+	min-height: 100vh;
+	padding-bottom: 4vh;
 	overflow-x: hidden;
 	background: #EDF2F2;
+	font-size: 0.66rem;
 }
 #servicedetail {
 	padding: 2vh 4vw;
-}
+} 
 .dTop,
 .dBot {
 	position: relative;
-	padding: 4% 2%;
+	padding: 10px;
 	margin-bottom: 2vh;
 	border-radius: 4px;
 	background: #fff;
 }
+.dTop p,
+.dBot li {
+	margin: 10px 0;
+} 
 .info {
 	color: #00d4c2;
 }
 .addworker {
 	display: inline-block;
-	padding: 4px 8px;
-	border: 1px solid red;
+	position: absolute;
+	padding: 4px 20px;
+	right: 10px;
+    bottom: 20px;
+	border: 1px solid #f16e65;
 	border-radius: 4px;
+	color: #f16e65;
+}
+.addworker:active {
+	color: #fff;
+	background: #f16e65;
+	opacity: .9;
 }
 .cfix::after {
 	content: '';
@@ -35,4 +51,32 @@ body {
 }
 .fr {
 	float: right;
+}
+.bigf {
+	margin-bottom: 10px;
+	font-size: 1rem;
+	font-weight: 600;
+}
+.ques {
+	border-top: 1px solid #eee;
+}
+.len {
+	display: flex;
+}
+.len>span:nth-of-type(1) {
+	flex: 2;
+}
+.len>span:nth-of-type(2) {
+	flex: 5;
+}
+.btnup {
+	width: 88vw;
+	padding: 10px 0;
+	position: fixed;
+	bottom: 4vh;
+	border: none;
+	color: #fff;
+	font-size: .7rem;
+	border-radius: 6px;
+	background: #59d6cb;
 }
