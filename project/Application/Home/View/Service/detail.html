@@ -68,7 +68,7 @@
 					result: '',
 					workid: '',
 					info: {},
-				}
+				} 
 			},
 			created (){
 				this.workid = GetQueryString('workid');
@@ -94,7 +94,7 @@
 								res.data.create_at = dateformat(res.data.create_at);
 								res.data.update_at = res.data.update_at ? dateformat(res.data.update_at) : '-- -- --';
 								res.data.type = typeList[res.data.type];
-								
+
 								res.data.pic = ['/Uploads/2018-05-08/5af1372be2437.png','/Uploads/2018-05-08/5af1373180e6c.png'];
 								servicedetail.info = res.data;
 
