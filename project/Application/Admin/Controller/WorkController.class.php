@@ -34,8 +34,6 @@ class WorkController extends CommonController
         $where['type'] = I('get.type');
         $where['result'] = I('get.result');
 
-        Work::add('24174', 4);
-
         $this->assign('pageList',$workList);
         $this->assign('where',$where);
         $this->display();

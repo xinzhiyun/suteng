@@ -26,7 +26,7 @@ class Work
      * @param $mode int 信息类型
      * @param array $info array 信息
      */
-    public static function add($wid, $mode, $info=[])
+    public static function add($wid, $mode)
     {
         $work =  M('work')->where('id='.$wid)->find();
         if(empty($work)) {
