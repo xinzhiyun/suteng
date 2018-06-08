@@ -58,6 +58,21 @@ class DeviceController extends CommonController
             $data['phone'] = I('phone');
             $data['addtime']    = time();
             $data['updatetime'] = time();
+
+            $address=[
+                "uid"   => $uid,
+                "name"  =>$data['name'],
+                "phone" => $data['phone'],
+                "province"  => I('province'),
+                "city"      => I('city'),
+                "area"      => I('name'),
+                "address"   => I('address'),
+                "province_id"   => I('province_id'),
+                "city_id"       => I('city_id'),
+                "area_id"       => I('area_id'),
+            ];
+            $data['addressinfo'] = json_encode($address);
+
             $user_device->where('uid='.$uid)->save(['status'=>0]);
             $res_save = $user_device->add($data);
 
