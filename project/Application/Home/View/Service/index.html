@@ -13,10 +13,12 @@
 		<div id='sTop'>
 			<p v-text='service_name'></p>
 		</div>
-		<ul id='sBot'>
+		<ul id='sBot' class="botOne">
 			<li class='worktype' @click='getList(0)' result='1'>
-				<i></i>
-				<span></span>
+				<i>15</i>
+				<span>
+					<img src="__PUBLIC__/Home/images/pg.png" alt="">
+				</span>
 				<p>待办工单</p>
 			</li>
 			<li class='worktype' @click='getList(1)' result='2'>
@@ -29,12 +31,14 @@
 				<span></span>
 				<p>待验收工单</p>
 			</li>
+		</ul>
+		<ul class="botTwo">
 			<li class='worktype' @click='getList(3)' result='4'>
 				<i></i>
 				<span></span>
 				<p>已完成工单</p>
 			</li>
-			<li class='worktype' @click='getList()' >
+			<li class='worktype' @click='getList(11)' >
 				<i></i>
 				<span></span>
 				<p>全部工单</p>
@@ -47,16 +51,18 @@
 			el: '#service',
 			data () {
 				return {
-					service_name: ''
+					service_name: '广州番禺服务站'
 				}
 			},
 			methods: {
 				// 获取工单列表
 				getList (result) {
 					console.log('result: ',result);
-					// 0：待处理 1处理中 2待验收 3(完成) 全部不传
-					location.href = '{{:U("Home/Service/list")}}' + '?result=' + result;
-					
+					if(result != 11){
+						// 0：待处理 1处理中 2待验收 3(完成) 全部不传
+						location.href = '{{:U("Home/Service/list")}}' + '?result=' + result;
+					}
+					location.href = '{{:U("Home/Service/list")}}';
 				}
 			}
 		})

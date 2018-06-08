@@ -79,7 +79,7 @@
 					// 全部（不传result）
 					var option = {
 						url: '{{:U("Home/Service/getList")}}',
-						type: 'post',
+						type: 'get',
 						success: function(res){
 							console.log('res: ',res);
 							if(res.status == 200){
