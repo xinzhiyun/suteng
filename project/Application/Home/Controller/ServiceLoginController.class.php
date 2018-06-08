@@ -63,4 +63,10 @@ class ServiceLoginController extends Controller
         $this->redirect('ServiceLogin/index');
     }
 
+    // 服务站申请
+    public function apply()
+    {
+        
+    }
+
 }
