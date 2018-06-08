@@ -9,6 +9,8 @@
     var selectResult = "";
     // 服务类型
     var serviceType;
+
+    console.log($('<img src="" alt="" index="" />'));
     // 点击上传图片
     $(".file_upload").click(function(){
         var len = $("#picShow>span").length;
@@ -328,7 +330,7 @@
         var phoneReg = /^1[3|4|5|8][0-9]\d{4,8}$/;
         var addressReg = /^(?=.*?[\u4E00-\u9FA5])[\dA-Za-z\u4E00-\u9FA5]{6,}/;
 
-        var username = $(".repaireName").text();//用户名
+        var username = $(".repaireName").val();//用户名
         var userphone = $("input[name='phone']").val();//电话
         var Detailadd = $("#Laddr").val(); //详细地址
         var content = $("textarea[name='content']").val();//问题描述/备注
@@ -374,6 +376,11 @@
                 layuiHint('请上传报修图片！');
                 return;
             }
+        }
+        if(!username) {
+            console.log("请输入名字")
+            layuiHint("请输入名字");
+            return ;
         }
         if(userphone) {
             if(!phoneReg.test(userphone)) {
