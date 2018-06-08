@@ -39,6 +39,7 @@ class ServiceController extends CommonController
         }
 
 
+
         $area = M('area')->where('parentid=0')->select();
 
         $count = M('service')->where($map)->count();
@@ -60,40 +61,6 @@ class ServiceController extends CommonController
         ];
         $this->assign($assign);
         $this->display();
-    }
-
-    /**
-     * 获取服务站
-     */
-    public function getService()
-    {
-        try {
-            $data = I('post.');
-            if(!empty($data['province_id'])){
-                $map['province_id'] = $data['province_id'];
-            }
-            if(!empty($data['city_id'])){
-                $map['city_id'] = $data['city_id'];
-            }
-            if(!empty($data['district_id'])){
-                $map['district_id'] = $data['district_id'];
-            }
-            $map['status'] = 1;
-            $count = M('service')->where($map)->count();
-            if(empty($count)){
-                $this->toJson(['data'=>[]],'无数据,请重试!',40001);
-            }
-            $Page       = new \Think\Page($count,15);
-            $data = M('service')->where($map)
-                ->limit($Page->firstRow.','.$Page->listRows)
-                ->select();
-
-
-            $this->toJson(['data'=>$data],'获取成功!',200);
-
-        } catch (\Exception $e) {
-            $this->toJson($e);
-        }
     }
 
     /**
@@ -362,8 +329,12 @@ class ServiceController extends CommonController
         $data['repassword'] = I('post.repassword');
         $rules = array(
             array('user','','帐号名称已经存在！',0,'unique',1), // 在新增的时候验证name字段是否唯一
+            array('user','require','帐号名称必须！'), //默认情况下用正则进行验证
+            array('user', '3,150', '帐号名称必须长于3位', '0', 'length'),
             array('repassword','password','确认密码不正确',0,'confirm'), // 验证确认密码是否和密码一致
+            array('password','require','密码必须！'), //默认情况下用正则进行验证
             array('password','checkPwd','密码格式不正确',0,'function'), // 自定义函数验证密码格式
+            array('password', '5,50', '密码必须长于5位', '0', 'length'),
        );
        $User = M("adminUser"); // 实例化User对象
        if (!$User->validate($rules)->create($data)){
@@ -393,105 +364,6 @@ class ServiceController extends CommonController
         }
     }
 
-
-    /**
-     * 服务站人员管理
-     */
-    public function people()
-    {
-        if(!empty($_GET['key']) && !empty($_GET['keywords'])) {
-            switch ($_GET['key']){
-                case 'company':
-                    $map['s.company']=['like',"%".$_GET['keywords']."%"];
-                    break;
-            }
-        }
-
-        $area = M('area')->where('parentid=0')->select();
-
-        $count = M('service_users')->alias('su')->where($map)->join('__SERVICE__ s ON su.sid=s.id', 'LEFT')->count();
-        $Page       = new \Think\Page($count,15);
-        $data = M('service_users')->where($map)
-            ->alias('su')
-            ->join('__SERVICE__ s ON su.sid=s.id', 'LEFT')
-            ->limit($Page->firstRow.','.$Page->listRows)
-            ->field('su.*,s.company')
-            ->select();
-        page_config($Page);
-        $show       = $Page->show();
-
-        $assign = [
-            'area' => $area,
-            'city'=>$city,
-            'district'=>$district,
-            'data' => $data,
-            'page'=> bootstrap_page_style($show),
-        ];
-        $this->assign($assign);
-        $area = M('area')->where('parentid=0')->select();
-        $this->display();
-    }
-    
-    // 添加人员
-    public function addServicePeople()
-    {
-        try {
-            $post = I('post.');
-            if (empty($post['sid']) ||
-                empty($post['name']) ||
-                empty($post['password']) ||
-                empty($post['repassword']) ||
-                empty($post['phone']) ||
-                empty($post['sn']) )
-            {
-                E('数据不完整', 201);
-            }
-
-            if($post['password'] != $post['repassword']) E('两次的输入的密码不同,请重试!',400001);
-
-            $re = M('service_users')->where('phone='.$post['phone'])->find();
-            if(!empty($re)) E('手机号已被注册,请重试',400002);
-
-            $post['password'] = md5($post['password']);
-            $post['addtime'] = time();
-            $post['updatetime'] = time();
-
-
-            $res = M('service_users')->add($post);
-            if($res) {
-                E('添加成功',200);
-            }else{
-                E('添加失败,请重试',40009);
-
-            }
-
-        } catch (\Exception $e) {
-            $this->toJson($e);
-        }
-    }
-    // 设置人员状态
-    public function setStatus()
-    {
-        try {
-            $post = I('post.');
-            if (empty($post['id']) || !isset($post['status']) ) {
-                E('数据不完整', 201);
-            }
-
-            $res = M('service_users')->save($post);
-            if($res) {
-                E('修改成功',200);
-            }else{
-                E('修改失败,请重试',40009);
-
-            }
-
-        } catch (\Exception $e) {
-            $this->toJson($e);
-        }
-    }
-
-
     // 修改服务站后台账号密码
     public function editpassword()
     {
@@ -500,10 +372,12 @@ class ServiceController extends CommonController
         $data['password'] = I('post.password');
         $data['repassword'] = I('post.repassword');
         $rules = array(
+            array('oldpassword','require','旧密码必须！'), //默认情况下用正则进行验证
             array('repassword','password','确认密码不正确',0,'confirm'), // 验证确认密码是否和密码一致
+            array('password','require','密码必须！'), //默认情况下用正则进行验证
             array('password','checkPwd','密码格式不正确',0,'function'), // 自定义函数验证密码格式
-            array('oldpassword','checkPwd','密码格式不正确',0,'function'), // 自定义函数验证密码格式
-       );
+            array('password', '5,50', '密码必须长于5位', '0', 'length'),
+        );
        $User = M("adminUser"); // 实例化User对象
        if (!$User->validate($rules)->create($data)){
             // 如果创建失败 表示验证没有通过 输出错误提示信息
