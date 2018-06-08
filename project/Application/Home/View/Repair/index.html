@@ -13,7 +13,7 @@
     var installList ={{$installList|json_encode}};
     // 报修设备列表
     var bindInfo = {{$bindInfo|json_encode}};
-    console.log("安装",installList, "报修",bindInfo)
+
   </script>
 </head>
 <body>
@@ -155,6 +155,7 @@
     <script type="text/javascript">
       $(function(){
         var vConsole = new VConsole();
+          console.log("安装",installList, "报修",bindInfo)
         //微信接口
         wx.config({
           debug: false,
