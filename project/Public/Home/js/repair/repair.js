@@ -33,7 +33,7 @@
             $img[0].setAttribute("index", res.media_Id);
             
             $span1.addClass("delPic");
-            $span1.css({zIndex: '999'});
+            $span1.css({zIndex: '9'});
             $span.append($span1);
             $span.append($img[0]);
             
@@ -443,9 +443,9 @@
                     layuiHint(res.msg);
                     // 将当前历史记录替换为水机首页
                     history.pushState({}, null, getURL("Home", "Index/index"));
-                    // setTimeout(function(){
-                    //     location.href = getURL("Home", "VipCenter/minepack");
-                    // },900);
+                    setTimeout(function(){
+                        location.href = getURL("Home", "VipCenter/minepack");
+                    },900);
                 }else {
                     layuiHint(res.msg);
                 }
