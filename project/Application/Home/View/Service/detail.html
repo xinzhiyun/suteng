@@ -12,44 +12,50 @@
 	<div id='servicedetail'>
 		<div class='dTop'>
 			<div class='cfix'>
-				<h2 class='fl' v-text='info.phone'>手机号码</h2>
+				<h2 class='fl bigf' v-text='info.phone'>手机号码</h2>
 				<span class='fr info' v-text='type'>待办工单</span>
 			</div>
 			<ul class='cfix'>
 				<li class='fl'>
 					<p>
-						售后人员：<span v-text='info.name'></span>
+						售后人员：&emsp;<span v-text='info.name'></span>
 					</p>
 					<p>
-						工单生成：<span v-text='info.name'></span>
+						工单生成：&emsp;<span v-text='info.create_at'></span>
 					</p>
 					<p>
-						工单审核：<span v-text='info.name'></span>
+						工单审核：&emsp;<span v-text='info.update_at'></span>
 					</p>
 				</li>
-				<li class='fr addworker'>派工</li>
+				<li class='fr addworker' v-if='info.name == "未派工"'>派工</li>
 			</ul>
 		</div>
 		<div class='dBot'>
 			<div class='cfix'>
-				<h2 class='fl' v-text='info.kname'></h2>
+				<h2 class='fl bigf' v-text='info.kname'></h2>
 				<span class='info fr'>用户信息</span>
 			</div>
 			<ul>
-				<li>手机号码：<span v-text='info.kphone'></span></li>
-				<li>服务类型：<span v-text='info.type'></span></li>
-				<li>设备型号：<span v-text='info.kphone'></span></li>
-				<li>详细地址：<span v-text='info.address'></span></li>
+				<li>手机号码：&emsp;<span v-text='info.kphone'></span></li>
+				<li>服务类型：&emsp;<span v-text='info.type'></span></li>
+				<li>设备型号：&emsp;<span v-text='info.kphone'></span></li>
+				<li class='len'>
+					<span>详细地址：&emsp;</span>
+					<span v-text='info.address'></span>
+				</li>
 			</ul>
-			<ul>
-				<li>问题描述：<span v-text='info.content'></span></li>
+			<ul class='ques'>
+				<li class='len'>
+					<span>问题描述：&emsp;</span>
+					<span v-text='info.content'></span></li>
 				<li>
 					<span v-for='i in info.pic'>
-						<img src="i" alt="">
+						<img :src="i" alt="">
 					</span>
 				</li>
 			</ul>
 		</div>
+		<button class='btnup' @click='getit'>我要接单</button>
 	</div>
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<script src='__PUBLIC__/Home/js/public.js'></script>
@@ -62,7 +68,7 @@
 					result: '',
 					workid: '',
 					info: {},
-				}
+				} 
 			},
 			created (){
 				this.workid = GetQueryString('workid');
@@ -84,10 +90,12 @@
 							console.log('res: ',res);
 							if(res.status == 200){
 								var typeList = ['安装', '维修', '维护'];
-								for(var i=0; i<res.data.length; i++){
-									res.data[i].name = res.data[i].name ? res.data[i].name : '未派工';
-									res.data[i].type = typeList[res.data[i].type]
-								}
+								res.data.name = res.data.name ? res.data.name : '未派工';
+								res.data.create_at = dateformat(res.data.create_at);
+								res.data.update_at = res.data.update_at ? dateformat(res.data.update_at) : '-- -- --';
+								res.data.type = typeList[res.data.type];
+
+								res.data.pic = ['/Uploads/2018-05-08/5af1372be2437.png','/Uploads/2018-05-08/5af1373180e6c.png'];
 								servicedetail.info = res.data;
 
 							}else{
@@ -98,6 +106,9 @@
 							console.log('err: ',err);
 						}
 					})
+				},
+				getit () {
+					// 我要接单
 				}
 			}
 		})

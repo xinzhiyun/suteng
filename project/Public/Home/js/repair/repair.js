@@ -9,6 +9,8 @@
     var selectResult = "";
     // 服务类型
     var serviceType;
+
+    console.log($('<img src="" alt="" index="" />'));
     // 点击上传图片
     $(".file_upload").click(function(){
         var len = $("#picShow>span").length;
@@ -17,7 +19,7 @@
             return
         } 
         // takePicture(1);
-        // 浏览上传图片
+        // 浏览上传图片 
         wxuploadimg(function(res){
             console.log('res: ',res);
             
@@ -28,7 +30,7 @@
             $img[0].width = "100%";
             $img[0].height = "90%";
             $img[0].src = res['src'];
-            $(img)[0].attr("index", res.media_Id);
+            $img[0].setAttribute("index", res.media_Id);
             
             $span1.addClass("delPic");
             $span1.css({zIndex: '999'});
@@ -39,7 +41,7 @@
             $('#picShow').append($span);
             // 待发送给后台的图片id
             // $('input[name="pic"]').val(res.media_Id);
-            console.log("传给后台的id",$('input[name="pic"]').val(), res.media_Id);
+            console.log("传给后台的id",res.media_Id);
         });
     })
     var formData = new FormData($('#form')[0]);
@@ -132,8 +134,6 @@
                 }
             }
         }
-        
-        
     })
     // 设备列表选择
     $(".serviceNum").on("click", function() {
@@ -330,7 +330,7 @@
         var phoneReg = /^1[3|4|5|8][0-9]\d{4,8}$/;
         var addressReg = /^(?=.*?[\u4E00-\u9FA5])[\dA-Za-z\u4E00-\u9FA5]{6,}/;
 
-        var username = $(".repaireName").text();//用户名
+        var username = $(".repaireName").val();//用户名
         var userphone = $("input[name='phone']").val();//电话
         var Detailadd = $("#Laddr").val(); //详细地址
         var content = $("textarea[name='content']").val();//问题描述/备注
@@ -376,6 +376,11 @@
                 layuiHint('请上传报修图片！');
                 return;
             }
+        }
+        if(!username) {
+            console.log("请输入名字")
+            layuiHint("请输入名字");
+            return ;
         }
         if(userphone) {
             if(!phoneReg.test(userphone)) {

@@ -18,7 +18,7 @@
                     <div class="input-group col-md-4" id='searchdiv'>
                         <select name="key" class="form-control" name="account" >
                             <option  <?php echo ($where['key']=="truename")?'selected':''; ?> value="truename" >报修人</option>
-                            <option <?php echo ($where['key']=="phone")?'selected':''; ?> value="phone">联系电话</option>
+                            <option <?php echo ($where['key']=="st_repair.phone")?'selected':''; ?> value="st_repair.phone">联系电话</option>
                             <option  <?php echo ($where['key']=="device_code")?'selected':''; ?> value="device_code">设备编码</option>
                             <option <?php echo ($where['key']=="st_repair.address")?'selected':''; ?>  value="st_repair.address">报修地址</option>
                         </select>
