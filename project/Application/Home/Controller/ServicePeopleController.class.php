@@ -3,10 +3,10 @@ namespace Home\Controller;
 use \Org\Util\WeixinJssdk;
 use Common\Tool\Work;
 /**
- * 服务站
+ * 服务站 工作人员
  */
 
-class ServiceController extends ServiceCommonController
+class ServicePeopleController extends ServiceCommonController
 {
     // 主页
     public function index()
@@ -78,7 +78,7 @@ class ServiceController extends ServiceCommonController
     }
 
 
-    // 工单派工
+    // 工单完成
     public function packwork()
     {
         try {
@@ -93,25 +93,15 @@ class ServiceController extends ServiceCommonController
                 E('工单不存在',400022);
             }
 
-            if ( empty($post['name']) || empty($post['phone']) || empty($post['dw_uid']) ) {
-                E('请确认服务人员的信息',400022);
-            }
-
-            if (empty($post['anry_time']) || empty($post['anry_period'])) {
-                E('请确认预约时间',400022);
-            }
-
-            unset($post['number']);
-
-            $post['update_at']=time();
-            $post['result'] = 1;
-            $res = M('work')->where($map)->save($post);
+            $data['update_at']=time();
+            $data['result'] = 2;
+            $res = M('work')->where($map)->save($data);
 
             if ($res) {
-                Work::add($info['id'], 4); //派遣
-                E('派工成功!',200);
+                Work::add($info['id'], 5); //完成
+                E('提交成功!',200);
             }else{
-                E('派工成功,请重试!',400001);
+                E('提交失败,请重试!',400001);
             }
         } catch (\Exception $e) {
             $this->toJson($e);
