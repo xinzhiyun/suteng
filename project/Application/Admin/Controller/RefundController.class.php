@@ -82,7 +82,7 @@ st_shop_order_detail.gid ='.$value['gid']);
                 switch ($refundList['status']) {
                     //同意退货退款，将status更改为  正在退货=>6
                     case '0':
-                        $data['status'] = 6;
+                        $data['status'] = 3;
                         $info = M('refund')->where('id='.$id)->save($data);
 
                         if ($info) {
@@ -92,7 +92,19 @@ st_shop_order_detail.gid ='.$value['gid']);
                         }
                         break;
                     
-                    //正在退货中，收到货后点击
+                    // //正在退货中，收到货后点击   前台修改状态为 6  同意退款
+                    // case '3':
+                    //     $data['status'] = 6;
+                    //     $info = M('refund')->where('id='.$id)->save($data);
+
+                    //     if ($info) {
+                    //         $this->ajaxReturn(array('code'=>'200','msg'=>'已收到退货'));
+                    //     } else {
+                    //         $this->ajaxReturn(array('code'=>'400','msg'=>'收到退货失败'));
+                    //     }
+                    //     break;
+
+                    //
                     case '6':
                         $data['status'] = 7;
                         $info = M('refund')->where('id='.$id)->save($data);
@@ -104,7 +116,7 @@ st_shop_order_detail.gid ='.$value['gid']);
                         }
                         break;
 
-                    //同意退款
+                    //确认收货
                     case '7':
                         //先查询该订单的支付类型
                         $order_id = M('refund_goods')->where('rf_id='.$id)->find()['oid'];

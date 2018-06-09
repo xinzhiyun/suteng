@@ -23,11 +23,12 @@ body {
 .botOne {
 	display: flex;
 	justify-content: space-between;
-	padding: 2vmin;
+	padding: 4vmin 4vmin 2vmin;
 }
 .botTwo {
 	display: flex;
-	padding: 0 2vmin 2vmin;
+	justify-content: space-between;
+	padding: 2vmin 4vmin;
 }
 .worktype {
 	position: relative;
@@ -44,10 +45,9 @@ body {
 	background: rgba(0,0,0,.03);
 }
 .botOne>li, .botTwo>li {
-	width: 30vw;
-    height: 30vw;
+	width: 28vw;
+    height: 28vw;
 	position: relative;
-	margin: 4px;
 	border-radius: 6px;
     background: #fff;
 }

@@ -302,7 +302,7 @@
      * @param  {[type]} status 	[8：未支付，9：待发货，2：待收货，7：待评论 4：退款处理中 5：已退货]
      * @return {[type]}    		[description]
      */
-    // refundStatus   处理进度（0：未处理 1：同意退款 2：不同意退款 3：同意退货 4：不同意退货 5：已退款 6：正在退货 7：已收货 ）
+    // refundStatus   处理进度（0：未处理 1：同意退款 2：不同意退款 3：同意退货 4：不同意退货 5：已退款 6：正在退货 7：已收货 10.待发货订单退部分商品  11.待收货订单部分商品退货退款  12.待收货订单部分商品进退款 ）
     (function unpaid_order(){
     	var imgpath = '/Uploads/';
     	var noimg = '__PUBLIC__/images/noimg.jpg';
@@ -603,7 +603,7 @@
 				url:"{{:U('Home/Order/order_list')}}",
 				data:{
             	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-            	"status":[2]
+            	"status":[2,11,12]
             },
             dataType:"json",
             type: 'post',
@@ -833,6 +833,7 @@
             // dataType:"json",
             type: 'get',
             success:function(res){
+            	// alert(1);
             	console.log(res);
             	var tuihuo = 0;
                 if(res.code == 200){
@@ -862,7 +863,7 @@
                 				'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
                 				'</div>'+
                 				'</div>'+
-                				'<p><b>等待商家同意退款</b></p>';
+                				'<p><b>等待商家同意</b></p>';
                 			}
 							tuihuo += res.data[i]['goods'].length;
                 		}else if(res.data[i]['status']=='1'){
@@ -885,7 +886,7 @@
                 				'<p><b>￥'+ res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
                 				'</div>'+
                 				'</div>'+
-                				'<p><b>商家同意退款</b></p>';
+                				'<p><b>商家同意退货</b></p>';
                 			}
 							tuihuo += res.data[i]['goods'].length;
 							// console.log(res.data[i]['goods'][k]['productname']);
@@ -955,16 +956,18 @@
                 		}else if(res.data[i]['status']=='6'){//正在退货
                 			
                 			for(var k=0;k<res.data[i]['goods'].length;k++){
-                				var tuihou = waitpaylist[i]['productList'][k]['tuihuo'] ? '已退货' : '';
+                				var tuihou = res.data[i]['goods'][k]['tuihuo'] ? '已退货' : '';
+                				// var tuihou = waitpaylist[i]['productList'][k]['tuihuo'] ? '已退货' : '';
                 				// 无图片时显示
-                				var noimg_show = waitpaylist[i]['productList'][k]['orderimg']
-                				? (imgpath + waitpaylist[i]['productList'][k]['orderimg'])
+                				// var noimg_show = waitpaylist[i]['productList'][k]['orderimg']
+                				var noimg_show = res.data[i]['goods'][k]['orderimg']
+                				? (imgpath + res.data[i]['goods'][k]['orderimg'])
                 				: noimg;
 								// 无标题是显示暂无标题显示
 								var infoTitle = res.data[i]['goods'][k]['productname'] ? res.data[i]['goods'][k]['productname'] : "暂无标题"; 
                 				returned3+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
-                				'<div class="tuikuangLeft giPicture" gid="'+ waitpaylist[i]['productList'][k].gid +'">'+
+                				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i]['goods'][k].gid +'">'+
                 				'<em class="tuihuo">'+ tuihou +'</em>'+ 
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+

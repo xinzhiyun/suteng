@@ -267,6 +267,13 @@ $("#saveAddress").click(function(){
 								
 							}
 	    				}
+	    			}else if(sessionStorage.getItem('lvxinData')){
+	    				// 无订单号， 回到‘我的’界面
+    					history.replaceState({}, null, getURL('Home', 'VipCenter/index'));
+						layHint('保存成功');
+    					setTimeout(function(){
+    						location.href = getURL('Home', 'Pay/lvxinPay');
+    					},500)
 	    			}else{
 	    				// 无订单号， 回到‘我的’界面
     					history.replaceState({}, null, getURL('Home', 'VipCenter/index'));

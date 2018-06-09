@@ -81,7 +81,7 @@
                                         <td>
                                             <switch name="v.status">
                                                 <case value="0">未处理</case>
-                                                <case value="3">同意退款退货</case>
+                                                <case value="3">对方退货中</case>
                                                 <case value="5">已退款</case>
                                                 <case value="6">正在退货...</case>
                                                 <case value="7">已收货</case>
@@ -108,13 +108,13 @@
                                                             <a class="btn btn-outline btn-success edit" href="javascript:;" rId="{{$v['id']}}" status="5">已退款</a>
                                                     </case>
                                                     <case value="3">
-                                                            <a class="btn btn-outline btn-success edit" href="javascript:;" rId="{{$v['id']}}" status="7">已收货</a>
+                                                            <a class="btn btn-outline btn-success edit" href="javascript:;" rId="{{$v['id']}}" status="7">等待用户提交退货信息</a>
                                                     </case>
                                                     <case value="6">
-                                                            <a class="btn btn-outline btn-success edit" href="javascript:;" rId="{{$v['id']}}" status="6">正在退货</a>
+                                                            <a class="btn btn-outline btn-success edit" href="javascript:;" rId="{{$v['id']}}" status="6">同意退款</a>
                                                     </case>
                                                     <case value="7">
-                                                            <a class="btn btn-outline btn-success edit" href="javascript:;" rId="{{$v['id']}}" status="1">同意退款</a>
+                                                            <a class="btn btn-outline btn-success edit" href="javascript:;" rId="{{$v['id']}}" status="1">确认收货</a>
                                                     </case>
                                                 </switch>
                                             </div>
