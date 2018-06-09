@@ -111,8 +111,14 @@ class ServiceController extends ServiceCommonController
             $map['number'] = $post['number'];
             $info = M('work')->where($map)->find();
             if( empty($info) ){
-                E('工单不存在',400022);
+                E('工单不存在!',400022);
             }
+
+            $uinfo = M('service_users')->where('id='.$post['dw_uid'])->find();
+            if( empty($uinfo) ){
+                E('服务人员错误!',400023);
+            }
+
 
             if ( empty($post['name']) || empty($post['phone']) || empty($post['dw_uid']) ) {
                 E('请确认服务人员的信息',400022);
@@ -123,6 +129,8 @@ class ServiceController extends ServiceCommonController
             }
 
             unset($post['number']);
+
+            $post['sn']=$uinfo['sn'];
 
             $post['update_at']=time();
             $post['anry_at']=time();

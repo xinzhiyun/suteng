@@ -21,9 +21,8 @@ class ServiceCommonController extends Controller
 
         // 后续添加 绑定微信进行自动登录
 
-
         if(empty($_SESSION['serviceInfo'])){
-//            $this->redirect("Home/SericeLogin/index");
+            $this->redirect("Home/ServiceLogin/index");
         }
     }
 
