@@ -150,11 +150,35 @@
 			<div class="modal-backup"></div>
 		</div> -->
 	<!-- 支付方式选择部分结束 -->
-
+	<div class='expressPanel'>
+		<h3>填写退货物流等信息</h3>
+		<p>
+			<label for="">收货人姓名：</label>&emsp;
+			<input type="text" class='recname' placeholder="请输入收货人姓名">
+		</p>
+		<p>
+			<label for="">收货人电话：</label>&emsp;
+			<input type="text" class='recphone' placeholder="请输入收货人电话">
+		</p>
+		<p>
+			<label for="">收货人地址：</label>&emsp;
+			<input type="text" class='recaddr' placeholder="请输入收货人地址">
+		</p>
+		<p>
+			<label for="">快&ensp;递&ensp;名称：</label>&emsp;
+			<input type="text" class='recexpress' placeholder="请输入快递名称">
+		</p>
+		<p>
+			<label for="">快&ensp;递&ensp;单号：</label>&emsp;
+			<input type="text" class='recexpressnum'placeholder="请输入快递单号">
+		</p>
+		<button class='exconfirm' onclick='exconfirm()'>确认</button>
+	</div>
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<!-- 微信支付支持JS部分代码 -->
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script>
 		$(function(){
 			// 首页按钮
@@ -919,7 +943,7 @@
                 				'<p>广东省韶关市</p>'+
                 				'</div>'+
                 				'<div class="hidBott">'+
-                				'<div class="hidbotttxt writeExpress">'+
+                				'<div class="hidbotttxt" onclick="writeExpress('+ res.data[i].serial_num+ ',' +res.data[i]['goods'][k].gid +')">'+
                 				'<a class="writeOrder">'+
                 				'<p>我已寄件</p>'+
                 				'<p>点击填写物流单号</p>'+
@@ -1173,6 +1197,106 @@
 		if(!gid) return;
 		location.href = '{{:U("Home/Shop/shoppingdetail")}}' + '?gid=' + gid;
 	})
+
+	var expressPanel = document.querySelector('.expressPanel');
+	var expressData = {};
+	// 填写物流单号
+	function writeExpress(serial_num, gid){
+		// 流水号， 商品id
+		console.log('serial_num, gid', serial_num, gid);
+		location.href = location.href + '#writeExpress';
+		sessionStorage.setItem('serial_num', serial_num);
+		sessionStorage.setItem('gid', gid);
+	}
+
+	// 提交快递信息
+	function exconfirm(){
+		var recname = $('.recname').val().trim();
+		var recphone = $('.recphone').val().trim();
+		var recaddr = $('.recaddr').val().trim();
+		var recexpress = $('.recexpress').val().trim();
+		var recexpressnum = $('.recexpressnum').val().trim();
+		if(!recname){
+			layuiHint('请输入收货人姓名');
+			return
+		}
+		if(!recphone){
+			layuiHint('请输入收货人电话');
+			return
+		}
+		if(!recaddr){
+			layuiHint('请输入收货人地址');
+			return
+		}
+		if(!recexpress){
+			layuiHint('请输入快递名称');
+			return
+		}
+		if(!recexpressnum){
+			layuiHint('请输入快递单号');
+			return
+		}
+		expressData['serial_num'] = sessionStorage.getItem('serial_num');
+		expressData['gid'] = sessionStorage.getItem('gid');
+
+		expressData['recname'] = recname;
+		expressData['recphone'] = recphone;
+		expressData['recaddr'] = recaddr;
+		expressData['recexpress'] = recexpress;
+		expressData['recexpressnum'] = recexpressnum;
+
+		// 提交数据
+		$.ajax({
+			url: '{{:U("Home/Order/refundMessage")}}',
+			type: 'post',
+			data: expressData,
+			success: function(res){
+				console.log('res: ',res);
+				if(res.code == 200){
+					layuiHint('提交成功');
+					setTimeout(function(){
+						history.go(-1);
+					},500);
+				}else{
+					layuiHint(res.msg);
+				}
+			},
+			error: function(err){
+				console.log('err: ',err);
+				layuiHint('系统遇到问题，请稍后再试!');
+			}
+		})
+	}
+
+	hashchangeFn(function(hash){
+		if(hash.indexOf('#writeExpress') < 0){
+			// 隐藏
+			expressPanel.setAttribute('style', 'transform:translateY(100%)');
+			$('.recname').val('');
+			$('.recphone').val('');
+			$('.recaddr').val('');
+			$('.recexpress').val('');
+			$('.recexpressnum').val('');
+		}else{
+			// 显示
+			expressPanel.setAttribute('style', 'transform:translateY(0%)');
+		}
+	})
+
+	// 监听hashchange事件
+	function hashchangeFn(callback) {
+		var haschangeflag = false;
+		window.addEventListener('hashchange', function(){
+			haschangeflag = true;
+			callback(location.hash);
+		}, false);
+		// console.log('haschangeflag: ',haschangeflag);
+		// console.log('hash: ',location.hash);
+		// 刷新保持
+		if(!haschangeflag){
+			callback(location.hash);
+		}
+	}
 </script>
 </body>
 </html>
