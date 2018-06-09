@@ -59,10 +59,11 @@ class Work
                     $service_info =  M('service')->where('id='.$work['sid'])->find();
                 }
 
+
                 $_html  = '站点名称:'.$service_info['company'].'<br>';
-                $_html .= '地址:'.'<br>';
+                $_html .= '地址:'.$service_info['addressinfo'].'<br>';
 //                $_html .= '联系人:'.'<br>';
-                $_html .= '联系电话:'.$service_info['telephone'].'<br>';
+                $_html .= '客服电话:'.$service_info['telephone'].'<br>';
                 $_html .= '服务站点正在为您优先安排安装师傅上门安装预计需要1-3个工作日.';
                 $data['content'] = $_html;
                 break;

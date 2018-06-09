@@ -2,6 +2,7 @@
 namespace Home\Controller;
 
 use Common\Tool\File;
+use Common\Tool\Work;
 use Think\Log;
 use Zend\Serializer\Adapter\AdapterInterface;
 
@@ -87,6 +88,7 @@ class WorkController extends CommonController
                 if( $data['type']==0 && !empty($data['install_id']) ){
                     M('shop_order_device_install')->where('id='.$data['install_id'])->save(['status'=>1,'updatetime'=>time()]);
                 }
+                Work::add($res,1);
 
                 E('工单开启成功,请等待安装服务人员联系',200);
             }else{

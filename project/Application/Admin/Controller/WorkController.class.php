@@ -121,6 +121,12 @@ class WorkController extends CommonController
                 E('数据错误',40002);
             }
             $map['id'] = $data['id'];
+
+            $info = M('work')->where($map)->find();
+
+            if(empty($info)){
+                E('工单不存在!',201);
+            }
             if($data['is_examine'] ==2){
                 $savetata['result']=9;
             }else{
@@ -130,6 +136,10 @@ class WorkController extends CommonController
             $savetata['examine_at'] = time();
             $res = M('work')->where($map)->save($savetata);
             if($res) {
+                Work::add($data['id'],2);
+
+                $this->autoService($data['id']);  // 分配工单
+
                 E('修改成功',200);
             } else {
                 E('修改失败,请重试!',201);
@@ -192,16 +202,6 @@ class WorkController extends CommonController
     }
 
 
-    /**
-     * 删除类型方法（废除）
-     * 不做删除，只做隐藏，如果要做删除产品类型，请确保产品类型没有被设备所用
-     *
-     * @author 潘宏钢 <619328391@qq.com>
-     */
-    public function del()
-    {
-
-    }
 
     // 自动派遣
     public function autoService($wid)
