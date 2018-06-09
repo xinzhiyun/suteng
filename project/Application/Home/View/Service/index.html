@@ -14,34 +14,49 @@
 			<p v-text='service_name'></p>
 		</div>
 		<ul id='sBot' class="botOne">
-			<li class='worktype' @click='getList(0)' result='1'>
-				<i>15</i>
+			<li class='worktype' @click='getList(0)' result='0'>
+				<i v-text='num.waitnum'></i>
 				<span>
 					<img src="__PUBLIC__/Home/images/pg.png" alt="">
 				</span>
 				<p>待办工单</p>
 			</li>
-			<li class='worktype' @click='getList(1)' result='2'>
-				<i></i>
-				<span></span>
+			<li class='worktype' @click='getList(1)' result='1'>
+				<i v-text='num.processnum'></i>
+				<span>
+					<img src="__PUBLIC__/Home/images/clz.png" alt="">
+				</span>
 				<p>处理中工单</p>
 			</li>
-			<li class='worktype' @click='getList(2)' result='3'>
-				<i></i>
-				<span></span>
+			<li class='worktype' @click='getList(2)' result='2'>
+				<i v-text='num.waitcomfirmnum'></i>
+				<span>
+					<img src="__PUBLIC__/Home/images/dys.png" alt="">
+				</span>
 				<p>待验收工单</p>
 			</li>
 		</ul>
 		<ul class="botTwo">
-			<li class='worktype' @click='getList(3)' result='4'>
-				<i></i>
-				<span></span>
+			<li class='worktype' @click='getList(3)' result='3'>
+				<i v-text='num.oknum'></i>
+				<span>
+					<img src="__PUBLIC__/Home/images/pg.png" alt="">
+				</span>
 				<p>已完成工单</p>
 			</li>
-			<li class='worktype' @click='getList(11)' >
-				<i></i>
-				<span></span>
+			<li class='worktype' @click='getList(11)' result='11'>
+				<i v-text='num.allnum'></i>
+				<span>
+					<img src="__PUBLIC__/Home/images/qbgd.png" alt="">
+				</span>
 				<p>全部工单</p>
+			</li>
+			<li class='worktype' style='opacity: 0;'>
+				<i></i>
+				<span>
+					<!-- <img src="__PUBLIC__/Home/images/qbgd.png" alt=""> -->
+				</span>
+				<p></p>
 			</li>
 		</ul>
 	</div>
@@ -51,18 +66,20 @@
 			el: '#service',
 			data () {
 				return {
-					service_name: '广州番禺服务站'
+					service_name: '广州番禺服务站',
+					num: {waitnum: 12, processnum: 16, waitcomfirmnum: 14, oknum: 15, allnum: 57}
 				}
 			},
 			methods: {
 				// 获取工单列表
 				getList (result) {
 					console.log('result: ',result);
+					// 0待处理 1处理中 2待验收 3(完成) 全部不传
 					if(result != 11){
-						// 0：待处理 1处理中 2待验收 3(完成) 全部不传
 						location.href = '{{:U("Home/Service/list")}}' + '?result=' + result;
+					}else{
+						location.href = '{{:U("Home/Service/list")}}';
 					}
-					location.href = '{{:U("Home/Service/list")}}';
 				}
 			}
 		})

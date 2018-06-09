@@ -401,4 +401,10 @@ class ServiceController extends CommonController
             $this->ajaxReturn(['code'=>400,'msg'=>'系统出现错误,请稍后重试......']); 
         }
     }
+
+
+    // 服务站参数设置
+    public function setService(){
+        $this->display();
+    }
 }

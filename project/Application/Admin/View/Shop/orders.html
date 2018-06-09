@@ -26,7 +26,7 @@
                         <select name="key" class="form-control" name="account">
                             <option <?php echo ($where['key']=="order_id")?'selected':''; ?> value="order_id">订单ID</option>
                             <option <?php echo ($where['key']=="name")?'selected':''; ?> value="name">收货人姓名</option>
-                            <option <?php echo ($where['key']=="phone")?'selected':''; ?> value="phone">电话</option>
+                            <option <?php echo ($where['key']=="a.phone")?'selected':''; ?> value="a.phone">电话</option>
                             <option <?php echo ($where['key']=="a.address")?'selected':''; ?> value="a.address">收货地址</option>
                         </select>
                         <input type="hidden" name="p" value="1">
