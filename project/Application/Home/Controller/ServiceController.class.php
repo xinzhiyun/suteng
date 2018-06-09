@@ -118,8 +118,4 @@ class ServiceController extends ServiceCommonController
         }
     }
 
-
-    
-
-
 }

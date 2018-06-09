@@ -97,6 +97,27 @@ class WorkController extends CommonController
             $this->toJson($e);
         }
     }
+
+    // 工单信息(时间线)
+    public function showWorkTimeInfo()
+    {
+        try {
+            $number = I('number');
+            if( empty($number ) ) {
+                E('请确认工单号',400022);
+            }
+            $info = M('work')->where('number='.$number)->find();
+            if( empty($info ) ) {
+                E('工单信息不存在',400022);
+            }
+            $list = M('work_note')->where('wid='.$info['id'])->order('id desc')->select();
+
+            $this->toJson(['data'=>$list],'获取成功!');
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
 }
 
 
