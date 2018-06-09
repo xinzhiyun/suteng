@@ -552,6 +552,39 @@ class OrderController extends CommonController
     }
     
     /**
+     * [refundMessage 退货详情信息录入]
+     * @return [type] [description]
+     */
+    public function refundMessage()
+    {
+        $data['orderid'] = $_POST[''];
+        $data['sname'] = $_POST[''];
+        $data['sphone'] = $_POST[''];
+        $data['saddress'] = $_POST[''];
+        $data['fname'] = $_POST[''];
+        $data['fphone'] = $_POST[''];
+        $data['faddress'] = $_POST[''];
+        $data['espress_name'] = $_POST[''];
+        $data['espress_num'] = $_POST[''];
+        $data['addtime'] = time();
+
+        dump($_POST);die;
+
+        $info = M('RefundMessage')->add($data);
+
+        if ($info) {
+            //写入成功后修改退货状态
+            $refund['status'] = 6;
+            $info = M('refund')->where('id='.$id)->save($data);
+
+        } else {
+            $this->ajaxReturn(array('code'=>'400','msg'=>'写入信息失败'));
+        }
+
+
+
+    }
+    /**
      * 耗材订单
      * @return [type] [description]
      */
