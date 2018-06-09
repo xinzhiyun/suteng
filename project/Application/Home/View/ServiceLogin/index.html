@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<title>登录</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/login.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<!-- <link rel="stylesheet" href="__PUBLIC__/Home/amazeui/assets/css/normalize.css"> -->
+</head>
+<body>
+	<div class="main"> 
+		<div class="companyLogo">
+			<!-- <img src="__PUBLIC__/Home/images/logo.png" alt=""> -->
+			<!-- <p class="leaderLogin">经销商登录</p> -->
+		</div>
+		<div class="userInfo">
+			<form action="javascript:return;" method="" id="forms">
+				<p>
+					<span class="iconfont icon-user"></span>
+					<input type="text" name="uname" placeholder="请输入手机号码">
+				</p>
+				<p>
+					<span class="iconfont icon-mima"></span>
+					<input type="password" name="userpass" placeholder="请输入密码">
+				</p>
+				<p><a href="{{:U('Coms/Login/resetPassword')}}" class="forgetPass">忘记密码</a></p>
+				<p class="loginBtn"><button>登录</button></p>
+			</form>
+		</div>
+	</div>
+</body>
+<script src="__PUBLIC__/Home/js/public.js"></script>
+<script src="__PUBLIC__/Home/js/jquery.min.js"></script>
+<script>
+	window.onload = function() {
+		document.getElementsByTagName("body")[0].style.height = document.documentElement.clientHeight + 'px';
+	}
+
+	// 验证
+	$(".loginBtn").on("click", function() {
+		var username = $("input[name='uname']").val();
+		var userpass = $("input[name='userpass']").val();
+		// 姓名判断
+		if(username) {
+			if(!phoneCheck(username)) {
+				noticeFn({text: "手机号码格式有误!"});
+				return false;
+			}
+		}else {
+			noticeFn({text: "用户名不能为空!"});
+			return false;
+		}
+		// 密码判断
+		if(!userpass) {
+			noticeFn({text: "密码不能为空!"});
+			return false;
+		}
+		// ajax提交后台
+		$.ajax({
+			url: "{{:U('Coms/Login/login')}}",
+			type: "post",
+			data: {user:username,password:userpass},
+			success: function(res) {
+                console.log("登录", res);
+                if(res.status == 200) {
+                    location.href = '{{:U("/Coms/Index/index")}}';
+				}else{
+                    noticeFn({text: res.msg});
+                }
+			},
+			error: function(res) {
+				console.log("失败", res);
+			}
+		})
+	})
+</script>
+</html>
