@@ -402,6 +402,43 @@ class ServiceController extends CommonController
         }
     }
 
+    // 服务站人员管理
+    public function people()
+    {
+        $area = M('area')->where('parentid=0')->select();
+        $map = [];
+
+        $count = M('service_users')->where($map)->count();
+        $Page       = new \Think\Page($count,15);
+        $data = M('service_users')->where($map)
+            ->join('__SERVICE__ s ON st_service_users.sid=s.id', 'LEFT')
+            ->limit($Page->firstRow.','.$Page->listRows)
+            ->field('st_service_users.*,s.company company')
+
+            ->select();
+        page_config($Page);
+        $show       = $Page->show();
+
+        $assign = [
+            'area' => $area,
+            'city'=>$city,
+            'district'=>$district,
+            'data' => $data,
+            'page'=> bootstrap_page_style($show),
+        ];
+        $this->assign($assign);
+        $this->display();
+    }
+
+  
+    public function getService()
+    {
+        
+    }
+
+
+
+
 
     // 服务站参数设置
     public function setService(){
