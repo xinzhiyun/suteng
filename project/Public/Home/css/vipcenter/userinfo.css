@@ -145,7 +145,7 @@ select::expand { display: none; }
 	width: 20%;
 }
 .addrdetail>textarea {
-	width: 68%;
+	width: 96%;
 	padding: 4px;
 	border: 1px solid #ccc;
 }

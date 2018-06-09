@@ -52,18 +52,18 @@
 						<span>手机号码：</span><input id="tel" name="phone" type="text" value="{{$user_device['phone']}}" >
 					</div>
 				</label>
-				
+
 				<label for="addr">
 					<i class="iconfont icon-dizhi"></i>
 					<div >
 						<span>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：</span>
-						<input type="text" id="areaID" class="areabtn" onfocus="this.blur()" placeholder="请选择 >">
+						<input type="text" id="areaID" class="areabtn" onfocus="this.blur()" placeholder="请选择 >" value=''>
 					</div>
 				</label>
 				<label for="">
-					<div class='cfix addrdetail'>
-						<span class='fl'>详细地址：</span>
-						<textarea class='fr' name="addrdetail" id="" cols="30" rows="5" placeholder="请输入详细地址"></textarea>
+					<div class='addrdetail'>
+						<p>详细地址：</p>
+						<textarea class='' name="address" id="" cols="30" rows="5" placeholder="请输入详细地址" value=''>{{$user_device["address"]}}</textarea>
 					</div>
 				</label>
 			</div>

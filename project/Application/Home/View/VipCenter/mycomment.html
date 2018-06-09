@@ -138,7 +138,7 @@
 								'<p class="cfix"><span class="fleft"><img src="'+ ulogo +'" alt="">'+
 								'</span>&nbsp;'+ nickname +'<span class="fright">'+ timestampToTime(res.data[i].addtime) +'</span></p>'+
 								'<p class="cfix xingx">'+
-									'<i index="1" class="iconfont pingfen fleft"><span style="width:'+ statusList[res.data[i].status] +'%"></span></i>'+
+									'<i index="1" class="iconfont pingfen fleft"><span style="width:'+ statusList[Number(res.data[i].grade)-1] +'%"></span></i>'+
 									'<span class="fleft">&emsp;'+ statusText[Number(res.data[i].grade)-1] + '</span>'+
 								'</p>'+
 								'<p class="ccontent">'+ res.data[i].content +'</p>'+
@@ -166,32 +166,6 @@
 								'</div>'+
 							'</div>';
 					}
-					// commetHTML += '<div class="mycomItem-first clearfix">'+
-					// 		'<div class="itemgoodsTop">'+
-					// 			'<h3><span>'+ timetrans(res.data[i].addtime) +'</span><span>10:28:39</span></h3>'+
-					// 			'<div class="goodspic clearfix">'+
-					// 				'<div class="mygoodsLeft"><img src="__PUBLIC__/Home/images/ro_01_03.png" alt=""></div>'+
-					// 				'<div class="mygoodsRight">'+
-					// 					'<p>'+res.data[i].good.name+'</p>'+
-					// 					'<b>5699.00</b>'+
-					// 				'</div>'+
-					// 			'</div>'+
-					// 		'</div>'+
-					// 	'</div>' + text_html;
-
-					// 所评论的商品详细信息   
-					// commetHTML += '<div class="mycomItem-first clearfix">'+
-					// 		'<div class="itemgoodsTop">'+
-					// 			'<h3><span>'+ timestampToTime(res.data[i].addtime) +'</span></h3>'+
-					// 			'<div class="goodspic clearfix">'+
-					// 				'<div class="mygoodsLeft"><img src="/Uploads/'+res.data[i].good.pic+'" alt="图片加载中"></div>'+
-					// 				'<div class="mygoodsRight">'+
-					// 					'<p style="margin-bottom: .4rem;">'+res.data[i].good.name+'</p>'+
-					// 					'<b>'+res.data[i].good.price+'</b>'+
-					// 				'</div>'+
-					// 			'</div>'+
-					// 		'</div>'+
-					// 	'</div>' + text_html;
 					commetHTML += text_html;
 					
 					// 判断是否接收到图片数据
