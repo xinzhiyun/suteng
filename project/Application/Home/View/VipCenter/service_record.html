@@ -27,7 +27,7 @@
 			<li class='spli' v-for='li in list' @click='getDetail(li.number)'>
 				<span v-text='li.number'></span>
 				<span v-text='li.type'></span>
-				<span v-text='li.status'></span>
+				<span v-text='li.status' :style='li.style'></span>
 			</li>
 			<div class='loadmore' @click='loadmore' :style='{display: loadstyle}'>加载更多</div>
 		</ul>
@@ -54,33 +54,16 @@
 			},
 			created (){
 				var vm = this;
-				// var list = [
-				// 	{number: '2018060112345', type: '0', status: '0'},
-				// 	{number: '2018060111235', type: '1', status: '1'},
-				// 	{number: '2018060114545', type: '2', status: '2'},
-				// 	{number: '2018060112455', type: '0', status: '0'},
-				// 	{number: '2018060112125', type: '3', status: '3'},
-				// 	{number: '2018060118945', type: '1', status: '1'},
-				// ];
-				// for(var i=0; i<list.length; i++){
-				// 	vm.list.push({
-				// 		number: list[i].number,
-				// 		type: vm.typeList[+list[i].type],
-				// 		status: vm.statusList[+list[i].status]
-				// 	})
-				// }
-				
 				// 获取列表
 				vm.getList(function(res){
 					console.log('res: ',res);
 					if(res.data.length){
 						for(var i=0; i<res.data.length; i++){
 							vm.list.push({
-								name: res.data[i].name,
 								number: res.data[i].number,
-								text: vm.titleList[+res.data[i].type],
-								style: vm.colorList[+res.data[i].type],
-								create_at: timetrans(res.data[i].create_at)
+								type: vm.typeList[+res.data[i].type],
+								status: vm.statusList[+res.data[i].result],
+								style: vm.colorList[+res.data[i].result]
 							});
 						}
 						vm.noticestyle = 'none';
