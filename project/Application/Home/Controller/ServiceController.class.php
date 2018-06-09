@@ -66,7 +66,9 @@ class ServiceController extends ServiceCommonController
             if(empty($number)){
                 E('工单号错误',400001);
             }
-            $map['sid'] =[];// $_SESSION['serviceInfo']['id'];
+            $map['sid'] =$_SESSION['serviceInfo']['id'];
+
+            $map = [];
             $list = M('service_users')->where($map)->select();   // 服务人员
 
 
