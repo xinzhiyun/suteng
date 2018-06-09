@@ -407,4 +407,53 @@ class ServiceController extends CommonController
     public function setService(){
         $this->display();
     }
+
+    // 服务评价设置
+    public function evaluate()
+    {
+        $data = M('service_evaluate')->where('pid=0')->select();
+        $this->assign('data',$data);
+
+        $this->display();
+    }
+
+    /**
+     * 加载下一级的评价项目
+     */
+    public function getNextEval()
+    {
+        $parentid = I('pid',0);
+
+        $data = M('service_evaluate')->where('pid='.$parentid)->select();
+
+        $this->toJson(['data'=>$data],'获取成功');
+    }
+
+    // 添加评价项
+    public function evalAdd()
+    {
+
+        $res=M('service_evaluate')->add($_POST);
+
+        if(empty($res)){
+            $this->error('添加失败......');
+        }else{
+            $this->success('添加成功......');
+        }
+    }
+
+    // 添加评价项
+    public function evalEdit()
+    {
+
+        $res=M('service_evaluate')->add($_POST);
+
+        if(empty($res)){
+            $this->error('添加失败......');
+        }else{
+            $this->success('添加成功......');
+        }
+    }
+
+
 }
