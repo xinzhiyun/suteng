@@ -1216,6 +1216,7 @@
 		var recaddr = $('.recaddr').val().trim();
 		var recexpress = $('.recexpress').val().trim();
 		var recexpressnum = $('.recexpressnum').val().trim();
+		
 		if(!recname){
 			layuiHint('请输入收货人姓名');
 			return
@@ -1244,7 +1245,7 @@
 		expressData['recaddr'] = recaddr;
 		expressData['recexpress'] = recexpress;
 		expressData['recexpressnum'] = recexpressnum;
-
+		
 		// 提交数据
 		$.ajax({
 			url: '{{:U("Home/Order/refundMessage")}}',
@@ -1256,6 +1257,9 @@
 					layuiHint('提交成功');
 					setTimeout(function(){
 						history.go(-1);
+						setTimeout(function(){
+							location.reload();
+						},300);
 					},500);
 				}else{
 					layuiHint(res.msg);
