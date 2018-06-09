@@ -24,7 +24,7 @@
 			<span>生成时间</span>
 		</div>
 		<ul class='content'>
-			<li class='spli' v-for='li in list' @click='getDetail(li.number, li.type)'>
+			<li class='spli' v-for='li in list' @click='getDetail(li.number, li.result)'>
 				<span v-text='li.number'></span>
 				<span v-if='result == 0 || result == "undefined"' :style='li.style' v-text='li.text'></span>
 				<span v-if='result == 1 || result == 2 || result == 3' v-text='li.name'></span>
@@ -70,11 +70,13 @@
 							vm.list.push({
 								name: res.data[i].name,
 								number: res.data[i].number,
-								text: vm.titleList[+res.data[i].type],
-								style: vm.colorList[+res.data[i].type],
-								create_at: timetrans(res.data[i].create_at)
+								text: vm.titleList[+res.data[i].result],
+								style: vm.colorList[+res.data[i].result],
+								create_at: timetrans(res.data[i].create_at),
+								result: res.data[i].result
 							});
 						}
+						console.log("vm.text", vm.list)
 						vm.noticestyle = 'none';
 					}else{
 						vm.notice = '查无数据';
@@ -93,10 +95,9 @@
 						url: getURL('Home', 'Service/getList'),
 						type: 'get',
 						success: function(res){
-							// console.log('res: ',res);
+							console.log('list res: ',res);
 							if(res.status == 200){
 								callback(res);
-								
 							}else{
 								vm.loadstyle = 'none';
 								layuiHint('查无数据');
@@ -121,6 +122,7 @@
 				},
 				// 跳到详情界面
 				getDetail (workid, result) {
+					// console.log(result);return;
 					location.href = getURL('Home', 'Service/detail')+'?result='+ result +'&workid='+ workid;
 				},
 				// 加载更多
@@ -163,7 +165,7 @@
 						type: 'get',
 						data: {result: vm.result, word: word},
 						success: function(res){
-							console.log('res: ',res);
+							console.log('搜索res: ',res);
 							if(res.status == 200){
 								vm.list = [];
 								if(res.data.length){
