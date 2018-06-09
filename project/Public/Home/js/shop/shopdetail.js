@@ -29,10 +29,9 @@ $(function(){
 	var eachNume = [];
 	var val = [];
 	var eachVal = [];
-	var _url = getURL('Home', 'Shop/goods_detail');
 	// ajax发送商品id查询商品详情
 	$.ajax({
-		url: _url,
+		url: getURL('Home', 'Shop/goods_detail'),
 		type: 'get',
 		async: false,
 		data: {'id': goods_gid},

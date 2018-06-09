@@ -23,7 +23,7 @@ function solveCompatible(obj){
         } 
     });
 }
-
+ 
 /**
  * 获取网址（解决在js文件中无法使用thinkPHP的大U方法的问题）
  * @param {string} [_home] [Home 或 Coms]
