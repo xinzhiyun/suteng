@@ -127,6 +127,7 @@ class WorkController extends CommonController
                 $savetata['result']=0;
             }
             $savetata['is_examine'] = $data['is_examine'];
+            $savetata['examine_at'] = time();
             $res = M('work')->where($map)->save($savetata);
             if($res) {
                 E('修改成功',200);

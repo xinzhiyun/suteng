@@ -458,4 +458,47 @@ class VipCenterController extends CommonController
         $this->ajaxReturn($message);
 
     }
+    
+    
+    //会员 服务记录
+    public function service_record()
+    {
+        $this->display();
+    }
+    public function get_service_record()
+    {
+        $uid = session('user.id');
+        $work_data =  M('work')->where('uid='.$uid)->select();
+
+        $this->toJson(['data'=>$work_data],'获取成功');
+    }
+
+    //会员 服务记录
+    public function record_detail()
+    {
+        $this->display();
+    }
+
+    // 工单信息(时间线)
+    public function showWorkTimeInfo()
+    {
+        try {
+            $number = I('number');
+            if( empty($number ) ) {
+                E('请确认工单号',400022);
+            }
+            $info = M('work')->where('number='.$number)->find();
+            if( empty($info ) ) {
+                E('工单信息不存在',400022);
+            }
+            $list = M('work_note')->where('wid='.$info['id'])->order('id desc')->select();
+
+            $this->toJson(['data'=>$list],'获取成功!');
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+
 }

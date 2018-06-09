@@ -123,6 +123,7 @@ class ServiceController extends ServiceCommonController
             unset($post['number']);
 
             $post['update_at']=time();
+            $post['anry_at']=time();
             $post['result'] = 1;
             $res = M('work')->where($map)->save($post);
 
@@ -156,7 +157,7 @@ class ServiceController extends ServiceCommonController
                 E('工单未完成请联系工作人员!',400022);
             }
 
-            $res = M('work')->where($map)->save(['result'=>3,'update_at'=>time()]);
+            $res = M('work')->where($map)->save(['result'=>3,'update_at'=>time(),'check_at'=>time()]);
 
             if ($res) {
                 Work::add($info['id'], 6); //验收
