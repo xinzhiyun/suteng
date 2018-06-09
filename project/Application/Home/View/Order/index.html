@@ -152,24 +152,39 @@
 	<!-- 支付方式选择部分结束 -->
 	<div class='expressPanel'>
 		<h3>填写退货物流等信息</h3>
+		<span>发货人：</span>
 		<p>
-			<label for="">收货人姓名：</label>&emsp;
-			<input type="text" class='recname' placeholder="请输入收货人姓名">
+			<label for="">姓名：</label>&emsp;
+			<input type="text" class='toname' placeholder="请输入姓名">
 		</p>
 		<p>
-			<label for="">收货人电话：</label>&emsp;
-			<input type="text" class='recphone' placeholder="请输入收货人电话">
+			<label for="">电话：</label>&emsp;
+			<input type="text" class='tophone' placeholder="请输入电话">
 		</p>
 		<p>
-			<label for="">收货人地址：</label>&emsp;
-			<input type="text" class='recaddr' placeholder="请输入收货人地址">
+			<label for="">地址：</label>&emsp;
+			<input type="text" class='toaddr' placeholder="请输入地址">
+		</p>
+		<div class='divide'></div>
+		<span>收货人：</span>
+		<p>
+			<label for="">姓名：</label>&emsp;
+			<input type="text" class='recname' placeholder="请输入姓名">
 		</p>
 		<p>
-			<label for="">快&ensp;递&ensp;名称：</label>&emsp;
+			<label for="">电话：</label>&emsp;
+			<input type="text" class='recphone' placeholder="请输入电话">
+		</p>
+		<p>
+			<label for="">地址：</label>&emsp;
+			<input type="text" class='recaddr' placeholder="请输入地址">
+		</p>
+		<p>
+			<label for="">快递名称：</label>&emsp;
 			<input type="text" class='recexpress' placeholder="请输入快递名称">
 		</p>
 		<p>
-			<label for="">快&ensp;递&ensp;单号：</label>&emsp;
+			<label for="">快递单号：</label>&emsp;
 			<input type="text" class='recexpressnum'placeholder="请输入快递单号">
 		</p>
 		<button class='exconfirm' onclick='exconfirm()'>确认</button>
@@ -938,10 +953,6 @@
                 				'<p><b>商家同意退款，请尽早退货</b><span>点击展开<i class="iconfont icon-shuangxiajiantou"></i></span></p>'+
                 				'<!-- 隐藏的评论内容 -->'+
                 				'<div class="commentHidden">'+
-                				'<div class="hidTop">'+
-                				'<p><span>收货人： 张三</span>18475698574</p>'+
-                				'<p>广东省韶关市</p>'+
-                				'</div>'+
                 				'<div class="hidBott">'+
                 				'<div class="hidbotttxt" onclick="writeExpress('+ res.data[i].serial_num+ ',' +res.data[i]['goods'][k].gid +')">'+
                 				'<a class="writeOrder">'+
@@ -1211,12 +1222,27 @@
 
 	// 提交快递信息
 	function exconfirm(){
+		var toname = $('.toname').val().trim();
+		var tophone = $('.tophone').val().trim();
+		var toaddr = $('.toaddr').val().trim();
 		var recname = $('.recname').val().trim();
 		var recphone = $('.recphone').val().trim();
 		var recaddr = $('.recaddr').val().trim();
 		var recexpress = $('.recexpress').val().trim();
 		var recexpressnum = $('.recexpressnum').val().trim();
 		
+		if(!toname){
+			layuiHint('请输入发货人姓名');
+			return
+		}
+		if(!tophone){
+			layuiHint('请输入发货人电话');
+			return
+		}
+		if(!toaddr){
+			layuiHint('请输入发货人地址');
+			return
+		}
 		if(!recname){
 			layuiHint('请输入收货人姓名');
 			return
@@ -1240,6 +1266,9 @@
 		expressData['serial_num'] = sessionStorage.getItem('serial_num');
 		expressData['gid'] = sessionStorage.getItem('gid');
 
+		expressData['toname'] = toname;
+		expressData['tophone'] = tophone;
+		expressData['toaddr'] = toaddr;
 		expressData['recname'] = recname;
 		expressData['recphone'] = recphone;
 		expressData['recaddr'] = recaddr;
