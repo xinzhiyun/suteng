@@ -58,6 +58,7 @@ class DeviceController extends CommonController
             $data['phone'] = I('phone');
             $data['addtime']    = time();
             $data['updatetime'] = time();
+            $data['address'] = I('province').I('city').I('crea').I('address');
 
             $address=[
                 "uid"   => $uid,
@@ -65,6 +66,7 @@ class DeviceController extends CommonController
                 "phone" => $data['phone'],
                 "province"  => I('province'),
                 "city"      => I('city'),
+                "crea"      => I('crea'),
                 "area"      => I('name'),
                 "address"   => I('address'),
                 "province_id"   => I('province_id'),

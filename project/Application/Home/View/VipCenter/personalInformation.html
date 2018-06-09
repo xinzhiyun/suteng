@@ -52,18 +52,18 @@
 						<span>手机号码：</span><input id="tel" name="phone" type="text" value="{{$user_device['phone']}}" >
 					</div>
 				</label>
-				
+
 				<label for="addr">
 					<i class="iconfont icon-dizhi"></i>
 					<div >
 						<span>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：</span>
-						<input type="text" id="areaID" class="areabtn" onfocus="this.blur()" placeholder="请选择 >">
+						<input type="text" id="areaID" class="areabtn" onfocus="this.blur()" placeholder="请选择 >" value=''>
 					</div>
 				</label>
 				<label for="">
-					<div class='cfix addrdetail'>
-						<span class='fl'>详细地址：</span>
-						<textarea class='fr' name="addrdetail" id="" cols="30" rows="5" placeholder="请输入详细地址"></textarea>
+					<div class='addrdetail'>
+						<p>详细地址：</p>
+						<textarea class='' name="address" id="" cols="30" rows="5" placeholder="请输入详细地址" value=''>{{$user_device["address"]}}</textarea>
 					</div>
 				</label>
 			</div>
@@ -94,7 +94,7 @@
     	</div>
 	</div>
   	<script src="__PUBLIC__/Home/js/laydate.js"></script>
-	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+	<script src="__PUBLIC__/Home/js/jquery.min.js"></script>
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
 	<script src="__PUBLIC__/Home/js/public.js"></script>
@@ -159,7 +159,7 @@
 			$("#save").click(function(){
 				
 				// formdata
-				var data = new FormData(document.getElementById("form"));
+				var data = new FormData($("#form")[0]);
 				if(data.getAll('province_id')){
 					data.delete('province')
 					data.delete('province_id')
@@ -191,7 +191,7 @@
 					layuiHint("请输入正确的手机号码");
 					return;
 
-				}else if(!(addressReg.test($('.addrdetail>textarea').val()))){
+				}else if(!$('.addrdetail>textarea').val()){
 					layuiHint("请输入详细地址！");
 					return;
 
@@ -201,13 +201,9 @@
 					return
 				}
 				if(machineNo){
+					data.append('device_code', machineNo);
 					// 绑定设备
-					bindFn(function(res){
-						if(res.binddevice){
-							// 保存信息
-							saveFn(data);
-						}
-					});
+					bindFn(data);
 				}else{
 					// 保存信息
 					saveFn(data);
@@ -243,32 +239,29 @@
 					}
 				})
 			}
-			function bindFn(callback){
+			function bindFn(data){
+				console.log('243: ',data.getAll('province_id'),data.getAll('city_id'),data.getAll('area_id'),data.getAll('city_id'),data.getAll('device_code'));
 				// 绑定设备
 				$.ajax({
-			    	url:"{{:U('Device/bind')}}",
-			    	type:"post",
-			    	data:{device_code: machineNo},
-			    	dataType:'json',
-			    	success:function(data){
-			    		console.log(data);
-						if(data.code == 200 ){
+					url: '{{:U("Home/Device/bind")}}',
+					type: 'post',
+					data: data,
+			        cache: false,
+			        contentType: false,
+			        processData: false,
+					success: function(res){
+						console.log('res: ',res);
+						if(res.status == 200){
 							layuiHint('绑定成功！');
-							callback({binddevice: true});
-							
 						}else{
-							layuiHint(data.msg);
-							callback({binddevice: null});
-						} 
-			    	},
-			    	error:function(jqXHR, textStatus, errorThrown){
-
-	    				layuiHint("绑定失败" + jqXHR.status + textStatus + errorThrown);
-						callback({binddevice: null});
-	    				return
-			    		//console.log(jqXHR.status);
-			    	}
-			    });
+							layuiHint(res.msg);
+						}
+					},
+					error: function(err){
+						console.log('err: ',err);
+						layuiHint('系统遇到问题，请稍后再试');
+					}
+				})
 			}
 
 		})

@@ -6,15 +6,19 @@
 	<title>工单详情</title>
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/service_record.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/record_detail.css">
 	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
 	<script src='__PUBLIC__/Home/js/public.js'></script>
 </head>
 <body>
 	<div id='recoed_detail'>
 		<div>
-			<ul>
-				<li></li>
+			<ul class='timeline' v-for='d in detailList'>
+				<li class='cfix'>
+					<b class='fl' v-text='d.title'></b>
+					<span class='fr' v-text='d.time'></span>
+				</li>
+				<li v-text='d.content'></li>
 			</ul>
 		</div>
 		<p class='notice' :style='{display: noticestyle}' v-text='notice'></p>
@@ -28,23 +32,50 @@
 				return {
 					notice: '正在加载...',
 					noticestyle: 'block',
-					workid: GetQueryString('workid')
+					workid: GetQueryString('workid'),
+					detailList: [],
 				}
 			},
 			created (){
 				var vm = this;
+				vm.detailList = [
+					{
+						title: '工单生成', 
+						time: '2018-06-04 19:30', 
+						content: '系统正安排，请耐心等待'
+					},
+					{
+						title: '已安排服务站点', 
+						time: '2018-06-04 19:30', 
+						content: '服务站点正在为您优先安排安装师傅上门，预计需要1-3个工作日'
+					},
+					{
+						title: '已安排安装师傅', 
+						time: '2018-06-04 19:30', 
+						content: '请保持电话畅通'
+					},
+					{
+						title: '安装完成', 
+						time: '2018-06-04 19:30', 
+						content: '水机安装服务已经完成，请点击下面对本次服务进行评价'
+					}
+				];
 				vm.getDetail(vm.workid);
 			},
 			methods: {
 				// 获取详情数据
 				getDetail (workid) {
+					var vm = this;
 					console.log('workid: ',workid);
 					$.ajax({
-						url: getURL('Home', 'Work/showWorkTimeInfo'),
-						type: 'get',
+						url: getURL('Home', 'vipCenter/showWorkTimeInfo'),
+						type: 'post',
 						data: {number: workid},
 						success: function(res){
 							console.log('res: ',res);
+							if(res.status == 200){
+								vm.detailList = res.data;
+							}
 						},
 						error: function(err){
 							console.log('err: ',err);

@@ -781,7 +781,7 @@ body {
 	flex: 2 0;
 }
 .expressPanel>p>input {
-	flex: 4 0;
+	flex: 5 0;
 	padding: 2px 4px;
     border: none;
     border-bottom: 1px solid #ccc;
@@ -808,4 +808,11 @@ body {
 	top: 0;
 	left: 0;
 	background: rgba(0,0,0,.05);
+}
+.divide {
+	height:10px;
+	width: 110%;
+	margin-left: -5%;
+    margin-top: 20px;
+	background: #eee;
 }

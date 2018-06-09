@@ -32,6 +32,9 @@ class ServiceController extends ServiceCommonController
 
         // $map['sid'] = $_SESSION['serviceInfo']['id'];
         $map['is_examine'] = 1;
+        if(!empty($_GET['word'])){
+            $map['number'] = ['like','%'.$_GET['word'].'%'];
+        }
 
         //处理结果 (0：待处理(服务站) 1处理中(工作人员) 2已完成(工作人员) 3(完成) 9 工单关闭 )
         if(isset($_GET['result'])){

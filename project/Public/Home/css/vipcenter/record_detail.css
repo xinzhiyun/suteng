@@ -1,0 +1,58 @@
+/*GLOBALS*/
+*{margin:0; padding:0; list-style:none;-webkit-box-sizing:border-box;box-sizing:border-box;}
+body {
+	overflow-x: hidden;
+}
+#recoed_detail {
+	position: relative;
+	padding: 0 4vw 0 12vw;
+}
+#recoed_detail>div {
+}
+#recoed_detail>div::before {
+	content: '';
+	width: 4px;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 6%;
+	border-radius: 4px;
+	background: #a1c5d6;
+}
+.timeline {
+	position: relative;
+	margin: 2vh 0;
+}
+.timeline>li {
+	margin-top: 10px;
+}
+.timeline::before {
+	content: '';
+	width: 12px;
+	height: 12px;
+	position: absolute;
+	left: -8.2%;
+	top: 4%;
+	border-radius: 50%;
+	background: #03A9F4;
+}
+.notice {
+	position: fixed;
+    top: 30%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    text-align: center;
+}
+.cfix::after {
+	content: '';
+	clear: both;
+	display: block;
+	visibility: hidden;
+}
+.fl {
+	float: left;
+}
+.fr {
+	float: right;
+}

@@ -14,7 +14,7 @@ class ServiceLoginController extends Controller
                 ->alias('au')
                 ->where("user='{$_POST['name']}'")
                 ->join('__SERVICE__ s ON s.auid=au.id', 'LEFT')
-                ->field('s.id,s.company')
+                ->field('au.password,au.user,s.id,s.company')
                 ->find();
 
             if($info){
@@ -24,7 +24,7 @@ class ServiceLoginController extends Controller
                     // 万事大吉
                     $_SESSION['serviceInfo'] = $info;
                     // 主页
-                    $this->redirect('Service/index');
+                    $this->toJson([],'登录成功',200);
                 }else{
                     $this->error('您的密码输入错误！');
                 }
@@ -43,19 +43,6 @@ class ServiceLoginController extends Controller
             }
         }
     }
-
-    // 验证码方法
-    public function yzm()
-    {
-        $config = array(
-            'font-Size' =>   30, //验证码大小
-            'length'    =>   4,  //验证码个数
-            'useNoise'  =>   false, //关闭验证码杂点
-        );
-        $Verify = new \Think\Verify($config);
-        $Verify->entry();
-    }
-
 
     public function logout()
     {
