@@ -137,4 +137,36 @@ class ServiceController extends ServiceCommonController
         }
     }
 
+    // 服务站验收工单
+    public function checkPass()
+    {
+        try {
+            $post = I('post.');
+            if( empty($post['number']) ){
+                E('工单信息错误',400022);
+            }
+
+            $map['number'] = $post['number'];
+            $info = M('work')->where($map)->find();
+            if( empty($info) ){
+                E('工单不存在',400022);
+            }
+
+            if ( $info['result'] != 2) {
+                E('工单未完成请联系工作人员!',400022);
+            }
+
+            $res = M('work')->where($map)->save(['result'=>3,'update_at'=>time()]);
+
+            if ($res) {
+                Work::add($info['id'], 6); //验收
+                E('派工成功!',200);
+            }else{
+                E('派工成功,请重试!',400001);
+            }
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
 }
