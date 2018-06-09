@@ -24,7 +24,8 @@ class ServiceLoginController extends Controller
                     // 万事大吉
                     $_SESSION['serviceInfo'] = $info;
                     // 主页
-                    $this->redirect('Service/index');
+//                    $this->redirect('Service/index');
+                    $this->toJson([],'登录成功',200);
                 }else{
                     $this->error('您的密码输入错误！');
                 }
