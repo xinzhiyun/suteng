@@ -409,7 +409,7 @@ class ServiceController extends CommonController
         $map = [];
 
         $count = M('service_users')->where($map)->count();
-        $Page       = new \Think\Page($count,15);
+        $Page = new \Think\Page($count,15);
         $data = M('service_users')->where($map)
             ->join('__SERVICE__ s ON st_service_users.sid=s.id', 'LEFT')
             ->limit($Page->firstRow.','.$Page->listRows)
@@ -430,13 +430,100 @@ class ServiceController extends CommonController
         $this->display();
     }
 
-  
-    public function getService()
+    // 添加人员
+    public function addServicePeople()
     {
-        
+        try {
+            $post = I('post.');
+            if (empty($post['sid']) ||
+                empty($post['name']) ||
+                empty($post['password']) ||
+                empty($post['repassword']) ||
+                empty($post['phone']) ||
+                empty($post['sn']) )
+            {
+                E('数据不完整', 201);
+            }
+
+            if($post['password'] != $post['repassword']) E('两次的输入的密码不同,请重试!',400001);
+
+            $re = M('service_users')->where('phone='.$post['phone'])->find();
+
+            if(!empty($re)) E('手机号已被注册,请重试',400002);
+
+            $post['password'] = md5($post['password']);
+            $post['addtime'] = time();
+            $post['updatetime'] = time();
+
+
+            $res = M('service_users')->add($post);
+            if($res) {
+                E('添加成功',200);
+            }else{
+                E('添加失败,请重试',40009);
+
+            }
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+    // 设置人员状态
+    public function setStatus()
+    {
+        try {
+            $post = I('post.');
+            if (empty($post['id']) || !isset($post['status']) ) {
+                E('数据不完整', 201);
+            }
+
+            $res = M('service_users')->save($post);
+            if($res) {
+                E('修改成功',200);
+            }else{
+                E('修改失败,请重试',40009);
+
+            }
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
     }
 
 
+    /**
+     * 获取服务站
+     */
+    public function getService()
+    {
+        try {
+            $data = I('post.');
+            if(!empty($data['province_id'])){
+                $map['province_id'] = $data['province_id'];
+            }
+            if(!empty($data['city_id'])){
+                $map['city_id'] = $data['city_id'];
+            }
+            if(!empty($data['district_id'])){
+                $map['district_id'] = $data['district_id'];
+            }
+            $map['status'] = 1;
+            $count = M('service')->where($map)->count();
+            if(empty($count)){
+                $this->toJson(['data'=>[]],'无数据,请重试!',40001);
+            }
+            $Page       = new \Think\Page($count,15);
+            $data = M('service')->where($map)
+                ->limit($Page->firstRow.','.$Page->listRows)
+                ->select();
+
+            $this->toJson(['data'=>$data],'获取成功!',200);
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
 
 
 
