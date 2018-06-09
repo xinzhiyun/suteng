@@ -30,7 +30,7 @@ class ServiceController extends ServiceCommonController
         $p = I('p',1);
         $_GET['p']=$p;
 
-        // $map['sid'] = $_SESSION['serviceInfo']['id'];
+        $map['sid'] = $_SESSION['serviceInfo']['id'];
         $map['is_examine'] = 1;
         if(!empty($_GET['word'])){
             $map['number'] = ['like','%'.$_GET['word'].'%'];
@@ -71,7 +71,6 @@ class ServiceController extends ServiceCommonController
             }
             $map['sid'] =$_SESSION['serviceInfo']['id'];
 
-            $map = [];
             $list = M('service_users')->where($map)->select();   // 服务人员
 
 

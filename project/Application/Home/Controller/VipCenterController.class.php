@@ -468,7 +468,6 @@ class VipCenterController extends CommonController
     public function get_service_record()
     {
         $map['uid'] =session('user.id');
-        $map=[];
         $work_data =  M('work')->where($map)->select();
 
         $this->toJson(['data'=>$work_data],'获取成功');
