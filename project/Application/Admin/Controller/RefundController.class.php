@@ -758,6 +758,7 @@ st_shop_order_detail.gid ='.$value['gid']);
         }         
     }
 
+
     public function install()
     {
         $map = '';
