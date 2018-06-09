@@ -67,9 +67,26 @@ class ServiceController extends ServiceCommonController
                 E('工单号错误',400001);
             }
             $map['sid'] =[];// $_SESSION['serviceInfo']['id'];
-            $list = M('service_users')->where($map)->select();
+            $list = M('service_users')->where($map)->select();   // 服务人员
 
-            $info = M('work')->where('number='.$number)->find();
+
+            $info = M('work')->where('number='.$number)->find(); //工单信息
+
+            if($info['type'] == 0){
+                $info['device_info'] = M('shop_order_device_install')
+                    ->alias('i')
+                    ->where('i.id='.$info['install_id'])
+                    ->field('i.gname')
+                    ->find();
+            }else{
+                $info['device_info'] = M('devices')
+                    ->alias('d')
+                    ->where('device_code='.$info['device_code'])
+                    ->join('__TYPE__ t ON d.type_id=t.id', 'LEFT')
+                    ->field('t.typename gname')
+                    ->find();
+            }
+
             $this->toJson(['data'=>$info,'people'=>$list],'获取成功');
         } catch (\Exception $e) {
             $this->toJson($e);
