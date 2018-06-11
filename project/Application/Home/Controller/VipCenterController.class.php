@@ -1,6 +1,8 @@
 <?php
 namespace Home\Controller;
 
+use Common\Tool\Work;
+
 class VipCenterController extends CommonController
 {
     public function _initialize()
@@ -522,24 +524,41 @@ class VipCenterController extends CommonController
     public function evaluAction()
     {
         try {
-            $number = I('number');
-            if(empty($number)){
-                E('工单号错误!',400001);
+            $post = I('post.');
+            if(empty($post['workid'])){
+                E('工单号错误!',40001);
             }
 
-            $map['number'] = $number;
+            if(empty($post['star'])){
+                E('请选择评级星级!',40002);
+            }
+
+            $map['result'] = 3;
+            $map['number'] = $post['workid'];
             $work = M('work')->where($map)->find();   // 服务人员
             if(empty($work)){
-                E('工单信息错误!',400001);
+                E('工单信息错误,请刷新重试!',400001);
             }
 
-
-            if(1){
-
+            if(!empty($post['evalid'])){
+                $evalids = implode(',',$post['evalid']);
+                $evalu = M('service_evaluate')->where(array('in',$evalids))->select();
+                $saveData['evaluate'] = json_encode($evalu);
             }
 
-            E('提交成功',200);
-            
+            $saveData['star'] = $post['star'];
+            if(!empty($post['text'])){
+                $saveData['evaluateinfo'] = $post['text'];
+            }
+            $saveData['result'] = 4;
+            $res = M('work')->where($map)->save($saveData);
+            Work::evaluAction($post['workid']);
+
+            if ($res){
+                E('提交成功',200);
+            }else{
+                E('提交失败',202);
+            }
         } catch (\Exception $e) {
             $this->toJson($e);
         }

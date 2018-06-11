@@ -208,4 +208,10 @@ class ServiceController extends ServiceCommonController
         }
     }
 
+    // 服务站
+    public function installInfo()
+    {
+        
+    }
+
 }
