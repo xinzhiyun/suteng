@@ -954,7 +954,7 @@
                 				'<!-- 隐藏的评论内容 -->'+
                 				'<div class="commentHidden">'+
                 				'<div class="hidBott">'+
-                				'<div class="hidbotttxt" onclick="writeExpress('+ res.data[i].serial_num+ ',' +res.data[i]['goods'][k].gid +')">'+
+                				'<div class="hidbotttxt writeExpress" serial_num='+ res.data[i].serial_num +' gid='+res.data[i]['goods'][k].gid+'>'+
                 				'<a class="writeOrder">'+
                 				'<p>我已寄件</p>'+
                 				'<p>点击填写物流单号</p>'+
@@ -1212,13 +1212,15 @@
 	var expressPanel = document.querySelector('.expressPanel');
 	var expressData = {};
 	// 填写物流单号
-	function writeExpress(serial_num, gid){
+	 $('body').on('click','.writeExpress', function(){
+		var serial_num = $(this).attr('serial_num');
+		var gid = $(this).attr('gid');
 		// 流水号， 商品id
 		console.log('serial_num, gid', serial_num, gid);
 		location.href = location.href + '#writeExpress';
 		sessionStorage.setItem('serial_num', serial_num);
 		sessionStorage.setItem('gid', gid);
-	}
+	})
 
 	// 提交快递信息
 	function exconfirm(){
