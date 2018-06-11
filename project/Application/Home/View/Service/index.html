@@ -80,7 +80,7 @@
 				// 获取工单列表
 				getList (result) {
 					console.log('result: ',result);
-					// 0待处理 1处理中 2待验收 3(完成) 全部不传
+					// 0待处理 1处理中 2待验收 3(完成) 4(员工管理) 全部不传
 					if(result != 11){
 						location.href = '{{:U("Home/Service/list")}}' + '?result=' + result;
 					}else{
