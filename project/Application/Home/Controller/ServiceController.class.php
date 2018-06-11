@@ -211,7 +211,12 @@ class ServiceController extends ServiceCommonController
     // 服务站人员
     public function installInfo()
     {
-        
+        $uid = I('uid');
+        if($uid){
+            $info = M('service_users')->where('id='.$uid)->find();
+            $this->assign('info',$info);
+        }
+        $this->display();
     }
 
     // 添加安装人员
