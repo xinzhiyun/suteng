@@ -105,15 +105,16 @@ class PaymentSystemController extends CommonController
     {   
         // echo json_decode($_POST['data']);
         $data = json_decode($_POST['data'],'true');
-//         dump($data);die;
+        
         // 库存检测
-        $result=[];
+
         foreach($data as $val){
             $result[] =  [
-                    'status'=> D('inventory')->where(['gid'=>$val['gid'],'allnum'=>['LT',$val['num']]])->count()?'fail':'pass',
+                    'status'=> D('inventory')->where(['gid'=>$val['gid'],'(CAST(allnum AS SIGNED) - CAST(abnormalnum AS SIGNED))'=>['LT',(int)$val['num']]])->count()?'fail':'pass',
                     'gid'=>$val['gid']
             ];
         }
+
         if(in_array('fail',\array_column($result,'status'))){
             $this->ajaxReturn(['code'=>604,'msg'=>'商品库存不足','data'=>$result]);
         }
