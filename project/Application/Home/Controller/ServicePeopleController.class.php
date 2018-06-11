@@ -8,7 +8,7 @@ use Common\Tool\Work;
 
 class ServicePeopleController extends ServiceCommonController
 {
-    // 主页 人员列表
+    // 任务列表
     public function list()
     {
         $this->display('service/list');
@@ -36,29 +36,6 @@ class ServicePeopleController extends ServiceCommonController
             ->select();
         $this->toJson(['data'=>$list],'获取成功');
     }
-
-
-    // 添加安装人员
-    public function addPeople()
-    {
-        try {
-            $number = I('number');
-            if(empty($number)){
-                E('工单号错误',400001);
-            }
-            $map['sid'] = $_SESSION['serviceInfo']['id'];
-
-
-            //$list = M('service_users')->add($data);
-
-            $info = M('work')->where('number='.$number)->find();
-            $this->toJson(['data'=>$info,'people'=>$list],'获取成功');
-        } catch (\Exception $e) {
-            $this->toJson($e);
-        }
-
-    }
-
 
     // 工单完成
     public function packwork()

@@ -43,7 +43,7 @@
 					word: '',			// 搜索框value
 					status: '',			// 工单状态
 					list: [],			// 数据列表
-					page: '',			// 分页
+					page: 1,			// 分页
 					loadstyle: 'block',
 					colorList: ['color:#f16e65;', 'color:#2196F3;', 'color:#2196F3;', 'color:#00d4c2;'],
 					typeList: ['安装', '维护', '维修'],
@@ -66,19 +66,20 @@
 								style: vm.colorList[+res.data[i].result]
 							});
 						}
+						vm.page++;
 						vm.noticestyle = 'none';
 					}else{
 						vm.notice = '查无数据';
 						vm.loadstyle = 'none';
 						layuiHint('查无数据');
 					}
-					vm.page = 1;
 				});
 			},
 			methods: {
 				// 获取列表数据
 				getList (callback, page) {
 					var vm = this;
+					console.log('page: ', page);
 					var option = {
 						url: getURL('Home', 'vipCenter/get_service_record'),
 						type: 'get',
@@ -99,7 +100,7 @@
 					}
 					if(page){
 						// 请求分页数据
-						option['data'] = {p: servicelist.page};
+						option['data'] = {p: page};
 					}
 					// 获取数据
 					$.ajax(option);
@@ -112,8 +113,6 @@
 				// 加载更多
 				loadmore () {
 					var vm = this;
-					console.log('result: ', vm.result);
-					console.log('page: ', vm.page);
 					// 请求分页数据
 					this.getList(function(res){
 						console.log('res: ',res);
@@ -121,11 +120,10 @@
 						if(res.data.length){
 							for(var i=0; i<res.data.length; i++){
 								vm.list.push({
-									name: res.data[i].name,
 									number: res.data[i].number,
-									text: vm.titleList[+res.data[i].type],
-									style: vm.colorList[+res.data[i].type],
-									create_at: timetrans(res.data[i].create_at)
+									type: vm.typeList[+res.data[i].type],
+									status: vm.statusList[+res.data[i].result],
+									style: vm.colorList[+res.data[i].result]
 								});
 							}
 							vm.page++;
@@ -134,7 +132,7 @@
 							layuiHint('无更多数据');
 
 						}
-					}, vm.result, vm.page);
+					}, vm.page);
 				},
 				// 搜索
 				search (word) {

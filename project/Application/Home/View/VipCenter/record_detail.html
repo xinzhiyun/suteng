@@ -27,20 +27,24 @@
 			<h3>评论本次服务</h3>
 			<ul>
 				<li class='xinx'>
-					<span class="iconfont icon-xingxing" :class='{activeClass: num >= 1}' @click='xingx(1)'></span>
-					<span class="iconfont icon-xingxing" :class='{activeClass: num >= 2}' @click='xingx(2)'></span>
-					<span class="iconfont icon-xingxing" :class='{activeClass: num >= 3}' @click='xingx(3)'></span>
-					<span class="iconfont icon-xingxing" :class='{activeClass: num >= 4}' @click='xingx(4)'></span>
-					<span class="iconfont icon-xingxing" :class='{activeClass: num == 5}' @click='xingx(5)'></span>
+					<span class="iconfont icon-xingxing" :class='{activeClass: star >= 1}' @click='xingx(1)'></span>
+					<span class="iconfont icon-xingxing" :class='{activeClass: star >= 2}' @click='xingx(2)'></span>
+					<span class="iconfont icon-xingxing" :class='{activeClass: star >= 3}' @click='xingx(3)'></span>
+					<span class="iconfont icon-xingxing" :class='{activeClass: star >= 4}' @click='xingx(4)'></span>
+					<span class="iconfont icon-xingxing" :class='{activeClass: star == 5}' @click='xingx(5)'></span>
 				</li>
 				<li class='text'>
-					<span v-for='text in textList' v-text='text' @click='textSelect($event)'></span>
+					<span v-for='t in textList' v-text='t.desc' :tid='t.id' @click='textSelect($event)'></span>
 				</li>
-				<li>
-					<label for="" style='padding-left: 4vw;'>其他想对师傅说的话</label>
-					<textarea name="" id="" cols="30" rows="6" placeholder="随便说说吧"></textarea>
+				<li class='say'>
+					<label for="">其他想对师傅说的话</label>
+					<textarea name="" id="" cols="30" rows="6" placeholder="随便说说吧" v-model='text'></textarea>
 				</li>
-				<button class='evaluate'>匿名提交</button>
+				<p>
+					<i :class='nonameclass'></i>
+					<label for="noname" @click='noname'>匿名提交</label>
+				</p>
+				<button class='evaluate' @touchend='upEval'>提交</button>
 			</ul>
 		</div>
 	</div>
@@ -55,14 +59,18 @@
 					noticestyle: 'block',
 					workid: GetQueryString('workid'),
 					detailList: [],
-					showEval: false,
-					evalPanel: '',
-					textList: ['不错', '态度好', '守时', '效率高', '长得帅', '说话好听'],
-					num: '',
+					showEval: false,	// 是否显示评价按钮
+					evalPanel: '',		// 评价面板的样式
+					starList: [],		// 所有星星的数据	
+					textList: [],		// 对应星星的选项数据
+					star: 5,			// 星星数量
+					text: '',			// 对安装师傅说的话
+					nonameclass: 'iconfont icon-fangxingweixuanzhong',
 				}
 			},
 			created (){
 				var vm = this;
+				// 获取详情数据
 				vm.getDetail(vm.workid);
 
 				hashchangeFn(function(hash){
@@ -89,10 +97,8 @@
 						callback(location.hash);
 					}
 				}
-
-				vm.getEvaluate();
 			},
-			methods: {
+			methods: { 
 				// 获取详情数据
 				getDetail (workid) {
 					var vm = this;
@@ -104,19 +110,19 @@
 						success: function(res){
 							console.log('res: ',res);
                             if(res.status == 200){
-                            	if(res.data.length){
+                            	if(res.data && res.data.length){
                             		vm.noticestyle = "none";
 									vm.detailList = res.data;
-									for(var i=0; i<res.data.length; i++){
-										if(res.data[i].content.indexOf('评价') > 0){
-											// 获取评价的数据
-											vm.getEvaluate(workid);
-											vm.showEval = 'true';
-										}
-									}
+									
 								}else{
                             		vm.notice = "查无数据";
 									layuiHint('查无数据');
+								}
+								if(res.evaluaction){
+									// 需要评价
+									vm.showEval = true;
+									// 获取评价的数据
+									vm.getEvaluate(workid);
 								}
 							}else{
 								layuiHint(res.msg);
@@ -129,13 +135,17 @@
 				},
 				// 获取评论的数据
 				getEvaluate (workid) {
+					console.log('workid: ',workid);
 					var vm = this;
 					$.ajax({
 						url: getURL('Home', 'Work/getEvaluate'),
 						type: 'get',
 						data: {number: workid},
 						success: function(res){
-							console.log('res: ',res);
+							console.log('评论星星数据res: ',res);
+							vm.starList = res.data;
+							// 五星
+							vm.textList = res.data[5][0];
 						},
 						error: function(err){
 							console.log('err: ',err);
@@ -150,9 +160,17 @@
 				},
 				// 点击星星
 				xingx (index) {
-					this.num = index;
-					console.log('num: ',this.num);
+					this.star = index;
+					console.log('star: ',this.star);
+					var evalel = document.querySelectorAll('.eval');
+					for(var i=0; i<evalel.length; i++){
+						evalel[i].setAttribute('class', '');
+					}
+					// 根据星星数量显示不同的选项
+					this.textList = this.starList[this.star][0];
+
 				},
+				// 评价多选
 				textSelect (e) {
 					var el = e.currentTarget;
 					var elclass = el.getAttribute('class');
@@ -165,7 +183,49 @@
 				// 提交评论数据
 				upEval () {
 					var vm = this;
-					var workid = vm.workid;
+					var info = {};		// 提交的数据
+					var evalidArr = [];
+					var textEval = document.querySelector('.text').querySelectorAll('.eval');
+					// 遍历评论选项的id
+					for(var i=0; i<textEval.length; i++){
+						evalidArr.push({
+							id: textEval[i].getAttribute('tid')
+						})
+					}
+					if(!evalidArr.length){
+						layuiHint('请至少选择一个评价');
+						return
+					}
+					info = {
+						workid: vm.workid,		// 工单id
+						star: vm.star,			// 评价星星数量
+						evalid: evalidArr,		// 评价选项id集合
+					};
+					// 对安装师傅说的话
+					if(vm.text){
+						info['text'] = vm.text;
+					}
+					console.log('info: ',info);
+					// 提交评论数据
+					$.ajax({
+						url: getURL('Home', 'VipCenter/evaluAction'),
+						type: 'post',
+						data: info,
+						success: function(res){
+							console.log('res: ',res);
+						},
+						error: function(err){
+							console.log('err: ',err);
+						}
+					})
+				},
+				noname () {
+					if(this.nonameclass.indexOf('xuanzhongduigou') < 0){
+						this.nonameclass = 'iconfont icon-xuanzhongduigou';
+					}else{
+						this.nonameclass = 'iconfont icon-fangxingweixuanzhong';
+					}
+					
 				}
 			}
 		})

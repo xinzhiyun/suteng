@@ -208,4 +208,36 @@ class ServiceController extends ServiceCommonController
         }
     }
 
+    // 服务站人员
+    public function installInfo()
+    {
+        $uid = I('uid');
+        if($uid){
+            $info = M('service_users')->where('id='.$uid)->find();
+            $this->assign('info',$info);
+        }
+        $this->display();
+    }
+
+    // 添加安装人员
+    public function addPeople()
+    {
+        try {
+            $number = I('number');
+            if(empty($number)){
+                E('工单号错误',400001);
+            }
+            $map['sid'] = $_SESSION['serviceInfo']['id'];
+
+
+            //$list = M('service_users')->add($data);
+
+            $info = M('work')->where('number='.$number)->find();
+            $this->toJson(['data'=>$info,'people'=>$list],'获取成功');
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+
+    }
+
 }

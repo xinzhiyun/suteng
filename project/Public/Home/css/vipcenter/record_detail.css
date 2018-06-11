@@ -59,9 +59,13 @@ body {
 	float: right;
 }
 .evaluate {
-	width: 40%;
+	width: 80%;
 	position: relative;
-    padding: 4px;
+    padding: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 4vh 0;
+    bottom: 0;
     border: none;
     border-radius: 4px;
     color: #fff;
@@ -88,7 +92,9 @@ body {
     left: 0;
     background: #fff;
     z-index: 999;
-    transform: translateY(100%);
+    -webkit-transform: translateY(100%);
+            transform: translateY(100%);
+    -webkit-transition: .3s ease;
     transition: .3s ease;
 }
 .evalPanel>h3 {
@@ -97,6 +103,8 @@ body {
 }
 
 .evalPanel>p {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
 	padding: 2vw 0;
 }
@@ -118,11 +126,25 @@ body {
 	margin-bottom: 2vh;
 }
 .text>span {
-	margin: 1vw 4vw;
+	min-width: 40%;
     display: inline-block;
+	margin: 1vw 4vw;
+	text-align: center;
 }
 .eval {
 	padding: 2px 4px;
 	color: #fff;
 	background: #FF5722;
+}
+
+input[type="radio"] {
+	-webkit-appearance: radio !important;
+	   -moz-appearance: radio !important;
+	        appearance: radio !important;
+}
+
+.say>textarea {
+	width: 100%;
+	padding: 2px 4px;
+	margin: 10px 0;
 }

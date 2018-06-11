@@ -175,9 +175,14 @@ class PayController extends Controller
 
         $where['status'] = 0;
         $data = $address->where($where)->find();
-
+        $rate = D('website')->field('gold_rate,silver_rate')->find();
+        $showUser['open_id'] = $_SESSION['open_id'];
+        // // 执行查询
+        $user = M('users')->where($showUser)->find(); 
         $assign = [
-            'data' => json_encode($data)
+            'data' => json_encode($data),
+            'user' => json_encode($user),
+            'rate' => json_encode($rate)
         ];
         $this->wx_info();
 
