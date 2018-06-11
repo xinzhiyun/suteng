@@ -99,6 +99,18 @@ class WorkController extends CommonController
             $this->toJson($e);
         }
     }
+    // 获取评价控制
+    public function getEvaluate()
+    {
+        $evaluate =  M('service_evaluate');
+        $eval = $evaluate->where('pid=0')->select();
+        $list=[];
+        foreach ($eval as $e){
+            $data = $evaluate->where('pid='.$e['id'])->select();
+            $list[$e['star']][]=$data;
+        }
+        $this->toJson(['data'=>$list],'获取成功!');
+    }
 }
 
 
