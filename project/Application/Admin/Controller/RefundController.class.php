@@ -118,8 +118,11 @@ st_shop_order_detail.gid ='.$value['gid']);
 
                     //确认收货
                     case '7':
+
                         //先查询该订单的支付类型
                         $order_id = M('refund_goods')->where('rf_id='.$id)->find()['oid'];
+
+
 
                         // dump($order_id);die;
                         
@@ -241,6 +244,7 @@ st_shop_order_detail.gid ='.$value['gid']);
                             case '3':
                                 //金币
                                 //先查询商品订单总价
+                                
                                 $odetail = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
 
                                 foreach ($odetail as $key => $value) {
@@ -283,43 +287,30 @@ st_shop_order_detail.gid ='.$value['gid']);
                                     //修改订单状态前先判断该订单下是否还有未发货的商品
                                     //1.先查询订单中的商品
                                     $od = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
+                                    $status = M('shop_order')->where("order_id='{$order_id}'")->find()['status'];
 
-                                    //订单中所有商品的id
-                                    $ids = array();
-                                    foreach ($od as $key => $value) {
-                                      $ids[] = $value['gid'];
+                                    switch ($status) {
+                                        //已发货的退货退款
+                                        case '11':
+                                            $shop['status'] = 7;
+                                            $shop['updatetime'] = time();
+                                            $bool3 = M('shop_order')->where("order_id='{$order_id}'")->save($shop);
+                                            break;
+                                        
+                                        //已发货的仅退款
+                                        case '12':
+                                            $shop['status'] = 7;
+                                            $shop['updatetime'] = time();
+                                            $bool3 = M('shop_order')->where("order_id='{$order_id}'")->save($shop);
+                                            break;
+
+
+                                        default:
+                                            # code...
+                                            break;
                                     }
                                     
-                                    //2.查询退货订单的商品
-                                    $rg = M('refund_goods')->where("oid='{$order_id}'")->select();
-
-                                    $rids = array();
-                                    foreach ($rg as $key => $value) {
-                                      $rids[] = $value['gid'];
-                                    }
-
-                                    //退货商品的快递的信息就不需要查询了
-                                    $jid = array_diff($ids,$rids);
                                   
-                                    // $map['order_id'] = $order_id;
-                                    $map['gid'] = array('in',$jid);
-
-                                    // dump($map);die;
-
-                                    // $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
-
-                                    if (empty($map)) {
-                                        // echo 1;
-                                        $shop['status'] = 7;
-                                        $shop['updatetime'] = time();
-                                        $bool3 = M('shop_order')->where("order_id='{$order_id}'")->save($shop);
-                                    } else {
-                                        $shop['updatetime'] = time();
-                                        $bool3 = M('shop_order')->where("order_id='{$order_id}'")->save($shop);
-
-                                    }
-                                    
-
                                     if ($bool1 && $bool2 && $bool3) {
                                         M('Users')->commit();
                                         M('refund')->commit();
