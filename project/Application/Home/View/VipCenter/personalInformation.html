@@ -16,7 +16,7 @@
 				<label for="name" class="">
 					<i class="iconfont icon-wode1"></i>
 					<div >
-						<span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input name="name" id="name" type="text" value="{{$user_device['name']}}">
+						<span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input name="name" id="name" type="text" value="">
 					</div>
 				</label>
 				<label for="sex">
@@ -42,14 +42,14 @@
 				<label for="birth">
 					<i class="iconfont icon-shengridangao2-copy"></i>
 					<div >
-						<span>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</span><input name="birth" class="dateSelect" id="birth" placeholder="请选择生日年月" type="text" value="{{$user_device['birth']}}"><!--日期插件-->
+						<span>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</span><input name="birth" class="dateSelect" id="birth" placeholder="请选择生日年月" type="text" value=""><!--日期插件-->
 					</div>
 				</label>
 				
 				<label for="tel">
 					<i class="iconfont icon-shouji2-copy"></i>
 					<div >
-						<span>手机号码：</span><input id="tel" name="phone" type="text" value="{{$user_device['phone']}}" >
+						<span>手机号码：</span><input id="tel" name="phone" type="text" value="" >
 					</div>
 				</label>
 
@@ -63,7 +63,7 @@
 				<label for="">
 					<div class='addrdetail'>
 						<p>详细地址：</p>
-						<textarea class='' name="address" id="" cols="30" rows="5" placeholder="请输入详细地址" value=''>{{$user_device["address"]}}</textarea>
+						<textarea class='' name="address" id="" cols="30" rows="5" placeholder="请输入详细地址" value=''></textarea>
 					</div>
 				</label>
 			</div>
