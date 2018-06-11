@@ -67,7 +67,9 @@ body {
 	background: rgba(0,0,0,.02);
 }
 .content {
+	min-height: 83vh;
 	padding: 0 8px 10vw;
+	transform: translate3d(0,0,0);
 }
 .content .spli>span{
 	flex: 1 0 33%;
