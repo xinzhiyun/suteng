@@ -58,7 +58,7 @@ class ServiceController extends ServiceCommonController
                 ->select();
             $this->toJson(['data'=>$list],'获取成功');
         }
-        
+
         $map['is_examine'] = 1;
         if(!empty($_GET['word'])){
             $map['number'] = ['like','%'.$_GET['word'].'%'];

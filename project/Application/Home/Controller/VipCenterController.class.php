@@ -476,6 +476,7 @@ class VipCenterController extends CommonController
         if(empty($total)){
             $this->toJson(['data'=>[]],'获取成功!');
         }
+        $page  = new \Think\Page($total,10);
         $work_data =  M('work')->where($map)
             ->limit($page->firstRow.','.$page->listRows)
             ->select();
