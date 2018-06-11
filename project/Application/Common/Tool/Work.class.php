@@ -84,4 +84,18 @@ class Work
         M('work_note')->add($data);
     }
 
+    // 自动评价功能 默认4星
+    public static function evaluAction($number)
+    {
+        if(empty($number)){
+            return false;
+        }
+        $map['number'] = $number;
+        $work = M('work')->where($map)->find();   // 服务人员
+        if(empty($work)){ return false; }
+
+
+    }
+
+
 }

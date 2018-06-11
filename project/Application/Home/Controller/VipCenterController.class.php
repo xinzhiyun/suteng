@@ -517,6 +517,35 @@ class VipCenterController extends CommonController
             $this->toJson($e);
         }
     }
+    
+    // 评价
+    public function evaluAction()
+    {
+        try {
+            $number = I('number');
+            if(empty($number)){
+                E('工单号错误!',400001);
+            }
+
+            $map['number'] = $number;
+            $work = M('work')->where($map)->find();   // 服务人员
+            if(empty($work)){
+                E('工单信息错误!',400001);
+            }
+
+
+            if(1){
+
+            }
+
+            E('提交成功',200);
+            
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+
 
 
 }
