@@ -1,5 +1,6 @@
 <?php
 namespace Home\Controller;
+use Common\Tool\File;
 use \Org\Util\WeixinJssdk;
 use Common\Tool\Work;
 /**
@@ -220,20 +221,60 @@ class ServiceController extends ServiceCommonController
     }
 
     // 添加安装人员
-    public function addPeople()
+    public function postPeople()
     {
         try {
-            $number = I('number');
-            if(empty($number)){
-                E('工单号错误',400001);
+            $post = I('post.');
+
+            if(empty($post['action'])){
+                E('参数错误',40001);
             }
-            $map['sid'] = $_SESSION['serviceInfo']['id'];
 
 
-            //$list = M('service_users')->add($data);
 
-            $info = M('work')->where('number='.$number)->find();
-            $this->toJson(['data'=>$info,'people'=>$list],'获取成功');
+
+
+            if(!empty($post['uImg'])){
+                $addData['uImg'] = File::downloadPic('service',$post['uImg']);
+            }
+
+            $addData['sn'] = $post['sn'];
+            $addData['idCard'] = $post['idCard'];
+
+            $addData['updatetime'] = time();
+
+            if($post['action']==1){//添加
+                $addData['sid'] = $_SESSION['serviceInfo']['id'];
+                $addData['addtime'] = time();
+                $addData['password'] = md5($post['password']);
+                $addData['star'] = 4;
+                $res = M('service_users')->add($addData);
+                if($res){
+                    E('添加成功!',200);
+                }
+            }elseif ($post['action']==2){//编辑
+                if(!empty($post['password'])){
+                    $addData['password'] = md5($post['password']);
+                }
+                if(empty($post["uid"])){
+                    E('参数错误:uid',40001);
+                }
+                $res = M('service_users')->where('id='.$post["uid"])->save($addData);
+                if($res){
+                    E('编辑成功!',200);
+                }
+            }elseif($post['action']==3){//删除
+                if(empty($post["uid"])){
+                    E('参数错误:uid',40001);
+                }
+                $res = M('service_users')->where('id='.$post["uid"])->delete();
+                if($res){ E('删除成功!',200); }
+            }else{
+                E('参数错误',40001);
+            }
+
+            E('操作失败,请重试!',202);
+            
         } catch (\Exception $e) {
             $this->toJson($e);
         }
