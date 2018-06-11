@@ -1,6 +1,7 @@
 /*GLOBALS*/
 *{margin:0; padding:0; list-style:none;-webkit-box-sizing:border-box;box-sizing:border-box;}
 body {
+	padding: 4% 0;
 	overflow-x: hidden;
 }
 #recoed_detail {
@@ -9,7 +10,7 @@ body {
 }
 #recoed_detail>div {
 }
-#recoed_detail>div::before {
+#recoed_detail>div.content::before {
 	content: '';
 	width: 4px;
 	height: 100%;
@@ -25,6 +26,7 @@ body {
 }
 .timeline>li {
 	margin-top: 10px;
+	line-height: 2;
 }
 .timeline::before {
 	content: '';
@@ -32,7 +34,7 @@ body {
 	height: 12px;
 	position: absolute;
 	left: -8.2%;
-	top: 4%;
+	top: 10%;
 	border-radius: 50%;
 	background: #03A9F4;
 }
@@ -55,4 +57,72 @@ body {
 }
 .fr {
 	float: right;
+}
+.evaluate {
+	width: 40%;
+	position: relative;
+    padding: 4px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    background: #a1c5d6;
+}
+.evaluate:active::after {
+	content: '';
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	border-radius: 4px;
+	background: rgba(0,0,0,.2);
+}
+/*评论服务*/
+.evalPanel {
+	width: 100%;
+	height: 100vh;
+	min-height: 500px;
+	position: fixed;
+	padding: 0 4vw 4vw;
+    top: 0;
+    left: 0;
+    background: #fff;
+    z-index: 999;
+    transform: translateY(100%);
+    transition: .3s ease;
+}
+.evalPanel>h3 {
+	padding: 4vw;
+	text-align: center;
+}
+
+.evalPanel>p {
+	display: flex;
+	padding: 2vw 0;
+}
+.xinx {
+	position: relative;
+	margin: 2vw 0;
+	text-align: center;
+	font-size: 40px;
+}
+
+.xinx>span {
+	font-size: 40px;
+	color: #ccc;
+}
+.activeClass {
+	color: #FF5722 !important;
+}
+.text {
+	margin-bottom: 2vh;
+}
+.text>span {
+	margin: 1vw 4vw;
+    display: inline-block;
+}
+.eval {
+	padding: 2px 4px;
+	color: #fff;
+	background: #FF5722;
 }
