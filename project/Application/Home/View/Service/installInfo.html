@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
+	<title>个人信息</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/station/installInfo.css">
+	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
+    <script src='__PUBLIC__/Home/js/public.js'></script>
+    <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+</head>
+<body>
+	<div id="installInfo">
+        <div class="infoTop infoCom">
+            <ul>
+                <li>
+                    <span>姓名：</span>
+                    <!-- 正常和编辑 -->
+                    <span v-if="editNo" v-text="userInfos.name"></span>
+                    <input type="text" :value="userInfos.name" v-if="editFlag" placeholder="请输入姓名" v-model="userVal.name">
+                </li>
+                <li>
+                    <span>头像：</span>
+                    <span class="userImg" @click="chooseImg">
+                        <img :src="userInfos.uImg" alt="">
+                        <input type="hidden" :value="imgId" v-model="imgId">
+                    </span>
+                </li>
+                <li>
+                    <span>电话：</span>
+                    <span v-if="editNo" v-text="userInfos.phone"></span>
+                    <input type="text" :value="userInfos.phone" v-if="editFlag" placeholder="请输入电话号码" v-model="userVal.phone">
+                </li>
+                <li>
+                    <span>身份证号码：</span>
+                    <span v-if="editNo" v-text="userInfos.idCard"></span>
+                    <input type="text" :value="userInfos.idCard" v-if="editFlag" placeholder="请输入身份证号码" v-model="userVal.idCard">
+                </li>
+                <li>
+                    <span>星级：</span>
+                    <span></span>
+                </li>
+            </ul>
+        </div>
+        <div class="infoBottom infoCom">
+            <ul>
+                <li>
+                    <span>工号：</span>
+                    <span v-if="editNo" v-text="userInfos.num"></span>
+                    <input type="text" :value="userInfos.num" v-if="editFlag" placeholder="请输入工号" v-model="userVal.num">
+                </li><li>
+                    <span>密码：</span>
+                    <span v-if="editNo" v-text="userInfos.password"></span>
+                    <input type="text" :value="userInfos.password" v-if="editFlag" placeholder="请输入密码" v-model="userVal.password">
+                </li>
+            </ul>
+        </div>
+        <div class="infoWay">
+            <p @click="someThing(0)" v-if="editNo"><span class="iconfont icon-bianji"></span><span>编辑</span></p>
+            <p @click="someThing(1)" v-if="editNo"><span class="iconfont icon-shanchu"></span><span>删除</span></p>
+            <p v-if="!addInfo && editFlag" class="cofirm" @click="someThing(2)">确认</p>
+            <p v-if="!addInfo && editFlag" class="reset" @click="someThing(3)">取消</p>
+            <p v-if="addInfo" class="save" @click="someThing(4)">保存</p>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
+<script src="__PUBLIC__/Home/js/wx_imgUpload.js"></script>
+<script>
+    $(function(){
+        var vConsole = new VConsole();
+        //微信接口
+        wx.config({
+            debug: false,
+            appId: '{{$info["appId"]}}',
+            timestamp: '{{$info["timestamp"]}}',
+            nonceStr: '{{$info["nonceStr"]}}',
+            signature: '{{$info["signature"]}}',
+            jsApiList: [
+            // 所有要调用的 API 都要加到这个列表中
+            'chooseImage',
+            'uploadImage',
+            'getLocalImgData',
+            'downloadImage'
+            ]
+        });
+    })
+</script>
+<script>
+    var installInfo = new Vue({
+        el: '#installInfo',
+        data () {
+            return {
+                editNo: true,//从安装人员列表进入
+                editFlag :false,//编辑状态
+                addInfo: false,//添加安装人员
+                imgId: "",
+                userInfos:{
+                    name: "",
+                    phone: "",
+                    idCard: "",
+                    num: "",
+                    password: "",
+                    uImg: "__PUBLIC__/Home/images/normal.png",
+                    start: ""
+                },
+                userVal: {
+                    name: "",
+                    phone: "",
+                    idCard: "",
+                    num: "",
+                    password: "",
+                    uImg: "__PUBLIC__/Home/images/normal.png",
+                    start: ""
+                }
+            }
+        },
+        created (){
+            this.index = GetQueryString("index");
+            console.log(typeof this.index);
+            // 添加安装人员
+            if(this.index == "1") {
+                this.editNo = false;
+                this.editFlag = true;
+                this.addInfo = true;
+                // 用户信息
+                this.userInfos = {
+                    name: "",
+                    phone: "",
+                    idCard: "",
+                    num: "",
+                    password: "",
+                    uImg: "__PUBLIC__/Home/images/normal.png",
+                    start: ""
+                }
+            }
+        },
+        methods: {
+            // 编辑 - 0 、删除 - 1 、保存 - 4 、取消 - 3 、确认 - 2 按钮
+            someThing(val) {
+                var val = val;
+                var userName = $();
+                
+                
+                switch(val) {
+                    case 0:
+                    console.log("编辑");
+                    this.editNo = false;
+                    this.editFlag = true; 
+                    break;
+                    case 1:
+                    console.log("删除")
+                    layui.use("layer", function() {
+                        var layer = layui.layer;
+                        
+                        layer.confirm("确定删除?", function(index) {
+                            // 删除信息
+                            $.ajax({
+                                url: "",
+                                type: "post",
+                                data: {},
+                                success: function(res) {
+                                    if(res.status == 200) {
+                                        layer.msg("删除成功!");
+                                        setTimeout(function() {
+                                            // location.href = ""
+                                        }, 1000);
+                                    }
+                                },
+                                error: function(res) {
+                                    
+                                }
+                            })
+                            layer.close(index);
+                        })
+                    })
+                    break;
+                    case 2:
+                    console.log("确认");
+                    this.editNo = true;
+                    this.editFlag = false;
+                    this.addInfo = false;
+                    // 验证
+                    if(!this.infoVal.name) {
+                        layuiHint("姓名不能为空!");
+                        return;
+                    }
+                    if(!this.infoVal.phone) {
+                        layuiHint("电话号码不能为空!");
+                        return;
+                    }else {
+                        if(!phoneReg.test(this.infoVal.phone)) {
+                            layuiHint("请输入正确的电话号码!");
+                            return;
+                        }
+                    }
+                    if(!this.infoVal.idCard) {
+                        layuiHint("身份证号码不能为空!");
+                        return;
+                    }
+                    if(!this.infoVal.num) {
+                        layuiHint("工号不能为空!");
+                        return;
+                    }
+                    if(!this.infoVal.password) {
+                        layuiHint("密码不能为空!");
+                        return;
+                    }
+                    return;
+                    // 提交
+                    $.ajax({
+                        url: "",
+                        type: "post",
+                        data: {},
+                        success: function(res) {
+                            if(res.status == 200) {
+                                layer.msg("删除成功!");
+                                setTimeout(function() {
+                                    // location.href = ""
+                                }, 1000);
+                            }
+                        },
+                        error: function(res) {
+                            
+                        }
+                    })
+                    break;
+                    case 3:
+                    console.log("取消");
+                    this.editNo = true;
+                    this.editFlag = false;
+                    this.addInfo = false;
+                    layuiHint("已取消");
+                    break;
+                    case 4:
+                    console.log("保存");
+                    
+                    break;
+                }
+            },
+            // 选择照片
+            chooseImg () {
+                // 编辑和添加状态下才可以上传头像
+                if(!this.editNo) {
+                    console.log("编辑头像");
+                    wxuploadimg(function(res) {
+                        this.infoVal.uImg = res['src'];//显示图片
+                        this.imgId = res.media_id;//发送到后台的图片id
+                    })
+                }
+                
+            }
+        }
+    })
+</script>
+
+</html>

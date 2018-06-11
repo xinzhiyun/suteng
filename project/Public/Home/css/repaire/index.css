@@ -12,7 +12,7 @@ body{
 .repairTop{
   padding-top:.5rem;
   
-}
+} 
 /*设备id*/
 .deviceid {
   width: 100%;
@@ -267,10 +267,12 @@ body{
 }
 .serverZhe > ul, .deviceZhe > ul {
   width: 70vw;
+  height: 70vh;
   border-radius: 5px;
   margin: 5rem auto 0;
   padding: .2rem 1rem;
   background-color: white;
+  overflow-y: scroll;
 }
 .serverZhe > ul > li, .deviceZhe > ul > li {
   padding: .5rem 0;

@@ -12,7 +12,7 @@
 </head>
 <body>
 	<div id='recoed_detail'>
-		<div>
+		<div class='content'>
 			<ul class='timeline' v-for='d in detailList'>
 				<li class='cfix'>
 					<b class='fl' v-text='d.title'></b>
@@ -22,6 +22,27 @@
 			</ul>
 		</div>
 		<p class='notice' :style='{display: noticestyle}' v-text='notice'></p>
+		<button v-show='showEval' class='evaluate' @click='evaluate'>评价</button>
+		<div class='evalPanel' :style='evalPanel'>
+			<h3>评论本次服务</h3>
+			<ul>
+				<li class='xinx'>
+					<span class="iconfont icon-xingxing" :class='{activeClass: num >= 1}' @click='xingx(1)'></span>
+					<span class="iconfont icon-xingxing" :class='{activeClass: num >= 2}' @click='xingx(2)'></span>
+					<span class="iconfont icon-xingxing" :class='{activeClass: num >= 3}' @click='xingx(3)'></span>
+					<span class="iconfont icon-xingxing" :class='{activeClass: num >= 4}' @click='xingx(4)'></span>
+					<span class="iconfont icon-xingxing" :class='{activeClass: num == 5}' @click='xingx(5)'></span>
+				</li>
+				<li class='text'>
+					<span v-for='text in textList' v-text='text' @click='textSelect($event)'></span>
+				</li>
+				<li>
+					<label for="" style='padding-left: 4vw;'>其他想对师傅说的话</label>
+					<textarea name="" id="" cols="30" rows="6" placeholder="随便说说吧"></textarea>
+				</li>
+				<button class='evaluate'>匿名提交</button>
+			</ul>
+		</div>
 	</div>
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
@@ -34,33 +55,42 @@
 					noticestyle: 'block',
 					workid: GetQueryString('workid'),
 					detailList: [],
+					showEval: false,
+					evalPanel: '',
+					textList: ['不错', '态度好', '守时', '效率高', '长得帅', '说话好听'],
+					num: '',
 				}
 			},
 			created (){
 				var vm = this;
-				// vm.detailList = [
-					// {
-					// 	title: '工单生成',
-					// 	time: '2018-06-04 19:30',
-					// 	content: '系统正安排，请耐心等待'
-					// },
-					// {
-					// 	title: '已安排服务站点',
-					// 	time: '2018-06-04 19:30',
-					// 	content: '服务站点正在为您优先安排安装师傅上门，预计需要1-3个工作日'
-					// },
-					// {
-					// 	title: '已安排安装师傅',
-					// 	time: '2018-06-04 19:30',
-					// 	content: '请保持电话畅通'
-					// },
-					// {
-					// 	title: '安装完成',
-					// 	time: '2018-06-04 19:30',
-					// 	content: '水机安装服务已经完成，请点击下面对本次服务进行评价'
-					// }
-				// ];
 				vm.getDetail(vm.workid);
+
+				hashchangeFn(function(hash){
+					if(hash.indexOf('#evaluate') < 0){
+						// 隐藏
+						vm.evalPanel = 'transform:translateY(100%)';
+					}else{
+						// 显示
+						vm.evalPanel = 'transform:translateY(0%)';
+					}
+				})
+ 
+				// 监听hashchange事件
+				function hashchangeFn(callback) {
+					var haschangeflag = false;
+					window.addEventListener('hashchange', function(){
+						haschangeflag = true;
+						callback(location.hash);
+					}, false);
+					// console.log('haschangeflag: ',haschangeflag);
+					// console.log('hash: ',location.hash);
+					// 刷新保持
+					if(!haschangeflag){
+						callback(location.hash);
+					}
+				}
+
+				vm.getEvaluate();
 			},
 			methods: {
 				// 获取详情数据
@@ -73,9 +103,21 @@
 						data: {number: workid},
 						success: function(res){
 							console.log('res: ',res);
-                            vm.noticestyle="none";
                             if(res.status == 200){
-								vm.detailList = res.data;
+                            	if(res.data.length){
+                            		vm.noticestyle = "none";
+									vm.detailList = res.data;
+									for(var i=0; i<res.data.length; i++){
+										if(res.data[i].content.indexOf('评价') > 0){
+											// 获取评价的数据
+											vm.getEvaluate(workid);
+											vm.showEval = 'true';
+										}
+									}
+								}else{
+                            		vm.notice = "查无数据";
+									layuiHint('查无数据');
+								}
 							}else{
 								layuiHint(res.msg);
 							}
@@ -84,6 +126,46 @@
 							console.log('err: ',err);
 						}
 					})
+				},
+				// 获取评论的数据
+				getEvaluate (workid) {
+					var vm = this;
+					$.ajax({
+						url: getURL('Home', 'Work/getEvaluate'),
+						type: 'get',
+						data: {number: workid},
+						success: function(res){
+							console.log('res: ',res);
+						},
+						error: function(err){
+							console.log('err: ',err);
+						}
+					})
+				},
+				// 点击评论按钮
+				evaluate () {
+					var vm = this;
+					vm.evalPanel = 'transform:translateY(0);';
+					location.href = location.href + '#evaluate';
+				},
+				// 点击星星
+				xingx (index) {
+					this.num = index;
+					console.log('num: ',this.num);
+				},
+				textSelect (e) {
+					var el = e.currentTarget;
+					var elclass = el.getAttribute('class');
+					if(elclass == 'eval'){
+						el.setAttribute('class', '');
+					}else{
+						el.setAttribute('class', 'eval');
+					}
+				},
+				// 提交评论数据
+				upEval () {
+					var vm = this;
+					var workid = vm.workid;
 				}
 			}
 		})

@@ -43,6 +43,22 @@ class ServiceController extends ServiceCommonController
         $_GET['p']=$p;
 
         $map['sid'] = $_SESSION['serviceInfo']['id'];
+
+        if($_GET['result']==4){  //服务站人员
+            $total = M('service_users')
+                ->where($map)
+                ->count();
+            if(empty($total)){
+                $this->toJson(['data'=>[]],'获取成功');
+            }
+            $page  = new \Think\Page($total,10);
+            $list = M('service_users')
+                ->where($map)
+                ->limit($page->firstRow.','.$page->listRows)
+                ->select();
+            $this->toJson(['data'=>$list],'获取成功');
+        }
+
         $map['is_examine'] = 1;
         if(!empty($_GET['word'])){
             $map['number'] = ['like','%'.$_GET['word'].'%'];

@@ -467,10 +467,21 @@ class VipCenterController extends CommonController
     }
     public function get_service_record()
     {
-        $map['uid'] =session('user.id');
-        $work_data =  M('work')->where($map)->select();
+        $p = I('p',1);
+        $_GET['p']=$p;
 
-        $this->toJson(['data'=>$work_data],'获取成功');
+        $map['uid'] =session('user.id');
+
+        $total =  M('work')->where($map)->count();
+        if(empty($total)){
+            $this->toJson(['data'=>[]],'获取成功!');
+        }
+        $page  = new \Think\Page($total,10);
+        $work_data =  M('work')->where($map)
+            ->limit($page->firstRow.','.$page->listRows)
+            ->select();
+        
+        $this->toJson(['data'=>$work_data],'获取成功!');
     }
 
     //会员 服务记录
@@ -492,8 +503,15 @@ class VipCenterController extends CommonController
                 E('工单信息不存在',400022);
             }
             $list = M('work_note')->where('wid='.$info['id'])->order('id desc')->select();
-
-            $this->toJson(['data'=>$list],'获取成功!');
+            $evaluaction = 0;
+            if($info['result'] ==3){
+                $evaluaction = 1;
+            }
+            $res = [
+                'data'=>$list,
+                'evaluaction'=> $evaluaction
+            ];
+            $this->toJson($res,'获取成功!');
 
         } catch (\Exception $e) {
             $this->toJson($e);

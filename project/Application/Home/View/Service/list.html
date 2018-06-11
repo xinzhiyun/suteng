@@ -12,7 +12,7 @@
 </head>
 <body>
 	<div id='servicelist'>
-		<div class='search'>
+		<div class='search' v-if="result != 4">
 			<span>
 				<i class='iconfont icon-sousuo' @click='search(word)'></i>
 				<input type="text" placeholder="请输入工单号/设备编码" v-model='word' @keyup.enter='search(word)'>
@@ -33,6 +33,15 @@
 			<div class='loadmore' @click='loadmore' :style='{display: loadstyle}'>加载更多</div>
 		</ul>
 		<p class='notice' :style='{display: noticestyle}' v-text='notice'></p>
+		
+		<!-- 添加安装人员 -->
+		<div class="installAdd" v-if="result == 4">
+			<a href="{{:U('Home/Service/installInfo')}}?index=1">
+				<span class="iconfont icon-jiahao"></span>
+				<span>添加安装人员</span>
+			</a>
+			
+		</div>
 	</div>
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
@@ -49,8 +58,8 @@
 					page: '',			// 分页
 					loadstyle: 'block',
 					colorList: ['color:#f16e65;', 'color:#2196F3;', 'color:#2196F3;', 'color:#00d4c2;'],
-					titleList: ['未派工', '处理中', '待验收', '已完成', '全部'],
-					statusList: ['状态', '作业人员', '作业人员', '作业人员', '状态'],
+					titleList: ['未派工工单', '处理中工单', '待验收工单', '已完成工单', '员工管理', '全部工单'],
+					statusList: ['状态', '作业人员', '作业人员', '作业人员', '姓名', '状态'],
 					notice: '正在加载...',
 					noticestyle: 'block',
 				}
@@ -59,8 +68,8 @@
 				var vm = this;
 				this.result = GetQueryString('result');
 				console.log('result: ',this.result);
-				document.title = vm.titleList[!this.result ? 4 : +this.result] + '工单';
-				this.status = vm.statusList[!this.result ? 4 : +this.result];
+				document.title = vm.titleList[!this.result ? 5 : +this.result];
+				this.status = vm.statusList[!this.result ? 5 : +this.result];
 				// result: 0待处理 1处理中 2待验收 3(完成)
 				// 获取列表
 				this.getList(function(res){
@@ -82,7 +91,7 @@
 						vm.notice = '查无数据';
 						vm.loadstyle = 'none';
 						layuiHint('查无数据');
-
+						
 					}
 					servicelist.page = 1;
 				}, this.result);
@@ -133,7 +142,7 @@
 					// 请求分页数据
 					this.getList(function(res){
 						console.log('res: ',res);
-
+						
 						if(res.data.length){
 							for(var i=0; i<res.data.length; i++){
 								vm.list.push({
@@ -148,7 +157,7 @@
 						}else{
 							vm.loadstyle = 'none';
 							layuiHint('无更多数据');
-
+							
 						}
 					}, vm.result, vm.page);
 				},
