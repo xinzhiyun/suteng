@@ -143,6 +143,11 @@ class WechatController extends Controller
 			   "name":"用户入口",
 			           "sub_button":[
 			            {
+			                "type":"view",
+			                "name":"新用户报装",
+			                "url":"http://test.dianqiukj.com/index.php/Home/Repair/index?install=1"
+			            },
+			            {
 			               "type":"view",
 			                "name":"服务站",
 			                "url":"http://test.dianqiukj.com/index.php/Home/Service/index"

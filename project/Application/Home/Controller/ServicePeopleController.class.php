@@ -8,37 +8,21 @@ use Common\Tool\Work;
 
 class ServicePeopleController extends ServiceCommonController
 {
-    // 主页
-    public function index()
-    {
-        $sid = $_SESSION['serviceInfo']['id'];
-        $map['sid'] = $sid;
-        $map['is_examine']=1;
-        M('work')->where($map)->select();
-
-        $this->display();
-    }
-    
-    //任务列表
+    // 主页 人员列表
     public function list()
     {
-        $this->display();
+        $this->display('service/list');
     }
+
     // 获取列表
     public function getList()
     {
         $p = I('p',1);
         $_GET['p']=$p;
 
-        // $map['sid'] = $_SESSION['serviceInfo']['id'];
-        $map['is_examine'] = 1;
+        $map['sid'] = $_SESSION['serviceInfo']['id'];
 
-        //处理结果 (0：待处理(服务站) 1处理中(工作人员) 2已完成(工作人员) 3(完成) 9 工单关闭 )
-        if(isset($_GET['result'])){
-            $map['result'] = $_GET['result'];
-        }
-
-        $total = M('work')
+        $total = M('service_users')
             ->where($map)
             ->count();
         if(empty($total)){
@@ -46,20 +30,16 @@ class ServicePeopleController extends ServiceCommonController
         }
 
         $page  = new \Think\Page($total,10);
-        $list = M('work')
+        $list = M('service_users')
             ->where($map)
             ->limit($page->firstRow.','.$page->listRows)
             ->select();
         $this->toJson(['data'=>$list],'获取成功');
     }
 
-    // 工单详情
-    public function detail()
-    {
-        $this->display();
-    }
-    // 详情页
-    public function getDetail()
+
+    // 添加安装人员
+    public function addPeople()
     {
         try {
             $number = I('number');
@@ -67,7 +47,9 @@ class ServicePeopleController extends ServiceCommonController
                 E('工单号错误',400001);
             }
             $map['sid'] = $_SESSION['serviceInfo']['id'];
-            $list = M('service_users')->where($map)->select();
+
+            
+            $list = M('service_users')->add($data);
 
             $info = M('work')->where('number='.$number)->find();
             $this->toJson(['data'=>$info,'people'=>$list],'获取成功');
