@@ -357,7 +357,7 @@ st_shop_order_detail.gid ='.$value['gid']);
                                     //修改用户表的金币数量
                                     //先查出该用户现有的金币总数
                                     $silver = M('users')->where("open_id='{$openid}'")->find()['silver'];
-                                    $totlaNum = $silver + $refundPrice;
+                                    $totlaNum = $silver + $refundPrice*2;
 
                                     // echo $totlaNum;die;
                                     $users['silver'] = $totlaNum;
@@ -550,18 +550,38 @@ st_shop_order_detail.gid ='.$value['gid']);
                         //先查询商品订单总价
                         $odetail = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
 
+                        // dump($odetail);
+
                         foreach ($odetail as $key => $value) {
                             //订单总价
-                            (int)$totalPrice += $value['price']*$value['num'];
+                            (int)$totalPrice += ($value['price']+$value['cprice'])*$value['num'];
                         }
                         
+
                         //查询要退款的金额
                         $refundInfo = M('refund')->where('id='.$id)->find();
                         $refundPrice = (int)$refundInfo['total_amount'];
 
+                        //查找退款的商品id及订单
+                        $gid = M('RefundGoods')->where('rf_id='.$id)->select();
+                        foreach ($gid as $key => $value) {
+                            $espress = M('shop_order_detail')->where('order_id='.$value['oid'].' and gid='.$value['gid'])->select();    
+                        }
+
+                        //商品快递总价
+                        foreach ($espress as $key => $value) {
+                            $totalEspressPrice += $value['cprice']*$value['num'];
+                        }
+                        // dump($totalEspressPrice);
+                        // // dump($refundInfo);
+
+                        // dump($refundPrice);die;
+
+                        //要退款的总金币数
+                        $totalNum = $refundPrice + $totalEspressPrice;
 
                         //判断退款金额是否超过订单总额
-                        if ($refundPrice > $totalPrice) {
+                        if ($totalNum > $totalPrice) {
                             $this->ajaxReturn(array('code'=>'400','msg'=>'退款金额超过订单总额'));
                         } else {
 
@@ -575,7 +595,7 @@ st_shop_order_detail.gid ='.$value['gid']);
                             //修改用户表的金币数量
                             //先查出该用户现有的金币总数
                             $gold_num = M('users')->where("open_id='{$openid}'")->find()['gold_num'];
-                            $totlaNum = $gold_num + $refundPrice;
+                            $totlaNum = $gold_num + $totalNum;
 
                             // echo $totlaNum;die;
                             $users['gold_num'] = $totlaNum;
@@ -658,9 +678,26 @@ st_shop_order_detail.gid ='.$value['gid']);
                         $refundInfo = M('refund')->where('id='.$id)->find();
                         $refundPrice = (int)$refundInfo['total_amount'];
 
-                        
+                        //查找退款的商品id及订单
+                        $gid = M('RefundGoods')->where('rf_id='.$id)->select();
+                        foreach ($gid as $key => $value) {
+                            $espress = M('shop_order_detail')->where('order_id='.$value['oid'].' and gid='.$value['gid'])->select();    
+                        }
+
+                        //商品快递总价
+                        foreach ($espress as $key => $value) {
+                            $totalEspressPrice += $value['cprice']*$value['num'];
+                        }
+                        // dump($totalEspressPrice);
+                        // // dump($refundInfo);
+
+                        // dump($refundPrice);die;
+
+                        //要退款的总银币数
+                        $totalNum = $refundPrice + $totalEspressPrice;
+
                         //判断退款金额是否超过订单总额
-                        if ($refundPrice > $totalPrice) {
+                        if ($totalNum > $totalPrice) {
                             $this->ajaxReturn(array('code'=>'400','msg'=>'退款金额超过订单总额'));
                         } else {
 
@@ -674,7 +711,7 @@ st_shop_order_detail.gid ='.$value['gid']);
                             //修改用户表的金币数量
                             //先查出该用户现有的金币总数
                             $silver = M('users')->where("open_id='{$openid}'")->find()['silver'];
-                            $totlaNum = $silver + $refundPrice;
+                            $totlaNum = $silver + $totalNum*2;
 
                             // echo $totlaNum;die;
                             $users['silver'] = $totlaNum;
