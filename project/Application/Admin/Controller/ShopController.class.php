@@ -95,10 +95,16 @@ class ShopController extends CommonController
             $res = $cate->where('pid='.$id)->find();
             if(!empty($res)){
                 E('该分类存在子类，不可删除',204);
-            } else {
-                $res = $cate->where('id='.$id)->delete();
-                if($res) E('分类删除成功', 200);
             }
+            // 判断该分类下的商品
+            $count = D('goods')->where(['cid'=>$id])->count();
+            if($count > 0){
+                E('该分类下存在商品，不可删除',204);
+            }
+            
+            $res = $cate->where('id='.$id)->delete();
+            if($res) E('分类删除成功', 200);
+            
         } catch (\Exception $e) {
             $err = [
                 'code' => $e->getCode(),
@@ -196,7 +202,7 @@ class ShopController extends CommonController
     public function goodsAction()
     {
         // dump($_POST);die;
-       
+       p($_FILES);die;
         try{
             $goods_add = D('Goods');
             $attr_val = D('AttrVal');
