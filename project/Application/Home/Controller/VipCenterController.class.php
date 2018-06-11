@@ -473,6 +473,9 @@ class VipCenterController extends CommonController
         $_GET['p']=$p;
 
         $map['uid'] =session('user.id');
+        if(!empty($_GET['word'])){
+            $map['number'] = ['like','%'.$_GET['word'].'%'];
+        }
 
         $total =  M('work')->where($map)->count();
         if(empty($total)){

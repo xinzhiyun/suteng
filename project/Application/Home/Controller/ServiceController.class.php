@@ -274,7 +274,7 @@ class ServiceController extends ServiceCommonController
             }
 
             E('操作失败,请重试!',202);
-            
+
         } catch (\Exception $e) {
             $this->toJson($e);
         }
