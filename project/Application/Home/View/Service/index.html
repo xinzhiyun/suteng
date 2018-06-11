@@ -7,6 +7,12 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/station/index.css">
 	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
+	<script>
+		var waitnum = "{{$work[1]|default = '0'}}";
+		var waitcomfirmnum = "{{$work[2]|default = '0'}}";
+		var serviceName = "{{$work['name']}}";
+		console.log(waitnum, waitcomfirmnum, serviceName);
+	</script>
 </head>
 <body>
 	<div id='service'>
@@ -22,7 +28,7 @@
 				<p>待办工单</p>
 			</li>
 			<li class='worktype' @click='getList(1)' result='1'>
-				<i v-text='num.processnum'></i>
+				<!-- <i v-text='num.processnum'></i> -->
 				<span>
 					<img src="__PUBLIC__/Home/images/clz.png" alt="">
 				</span>
@@ -38,25 +44,25 @@
 		</ul>
 		<ul class="botTwo">
 			<li class='worktype' @click='getList(3)' result='3'>
-				<i v-text='num.oknum'></i>
+				<!-- <i v-text='num.oknum'></i> -->
 				<span>
 					<img src="__PUBLIC__/Home/images/pg.png" alt="">
 				</span>
 				<p>已完成工单</p>
 			</li>
 			<li class='worktype' @click='getList(11)' result='11'>
-				<i v-text='num.allnum'></i>
+				<!-- <i v-text='num.allnum'></i> -->
 				<span>
 					<img src="__PUBLIC__/Home/images/qbgd.png" alt="">
 				</span>
 				<p>全部工单</p>
 			</li>
-			<li class='worktype' style='opacity: 0;'>
-				<i></i>
+			<li class='worktype' @click="getList(4)">
+				<!-- <i></i> -->
 				<span>
-					<!-- <img src="__PUBLIC__/Home/images/qbgd.png" alt=""> -->
+					<img src="__PUBLIC__/Home/images/manage.png" alt="">
 				</span>
-				<p></p>
+				<p>安装人员</p>
 			</li>
 		</ul>
 	</div>
@@ -66,8 +72,8 @@
 			el: '#service',
 			data () {
 				return {
-					service_name: '广州番禺服务站',
-					num: {waitnum: 12, processnum: 16, waitcomfirmnum: 14, oknum: 15, allnum: 57}
+					service_name: serviceName,
+					num: {waitnum: waitnum, processnum: 16, waitcomfirmnum: waitcomfirmnum, oknum: 15, allnum: 57}
 				}
 			},
 			methods: {
