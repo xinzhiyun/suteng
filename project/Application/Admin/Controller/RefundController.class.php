@@ -357,7 +357,7 @@ st_shop_order_detail.gid ='.$value['gid']);
                                     //修改用户表的金币数量
                                     //先查出该用户现有的金币总数
                                     $silver = M('users')->where("open_id='{$openid}'")->find()['silver'];
-                                    $totlaNum = $silver + $refundPrice;
+                                    $totlaNum = $silver + $refundPrice*2;
 
                                     // echo $totlaNum;die;
                                     $users['silver'] = $totlaNum;
