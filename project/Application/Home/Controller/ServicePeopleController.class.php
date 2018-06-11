@@ -48,8 +48,8 @@ class ServicePeopleController extends ServiceCommonController
             }
             $map['sid'] = $_SESSION['serviceInfo']['id'];
 
-            
-            $list = M('service_users')->add($data);
+
+            //$list = M('service_users')->add($data);
 
             $info = M('work')->where('number='.$number)->find();
             $this->toJson(['data'=>$info,'people'=>$list],'获取成功');
