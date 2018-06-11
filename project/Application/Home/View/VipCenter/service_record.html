@@ -15,7 +15,7 @@
 		<div class='search'>
 			<span>
 				<i class='iconfont icon-sousuo' @click='search(word)'></i>
-				<input type="text" placeholder="请输入工单号/设备编码" v-model='word' @keyup.enter='search(word)'>
+				<input type="text" placeholder="请输入工单号" v-model='word' @keyup.enter='search(word)'>
 			</span>
 		</div>
 		<div class='title spli'>
@@ -143,9 +143,9 @@
 						return
 					}
 					$.ajax({
-						url: getURL('Home', 'vipCenter/getList'),
+						url: getURL('Home', 'vipCenter/get_service_record'),
 						type: 'get',
-						data: {result: vm.result, word: word},
+						data: {word: word},
 						success: function(res){
 							console.log('res: ',res);
 							if(res.status == 200){
