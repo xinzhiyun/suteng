@@ -13,20 +13,20 @@ class ServiceController extends ServiceCommonController
     {
         $sid = $_SESSION['serviceInfo']['id'];
         $service = M('service')->find($sid);
-        
+
         $work['name'] = $service['company'];
 
         $map['sid'] = $sid;
         $map['is_examine']=1;
 
         $workModel = M('work');
-        $work[10] = $workModel->where($map)->count();
 
-        // 处理结果(0：待处理(服务站) 1处理中(工作人员) 2已完成(工作人员) 3(完成) 10 全部)
-        for ($i=0;$i<4;$i++){
-            $map['result'] = $i;
-            $work[$i] = $workModel->where($map)->count();
-        }
+        $map['result'] = 0;
+        $work[1] = $workModel->where($map)->count();
+
+        $map['result'] = 2;
+        $work[2] = $workModel->where($map)->count();
+
         $this->assign('work',$work);
         $this->display();
     }
