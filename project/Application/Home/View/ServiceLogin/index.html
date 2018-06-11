@@ -60,7 +60,11 @@
 			success: function(res) {
                 console.log("登录", res);
                 if(res.status == 200) {
-                    location.href = '{{:U("Home/Service/index")}}';
+					layuiHint("登录成功!");
+					setTimeout(function() {
+						location.href = '{{:U("Home/Service/index")}}';
+					}, 1000);
+                    
 				}else{
                     layuiHint(res.info);
                 }
