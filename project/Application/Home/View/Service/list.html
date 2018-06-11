@@ -27,7 +27,7 @@
 			<li class='spli' v-for='li in list' @click='getDetail(li.number, li.result)'>
 				<span v-text='li.number'></span>
 				<span v-if='result == 0 || result == "undefined"' :style='li.style' v-text='li.text'></span>
-				<span v-if='result == 1 || result == 2 || result == 3' v-text='li.name'></span>
+				<span v-if='result == 1 || result == 2 || result == 3 || result == 4' v-text='li.name'></span>
 				<span v-text='li.create_at'></span>
 			</li>
 			<div class='loadmore' @click='loadmore' :style='{display: loadstyle}'>加载更多</div>
@@ -38,7 +38,7 @@
 		<div class="installAdd" v-if="result == 4">
 			<a href="{{:U('Home/Service/installInfo')}}?index=1">
 				<span class="iconfont icon-jiahao"></span>
-				<span>添加安装人员</span>
+				<!-- <span>添加安装人员</span> -->
 			</a>
 			
 		</div>
@@ -76,16 +76,29 @@
 					console.log('res: ',res);
 					if(res.data.length){
 						for(var i=0; i<res.data.length; i++){
-							vm.list.push({
-								name: res.data[i].name,
-								number: res.data[i].number,
-								text: vm.titleList[+res.data[i].result],
-								style: vm.colorList[+res.data[i].result],
-								create_at: timetrans(res.data[i].create_at),
-								result: res.data[i].result
-							});
+							if(vm.result == '4') {
+								console.log(4444)
+								vm.list.push({
+									name: res.data[i].name,
+									number: res.data[i].sn,
+									// text: vm.titleList[+res.data[i].result],
+									// style: vm.colorList[+res.data[i].result],
+									create_at: timetrans(res.data[i].addtime),
+									// result: res.data[i].result
+								});
+							}else {
+								vm.list.push({
+									name: res.data[i].name,
+									number: res.data[i].number,
+									text: vm.titleList[+res.data[i].result],
+									style: vm.colorList[+res.data[i].result],
+									create_at: timetrans(res.data[i].create_at),
+									result: res.data[i].result
+								});
+							}
+							
 						}
-						console.log("vm.text", vm.list)
+						// console.log("vm.text", vm.list);
 						vm.noticestyle = 'none';
 					}else{
 						vm.notice = '查无数据';
@@ -104,7 +117,7 @@
 						url: getURL('Home', 'Service/getList'),
 						type: 'get',
 						success: function(res){
-							console.log('list res: ',res);
+							// console.log('list res: ',res);
 							if(res.status == 200){
 								callback(res);
 							}else{
@@ -132,7 +145,12 @@
 				// 跳到详情界面
 				getDetail (workid, result) {
 					// console.log(result);return;
-					location.href = getURL('Home', 'Service/detail')+'?result='+ result +'&workid='+ workid;
+					if(this.result == 4) {
+						location.href = getURL('Home', 'Service/installInfo');
+					}else {
+						location.href = getURL('Home', 'Service/detail')+'?result='+ result +'&workid='+ workid;
+					}
+					
 				},
 				// 加载更多
 				loadmore () {
@@ -141,17 +159,25 @@
 					console.log('page: ', vm.page);
 					// 请求分页数据
 					this.getList(function(res){
-						console.log('res: ',res);
-						
+						console.log('res: ',res, res.data[0].sn);
 						if(res.data.length){
 							for(var i=0; i<res.data.length; i++){
-								vm.list.push({
-									name: res.data[i].name,
-									number: res.data[i].number,
-									text: vm.titleList[+res.data[i].type],
-									style: vm.colorList[+res.data[i].type],
-									create_at: timetrans(res.data[i].create_at)
-								});
+								if(vm.result == 4) {
+									vm.list.push({
+										name: res.data[i].name,
+										number: res.data[i].sn,
+										create_at: timetrans(res.data[i].addtime)
+									})
+								}else {
+									vm.list.push({
+										name: res.data[i].name,
+										number: res.data[i].number,
+										text: vm.titleList[+res.data[i].type],
+										style: vm.colorList[+res.data[i].type],
+										create_at: timetrans(res.data[i].create_at)
+									});
+								}
+								
 							}
 							vm.page++;
 						}else{
