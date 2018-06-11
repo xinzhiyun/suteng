@@ -12,10 +12,22 @@ class ServiceController extends ServiceCommonController
     public function index()
     {
         $sid = $_SESSION['serviceInfo']['id'];
+        $service = M('service')->find($sid);
+
+        $work['name'] = $service['company'];
+
         $map['sid'] = $sid;
         $map['is_examine']=1;
-        M('work')->where($map)->select();
 
+        $workModel = M('work');
+
+        $map['result'] = 0;
+        $work[1] = $workModel->where($map)->count();
+
+        $map['result'] = 2;
+        $work[2] = $workModel->where($map)->count();
+
+        $this->assign('work',$work);
         $this->display();
     }
     
