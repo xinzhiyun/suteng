@@ -212,6 +212,7 @@ class ServiceController extends ServiceCommonController
     // 服务站人员
     public function installInfo()
     {
+        $this->wx_info();
         $uid = I('uid');
         if($uid){
             $info = M('service_users')->where('id='.$uid)->find();

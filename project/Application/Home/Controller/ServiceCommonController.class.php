@@ -26,6 +26,16 @@ class ServiceCommonController extends Controller
         }
     }
 
+    /**
+     * 加载微信配置信息
+     */
+    public function wx_info()
+    {
+        $weixin = new \Org\Util\WeixinJssdk();
+        $signPackage = $weixin->getSignPackage();
+        $this->assign('wxinfo',$signPackage);
+    }
+
 
 
 }
