@@ -206,7 +206,7 @@
         
         content:备注 (安装(非必要)/报修(必要))  device_code 设备id 
         
-        province city district 三级地址
+        province city district 三级地址 
         
         province_id city_id district_id 三级地址的ID
         

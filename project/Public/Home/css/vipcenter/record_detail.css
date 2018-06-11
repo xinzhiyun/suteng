@@ -92,7 +92,7 @@ body {
     transition: .3s ease;
 }
 .evalPanel>h3 {
-	padding: 4vw;
+	padding: 4vw; 
 	text-align: center;
 }
 
