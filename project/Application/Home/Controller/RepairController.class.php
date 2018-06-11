@@ -12,13 +12,6 @@ class RepairController extends CommonController
     {
         $map['uid'] = session('user.id');
 
-        $maps['uid'] = session('user.id');
-        $maps['status'] = I('status',0);
-
-
-        $installList = M('shop_order_device_install')->where($maps)->select();
-        $this->assign('installList',$installList);
-
 
         // 调试用默认用户
         $openId = $_SESSION['user']['open_id'];
@@ -32,6 +25,18 @@ class RepairController extends CommonController
         $weixin = new WeixinJssdk;
         $signPackage = $weixin->getSignPackage();
         $this->assign('info',$signPackage);
+
+        $this->display();
+    }
+    
+    // 安装
+    public function install()
+    {
+        $maps['uid'] = session('user.id');
+        $maps['status'] = I('status',0);
+
+        $installList = M('shop_order_device_install')->where($maps)->select();
+        $this->assign('installList',$installList);
 
         $this->display();
     }
