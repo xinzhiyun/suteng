@@ -3,7 +3,7 @@
 <head>
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
   <meta charset="UTF-8">
-  <title>速腾-用户报修</title>
+  <title>速腾-用户安装</title>
   <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
@@ -23,13 +23,6 @@
         <!-- 设备信息 -->
         <div class="repairTop repairCom">
           <ul>
-            <li>
-              <p class="repaireSet selService">
-                <span>服务选择：</span>
-                <span class="serviceVal">请选择</span>
-                <i class="iconfont icon-down"></i>
-              </p>
-            </li>
             <li class="serviceNum">
               <p class="repaireSet selDevice">
                 <span>设备列表：</span>
@@ -39,53 +32,25 @@
             </li>
           </ul>
         </div>
-        <div class="repairMidd repairCom">
-          <h3>问题描述:</h3>
-          <textarea name="content" id="suggestTxt" cols="30" rows="4" placeholder="请描述您所遇到的问题"></textarea>
-          <p>上传截图</p>
-          <div class="repairPic">
-            <i class="iconfont icon-jiahao"></i>
-            <span></span> 
-            <input class="repair-sendpic file_upload" multiple="true" type="button" accept="image/png, image/jpeg, image/gif, image/jpg" >
-            <input type="hidden" name='pic'>
-            <div id="picShow">
-              <!-- <span>
-                <span class="delPic">X</span>
-                <img src="__PUBLIC__/Home/images/1a.jpg" alt="" index="35435435435">
-              </span>
-              <span>
-                <span class="delPic">X</span>
-                <img src="__PUBLIC__/Home/images/1a.jpg" alt="" index="2468468468465">
-              </span>
-              <span>
-                <span class="delPic">X</span>
-                <img src="__PUBLIC__/Home/images/1a.jpg" alt="" index="2468468468465">
-              </span> -->
-              
-            </div>
-            <div class="hide"></div>
-            <span class="picnum">最多上传3张</span>
-          </div>
-        </div>
         <!-- 用户信息 -->
         <div class="repairFoot repairCom">
           <ul>
             <li>
               <p>
-                <span>报修人：</span>
+                <span>联系人：</span>
                 <!-- <span ></span> -->
                 <input type="text" class="repaireName" placeholder="请输入姓名">
               </p>
             </li>
             <li>
               <p class="repairePhone">
-                <span>报修电话：</span>
+                <span>联系电话：</span>
                 <input id="Ltel" type="text" name="phone" value="" placeholder="请输入电话">
               </p>
             </li>
             <li>
               <p class="repaireSet repaireAdd">
-                <span>报修地址：</span>
+                <span>联系地址：</span>
                 <span id="areaID" class="areabtn">请选择</span>
                 <i class="iconfont icon-down"></i>
               </p>
@@ -124,23 +89,13 @@
           <div>确定</div>
         </div> -->
       </div>
-      <!-- 弹框选择 -->
-      <div class="selectOption serverZhe">
-        <ul class="clearfix">
-          <li><i class="iconfont icon-selectcircle"></i><span index="0">安装</span></li>
-          <li><i class="iconfont icon-emptycircle"></i><span index="1">维修</span></li>
-          <li><i class="iconfont icon-emptycircle"></i><span index="2">维护</span></li>
-          <p class="confirmSelect">确定</p>
-        </ul>
-      </div>
       <div class="selectOption deviceZhe">
         <ul class="clearfix">
           <!-- <li><i class="iconfont icon-selectcircle"></i><span>是旅客是两地佛</span></li>
             <p class="confirmSelect">确定</p> -->
         </ul>
       </div>
-    </div>
-    
+    </div> 
   </div>
   <link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
   <script src="__PUBLIC__/Home/js/laydate.js"></script>
@@ -150,26 +105,11 @@
   <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
   <script src="__PUBLIC__/Home/js/wx_imgUpload.js"></script>
   <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
-  <script src="__PUBLIC__/Home/js/repair/repair.js"></script>
+  <script src="__PUBLIC__/Home/js/repair/install.js"></script>
   <script type="text/javascript">
-    $(function(){
+      $(function(){
         // var vConsole = new VConsole();
           console.log("安装",installList, "报修",bindInfo)
-        //微信接口
-        wx.config({
-          debug: false,
-          appId: '{{$info["appId"]}}',
-          timestamp: '{{$info["timestamp"]}}',
-          nonceStr: '{{$info["nonceStr"]}}',
-          signature: '{{$info["signature"]}}',
-          jsApiList: [
-          // 所有要调用的 API 都要加到这个列表中
-          'chooseImage',
-          'uploadImage',
-          'getLocalImgData',
-          'downloadImage'
-          ]
-        });
         // 首页按钮
         !function(){
           // 创建 a 标签

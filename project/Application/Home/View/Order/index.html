@@ -7,6 +7,10 @@
 	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_3mgodvjd6sp833di.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/order/index.css">
 	<title>商品订单</title>
+    <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+    <script>
+        var vconsole = new VConsole();
+    </script>
 </head> 
 <body>
 	<header id="header">
@@ -1200,7 +1204,7 @@
 		m = date.getMinutes() + ':';
 		s = date.getSeconds();
 		return Y+M+D+h+m+s;
-	}
+	} 
 
 	// 点击图片跳到商品详情界面
 	$('body').on('click', '.giPicture', function(){
@@ -1212,7 +1216,7 @@
 	var expressPanel = document.querySelector('.expressPanel');
 	var expressData = {};
 	// 填写物流单号
-	 $('body').on('click','.writeExpress', function(){
+	 $('body').on('touchend','.writeExpress', function(){
 		var serial_num = $(this).attr('serial_num');
 		var gid = $(this).attr('gid');
 		// 流水号， 商品id

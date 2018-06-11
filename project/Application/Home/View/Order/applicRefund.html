@@ -8,6 +8,10 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/refund/applicRefund.css">
 	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_p8cbsn51ch2utyb9.css">
+    <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+    <script>
+        var vconsole = new VConsole();
+    </script>
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
@@ -170,7 +174,7 @@
  
 		 	//重新赋值
 		 	for(var i=0; i<gid.length; i++){
-
+ 
 		 		formData.append('gid[]', gid[i]);
 		 	}
 		 	formData.append('order_id', goodsInfo[0].order_id);
