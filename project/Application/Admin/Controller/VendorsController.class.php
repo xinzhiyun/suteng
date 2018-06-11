@@ -927,7 +927,6 @@ class VendorsController extends CommonController
         }else{
              // 验证通过 可以进行其他数据操作
         }
-        die;
          // 判断账号是否注册过
          $auid = D('vendors')->find($service_id);
          if($auid['auid']){

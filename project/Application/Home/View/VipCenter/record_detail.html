@@ -18,7 +18,7 @@
 					<b class='fl' v-text='d.title'></b>
 					<span class='fr' v-text='d.time'></span>
 				</li>
-				<li v-text='d.content'></li>
+				<li v-html='d.content'></li>
 			</ul>
 		</div>
 		<p class='notice' :style='{display: noticestyle}' v-text='notice'></p>
@@ -38,28 +38,28 @@
 			},
 			created (){
 				var vm = this;
-				vm.detailList = [
-					{
-						title: '工单生成', 
-						time: '2018-06-04 19:30', 
-						content: '系统正安排，请耐心等待'
-					},
-					{
-						title: '已安排服务站点', 
-						time: '2018-06-04 19:30', 
-						content: '服务站点正在为您优先安排安装师傅上门，预计需要1-3个工作日'
-					},
-					{
-						title: '已安排安装师傅', 
-						time: '2018-06-04 19:30', 
-						content: '请保持电话畅通'
-					},
-					{
-						title: '安装完成', 
-						time: '2018-06-04 19:30', 
-						content: '水机安装服务已经完成，请点击下面对本次服务进行评价'
-					}
-				];
+				// vm.detailList = [
+					// {
+					// 	title: '工单生成',
+					// 	time: '2018-06-04 19:30',
+					// 	content: '系统正安排，请耐心等待'
+					// },
+					// {
+					// 	title: '已安排服务站点',
+					// 	time: '2018-06-04 19:30',
+					// 	content: '服务站点正在为您优先安排安装师傅上门，预计需要1-3个工作日'
+					// },
+					// {
+					// 	title: '已安排安装师傅',
+					// 	time: '2018-06-04 19:30',
+					// 	content: '请保持电话畅通'
+					// },
+					// {
+					// 	title: '安装完成',
+					// 	time: '2018-06-04 19:30',
+					// 	content: '水机安装服务已经完成，请点击下面对本次服务进行评价'
+					// }
+				// ];
 				vm.getDetail(vm.workid);
 			},
 			methods: {
@@ -73,10 +73,13 @@
 						data: {number: workid},
 						success: function(res){
 							console.log('res: ',res);
-							if(res.status == 200){
+                            vm.noticestyle="none";
+                            if(res.status == 200){
 								vm.detailList = res.data;
+							}else{
+								layuiHint(res.msg);
 							}
-						},
+                        },
 						error: function(err){
 							console.log('err: ',err);
 						}
