@@ -124,11 +124,11 @@
 			// var gold_rate = JSON.parse($("#rate").val()).gold_rate;
 			// var silver_rate = JSON.parse($("#rate").val()).silver_rate;
 			var gold_num, silver, gold_rate, silver_rate;
-			gold_num = JSON.parse('{{$user|json_encode}}') ? JSON.parse('{{$user|json_encode}}')['gold_num'] : 0;
-			silver = JSON.parse('{{$user|json_encode}}') ? JSON.parse('{{$user|json_encode}}')['silver'] : 0;
+			gold_num = JSON.parse('{{$user|json_encode}}') ? parseInt(JSON.parse('{{$user|json_encode}}')['gold_num']) : 0;
+			silver = JSON.parse('{{$user|json_encode}}') ? parseInt(JSON.parse('{{$user|json_encode}}')['silver']) : 0;
 			gold_rate = JSON.parse('{{$rate|json_encode}}') ? JSON.parse('{{$rate|json_encode}}')['gold_rate'] : 0;
 			silver_rate = JSON.parse('{{$rate|json_encode}}') ? JSON.parse('{{$rate|json_encode}}')['silver_rate'] : 0;
-			console.log("金银币数量", gold_num, silver);
+			console.log("金银币数量", gold_num, silver, gold_rate, silver_rate);
 			// else {
 			// 	// 若无快递数据时友情提示
 			// 	selectPostage = "<p class='postage'><span class='posway'>暂无快递选择</span></p>";
@@ -325,15 +325,16 @@
 				$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
 
 				var fuhao = $(this).parent().text();//获取购买方式
+				console.log(fuhao, goodsPrice, silver_rate)
 				// 判断选择方式是否为：金币或者银币
 				if(fuhao == "金币") {
 					// 金额兑换成金币
-					var goldPrice = (goodsPrice / gold_rate);
+					var goldPrice = gold_rate ? (goodsPrice / gold_rate) : (goodsPrice / 1);
 					// 将￥替换成$符号
 					$(".paytopRight>p").text("$"+goldPrice);
 				}else if(fuhao == "银币") {
 					// 金额兑换成银币
-					var silverPrice = (goodsPrice / silver_rate);
+					var silverPrice = silver_rate ? (goodsPrice / silver_rate) : (goodsPrice / .5);
 					// 将￥替换成$符号
 					$(".paytopRight>p").text("$"+silverPrice);
 				}
@@ -341,7 +342,7 @@
 					// 将$替换成￥符号
 					$(".paytopRight>p").text("￥"+ goodsPrice + ".00");
 				}
-				console.log("选中的支付方式",$(this).parent().text());
+				console.log("选中的支付方式",$(this).parent().text(), goldPrice, silverPrice);
 			})
 			// 付款方式页面隐藏
 			$('.paytop>.paytopLeft>i').click(function(){
