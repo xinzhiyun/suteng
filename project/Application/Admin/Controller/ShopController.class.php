@@ -506,7 +506,7 @@ class ShopController extends CommonController
             }else{// 上传成功
                 // $this->success('上传成功！');
             }
-            p($info);
+            // p($info);
         }
         // p($_FILES);die;
 
