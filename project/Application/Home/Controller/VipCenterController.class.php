@@ -503,8 +503,15 @@ class VipCenterController extends CommonController
                 E('工单信息不存在',400022);
             }
             $list = M('work_note')->where('wid='.$info['id'])->order('id desc')->select();
-
-            $this->toJson(['data'=>$list],'获取成功!');
+            $evaluaction = 0;
+            if($info['result'] ==3){
+                $evaluaction = 1;
+            }
+            $res = [
+                'data'=>$list,
+                'evaluaction'=> $evaluaction
+            ];
+            $this->toJson([],'获取成功!');
 
         } catch (\Exception $e) {
             $this->toJson($e);
