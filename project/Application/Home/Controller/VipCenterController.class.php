@@ -511,7 +511,7 @@ class VipCenterController extends CommonController
                 'data'=>$list,
                 'evaluaction'=> $evaluaction
             ];
-            $this->toJson([],'获取成功!');
+            $this->toJson($res,'获取成功!');
 
         } catch (\Exception $e) {
             $this->toJson($e);
