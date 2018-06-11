@@ -107,7 +107,7 @@
 				// 跳到详情界面
 				getDetail (workid) {
 					console.log('workid: ',workid);
-					location.href = getURL('Home', 'Service/record_detail') +'?workid='+ workid;
+					location.href = getURL('Home', 'vipCenter/record_detail') +'?workid='+ workid;
 				},
 				// 加载更多
 				loadmore () {
@@ -145,7 +145,7 @@
 						return
 					}
 					$.ajax({
-						url: getURL('Home', 'Service/getList'),
+						url: getURL('Home', 'vipCenter/getList'),
 						type: 'get',
 						data: {result: vm.result, word: word},
 						success: function(res){
