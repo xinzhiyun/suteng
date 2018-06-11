@@ -97,7 +97,7 @@ class ShopController extends CommonController
                 E('该分类存在子类，不可删除',204);
             }
             // 判断该分类下的商品
-            $count = D('goods')->where(['cid'=>$id])->count();
+            $count = D('goods')->where(['cid'=>$id,'status'=>['NEQ',2]])->count();
             if($count > 0){
                 E('该分类下存在商品，不可删除',204);
             }
@@ -202,7 +202,7 @@ class ShopController extends CommonController
     public function goodsAction()
     {
         // dump($_POST);die;
-       p($_FILES);die;
+    //    p($_FILES);die;
         try{
             $goods_add = D('Goods');
             $attr_val = D('AttrVal');
@@ -508,7 +508,7 @@ class ShopController extends CommonController
             }
             p($info);
         }
-        p($_FILES);die;
+        // p($_FILES);die;
 
         // die;
         try{
