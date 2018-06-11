@@ -557,30 +557,50 @@ class OrderController extends CommonController
      */
     public function refundMessage()
     {
-        $data['orderid'] = $_POST[''];
-        $data['sname'] = $_POST[''];
-        $data['sphone'] = $_POST[''];
-        $data['saddress'] = $_POST[''];
-        $data['fname'] = $_POST[''];
-        $data['fphone'] = $_POST[''];
-        $data['faddress'] = $_POST[''];
-        $data['espress_name'] = $_POST[''];
-        $data['espress_num'] = $_POST[''];
+        //退货流水单号
+        $serial_num = $_POST['serial_num'];
+
+        //退货id
+        $rid = M('refund')->where('serial_num='.$serial_num)->find()['id'];
+
+        //根据退货id获取该退货的订单id
+        $orderid = M('RefundGoods')->where('rf_id='.$rid)->find()['oid'];
+
+        // echo $orderid;die;
+
+
+        $data['orderid'] = $orderid;
+        $data['sname'] = $_POST['recname'];
+        $data['sphone'] = $_POST['recphone'];
+        $data['saddress'] = $_POST['recaddr'];
+        $data['fname'] = $_POST['toname'];
+        $data['fphone'] = $_POST['tophone'];
+        $data['faddress'] = $_POST['toaddr'];
+        $data['espress_name'] = $_POST['recexpress'];
+        $data['espress_num'] = $_POST['recexpressnum'];
         $data['addtime'] = time();
 
-        dump($_POST);die;
+        // dump($data);die;
+
+        //写入退货信息
+        M('RefundMessage')->startTrans();
+        M('refund')->startTrans();
+
 
         $info = M('RefundMessage')->add($data);
+        //写入成功后修改退货状态
+        $refund['status'] = 6;
+        $refundStatus = M('refund')->where('serial_num='.$serial_num)->save($refund);
 
-        if ($info) {
-            //写入成功后修改退货状态
-            $refund['status'] = 6;
-            $info = M('refund')->where('id='.$id)->save($data);
-
+        if ($info && $refundStatus) {
+            M('RefundMessage')->commit();
+            M('refund')->commit();
+            $this->ajaxReturn(array('code'=>'200','msg'=>'提交成功，请耐心等待商家处理'));
         } else {
-            $this->ajaxReturn(array('code'=>'400','msg'=>'写入信息失败'));
+            M('RefundMessage')->rollback();
+            M('refund')->rollback();
+            $this->ajaxReturn(array('code'=>'400','msg'=>'更改状态信息失败'));
         }
-
 
 
     }
