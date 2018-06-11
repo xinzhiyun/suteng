@@ -60,6 +60,7 @@ body {
 }
 .evaluate {
 	width: 80%;
+	display: none;
 	position: relative;
     padding: 12px;
     left: 50%;

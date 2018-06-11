@@ -153,11 +153,10 @@
 								if(res.data.length){
 									for(var i=0; i<res.data.length; i++){
 										vm.list.push({
-											name: res.data[i].name,
 											number: res.data[i].number,
-											text: vm.titleList[+res.data[i].type],
-											style: vm.colorList[+res.data[i].type],
-											create_at: timetrans(res.data[i].create_at)
+											type: vm.typeList[+res.data[i].type],
+											status: vm.statusList[+res.data[i].result],
+											style: vm.colorList[+res.data[i].result]
 										});
 									}
 								}else{
