@@ -138,7 +138,10 @@ class WorkController extends CommonController
             if($res) {
                 Work::add($data['id'],2);
 
-                $this->autoService($data['id']);  // 分配工单
+                // 分配工单
+                if( !$this->autoService($data['id']) ){
+                    E('审核成功,自动派遣失败,请手动派遣',200);
+                }
 
                 E('修改成功',200);
             } else {
@@ -238,11 +241,11 @@ class WorkController extends CommonController
                 $service_mode = 1;
             }
 
-            $work_res = M('work')->where('id='.$wid)->save( ['sid'=>$sid,'service_mode'=>$service_mode] );
+            $work_res = M('work')->where('id='.$wid)->save( ['sid'=>$sid, 'service_mode'=>$service_mode, 'company'=>$name ] );
 
             if($work_res){
                 // 写工单记录
-                Work::add($wid, 3);
+                return  Work::add($wid, 3);
             }
         }
     }

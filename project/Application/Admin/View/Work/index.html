@@ -77,7 +77,7 @@
                                     <tr><td><h3>暂无工单.....</h3></td></tr>
                                 <else />
                                     <volist name="pageList.data" id="val">
-                                        <tr data-id="{{$val.id}}" data-number="{{$val.number}}" data-title="{{$val.title}}"
+                                        <tr data-id="{{$val.id}}" data-number="{{$val.number}}" data-sid="{{$val.sid}}" data-title="{{$val.title}}"
                                             data-type="{{$val.type}}" data-content="{{$val.content}}" data-result="{{$val['result']}}">
                                             <td>{{$val.number}}</td>
                                             <td>{{$val.title}}</td>
@@ -481,8 +481,15 @@
         var submit = "提交";
         var pagetitle = "修改工单";
         if(action == 'send'){//委派
-            pagetitle = "工单派遣";
-            $('.edit_box_send').show();
+            var sid  = obj.data('sid');
+
+            if(sid){
+                pagetitle = "工单派遣";
+                $('.edit_box_send').show();
+            }else{
+                
+            }
+
 
         }else if(action == 'over'){//完成
             var pagetitle = "工单完成";
@@ -504,9 +511,9 @@
 
 
         // {{:U('Admin/work/edit_work','p='.I('get.p'))}}
-
-        $('.edit_errmsg').text('');
-        $('#st-edit').modal('show');
+        //
+        // $('.edit_errmsg').text('');
+        // $('#st-edit').modal('show');
     });
     $('#edit_submit').click(function(){        
         var editdata = {
