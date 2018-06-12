@@ -8,7 +8,6 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/station/list.css">
 	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
-	<script src='__PUBLIC__/Home/js/public.js'></script>
 </head>
 <body>
 	<div id='servicelist'>
@@ -44,6 +43,7 @@
 		</div>
 	</div>
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+	<script src='__PUBLIC__/Home/js/public.js'></script>
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<script>
 		var servicelist = new Vue({
@@ -77,7 +77,6 @@
 					if(res.data.length){
 						for(var i=0; i<res.data.length; i++){
 							if(vm.result == '4') {
-								console.log(4444)
 								vm.list.push({
 									name: res.data[i].name,
 									number: res.data[i].sn,
@@ -85,6 +84,7 @@
 									// style: vm.colorList[+res.data[i].result],
 									create_at: timetrans(res.data[i].addtime),
 									// result: res.data[i].result
+									result: res.data[i].id
 								});
 							}else {
 								vm.list.push({
@@ -146,7 +146,7 @@
 				getDetail (workid, result) {
 					// console.log(result);return;
 					if(this.result == 4) {
-						location.href = getURL('Home', 'Service/installInfo');
+						location.href = getURL('Home', 'Service/installInfo') + '?uid=' + result;
 					}else {
 						location.href = getURL('Home', 'Service/detail')+'?result='+ result +'&workid='+ workid;
 					}
@@ -166,7 +166,9 @@
 									vm.list.push({
 										name: res.data[i].name,
 										number: res.data[i].sn,
-										create_at: timetrans(res.data[i].addtime)
+										create_at: timetrans(res.data[i].addtime),
+										result: res.data[i].id
+										
 									})
 								}else {
 									vm.list.push({

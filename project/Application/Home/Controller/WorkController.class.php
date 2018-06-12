@@ -53,14 +53,11 @@ class WorkController extends CommonController
 
             if(!empty($post['pic'])){
                 if(is_string($post['pic'])){
-                    $post['pic'] = explode(',',$post['pic']);
+                    $data['pic'] = $post['pic'];
                 }
                 if( is_array($post['pic']) ){
-                    foreach ($post['pic'] as $pic) {
-                        $pics[] = File::downloadPic('work',$pic);
-                    }
+                    $data['pic'] = json_encode($post['pic']);
                 }
-                $data['pic'] = json_encode($pics);
             }
 
             $data['kname'] = $post['kname'];
@@ -149,7 +146,7 @@ class WorkController extends CommonController
             $data['anry_time'] = $post['anry_time'];
             $data['anry_period'] = $post['anry_period'];
 
-            $data['content'] = '新购设备-安装 型号:';
+            $data['content'] = '新购设备-安装 型号:'.$post['device_type'];
             $data['title']   = '设备安装';
 
             $data['device_code'] = $post['device_code'];
@@ -181,6 +178,26 @@ class WorkController extends CommonController
             $list[$e['star']][]=$data;
         }
         $this->toJson(['data'=>$list],'获取成功!');
+    }
+
+    // 图片上传
+    public function picUpload()
+    {
+        $pic = I('pic');
+        if(!empty($pic)){
+            if(is_string($pic)){
+                $pic = explode(',',$pic);
+            }
+            if( is_array($pic) ){
+                foreach ($pic as $p) {
+                    $pics[] = File::downloadPic('work',$p);
+                }
+            }
+            $data['pic'] = json_encode($pics);
+            $this->toJson(['data'=>$data],'上传成功!',200);
+        }else{
+            $this->toJson(['data'=>[]],'无图片上传!',400001);
+        }
     }
 }
 
