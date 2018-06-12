@@ -92,9 +92,13 @@ body{
 .MineFoot ul li{
   height: 1.5rem;
   line-height: 1.5rem;
+  position: relative;
   font-size: 0.7rem;
   border-bottom:1px solid #F3F3F3;
   padding:0.3rem 3% ;
+}
+.MineFoot ul li:active {
+  background: rgba(0,0,0,.04);
 }
 .MineFoot ul li a{
   display: block;

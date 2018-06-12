@@ -1207,7 +1207,7 @@
 	} 
 
 	// 点击图片跳到商品详情界面
-	$('body').on('click', '.giPicture', function(){
+	$('body').on('touchend', '.giPicture', function(){
 		var gid = $(this).attr('gid');
 		if(!gid) return;
 		location.href = '{{:U("Home/Shop/shoppingdetail")}}' + '?gid=' + gid;

@@ -81,7 +81,7 @@ class Work
                 $data['content'] = '任务已完成,请点击下面 评价 对本次服务进行评价.';
                 break;
         }
-        M('work_note')->add($data);
+        return M('work_note')->add($data);
     }
 
     // 自动评价功能 默认4星
