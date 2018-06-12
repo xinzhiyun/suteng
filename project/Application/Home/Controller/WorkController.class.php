@@ -99,6 +99,75 @@ class WorkController extends CommonController
             $this->toJson($e);
         }
     }
+
+    /**
+     * 发起安装工单
+     */
+    public function workAddInatall()
+    {
+        try {
+            $post = I('post.');
+
+            $data['type'] = 1;
+
+            if ( empty($post['device_code']) ) {
+                E('请确认设备信息',400022);
+            }
+
+            if (empty($post['kphone']) || empty($post['kname'])) {
+                E('请确认联系方式',400022);
+            }
+
+            if (empty($post['province']) ||
+                empty($post['city']) ||
+                empty($post['district']) ||
+                empty($post['province_id']) ||
+                empty($post['city_id']) ||
+                empty($post['district_id']) ||
+                empty($post['address'])
+            ) {
+                E('请重新检查地址信息',400022);
+            }
+
+            $data['province'] = $post['province'];
+            $data['city'] = $post['city'];
+            $data['district'] = $post['district'];
+
+            $data['province_id'] = $post['province_id'];
+            $data['city_id'] = $post['city_id'];
+            $data['district_id'] = $post['district_id'];
+
+            $data['address'] = $post['address'];
+
+            $data['kname'] = $post['kname'];
+            $data['kphone'] = $post['kphone'];
+
+            $data['uid'] = session('user.id');
+
+            $data['number'] = getWorkNumber();
+
+
+            $data['content'] = '新购设备-安装 型号:';
+            $data['title']   = '设备安装';
+
+            $data['device_code'] = $post['device_code'];
+
+            $data['is_examine'] = 0;
+            $data['create_at']=time();
+            $data['update_at']=time();
+            $res = M('work')->add($data);
+
+            if ($res) {
+                Work::add($res,1);
+                E('工单开启成功,请等待安装服务人员联系',200);
+            }else{
+                E('添加失败请重试',200);
+            }
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
     // 获取评价控制
     public function getEvaluate()
     {

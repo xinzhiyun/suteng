@@ -28,13 +28,13 @@ class RepairController extends CommonController
 
         $this->display();
     }
-    
+
     // 安装
     public function install()
     {
         $maps['uid'] = session('user.id');
         $maps['status'] = I('status',0);
-
+        $this->wx_info();
         $installList = M('shop_order_device_install')->where($maps)->select();
         $this->assign('installList',$installList);
 
