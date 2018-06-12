@@ -71,13 +71,9 @@ class WorkController extends CommonController
 
             $data['number'] = getWorkNumber();
 
-            if($data['type']==0){
-                $data['content'] = '新购设备-安装';
-                $data['title']   = '设备安装';
-                $data['install_id'] = $post['device_code'];
-            }else{
-                $data['device_code'] = $post['device_code'];
-            }
+
+            $data['device_code'] = $post['device_code'];
+
 
             $data['is_examine'] = 0;
             $data['create_at']=time();
@@ -111,11 +107,18 @@ class WorkController extends CommonController
             $data['type'] = 1;
 
             if ( empty($post['device_code']) ) {
-                E('请确认设备信息',400022);
+                E('请确认设备编码',400022);
+            }
+            if ( empty($post['device_type']) ) {
+                E('请确认设备型号',400023);
             }
 
             if (empty($post['kphone']) || empty($post['kname'])) {
                 E('请确认联系方式',400022);
+            }
+
+            if (empty($post['anry_time']) || empty($post['anry_period'])) {
+                E('请确认预约时间',400022);
             }
 
             if (empty($post['province']) ||
@@ -146,6 +149,8 @@ class WorkController extends CommonController
 
             $data['number'] = getWorkNumber();
 
+            $data['anry_time'] = $post['anry_time'];
+            $data['anry_period'] = $post['anry_period'];
 
             $data['content'] = '新购设备-安装 型号:';
             $data['title']   = '设备安装';
