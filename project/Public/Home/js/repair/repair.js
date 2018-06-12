@@ -17,8 +17,7 @@
         if(len == 3){
             layuiHint("暂时只支持三张图片！");
             return
-        } 
-        // takePicture(1);
+        }
         // 浏览上传图片 
         wxuploadimg(function(res){
             console.log('res: ',res);

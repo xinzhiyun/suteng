@@ -48,6 +48,22 @@ body {
 #qrCode_share>i:nth-of-type(2){ 
 	font-size: 1.0rem;
 }
+#indent>div>a {
+	position: relative;
+}
+#indent>div>a:active::after {
+	content: '';
+	width: 120%;
+	height: 120%;
+	display: block;
+	position: absolute;
+	top: -5%;
+	left: -5%;
+	background: rgba(0,0,0,.03);
+}
+#more>div:active {
+	background: rgba(0,0,0,.03);
+}
 /*会员*/
 .member {
 	display:flex;

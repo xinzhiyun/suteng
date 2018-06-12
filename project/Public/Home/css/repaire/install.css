@@ -13,6 +13,10 @@ body{
   padding-top:.5rem;
   
 } 
+#form {
+  min-height: 500px;
+  position: relative;
+}
 .icon-scan {
   position: absolute;
   right: 1.5rem;
@@ -122,6 +126,7 @@ body{
   font-size: 0.7rem;
 }
 .repairCom li{
+  position: relative;
   border-bottom:1px solid #E0E0E0;
   padding: 0 1.5rem 0 .8rem;
 }
@@ -138,6 +143,9 @@ body{
 .repairCom li input{
   border:none;
   text-align: right;
+}
+.repairCom .deviceid {
+  text-align: left;
 }
 .repaireSet {
   position:relative;
@@ -160,8 +168,11 @@ body{
   font-size: 0.6rem;
 }
 .repairBtn{
-  margin: 2.0rem auto 1.0rem;
   width: 86%;
+  position: relative;
+  margin: 6vh 0;
+  left: 50%;
+  margin-left: -43%;
 }
 .repairBtn input{
   width: 86vw;
@@ -214,7 +225,13 @@ body{
   justify-content: center;
   margin: 0 10px !important;
 }
-
+.layui-laydate-list ol {
+  overflow-y: scroll !important;
+}
+.repairCom .anry_time,
+.repairCom .anry_period {
+  text-align: right;
+}
 
 /*地区选择*/
 #areaChoose {
@@ -263,7 +280,27 @@ body{
 .fr {
   float: right;
 }
-
+.select {
+  width: 60vw;
+  min-height: 200px;
+  max-height: 60vh;
+  display: none;
+  position: absolute;
+  padding-left: 1vh;
+  right: 0;
+  top: 100%;
+  border: 1px solid #eee;
+  background: #fff;
+  box-shadow: 0px 4px 20px rgba(0,0,0,.05);
+  overflow-y: scroll;
+  z-index: 999;
+}
+.select>.option {
+  padding: 1vh 0;
+}
+.opselect {
+  color: #2EB6AA;
+}
 /*弹出地区选择底部的确认按钮*/
 #confirmAreaChoose {
 	height: 14vh;
@@ -328,3 +365,22 @@ body{
 .areaDiv>ul p {
 	margin: 20px 0;
 }
+::-webkit-scrollbar {   
+    width: 6px !important;   
+    height: 16px;   
+    background-color: #F5F5F5;   
+}   
+     
+/*定义滚动条轨道 内阴影+圆角*/   
+::-webkit-scrollbar-track {   
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);   
+    border-radius: 10px;   
+    background-color: #F5F5F5;   
+}   
+     
+/*定义滑块 内阴影+圆角*/   
+::-webkit-scrollbar-thumb {   
+    border-radius: 10px;   
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);   
+    background-color: #555;   
+} 
