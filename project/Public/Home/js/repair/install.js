@@ -1,5 +1,5 @@
 (function() {
-    console.log("安装",installList, "报修",bindInfo);
+    console.log("installList: ",installList);
     var province,city,area;//省市区
     // 设备id号
     var service_code;
@@ -194,6 +194,21 @@
         $('#areaChoose').fadeOut('slow');
     })
     
+    // 扫描设备编码
+    $('.devicep').on('click', function scancode() {
+        wx.scanQRCode({
+          needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+          scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+          success: function (res) {
+            var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+            if(result){
+              document.getElementById("Ickahao").value = result.substr(-16);
+            }else{
+              console.dir('扫描失败：10000');
+            }
+          }
+        })
+    })
     
     /*
     点击'提交'
@@ -222,9 +237,10 @@
         var content = $("textarea[name='content']").val();//问题描述/备注
         console.log(province,city,area,province_id,city_id,area_id, service_code, username, userphone, Detailadd, content);  
         info = {
-            device_code: device_code,
-            username: username,
-            userphone: userphone,
+            type: 0,                    // 安装类型
+            device_code: device_code,   // 设备id
+            username: username,         // 联系人
+            userphone: userphone,       // 联系电话
             province: province,
             city: city,
             area: area,
@@ -278,11 +294,7 @@
         $.ajax({
             url: getURL("Home", "Work/workAdd"),
             type: 'post',
-            async: false,
             data: info,
-            cache: false,
-            processData: false,
-            contentType: false,
             success: function(res){
                 $(".btn").off('touchend');    // 解绑事件
                 console.log('请求成功！', res);

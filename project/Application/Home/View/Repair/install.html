@@ -7,13 +7,12 @@
   <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
-  <link rel="stylesheet" href="__PUBLIC__/Home/css/repaire/index.css">
+  <link rel="stylesheet" href="__PUBLIC__/Home/css/repaire/install.css">
+  <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
   <script>
+      // var vConsole = new VConsole();
     // 安装设备列表
-    var installList ={{$installList|json_encode}};
-    // 报修设备列表
-    var bindInfo = {{$bindInfo|json_encode}};
-
+    var installList = '{{$installList|json_encode}}';
   </script>
 </head>
 <body>
@@ -25,9 +24,16 @@
           <ul>
             <li class="serviceNum">
               <p class="repaireSet selDevice">
-                <span>设备列表：</span>
+                <span>设备型号：</span>
                 <span class="deviceVal">请选择</span>
                 <i class="iconfont icon-down"></i>
+              </p>
+            </li>
+            <li>
+              <p class='cfix devicep'>
+                <span class='fl'>设备编码：</span>
+                <span class='fl deviceid'>&emsp;</span>
+                <i class='iconfont icon-scan fr'></i>
               </p>
             </li>
           </ul>
@@ -104,12 +110,25 @@
   <script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
   <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
   <script src="__PUBLIC__/Home/js/wx_imgUpload.js"></script>
-  <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
   <script src="__PUBLIC__/Home/js/repair/install.js"></script>
   <script type="text/javascript">
+      //微信接口
+      wx.config({
+        debug: true,
+        appId: '{{$info["appId"]}}',
+        timestamp: '{{$info["timestamp"]}}',
+        nonceStr: '{{$info["nonceStr"]}}',
+        signature: '{{$info["signature"]}}',
+        jsApiList: [
+          // 所有要调用的 API 都要加到这个列表中
+          'chooseImage',
+          'uploadImage',
+          'getLocalImgData',
+          'downloadImage'
+        ]
+      });
       $(function(){
-        // var vConsole = new VConsole();
-          console.log("安装",installList, "报修",bindInfo)
+          console.log("installList: ",installList)
         // 首页按钮
         !function(){
           // 创建 a 标签
