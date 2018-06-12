@@ -57,7 +57,7 @@ class DevicesController extends CommonController
             ->order('d.addtime desc,d.id desc')
             ->select();
             $arr = ['alivestause'=>['未激活','已激活']];
-            $data = replace_array_value($data,$arr);
+            $data =  replace_array_value($data,$arr);
             $filename = '设备列表数据';
             $title = '设备列表';
             $cellName = ['设备编号','设备类型','绑定分销商','绑定用户','激活状态'];
