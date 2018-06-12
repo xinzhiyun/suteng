@@ -11,8 +11,7 @@
     
     <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
     <script>
-        var info ={{$info|json_encode}};
-        console.log("info", info);
+        
     </script>
 </head>
 <body>
@@ -47,7 +46,7 @@
                     <p class="stars">
                         <i class="iconfont icon-star1" v-for="starnum in starN"></i>
                         <span>
-                            <i class="iconfont icon-star" v-for="starnum in starD"></i>
+                            <i class="iconfont icon-star" v-for="starnums in starD"></i>
                         </span>
                     </p>
                 </li>
@@ -77,7 +76,7 @@
     </div>
 </body>
 <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
-<script src='__PUBLIC__/Home/js/public.js'></script>
+<script src='__PUBLIC__/Home/js/public.js?qwe={{:time()}}'></script>
 <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 <script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 <script src="__PUBLIC__/Home/js/wx_imgUpload.js"></script>
@@ -87,10 +86,10 @@
         //微信接口
         wx.config({
             debug: false,
-            appId: '{{$info["appId"]}}',
-            timestamp: '{{$info["timestamp"]}}',
-            nonceStr: '{{$info["nonceStr"]}}',
-            signature: '{{$info["signature"]}}',
+            appId: '{{$wxinfo["appId"]}}',
+            timestamp: '{{$wxinfo["timestamp"]}}',
+            nonceStr: '{{$wxinfo["nonceStr"]}}',
+            signature: '{{$wxinfo["signature"]}}',
             jsApiList: [
             // 所有要调用的 API 都要加到这个列表中
             'chooseImage',
@@ -102,6 +101,8 @@
     })
 </script>
 <script>
+    var info ={{$info|json_encode}};
+    console.log("info", info);
     var installInfo = new Vue({
         el: '#installInfo',
         data () {
@@ -115,6 +116,7 @@
             }
         },
         created (){
+            
             this.index = GetQueryString("index");
             // 添加安装人员
             if(this.index == "1") {
@@ -131,14 +133,16 @@
                     idCard: info.idcard,
                     sn: info.sn,
                     password: "",
-                    uImg: info.uimg,
+                    uImg: "__PUBLIC__" + info.uimg,
                 }
                 this.starD = +info.star;//显示星星
+                console.log("star", this.starD);
             }
         },
         methods: {
             // 编辑 - 0 、删除 - 1 、保存 - 4 、取消 - 3 、确认 - 2 按钮
             someThing(val) {
+                
                 var val = val;
                 var _this = this;
                 switch(val) {
@@ -168,10 +172,10 @@
                     var data = {
                         name: _this.userInfos.name,
                         phone: _this.userInfos.phone,
-                        idcard: _this.userInfos.idCard,
+                        idCard: _this.userInfos.idCard,
                         sn: _this.userInfos.sn,
                         password: _this.userInfos.password,
-                        uimg: _this.imgId,
+                        uImg: _this.imgId,
                         action: 2,//action: 1-添加 2-编辑 3-删除
                         uid: info.id
                     }
@@ -194,10 +198,10 @@
                     var data = {
                         name: _this.userInfos.name,
                         phone: _this.userInfos.phone,
-                        idcard: _this.userInfos.idCard,
+                        idCard: _this.userInfos.idCard,
                         sn: _this.userInfos.sn,
                         password: _this.userInfos.password,
-                        uimg: _this.imgId,
+                        uImg: _this.imgId,
                         action: 1,
                     }
                     this.getAjax(data, function(res) {
@@ -211,12 +215,15 @@
             },
             // 选择照片
             chooseImg () {
+                var _this = this;
+                console.log(123123)
                 // 编辑和添加状态下才可以上传头像
-                if(!this.editNo) {
-                    console.log("编辑头像");
-                    wxuploadimg(function(res) {
-                        this.infoVal.uImg = res['src'];//显示图片
-                        this.imgId = res.media_id;//发送到后台的图片id
+                if(!_this.editNo) {
+                    wxuploadimg(1,function(res) {
+                        console.log("头像", res);
+                        _this.userInfos.uImg = res[0]['src'];//显示图片
+                        _this.imgId = res[0].media_Id;//发送到后台的图片id
+                        console.log(_this.imgId);
                     })
                 }
                 

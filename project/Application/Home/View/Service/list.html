@@ -20,7 +20,7 @@
 		<div class='title spli'>
 			<span>工单号</span>
 			<span v-text='status'>状态</span>
-			<span>生成时间</span>
+			<span >生成时间</span>
 		</div>
 		<ul class='content'>
 			<li class='spli' v-for='li in list' @click='getDetail(li.number, li.result)'>
@@ -55,13 +55,14 @@
 					service_name: '',	// 服务站名称
 					list: [],			// 数据列表
 					result: '',			// 工单类型 0待处理 1处理中 2待验收 3(完成)
-					page: '',			// 分页
+					page: 1,			// 分页
 					loadstyle: 'block',
 					colorList: ['color:#f16e65;', 'color:#2196F3;', 'color:#2196F3;', 'color:#00d4c2;'],
 					titleList: ['未派工工单', '处理中工单', '待验收工单', '已完成工单', '员工管理', '全部工单'],
 					statusList: ['状态', '作业人员', '作业人员', '作业人员', '姓名', '状态'],
 					notice: '正在加载...',
 					noticestyle: 'block',
+					timeStar : ['生成时间', '星级'],
 				}
 			},
 			created (){
@@ -106,12 +107,13 @@
 						layuiHint('查无数据');
 						
 					}
-					servicelist.page = 1;
-				}, this.result);
+					vm.page++;
+				}, this.result, vm.page);
 			},
 			methods: {
 				// 获取列表数据
 				getList (callback, result, page) {
+					console.log(result, page)
 					var vm = this;
 					var option = {
 						url: getURL('Home', 'Service/getList'),
@@ -137,7 +139,7 @@
 					}
 					if(page){
 						// 请求分页数据
-						option['data'] = {result: result, p: servicelist.page};
+						option['data'] = {result: result, p: vm.page};
 					}
 					// 获取数据
 					$.ajax(option);
@@ -159,7 +161,7 @@
 					console.log('page: ', vm.page);
 					// 请求分页数据
 					this.getList(function(res){
-						console.log('res: ',res, res.data[0].sn);
+						console.log('res: ',res);
 						if(res.data.length){
 							for(var i=0; i<res.data.length; i++){
 								if(vm.result == 4) {
@@ -168,7 +170,6 @@
 										number: res.data[i].sn,
 										create_at: timetrans(res.data[i].addtime),
 										result: res.data[i].id
-										
 									})
 								}else {
 									vm.list.push({
