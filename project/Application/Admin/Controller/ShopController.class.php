@@ -430,7 +430,7 @@ class ShopController extends CommonController
         $goodsDetail = $goodsInfo['goods_detail'];
 
         $goodsPics = D('pic')->where(['gid'=>$id])->select();
-        p($goodsPics);
+     
         //处理属性所属
         foreach ($attrVal as $value) {
             $attrValArr[]=$value['aid'];
