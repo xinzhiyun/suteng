@@ -15,7 +15,7 @@
 		<div class='search'>
 			<span>
 				<i class='iconfont icon-sousuo' @click='search(word)'></i>
-				<input type="text" placeholder="请输入工单号/设备编码" v-model='word' @keyup.enter='search(word)'>
+				<input type="text" placeholder="请输入工单号" v-model='word' @keyup.enter='search(word)'>
 			</span>
 		</div>
 		<div class='title spli'>
@@ -47,7 +47,7 @@
 					loadstyle: 'block',
 					colorList: ['color:#f16e65;', 'color:#2196F3;', 'color:#2196F3;', 'color:#00d4c2;'],
 					typeList: ['安装', '维护', '维修'],
-					statusList: ['未派工', '处理中', '待评价', '已完成'],
+					statusList: ['待处理', '处理中', '已完成', '完成(待评价)', '评价完成', '工单关闭' ],
 					notice: '正在加载...',
 					noticestyle: 'block',
 				}
@@ -143,9 +143,9 @@
 						return
 					}
 					$.ajax({
-						url: getURL('Home', 'vipCenter/getList'),
+						url: getURL('Home', 'vipCenter/get_service_record'),
 						type: 'get',
-						data: {result: vm.result, word: word},
+						data: {word: word},
 						success: function(res){
 							console.log('res: ',res);
 							if(res.status == 200){
@@ -153,11 +153,10 @@
 								if(res.data.length){
 									for(var i=0; i<res.data.length; i++){
 										vm.list.push({
-											name: res.data[i].name,
 											number: res.data[i].number,
-											text: vm.titleList[+res.data[i].type],
-											style: vm.colorList[+res.data[i].type],
-											create_at: timetrans(res.data[i].create_at)
+											type: vm.typeList[+res.data[i].type],
+											status: vm.statusList[+res.data[i].result],
+											style: vm.colorList[+res.data[i].result]
 										});
 									}
 								}else{

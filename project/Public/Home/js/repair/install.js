@@ -1,5 +1,5 @@
 (function() {
-    console.log("安装",installList, "报修",bindInfo);
+    console.log("typeList: ",typeList);
     var province,city,area;//省市区
     // 设备id号
     var service_code;
@@ -7,71 +7,28 @@
     var province_id,city_id,area_id;
     // 选择结果
     var selectResult = "";
-    // 服务类型
-    var serviceType;
 
-    // 设备确认选择
-    $(".deviceZhe").on("click", ".confirmDevice", function() {
-
-        // 选择完后隐藏
-        $(".deviceZhe").css("display", "none");
-        for(var i = 0; i < installList.length; i++) {
-            if(service_code == installList[i].id) {
-                var userInfo = JSON.parse(installList[i].addressinfo);
-                console.log("该设备的用户的信息", userInfo);
-                $(".repaireName").val(userInfo.name);//写入用户名
-                $("input[name='phone']").val(userInfo.phone);//写入电话
-                $(".repaireAdd").html('<span>报修地址：</span><span id="areaID" class="areabtn">'+userInfo.province + userInfo.city + userInfo.area +'</span>');//写入省市区
-                $("textarea[name='address']").val(userInfo.address);//写入详细地址
-                // 省市区赋值
-                province = userInfo.province;
-                city = userInfo.city;
-                area = userInfo.area;
-                province_id = userInfo.province_id;
-                city_id = userInfo.city_id;
-                area_id = userInfo.area_id;
-            }
+    if(typeList.length){     // 遍历设备列表
+        var deviceList = '';
+        for(var i=0; i<typeList.length; i++){
+            deviceList += '<li class="option">'+ typeList[i].typename +'</li>';
         }
-        var ZheVal = $(".deviceZhe").find(".icon-selectcircle").siblings().text();
-        console.log("设备确认选择",ZheVal);
-        // 设备id号
-        service_code = $(".deviceZhe").find(".icon-selectcircle").parent().attr("index");
-        if(ZheVal) {
-            $(".selDevice").html(
-                "<span>设备列表：</span><span class='deviceVal'>"+ $(".deviceZhe").find(".icon-selectcircle").siblings().text() +"</span>"
-            )
-        }else {
-            $(".selDevice").html('<span>设备列表：</span><span class="deviceVal">请选择</span><i class="iconfont icon-down"></i>');
-        }
+        $('.select').html(deviceList);
+    }
+    // 显示设备选择面板
+    $('.selDevice').click(function(){
+        $('.select').fadeIn('fast');
     })
     // 设备列表选择
-    $(".serviceNum").on("click", function() {
-        // 获取用户选择完的结果
-        var content = "";
-        if(installList.length) {
-            for(var i = 0; i < installList.length; i++) {
-                // 默认选中第一个 改变弹框选择内容
-                if(i == 0) {
-                    content = content + '<li index="'+installList[i].id+'"><i class="iconfont icon-selectcircle"></i><span>'+ installList[i].gname +'</span></li>';
-                }else {
-                    content = content + '<li index="'+installList[i].id+'"><i class="iconfont icon-emptycircle"></i><span>'+ installList[i].gname +'</span></li>';
-                }
-            }
-            content = content + '<p class="confirmDevice">确定</p>';
-        }else {
-            content = "<li>无设备</li><p class='confirmDevice'>确定</p>";
+    $('.select').on('click', '.option', function(){
+        for(var i=0; i<$('.select>.option').length; i++){
+            $('.select>.option').eq(i).attr('class', 'option');
         }
-        
-    });
-    
-    // 蒙版点击隐藏
-    $(".selectOption").on("click", function(e) {
-        var ev = e || window.event;
-        var target = ev.target || srcElement;
-        if(target.nodeName.toLowerCase() == "div") {
-            $(".selectOption").css("display", "none");
-        }
-    });
+        $(this).attr('class', 'option opselect');
+        selectResult = $(this).text();
+        $('.deviceVal').text(selectResult);
+        $('.select').fadeOut('slow');
+    })
     
     // 选择地区
     $(".repaireAdd").on("click", ".areabtn", function(){
@@ -194,6 +151,21 @@
         $('#areaChoose').fadeOut('slow');
     })
     
+    // 扫描设备编码
+    $('.devicep').on('click', function scancode() {
+        wx.scanQRCode({
+          needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+          scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+          success: function (res) {
+            var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+            if(result){
+                $('.deviceid').val(result.substr(-16));
+            }else{
+                console.dir('扫描失败：10000');
+            }
+          }
+        })
+    })
     
     /*
     点击'提交'
@@ -213,32 +185,41 @@
         address 地址详情  pic 图片(安装(非必要)/报修(必要))
         
         */
+        var info = {};
+        var device_code = $('.deviceid').val();
         var phoneReg = /^1[3|4|5|8][0-9]\d{4,8}$/;
         var addressReg = /^(?=.*?[\u4E00-\u9FA5])[\dA-Za-z\u4E00-\u9FA5]{6,}/;
-        var info = {};
         var username = $(".repaireName").val();//用户名
         var userphone = $("input[name='phone']").val();//电话
-        var Detailadd = $("#Laddr").val(); //详细地址
-        var content = $("textarea[name='content']").val();//问题描述/备注
-        console.log(province,city,area,province_id,city_id,area_id, service_code, username, userphone, Detailadd, content);  
+        var address = $("#Laddr").val(); //详细地址
+        var anry_time = $('.anry_time').val();
+        var anry_period = $('.anry_period').val();
+
         info = {
-            device_code: device_code,
-            username: username,
-            userphone: userphone,
+            device_code: device_code,   // 设备id
+            device_type: selectResult,   // 设备id
+            kname: username,         // 联系人
+            kphone: userphone,       // 联系电话
             province: province,
             city: city,
-            area: area,
+            district: area,
             province_id: province_id,
             city_id: city_id,
-            area_id: area_id,
-            Detailadd: Detailadd
+            district_id: area_id,
+            address: address,
+            anry_time: anry_time,       // 预约年月日
+            anry_period: anry_period    // 预约时间段
         };
+        console.log('info: ',info);
 
         if($(".deviceVal").text() == "请选择") {
-            layuiHint("请选择设备");
+            layuiHint("请选择设备型号");
             return ;
         }
-
+        if(!device_code){
+            layuiHint('请扫描设备编码');
+            return
+        }
         if(!username) {
             console.log("请输入名字")
             layuiHint("请输入名字");
@@ -257,8 +238,8 @@
             layuiHint("请选择联系地址!");
             return;
         }
-        if(Detailadd) {
-            if(!addressReg.test(Detailadd)) {
+        if(address) {
+            if(!addressReg.test(address)) {
                 layuiHint("请输入正确的地址!");
                 return;
             }
@@ -270,19 +251,22 @@
             layuiHint("请选择联系地址");
             return ;
         }
-        console.log('info: ',info);
 
+        if(!anry_time){
+            layuiHint('请选择预约日期');
+            return
+        }
+        if(!anry_period){
+            layuiHint('请选择预约时间段');
+            return
+        }
         /*
         发送到后台
         */
         $.ajax({
-            url: getURL("Home", "Work/workAdd"),
+            url: getURL("Home", "Work/workAddInatall"),
             type: 'post',
-            async: false,
             data: info,
-            cache: false,
-            processData: false,
-            contentType: false,
             success: function(res){
                 $(".btn").off('touchend');    // 解绑事件
                 console.log('请求成功！', res);

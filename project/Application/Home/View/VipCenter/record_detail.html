@@ -22,7 +22,7 @@
 			</ul>
 		</div>
 		<p class='notice' :style='{display: noticestyle}' v-text='notice'></p>
-		<button v-show='showEval' class='evaluate' @click='evaluate'>评价</button>
+		<button :style='{display: showEval}' class='evaluate' @click='evaluate'>评价</button>
 		<div class='evalPanel' :style='evalPanel'>
 			<h3>评论本次服务</h3>
 			<ul>
@@ -44,7 +44,7 @@
 					<i :class='nonameclass'></i>
 					<label for="noname" @click='noname'>匿名提交</label>
 				</p>
-				<button class='evaluate' @touchend='upEval'>提交</button>
+				<button class='evaluate' :style='{display: showEval}' @touchend='upEval'>提交</button>
 			</ul>
 		</div>
 	</div>
@@ -59,7 +59,7 @@
 					noticestyle: 'block',
 					workid: GetQueryString('workid'),
 					detailList: [],
-					showEval: false,	// 是否显示评价按钮
+					showEval: '',	// 是否显示评价按钮
 					evalPanel: '',		// 评价面板的样式
 					starList: [],		// 所有星星的数据	
 					textList: [],		// 对应星星的选项数据
@@ -97,6 +97,7 @@
 						callback(location.hash);
 					}
 				}
+				
 			},
 			methods: { 
 				// 获取详情数据
@@ -120,7 +121,7 @@
 								}
 								if(res.evaluaction){
 									// 需要评价
-									vm.showEval = true;
+									vm.showEval = 'block';
 									// 获取评价的数据
 									vm.getEvaluate(workid);
 								}

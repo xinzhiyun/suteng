@@ -145,7 +145,7 @@ class WechatController extends Controller
 			            {
 			                "type":"view",
 			                "name":"新用户报装",
-			                "url":"http://test.dianqiukj.com/index.php/Home/Repair/index?install=1"
+			                "url":"http://test.dianqiukj.com/index.php/Home/Repair/install"
 			            },
 			            {
 			               "type":"view",
