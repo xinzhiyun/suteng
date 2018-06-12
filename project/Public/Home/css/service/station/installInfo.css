@@ -80,3 +80,19 @@
     text-align: center;
     background: #CCCCCC !important;
 }
+/* 星星 */
+.stars > i{
+    color: #FBC91D;
+}
+.stars{
+    position: relative;
+}
+.stars > span{ 
+    position: absolute;
+    top: 0; 
+    left: .05rem;
+    color: #FBC91D;
+    /* width: 100%; */
+    /* height: 1rem; */
+    /* overflow: hidden; */
+}
