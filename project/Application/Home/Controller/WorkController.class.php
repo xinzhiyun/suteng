@@ -15,7 +15,6 @@ class WorkController extends CommonController
     {
         try {
             $post = I('post.');
-
             if (!isset($post['type'])) {
                 E('请选择服务类型', 40102);
             } else {
@@ -53,7 +52,7 @@ class WorkController extends CommonController
 
             if(!empty($post['pic'])){
                 if(is_string($post['pic'])){
-                    $data['pic'] = $post['pic'];
+                    $post['pic'] = explode(',', $post['pic'] );
                 }
                 if( is_array($post['pic']) ){
                     $data['pic'] = json_encode($post['pic']);
