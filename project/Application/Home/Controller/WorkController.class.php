@@ -146,7 +146,7 @@ class WorkController extends CommonController
             $data['anry_time'] = $post['anry_time'];
             $data['anry_period'] = $post['anry_period'];
 
-            $data['content'] = '新购设备-安装 型号:';
+            $data['content'] = '新购设备-安装 型号:'.$post['device_type'];
             $data['title']   = '设备安装';
 
             $data['device_code'] = $post['device_code'];
@@ -194,8 +194,10 @@ class WorkController extends CommonController
                 }
             }
             $data['pic'] = json_encode($pics);
+            $this->toJson(['data'=>$data],'上传成功!',200);
+        }else{
+            $this->toJson(['data'=>[]],'无图片上传!',400001);
         }
-        $this->toJson(['data'=>$data],'上传成功!',200);
     }
 }
 
