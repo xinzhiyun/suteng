@@ -119,8 +119,8 @@ class RefundController extends CommonController
                         D('shop_order_detail')->where(['order_id'=>$order_id])->setField(['status'=>11]);
                     } else {
                         // 将订单状态更改为退货处理中
-                        D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>6]);
-                        D('shop_order_detail')->where(['order_id'=>$order_id])->setField(['status'=>6]);
+                        D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>13]);
+                        D('shop_order_detail')->where(['order_id'=>$order_id])->setField(['status'=>13]);
                     }
 
                 } else {
@@ -141,8 +141,8 @@ class RefundController extends CommonController
                         D('shop_order_detail')->where(['order_id'=>$order_id])->setField(['status'=>12]);
                     } else {
                         // 将订单状态更改为退货处理中
-                        D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>6]);
-                        D('shop_order_detail')->where(['order_id'=>$order_id])->setField(['status'=>6]);
+                        D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>13]);
+                        D('shop_order_detail')->where(['order_id'=>$order_id])->setField(['status'=>13]);
                     }
                 }
 
