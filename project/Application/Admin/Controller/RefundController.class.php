@@ -86,8 +86,11 @@ st_shop_order_detail.gid ='.$value['gid']);
             //订单状态
             $ostatus = M('shop_order')->where("order_id='{$oid}'")->find()['status'];
 
+            // dump($ostatus);die;
+            // echo $ostatus;
 
-            if ($ostatus=='11' or $ostatus=='12' or $ostatus='13') {
+            if ($ostatus=='11' or $ostatus=='12' or $ostatus=='13') {
+
                 //待收货处退款  有退货退款跟仅退款
                 if ($refundList['method'] == 2) {
                 //退货退款的
@@ -918,6 +921,8 @@ st_shop_order_detail.gid ='.$value['gid']);
 
                             //要退款的总金币数
                             $totalNum = $refundPrice + $totalEspressPrice;
+
+                            // echo $totalNum;die;
 
                             //判断退款金额是否超过订单总额
                             if ($totalNum > $totalPrice) {
