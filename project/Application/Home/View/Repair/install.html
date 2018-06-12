@@ -3,16 +3,16 @@
 <head>
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
   <meta charset="UTF-8">
-  <title>速腾-用户安装</title>
+  <title>速腾-报装</title>
   <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/css/repaire/install.css">
   <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
   <script>
-      // var vConsole = new VConsole();
+      var vConsole = new VConsole();
     // 安装设备列表
-    var installList = '{{$installList|json_encode}}';
+    var typeList = {{$typeList|json_encode}};
   </script>
 </head>
 <body>
@@ -28,11 +28,14 @@
                 <span class="deviceVal">请选择</span>
                 <i class="iconfont icon-down"></i>
               </p>
+              <ul class="select">
+                <!-- <li class='option'></li> -->
+              </ul>
             </li>
             <li>
               <p class='cfix devicep'>
                 <span class='fl'>设备编码：</span>
-                <span class='fl deviceid'>&emsp;</span>
+                <input class='fl deviceid'>
                 <i class='iconfont icon-scan fr'></i>
               </p>
             </li>
@@ -63,6 +66,16 @@
             </li>
             <li>
               <textarea name="address" id="Laddr" cols="30" rows="4" placeholder="请谨慎输入详细地址" ></textarea>
+            </li>
+            <li>
+              <p>
+                <span>预约时间：</span>
+                <input class='anry_time' type="text" placeholder="选择日期" readonly>
+              </p>
+              <p>
+                <span>&emsp;</span>
+                <input class='anry_period' type="text" placeholder="选择时间" readonly>
+              </p>
             </li>
           </ul>
         </div>
@@ -114,21 +127,17 @@
   <script type="text/javascript">
       //微信接口
       wx.config({
-        debug: true,
-        appId: '{{$info["appId"]}}',
-        timestamp: '{{$info["timestamp"]}}',
-        nonceStr: '{{$info["nonceStr"]}}',
-        signature: '{{$info["signature"]}}',
+        debug: false,
+        appId: '{{$wxinfo["appId"]}}',
+        timestamp: '{{$wxinfo["timestamp"]}}',
+        nonceStr: '{{$wxinfo["nonceStr"]}}',
+        signature: '{{$wxinfo["signature"]}}',
         jsApiList: [
           // 所有要调用的 API 都要加到这个列表中
-          'chooseImage',
-          'uploadImage',
-          'getLocalImgData',
-          'downloadImage'
+          'scanQRCode'
         ]
       });
       $(function(){
-          console.log("installList: ",installList)
         // 首页按钮
         !function(){
           // 创建 a 标签
@@ -145,6 +154,34 @@
           }
           // console.log(home)
         }()
+        // 选择日期
+        $(".anry_time").click(function(){
+
+          //选择服务日期，
+          laydate.render({
+            elem: '.anry_time', //指定元素
+            show: true,
+            format: 'yyyy年MM月dd日',
+            btns: ['clear', 'confirm'],
+            min: 1
+          });
+
+        })
+
+        // 选择时间
+        $(".anry_period").click(function(){
+
+          //选择服务日期
+          laydate.render({
+            elem: '.anry_period',
+            show: true,
+            type: 'time',
+            min: '09:30:00',
+            max: '17:30:00',
+            btns: ['clear', 'confirm']
+          }); 
+
+        })
       })
       
     </script>
