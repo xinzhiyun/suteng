@@ -94,18 +94,21 @@ body {
 /* 添加安装人员 */
 .installAdd {
 	position: fixed;
-	bottom: 0;
-	left: 0;
-	height: 2rem;
-	width: 100vw;
-	line-height: 2rem;
-	display: flex;
-	font-size: .7rem;
-	align-items: center;
-	border-top: 1px solid #DFDFDF;
+	bottom: 2rem;
+	right: 0rem;
+	/* height: 2rem; */
+	/* width:  */
+	/* width: 100vw; */
+	/* background: white; */
+	z-index: 1000;
+	/* line-height: 2rem; */
+	/* display: flex; */
+	border-radius: 50%;
+	/* align-items: center; */
+	/* border-top: 1px solid #DFDFDF; */
 }
 .installAdd > a > span:nth-child(1) {
 	color: #2EB6AA;
-	font-size: 1.2rem;
+	font-size: 1.5rem;
 	padding: 0 .5rem 0 .7rem;
 }

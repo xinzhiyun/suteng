@@ -4,12 +4,16 @@
 	<meta charset="UTF-8">
 	<meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
 	<title>个人信息</title>
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/station/installInfo.css">
 	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
-    <script src='__PUBLIC__/Home/js/public.js'></script>
+    
     <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+    <script>
+        var info ={{$info|json_encode}};
+        console.log("info", info);
+    </script>
 </head>
 <body>
 	<div id="installInfo">
@@ -19,28 +23,33 @@
                     <span>姓名：</span>
                     <!-- 正常和编辑 -->
                     <span v-if="editNo" v-text="userInfos.name"></span>
-                    <input type="text" :value="userInfos.name" v-if="editFlag" placeholder="请输入姓名" v-model="userVal.name">
+                    <input type="text" :value="userInfos.name" v-if="editFlag" placeholder="请输入姓名" v-model="userInfos.name">
                 </li>
                 <li>
                     <span>头像：</span>
                     <span class="userImg" @click="chooseImg">
                         <img :src="userInfos.uImg" alt="">
-                        <input type="hidden" :value="imgId" v-model="imgId">
+                        <input type="hidden" :value="imgId">
                     </span>
                 </li>
                 <li>
                     <span>电话：</span>
                     <span v-if="editNo" v-text="userInfos.phone"></span>
-                    <input type="text" :value="userInfos.phone" v-if="editFlag" placeholder="请输入电话号码" v-model="userVal.phone">
+                    <input type="text" :value="userInfos.phone" v-if="editFlag" placeholder="请输入电话号码" v-model="userInfos.phone">
                 </li>
                 <li>
                     <span>身份证号码：</span>
                     <span v-if="editNo" v-text="userInfos.idCard"></span>
-                    <input type="text" :value="userInfos.idCard" v-if="editFlag" placeholder="请输入身份证号码" v-model="userVal.idCard">
+                    <input type="text" :value="userInfos.idCard" v-if="editFlag" placeholder="请输入身份证号码" v-model="userInfos.idCard">
                 </li>
-                <li>
+                <li v-if="editNo"> 
                     <span>星级：</span>
-                    <span></span>
+                    <p class="stars">
+                        <i class="iconfont icon-star1" v-for="starnum in starN"></i>
+                        <span>
+                            <i class="iconfont icon-star" v-for="starnum in starD"></i>
+                        </span>
+                    </p>
                 </li>
             </ul>
         </div>
@@ -48,12 +57,13 @@
             <ul>
                 <li>
                     <span>工号：</span>
-                    <span v-if="editNo" v-text="userInfos.num"></span>
-                    <input type="text" :value="userInfos.num" v-if="editFlag" placeholder="请输入工号" v-model="userVal.num">
-                </li><li>
+                    <span v-if="editNo" v-text="userInfos.sn"></span>
+                    <input type="text" :value="userInfos.sn" v-if="editFlag" placeholder="请输入工号" v-model="userInfos.sn">
+                </li>
+                <li v-if="!editNo">
                     <span>密码：</span>
                     <span v-if="editNo" v-text="userInfos.password"></span>
-                    <input type="text" :value="userInfos.password" v-if="editFlag" placeholder="请输入密码" v-model="userVal.password">
+                    <input type="password" :value="userInfos.password" v-if="editFlag" placeholder="请输入密码" v-model="userInfos.password">
                 </li>
             </ul>
         </div>
@@ -67,6 +77,7 @@
     </div>
 </body>
 <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script src='__PUBLIC__/Home/js/public.js'></script>
 <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 <script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 <script src="__PUBLIC__/Home/js/wx_imgUpload.js"></script>
@@ -99,133 +110,76 @@
                 editFlag :false,//编辑状态
                 addInfo: false,//添加安装人员
                 imgId: "",
-                userInfos:{
-                    name: "",
-                    phone: "",
-                    idCard: "",
-                    num: "",
-                    password: "",
-                    uImg: "__PUBLIC__/Home/images/normal.png",
-                    start: ""
-                },
-                userVal: {
-                    name: "",
-                    phone: "",
-                    idCard: "",
-                    num: "",
-                    password: "",
-                    uImg: "__PUBLIC__/Home/images/normal.png",
-                    start: ""
-                }
+                starN: 5,
+                starD: ""
             }
         },
         created (){
             this.index = GetQueryString("index");
-            console.log(typeof this.index);
             // 添加安装人员
             if(this.index == "1") {
                 this.editNo = false;
                 this.editFlag = true;
                 this.addInfo = true;
-                // 用户信息
-                this.userInfos = {
-                    name: "",
-                    phone: "",
-                    idCard: "",
-                    num: "",
+                // 用户信息清空
+                this.userInfos = {};
+            }else {
+                // 将该用户信息放入userinfo遍历
+                this.userInfos ={
+                    name: info.name,
+                    phone: info.phone,
+                    idCard: info.idcard,
+                    sn: info.sn,
                     password: "",
-                    uImg: "__PUBLIC__/Home/images/normal.png",
-                    start: ""
+                    uImg: info.uimg,
                 }
+                this.starD = +info.star;//显示星星
             }
         },
         methods: {
             // 编辑 - 0 、删除 - 1 、保存 - 4 、取消 - 3 、确认 - 2 按钮
             someThing(val) {
                 var val = val;
-                var userName = $();
-                
+                var _this = this;
                 switch(val) {
                     case 0:
                     console.log("编辑");
-                    this.editNo = false;
-                    this.editFlag = true; 
+                    _this.editNo = false;
+                    _this.editFlag = true; 
                     break;
                     case 1:
                     console.log("删除")
-                    layui.use("layer", function() {
-                        var layer = layui.layer;
-                        
-                        layer.confirm("确定删除?", function(index) {
-                            // 删除信息
-                            $.ajax({
-                                url: "",
-                                type: "post",
-                                data: {},
-                                success: function(res) {
-                                    if(res.status == 200) {
-                                        layer.msg("删除成功!");
-                                        setTimeout(function() {
-                                            // location.href = ""
-                                        }, 1000);
-                                    }
-                                },
-                                error: function(res) {
-                                    
-                                }
-                            })
-                            layer.close(index);
+                    layer.confirm("确认删除?", function(index) {
+                        var data = {
+                            action: 3,
+                            uid: info.id
+                        }
+                        _this.getAjax(data, function(res) {
+                            console.log("删除数据", res);
+                            setTimeout(function() {
+                                location.href = "{{:U('Service/list')}}?result=4";
+                            }, 1000);
                         })
-                    })
+                        layer.close(index);
+                    }); 
                     break;
                     case 2:
                     console.log("确认");
-                    this.editNo = true;
-                    this.editFlag = false;
-                    this.addInfo = false;
-                    // 验证
-                    if(!this.infoVal.name) {
-                        layuiHint("姓名不能为空!");
-                        return;
+                    var data = {
+                        name: _this.userInfos.name,
+                        phone: _this.userInfos.phone,
+                        idcard: _this.userInfos.idCard,
+                        sn: _this.userInfos.sn,
+                        password: _this.userInfos.password,
+                        uimg: _this.imgId,
+                        action: 2,//action: 1-添加 2-编辑 3-删除
+                        uid: info.id
                     }
-                    if(!this.infoVal.phone) {
-                        layuiHint("电话号码不能为空!");
-                        return;
-                    }else {
-                        if(!phoneReg.test(this.infoVal.phone)) {
-                            layuiHint("请输入正确的电话号码!");
-                            return;
-                        }
-                    }
-                    if(!this.infoVal.idCard) {
-                        layuiHint("身份证号码不能为空!");
-                        return;
-                    }
-                    if(!this.infoVal.num) {
-                        layuiHint("工号不能为空!");
-                        return;
-                    }
-                    if(!this.infoVal.password) {
-                        layuiHint("密码不能为空!");
-                        return;
-                    }
-                    return;
-                    // 提交
-                    $.ajax({
-                        url: "",
-                        type: "post",
-                        data: {},
-                        success: function(res) {
-                            if(res.status == 200) {
-                                layer.msg("删除成功!");
-                                setTimeout(function() {
-                                    // location.href = ""
-                                }, 1000);
-                            }
-                        },
-                        error: function(res) {
-                            
-                        }
+                    this.getAjax(data, function(res) {
+                        console.log("编辑数据", res);
+                        setTimeout(function() {
+                            location.href = "{{:U('Service/list')}}?result=4";
+                        }, 1000);
                     })
                     break;
                     case 3:
@@ -237,7 +191,21 @@
                     break;
                     case 4:
                     console.log("保存");
-                    
+                    var data = {
+                        name: _this.userInfos.name,
+                        phone: _this.userInfos.phone,
+                        idcard: _this.userInfos.idCard,
+                        sn: _this.userInfos.sn,
+                        password: _this.userInfos.password,
+                        uimg: _this.imgId,
+                        action: 1,
+                    }
+                    this.getAjax(data, function(res) {
+                        console.log("保存数据", res);
+                        setTimeout(function() {
+                            location.href = "{{:U('Service/list')}}?result=4";
+                        }, 1000);
+                    })
                     break;
                 }
             },
@@ -251,6 +219,100 @@
                         this.imgId = res.media_id;//发送到后台的图片id
                     })
                 }
+                
+            },
+            // 提交后台
+            getAjax(data, callback) {
+                console.log("data", data);
+                var _this = this;
+                if(data.action != 3) {
+                    // 验证
+                    if(!_this.userInfos.name) {
+                        layuiHint("姓名不能为空!");
+                        return;
+                    }
+                    if(!_this.userInfos.phone) {
+                        layuiHint("电话号码不能为空!");
+                        return;
+                    }else {
+                        if(!phoneReg.test(_this.userInfos.phone)) {
+                            layuiHint("请输入正确的电话号码!");
+                            return;
+                        }
+                    }
+                    if(!_this.userInfos.idCard) {
+                        layuiHint("身份证号码不能为空!");
+                        return;
+                    }else {
+                        if(!cardCheck(_this.userInfos.idCard)) {
+                            layuiHint("请输入正确的身份证号码!");
+                            return;
+                        }
+                    }
+                    if(!_this.userInfos.sn) {
+                        layuiHint("工号不能为空!");
+                        return;
+                    }else {
+                        var nums = /^[0-9]*$/;
+                        if(!nums.test(_this.userInfos.sn)) {
+                            layuiHint("工单号只能由数字组成!");
+                            return
+                        }
+                    }
+                }
+                // 添加用户和编辑用户信息
+                if(data.action == 1) {
+                    if(!_this.userInfos.password) {
+                        layuiHint("密码不能为空!");
+                        return;
+                    }
+                }else if(data.action == 2) {
+                    if(_this.userInfos.password) {
+                        layer.confirm("添入密码会覆盖原密码，仍要继续？", function(index) {
+                            // 提交
+                            $.ajax({
+                                url: getURL("Home", "service/postPeople"),
+                                type: "post",
+                                data: data,
+                                success: function(res) {
+                                    console.log("res", res);
+                                    if(res.status == 200) {
+                                        layuiHint(res.msg);
+                                        // 回调
+                                        callback(res);
+                                    }else {
+                                        layuiHint(res.msg);
+                                    }
+                                },
+                                error: function(res) {
+                                    
+                                }
+                            })
+                            layer.close(index);
+                        })
+                        return ;
+                    }
+                }
+                
+                // 提交
+                $.ajax({
+                    url: getURL("Home", "service/postPeople"),
+                    type: "post",
+                    data: data,
+                    success: function(res) {
+                        console.log("res", res);
+                        if(res.status == 200) {
+                            layuiHint(res.msg);
+                            // 回调
+                            callback(res);
+                        }else {
+                            layuiHint(res.msg);
+                        }
+                    },
+                    error: function(res) {
+                        
+                    }
+                })
                 
             }
         }
