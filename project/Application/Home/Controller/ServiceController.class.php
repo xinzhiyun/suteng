@@ -6,7 +6,6 @@ use Common\Tool\Work;
 /**
  * 服务站
  */
-
 class ServiceController extends ServiceCommonController
 {
     // 主页
@@ -231,16 +230,14 @@ class ServiceController extends ServiceCommonController
                 E('参数错误',40001);
             }
 
-
-
-
-
             if(!empty($post['uImg'])){
                 $addData['uImg'] = File::downloadPic('service',$post['uImg']);
             }
 
             $addData['sn'] = $post['sn'];
             $addData['idCard'] = $post['idCard'];
+            $addData['name'] = $post['name'];
+            $addData['phone'] = $post['phone'];
 
             $addData['updatetime'] = time();
 
