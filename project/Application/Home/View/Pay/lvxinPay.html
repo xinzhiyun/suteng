@@ -124,10 +124,10 @@
 			// var gold_rate = JSON.parse($("#rate").val()).gold_rate;
 			// var silver_rate = JSON.parse($("#rate").val()).silver_rate;
 			var gold_num, silver, gold_rate, silver_rate;
-			gold_num = JSON.parse({{$user|json_encode}}) ? parseInt(JSON.parse({{$user|json_encode}})['gold_num']) : 0;
-			silver = JSON.parse({{$user|json_encode}}) ? parseInt(JSON.parse({{$user|json_encode}})['silver']) : 0;
-			gold_rate = JSON.parse({{$rate|json_encode}}) ? JSON.parse({{$rate|json_encode}})['gold_rate'] : 0;
-			silver_rate = JSON.parse({{$rate|json_encode}}) ? JSON.parse({{$rate|json_encode}})['silver_rate'] : 0;
+			gold_num = JSON.parse('{{$user|json_encode}}') ? parseInt(JSON.parse('{{$user|json_encode}}')['gold_num']) : 0;
+			silver = JSON.parse('{{$user|json_encode}}') ? parseInt(JSON.parse('{{$user|json_encode}}')['silver']) : 0;
+			gold_rate = JSON.parse('{{$rate|json_encode}}') ? JSON.parse('{{$rate|json_encode}}')['gold_rate'] : 0;
+			silver_rate = JSON.parse('{{$rate|json_encode}}') ? JSON.parse('{{$rate|json_encode}}')['silver_rate'] : 0;
 			console.log("金银币数量", gold_num, silver, gold_rate, silver_rate);
 			// else {
 			// 	// 若无快递数据时友情提示

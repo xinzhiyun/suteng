@@ -9,58 +9,95 @@
     var selectResult = "";
     // 服务类型
     var serviceType;
-
+    var pic = [];
     console.log($('<img src="" alt="" index="" />'));
     // 点击上传图片
-    $(".file_upload").click(function(){
+    $(".file_upload").on('touchend', function(){
         var len = $("#picShow>span").length;
         if(len == 3){
             layuiHint("暂时只支持三张图片！");
             return
         }
+        pic = [];   // 初始化
+        var nums = 3 - len;  // 最多三张图片
         // 浏览上传图片 
-        wxuploadimg(function(res){
+        wxuploadimg(nums, function(res){
             console.log('res: ',res);
-            
-            var $span = $("<span></span>");
-            var $span1 = $("<span>X</span>");
-            var $img = $('<img src="" alt="" index="" />');
-            
-            $img[0].width = "100%";
-            $img[0].height = "90%";
-            $img[0].src = res['src'];
-            $img[0].setAttribute("index", res.media_Id);
-            
-            $span1.addClass("delPic");
-            $span1.css({zIndex: '9'});
-            $span.append($span1);
-            $span.append($img[0]);
-            
-            // 显示图片
-            $('#picShow').append($span);
-            // 待发送给后台的图片id
-            // $('input[name="pic"]').val(res.media_Id);
-            console.log("传给后台的id",res.media_Id);
-        });
+            for(var i=0; i<res.length; i++){
+                // console.log('res: ',res[i]);
+                if(res[i].media_Id){
+                    (function locfn(media_Id, src, i){
+                        // console.log("传给后台的id",media_Id);
+                        pic.push(media_Id);
+                    })(res[i].media_Id, res[i].src, i)
+                }
+            }
+            console.log('1111');
+            setTimeout(function(){
+                picUpload();
+            },0)
+
+        })
     })
+    // 上传图片
+    function picUpload(){
+        console.log('pic: ',pic);
+        $.ajax({
+            url: getURL('Home', 'Work/picUpload'),
+            type: 'post',
+            data: {pic: pic},
+            success: function(res){
+                console.log('res: ',res);
+                if(res.status == 200){
+                    var picList = '';
+                    picList = JSON.parse(res.data.pic);
+                    for(var i=0; i<picList.length; i++){
+                        (function upfn(src){
+
+                            var $span = $("<span></span>");
+                            var $span1 = $("<span>X</span>");
+                            var $img = $('<img src="" alt="" index="" />');
+                            $img[0].width = "100%";
+                            $img[0].height = "90%";
+                            $img[0].src = '/Public'+src;
+                            
+                            $span1.addClass("delPic");
+                            $span1.css({zIndex: '9'});
+                            $span.append($span1);
+                            $span.append($img[0]);
+                            
+                            // 显示图片
+                            $('#picShow').append($span);
+                        })(picList[i])
+                    }
+                }else{
+                    layuiHint(res.msg);
+                }
+            },
+            error: function(err){
+                console.log('err: ',err);
+                layuiHint('系统出错，请稍后再试');
+            }
+        })
+    }
     var formData = new FormData($('#form')[0]);
     // 删除图片
-    $("#picShow").on("click", ".delPic", function(){
+    $("#picShow").on("touchend", ".delPic", function(){
         $(this).parent().remove();
         $(this).siblings().attr("index", "");
         // formData.delete('pic');
     })
     // 点击服务选择
-    $(".selService").on("click", function() {
+    $(".selService").on("touchend", function() {
         // 显示弹窗
         $(".serverZhe").css("display", "block");
     });
     // 弹窗列表选择
-    $(".selectOption>ul").on("click", "li", function(e) {
+    $(".selectOption>ul").on("touchend", "li", function(e) {
         $(this).children("i").removeClass("iconfont icon-emptycircle").addClass("iconfont icon-selectcircle").parent().siblings().children("i").removeClass("iconfont icon-selectcircle").addClass("iconfont icon-emptycircle");
     })
     // 服务确认选择
-    $(".serverZhe").on("click", ".confirmSelect", function() {
+    $(".serverZhe").on("touchend", ".confirmSelect", function() {
         // 选择完后隐藏
         $(".serverZhe").css("display", "none");
         selectResult = $(".serverZhe").find(".icon-selectcircle").siblings().text();
@@ -80,7 +117,7 @@
         service_code = "";
     });
     // 设备确认选择
-    $(".deviceZhe").on("click", ".confirmDevice", function() {
+    $(".deviceZhe").on("touchend", ".confirmDevice", function() {
         // 选择完后隐藏
         $(".deviceZhe").css("display", "none");
         var ZheVal = $(".deviceZhe").find(".icon-selectcircle").siblings().text();
@@ -135,7 +172,7 @@
         }
     })
     // 设备列表选择
-    $(".serviceNum").on("click", function() {
+    $(".serviceNum").on("touchend", function() {
         if(selectResult) {
             // 获取用户选择完的结果
             if(selectResult == "安装") {
@@ -178,7 +215,7 @@
     });
     
     // 蒙版点击隐藏
-    $(".selectOption").on("click", function(e) {
+    $(".selectOption").on("touchend", function(e) {
         var ev = e || window.event;
         var target = ev.target || srcElement;
         if(target.nodeName.toLowerCase() == "div") {
@@ -187,7 +224,7 @@
     });
     
     // 选择地区
-    $(".repaireAdd").on("click", ".areabtn", function(){
+    $(".repaireAdd").on("touchend", ".areabtn", function(){
         $("#areaChoose").css({display: "block"});
     });
     // 获取地址数据
@@ -223,7 +260,7 @@
     });
     
     // 选择省份，城市，区县
-    $('.areaDiv').on('click', 'p', function(){
+    $('.areaDiv').on('touchend', 'p', function(){
         var parent = $(this).parent()[0].className;
         var aid = $(this).attr('aid');	// 省份id
         var _this = $(this);
@@ -303,7 +340,7 @@
     }
     
     // 关闭地址选择
-    $('.areaChoosebg').click(function(){
+    $('.areaChoosebg').on('touchend', function(){
         $('#areaChoose').fadeOut('slow');
     })
     
@@ -338,7 +375,7 @@
         var picImgs = $('#picShow>span>img')
         if(picImgs.length) {
             for(var i = 0; i < picImgs.length; i++) {
-                filePic[i] = picImgs.eq(i).attr("index");
+                filePic.push(picImgs.eq(i).attr("src"));
             }
         }
         console.log("图片id",filePic)
@@ -428,7 +465,7 @@
         发送到后台
         */
         $.ajax({
-            url: getURL("Home", "work/workAdd   "),
+            url: getURL("Home", "work/workAdd"),
             type: 'post',
             async: false,
             data: formData,

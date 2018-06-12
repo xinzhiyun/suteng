@@ -16,11 +16,11 @@
         $('.select').html(deviceList);
     }
     // 显示设备选择面板
-    $('.selDevice').click(function(){
+    $('.selDevice').on('touchend', function(){
         $('.select').fadeIn('fast');
     })
     // 设备列表选择
-    $('.select').on('click', '.option', function(){
+    $('.select').on('touchend', '.option', function(){
         for(var i=0; i<$('.select>.option').length; i++){
             $('.select>.option').eq(i).attr('class', 'option');
         }
@@ -31,7 +31,7 @@
     })
     
     // 选择地区
-    $(".repaireAdd").on("click", ".areabtn", function(){
+    $(".repaireAdd").on("touchend", ".areabtn", function(){
         $("#areaChoose").css({display: "block"});
     });
     // 获取地址数据
@@ -67,7 +67,7 @@
     });
     
     // 选择省份，城市，区县
-    $('.areaDiv').on('click', 'p', function(){
+    $('.areaDiv').on('touchend', 'p', function(){
         var parent = $(this).parent()[0].className;
         var aid = $(this).attr('aid');	// 省份id
         var _this = $(this);
@@ -147,12 +147,12 @@
     }
     
     // 关闭地址选择
-    $('.areaChoosebg').click(function(){
+    $('.areaChoosebg').on('touchend', function(){
         $('#areaChoose').fadeOut('slow');
     })
     
     // 扫描设备编码
-    $('.devicep').on('click', function scancode() {
+    $('.devicep').on('touchend', function scancode() {
         wx.scanQRCode({
           needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
           scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有

@@ -7,8 +7,10 @@
   <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
-  <link rel="stylesheet" href="__PUBLIC__/Home/css/repaire/index.css">
+  <link rel="stylesheet" href="__PUBLIC__/Home/css/repaire/index.css?qwe={{:time()}}">
+  <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
   <script>
+    var vConsole = new VConsole();
     // 安装设备列表
     var installList ={{$installList|json_encode}};
     // 报修设备列表
@@ -148,12 +150,10 @@
   <script src="__PUBLIC__/Home/js/public.js"></script>
   <script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
   <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
-  <script src="__PUBLIC__/Home/js/wx_imgUpload.js"></script>
-  <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
-  <script src="__PUBLIC__/Home/js/repair/repair.js"></script>
+  <script src="__PUBLIC__/Home/js/wx_imgUpload.js?qwe={{:time()}}"></script>
+  <script src="__PUBLIC__/Home/js/repair/repair.js?qwe={{:time()}}"></script>
   <script type="text/javascript">
     $(function(){
-        // var vConsole = new VConsole();
           console.log("安装",installList, "报修",bindInfo)
         //微信接口
         wx.config({
