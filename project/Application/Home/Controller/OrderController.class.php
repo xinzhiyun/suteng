@@ -589,7 +589,7 @@ class OrderController extends CommonController
 
         $info = M('RefundMessage')->add($data);
         //写入成功后修改退货状态
-        $refund['status'] = 6;
+        $refund['status'] = 13;
         $refundStatus = M('refund')->where('serial_num='.$serial_num)->save($refund);
 
         if ($info && $refundStatus) {
