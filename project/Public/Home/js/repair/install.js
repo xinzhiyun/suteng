@@ -276,7 +276,7 @@
                     history.pushState({}, null, getURL("Home", "Index/index"));
                     setTimeout(function(){
                         location.href = getURL("Home", "VipCenter/minepack");
-                    },900);
+                    },2000);
                 }else {
                     layuiHint(res.msg);
                 }
