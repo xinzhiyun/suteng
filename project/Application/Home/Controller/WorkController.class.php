@@ -51,7 +51,6 @@ class WorkController extends CommonController
 
             $data['address'] = $post['address'];
 
-
             if(!empty($post['pic'])){
                 if(is_string($post['pic'])){
                     $post['pic'] = explode(',',$post['pic']);

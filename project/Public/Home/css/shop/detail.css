@@ -483,10 +483,7 @@ ul, li {
     border-radius: 0.2rem;
 }/*第一类item的底部评论设置结束*/
 
-
-
 .itemgoodsBott .pingfen {
-	width: 28%;
 	display: inline-block;
 	position: relative;
 	font-size: 20px;
