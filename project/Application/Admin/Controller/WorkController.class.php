@@ -33,6 +33,7 @@ class WorkController extends CommonController
         $where['number'] = $_GET['number'];
         $where['type'] = I('get.type');
         $where['result'] = I('get.result');
+        $where['is_examine'] = I('get.is_examine');
 
         $area = M('area')->where('parentid=0')->select();
 

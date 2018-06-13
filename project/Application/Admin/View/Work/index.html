@@ -40,16 +40,19 @@
                             <option <?php echo ($where['type']==1)?'selected':''; ?> value="1">维修</option>
                             <option <?php echo ($where['type']==2)?'selected':''; ?> value="2">维护</option>
                         </select>
+                        <!--处理结果(0：待处理(服务站) 1处理中(工作人员) 2已完成(工作人员) 3完成 (待客户评价) 4 评价完成   9 工单关闭 )-->
                         <select name="result" class="form-control" style="width:15%">
                             <option  <?php echo ($where['result']=="")?'selected':''; ?>  value="">处理结果</option>
                             <option <?php echo ($where['result']=="0")?'selected':''; ?> value="0">未处理</option>
                             <option <?php echo ($where['result']==1)?'selected':''; ?> value="1">正在处理</option>
                             <option <?php echo ($where['result']==2)?'selected':''; ?> value="2">已处理</option>
+                            <option <?php echo ($where['result']==3)?'selected':''; ?> value="3">已完成</option>
+                            <option <?php echo ($where['result']==9)?'selected':''; ?> value="9">已关闭</option>
                         </select>
                         <select name="is_examine" class="form-control"  style="width:15%">
-                            <option  <?php echo ($where['result']=="")?'selected':''; ?>  value="">审核状态</option>
-                            <option <?php echo ($where['result']=="0")?'selected':''; ?> value="0">待审核</option>
-                            <option <?php echo ($where['result']==1)?'selected':''; ?> value="1">未通过</option>
+                            <option  <?php echo ($where['is_examine']=="")?'selected':''; ?>  value="">审核状态</option>
+                            <option <?php echo ($where['is_examine']=="0")?'selected':''; ?> value="0">待审核</option>
+                            <option <?php echo ($where['is_examine']==2)?'selected':''; ?> value="2">未通过</option>
                         </select>
                         <span class="input-group-btn" style="display: inline-block;">
                                 <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
