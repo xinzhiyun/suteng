@@ -107,7 +107,7 @@ body{
 .saleBott{
 	width: 86%;
 	height: 1.8rem;
-	margin:35% 7% 0 7%;
+	margin: 10% 7%;
 	/* position: fixed; */
 	bottom: 1rem;
 }
@@ -190,8 +190,10 @@ body{
 	display: inline-block;
 }
 #picShow>span {
-	width: 30%;
-	height: 4rem;
+	width: 30vw;
+	height: 30vw;
+	max-width: 100px;
+	max-height: 100px;
 	display: inline-block;
 	position: relative;
 	margin: 5px 4px;
@@ -214,5 +216,6 @@ body{
 	align-items: center;
 	color: #fff;
 	border-radius: 50%;
+	border: 2px solid #fff;
 	background: red;
 }

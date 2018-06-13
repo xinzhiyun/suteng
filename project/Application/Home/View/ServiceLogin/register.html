@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<title>服务站注册</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/register.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
+</head>
+<body>
+	<div class="main"> 
+		<!-- 服务站信息 -->
+		<div class="stationInfo">
+			<div>
+				<span class="iconfont icon-gongsi"></span>
+				<span>服务站信息</span>
+			</div>
+			<div class="chooseArea">
+				<label for="">开通区域：</label>
+				<input type="text" disabled placeholder="请选择区域">
+				<span class="iconfont icon-right"></span>
+			</div>
+			<div>
+				<label for="">详细地址：</label>
+				<input type="text" placeholder="请输入详细地址">
+			</div>
+			<div>
+				<label for="">服务站客服：</label>
+				<input type="text" placeholder="请输入客服电话">
+			</div>
+		</div>
+		
+		<!-- 个人信息 -->
+		<div class="stationInfo">
+			<div>
+				<span class="iconfont icon-user"></span>
+				<span>个人信息</span>
+			</div>
+			<div>
+				<label for="">联系人：</label>
+				<input type="text" disabled placeholder="请输入姓名">
+			</div>
+			<div class="chooseSex">
+				<label for="">性别：</label>
+				<span><i class="iconfont icon-selectcircle"></i>男</span>
+				<span><i class="iconfont icon-emptycircle"></i>女</span>
+			</div>
+			<div>
+				<label for="">联系电话：</label>
+				<input type="text" placeholder="请输入联系电话">
+			</div>
+			<div>
+				<label for="">身份证号码：</label>
+				<input type="text" placeholder="请输入身份证号码">
+			</div>
+		</div>
+		
+		<!-- 公司信息 -->
+		<div class="stationInfo">
+			<div>
+				<span class="iconfont icon-gongsi"></span>
+				<span>公司信息</span>
+			</div>
+			<div>
+				<label for="">所属公司：</label>
+				<input type="text" disabled placeholder="请输入公司名称">
+			</div>
+			<div>
+				<label for="">公司法人：</label>
+				<input type="text" placeholder="请输入公司法人姓名">
+			</div>
+			<div class="yinyePic">
+				<p>营业执照：</p>
+				<div>
+					<span class="iconfont icon-41"></span>
+					<div class="picShow"></div>
+				</div>
+			</div>
+			<div class="yinyePic" id="hezuo">
+				<p>合作协议：</p>
+				<div>
+					<span class="iconfont icon-41"></span>
+					<div class="picShow"></div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 账号设置 -->
+		<div class="stationInfo">
+			<div>
+				<span class="iconfont icon-user"></span>
+				<span>账号设置</span>
+			</div>
+			<div class="chooseArea">
+				<label for="">账号：</label>
+				<input type="text" disabled placeholder="请输入账号">
+				<span class="iconfont icon-right"></span>
+			</div>
+			<div>
+				<label for="">密码：</label>
+				<input type="text" placeholder="请输入密码">
+			</div>
+			<div>
+				<label for="">再次确认：</label>
+				<input type="text" placeholder="请再次确认">
+			</div>
+		</div>
+
+		<!-- 保存和提交审核 -->
+		<div class="save">
+			<p>保存</p>
+			<p>提交审核</p>
+		</div>
+	</div>
+</body>
+<script src="__PUBLIC__/Home/js/jquery.min.js"></script>
+<script>
+</script>
+<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script src="__PUBLIC__/Home/js/public.js"></script>
+</html>

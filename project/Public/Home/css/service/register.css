@@ -1,0 +1,113 @@
+body {
+    font-size: .7rem;
+    background: #EDF2F2;
+    width: 100vw;
+    /* height: 100vh; */
+}
+/* 服务站信息 */
+.stationInfo {
+    padding: .4rem .5rem;
+    margin-bottom: .5rem;
+    background: white;
+}
+.stationInfo > div {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #F2F2F2;
+    padding: .7rem 0 .4rem 0;
+}
+.stationInfo > div > label {
+    width: 35%;
+    white-space: nowrap;
+}
+.stationInfo > div >input[type='text'] {
+    border: none;
+    background: white;
+}
+.chooseSex > span {
+    margin-right: 1rem;
+}
+.chooseSex > span > i{
+    color: #17AEA1;
+    margin-right: .3rem;
+}
+.stationInfo > div:nth-child(1) {
+    color: #17AEA1;
+    font-weight: blod;
+}
+.stationInfo > div:nth-child(1) > span:nth-child(1) {
+    font-size: 1rem;
+    margin-right: .2rem;
+}
+.stationInfo > div:nth-child(1) {
+    padding-top: 0;
+}
+.stationInfo > div:nth-child(1),  .stationInfo > div:last-child{
+    border-bottom: none;
+}
+.chooseArea {
+    position: relative;
+}
+.chooseArea > span {
+    position: absolute;
+    right: 0; 
+    color:#ACACAC;
+}
+/* placeholder颜色 */
+input::-webkit-input-placeholder{
+    color:#ACACAC;
+}
+input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+    color:#ACACAC;
+}
+input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+    color:#ACACAC;
+}
+input:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+    color:#ACACAC;
+}
+/* 营业执照 */
+.stationInfo > .yinyePic {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: 1rem;
+}
+.stationInfo > .yinyePic{
+    border-bottom: 1px solid #EBEBEB !important;
+}
+.stationInfo > #hezuo {
+    border-bottom: none !important;
+}
+.stationInfo > .yinyePic > div {
+    margin-top: 1rem;
+    display: flex;
+}
+.stationInfo > .yinyePic > div > span {
+    font-size: 2.5rem;
+    color: #AEAEAE;
+    border: 1px dashed #CDCDCD;
+    padding: .5rem;
+    border-radius: 3px;
+    margin-right: .3rem;
+}
+/* 提交和审核 */
+.save {
+    display: flex;
+    justify-content: space-around;
+    padding: 1rem 0 2rem 0;
+}
+.save > p {
+    width: 4.5rem;
+    height: 1.8rem;
+    line-height: 1.8rem;
+    text-align: center;
+    color: white;
+    border-radius: 5px;
+}
+.save > p:nth-child(1) {
+    background: #F0A92D;
+}
+.save > p:nth-child(2) {
+    background: #53C2B8;
+}
