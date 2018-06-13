@@ -70,36 +70,38 @@
 					</li>
 				</ul>
 				<ul class='ques' v-if="result == 0 || result == 1">
-					<li class='len'>
+					<li class='lens'>
 						<span>问题描述：&emsp;</span>
-						<span v-text='info.content'></span></li>
-						<li>
-							<span v-for='i in info.pic'>
-								<img :src="i" alt="">
-							</span>
-						</li>
-					</li>
-				</ul>
-			</div>
-			<!-- 用户信息结束 -->
-			
-			<!-- 安装人员信息开始 -->
-			<div class='dBot' v-if="result == '1' || result == '2' || result == '3'" >
-				<ul>
-					<li>售后人员：&emsp;<span v-text='info.name'></span></li>
-					<li>手机号码：&emsp;<a v-text='info.phone'></a></li>
-					<li>服务工号：&emsp;<span v-text='info.sn'></span></li>
-				</ul>
-				<ul class='ques' v-if="result == '2' || result == '3'">
-					<li class='len'>
-						<span>工作备注：&emsp;</span>
-						<span v-text='info.content'></span>
+						<div v-html='info.content'></div>
 					</li>
 					<li>
-						<span v-for='i in info.pic'>
-							<img :src="i" alt="">
+						<span class="pics">
+							<img :src="i" alt="" v-for='i in info.pic' >
 						</span>
 					</li>
+				</li>
+			</ul>
+		</div>
+		<!-- 用户信息结束 -->
+		
+		<!-- 安装人员信息开始 -->
+		<div class='dBot' v-if="result == '1' || result == '2' || result == '3'" >
+			<ul>
+				<li>售后人员：&emsp;<span v-text='info.name'></span></li>
+				<li>手机号码：&emsp;<a v-text='info.phone'></a></li>
+				<li>服务工号：&emsp;<span v-text='info.sn'></span></li>
+			</ul>
+			<ul class='ques' v-if="result == '2' || result == '3'">
+				<li class='len'>
+					<span>工作备注：&emsp;</span>
+					<span v-text='info.content'></span>
+				</li>
+				<li>
+					<span v-for='i in info.pic' class="pics">
+						<img :src="i" alt="">
+						<img src="__PUBLIC__/Home/images/3b.png" alt="">
+						<img src="__PUBLIC__/Home/images/3b.png" alt="">
+					</span>
 				</li>
 			</ul>
 		</div>
