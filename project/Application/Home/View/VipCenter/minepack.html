@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/minepack.css">
 
 </head>
-<body>
+<body ontouchstart='console.log()'>
   <div class="_Mine">
     <div class="MineContainer">
         <div class="MineTop"> 
@@ -29,26 +29,40 @@
         <div class="MineFoot">
           <ul>
             <li>
-              <a href="{{:U('Home/Device/index')}}"><i class="iconfont icon-shebeiguanli Mf-left"></i><span>设备管理</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i><b id="device_now">当前设备：{{$device['device_code']}}</b></a>
+              <a href="{{:U('Home/Device/index')}}"><i class="iconfont icon-shebeiguanli Mf-left"></i>
+              <span>设备管理</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i><b id="device_now">当前设备：{{$device['device_code']}}</b></a>
             </li>
             <li>
-              <a href="{{:U('Home/Switch/index')}}"><i class="iconfont icon-renwu Mf-left"></i><span>定时管理</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a>
+              <a href="{{:U('Home/Switch/index')}}"><i class="iconfont icon-renwu Mf-left"></i>
+              <span>定时管理</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a>
             </li>
             <li>
-              <a href="{{:U('Home/Switch/setTime')}}"><i class="iconfont icon-naozhong Mf-left"></i><span>定时设置</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a>
+              <a href="{{:U('Home/Switch/setTime')}}"><i class="iconfont icon-naozhong Mf-left"></i>
+              <span>定时设置</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a>
             </li>
             <!-- <li><a href="{{:U('Home/VipCenter/usedNotes')}}"><i class="iconfont icon-yongshuijilu Mf-left"></i><span>用水记录</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a></li> -->
             <li>
-              <a href="{{:U('Home/VipCenter/purificationNotes')}}"><i class="iconfont icon-jilu1 Mf-left"></i><span>净水记录</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a>
+              <a href="{{:U('Home/VipCenter/purificationNotes')}}"><i class="iconfont icon-jilu1 Mf-left"></i>
+              <span>净水记录</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a>
+            </li>
+
+            <li>
+              <a href="{{:U('Home/vipCenter/service_record')}}">
+                <i class="iconfont icon-pinglun Mf-left" style='color: #00BCD4;'></i>
+                <span>服务记录</span>
+                <i class="iconfont icon-dayuhao-copy-copy Mf-right"></i>
+              </a>
             </li>
             <!-- <li class="Mf-infor">
               <a href="{{:U('Home/VipCenter/personalInformation')}}"><i class="iconfont icon-gerenxinxi Mf-left"></i><span>个人信息</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a>
             </li> -->
             <li>
-              <a href="{{:U('Home/Repair/index')}}"><i class="iconfont icon-wuyebaoxiu Mf-left"></i><span>报 修</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a>
+              <a href="{{:U('Home/Repair/index')}}"><i class="iconfont icon-wuyebaoxiu Mf-left"></i>
+              <span>报 修</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a>
             </li>
             <li>
-              <a href="{{:U('Home/Suggest/index')}}"><i class="iconfont icon-dengpao1 Mf-left"></i><span>建 议</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a>
+              <a href="{{:U('Home/Suggest/index')}}"><i class="iconfont icon-dengpao1 Mf-left"></i>
+              <span>建 议</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a>
             </li>
           </ul>
         </div>

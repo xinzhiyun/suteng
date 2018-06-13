@@ -275,7 +275,7 @@ $(function(){
 					// console.log(picArr[i].picHTML)		//评价的图片
 				}
 			}else{
-				$(".detailItemall").html("<div style='width:100%;height:50vh;display:flex;justify-content:center;align-items:center;'>您还没有已评论的记录</div>");
+				$(".detailItemall").html("<div style='width:100%;display:flex;justify-content:center;align-items:center;'>暂无评论</div>");
 			}
 			// 图片浏览
 			setTimeout(function(){

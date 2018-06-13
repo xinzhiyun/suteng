@@ -1,6 +1,6 @@
 var peopleindex = new Vue({
 	data() {
-		return {
+		return { 
 			task: {}
 		}
 	},

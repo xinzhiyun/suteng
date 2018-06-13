@@ -13,7 +13,7 @@
 <body>
 	<div id='service_record'>
 		<div class='search'>
-			<span>
+			<span> 
 				<i class='iconfont icon-sousuo' @click='search(word)'></i>
 				<input type="text" placeholder="请输入工单号" v-model='word' @keyup.enter='search(word)'>
 			</span>
@@ -47,7 +47,7 @@
 					loadstyle: 'block',
 					colorList: ['color:#f16e65;', 'color:#2196F3;', 'color:#2196F3;', 'color:#00d4c2;'],
 					typeList: ['安装', '维护', '维修'],
-					statusList: ['待处理', '处理中', '已完成', '完成(待评价)', '评价完成', '工单关闭' ],
+					statusList: ['待处理', '处理中', '已完成', '待评价', '已完成', '已完成', '已完成', '已完成', '已完成', '工单关闭'],
 					notice: '正在加载...',
 					noticestyle: 'block',
 				}

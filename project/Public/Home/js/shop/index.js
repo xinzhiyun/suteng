@@ -97,29 +97,29 @@ var lazyNum = 0;	// '|'的加载次数
 if(goods != 'null'){
 	//有数据
 	_goods = goods;
-	// console.log(_goods);
 	if(_cate){
 		for(var i=0;i<_cate.length; i++){
 			_htmlArr[[i]] = '';		//使用前先初始化
 			searchArr[[i]] = '';		//使用前先初始化
 			for(var j=0; j<_goods.length; j++){
-				if(_goods[j].cid == _cate[i].id){	//对应分类下有商品
+				if(_goods[j].cid == _cate[i].id && _htmlArr[i].indexOf(_goods[j].gid) < 0){	//对应分类下有商品
 					lazyNum++; 
 					// console.log(_goods[j].cid, _cate[i].id);
+					// 搜索
 					searchArr[i] += '<a href="javascript:;" goods_gid="'+_goods[j].gid+'">'+
 							'<p>'+ _goods[j].name +'</p>'+
 						'</a>';
 
 					_htmlArr[i] += 
 						'<li>'+
-							'<a class="pic" goods_gid="'+_goods[j].gid+'" href="javasctipt:;" cid="'+ i +'">'+
-								'<span ><img src="/Uploads/'+_goods[j].path+'" alt="正在加载中..."></span>'+
+							'<a class="pic" goods_gid="'+ _goods[j].gid +'" href="javasctipt:;" cid="'+ i +'">'+
+								'<span ><img src="/Uploads/'+ _goods[j].path +'" alt="正在加载中..."></span>'+
 								'<p class="name">'+ _goods[j].name +'</p>'+
 								'<b class="price">¥'+ _goods[j].price +'</b>'+
 							'</a>'+
 							'<i class="iconfont icon-jiarugouwuche"></i>'+
 						'</li>';
-					if(lazyNum > 4 && (lazyNum+1)%4 == 0){
+					if(lazyNum > 4 && (lazyNum+1)%4 == 0 && i+1 != _goods.length){
 						// console.log('lazyNum: ', lazyNum);
 						// console.log('(lazyNum+1)%6: ',(lazyNum+1)%4);
 						//每隔6个添加 '|' ，后面懒加载用
@@ -149,7 +149,7 @@ for(var i=0; i<categoryArr.length; i++){
 /*
 	如果第一页有内容则加载第一页
  */
-// console.log('_htmlArr: ',_htmlArr)
+console.log('_htmlArr: ',_htmlArr)
 if(_htmlArr[0]){
 	// $(".allgoods>ul").eq(0).html(_htmlArr[0]);
 	// console.log($("#content>div").eq(0).attr("index"))
@@ -335,22 +335,22 @@ function lazyLoad(_this){
 	// console.log('scrollHeight - offsetHeight: ', scrollH - offsetH);
 	// console.log('scrollTop: ',scrollTop);
 
-	if(scrollTop/(scrollH - offsetH) >= 0.99){	//触底加载，直到没有数据
+	if(scrollTop/(scrollH - offsetH) >= 0.7){	//触底加载，直到没有数据
 		// console.group()
 		// console.log('scrollAppend: ',lazyArr[num]);
 
 		if(_htmlArr[tab_now]){	//对应分类下有多数据才添加到页面
-			$(".allgoods>ul").eq(tab_now).append(lazyArr[num]);
-			num++;
+			if(lazyArr[num+1] && lazyArr[num+1] != '|'){
+				$(".allgoods>ul").eq(tab_now).append(lazyArr[num+1]);
+				num++;
+			}else{	// 如果没有数据了， 解绑监听scroll
+				$('#container').off('scroll');
+				$(".allgoods>ul").eq(tab_now).append('<li class="nomore"><p>已无更多数据，休息一下吧！</p><span></span><span></span></li>');
+				num = 1;
+				isLoad[tab_now] = true;		//停止懒加载标志
+			}
 		}
-		// 如果没有数据了， 解绑监听scroll
-		if(num = lazyArr.length){
-			$('#container').off('scroll');
-			$(".allgoods>ul").eq(tab_now).append('<li class="nomore"><p>已无更多数据，休息一下吧！</p><span></span><span></span></li>');
-			num = 1;
-			isLoad[tab_now] = true;		//停止懒加载标志
-			// return
-		}
+		
 	}
 	// console.log('tab_now: ', tab_now);
 	// console.log('num: ', num);

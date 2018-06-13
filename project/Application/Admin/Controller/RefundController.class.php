@@ -27,7 +27,17 @@ class RefundController extends CommonController
         $id = I('get.id');
         $data = D('Refund')->relation(['logistics','goods'])->find($id);
 
-        dump($data);
+        //退货的 需要将用户的快递信息显示出来
+        if ($data['method'] == '2') {
+            $rid = M('Refund')->find($id)['id'];
+            $oid = M('RefundGoods')->where('rf_id='.$rid)->find()['oid'];
+
+            $cinfo = M('RefundMessage')->where('orderid='.$oid)->find();
+
+            $data['espress_name'] = $cinfo['espress_name'];
+            $data['espress_num'] = $cinfo['espress_num'];
+            $data['addtime'] = date('Y-m-d H:i:s',$cinfo['addtime']);
+        }
 
 
         // $orderDetail = D('orderDetail');
@@ -52,7 +62,7 @@ st_shop_order_detail.gid ='.$value['gid']);
             // $orderDetail->join('st_pic ON st_order_detail.gid = st_pic.gid','LEFT');
             $orderDetail->where('st_shop_order_detail.id < 0');
         $goods = $orderDetail->select();
-        dump($goods);
+        
         $this->assign('goods',$goods);
         $this->assign('data',$data);
         $this->display();
@@ -309,16 +319,88 @@ st_shop_order_detail.gid ='.$value['gid']);
                                     switch ($status) {
                                         //已发货的退货退款
                                         case '11':
-                                            $shop['status'] = 7;
-                                            $shop['updatetime'] = time();
-                                            $bool3 = M('shop_order')->where("order_id='{$order_id}'")->save($shop);
+
+                                            //修改订单状态前先判断该订单下是否还有未发货的商品
+                                            //1.先查询订单中的商品
+                                            $od = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
+
+                                            //订单中所有商品的id
+                                            $ids = array();
+                                            foreach ($od as $key => $value) {
+                                              $ids[] = $value['gid'];
+                                            }
+                                            
+                                            //2.查询退货订单的商品
+                                            $rg = M('refund_goods')->where("oid='{$order_id}'")->select();
+
+                                            $rids = array();
+                                            foreach ($rg as $key => $value) {
+                                              $rids[] = $value['gid'];
+                                            }
+
+                                            //退货商品的快递的信息就不需要查询了
+                                            $jid = array_diff($ids,$rids);
+                                          
+                                            // $map['order_id'] = $order_id;
+                                            $map['gid'] = array('in',$jid);
+
+                                            // dump($map);die;
+
+                                            // $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
+
+                                            if (empty($map)) {
+                                                // echo 1;
+                                                $shop['status'] = 7;
+                                                $shop['updatetime'] = time();
+                                                $bool3 = M('shop_order')->where("order_id='{$order_id}'")->save($shop);
+                                            } else {
+                                                $shop['updatetime'] = time();
+                                                $bool3 = M('shop_order')->where("order_id='{$order_id}'")->save($shop);
+
+                                            }
+                                            
                                             break;
                                         
                                         //已发货的仅退款
                                         case '12':
-                                            $shop['status'] = 7;
-                                            $shop['updatetime'] = time();
-                                            $bool3 = M('shop_order')->where("order_id='{$order_id}'")->save($shop);
+                                            //修改订单状态前先判断该订单下是否还有未发货的商品
+                                            //1.先查询订单中的商品
+                                            $od = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
+
+                                            //订单中所有商品的id
+                                            $ids = array();
+                                            foreach ($od as $key => $value) {
+                                              $ids[] = $value['gid'];
+                                            }
+                                            
+                                            //2.查询退货订单的商品
+                                            $rg = M('refund_goods')->where("oid='{$order_id}'")->select();
+
+                                            $rids = array();
+                                            foreach ($rg as $key => $value) {
+                                              $rids[] = $value['gid'];
+                                            }
+
+                                            //退货商品的快递的信息就不需要查询了
+                                            $jid = array_diff($ids,$rids);
+                                          
+                                            // $map['order_id'] = $order_id;
+                                            $map['gid'] = array('in',$jid);
+
+                                            // dump($map);die;
+
+                                            // $couriers = D('ShopOrderDetail')->field('id')->where($map)->select();
+
+                                            if (empty($map)) {
+                                                // echo 1;
+                                                $shop['status'] = 7;
+                                                $shop['updatetime'] = time();
+                                                $bool3 = M('shop_order')->where("order_id='{$order_id}'")->save($shop);
+                                            } else {
+                                                $shop['updatetime'] = time();
+                                                $bool3 = M('shop_order')->where("order_id='{$order_id}'")->save($shop);
+
+                                            }
                                             break;
 
 

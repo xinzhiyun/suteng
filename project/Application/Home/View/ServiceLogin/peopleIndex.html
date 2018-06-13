@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<title>登录</title> 
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/login.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+</head>
+<body>
+	<div class="main"> 
+		<div class="logoTop">
+			<img src="__PUBLIC__/Home/images/logo@2x.png" alt="">
+		</div>
+		<div class="contentBottom">
+			<div>
+				<span class="iconfont icon-user"></span>
+				<input type="text" name="uname" placeholder="账号">
+			</div>
+			<div>
+				<span class="iconfont icon-mima"></span>
+				<input type="password" name="userpass" placeholder="密码">
+			</div>
+			<div class="yCodeP">
+				<p>
+					<span class="iconfont icon-yanzheng"></span>
+					<input type="text" name="usercode" placeholder="验证码">
+				</p>
+				<span class="yCord">
+					<img src="{{:U('ServiceLogin/yzm',['s'=>time()])}}" onclick="this.src +='?s'+Math.random">
+				</span>
+			</div>
+			<div class="login">
+				<p>登录</p>
+			</div>
+			<div class="tips">
+				<p>还没有服务站?<a href="{{:U('Home/ServiceLogin/register')}}">马上注册</a>服务站</p>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="__PUBLIC__/Home/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script src="__PUBLIC__/Home/js/public.js"></script>
+
+<script>
+	// 验证
+	$(".login").on("click", function() {
+		var username = $("input[name='uname']").val();
+		var userpass = $("input[name='userpass']").val();
+		var usercode = $("input[name='usercode']").val();
+		// 姓名判断
+		if(!username) {
+			layuiHint("账号不能为空!")
+			return false;
+		}
+		// 密码判断
+		if(!userpass) {
+			layuiHint("密码不能为空!")
+			return false;
+		}
+		// 验证码
+		if(!usercode) {
+			layuiHint("请填入验证码");
+		}
+		// ajax提交后台
+		$.ajax({
+			url: "{{:U('Home/ServiceLogin/index')}}",
+			type: "post",
+			data: {name:username,password:userpass, code: usercode},
+			success: function(res) {
+				console.log("登录", res);
+				if(res.status == 200) {
+					layuiHint(res.msg);
+					setTimeout(function() {
+						location.href = '{{:U("Home/ServicePeople/index")}}';
+					}, 1000);
+					
+				}else{
+					layuiHint(res.msg);
+				}
+			},
+			error: function(res) {
+				console.log("失败", res);
+			}
+		})
+	})
+</script>
+</html>

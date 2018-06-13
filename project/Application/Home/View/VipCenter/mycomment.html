@@ -175,7 +175,7 @@
 					}else {
 						picStr = '';	//先清空再生成
 						for(var j=0; j<res.data[i].pics.length; j++){
-							picStr += '<li><img src="'+'/Public/'+res.data[i].pics[j].path+'" alt="图片加载中"></li>';
+							picStr += '<li><img src="'+ res.data[i].pics[j].path +'" alt="图片加载中"></li>';
 						}
 						picArr.push({'picHTML':picStr});
 					}
