@@ -25,16 +25,14 @@ class ServiceLoginController extends Controller
                 if($info){
                     if ($info['password'] == $password) {
                         unset($info['password']);
-
                         // 万事大吉
                         $_SESSION['serviceInfo'] = $info;
-                        // 主页
-                        $this->toJson([],'登录成功',200);
+                        E('登录成功',200);// 主页
                     }else{
-                        $this->error('您的密码输入错误！');
+                        E('您的密码输入错误!',40002);
                     }
                 }else{
-                    $this->error('您输入的用户名不存在！');
+                    E('您输入的用户名不存在!',40002);
                 }
 
             } catch (\Exception $e) {
