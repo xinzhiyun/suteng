@@ -188,7 +188,7 @@ st_shop_order_detail.gid ='.$value['gid']);
                                     M('shop_order')->startTrans();
 
                                     //修改退款订单的状态
-                                    $refund['status'] = 5;
+                                    $refund['status'] = 11;
                                     $bool2 = M('refund')->where('id='.$id)->save($refund);
 
                                     //修改订单状态前先判断该订单下是否还有未发货的商品
