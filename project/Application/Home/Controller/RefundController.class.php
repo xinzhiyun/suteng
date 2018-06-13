@@ -108,8 +108,9 @@ class RefundController extends CommonController
                     $data['pic'] = $path;
 
                     // dump($data);
-                    
-                    $result = $refund->add($data);
+                    $refund->startTrans();
+                    // print_r($data);die;                    
+                    $result = D('Refund')->relation(true)->add($data);
 
 
                     //查看退货表中退货商品的总数
