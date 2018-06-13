@@ -227,7 +227,7 @@
     });
     
     // 选择地区
-    $(".repaireAdd").on("touchend", ".areabtn", function(){
+    $(".repaireAdd").on("click", ".areabtn", function(){
         $("#areaChoose").css({display: "block"});
     });
     // 获取地址数据
