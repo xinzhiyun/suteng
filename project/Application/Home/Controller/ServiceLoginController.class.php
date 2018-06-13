@@ -9,6 +9,10 @@ class ServiceLoginController extends Controller
     {
         if (IS_POST) {
 
+            $Verify = new \Think\Verify();
+            $res = $Verify->check($_POST['code']);
+            if(!$res) E('验证码不对',40002);
+
             $password = md5($_POST['password']);
             $info = M('admin_user')
                 ->alias('au')
