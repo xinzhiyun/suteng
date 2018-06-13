@@ -27,7 +27,17 @@ class RefundController extends CommonController
         $id = I('get.id');
         $data = D('Refund')->relation(['logistics','goods'])->find($id);
 
-        dump($data);
+        //退货的 需要将用户的快递信息显示出来
+        if ($data['method'] == '2') {
+            $rid = M('Refund')->find($id)['id'];
+            $oid = M('RefundGoods')->where('rf_id='.$rid)->find()['oid'];
+
+            $cinfo = M('RefundMessage')->where('orderid='.$oid)->find();
+
+            $data['espress_name'] = $cinfo['espress_name'];
+            $data['espress_num'] = $cinfo['espress_num'];
+            $data['addtime'] = date('Y-m-d H:i:s',$cinfo['addtime']);
+        }
 
 
         // $orderDetail = D('orderDetail');
@@ -52,7 +62,7 @@ st_shop_order_detail.gid ='.$value['gid']);
             // $orderDetail->join('st_pic ON st_order_detail.gid = st_pic.gid','LEFT');
             $orderDetail->where('st_shop_order_detail.id < 0');
         $goods = $orderDetail->select();
-        dump($goods);
+        
         $this->assign('goods',$goods);
         $this->assign('data',$data);
         $this->display();
