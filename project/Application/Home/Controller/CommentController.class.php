@@ -15,107 +15,107 @@ class CommentController extends CommonController
         $this->display();
     }
 
-    /**
-     * [reward 商品评论成功]
-     * @return [type] [description]
-     */
-    public function commentsucceed()
-    {
-        p(I(''));die;
-        try {
-            $comment = D('Comment');
-            $data = I('post.');
-            $orderid = $data['orderid'];
-            // dump($data);
-            // $_SESSION['user']['id'] = 27;
-            $data['uid'] = session('user.id');
-
-
-            // $savePath = 'Uploads/pic/';
-            // // 二进制文件上传简单处理
-            // if (!empty($_FILES["UploadForm"])) {
-            //     foreach ($_FILES["UploadForm"]["tmp_name"] as $key => $value) {
-            //         $image = $_FILES["UploadForm"]["tmp_name"][$key];
-
-            //         $$key = fopen($image, "r");
-
-            //         $file = fread($$key, $_FILES["UploadForm"]["size"][$key]); //二进制数据流
-
-            //         $imgUp = new \Org\Util\ImageUpload(time().mt_rand(100000,9999999).'.png',$savePath);
-            //         $info[] = $imgUp->stream2Image($file);
-            //         fclose ( $$key );
-            //     }
-            // }else{
-            //     $info = [];
-            //     // E('没有文件上传', 602);
-            // }   
-  
-            if(!empty($data['pic'])){
-                $info = $this->downloadPic($data['pic']);
-            }
-           
-           
-            $comment->startTrans();
-            // 根据订单获取所有商品
-            $goods = D('shop_order_detail')->where(['order_id'=>$orderid])->field('gid')->select();
-            foreach($goods as $key => $value){
-                // 判断该用户是否已经对这个商品评价过，如果评价过，就不能评价了           
-                if($comment->where(['uid'=>$data['uid'],'gid'=>$value['gid'],'order_id'=>$orderid])->find()){                   
-                    E('你已经评论过了，不能再次评论！', 605);
-                    break;
-                }
-                $comments = [];
-                $comments = [
-                    'order_id' => $orderid,
-                    'gid' => $value['gid'],
-                    'uid' => $data['uid'],
-                    'status' => $data['status'],
-                    'content' => $data['content'],
-                    'addtime' => time()
-                ];
-                $com_status[] = $comment->add($comments);
-            }
-            // 处理图片写入
-            if(!empty($info)){
-                                // print_r($comments);die;
-                // unset($data['file']);
-                foreach($com_status as $coms){
-                    // foreach ($info as $key => $value) {
-                    //     $com_pic[] = [
-                    //         'cid' => $coms,
-                    //         'path' => $value
-                    //     ];
-                    // }
-                    $com_pic[] = [
-                            'cid' => $coms,
-                            'path' => $info
-                        ];
-                }           
-                // print_r($com_status);
-                // dump($com_status);die;
-                $pic_status = D("ComPic")->addAll($com_pic);
-            }
-            $res = D('ShopOrder')->where(['uid'=>$data['uid'],'order_id'=>$orderid])->setField(['status'=>7]);
-            // var_dump($res);dump($orderid);
-            if($res){                
-                $comment->commit();
-                E('评论成功', 200);
-                $this->success('评论成功');
-            } else {
-                $comment->rollback();
-                E('评论失败', 603);
-                // $this->error('评论失败');
-            }
-        } catch (\Exception $e) {
-            $this->rmfiles($info);
-            $err = [
-                'code' => $e->getCode(),
-                'msg' => $e->getMessage(),
-            ];
-            $this->ajaxReturn($err);
-            // $this->error('评论失败');                     
-        }
-    }
+//    /**
+//     * [reward 商品评论成功]
+//     * @return [type] [description]
+//     */
+//    public function commentsucceed()
+//    {
+//        p(I(''));die;
+//        try {
+//            $comment = D('Comment');
+//            $data = I('post.');
+//            $orderid = $data['orderid'];
+//            // dump($data);
+//            // $_SESSION['user']['id'] = 27;
+//            $data['uid'] = session('user.id');
+//
+//
+//            // $savePath = 'Uploads/pic/';
+//            // // 二进制文件上传简单处理
+//            // if (!empty($_FILES["UploadForm"])) {
+//            //     foreach ($_FILES["UploadForm"]["tmp_name"] as $key => $value) {
+//            //         $image = $_FILES["UploadForm"]["tmp_name"][$key];
+//
+//            //         $$key = fopen($image, "r");
+//
+//            //         $file = fread($$key, $_FILES["UploadForm"]["size"][$key]); //二进制数据流
+//
+//            //         $imgUp = new \Org\Util\ImageUpload(time().mt_rand(100000,9999999).'.png',$savePath);
+//            //         $info[] = $imgUp->stream2Image($file);
+//            //         fclose ( $$key );
+//            //     }
+//            // }else{
+//            //     $info = [];
+//            //     // E('没有文件上传', 602);
+//            // }
+//
+//            if(!empty($data['pic'])){
+//                $info = $this->downloadPic($data['pic']);
+//            }
+//
+//
+//            $comment->startTrans();
+//            // 根据订单获取所有商品
+//            $goods = D('shop_order_detail')->where(['order_id'=>$orderid])->field('gid')->select();
+//            foreach($goods as $key => $value){
+//                // 判断该用户是否已经对这个商品评价过，如果评价过，就不能评价了
+//                if($comment->where(['uid'=>$data['uid'],'gid'=>$value['gid'],'order_id'=>$orderid])->find()){
+//                    E('你已经评论过了，不能再次评论！', 605);
+//                    break;
+//                }
+//                $comments = [];
+//                $comments = [
+//                    'order_id' => $orderid,
+//                    'gid' => $value['gid'],
+//                    'uid' => $data['uid'],
+//                    'status' => $data['status'],
+//                    'content' => $data['content'],
+//                    'addtime' => time()
+//                ];
+//                $com_status[] = $comment->add($comments);
+//            }
+//            // 处理图片写入
+//            if(!empty($info)){
+//                                // print_r($comments);die;
+//                // unset($data['file']);
+//                foreach($com_status as $coms){
+//                    // foreach ($info as $key => $value) {
+//                    //     $com_pic[] = [
+//                    //         'cid' => $coms,
+//                    //         'path' => $value
+//                    //     ];
+//                    // }
+//                    $com_pic[] = [
+//                            'cid' => $coms,
+//                            'path' => $info
+//                        ];
+//                }
+//                // print_r($com_status);
+//                // dump($com_status);die;
+//                $pic_status = D("ComPic")->addAll($com_pic);
+//            }
+//            $res = D('ShopOrder')->where(['uid'=>$data['uid'],'order_id'=>$orderid])->setField(['status'=>7]);
+//            // var_dump($res);dump($orderid);
+//            if($res){
+//                $comment->commit();
+//                E('评论成功', 200);
+//                $this->success('评论成功');
+//            } else {
+//                $comment->rollback();
+//                E('评论失败', 603);
+//                // $this->error('评论失败');
+//            }
+//        } catch (\Exception $e) {
+//            $this->rmfiles($info);
+//            $err = [
+//                'code' => $e->getCode(),
+//                'msg' => $e->getMessage(),
+//            ];
+//            $this->ajaxReturn($err);
+//            // $this->error('评论失败');
+//        }
+//    }
 
     public function comment(){
         // 1.获取参数
@@ -133,17 +133,26 @@ class CommentController extends CommonController
             $this->ajaxReturn(['code'=>605,'msg'=>'你已经评论过了，不能再次评论！']);
         }
         // 4.判断图片，处理文件上传
+//        if(!empty($pics)){
+//            $info = [];
+//            $pics = explode(',',$pics);
+//            foreach ($pics as $key => $val) {
+//                array_push($info,$this->downloadPic($val));
+//            }
+//            // file_put_contents('./com_pic.txt',$info."\r\n\r\n", FILE_APPEND);
+//        }
         if(!empty($pics)){
+            if(is_string($pics)){
+                $pics = explode(',', $pics );
+            }
             $info = [];
-            $pics = explode(',',$pics);
-            foreach ($pics as $key => $val) {
-                array_push($info,$this->downloadPic($val)); 
-            }                
-            // file_put_contents('./com_pic.txt',$info."\r\n\r\n", FILE_APPEND);     
+            if( is_array($pics) ){
+                foreach ($pics as $key => $val) {
+                    array_push($info,$val);
+                }
+            }
         }
-        // p($info);
-        // file_put_contents('./comment.txt',json_encode($info)."\r\n\r\n", FILE_APPEND);die;   
-        
+
         // 5.处理添加评论
         $comment->startTrans();
             // 根据订单获取所有商品
@@ -161,7 +170,6 @@ class CommentController extends CommonController
                 foreach ($info as $key => $path) {
                     D("ComPic")->add(['cid'=>$id,'path'=>$path]);
                 }
-                   
            }
             
             $res = D('shop_order_detail')->where(['order_id'=>$orderid,'gid'=>$gid])->setField(['status'=>7]);

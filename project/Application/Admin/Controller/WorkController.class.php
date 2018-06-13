@@ -139,11 +139,13 @@ class WorkController extends CommonController
                 Work::add($data['id'],2);
 
                 // 分配工单
-                if( !$this->autoService($data['id']) ){
-                    E('审核成功,自动派遣失败,请手动派遣',200);
+                if($data['is_examine'] ==1){
+                    if( !$this->autoService($data['id']) ){
+                        E('审核成功,自动派遣失败,请手动派遣',200);
+                    }
                 }
 
-                E('修改成功',200);
+                E('审核完成',200);
             } else {
                 E('修改失败,请重试!',201);
             }
