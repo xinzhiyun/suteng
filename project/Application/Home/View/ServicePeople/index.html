@@ -13,11 +13,11 @@
     <div class="main">
         <!-- 用户信息 -->
         <div class="backImg">
-            <h1>广州番禺服务站</h1>
-            <p>姓名：<span>张三</span></p>
+            <h1>{{$_SESSION['servicepeople']['company']}}</h1>
+            <p>姓名：<span>{{$_SESSION['servicepeople']['name']}}</span></p>
             <p>
                 <span>
-                    工号：<i>123589645</i>
+                    工号：<i>{{$_SESSION['servicepeople']['sn']}}</i>
                 </span>
             </p>
         </div>
@@ -31,7 +31,7 @@
                         <a href="{{:U('Home/ServicePeople/wait_task')}}?type=0">
                             <p><img src="__PUBLIC__/Home/images/install@2x.png" alt=""></p> 
                             <span>待安装</span>
-                            <i class="tipNum" v-text='task.wait_install'>15</i>
+                            <i class="tipNum" v-text='task.wait_install'>0</i>
                         </a>
                     </li>
                     <li>
@@ -40,7 +40,7 @@
                                 <img src="__PUBLIC__/Home/images/repair@2x.png" alt=""> 
                             </p>
                             <span>待维修</span>
-                            <i class="tipNum" v-text='task.wait_repair'>15</i>
+                            <i class="tipNum" v-text='task.wait_repair'>0</i>
                         </a>
                     </li>
                     <li>
@@ -49,7 +49,7 @@
                                 <img src="__PUBLIC__/Home/images/maintain@2x.png" alt=""> 
                             </p>
                             <span>待维护</span>
-                            <i class="tipNum" v-text='task.wait_maintain'>15</i>
+                            <i class="tipNum" v-text='task.wait_maintain'>0</i>
                         </a>
                     </li>
                 </ul>
@@ -81,5 +81,8 @@
     <script src="__PUBLIC__/Home/js/public.js"></script>
     <script src='__PUBLIC__/Home/js/vue.min.js'></script>
     <script src="__PUBLIC__/Home/js/service/people/index.js"></script>
+    <script>
+        var task = {{$work|json_encode}};
+    </script>
 </body>
 </html>
