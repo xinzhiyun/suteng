@@ -56,4 +56,16 @@ class ServiceLoginController extends Controller
         
     }
 
+    // 验证码方法
+    public function yzm()
+    {
+        $config = array(
+            'font-Size' =>   30, //验证码大小
+            'length'    =>   4,  //验证码个数
+            'useNoise'  =>   false, //关闭验证码杂点
+        );
+        $Verify = new \Think\Verify($config);
+        $Verify->entry();
+    }
+
 }
