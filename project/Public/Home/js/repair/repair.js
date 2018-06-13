@@ -367,7 +367,7 @@
         
         */
         var phoneReg = /^1[3|4|5|8][0-9]\d{4,8}$/;
-        var addressReg = /^(?=.*?[\u4E00-\u9FA5])[\dA-Za-z\u4E00-\u9FA5]{6,}/;
+        var addressReg = /^(?=.*?[\u4E00-\u9FA5])[\dA-Za-z\u4E00-\u9FA5]{4,}/;
 
         var username = $(".repaireName").val();//用户名
         var userphone = $("input[name='phone']").val();//电话
@@ -436,7 +436,7 @@
         }
         if(Detailadd) {
             if(!addressReg.test(Detailadd)) {
-                layuiHint("请输入正确的地址!");
+                layuiHint("请输入正确的地址，不能少于6个字!");
                 return;
             }
         }else {

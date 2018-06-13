@@ -63,7 +63,7 @@
 					<li>用户名：&emsp;<span v-text='info.kname'></span><span></span></li>
 					<li>手机号码</i>：&emsp;<a v-text='info.kphone'></a></li>
 					<li>服务类型：&emsp;<span v-text='info.type'></span></li>
-					<li>设备信息：&emsp;<span v-text='info.gname'></span></li>
+					<li>设备信息：&emsp;<span v-text='info.device_code'></span></li>
 					<li class='len'>
 						<span>详细地址：&emsp;</span>
 						<span v-text='info.province+info.city+info.address'></span>
@@ -202,8 +202,9 @@
 					$("#changeC2").css("color", "#7A7A7A");
 				},
 				getit () {
+					var vm = this;
 					// 我要接单
-					if(this.result == "0") {
+					if(vm.result == "0") {
 						// dw_uid 服务人员的ID name 服务人 phone 服务人电话 anry_time   年月日 anry_period 时间段
 						var date = $(".currentdate").val();//预约日期
 						var anzhuang = $("#changeC2").val();
@@ -221,17 +222,17 @@
 							layuiHint("请选择安装人员");
 							return ;
 						}
-						console.log("预约时间", time, "预约日期", date, "安装工人信息",this.installInfo);
+						console.log("预约时间", time, "预约日期", date, "安装工人信息",vm.installInfo);
 						$.ajax({
 							url: getURL("Home", "Service/packwork"),
 							type: "post",
 							data: {
-								dw_uid: this.installInfo.id,
-								name: this.installInfo.name,
-								phone: this.installInfo.phone,
+								dw_uid: vm.installInfo.id,
+								name: vm.installInfo.name,
+								phone: vm.installInfo.phone,
 								anry_time: date,
 								anry_period: time,
-								number: this.workid
+								number: vm.workid
 							},
 							success: function(res) {
 								console.log("成功", res);
@@ -249,15 +250,15 @@
 								layuiHint("系统出错，请稍后重试");
 							}
 						})
-					}else if(this.result == "2") {
-						console.log(this.workid)
+					}else if(vm.result == "2") {
+						console.log(vm.workid)
 						layui.use('layer', function(){
 							var layer = layui.layer;
 							layer.confirm("确认通过审核?", function(index) {
 								$.ajax({
 									url: getURL("Home", "Service/checkPass"),
 									type: "post",
-									data: {number: this.workid},
+									data: {number: vm.workid},
 									success: function(res) {
 										console.log("待验收", res)
 										if(res.status == 200) {
