@@ -13,7 +13,7 @@ body{
 /*商品图片*/
 .detailTop{
 	border-bottom:20px solid #f3f3f3;
-	padding-bottom: 4rem;
+	margin-bottom: 1rem;
 }
 .detailpic{
 	-webkit-box-sizing: border-box;
@@ -134,7 +134,7 @@ body{
 }
 /*评论内容*/
 .detailContain{
-	height: 70vh;
+	height: 66vh;
     min-width: 300px;
     padding-bottom: 20vh;
     overflow: hidden;

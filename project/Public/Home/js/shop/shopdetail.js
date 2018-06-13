@@ -366,7 +366,7 @@ $(function(){
 			$(this).val(1);
 		}
 	})
-	var detailContainscTop = window.innerHeight*9/10;
+	var detailContainscTop = $('.detailtitle').height()+$('.detailtitle').offset().top;
 	// 点击‘更多’展开评论或者收起
 	$('.pinglunshow>p').on('click', function(){
 		// console.dir($(this).find("span").attr('class'));
@@ -380,8 +380,8 @@ $(function(){
 
 			$('.pinglunshow b').text('收起评论');
 			$('.slide').show();
-			$('html').css({overflowY: 'hidden'}).scrollTop(detailContainscTop);
-
+			$('html').scrollTop(detailContainscTop);
+			$('body').scrollTop(detailContainscTop);
 			$('.detailItemall').css({height: '70vh',overflowY: 'scroll'});
 			setTimeout(function(){
 				$('.slide').hide();
@@ -397,7 +397,6 @@ $(function(){
 			$('.detailItem').eq(1).css('display','block');
 			$('.detailItemall').css({height: 'auto',overflowY: 'hidden'});
 			$('.slide').hide();
-			$('html').css({overflowY: 'auto'});
 			$('.pinglunshow b').text('查看更多');
 
 		}
