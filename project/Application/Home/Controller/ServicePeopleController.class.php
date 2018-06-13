@@ -9,6 +9,11 @@ use Common\Tool\Work;
 class ServicePeopleController extends ServiceCommonController
 {
     // 任务列表
+    public function servicePersonal()
+    {
+        $this->display();
+    }
+    // 任务列表
     public function list()
     {
         $this->display('service/list');

@@ -1,0 +1,56 @@
+.main {
+    width: 100vw;
+    height: 100vh;
+}
+.main > ul > li {
+    text-align: center;
+}
+.main > ul > li > p {
+    text-align: left;
+}
+.main > ul {
+    padding: 2rem;
+}
+.icon-chenggong {
+    font-size: 4.5rem;
+    color: #32C97C;
+}
+.main > .firstCon > li:nth-child(2) {
+    margin: .8rem 0 2rem;
+}
+.main > .firstCon > li:nth-child(2) > span{
+    font-size: .9rem;
+    color: #32C97C;
+}
+.main > .firstCon > li:nth-child(3) > p{
+    font-size: .5rem;
+    color: #6F6F6F;
+    line-height: .9rem;
+}
+.main > .firstCon > li:nth-child(4) {
+    margin-top: 7rem;
+}
+.main > .firstCon > li:nth-child(4) > a{
+    color: #50B8FF;
+}
+/* 第一部分 */
+.firstCon {
+    display: none;
+}
+/* 第二部分 */
+.secondCon > li > img {
+    height: 3.5rem;
+}
+.secondCon > li:nth-child(1) {
+    margin: 2.5rem 0 1.5rem;
+}
+.secondCon > li:nth-child(2) {
+    color: #7B7B7B;
+    font-size: .7rem;
+}
+.secondCon > li:nth-child(3) > a {
+    color: #6BC3FF;
+}
+.secondCon > li:nth-child(3) {
+    margin-top: 8rem;
+}

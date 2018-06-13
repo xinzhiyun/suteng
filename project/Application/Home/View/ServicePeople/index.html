@@ -6,7 +6,7 @@
     <title>服务站</title>
     <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
     <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
-    <link rel="stylesheet" href="__PUBLIC__/Home/css/service/serviceIndex.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/service/people/index.css">
 </head>
 <body>
     <div class="backColor"></div>
@@ -28,14 +28,14 @@
                 <p>我的任务</p>
                 <ul>
                     <li>
-                        <a href="####">
+                        <a href="{{:U('Home/ServicePeople/wait_task')}}?type=0">
                             <p><img src="__PUBLIC__/Home/images/install@2x.png" alt=""></p> 
                             <span>待安装</span>
                             <i class="tipNum">15</i>
                         </a>
                     </li>
                     <li>
-                        <a href="####">
+                        <a href="{{:U('Home/ServicePeople/wait_task')}}?type=1">
                             <p>
                                 <img src="__PUBLIC__/Home/images/repair@2x.png" alt=""> 
                             </p>
@@ -45,7 +45,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="####">
+                        <a href="{{:U('Home/ServicePeople/wait_task')}}?type=2">
                             <p>
                                 <img src="__PUBLIC__/Home/images/maintain@2x.png" alt=""> 
                             </p>
@@ -59,19 +59,19 @@
             <!-- 功能 -->
             <ul class="funC">
                 <li>
-                    <a href="{{:U('Home/Index/servicePersonal')}}">
+                    <a href="{{:U('Home/ServicePeople/servicePersonal')}}">
                         <span class="iconfont icon-user"></span>
                         <span>个人中心</span>
                     </a>
                 </li>
                 <li>
-                    <a href="####">
+                    <a href="{{:U('Home/ServicePeople/payment')}}">
                         <span class="iconfont icon-chongzhi"></span>
                         <span>代缴费</span>
                     </a>
                 </li>
                 <li>
-                    <a href="####">
+                    <a href="{{:U('Home/ServicePeople/service')}}">
                         <span class="iconfont icon-goumaijilu"></span>
                         <span>服务记录</span>
                     </a>
@@ -82,5 +82,5 @@
 </body>
 <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 <script src="__PUBLIC__/Home/js/public.js"></script>
-<script src="__PUBLIC__/Home/js/service/serviceIndex.js"></script>
+<script src="__PUBLIC__/Home/js/service/people/index.js"></script>
 </html>

@@ -3,31 +3,38 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
-	<title>登录</title>
+	<title>登录</title> 
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/login.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
-	<!-- <link rel="stylesheet" href="__PUBLIC__/Home/amazeui/assets/css/normalize.css"> -->
 </head>
 <body>
 	<div class="main"> 
-		<div class="companyLogo">
-			<!-- <img src="__PUBLIC__/Home/images/logo.png" alt=""> -->
-			<!-- <p class="leaderLogin">经销商登录</p> -->
+		<div class="logoTop">
+			<img src="__PUBLIC__/Home/images/logo@2x.png" alt="">
 		</div>
-		<div class="userInfo">
-			<form action="javascript:return;" method="" id="forms">
+		<div class="contentBottom">
+			<div>
+				<span class="iconfont icon-user"></span>
+				<input type="text" name="uname" placeholder="账号">
+			</div>
+			<div>
+				<span class="iconfont icon-mima"></span>
+				<input type="password" name="userpass" placeholder="密码">
+			</div>
+			<div class="yCodeP">
 				<p>
-					<span class="iconfont icon-user"></span>
-					<input type="text" name="uname" placeholder="请输入姓名">
+					<span class="iconfont icon-yanzheng"></span>
+					<input type="password" name="userpass" placeholder="验证码">
 				</p>
-				<p>
-					<span class="iconfont icon-mima"></span>
-					<input type="password" name="userpass" placeholder="请输入密码">
-				</p>
-				<p><a href="{{:U('Coms/Login/resetPassword')}}" class="forgetPass">忘记密码</a></p>
-				<p class="loginBtn"><button>登录</button></p>
-			</form>
+				<span class="yCord"></span>
+			</div>
+			<div class="login">
+				<p>登录</p>
+			</div>
+			<div class="tips">
+				<p>还没有服务站?<a href="####">马上注册</a>服务站</p>
+			</div>
 		</div>
 	</div>
 </body>
@@ -37,7 +44,7 @@
 	window.onload = function() {
 		document.getElementsByTagName("body")[0].style.height = document.documentElement.clientHeight + 'px';
 	}
-
+	
 	// 验证
 	$(".loginBtn").on("click", function() {
 		var username = $("input[name='uname']").val();
@@ -58,16 +65,16 @@
 			type: "post",
 			data: {name:username,password:userpass},
 			success: function(res) {
-                console.log("登录", res);
-                if(res.status == 200) {
+				console.log("登录", res);
+				if(res.status == 200) {
 					layuiHint("登录成功!");
 					setTimeout(function() {
 						location.href = '{{:U("Home/Service/index")}}';
 					}, 1000);
-                    
+					
 				}else{
-                    layuiHint(res.info);
-                }
+					layuiHint(res.info);
+				}
 			},
 			error: function(res) {
 				console.log("失败", res);
