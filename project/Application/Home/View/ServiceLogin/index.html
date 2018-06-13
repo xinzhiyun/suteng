@@ -7,7 +7,6 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/login.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
-	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
 </head>
 <body>
 	<div class="main"> 
@@ -26,11 +25,13 @@
 			<div class="yCodeP">
 				<p>
 					<span class="iconfont icon-yanzheng"></span>
-					<input type="text" name="userpass" placeholder="验证码">
+					<input type="text" name="usercode" placeholder="验证码">
 				</p>
-				<span class="yCord"></span>
+				<span class="yCord">
+					<img src="{{:U('ServiceLogin/yzm',['s'=>time()])}}" onclick="this.src +='?s'+Math.random">
+				</span>
 			</div>
-			<div class="login ">
+			<div class="login">
 				<p>登录</p>
 			</div>
 			<div class="tips">
@@ -48,9 +49,10 @@
 	$(".login").on("click", function() {
 		var username = $("input[name='uname']").val();
 		var userpass = $("input[name='userpass']").val();
+		var usercode = $("input[name='usercode']").val();
 		// 姓名判断
 		if(!username) {
-			layuiHint("用户名不能为空!")
+			layuiHint("账号不能为空!")
 			return false;
 		}
 		// 密码判断
@@ -58,21 +60,25 @@
 			layuiHint("密码不能为空!")
 			return false;
 		}
+		// 验证码
+		if(!usercode) {
+			layuiHint("请填入验证码");
+		}
 		// ajax提交后台
 		$.ajax({
 			url: "{{:U('Home/ServiceLogin/index')}}",
 			type: "post",
-			data: {name:username,password:userpass},
+			data: {name:username,password:userpass, code: usercode},
 			success: function(res) {
 				console.log("登录", res);
 				if(res.status == 200) {
-					layuiHint("登录成功!");
+					layuiHint(res.msg);
 					setTimeout(function() {
 						location.href = '{{:U("Home/Service/index")}}';
 					}, 1000);
 					
 				}else{
-					layuiHint(res.info);
+					layuiHint(res.msg);
 				}
 			},
 			error: function(res) {
