@@ -51,7 +51,7 @@ var take = new Vue({
 		lookup(){
 			var _this = this;
 			_this.subPub();
-		},
+		}, 
 		// 点击搜索小图标
 		subSea(){
 			var _this = this;
