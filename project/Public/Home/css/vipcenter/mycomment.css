@@ -96,22 +96,23 @@ body{
 	margin-top: 10px;
 }
 .itemgoodsBott>.commpic>ul>li{
+	width: 24vw;
+	height: 24vw;
 	display: inline-block;
 	margin-bottom: 1rem;
 	border-radius: 0.3rem;
 	-webkit-box-sizing: border-box;
 	        box-sizing: border-box;
-	width: 24%;
 	padding: 0 2vw;
 
 }
 .itemgoodsBott>.commpic>ul>li>img{
 	width: 100%;
-   border: 1px solid #EBEBEB;
+	height: 100%;
+   	border: 1px solid #EBEBEB;
     padding: 0.2rem;
     border-radius: 0.2rem;
 }/*第一类item的底部评论设置结束*/
-
 
 
 .itemgoodsBott .pingfen {

@@ -20,7 +20,7 @@
         $('.select').fadeIn('fast');
     })
     // 设备列表选择
-    $('.select').on('touchend', '.option', function(){
+    $('.select').on('click', '.option', function(){
         for(var i=0; i<$('.select>.option').length; i++){
             $('.select>.option').eq(i).attr('class', 'option');
         }
