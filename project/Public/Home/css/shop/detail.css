@@ -134,8 +134,8 @@ body{
 }
 /*评论内容*/
 .detailContain{
-	height: 66vh;
-    min-width: 300px;
+	/*height: 66vh;
+    min-width: 300px;*/
     padding-bottom: 20vh;
     overflow: hidden;
     -webkit-transform: translate3d(0,0,0);
