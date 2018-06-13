@@ -1,0 +1,134 @@
+body {
+    font-size: .7rem;
+    background: #EDF2F2;
+    width: 100vw;
+    height: 100vh;
+}
+/* 服务站信息 */
+.stationInfo {
+    padding: .4rem .5rem;
+    margin-bottom: .5rem;
+    background: white;
+}
+.stationInfo > div {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #F2F2F2;
+    padding: .7rem 0 .4rem 0;
+}
+.stationInfo > div:nth-child(1) {
+    color: #2EB6AA;
+    border: none;
+    font-weight: bold;
+    padding: 0;
+}
+.stationInfo > div:nth-child(6) {
+    border: none;
+}
+.stationInfo > div > span:nth-child(1) {
+    width: 38%;
+    white-space: nowrap;
+    font-weight: bold;
+}
+.stationInfo > div > span:nth-child(2) {
+    color: #8E8E8E;
+}
+.money {
+    padding: .4rem .5rem;
+    margin-bottom: .5rem;
+    background: white;
+}
+.money > div {
+    display: flex;
+    align-items: center;
+}
+.money > div > span:nth-child(1) {
+    font-weight: bold;
+    width: 38%;
+    white-space: nowrap;
+}
+.money > div > span:nth-child(2) {
+    color: #FF5B5B;
+}
+.pay {
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    width: 100vw;
+}
+.pay > p {
+    width: 50%;
+    height: 3rem;
+    line-height: 3rem;
+    text-align: center;
+    color: white;
+}
+.pay > p:nth-child(1) {
+    background: #ECB243;
+}
+.pay > p:nth-child(2) {
+    background: #2EB6AA;
+}
+/* 支付面板 */
+.payBan {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(30,30,30,.2);
+}
+.payBan > ul {
+    background: white;
+    height: 35vh;
+    width: 100vw;
+    position: fixed;
+    z-index: 100;
+    bottom: 0;
+    left: 0;
+
+}
+.clear {
+    position: relative;
+}
+.clear > p {
+    color: #FD5955;
+    font-weight: bold;
+}
+.clear > .icon-chacha {
+    position: absolute;
+    left: .5rem;
+    font-size: .9rem;
+    font-weight: bold;
+}
+.payBan > ul > li {
+    display: flex;
+    justify-content: center;
+}
+.payBan > ul > li:nth-child(1) {
+    padding: .5rem;
+    border-bottom: 1px solid  #EBEBEB;
+}
+.payBan > ul > li:nth-child(2) > p {
+    display: flex;
+    align-items: center;
+    margin: 1rem 0 1.5rem 0;
+}
+.payBan > ul > li:nth-child(2) > p > span:nth-child(1) {
+    font-size: 2rem;
+    color: #149E23;
+    margin-right: 1rem;
+}
+.payBan > ul > li:nth-child(2) > p > span:nth-child(2) {
+    font-size: .9rem;
+}
+/* 付款 */
+.toPay > p {
+    width: 90%;
+    height:1.8rem;
+    line-height: 1.8rem;
+    text-align: center;
+    color: white;
+    border-radius: 5px;
+    background: #2EB6AA;
+}
