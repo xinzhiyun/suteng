@@ -140,7 +140,9 @@ class WorkController extends CommonController
             $savetata['examine_at'] = time();
             $res = M('work')->where($map)->save($savetata);
             if($res) {
-                Work::add($data['id'],2);
+                if($data['is_examine']==1){
+                    Work::add($data['id'],2);
+                }
 
                 // 分配工单
                 if($data['is_examine'] ==1){
