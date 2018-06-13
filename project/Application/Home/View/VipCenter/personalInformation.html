@@ -231,8 +231,12 @@
 					}
 				})
 			}
+			var bindflag = false;
 			function bindFn(data){
 				console.log('data: ',data);
+				if(bindflag){
+					return
+				}
 				// 绑定设备
 				$.ajax({
 					url: '{{:U("Home/Device/bind")}}',
@@ -240,13 +244,21 @@
 					data: data,
 					success: function(res){
 						console.log('res: ',res);
-						if(res.status == 200){
+						bindflag = true;
+						if(res.code == 200){
 							layuiHint('绑定成功！');
+							history.replaceState({}, null, '{{:U("Home/Index/index")}}');
+							// 返回‘我的钱包’
+							setTimeout(function(){
+								bindflag = false;
+								location.href = '{{:U("Home/VipCenter/minepack")}}';
+							},500)
 						}else{
 							layuiHint(res.msg);
 						}
 					},
 					error: function(err){
+						bindflag = false;
 						console.log('err: ',err);
 						layuiHint('系统遇到问题，请稍后再试');
 					}
