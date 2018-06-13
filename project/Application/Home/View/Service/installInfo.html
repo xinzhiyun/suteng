@@ -138,6 +138,9 @@
                 this.starD = +info.star;//显示星星
                 console.log("star", this.starD);
             }
+            layui.use("layer", function() {
+                layer = layui.layer;
+            })
         },
         methods: {
             // 编辑 - 0 、删除 - 1 、保存 - 4 、取消 - 3 、确认 - 2 按钮
