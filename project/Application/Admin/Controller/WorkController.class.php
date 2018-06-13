@@ -142,6 +142,8 @@ class WorkController extends CommonController
             if($res) {
                 if($data['is_examine']==1){
                     Work::add($data['id'],2);
+                }else{
+                    Work::add($data['id'],3);
                 }
 
                 // 分配工单
@@ -180,7 +182,7 @@ class WorkController extends CommonController
             if($post['action']=='close'){//关闭
                 $data['result']=9;
             } else if ($post['action']=='over'){ // 完成
-                $data['result']=4;
+                $data['result']=3;
             } else {
                 E('参数错误',40002);
             }
@@ -189,6 +191,14 @@ class WorkController extends CommonController
             $res = $device_type->where(['id'=>$id])->save($data);
 
             if($res){
+                $status = [
+                    '9'=>99,// 关闭
+                    '3'=>6
+                ];
+                if(in_array($data['result'], $status)){
+                    Work::add($post['id'], $status[$data['result']]);
+                }
+
                 E('修改成功',200);
             }else{
                 E('修改失败',40010);
@@ -263,7 +273,7 @@ class WorkController extends CommonController
                     'company'=>$name
                 ];
                 $res =  M('work')->where('id='.$post['wid'])->save($saveData);
-                Work::add($post['wid'], 3);
+                Work::add($post['wid'], 4);
 
             }
             if(!empty($post['suid'])){
@@ -279,7 +289,7 @@ class WorkController extends CommonController
                     'result'=>1
                 ];
                 $res =  M('work')->where('id='.$post['wid'])->save($saveData);
-                Work::add($post['wid'], 4);
+                Work::add($post['wid'], 5);
             }
 
             if($res){
@@ -332,7 +342,7 @@ class WorkController extends CommonController
 
             if($work_res){
                 // 写工单记录
-                return  Work::add($wid, 3);
+                return  Work::add($wid, 4);
             }
         }
     }

@@ -1,15 +1,17 @@
 <?php
 namespace Home\Controller;
 use \Org\Util\WeixinJssdk;
+use Think\Controller;
 use Common\Tool\Work;
 /**
  * 服务站 工作人员
  */
 
-class ServicePeopleController extends ServiceCommonController
+class ServicePeopleController extends Controller
 {
-    public function index(){
 
+    public function index(){
+        $this->display();
     }
 
     // 任务列表
