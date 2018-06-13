@@ -20,6 +20,9 @@
         }
         pic = [];   // 初始化
         var nums = 3 - len;  // 最多三张图片
+        if(window.__wxjs_is_wkwebview){
+            nums = 1
+        }
         // 浏览上传图片 
         wxuploadimg(nums, function(res){
             console.log('res: ',res);

@@ -484,7 +484,7 @@ ul, li {
 }/*第一类item的底部评论设置结束*/
 
 .itemgoodsBott .pingfen {
-	display: inline-block;
+	display: block;
 	position: relative;
 	font-size: 20px;
 }

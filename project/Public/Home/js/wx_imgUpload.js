@@ -27,6 +27,7 @@
       });
  */
 var backdata = [];    // 需要上传给后台的图片id
+var localIdArr = [];
 var len;
 var wxuploadimg = function(nums, callback){
 
@@ -43,6 +44,7 @@ var wxuploadimg = function(nums, callback){
             // console.log('data.localIds: ',data.localIds);
            	// 多张图片
             len = data.localIds.length;
+            localIdArr = data.localIds;
             for(var i=0; i<data.localIds.length; i++){
               backdata.push({});
               (function(localIds, num){
@@ -62,51 +64,73 @@ var wxuploadimg = function(nums, callback){
   } 
   // 上传图片
   function wxuploadImage(localIds,num) {
+    console.log('upnum: ',num);
+    
+    if(window.__wxjs_is_wkwebview){ // IOS
 
+      console.log('localIdArr: ',localIdArr);
+      var index = num;
+      if(index+1 < localIdArr.length){
+        setTimeout(function(){
+          num--;
+          console.log('index: ',index);
+          // wxuploadImage(localIdArr[index], index);
+        },100)
+        
+      }
+    }
     wx.uploadImage({
         localId: localIds, // 需要上传的图片的本地ID，由chooseImage接口获得  
         isShowProgressTips: 1, // 默认为1，显示进度提示  
         success: function (res) {
-          // console.log('num: ', num);
-          // console.log('backdata[num]: ', backdata[num]);
+            console.log('_num: ', num);
+            // console.log('backdata[num]: ', backdata[num]);
             backdata[num]['media_Id'] = res.serverId;
             wxgetLocalImgData(localIds,num);
             
-        },  
-        fail: function (error) {  
+        },
+        fail: function (error) {
             picPath = '';  
             localIds = '';  
-        }          
+        }
     });
+    
   }
   // 下载图片(本地显示)
   function wxgetLocalImgData(localIds,num){
+      console.log('wx.getLocalImgData_localIds: ',localIds);
+      console.log('num: ',num);
 
-      if(window.__wxjs_is_wkwebview){
-  	    wx.getLocalImgData({
-  	        localId: localIds, // 图片的localID
-  	        success: function (res) {
-              // console.log('wx.getLocalImgData_res: ', res);                  
-              var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
-              localData = localData.replace('jgp', 'jpeg');//iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下                                            
-  			      
-              backdata[num]['src'] = localData;
-  	        },
-  	        fail:function(res){
-  	          	alert("显示失败");
-  	        }
-  	    })
+      if(window.__wxjs_is_wkwebview){   // IOS
+    	    wx.getLocalImgData({
+    	        localId: localIds, // 图片的localID
+    	        success: function (res) {
+                console.log('wx.getLocalImgData_res: ', res);                  
+                var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+                // localData = localData.replace('jgp', 'jpeg');//iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下                                            
+    			      
+                console.log('wx.getLocalImgData_num: ',num);
+                console.log('backdata[num]: ',backdata[num]);
+                backdata[num]['src'] = localData;
+                // if(num == 0){
+                  // 回调
+                  callback(backdata);
+                  // backdata = [];
+                // }
+    	        },
+    	        fail:function(res){
+    	          	alert("显示失败");
+    	        }
+    	    })
 
       }else{
-          backdata[num]['src'] = localIds;
+        backdata[num]['src'] = localIds;
           
-      }
-      console.log('num: ',num);
-      console.log('backdata.length: ',backdata.length);
-      if(num+1 == backdata.length){
-        // 回调
-        callback(backdata);
-        backdata = [];
+        if(num+1 == backdata.length){
+          // 回调
+          callback(backdata);
+          backdata = [];
+        }
       }
   	
   }
