@@ -9,8 +9,17 @@ use Common\Tool\Work;
 
 class ServicePeopleController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+        if(empty($_SESSION['servicepeople'])){
+            $this->redirect("Home/ServiceLogin/peopleIndex");
+        }
+    }
 
     public function index(){
+        $company = M('service')->cache('cache_company_name',60)->where('id='.$_SESSION['servicepeople']['sid'])->getField('company');
+        $_SESSION['servicepeople']['company']=$company;
         $this->display();
     }
 
