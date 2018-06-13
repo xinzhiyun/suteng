@@ -7,10 +7,10 @@
   <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
   <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
-  <link rel="stylesheet" href="__PUBLIC__/Home/css/repaire/index.css">
+  <link rel="stylesheet" href="__PUBLIC__/Home/css/repaire/index.css?v={{:time()}}">
   <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
   <script>
-    var vConsole = new VConsole();
+    // var vConsole = new VConsole();
     // 安装设备列表
     var installList ={{$installList|json_encode}};
     // 报修设备列表
@@ -144,12 +144,11 @@
     </div>
     
   </div>
-  <link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
   <script src="__PUBLIC__/Home/js/laydate.js"></script>
   <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
   <script src="__PUBLIC__/Home/js/public.js"></script>
   <script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
-  <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
   <script src="__PUBLIC__/Home/js/wx_imgUpload.js"></script>
   <script src="__PUBLIC__/Home/js/repair/repair.js?qwe={{:time()}}"></script>
   <script type="text/javascript">
@@ -186,8 +185,8 @@
           }
           // console.log(home)
         }()
+        
       })
-      
     </script>
   </body>
   </html>                                                                                                                                                                                                                                                                      

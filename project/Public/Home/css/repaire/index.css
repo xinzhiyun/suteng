@@ -4,10 +4,12 @@ body{
   color:#373737;
   overflow-x: hidden;
   background: #EBEBEB;
-  height: 100vh;
+  min-height: 100vh;
 }
 ._repair{
   width: 100%;
+  min-height: 500px;
+  position: relative;
 }
 .repairTop{
   padding-top:.5rem;

@@ -20,7 +20,7 @@
 		<div class='title spli'>
 			<span>工单号</span>
 			<span v-text='status'>状态</span>
-			<span >生成时间</span>
+			<span>生成时间</span>
 		</div>
 		<ul class='content'>
 			<li class='spli' v-for='li in list' @click='getDetail(li.number, li.result)'>
@@ -28,6 +28,12 @@
 				<span v-if='result == 0 || result == "undefined"' :style='li.style' v-text='li.text'></span>
 				<span v-if='result == 1 || result == 2 || result == 3 || result == 4' v-text='li.name'></span>
 				<span v-text='li.create_at'></span>
+				<!-- <p class="stars" v-if="result == 4 || result == 0 || result == 'undefined'">
+					<i class="iconfont icon-star1" v-for="starnumN in starN"></i>
+					<span>
+						<i class="iconfont icon-star" v-for="starnumD in starD"></i>
+					</span>
+				</p> -->
 			</li>
 			<div class='loadmore' @click='loadmore' :style='{display: loadstyle}'>加载更多</div>
 		</ul>
@@ -56,13 +62,14 @@
 					list: [],			// 数据列表
 					result: '',			// 工单类型 0待处理 1处理中 2待验收 3(完成)
 					page: 1,			// 分页
+					// diffStatrs: "",	
+					// starN: 5,	
 					loadstyle: 'block',
 					colorList: ['color:#f16e65;', 'color:#2196F3;', 'color:#2196F3;', 'color:#00d4c2;'],
 					titleList: ['未派工工单', '处理中工单', '待验收工单', '已完成工单', '员工管理', '全部工单'],
 					statusList: ['状态', '作业人员', '作业人员', '作业人员', '姓名', '状态'],
 					notice: '正在加载...',
 					noticestyle: 'block',
-					timeStar : ['生成时间', '星级'],
 				}
 			},
 			created (){
@@ -71,20 +78,24 @@
 				console.log('result: ',this.result);
 				document.title = vm.titleList[!this.result ? 5 : +this.result];
 				this.status = vm.statusList[!this.result ? 5 : +this.result];
+				// if(this.result == 4 || this.result == 0 ||this.result == "undefined") {
+				// 	this.diffStatrs = "星级";
+				// }else {
+				// 	this.diffStatrs = "生成时间";
+				// }
 				// result: 0待处理 1处理中 2待验收 3(完成)
 				// 获取列表
 				this.getList(function(res){
 					console.log('res: ',res);
 					if(res.data.length){
 						for(var i=0; i<res.data.length; i++){
+							// this.starD = +res.data[i].star;
+							// console.log("星星个数",res.data[i].name, +res.data[i].star);
 							if(vm.result == '4') {
 								vm.list.push({
 									name: res.data[i].name,
 									number: res.data[i].sn,
-									// text: vm.titleList[+res.data[i].result],
-									// style: vm.colorList[+res.data[i].result],
 									create_at: timetrans(res.data[i].addtime),
-									// result: res.data[i].result
 									result: res.data[i].id
 								});
 							}else {
@@ -99,7 +110,6 @@
 							}
 							
 						}
-						// console.log("vm.text", vm.list);
 						vm.noticestyle = 'none';
 					}else{
 						vm.notice = '查无数据';
@@ -129,17 +139,23 @@
 						},
 						error: function(err){
 							console.log('err: ',err);
-							layuiHint('系统出错，请稍后再试');
+							layuiHint('系统出错，请稍后再试'); 
 						}
 					}
 					// 全部（result: 11）
 					// result: 0待处理 1处理中 2待验收 3(完成)
-					if(result){
-						option['data'] = {result: result};
+					console.log("result", result, typeof result)
+					if((result+'')){
+						console.log(123132123)
+						option['data'] = {};
+						option['data']['result'] =  result;
 					}
 					if(page){
 						// 请求分页数据
-						option['data'] = {result: result, p: vm.page};
+						if(typeof option['data'] != "object") {
+							option['data'] = {};
+						}
+						option['data']['p'] = vm.page;
 					}
 					// 获取数据
 					$.ajax(option);

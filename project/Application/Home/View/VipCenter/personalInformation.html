@@ -7,6 +7,10 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/userinfo.css">
+    <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+    <script>
+        var vconsole = new VConsole();
+    </script>
 </head>
 <body>
 	<div class="container">
@@ -22,7 +26,7 @@
 				<label for="sex">
 					<i class="iconfont icon-weibiaoti-"></i>
 					<div >
-						<span>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span><select name="sex" >
+						<span>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span><select name="sex" id='sex' >
 							<switch name="user_device.sex">
 							    <case value="0">
 				    				<option value="0">男</option>
@@ -42,7 +46,7 @@
 				<label for="birth">
 					<i class="iconfont icon-shengridangao2-copy"></i>
 					<div >
-						<span>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</span><input name="birth" class="dateSelect" id="birth" placeholder="请选择生日年月" type="text" value=""><!--日期插件-->
+						<span>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</span><input name="birth" class="dateSelect" id="birth" placeholder="请选择生日年月" type="text" value="" readonly><!--日期插件-->
 					</div>
 				</label>
 				
@@ -63,7 +67,7 @@
 				<label for="">
 					<div class='addrdetail'>
 						<p>详细地址：</p>
-						<textarea class='' name="address" id="" cols="30" rows="5" placeholder="请输入详细地址" value=''></textarea>
+						<textarea class='address' name="address" id="" cols="30" rows="5" placeholder="请输入详细地址" value=''></textarea>
 					</div>
 				</label>
 			</div>
@@ -157,41 +161,33 @@
 			
 			// 点击保存
 			$("#save").click(function(){
-				
-				// formdata
-				var data = new FormData($("#form")[0]);
-				if(data.getAll('province_id')){
-					data.delete('province')
-					data.delete('province_id')
+				var info = {};
+				info = {
+					name: $('#name').val(),
+					sex: $('#sex>option:selected').val(),
+					birth: $('#birth').val(),
+					phone: $('#tel').val(),
+					province: province,
+					city: city,
+					area: area,
+					province_id: province_id,
+					city_id: city_id,
+					area_id: area_id,
+					address: $('.address').val()
 				}
-				if(data.getAll('city_id')){
-					data.delete('city')
-					data.delete('city_id')
-				}
-				if(data.getAll('area_id')){
-					data.delete('area')
-					data.delete('area_id')
-				}
-				data.append('province', province)
-				data.append('city', city)
-				data.append('area', area)
-				data.append('province_id', province_id)
-				data.append('city_id', city_id)
-				data.append('area_id', area_id)
-
-				if(!(nameReg.test($('#name').val()))){
+				if(!(nameReg.test(info.name))){
 					layuiHint("请输入真实的姓名");
 					return;
 
-				}else if(!$("#birth").val()){
-					layuiHint("请选中您的生日");
+				}else if(!info.birth){
+					layuiHint("请选择您的生日");
 					return;
 
-				}else if(!(phoneReg.test($('#tel').val()))){
+				}else if(!(phoneReg.test(info.phone))){
 					layuiHint("请输入正确的手机号码");
 					return;
 
-				}else if(!$('.addrdetail>textarea').val()){
+				}else if(!info.address){
 					layuiHint("请输入详细地址！");
 					return;
 
@@ -201,9 +197,9 @@
 					return
 				}
 				if(machineNo){
-					data.append('device_code', machineNo);
+					info['device_code'] = machineNo;
 					// 绑定设备
-					bindFn(data);
+					bindFn(info);
 				}else{
 					// 保存信息
 					saveFn(data);
@@ -215,10 +211,6 @@
 				$.ajax({
 					url: 'infomationAction',
 					type: 'post',
-					async: false,
-			        cache: false,
-			        contentType: false,
-			        processData: false,
 					data: data,
 					success: function(res){
 						if(res.code == 200){
@@ -239,25 +231,34 @@
 					}
 				})
 			}
+			var bindflag = false;
 			function bindFn(data){
-				console.log('243: ',data.getAll('province_id'),data.getAll('city_id'),data.getAll('area_id'),data.getAll('city_id'),data.getAll('device_code'));
+				console.log('data: ',data);
+				if(bindflag){
+					return
+				}
 				// 绑定设备
 				$.ajax({
 					url: '{{:U("Home/Device/bind")}}',
 					type: 'post',
 					data: data,
-			        cache: false,
-			        contentType: false,
-			        processData: false,
 					success: function(res){
 						console.log('res: ',res);
-						if(res.status == 200){
+						bindflag = true;
+						if(res.code == 200){
 							layuiHint('绑定成功！');
+							history.replaceState({}, null, '{{:U("Home/Index/index")}}');
+							// 返回‘我的钱包’
+							setTimeout(function(){
+								bindflag = false;
+								location.href = '{{:U("Home/VipCenter/minepack")}}';
+							},500)
 						}else{
 							layuiHint(res.msg);
 						}
 					},
 					error: function(err){
+						bindflag = false;
 						console.log('err: ',err);
 						layuiHint('系统遇到问题，请稍后再试');
 					}

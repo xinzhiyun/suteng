@@ -20,6 +20,9 @@
         }
         pic = [];   // 初始化
         var nums = 3 - len;  // 最多三张图片
+        if(window.__wxjs_is_wkwebview){
+            nums = 1
+        }
         // 浏览上传图片 
         wxuploadimg(nums, function(res){
             console.log('res: ',res);
@@ -224,7 +227,7 @@
     });
     
     // 选择地区
-    $(".repaireAdd").on("touchend", ".areabtn", function(){
+    $(".repaireAdd").on("click", ".areabtn", function(){
         $("#areaChoose").css({display: "block"});
     });
     // 获取地址数据

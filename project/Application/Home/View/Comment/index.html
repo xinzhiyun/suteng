@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
   	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
-  	<link rel="stylesheet" href="__PUBLIC__/Home/css/comment/index.css">
+  	<link rel="stylesheet" href="__PUBLIC__/Home/css/comment/index.css?v={{:time()}}">
  	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<title>发表评论</title>
 	<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
     <script>
-        // var vconsole = new VConsole();
+        var vconsole = new VConsole();
     </script>
 </head>
 <body>
@@ -64,7 +64,7 @@
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
   	<script src="__PUBLIC__/Home/js/public.js"></script>
-  	<script src="__PUBLIC__/Home/js/wx_imgUpload.js"></script>
+  	<script src="__PUBLIC__/Home/js/wx_imgUpload.js?v={{:time()}}"></script>
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>	
 	<script>
 	  	$(function(){
@@ -75,7 +75,7 @@
 				$(".pingpic>img").attr("src",pinglunObj.pic);
 				$(".pingpic").attr("gid",pinglunObj.gid);
 			}
-			$(".pingpic").click(function(){
+			$(".pingpic").on('touchend', function(){
 				var gid = $(this).attr('gid');
 				location.href = '{{:U("Home/Shop/shoppingdetail")}}' + '?gid=' + gid;
 			})
@@ -110,61 +110,112 @@
 					$('.pintext>i>span').css({width: '0%'});
 				}
 			})
-			var pic = [];	// 图片
+			var pic = [];
 			// 点击选择图片
-			$('.file_upload').click(function(){
-				// 浏览上传图片
-				wxuploadimg(function(res){
-				    console.log('res: ',res);
+			$('.file_upload').on('touchend', function(){
+				var len = $("#picShow img").length;
+				console.log('len: ',len);
+		        if(len >= 3){
+		            layuiHint("暂时只支持三张图片！");
+		            return
+		        }
+		        pic = [];   // 初始化
+		        var nums = 3 - len;  // 最多三张图片
+		        if(window.__wxjs_is_wkwebview){
+		            nums = 1
+		        }
+		        // 浏览上传图片 
+		        wxuploadimg(nums, function(res){
+		            console.log('res: ',res);
+		            for(var i=0; i<res.length; i++){
+		                // console.log('res: ',res[i]);
+		                if(res[i].media_Id){
+		                    (function locfn(media_Id, src, i){
+		                        // console.log("传给后台的id",media_Id);
+		                        pic.push(media_Id);
+		                    })(res[i].media_Id, res[i].src, i)
+		                }
+		            }
+		            console.log('1111');
+		            setTimeout(function(){
+		                picUpload();
+		            },0)
 
-				    var $span = $("<span class='fuPic'></span>");
-				    var $span1 = $("<span>X</span>");
-				    var $img = $('<img src="" alt="" />');
-
-				    $img[0].width = "100%";
-				    $img[0].height = "90%";
-				    $img[0].src = res['src'];
-				    
-				    $span1.addClass("delPic");
-				    $span1.css({zIndex: '999'});
-				    $span.append($span1);
-				    $span.append($img[0]);
-
-				    // 显示图片
-				    $('#picShow').append($span);
-				    // 待发送给后台的图片id
-				    pic.push(res.media_Id);
-				});
+		        })
 			})
+			// 上传图片
+		    function picUpload(){
+		        console.log('pic: ',pic);
+		        $.ajax({
+		            url: getURL('Home', 'Comment/picUpload'),
+		            type: 'post',
+		            data: {pic: pic},
+		            success: function(res){
+		                console.log('res: ',res);
+		                if(res.status == 200){
+		                    var picList = '';
+		                    picList = JSON.parse(res.data.pic);
+		                    for(var i=0; i<picList.length; i++){
+		                        (function upfn(src){
 
+		                            var $span = $("<span></span>");
+		                            var $span1 = $("<span>X</span>");
+		                            var $img = $('<img src="" alt="" index="" />');
+		                            $img[0].width = "100%";
+		                            $img[0].height = "90%";
+		                            $img[0].src = '/Public'+src;
+		                            
+		                            $span1.addClass("delPic");
+		                            $span1.css({zIndex: '99'});
+		                            $span.append($span1);
+		                            $span.append($img[0]);
+		                            
+		                            // 显示图片
+		                            $('#picShow').append($span);
+		                        })(picList[i])
+		                    }
+		                }else{
+		                    layuiHint(res.msg);
+		                }
+		            },
+		            error: function(err){
+		                console.log('err: ',err);
+		                layuiHint('系统出错，请稍后再试');
+		            }
+		        })
+		    }
 		    // 删除图片
-		    $("#picShow").on("click",".delPic",function(){
-				$(this).parent(".fuPic").remove();
-				var index = $('#picShow>span').index(this)+1;
-				console.log('index: ',index);
-				pic.splice(index,1);
-				console.log('pic: ',pic);
+		    $("#picShow").on("touchend",".delPic",function(){
+				$(this).parent().remove();
 			})
 			/**
 				点击提交
 			*/
 			var href = location.href;
-			var orderid,gid;
+			var orderid, gid;
 			var successFlag = true;
 			if(href.indexOf('?orderid=') > -1){
 				orderid = href.substr(href.indexOf('?orderid=')+9);
 				gid = JSON.parse(sessionStorage.getItem("pinglunObj")).gid;
 			}
-			$("#submit").on('click',function(){
-				var formData = new FormData($('#form')[0]);	// 评论的数据
-				formData.append('orderid',orderid);
-				formData.append('gid',gid);
-				formData.append('pic',pic);
+			$("#submit").on('touchend',function(){
+				var info = {};	// 评论的数据
+				var filePic = [];//存放图片的id
+		        var picImgs = $('#picShow>span>img')
 				var status = $('input[name="status"]:checked').val();
-				console.log('status: ',status);
-				console.log('orderid: ',orderid);
-				console.log('gid: ',gid);
-				console.log('uppic: ',pic);
+
+		        if(picImgs.length) {
+		            for(var i = 0; i < picImgs.length; i++) {
+		                filePic.push(picImgs.eq(i).attr("src"));
+		            }
+		        }
+		        info = {
+		        	orderid: orderid,
+		        	gid: gid,
+		        	pic: filePic,
+		        	status: status
+		        }
+		        console.log('info: ',info);
 				if(!$("#shopping").val()){
 					layuiHint("请您对我们的商品做出评价呗");
 					return
@@ -179,11 +230,7 @@
 					$.ajax({
 						url: '{{:U("Home/Comment/comment")}}',
 						type: 'post',
-						data: formData,
-						async: false,
-						cache: false,
-						contentType: false,
-						processData: false,
+						data: info,
 						success: function(res){
 							console.log('res: ',res);
 							// 发送到后台并返回结果时解除禁止点击

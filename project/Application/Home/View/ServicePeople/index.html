@@ -31,7 +31,7 @@
                         <a href="{{:U('Home/ServicePeople/wait_task')}}?type=0">
                             <p><img src="__PUBLIC__/Home/images/install@2x.png" alt=""></p> 
                             <span>待安装</span>
-                            <i class="tipNum">15</i>
+                            <i class="tipNum" v-text='task.wait_install'>15</i>
                         </a>
                     </li>
                     <li>
@@ -39,9 +39,8 @@
                             <p>
                                 <img src="__PUBLIC__/Home/images/repair@2x.png" alt=""> 
                             </p>
-                            
                             <span>待维修</span>
-                            <i class="tipNum">15</i>
+                            <i class="tipNum" v-text='task.wait_repair'>15</i>
                         </a>
                     </li>
                     <li>
@@ -49,9 +48,8 @@
                             <p>
                                 <img src="__PUBLIC__/Home/images/maintain@2x.png" alt=""> 
                             </p>
-                            
                             <span>待维护</span>
-                            <i class="tipNum">15</i>
+                            <i class="tipNum" v-text='task.wait_maintain'>15</i>
                         </a>
                     </li>
                 </ul>
@@ -79,8 +77,9 @@
             </ul>
         </div>
     </div>
+    <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+    <script src="__PUBLIC__/Home/js/public.js"></script>
+    <script src='__PUBLIC__/Home/js/vue.min.js'></script>
+    <script src="__PUBLIC__/Home/js/service/people/index.js"></script>
 </body>
-<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
-<script src="__PUBLIC__/Home/js/public.js"></script>
-<script src="__PUBLIC__/Home/js/service/people/index.js"></script>
 </html>

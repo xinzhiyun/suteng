@@ -491,6 +491,20 @@ class ServiceController extends CommonController
         }
     }
 
+    public function getServiceUser()
+    {
+        try {
+            $post = I('post.');
+            if (empty($post['sid']) ) {
+                E('数据不完整', 201);
+            }
+            $list = M('service_users')->where('sid='.$post['sid'])->select();
+            $this->toJson(['data'=>$list],'获取成功');
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
 
     /**
      * 获取服务站
