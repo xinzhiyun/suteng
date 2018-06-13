@@ -5,6 +5,7 @@ var take = new Vue({
 			search:"",
 			list:[],		//列表
 			detail:"",		//服务详情
+			type: ''
 		}
 	},
 	methods:{
@@ -84,14 +85,20 @@ var take = new Vue({
 			});
 			$(".wrap").hide().next().hide().next().show();
 			setTimeout(function(){
-				var url = getURL("Home","Index/wait_task");
+				var url = getURL("Home","ServicePeople/wait_task");
 				location.href = url;
 			},1000);
 		}
 	},
-	created:function(){
+	created() {
+		// 显示服务类型
+		var textList = ['待安装', '待维修', '待维护'];
+		this.type = GetQueryString('type');
+		$('#navbar>h2').text(textList[+this.type]);
+		document.title = textList[+this.type];
+
 		var _this = this;
-		var  href = location.href.split("?")[1];
+		var href = location.href.split("?")[1];
 		if(href == undefined){
 			// 用户列表
 			$(".wrap").show().next().hide();
