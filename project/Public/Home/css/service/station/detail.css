@@ -102,6 +102,9 @@ body {
 .len>span:nth-of-type(2) {
 	flex: 5;
 }
+.lens > div {
+	margin-top: .5rem;
+}
 .btnup {
 	width: 88vw;
 	padding: 10px 0;
@@ -205,4 +208,13 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
 	border: none;
 	text-align: right;
 	
+}
+/* 图片 */
+.pics {
+	display: flex;
+	/* justify-content: space-between; */
+}
+.pics > img {
+	width: 4rem;
+	height: 5rem;
 }
