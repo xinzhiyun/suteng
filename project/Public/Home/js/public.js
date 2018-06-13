@@ -97,10 +97,6 @@ function layuiHint(text){
 		layer.msg(text);
 	});  
 }
-// 分装layui中的layer
-layui.use("layer", function() {
-	layer = layui.layer;
-})
 
 
 // 验证姓名，手机号，地址的正则变量定义
