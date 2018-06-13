@@ -155,7 +155,7 @@ class WechatController extends Controller
 			            {
 			               "type":"view",
 			                "name":"服务人员",
-			                "url":"http://test.dianqiukj.com/index.php/Home/People/index"
+			                "url":"http://test.dianqiukj.com/index.php/Home/ServicePeople/index"
 			            },
 			            {
 			               "type":"view",

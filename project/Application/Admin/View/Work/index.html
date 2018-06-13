@@ -43,10 +43,11 @@
                         <!--处理结果(0：待处理(服务站) 1处理中(工作人员) 2已完成(工作人员) 3完成 (待客户评价) 4 评价完成   9 工单关闭 )-->
                         <select name="result" class="form-control" style="width:15%">
                             <option  <?php echo ($where['result']=="")?'selected':''; ?>  value="">处理结果</option>
-                            <option <?php echo ($where['result']=="0")?'selected':''; ?> value="0">未处理</option>
-                            <option <?php echo ($where['result']==1)?'selected':''; ?> value="1">正在处理</option>
-                            <option <?php echo ($where['result']==2)?'selected':''; ?> value="2">已处理</option>
-                            <option <?php echo ($where['result']==3)?'selected':''; ?> value="3">已完成</option>
+                            <option <?php echo ($where['result']=="0")?'selected':''; ?> value="0">待服务站处理</option>
+                            <option <?php echo ($where['result']==1)?'selected':''; ?> value="1">服务人员处理中</option>
+                            <option <?php echo ($where['result']==2)?'selected':''; ?> value="2">待服务站确认	</option>
+                            <option <?php echo ($where['result']==3)?'selected':''; ?> value="3">待客户评价</option>
+                            <option <?php echo ($where['result']==4)?'selected':''; ?> value="4">评价完成</option>
                             <option <?php echo ($where['result']==9)?'selected':''; ?> value="9">已关闭</option>
                         </select>
                         <select name="is_examine" class="form-control"  style="width:15%">

@@ -65,7 +65,7 @@ class ServiceController extends ServiceCommonController
         }
 
         //处理结果 (0：待处理(服务站) 1处理中(工作人员) 2已完成(工作人员) 3(完成) 9 工单关闭 )
-        if(isset($_GET['result'])){
+        if(isset($_GET['result']) && strlen($_GET['result'])){
             $map['result'] = $_GET['result'];
         }
 
@@ -104,20 +104,20 @@ class ServiceController extends ServiceCommonController
 
             $info = M('work')->where('number='.$number)->find(); //工单信息
 
-            if($info['type'] == 0){
-                $info['device_info'] = M('shop_order_device_install')
-                    ->alias('i')
-                    ->where('i.id='.$info['install_id'])
-                    ->field('i.gname')
-                    ->find();
-            }else{
-                $info['device_info'] = M('devices')
-                    ->alias('d')
-                    ->where('device_code='.$info['device_code'])
-                    ->join('__TYPE__ t ON d.type_id=t.id', 'LEFT')
-                    ->field('t.typename gname')
-                    ->find();
-            }
+//            if($info['type'] == 0){
+//                $info['device_info'] = M('shop_order_device_install')
+//                    ->alias('i')
+//                    ->where('i.id='.$info['install_id'])
+//                    ->field('i.gname')
+//                    ->find();
+//            }else{
+//                $info['device_info'] = M('devices')
+//                    ->alias('d')
+//                    ->where('device_code='.$info['device_code'])
+//                    ->join('__TYPE__ t ON d.type_id=t.id', 'LEFT')
+//                    ->field('t.typename gname')
+//                    ->find();
+//            }
 
             $this->toJson(['data'=>$info,'people'=>$list],'获取成功');
         } catch (\Exception $e) {

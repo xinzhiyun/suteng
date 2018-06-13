@@ -8,6 +8,10 @@ use Common\Tool\Work;
 
 class ServicePeopleController extends ServiceCommonController
 {
+    public function index(){
+
+    }
+
     // 任务列表
     public function servicePersonal()
     {

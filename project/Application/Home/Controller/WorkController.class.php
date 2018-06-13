@@ -21,13 +21,12 @@ class WorkController extends CommonController
                 $data['type'] = $post['type'];
             }
 
-
             if ( empty($post['device_code']) ) {
                 E('请确认设备信息',400022);
             }
             //工单类型(0：安装 1：维修 2：维护)
             $content_pre = ['1'=>'设备维修','2'=>'设备维护'];
-            $data['content'] = $content_pre[$data['type']] .'设备:'.$post['device_code'].$post['content'];
+            $data['content'] = $content_pre[$data['type']] .'-设备:'.$post['device_code'].'<br/>'.$post['content'];
 
             if (empty($post['kphone']) || empty($post['kname'])) {
                 E('请确认联系方式',400022);
@@ -101,7 +100,7 @@ class WorkController extends CommonController
         try {
             $post = I('post.');
 
-            $data['type'] = 1;
+            $data['type'] = 0;
 
             if ( empty($post['device_code']) ) {
                 E('请确认设备编码',400022);
