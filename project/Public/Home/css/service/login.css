@@ -46,9 +46,10 @@ input {
 }
 .yCodeP > p > span {
   margin-right: .5rem;
+  font-size: 1rem;
 }
 .yCodeP > p > input {
-  width: 80%;
+  width: 75%;
 }
 .yCodeP > .yCord {
   width: 4rem;
@@ -56,6 +57,10 @@ input {
   height: 1.5rem;
   margin: 0;
   background-color:lightblue;
+}
+img {
+  width: 100%;
+  height: 100%;
 }
 /* 登录 */
 .login > p {
