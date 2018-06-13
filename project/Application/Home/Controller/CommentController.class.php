@@ -1,5 +1,6 @@
 <?php
 namespace Home\Controller;
+use Common\Tool\File;
 use Think\Controller;
 use \Org\Util\WeixinJssdk;
 use Think\Log;
@@ -152,7 +153,7 @@ class CommentController extends CommonController
                 }
             }
         }
-
+dump($info);
         // 5.处理添加评论
         $comment->startTrans();
             // 根据订单获取所有商品
@@ -282,6 +283,26 @@ class CommentController extends CommonController
     {
         foreach ($files as $key => $value) {
             return unlink($value);
+        }
+    }
+
+    // 图片上传
+    public function picUpload()
+    {
+        $pic = I('pic');
+        if(!empty($pic)){
+            if(is_string($pic)){
+                $pic = explode(',',$pic);
+            }
+            if( is_array($pic) ){
+                foreach ($pic as $p) {
+                    $pics[] = File::downloadPic('comment',$p);
+                }
+            }
+            $data['pic'] = json_encode($pics);
+            $this->toJson(['data'=>$data],'上传成功!',200);
+        }else{
+            $this->toJson(['data'=>[]],'无图片上传!',400001);
         }
     }
 }

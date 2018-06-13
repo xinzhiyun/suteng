@@ -48,7 +48,7 @@ class DeviceController extends CommonController
             $did = $res['id'];
             $type = $res['type_id'];
             $res_find = $user_device->where('did='.$did)->find();
-            if($res_find != null) E('设备已绑定',604);
+            if(!empty($res_find)) E('设备已绑定',604);
             $data['did']        = $did;
             $data['uid']        = $uid;
             $data['status']     = 1;

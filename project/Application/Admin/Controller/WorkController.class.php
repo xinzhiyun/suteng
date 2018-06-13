@@ -34,6 +34,9 @@ class WorkController extends CommonController
         $where['type'] = I('get.type');
         $where['result'] = I('get.result');
 
+        $area = M('area')->where('parentid=0')->select();
+
+        $this->assign('area',$area);
         $this->assign('pageList',$workList);
         $this->assign('where',$where);
         $this->display();
@@ -163,49 +166,128 @@ class WorkController extends CommonController
      */
     public function edit()
     {
+        try {
+            $post = I('post.');
+            $id = $post['id'];
 
-        if (IS_AJAX) {
-            $id = I('post.id');
-
-            $data['result']      = I('post.result');
-            $data['dw_uid']     = session('adminInfo.id');
-                        if ($data['result'] == 1) {
-                $data['name']       = I('name');
-                $data['phone']      = I('phone');
+            if(empty($post['action']) || empty($post['id'])){
+                E('参数错误',40001);
             }
-            $data['time']  = time();
+            //处理结果(0：待处理(服务站) 1处理中(工作人员) 2已完成(工作人员) 3完成 (待客户评价) 4 评价完成   9 工单关闭 )
+            if($post['action']=='close'){//关闭
+                $data['result']=9;
+            } else if ($post['action']=='over'){ // 完成
+                $data['result']=4;
+            } else {
+                E('参数错误',40002);
+            }
 
             $device_type = D('work');
-            $info = $device_type->create();
+            $res = $device_type->where(['id'=>$id])->save($data);
 
-            if($info){
-                $res = $device_type->where(['id'=>$id])->save($data);
-                if ($res) {
-                    return $this->ajaxReturn([
-                        'code' => 200,
-                        'msg' => '工单修改成功啦！！！',
-                        'status' => 'success'
-                    ]);
-                } else {
-                    return $this->ajaxReturn([
-                        'code' => 410,
-                        'msg' => '工单修改失败',
-                        'status' => 'error'
-                    ]);
-                }
-            } else {
-                // getError是在数据创建验证时调用，提示的是验证失败的错误信息
-                return $this->ajaxReturn([
-                        'code' => 400,
-                        'msg' => $device_type->getError(),
-                        'status' => 'error'
-                    ]);
+            if($res){
+                E('修改成功',200);
+            }else{
+                E('修改失败',40010);
             }
-        }else{
-            $this->display();
+
+
+//        if($info){
+//            $res = $device_type->where(['id'=>$id])->save($data);
+//            if ($res) {
+//                return $this->ajaxReturn([
+//                    'code' => 200,
+//                    'msg' => '工单修改成功啦！！！',
+//                    'status' => 'success'
+//                ]);
+//            } else {
+//                return $this->ajaxReturn([
+//                    'code' => 410,
+//                    'msg' => '工单修改失败',
+//                    'status' => 'error'
+//                ]);
+//            }
+//        } else {
+//            // getError是在数据创建验证时调用，提示的是验证失败的错误信息
+//            return $this->ajaxReturn([
+//                    'code' => 400,
+//                    'msg' => $device_type->getError(),
+//                    'status' => 'error'
+//                ]);
+//        }
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
         }
+
     }
 
+    //指定派遣
+    public function setService()
+    {
+        try {
+            $post = I('post.');
+            if( empty($post['wid']) ) {
+                E('参数数据错误,请刷新重试',400001);
+            }
+
+            $work_data =  M('work')->where('id='.$post['wid'])->find();
+            if( empty($work_data) ){
+                E('工单不存在!',400002);
+            }
+
+            if(!empty($post['sid'])){
+                $service = M('service')->where('id='.$post['sid'])->find();
+                if( empty($service) ){
+                    E('服务站不存在!',400003);
+                }
+                $sid = $post['sid'];
+                $name = $service['company'];
+                $service_mode = 0;
+
+                if ($service['status'] >1 ) {
+                    $sid = $service['t_id'];
+                    $name = $service['t_company'];
+                }
+
+                // 第三方 服务商 待客户需求
+                if ($service['status'] == 3) {
+                    $service_mode = 1;
+                }
+                $saveData=[
+                    'sid'=>$sid,
+                    'service_mode'=>$service_mode,
+                    'company'=>$name
+                ];
+                $res =  M('work')->where('id='.$post['wid'])->save($saveData);
+                Work::add($post['wid'], 3);
+
+            }
+            if(!empty($post['suid'])){
+                $user = M('service_users')->where('id='.$post['suid'])->find();
+                if( empty($user) ){
+                    E('该人员不存在!',40002);
+                }
+                $saveData=[
+                    'dw_uid'=>$post['suid'],
+                    'name'=>$user['name'],
+                    'sn'=>$user['sn'],
+                    'phone'=>$user['phone'],
+                    'result'=>1
+                ];
+                $res =  M('work')->where('id='.$post['wid'])->save($saveData);
+                Work::add($post['wid'], 4);
+            }
+
+            if($res){
+                E('派遣成功!',200);
+            }else{
+                E('派遣失败,请重试!',400010);
+            }
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
 
 
     // 自动派遣

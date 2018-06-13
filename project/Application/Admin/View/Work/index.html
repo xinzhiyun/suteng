@@ -77,7 +77,8 @@
                                 <else />
                                     <volist name="pageList.data" id="val">
                                         <tr data-id="{{$val.id}}" data-number="{{$val.number}}" data-sid="{{$val.sid}}" data-title="{{$val.title}}"
-                                            data-type="{{$val.type}}" data-content="{{$val.content}}" data-result="{{$val['result']}}">
+                                            data-type="{{$val.type}}" data-content="{{$val.content}}" data-result="{{$val['result']}}"
+                                            data-area="{{$val.province}}-{{$val.city}}-{{$val.district}}">
                                             <td>{{$val.number}}</td>
                                             <td>
                                                 <switch name="val.type">
@@ -90,7 +91,7 @@
                                             <td><a class="" href="javascript:;" onclick="details({{$val.id}})">{{$val.content}}</a></td>
                                             <td>{{$val.kname}}<br/>{{$val.kphone}}</td>
                                             <td style="">{{$val.province}}&nbsp;{{$val.city}}&nbsp;{{$val.district}} <br/>{{$val.address}}</td>
-                                            <td>{{$val.company}}</td>
+                                            <td class="service_name">{{$val.company}}</td>
                                             <td>
                                                 <if condition="$val['is_examine'] eq 0">待总站审核
                                                     <elseif condition="$val['is_examine'] eq 2"/>审核未通过
@@ -122,10 +123,15 @@
                                                             <a class="btn btn-outline btn-success _send" data-action="send">委派</a>
                                                         </case>
                                                         <case value="1">
-                                                            <!--<a class="btn btn-outline btn-success _edit" data-action="over">完成</a></case>-->
+                                                            <a class="btn btn-outline btn-success _edit" data-action="over">完成</a>
+                                                        </case>
                                                         <default />
-                                                        <a class="btn btn-outline btn-success _edit" data-action="close">关闭</a></case>
                                                     </switch>
+
+
+                                                </if>
+                                                <if condition="$val['result'] neq 9">
+                                                    <a class="btn btn-outline btn-success _edit" data-action="close">关闭</a>
                                                 </if>
                                             </td>
                                         </tr>
@@ -249,37 +255,57 @@
                 <div class="modal-body">
                     <div class="edit_errmsg" style="text-align: center;color: red;"></div>
                     <form id="send-form" class="form-inline" action="" method="post">
-                        <input class="input-medium" type="text" name="id" class="form-control" value="" readonly="" hidden="">
+                        <input type="hidden" name="id" value="">
+                        <input type="hidden" name="sid" value="">
                         <table class="table table-striped table-bordered table-hover table-condensed">
                             <tr>
-                                <th width="20%">工单号：</th>
+                                <th width="21%">工单号：</th>
                                 <td class="number"></td>
                             </tr>
                             <tr class="send_service">
                                 <th>工单区域：</th>
-                                <td class="title"></td>
+                                <td class="area"></td>
                             </tr>
-
                             <tr class="send_service">
                                 <th>服务站检索：</th>
-                                <td>
+                                <td class="form-inline">
+                                    <select class="form-control send_area send_province_id" style="width: 32%;" name="province_id">
+                                        <option value="">--请选择--</option>
+                                        <volist name="area" id="vl">
+                                            <option value="{{$vl.id}}">{{$vl.areaname}}</option>
+                                        </volist>
+                                    </select>
+                                    <select class="form-control send_area send_city_id" style="width: 32%;" name="city_id">
+                                        <option value="">--请选择--</option>
+                                    </select>
+                                    <select class="form-control send_area send_district_id" style="width: 32%;" name="district_id">
+                                        <option value="">--请选择--</option>
+                                    </select>
                                 </td>
                             </tr>
                             <tr class="send_service">
                                 <th>请选择服务站：</th>
                                 <td>
-                                    <input class="input-medium" type="text" name="phone" id="edit_phone" class="form-control" value="">
+                                    <select class="form-control" name="t_id" id="st_set_agent_sel" style="width: 98%;">
+                                        <option value="">--请选择--</option>
+                                    </select>
                                 </td>
                             </tr>
-                            <tr class="send_service">
-                                <th>请选择服务站：</th>
+                            <tr class="send_service_user">
+                                <th>服务站：</th>
+                                <td class="service_name"></td>
+                            </tr>
+                            <tr class="send_service_user">
+                                <th>服务站员工：</th>
                                 <td>
-                                    <input class="input-medium" type="text" name="phone" id="edit_phone" class="form-control" value="">
+                                    <select class="form-control" name="t_id" id="service_user" style="width: 98%;">
+                                        <option value="">--请选择--</option>
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <input id="send_submit" class="btn btn-success " type="button" value="确认">
+                                    <input class="btn btn-success " type="button" onclick="send_submit()" value="确认">
                                 </td>
                             </tr>
                         </table>
@@ -305,9 +331,9 @@
                         </div>
                         <div class="modal-body">
                             <div class="edit_errmsg" style="text-align: center;color: red;"></div>
-                            <form id="bjy-form2" class="form-inline" action=""
-                            method="post">
-                                <input class="input-medium" type="text" id="edit_id" name="id" class="form-control" value="" readonly="" hidden="">
+                            <form id="st-edit-form" class="form-inline" action="" method="post">
+                                <input type="hidden" name="id"  value="">
+                                <input type="hidden" name="action" value="" >
                                 <table class="table table-striped table-bordered table-hover table-condensed">
                                     <tr>
                                         <th width="16%">
@@ -315,12 +341,12 @@
                                         </th>
                                         <td id="number"></td>
                                     </tr>
-                                    <tr>
-                                        <th>
-                                            工单标题：
-                                        </th>
-                                        <td id="title"></td>
-                                    </tr>
+                                    <!--<tr>-->
+                                        <!--<th>-->
+                                            <!--工单标题：-->
+                                        <!--</th>-->
+                                        <!--<td id="title"></td>-->
+                                    <!--</tr>-->
                                     <tr class="edit_box edit_box_over">
                                         <th>
                                             客户反馈：
@@ -329,23 +355,6 @@
                                             <textarea class="form-control" name="feedback" cols="55" rows="5"></textarea>
                                         </td>
                                     </tr>
-                                    <tr class="edit_box edit_box_send">
-                                        <th>
-                                            委派人：
-                                        </th>
-                                        <td>
-                                            <input class="input-medium" type="text" name="name" id="edit_name" class="form-control" value="">
-                                        </td>
-                                    </tr>
-                                    <tr class="edit_box edit_box_send">
-                                        <th>
-                                            电话：
-                                        </th>
-                                        <td>
-                                            <input class="input-medium" type="text" name="phone" id="edit_phone" class="form-control" value="">
-                                        </td>
-                                    </tr>
-                                            <input class="input-medium" type="text" name="result" id="edit_result" class="form-control" value="" hidden="">
                                     <tr>
                                         <th>
                                         </th>
@@ -360,8 +369,8 @@
                 </div>
             </div>
             <!-- 修改工单结束 -->
-            <!-- 查看详情开始 -->
-            <div class="modal inmodal bs-example-modal-lg" id="st-details" tabindex="-1" role="dialog" aria-hidden="true">
+        <!-- 查看详情开始 -->
+        <div class="modal inmodal bs-example-modal-lg" id="st-details" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content animated bounceInRight">
                         <div class="modal-header">
@@ -474,17 +483,7 @@
             }
         });
     });
-        //         console.log(formdata);
 
-        //     // $.ajax({
-        //     //    type: "POST",
-        //     //    url: {{:U('Admin/work/test')}},
-        //     //    data: formdata,
-        //     //    success: function(msg){
-        //     //         console.log(msg);
-        //     //    }
-        //     // });
-        // });
     $('.acction_examine').click(function () {
         var url = "{{:U('examine')}}";
         var id =  $(this).parents('tr').data('id');
@@ -525,120 +524,180 @@
             });
         }
     }
-         $('._send').click(function(){
-             var obj = $(this).parents('tr');
-             var id = obj.data('id');
-             number  = obj.data('number');
-             title   = obj.data('title');
-             result    = obj.data('result');
 
-             var action = $(this).data('action');
+    var areaUrl = "{{:U('Admin/Area/getNextArea')}}";
+    var _html = '<option value="">--请选择--</option>';
 
-             if(action == 'send'){//委派
-                 var sid  = obj.data('sid');
-                 pagetitle = "工单派遣";
-                 if(sid){
-                     $('.edit_box_send').show();
-                 }else{
-                     parent.layer.msg('请手动指定服务站');
-                 }
-             }
+    // 地址 筛选
+    $('.send_area').change(function () {
+        var _html = '<option value="">--请选择--</option>';
+        $(this).nextAll('select').html(_html);
 
-             $('#edit-modal-title').text(pagetitle);
+        var parentid = $(this).val();
 
-             $("input[name='id']").val(id);
-             $('#st-send .number').html(number);
-             $("#st-send .title").html(title);
+        //地址切换
+        var selObj = $(this).next('select');
+        if(selObj.length>0){
+            getInfo(areaUrl,{parentid:parentid}, function (res) {
+                if(res.status == 200){
+                    $.each(res.data,function (i,val) {
+                        _html += '<option value="'+val.id+'">'+val.areaname+'</option>';
+                    })
+                    selObj.html(_html);
+                    pullAgentList();// 检索新的服务站
+                }else{
+                    parent.layer.msg(res.msg);
+                }
+            });
+        }
 
-             // {{:U('Admin/work/edit_work','p='.I('get.p'))}}
-             $('.edit_errmsg').text('');
-             $('#st-send').modal('show');
-         });
+    });
+    function pullAgentList(){
+        $("#st_set_agent_sel").html(_html);
+
+        var data = {};
+        data.province_id = $('.send_area').eq(0).val();
+        data.city_id     = $('.send_area').eq(1).val();
+        data.district_id = $('.send_area').eq(2).val();
+
+        getInfo("{{:U('service/getService')}}", data, function (res) {
+         if(res.status == 200){
+             $.each(res.data,function (i,val) {
+                 _html += '<option value="'+val.id+'">'+val.company+'</option>';
+             })
+             $("#st_set_agent_sel").html(_html);
+         }else{
+             parent.layer.msg(res.msg);
+         }
+        });
+    }
+    // 手动派遣
+    $('._send').click(function(){
+
+         var obj = $(this).parents('tr');
+         var id = obj.data('id');
+         number  = obj.data('number');
+         var area   = obj.data('area');
+         var sid    = obj.data('sid');
+
+         if(sid){
+             // 加载 服务站人员
+             var getUser = "{{:U('Service/getServiceUser')}}";
+             getInfo(getUser,{sid:sid},function (res) {
+                 $.each(res.data,function (i,val) {
+                     _html += '<option value="'+val.id+'">'+val.name+'</option>';
+                 })
+                 $("#service_user").html(_html);
+             });
+
+             $('#st-send .service_name').html(obj.find('.service_name').html());
+             $('.send_service').hide();
+             $('.send_service_user').show();
+
+         }else{
+             $('.send_service_user').hide();
+             $('.send_service').show();
+             $("#st-send .area").html(area);
+             parent.layer.msg('请手动指定服务站');
+         }
+
+         $("#st-send input[name='id']").val(id);
+         $("#st-send input[name='sid']").val(sid);
+         $('#st-send .number').html(number);
+
+
+         // {{:U('Admin/work/edit_work','p='.I('get.p'))}}
+         $('.edit_errmsg').text('');
+         $('#st-send').modal('show');
+    });
+    // 派遣
+    function send_submit(){
+        var sendUrl = "{{:U('setService')}}";
+
+        var wid = $("#st-send input[name='id']").val(); //工单
+        var osid = $("#st-send input[name='sid']").val();// 原服务站
+        var data = {wid:wid};
+
+        if(osid){
+            var suid = $("#service_user").val();// 原服务站
+            if(!suid){ parent.layer.msg('请选择服务人员!'); return;}
+            data.suid = suid;
+        }else{
+            var sid = $('#st_set_agent_sel').val();// 选择的服务站
+            if(!sid){ parent.layer.msg('请选择服务站!'); return;}
+            data.sid=sid;
+        }
+        getInfo(sendUrl,data);
+    }
 
     $('._edit').click(function(){
         var obj = $(this).parents('tr');
         var id = obj.data('id');
         number  = obj.data('number');
-        title   = obj.data('title');
-        result    = obj.data('result');
 
         var action = $(this).data('action');
         $('.edit_box').hide();
-        var submit = "提交";
-        var pagetitle = "修改工单";
-        if(action == 'send'){//委派
-            var sid  = obj.data('sid');
-            pagetitle = "工单派遣";
-            if(sid){
-                $('.edit_box_send').show();
-            }else{
-                parent.layer.msg('请手动指定服务站');
-            }
 
-
-        }else if(action == 'over'){//完成
+        if(action == 'over'){//完成
             var pagetitle = "工单完成";
             $('.edit_box_over').show();
-        }else{//关闭
+        }else if(action == 'close'){//关闭
+            var pagetitle = "关闭工单";
 
+            $('.edit_box_over').hide();
         }
 
-         $('#edit_submit').val(submit);
-         $('#edit-modal-title').text(pagetitle);
+        $('#edit-modal-title').text(pagetitle);
 
-
-        // p = "{{:I('get.p')}}";
-        $("input[name='id']").val(id);
+        $("#st-edit-form input[name='id']").val(id);
         $('#number').html(number);
-        $("#title").html(title);
-        $('#edit_result').val(result);
+        $("#st-edit-form input[name='action']").val(action);
 
-
-
-        // {{:U('Admin/work/edit_work','p='.I('get.p'))}}
         $('.edit_errmsg').text('');
         $('#st-edit').modal('show');
     });
+
     $('#edit_submit').click(function(){        
         var editdata = {
-                'id' : $('#edit_id').val(),
-                'result' : $('#edit_result').val()
+                'id' : $("#st-edit-form input[name='id']").val(),
+                'action' : $("#st-edit-form input[name='action']").val()
             }
-            if (result == 0) {
-                editdata.name = $('#edit_name').val();
-                editdata.phone = $('#edit_phone').val();
-            }
-            console.log(editdata);
-        $.ajax({
-           type: "POST",
-           url: "{{:U('Admin/work/edit')}}",
-           data: editdata,
-           success: function(msg){
-                if (msg.code == 200) {
-                    $('#st-edit').modal('hide');
-                    parent.layer.msg(msg.msg);
-                    window.location.href="{{:U('Admin/work/index')}}?p="+p;
-                }
-                if (msg.code == 400) {
-                    text = '';
-                    $.each(msg.msg, function(i, n){
-                      text = text + '*' + n + '</br>';                     
-                    });
-                    $('.edit_errmsg').html(text);
-                }
-                console.log(msg);
-           }
-        });
+
+        var editUrl="{{:U('Work/edit')}}";
+        getInfo(editUrl, editdata);
+        //"{{:U('Admin/work/index')}}?p="+p;
+
+
+        // $.ajax({
+        //    type: "POST",
+        //    url: "{{:U('Admin/work/edit')}}",
+        //    data: editdata,
+        //    success: function(msg){
+        //         if (msg.code == 200) {
+        //             $('#st-edit').modal('hide');
+        //             parent.layer.msg(msg.msg);
+        //             window.location.href="{{:U('Admin/work/index')}}?p="+p;
+        //         }
+        //         if (msg.code == 400) {
+        //             text = '';
+        //             $.each(msg.msg, function(i, n){
+        //               text = text + '*' + n + '</br>';
+        //             });
+        //             $('.edit_errmsg').html(text);
+        //         }
+        //         console.log(msg);
+        //    }
+        // });
     });
     // 维护类型单选框处理
     $('.i-checks > label').hover(
-          function () {
+        function () {
             $(this).children('div').addClass("hover");
-          },
-          function () {
+        },
+        function () {
             $(this).children('div').removeClass("hover");
-          }
-        );
+        }
+    );
     $('.i-checks > label').click( function () {
         $(this).children('div').addClass("checked").parent().siblings().children('div').removeClass("checked");
         $(this).children('div > input').attr("checked").parent().siblings().children('div > input').removeAttr("checked");
