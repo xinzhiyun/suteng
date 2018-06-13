@@ -42,7 +42,7 @@ body {
 .stationInfo > div:nth-child(1) {
     padding-top: 0;
 }
-.stationInfo > div:nth-child(1),  .stationInfo > div:nth-child(4){
+.stationInfo > div:nth-child(1),  .stationInfo > div:last-child{
     border-bottom: none;
 }
 .chooseArea {
