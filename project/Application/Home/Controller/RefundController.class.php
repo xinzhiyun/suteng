@@ -50,7 +50,9 @@ class RefundController extends CommonController
      * @return [type] [description]
      */
     public function create()
-    {
+    {   
+
+
         $post = I('post.');
         $order_id = $post['order_id'];
 
@@ -78,7 +80,7 @@ class RefundController extends CommonController
         try {        
             if ($ostatus=='11' or $ostatus=='12' or $ostatus=='2') {
                 //待收货中 申请退款或退货
-                
+                // dump($_FILES);die;
                 $savePath = 'Uploads/pic/';
                 if($data['method'] == 2){            
                     // 二进制文件上传简单处理
@@ -98,14 +100,17 @@ class RefundController extends CommonController
                     if(!(count($info) <= 3)){
                         E('只能添加三张图片',604);
                     }
-                     foreach ($info as $k => $val) {
+
+
+                    foreach ($info as $k => $val) {
                         $path .= $val.'|';
                     }
                     $data['pic'] = $path;
 
-                    $refund->startTrans();
-                    // print_r($data);die;                    
-                    $result = D('Refund')->relation(true)->add($data);
+                    // dump($data);
+                    
+                    $result = $refund->add($data);
+
 
                     //查看退货表中退货商品的总数
                     $rgNum = M('refund_goods')->where('oid='.$order_id)->count();
@@ -171,8 +176,7 @@ class RefundController extends CommonController
             
             if($result){
                 $refund->commit();
-                E('申请成功', 200);
-                
+                $this->ajaxReturn(['code'=>200,'msg'=>'申请成功'],'JSON');
             } else {
                 $comment->rollback();
                 E('申请失败', 603);
