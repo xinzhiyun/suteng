@@ -133,3 +133,10 @@
   font-size: 4.28571429rem;
   color: #32C97C;
 }
+.notice {
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  padding-top: 40vh;
+  text-align: center;
+}
