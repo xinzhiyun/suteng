@@ -605,10 +605,11 @@
              // 加载 服务站人员
              var getUser = "{{:U('Service/getServiceUser')}}";
              getInfo(getUser,{sid:sid},function (res) {
+                 var _shtml = '<option value="">--请选择--</option>';
                  $.each(res.data,function (i,val) {
-                     _html += '<option value="'+val.id+'">'+val.name+'</option>';
+                     _shtml += '<option value="'+val.id+'">'+val.name+'</option>';
                  })
-                 $("#service_user").html(_html);
+                 $("#service_user").html(_shtml);
              });
 
              $('#st-send .service_name').html(obj.find('.service_name').html());
