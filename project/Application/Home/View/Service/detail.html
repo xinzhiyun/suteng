@@ -75,13 +75,8 @@
 						<div v-html='info.content'></div>
 					</li>
 					<li>
-						<!-- <span class="pics">
-							<img :src="i" alt="" v-for='i in info.pic' >
-						</span> -->
 						<span class="pics">
-							<!-- <img :src="i" alt=""> -->
-							<img src="__PUBLIC__/Home/images/3b.png" alt="" @click="openPhotoSwipe">
-							<img src="__PUBLIC__/Home/images/3b.png" alt="" @click="openPhotoSwipe">
+							<img :src="i" alt="" v-for='i in info.pic' >
 						</span>
 					</li>
 				</li>
@@ -102,15 +97,8 @@
 					<span v-text='info.content'></span>
 				</li>
 				<li>
-					<!-- <span v-for='i in info.pic' class="pics">
-						<img :src="i" alt="">
-						<img src="__PUBLIC__/Home/images/3b.png" alt="" @click="openPhotoSwipe">
-						<img src="__PUBLIC__/Home/images/3b.png" alt="" @click="openPhotoSwipe">
-					</span> -->
 					<span class="pics">
-						<!-- <img :src="i" alt=""> -->
-						<img src="__PUBLIC__/Home/images/3b.png" alt="" @click="openPhotoSwipe">
-						<img src="__PUBLIC__/Home/images/3b.png" alt="" @click="openPhotoSwipe">
+						<img :src="i" alt="" v-for='i in info.pic'>
 					</span>
 				</li>
 			</ul>
