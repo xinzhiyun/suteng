@@ -1,5 +1,6 @@
 <?php
 namespace Home\Controller;
+use Common\Tool\Weixin;
 use Think\Controller;
 
 class ServiceLoginController extends Controller
@@ -51,6 +52,7 @@ class ServiceLoginController extends Controller
         }
     }
 
+    // 安装人员登录
     public function peopleIndex()
     {
         $this->display();
