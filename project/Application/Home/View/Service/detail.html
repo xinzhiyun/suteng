@@ -76,7 +76,7 @@
 					</li>
 					<li>
 						<span class="pics">
-							<img :src="i" alt="" v-for='i in info.pic' >
+							<img :src="i" alt="" v-for='i in info.pic' @click="openPhotoSwipe">
 						</span>
 					</li>
 				</li>
@@ -98,7 +98,7 @@
 				</li>
 				<li>
 					<span class="pics">
-						<img :src="i" alt="" v-for='i in info.pic'>
+						<img :src="i" alt="" @click="openPhotoSwipe" v-for='i in info.pic'>
 					</span>
 				</li>
 			</ul>
