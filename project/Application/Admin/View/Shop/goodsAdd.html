@@ -362,13 +362,14 @@
                 })
             }
         })
-        
+        var picarr = [];
         // 点击添加图片  每张filereader对象只能读取一张图片的路径
         $("input[type='file']").on("change", function() {
             // 获取文件
             var file = $(this)[0].files;
             var fileHtml = "";
             for(var i = 0; i < file.length; i++) {
+                picarr[i] = file[i];
                 //创建读取文件的对象  
                 var reader = new FileReader();  
                 //创建文件读取相关的变量  
@@ -640,6 +641,7 @@
         $(".goodsAdd").click(function(){
             // var data = $("#form").serializeArray();
             var data = new FormData($("#form")[0]);
+            data.append('goodsPhoto',picarr);
             $.ajax({
                 url:'goodsAction',
                 type:'post',
