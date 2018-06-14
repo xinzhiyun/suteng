@@ -574,6 +574,8 @@
 
     });
     function pullAgentList(){
+        var _html = '<option value="">--请选择--</option>';
+
         $("#st_set_agent_sel").html(_html);
 
         var data = {};
@@ -602,10 +604,11 @@
          var sid    = obj.data('sid');
 
          if(sid){
+             var _shtml = '<option value="">--请选择--</option>';
+
              // 加载 服务站人员
              var getUser = "{{:U('Service/getServiceUser')}}";
              getInfo(getUser,{sid:sid},function (res) {
-                 var _shtml = '<option value="">--请选择--</option>';
                  $.each(res.data,function (i,val) {
                      _shtml += '<option value="'+val.id+'">'+val.name+'</option>';
                  })
