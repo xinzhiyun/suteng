@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
+	<title>服务站</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/station/index.css">
+	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
+	<script>
+		var waitnum = "{{$work[1]|default = '0'}}";
+		var waitcomfirmnum = "{{$work[2]|default = '0'}}";
+		var serviceName = "{{$work['name']}}";
+		console.log(waitnum, waitcomfirmnum, serviceName);
+	</script>
+</head>
+<body>
+	<div id='service'>
+		<div id='sTop'>
+			<p v-text='service_name'></p>
+		</div>
+		<ul id='sBot' class="botOne">
+			<li class='worktype' @click='getList(0)' result='0'>
+				<i v-text='num.waitnum'></i>
+				<span>
+					<img src="__PUBLIC__/Home/images/pg.png" alt="">
+				</span>
+				<p>待办工单</p>
+			</li>
+			<li class='worktype' @click='getList(1)' result='1'>
+				<!-- <i v-text='num.processnum'></i> -->
+				<span>
+					<img src="__PUBLIC__/Home/images/clz.png" alt="">
+				</span>
+				<p>处理中工单</p>
+			</li>
+			<li class='worktype' @click='getList(2)' result='2'>
+				<i v-text='num.waitcomfirmnum'></i>
+				<span>
+					<img src="__PUBLIC__/Home/images/dys.png" alt="">
+				</span>
+				<p>待验收工单</p>
+			</li>
+		</ul>
+		<ul class="botTwo">
+			<li class='worktype' @click='getList(3)' result='3'>
+				<!-- <i v-text='num.oknum'></i> -->
+				<span>
+					<img src="__PUBLIC__/Home/images/qbgd2.png" alt="">
+				</span>
+				<p>已完成工单</p>
+			</li>
+			<li class='worktype' @click='getList(11)' result='11'>
+				<!-- <i v-text='num.allnum'></i> -->
+				<span>
+					<img src="__PUBLIC__/Home/images/qbgd.png" alt="">
+				</span>
+				<p>全部工单</p>
+			</li>
+			<li class='worktype' @click="getList(4)">
+				<!-- <i></i> -->
+				<span>
+					<img src="__PUBLIC__/Home/images/manage.png" alt="">
+				</span>
+				<p>员工管理</p>
+			</li>
+		</ul>
+	</div>
+	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+	<script>
+		var service = new Vue({ 
+			el: '#service',
+			data () {
+				return {
+					service_name: serviceName,
+					num: {waitnum: waitnum, processnum: 16, waitcomfirmnum: waitcomfirmnum, oknum: 15, allnum: 57}
+				}
+			},
+			methods: {
+				// 获取工单列表
+				getList (result) {
+					console.log('result: ',result);
+					// 0待处理 1处理中 2待验收 3(完成) 4(员工管理) 全部不传
+					if(result != 11){
+						location.href = '{{:U("Home/Service/list")}}' + '?result=' + result;
+					}else{
+						location.href = '{{:U("Home/Service/list")}}';
+					}
+				}
+			}
+		})
+	</script>
+</body>
+</html>

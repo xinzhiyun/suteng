@@ -3,17 +3,17 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
-	<title>待办任务</title>
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/Wait_task/css/wait_task.css">
+	<title>待安装</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/wait_task/css/wait_task.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/amazeui.min.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/common.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css">
 </head>
 <body>
 <div id="app">
-<!-- 待办任务列表部分开始 -->
+	<!-- 待办任务列表部分开始 -->
 	<div class="wrap">
-	<!-- 搜索部分开始 -->
+		<!-- 搜索部分开始 -->
 		<div class="header">
 			<div class="sub_head" @keyup.enter="lookup">
 				<label for="">
@@ -23,7 +23,7 @@
 			</div>
 		</div>
 
-	<!-- 用户列表 -->
+		<!-- 用户列表 -->
 		<div class="list">
 			<ul class="link_b">
 				<li>
@@ -43,9 +43,9 @@
 			</ul>
 		</div>
 	</div>
-<!-- 待办任务列表部分结束 -->
+	<!-- 待办任务列表部分结束 -->
 
-<!-- 服务详情页面部分开始 -->
+	<!-- 服务详情页面部分开始 -->
 	<div class="detail">
 		<div class="user">
 			<ul>
@@ -98,30 +98,30 @@
 			<input type="button" value="完成" @click="openModal()">
 		</div>
 	</div>
-<!-- 服务详情页面部分结束 -->
+	<!-- 服务详情页面部分结束 -->
 
-<!-- 支付成功部分开始 -->
+	<!-- 支付成功部分开始 -->
 	<div class="paySuc">
 		<div>
 			<i class="iconfont icon-dagouyouquan"></i>
 			<span>提交成功</span>
 		</div>
 	</div>
-<!-- 支付成功部分结束 -->
+	<!-- 支付成功部分结束 -->
 
-<!-- 模态框部分开始 -->
+	<!-- 模态框部分开始 -->
 	<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
         <div class="am-modal-dialog" style="border-radius:0.3rem;">  
             <div class="am-modal-bd" style="fontSize:1rem;">  
                 确定提交任务？  
-            </div>  
+            </div>   
             <div class="am-modal-footer">  
                 <span class="am-modal-btn" style="fontSize:0.8rem;color:#aeaeae;">否</span>  
                 <span class="am-modal-btn" style="fontSize:0.8rem;color:#2eb6aa;" @click="Yes()">是</span> 
             </div>  
         </div>  
     </div>  
-<!-- 模态框部分结束 -->
+	<!-- 模态框部分结束 -->
 
 </div>
 	<script src="__PUBLIC__/Home/js/head.js"></script>
@@ -132,6 +132,7 @@
 	<script src="__PUBLIC__/Home/js/wait_task/wait_task.js"></script>
 	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
 	<script>	
+		// url type: 0待安装, 1待维修，2待维护
 		var infos = [
 			{
 				name:"沈腾",

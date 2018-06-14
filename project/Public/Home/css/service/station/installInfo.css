@@ -1,0 +1,98 @@
+#installInfo {
+    width: 100vw;
+    height: 100vh;
+    background-color: #EDF2F2;
+    font-size: .7rem;
+}
+/* 顶部 */
+.infoCom {
+    background-color: white;
+}
+.infoCom > ul > li {
+    padding: .7rem .7rem;
+    border-bottom: 1px solid #EDEDED;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.infoCom > ul > li:nth-child(2) {
+    padding: .4rem .7rem;
+}
+.infoCom > ul > li > input {
+    border: none;
+    text-align: right;
+}
+.userImg {
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.userImg > img {
+    height: 100%;
+    width: 100%;
+}
+/* 底部 */
+.infoBottom {
+    margin-top: 1rem;
+}
+/* 两个按钮 */
+.infoWay {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-around;
+}
+.infoWay > p {
+    display: flex;
+    justify-content: center;
+    padding: .3rem 1.5rem .3rem .5rem;
+    border-radius: 5px;
+    align-items: center;
+    color: white;
+    font-size: .9rem;
+}
+.infoWay > p > span:nth-child(1) {
+    margin-right: .5rem;
+    font-size: 1.1rem;
+}
+.infoWay > p:nth-child(1) {
+    background-color: #3D77D8;
+}
+.infoWay > p:nth-child(2) {
+    background-color: #E84747;
+}
+/* 保存 */
+.infoWay > .save {
+    width: 90%;
+    padding: .3rem 0 .3rem 0;
+    text-align: center;
+    background-color: #2EB6AA !important;
+}
+/* 确认和保存 */
+.infoWay >.cofirm {
+    padding: .3rem 2rem;
+    text-align: center;
+    background: #2EB6AA !important;
+}
+.infoWay >.reset {
+    padding: .3rem 2rem;
+    text-align: center;
+    background: #CCCCCC !important;
+}
+/* 星星 */
+.stars > i{
+    color: #FBC91D;
+}
+.stars{
+    position: relative;
+}
+.stars > span{ 
+    position: absolute;
+    top: 0; 
+    left: .05rem;
+    color: #FBC91D;
+    /* width: 100%; */
+    /* height: 1rem; */
+    /* overflow: hidden; */
+}

@@ -126,20 +126,19 @@ class OrderController extends CommonController
             
 
             foreach ($waitpaylist as $key => $value) {
-                //先处理数据再给前端分配数据
-                
-                foreach ($value['productList'] as $k => $v) {
-        
-                    //查找退货的商品id
-                    $refund_goods =  M('refund_goods')->where('oid='."'{$value['orderid']}'")->select();
-                    foreach ($refund_goods as $rd => $rdvalue) {
-                        $rids[] = $rdvalue['gid'];
-                    }
-                    //id去重
-                    $ids = array_unique($rids);
 
+                $rids = array();
+                $refund_goods =  M('refund_goods')->where('oid='."'{$value['orderid']}'")->select();
+
+                //查找退货的商品id
+                foreach ($refund_goods as $rd => $rdvalue) {
+                    $rids[] = $rdvalue['gid'];
+                }
+               
+                //先处理数据再给前端分配数据
+                foreach ($value['productList'] as $k => $v) {
                     // dump($ids);
-                    if (in_array($v['gid'],$ids)) {
+                    if (in_array($v['gid'],$rids)) {
                         // dump();
                         $waitpaylist[$key]['productList'][$k]['tuihuo']='1';
                     } 
@@ -651,6 +650,59 @@ class OrderController extends CommonController
         }
     }
     
+    /**
+     * [refundMessage 退货详情信息录入]
+     * @return [type] [description]
+     */
+    public function refundMessage()
+    {
+        //退货流水单号
+        $serial_num = $_POST['serial_num'];
+
+        //退货id
+        $rid = M('refund')->where('serial_num='.$serial_num)->find()['id'];
+
+        //根据退货id获取该退货的订单id
+        $orderid = M('RefundGoods')->where('rf_id='.$rid)->find()['oid'];
+
+        // echo $orderid;die;
+
+
+        $data['orderid'] = $orderid;
+        $data['sname'] = $_POST['recname'];
+        $data['sphone'] = $_POST['recphone'];
+        $data['saddress'] = $_POST['recaddr'];
+        $data['fname'] = $_POST['toname'];
+        $data['fphone'] = $_POST['tophone'];
+        $data['faddress'] = $_POST['toaddr'];
+        $data['espress_name'] = $_POST['recexpress'];
+        $data['espress_num'] = $_POST['recexpressnum'];
+        $data['addtime'] = time();
+
+        // dump($data);die;
+
+        //写入退货信息
+        M('RefundMessage')->startTrans();
+        M('refund')->startTrans();
+
+
+        $info = M('RefundMessage')->add($data);
+        //写入成功后修改退货状态
+        $refund['status'] = 6;
+        $refundStatus = M('refund')->where('serial_num='.$serial_num)->save($refund);
+
+        if ($info && $refundStatus) {
+            M('RefundMessage')->commit();
+            M('refund')->commit();
+            $this->ajaxReturn(array('code'=>'200','msg'=>'提交成功，请耐心等待商家处理'));
+        } else {
+            M('RefundMessage')->rollback();
+            M('refund')->rollback();
+            $this->ajaxReturn(array('code'=>'400','msg'=>'更改状态信息失败'));
+        }
+
+
+    }
     /**
      * 耗材订单
      * @return [type] [description]

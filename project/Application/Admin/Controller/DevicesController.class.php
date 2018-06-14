@@ -27,7 +27,14 @@ class DevicesController extends CommonController
             if($_GET['key'] == 'typename'){
                 $map['t.typename'] = array('like',"%".trim($_GET['keywords'])."%");
             }
+            if($_GET['key'] == 'v.user'){
+                $map['v.user'] = array('like',"%".trim($_GET['keywords'])."%");
+            }
+            if($_GET['key'] == 'u.nickname'){
+                $map['u.nickname'] = array('like',"%".trim($_GET['keywords'])."%");
+            }
         }
+
         $where['key'] = $_GET['key'];
         $where['keywords'] = $_GET['keywords'];
         // ---- 解决非第一页搜索条件$_GET['p']不等于1的情况【start】
@@ -35,6 +42,31 @@ class DevicesController extends CommonController
             $_GET['p'] = 1;
             unset($_GET['sou']);
         }
+
+        // PHPExcel 导出数据 
+        if (I('output') == 1) {
+            $data = $device
+            ->where($map)
+            ->alias('d')
+            ->join('__TYPE__ t ON d.type_id=t.id', 'LEFT')
+            ->join('__DEVICES_STATU__ ds ON d.device_code=ds.DeviceID', 'LEFT')
+            ->join('__VENDORS__ v ON d.vid=v.id', 'LEFT')
+            ->join('__USER_DEVICE__ ud ON d.id=ud.did', 'LEFT')
+            ->join('__USERS__ u ON ud.uid=u.id', 'LEFT')
+            ->field('d.device_code,t.typename,v.user,u.nickname,ds.alivestause')
+            ->order('d.addtime desc,d.id desc')
+            ->select();
+            $arr = ['alivestause'=>['未激活','已激活']];
+            $data =  replace_array_value($data,$arr);
+            $filename = '设备列表数据';
+            $title = '设备列表';
+            $cellName = ['设备编号','设备类型','绑定分销商','绑定用户','激活状态'];
+            // dump($data);die;
+            $myexcel = new \Org\Util\MYExcel($filename,$title,$cellName,$data);
+            $myexcel->output();
+            return ;
+        }
+
         // ---- 【end】
         $count = $device                                                            
             ->where($map)
@@ -641,7 +673,7 @@ class DevicesController extends CommonController
             $type = D('Type');
             $where = I('post.');
             $map['type_id'] = I('post.id');
-            $device_code = M('devices')->where($map)->getField('device_code');
+            $device_code = M('devices')->where()->getField('device_code');
             if(!empty($device_code))E('该类型被设备:'.$device_code.'使用中', 603);
             
             $type->startTrans();

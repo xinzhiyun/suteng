@@ -84,15 +84,16 @@ class File
         return $data;
     }
 
-    public function downloadPic($paths='')
+    public static function downloadPic($paths='', $key)
     {
-        Log::write($paths,'图片上传');
+//        Log::write($key,'图片上传');
+        $path = trim($paths,'/');
 
-        $path_info = '/Pic/repair/'.date('Y-m-d',time());
+        $path_info = '/Pic/'.$path.'/'.date('Y-m-d',time());
 
         $dirname = self::$subName;
 
-        $file=md5($paths).".jpg";
+        $file=md5($key).".jpg";
 
 
         $dir =rtrim(THINK_PATH,"ThinkPHP/").'/Public'.$path_info;
@@ -106,7 +107,7 @@ class File
         $ACCESS_TOKEN = $weixin->getAccessToken();
 
 
-        $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=$ACCESS_TOKEN&media_id=$paths";
+        $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=$ACCESS_TOKEN&media_id=$key";
         // $url = "http://img.taopic.com/uploads/allimg/140729/240450-140HZP45790.jpg";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -119,8 +120,16 @@ class File
         fwrite($resource, $file);
         fclose($resource);
         return $path_info;
-
     }
+
+    // 删除文件
+    public static function del($files)
+    {
+        foreach ($files as $key => $value) {
+            return unlink($value);
+        }
+    }
+
 
     public function output($filename,$title,$cellName,$data,$replace)
     {

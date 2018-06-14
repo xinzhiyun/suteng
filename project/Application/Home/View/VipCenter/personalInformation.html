@@ -6,135 +6,11 @@
 	<title>个人信息</title>
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
-	
-	<style>
-		.container{
-			width:92%;
-			position: relative;
-			margin:0 auto;
-		}
-		.Information h3{
-			font-size: 0.75rem;
-			margin: 0.666667rem 0;
-			color: 373737;
-		}
-		.Information label {
-			display: block;
-			width: 100%;
-			height: 3rem;
-		}
-		.Information label i{
-			display: inline-block;
-		    width: 8%;
-		    font-size: 1.2rem;
-		    color: #307DBB;
-		    padding: 0.4rem 0 0;
-		    font-weight: 550;
-		}
-		.Information label div{
-			float: right;
-			width: 90%;
-			border-bottom: 1px solid #838383;
-			display: inline-block;
-		}
-		.Information label div span{
-			display: inline-block;
-		    width: 29%;
-		    text-align: right;
-		    line-height: 3vh;
-		    font-size: 0.72rem;
-		    margin-left: -0.32rem;
-		}
-		.Information label div input,.Information label div select{
-			background: #fff!important;
-			font-size: 0.72rem;
-		    width: 68%;
-		    border: none;
-		    height: 1.5rem;
-		    padding-left:0.2rem;
-		    margin-bottom: 0.1rem;
-		    color: #737373;
-		    appearance:none;
-			-moz-appearance:none;
-			-webkit-appearance:none;
-		}
-		.Information label div select{
-			appearance:none;
-		  -moz-appearance:none;
-		  -webkit-appearance:none;
-		}
-		select::-ms-expand { display: none; }
-		select::-webkit-expand { display: none; }
-		select::expand { display: none; }
-
-		.bandBtn{
-			width: 100%;
-			position: absolute;
-			/*bottom: 6rem;*/
-			border-radius: 0.106667rem;
-			padding:3.9rem 0 0;
-		}
-		.bandBtn input{
-			height: 1.9rem;
-			width: 86vw;
-			text-align: center;
-			display: block;
-			font-size: 0.82rem;
-			border-radius: 0.2rem;
-			border:none;
-			margin:0 auto;
-			color: #fff;
-			background: #2EB6AA;
-
-		}
-      .layui-laydate, .layui-laydate-main{
-        width: 98vw !important;
-        left: 50%;
-        /*transform: translateX(-49vw);*/
-      }
-      .laydate-footer-btns {
-        width: 50%;
-        display: flex;
-        position: relative !important;
-        right: 9vw !important;
-        top: 0 !important;
-        align-items: center;
-      }
-      .laydate-btns-clear,
-      .laydate-btns-now,
-      .laydate-btns-confirm {
-        width: 33.33%;
-        display: inline-block;
-        padding: 10% !important;
-      }
-      .layui-laydate-content table {
-        width: 90%;
-        position: relative;
-        left: 50%;
-        margin-left: -45%;
-      }
-      .layui-laydate-footer {
-        display: flex !important;
-        justify-content: flex-end;
-        height: auto;
-      }
-      .laydate-footer-btns span {
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
-        margin: 0 10px !important;
-      }
-
-		/*兼容解决*/
-		@media screen and (max-height:520px) {
-			.bandBtn {
-
-		    padding: 2.5rem 0 0;
-		    
-			}
-		}
-
-	</style>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/userinfo.css">
+    <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+    <script>
+        var vconsole = new VConsole();
+    </script>
 </head>
 <body>
 	<div class="container">
@@ -144,13 +20,13 @@
 				<label for="name" class="">
 					<i class="iconfont icon-wode1"></i>
 					<div >
-						<span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input name="name" id="name" type="text" value="{{$user_device['name']}}">
+						<span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span><input name="name" id="name" type="text" value="">
 					</div>
 				</label>
 				<label for="sex">
 					<i class="iconfont icon-weibiaoti-"></i>
 					<div >
-						<span>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span><select name="sex" >
+						<span>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span><select name="sex" id='sex' >
 							<switch name="user_device.sex">
 							    <case value="0">
 				    				<option value="0">男</option>
@@ -170,21 +46,28 @@
 				<label for="birth">
 					<i class="iconfont icon-shengridangao2-copy"></i>
 					<div >
-						<span>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</span><input name="birth" class="dateSelect" id="birth" placeholder="请选择生日年月" type="text" value="{{$user_device['birth']}}"><!--日期插件-->
+						<span>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</span><input name="birth" class="dateSelect" id="birth" placeholder="请选择生日年月" type="text" value="" readonly><!--日期插件-->
 					</div>
 				</label>
 				
 				<label for="tel">
 					<i class="iconfont icon-shouji2-copy"></i>
 					<div >
-						<span>手机号码：</span><input id="tel" name="phone" type="text" value="{{$user_device['phone']}}" >
+						<span>手机号码：</span><input id="tel" name="phone" type="text" value="" >
 					</div>
 				</label>
-				
+
 				<label for="addr">
 					<i class="iconfont icon-dizhi"></i>
 					<div >
-						<span>住&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：</span><input name="address" id="addr" type="text" value="{{$user_device['address']}}">
+						<span>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：</span>
+						<input type="text" id="areaID" class="areabtn" onfocus="this.blur()" placeholder="请选择 >" value=''>
+					</div>
+				</label>
+				<label for="">
+					<div class='addrdetail'>
+						<p>详细地址：</p>
+						<textarea class='address' name="address" id="" cols="30" rows="5" placeholder="请输入详细地址" value=''></textarea>
 					</div>
 				</label>
 			</div>
@@ -193,8 +76,29 @@
 			</div>
 		</form>
 	</div>
+	<div id="areaChoose" class="citys">
+		<div class="areaChoosebg"></div>
+        <div class="areaDiv">
+        	<div>
+        		<span>省份</span>
+        		<span>城市</span>
+        		<span>区县</span>
+        	</div>
+			<ul>
+				<li class='province'>
+					<p></p>
+				</li>
+				<li class='city'>
+					<p></p>
+				</li>
+				<li class='area'>
+					<p></p>
+				</li>
+			</ul>
+    	</div>
+	</div>
   	<script src="__PUBLIC__/Home/js/laydate.js"></script>
-	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+	<script src="__PUBLIC__/Home/js/jquery.min.js"></script>
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
 	<script src="__PUBLIC__/Home/js/public.js"></script>
@@ -257,35 +161,45 @@
 			
 			// 点击保存
 			$("#save").click(function(){
-				
-				// formdata
-				var data = new FormData(document.getElementById("form"));
-
-				if(!(nameReg.test($('#name').val()))){
+				var info = {};
+				info = {
+					name: $('#name').val(),
+					sex: $('#sex>option:selected').val(),
+					birth: $('#birth').val(),
+					phone: $('#tel').val(),
+					province: province,
+					city: city,
+					area: area,
+					province_id: province_id,
+					city_id: city_id,
+					area_id: area_id,
+					address: $('.address').val()
+				}
+				if(!(nameReg.test(info.name))){
 					layuiHint("请输入真实的姓名");
 					return;
 
-				}else if(!$("#birth").val()){
-					layuiHint("请选中您的生日");
+				}else if(!info.birth){
+					layuiHint("请选择您的生日");
 					return;
 
-				}else if(!(phoneReg.test($('#tel').val()))){
+				}else if(!(phoneReg.test(info.phone))){
 					layuiHint("请输入正确的手机号码");
 					return;
 
-				}else if(!(addressReg.test($('#addr').val()))){
+				}else if(!info.address){
 					layuiHint("请输入详细地址！");
 					return;
 
 				}
+				if(!$('.areabtn').val()){
+					layuiHint("请选择地区！");
+					return
+				}
 				if(machineNo){
+					info['device_code'] = machineNo;
 					// 绑定设备
-					bindFn(function(res){
-						if(res.binddevice){
-							// 保存信息
-							saveFn(data);
-						}
-					});
+					bindFn(info);
 				}else{
 					// 保存信息
 					saveFn(data);
@@ -297,10 +211,6 @@
 				$.ajax({
 					url: 'infomationAction',
 					type: 'post',
-					async: false,
-			        cache: false,
-			        contentType: false,
-			        processData: false,
 					data: data,
 					success: function(res){
 						if(res.code == 200){
@@ -310,7 +220,7 @@
 							setTimeout(function(){
 								// 跳转到我的钱包
 								location.href="{{:U('Home/VipCenter/minepack')}}";	
-							},500);	
+							},500);
 						}else{
 							layuiHint(res.msg);
 						}
@@ -321,36 +231,163 @@
 					}
 				})
 			}
-			function bindFn(callback){
+			var bindflag = false;
+			function bindFn(data){
+				console.log('data: ',data);
+				if(bindflag){
+					return
+				}
 				// 绑定设备
 				$.ajax({
-			    	url:"{{:U('Device/bind')}}",
-			    	type:"post",
-			    	data:{device_code: machineNo},
-			    	dataType:'json',
-			    	success:function(data){
-			    		console.log(data);
-						if(data.code == 200 ){
+					url: '{{:U("Home/Device/bind")}}',
+					type: 'post',
+					data: data,
+					success: function(res){
+						console.log('res: ',res);
+						bindflag = true;
+						if(res.code == 200){
 							layuiHint('绑定成功！');
-							callback({binddevice: true});
-							
+							history.replaceState({}, null, '{{:U("Home/Index/index")}}');
+							// 返回‘我的钱包’
+							setTimeout(function(){
+								bindflag = false;
+								location.href = '{{:U("Home/VipCenter/minepack")}}';
+							},500)
 						}else{
-							layuiHint(data.msg);
-							callback({binddevice: null});
-						} 
-			    	},
-			    	error:function(jqXHR, textStatus, errorThrown){
-
-	    				layuiHint("绑定失败" + jqXHR.status + textStatus + errorThrown);
-						callback({binddevice: null});
-	    				return
-			    		//console.log(jqXHR.status);
-			    	}
-			    });
+							layuiHint(res.msg);
+						}
+					},
+					error: function(err){
+						bindflag = false;
+						console.log('err: ',err);
+						layuiHint('系统遇到问题，请稍后再试');
+					}
+				})
 			}
 
 		})
 	</script>
-	
+	<script>
+		var province_id,city_id,area_id;
+		// 选择地区
+		$(".areabtn").on("click", function(){
+			$("#areaChoose").css({display: "block"});
+		});
+
+		// 获取地址数据
+		function getAddress(parentid, callback){
+			$.ajax({
+				url: '{{:U("Home/Address/getNextArea")}}',
+				type: 'post',
+				data: {parentid: parentid},
+				success: function(res){
+					console.log('res: ',res);
+					if(res.status == 200){
+						callback(res.data);	
+					}else{
+						layHint(res.msg);
+					}
+				},
+				error: function(err){
+					console.log('err: ',err);
+					layHint('系统遇到问题，请稍后再试');
+				}
+			})
+		}
+
+		// 获取省份数据
+		getAddress(0, function(res){
+			if(res.length){
+				var html = '';
+				for(var i=0; i<res.length; i++){
+					html += '<p aid='+ res[i].id +'>'+ res[i].areaname +'</p>';
+				}
+				$(".province").html(html);
+			}
+		});
+
+		var province,city,area;
+		// 选择省份，城市，区县
+		$('.areaDiv').on('click', 'p', function(){
+			var parent = $(this).parent()[0].className;
+			var aid = $(this).attr('aid');	// 省份id
+			var _this = $(this);
+			console.log('parent: ',parent);
+
+			// 根据省份id 获取城市数据
+			getAddress(aid, function(res){
+				if(parent == 'province'){
+					province = _this.text();
+					province_id = _this.attr('aid');
+					console.log('cityres: ',res);
+					// 点击省份
+					console.log('city: ');
+					var cityhtml = '';
+					for(var i=0; i<res.length; i++){
+						cityhtml += '<p aid='+ res[i].id +'>'+ res[i].areaname +'</p>';
+					}
+					$('.city').html(cityhtml);
+					for(var j=0; j<$('.province>p').length; j++){
+						$('.province>p').eq(j).removeClass('addrselect');
+					}
+					_this.attr('class','addrselect');
+
+				}else if(parent == 'city'){
+					city = _this.text();
+					city_id = _this.attr('aid');
+					// 点击城市
+					console.log('areares: ',res);
+					var areahtml = '';
+					for(var i=0; i<res.length; i++){
+						areahtml += '<p aid='+ res[i].id +'>'+ res[i].areaname +'</p>';
+					}
+					$('.area').html(areahtml);
+					for(var j=0; j<$('.city>p').length; j++){
+						$('.city>p').eq(j).removeClass('addrselect');
+					}
+					_this.attr('class','addrselect');
+
+				}else if(parent == 'area'){
+					area = _this.text();
+					area_id = _this.attr('aid');
+					// 点击区县
+					console.log('area: ',_this);
+					for(var j=0; j<$('.area>p').length; j++){
+						$('.area>p').eq(j).removeClass('addrselect');
+					}
+					_this.attr('class','addrselect');
+					areaover();
+				}
+				console.log('province,city,area: ',province,city,area);
+				console.log('province_id,city_id,area_id: ',province_id,city_id,area_id);
+			})
+		})
+
+		// 选择完区县后自动消失
+		function areaover(){
+			if(!province){
+				layuiHint('请选择省份');
+				return
+			}
+			if(!city){
+				layuiHint('请选择城市');
+				return
+			}
+			if(!area){
+				layuiHint('请选择区县');
+				return
+			}
+
+			$('.areabtn').val(province +' '+ city +' '+ area);
+			setTimeout(function(){
+				$('#areaChoose').fadeOut('fast');
+			},300);
+		}
+
+		// 关闭地址选择
+		$('.areaChoosebg').click(function(){
+			$('#areaChoose').fadeOut('slow');
+		})
+	</script>
 </body>
 </html>                                                                                                                                                                                                                                                                      

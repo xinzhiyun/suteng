@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
+	<title>服务记录</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/service_record.css">
+	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
+	<script src='__PUBLIC__/Home/js/public.js'></script>
+</head>
+<body>
+	<div id='service_record'>
+		<div class='search'>
+			<span> 
+				<i class='iconfont icon-sousuo' @click='search(word)'></i>
+				<input type="text" placeholder="请输入工单号" v-model='word' @keyup.enter='search(word)'>
+			</span>
+		</div>
+		<div class='title spli'>
+			<span>工单编号</span>
+			<span>类型</span>
+			<span>状态</span>
+		</div>
+		<ul class='content'>
+			<li class='spli' v-for='li in list' @click='getDetail(li.number)'>
+				<span v-text='li.number'></span>
+				<span v-text='li.type'></span>
+				<span v-text='li.status' :style='li.style'></span>
+			</li>
+			<div class='loadmore' @click='loadmore' :style='{display: loadstyle}'>加载更多</div>
+		</ul>
+		<p class='notice' :style='{display: noticestyle}' v-text='notice'></p>
+	</div>
+	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+	<script> 
+		var service_record = new Vue({
+			el: '#service_record',
+			data () {
+				return {
+					word: '',			// 搜索框value
+					status: '',			// 工单状态
+					list: [],			// 数据列表
+					page: 1,			// 分页
+					loadstyle: 'block',
+					colorList: ['color:#f16e65;', 'color:#2196F3;', 'color:#2196F3;', 'color:#00d4c2;'],
+					typeList: ['安装', '维护', '维修'],
+					statusList: ['待处理', '处理中', '已完成', '待评价', '已完成', '已完成', '已完成', '已完成', '已完成', '工单关闭'],
+					notice: '正在加载...',
+					noticestyle: 'block',
+				}
+			},
+			created (){
+				var vm = this;
+				// 获取列表
+				vm.getList(function(res){
+					console.log('res: ',res);
+					if(res.data.length){
+						for(var i=0; i<res.data.length; i++){
+							vm.list.push({
+								number: res.data[i].number,
+								type: vm.typeList[+res.data[i].type],
+								status: vm.statusList[+res.data[i].result],
+								style: vm.colorList[+res.data[i].result]
+							});
+						}
+						vm.page++;
+						vm.noticestyle = 'none';
+					}else{
+						vm.notice = '查无数据';
+						vm.loadstyle = 'none';
+						layuiHint('查无数据');
+					}
+				});
+			},
+			methods: {
+				// 获取列表数据
+				getList (callback, page) {
+					var vm = this;
+					console.log('page: ', page);
+					var option = {
+						url: getURL('Home', 'vipCenter/get_service_record'),
+						type: 'get',
+						success: function(res){
+							// console.log('res: ',res);
+							if(res.status == 200){
+								callback(res);
+								
+							}else{
+								vm.loadstyle = 'none';
+								layuiHint('查无数据');
+							}
+						},
+						error: function(err){
+							console.log('err: ',err);
+							layuiHint('系统出错，请稍后再试');
+						}
+					}
+					if(page){
+						// 请求分页数据
+						option['data'] = {p: page};
+					}
+					// 获取数据
+					$.ajax(option);
+				},
+				// 跳到详情界面
+				getDetail (workid) {
+					console.log('workid: ',workid);
+					location.href = getURL('Home', 'vipCenter/record_detail') +'?workid='+ workid;
+				},
+				// 加载更多
+				loadmore () {
+					var vm = this;
+					// 请求分页数据
+					this.getList(function(res){
+						console.log('res: ',res);
+
+						if(res.data.length){
+							for(var i=0; i<res.data.length; i++){
+								vm.list.push({
+									number: res.data[i].number,
+									type: vm.typeList[+res.data[i].type],
+									status: vm.statusList[+res.data[i].result],
+									style: vm.colorList[+res.data[i].result]
+								});
+							}
+							vm.page++;
+						}else{
+							vm.loadstyle = 'none';
+							layuiHint('无更多数据');
+
+						}
+					}, vm.page);
+				},
+				// 搜索
+				search (word) {
+					var vm = this;
+					console.log('word: ',word);
+					if(!word){
+						layuiHint('请输入工单号');
+						return
+					}
+					$.ajax({
+						url: getURL('Home', 'vipCenter/get_service_record'),
+						type: 'get',
+						data: {word: word},
+						success: function(res){
+							console.log('res: ',res);
+							if(res.status == 200){
+								vm.list = [];
+								if(res.data.length){
+									for(var i=0; i<res.data.length; i++){
+										vm.list.push({
+											number: res.data[i].number,
+											type: vm.typeList[+res.data[i].type],
+											status: vm.statusList[+res.data[i].result],
+											style: vm.colorList[+res.data[i].result]
+										});
+									}
+								}else{
+									layuiHint('查无数据');
+								}
+							}else{
+								layuiHint('查无数据');
+							}
+						},
+						error: function(err){
+							console.log('err: ',err);
+							layuiHint('系统出错，请稍后再试');
+						}
+					})
+				}
+			}
+		})
+	</script>
+</body>
+</html>

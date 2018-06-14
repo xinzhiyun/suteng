@@ -15,7 +15,7 @@ class ShopOrderDetailModel extends BaseModel
             // ->join('st_goods_courier gc ON gc.gid = od.gid AND gc.cid = od.cid','LEFT')
             // ->join('__PIC__ p ON p.gid=g.id','LEFT')
             // ->join('__ADDRESS__ a ON o.address_id=a.id', 'LEFT')
-            ->field('od.num,od.price,od.express,od.express_name,gd.desc productbrief,od.gname,od.gpic,od.cname,od.cprice,o.status os')
+            ->field('od.num,od.gid,od.price,od.express,od.express_name,gd.desc productbrief,od.gname,od.gpic,od.cname,od.cprice,o.status os')
 
             ->select();
         return $data; 
@@ -30,7 +30,7 @@ class ShopOrderDetailModel extends BaseModel
             ->join('__FILTERS__ f ON f.id = od.gid','LEFT')
             ->join('st_goods_courier gc ON gc.gid = od.gid AND gc.cid = od.cid','LEFT')
             ->join('__ADDRESS__ a ON o.address_id=a.id', 'LEFT')
-            ->field('f.filtername gname,od.num,od.price,od.express,od.express_name,f.introduce productbrief,a.name,a.phone,a.address,f.picpath path,o.status os,gc.cprice')
+            ->field('f.filtername gname,od.num,od.price,od.express,od.express_name,f.introduce productbrief,a.name,a.phone,a.address,f.picpath gpic,o.status os,gc.cprice')
             ->select();
         return $data;
     }

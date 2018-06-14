@@ -14,11 +14,16 @@ class Work
     public static $title = [
         '1'=>  '工单生成',
         '2'=>  '工单信息审核',  //通知是否通过审核
-        '3'=>  '服务站分配',    //服务站的信息
-        '4'=>  '预约派遣',      //安装师傅的信息 预约时间
-        '5'=>  '任务完成',      //安装工人 完成
-        '6'=>  '客户反馈',      //(预留)
-        '7'=>  '工单完成',      // 工单完成(关闭)
+        '3'=>  '工单信息审核失败',  //通知是否通过审核
+
+        '4'=>  '服务站分配',    //服务站的信息
+        '5'=>  '预约派遣',      //安装师傅的信息 预约时间
+        '6'=>  '预约派遣-重新预约',
+
+        '7'=>  '服务完成',      //安装工人 完成
+        '8'=>  '服务站验收',    //服务站验收成功
+
+        '99'=>  '工单完成',      // 工单完成(关闭)
     ];
 
     /** 添加工单记录
@@ -26,7 +31,7 @@ class Work
      * @param $mode int 信息类型
      * @param array $info array 信息
      */
-    public static function add($wid, $mode, $info=[])
+    public static function add($wid, $mode)
     {
         $work =  M('work')->where('id='.$wid)->find();
         if(empty($work)) {
@@ -59,10 +64,11 @@ class Work
                     $service_info =  M('service')->where('id='.$work['sid'])->find();
                 }
 
+
                 $_html  = '站点名称:'.$service_info['company'].'<br>';
-                $_html .= '地址:'.'<br>';
+                $_html .= '地址:'.$service_info['addressinfo'].'<br>';
 //                $_html .= '联系人:'.'<br>';
-                $_html .= '联系电话:'.$service_info['telephone'].'<br>';
+                $_html .= '客服电话:'.$service_info['telephone'].'<br>';
                 $_html .= '服务站点正在为您优先安排安装师傅上门安装预计需要1-3个工作日.';
                 $data['content'] = $_html;
                 break;
@@ -80,7 +86,21 @@ class Work
                 $data['content'] = '任务已完成,请点击下面 评价 对本次服务进行评价.';
                 break;
         }
-        M('work_note')->add($data);
+        return M('work_note')->add($data);
     }
+
+    // 自动评价功能 默认4星
+    public static function evaluAction($number)
+    {
+        if(empty($number)){
+            return false;
+        }
+        $map['number'] = $number;
+        $work = M('work')->where($map)->find();   // 服务人员
+        if(empty($work)){ return false; }
+
+
+    }
+
 
 }

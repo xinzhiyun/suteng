@@ -11,7 +11,7 @@ img {
 .backColor {
     width: 100vw;
     height: 40vh;
-    background: url("../../images/serviceIndex.png") no-repeat;
+    background: url("../../../images/serviceIndex.png") no-repeat;
     background-size: 100%;
 }
 .main {
@@ -50,10 +50,13 @@ img {
     margin: 1rem auto 0;
     text-align:center;
 }
+.services li:active {
+    background: rgba(220,220,220,.4);
+}
 .myDuty {
     border-radius: 5px;
     background-color: white;
-    box-shadow: 0 1px 10px 0px rgba(72,72,72, .35);
+    box-shadow: 0 1px 10px 0px rgba(72,72,72, .1);
 }
 .myDuty > p {
     height: 1.7rem;

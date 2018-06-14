@@ -48,7 +48,7 @@ class DeviceController extends CommonController
             $did = $res['id'];
             $type = $res['type_id'];
             $res_find = $user_device->where('did='.$did)->find();
-            if($res_find != null) E('设备已绑定',604);
+            if(!empty($res_find)) E('设备已绑定',604);
             $data['did']        = $did;
             $data['uid']        = $uid;
             $data['status']     = 1;
@@ -58,6 +58,23 @@ class DeviceController extends CommonController
             $data['phone'] = I('phone');
             $data['addtime']    = time();
             $data['updatetime'] = time();
+            $data['address'] = I('province').I('city').I('area').I('address');
+
+            $address=[
+                "uid"   => $uid,
+                "name"  =>$data['name'],
+                "phone" => $data['phone'],
+                "province"  => I('province'),
+                "city"      => I('city'),
+                "area"      => I('area'),
+                //"area"      => I('name'),
+                "address"   => I('address'),
+                "province_id"   => I('province_id'),
+                "city_id"       => I('city_id'),
+                "area_id"       => I('area_id'),
+            ];
+            $data['addressinfo'] = json_encode($address);
+
             $user_device->where('uid='.$uid)->save(['status'=>0]);
             $res_save = $user_device->add($data);
 

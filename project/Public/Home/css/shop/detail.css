@@ -13,7 +13,7 @@ body{
 /*商品图片*/
 .detailTop{
 	border-bottom:20px solid #f3f3f3;
-	padding-bottom: 4rem;
+	margin-bottom: 1rem;
 }
 .detailpic{
 	-webkit-box-sizing: border-box;
@@ -134,8 +134,8 @@ body{
 }
 /*评论内容*/
 .detailContain{
-	height: 70vh;
-    min-width: 300px;
+	/*height: 66vh;
+    min-width: 300px;*/
     padding-bottom: 20vh;
     overflow: hidden;
     -webkit-transform: translate3d(0,0,0);
@@ -483,11 +483,8 @@ ul, li {
     border-radius: 0.2rem;
 }/*第一类item的底部评论设置结束*/
 
-
-
 .itemgoodsBott .pingfen {
-	width: 28%;
-	display: inline-block;
+	display: block;
 	position: relative;
 	font-size: 20px;
 }

@@ -26,7 +26,7 @@
                         <select name="key" class="form-control" name="account">
                             <option <?php echo ($where['key']=="order_id")?'selected':''; ?> value="order_id">订单ID</option>
                             <option <?php echo ($where['key']=="name")?'selected':''; ?> value="name">收货人姓名</option>
-                            <option <?php echo ($where['key']=="phone")?'selected':''; ?> value="phone">电话</option>
+                            <option <?php echo ($where['key']=="a.phone")?'selected':''; ?> value="a.phone">电话</option>
                             <option <?php echo ($where['key']=="a.address")?'selected':''; ?> value="a.address">收货地址</option>
                         </select>
                         <input type="hidden" name="p" value="1">
@@ -39,11 +39,14 @@
                             <option value="3">已收货</option>
                             <option value="4">退货处理中</option>
                             <option value="5">已退货</option>
-                            <option value="6">申诉中</option>
+                            <option value="6">未发货申诉中</option>
+                            <option value="13">已发货申诉中</option>
                             <option value="7">订单完成</option>
                             <option value="8">未支付</option>
                             <option value="9">已支付</option>
-                            <option value="10">部分商品退货中</option>
+                            <option value="10">未发货部分商品退货中(仅退款)</option>
+                            <option value="11">发货后部分商品退货中(退货退款)</option>
+                            <option value="12">发货后部分商品退货中(仅退款)</option>
                         </select>
                         <span class="input-group-btn" style="display: inline-block;">
                                 <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
@@ -151,11 +154,14 @@
                                                 <case value="3"><span style="color:darkpink;">已收货</span></case>
                                                 <case value="4"><span style="color:lightblue;">退货处理中</span></case>
                                                 <case value="5"><span style="color:">已退货</span></case>
-                                                <case value="6"><span style="color:">申诉中</span></case>
+                                                <case value="6"><span style="color:">未发货申诉中</span></case>
+                                                <case value="13"><span style="color:">已发货申诉中</span></case>
                                                 <case value="7"><span style="color:">订单完成</span></case>
                                                 <case value="8"><span style="color:red;">未支付</span></case>
                                                 <case value="9"><span style="color:green;">已支付</span></case>
-                                                <case value="10"><span style="color:blue;">部分商品退货中</span></case>
+                                                <case value="10"><span style="color:blue;">未发货部分商品退货中(仅退款)</span></case>
+                                                <case value="11"><span style="color:blue;">发货后部分商品退货中(退货退款)</span></case>
+                                                <case value="12"><span style="color:blue;">发货后部分商品退货中(仅退款)</span></case>
                                             </switch>
                                         </td>
                                         <td>
@@ -386,8 +392,8 @@
     </div>
 </block>
 <block name="myjs">
-    <script src="__PUBLIC__/Home/js/public.js"></script>
     <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script src="__PUBLIC__/Home/js/public.js"></script>
     <script>
     // $('#affirm').modal('show'); 
     // $('#st-edit').modal('show');
@@ -427,6 +433,18 @@
                 case 1:                   
                     // courier.prepend('');
                     $.get("{{:U('admin/orders/getCourierByOrder')}}",{ order_id : orderid},function(res){
+
+                        if (res.code == 201) {
+                            // var html = '<tr><th>快递名称</th><th>快递单号</th></tr>';
+                            var html = '';
+                           
+
+                            html = res.data;
+                            courier.css({border:'none'});
+                            courier.find('tbody').eq(0).html('<div style="text-align:center; color:red; font-size:25px;">'+html+'</div>');
+                            courier.find('tbody').eq(1).hide();
+                        }
+
 
                         if(res.code == 200){
                             console.log(res);

@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/index.css">
 	<title>会员中心</title>
 </head>
-<body>
+<body ontouchstart='console.log()'>
 	<header id="header">
 		<div id="hLeft">
 			<img src="{{$user['head']}}" alt="">
@@ -122,16 +122,16 @@
 					<i class="iconfont icon-right"></i>
 				</a>
 			</div>
-			<div id="yinhanka">
+			<!-- <div id="yinhanka">
 				<a href="{{:U('Home/BankCard/index')}}">
 					<i class="iconfont icon-yinhangqia"></i>
 					<p>银行卡</p>
 					<i class="iconfont icon-right"></i>
 				</a>
-			</div>
+			</div> -->
 			<div id="comment">
 				<a href="{{:U('Home/VipCenter/mycomment')}}">
-					<i class="iconfont  icon-pinglun"></i>
+					<i class="iconfont icon-pinglun"></i>
 					<p>我的评论</p>
 					<i class="iconfont icon-right"></i>
 				</a>
@@ -148,6 +148,20 @@
 					<i class="iconfont icon-huiyuan"></i>
 					<p>会员升级</p>
 					<i class="iconfont icon-right"></i>
+				</a>
+			</div>
+			<div id="member">
+				<a href="{{:U('Home/vipCenter/service_record')}}">
+					<i class="iconfont icon-pinglun" style='color: #00BCD4;'></i>
+					<p>服务记录</p>
+					<i class="iconfont icon-right"></i>
+				</a>
+			</div>
+			<div id="member">
+				<a href="javascript:;">
+					<i class="" style='color: #00BCD4;'></i>
+					<p></p>
+					<i class=""></i>
 				</a>
 			</div>
 		</div>
@@ -244,20 +258,43 @@
 			点击右上角二维码
 		 */
 		$(".icon-erweima").on("click", function(){
-			$("#myCode").css({display: 'flex'})
+			location.href += '#myCode';
+			
 		})
+
+		hashchangeFn(function(hash){
+			if(hash.indexOf('#myCode') < 0){
+				// 隐藏
+				$("#myCode").css({display: 'none'})
+			}else{
+				// 显示
+				$("#myCode").css({display: 'flex'})
+			}
+		})
+
+		// 监听hashchange事件
+		function hashchangeFn(callback) {
+			var haschangeflag = false;
+			window.addEventListener('hashchange', function(){
+				haschangeflag = true;
+				callback(location.hash);
+			}, false);
+			// console.log('haschangeflag: ',haschangeflag);
+			// console.log('hash: ',location.hash);
+			// 刷新保持
+			if(!haschangeflag){
+				callback(location.hash);
+			}
+		}
 		// 关闭二维码界面
 		$(".closeQR").click(function(){
-			$("#myCode").css({display: 'none'})
-		})
-		$("#myCode").click(function(){
-			$("#myCode").css({display: 'none'})
+			$("#myCode").css({display: 'none'});
+			history.go(-1);
 		})
 		var canvas = document.getElementById("canvas");
 
 		//二维码的保存时消失
 		$('#saveCode').click(function(){
-			$('#myCode').css('display','none');
 			// var img;
 			// var reader = new FileReader();
 			// reader.onload = function(e){

@@ -29,10 +29,9 @@ $(function(){
 	var eachNume = [];
 	var val = [];
 	var eachVal = [];
-	var _url = getURL('Home', 'Shop/goods_detail');
 	// ajax发送商品id查询商品详情
 	$.ajax({
-		url: _url,
+		url: getURL('Home', 'Shop/goods_detail'),
 		type: 'get',
 		async: false,
 		data: {'id': goods_gid},
@@ -183,7 +182,7 @@ $(function(){
 		    history: true,
 		    index: 0 // start at first slide
 		};
-		$('#wrapul').on('click', 'li', function(){
+		$('#wrapul').on('touchend', 'li', function(){
 			var index = $(this).attr('index');
 			options.index = +index;
 			// console.log('options: ',options);
@@ -225,7 +224,7 @@ $(function(){
 							'</span><span>&nbsp;'+ nickname +'</span><span>'+ timestampToTime(res.data[i].addtime) +'</span></p>'+
 							'<p class="cfix xingx">'+
 								'<i index="1" class="iconfont pingfen fleft"><span style="width:'+ statusList[res.data[i].grade-0-1] +'%"></span></i>'+
-								'<span class="fleft">&emsp;'+ statusText[res.data[i].grade-0-1] + '<span>（'+ statusDesc[res.data[i].grade-0-1] +'）</span></span>'+
+								'<span class="fleft">'+ statusText[res.data[i].grade-0-1] + '<span>（'+ statusDesc[res.data[i].grade-0-1] +'）</span></span>'+
 							'</p>'+
 							'<p class="ccontent">'+ res.data[i].content +'</p>'+
 							'<div class="commpic">'+
@@ -276,7 +275,7 @@ $(function(){
 					// console.log(picArr[i].picHTML)		//评价的图片
 				}
 			}else{
-				$(".detailItemall").html("<div style='width:100%;height:50vh;display:flex;justify-content:center;align-items:center;'>您还没有已评论的记录</div>");
+				$(".detailItemall").html("<div style='width:100%;display:flex;justify-content:center;align-items:center;'>暂无评论</div>");
 			}
 			// 图片浏览
 			setTimeout(function(){
@@ -313,7 +312,7 @@ $(function(){
 		    history: true,
 		    index: 0 // start at first slide
 		};
-		$('body').on('click', '.compic', function(){
+		$('body').on('touchend', '.compic', function(){
 			var index = $(this).attr('index');
 			options.index = +index-1;
 			// console.log('options: ',options);
@@ -367,8 +366,9 @@ $(function(){
 			$(this).val(1);
 		}
 	})
+	var detailContainscTop = $('.detailtitle').height()+$('.detailtitle').offset().top;
 	// 点击‘更多’展开评论或者收起
-	$('.pinglunshow>p').click(function(){
+	$('.pinglunshow>p').on('click', function(){
 		// console.dir($(this).find("span").attr('class'));
 		var _class=$(this).find("span").attr('class');
 
@@ -380,6 +380,8 @@ $(function(){
 
 			$('.pinglunshow b').text('收起评论');
 			$('.slide').show();
+			$('html').scrollTop(detailContainscTop);
+			$('body').scrollTop(detailContainscTop);
 			$('.detailItemall').css({height: '70vh',overflowY: 'scroll'});
 			setTimeout(function(){
 				$('.slide').hide();
@@ -403,7 +405,7 @@ $(function(){
 	/*
 		点击‘加入购物车’
 	 */
-	$("#add2ShopCart").click(function(){
+	$("#add2ShopCart").on('touchend', function(){
 		
 		var num = $(".number").val();	//选择的数量
 		var addtime = new Date().getTime();	//添加进购物车的时间
@@ -436,7 +438,7 @@ $(function(){
 	/*
 		点击‘立即购买’
 	 */
-	$("#buyNow").click(function(){
+	$("#buyNow").on('touchend', function(){
 		//清除其他页面的sessionStorage
 		sessionStorage.setItem("lvxinData", '');
 		sessionStorage.setItem("shopCar_data", '');

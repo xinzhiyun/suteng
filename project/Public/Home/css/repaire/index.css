@@ -1,304 +1,406 @@
 
-  body{
-    min-height: 700px;
-    font-size: 0.7rem;
-    color:#373737;
-    overflow-x: hidden;
-  }
-  ._repair{
-    width: 100%;
-  }
-  .repairTop{
-    width: 90%;
-    padding:0.533333rem 5% 0.933333rem 5%;
-    border-bottom: 0.4rem solid #F3F3F3;
-  }
-  .repairTop ul li{
-    display: block;
-    width: 80%;
-    height: 1.6rem;
-    line-height: 1.6rem;
-    /*background: red;*/
-  }
-  .repairTop ul li span{
-    display: inline-block;
-    width: 30%;
-    font-size: 0.68rem;
-    float: left;
-    white-space: pre;
-  }
-  /*设备id*/
-  .deviceid {
-    width: 100%;
-    height: 1.3rem;
-    display: block;
-    border-radius: 0.133333rem;
-    border: 1px solid #d4d4d4;
-  }
-  .repairTop ul li span:nth-child(4){
-    margin-top: 0.1rem;
-  }
-  .repairTop ul li p {
-    width: 65%;
-    display: inline-block;
-    font-size: 0.7rem;
-    border-radius: 4px;
-    border: 1px solid #d4d4d4;
-  }
-  .repairTop ul li:nth-of-type(1) p {
-    border: none;
-  }
-  .repairTop .device_code {
-    width: 100%;
-    text-indent: 6px;
-  }
-  .repairTop ul li p input,.repairTop ul li p select{
-    float: right;
-    height: 1.3rem;
-    width: 100%;
-    border: none;
-    border-radius: 4px;
-    text-align: left;
-    background: #fff;
-    text-indent: 6px;
-  }
-  .device_code>option{
-    padding-left: 2%;
-  }
-  .repairTop ul li p select{
-    color: #666;
-  }
- 
-  .repairMidd{
-    padding:0.533333rem 5% 0.933333rem 5%;
-    border-bottom: 0.4rem solid #F3F3F3;
+body{
+  font-size: 0.7rem;
+  color:#373737;
+  overflow-x: hidden;
+  background: #EBEBEB;
+  min-height: 100vh;
+}
+._repair{
+  width: 100%;
+  min-height: 500px;
+  position: relative;
+}
+.repairTop{
+  padding-top:.5rem;
+  
+} 
+/*设备id*/
+.deviceid {
+  width: 100%;
+  height: 1.3rem;
+  display: block;
+  border-radius: 0.133333rem;
+  border: 1px solid #d4d4d4;
+}
+.repairFoot {
+  margin-top: .5rem;
+}
+.repairTop > ul > li:last-child {
+  border-bottom: 1px solid #F0F0F0;
+}
+.device_code>option{
+  padding-left: 2%;
+}
+.repairTop ul li p select{
+  color: #666;
+}
+.repairMidd{
+  padding:0.533333rem 5% 0.933333rem 5%;
+  background-color: white;
+}
+.repairMidd h3 {
+  line-height: 0.8rem;
+  margin-bottom: 0.266667rem;
+}
+.repairMidd textarea {
+  margin-top: 0.133333rem;
+  width: calc(100% - 20px);
+  display: inline-block;
+  resize: none;
+  border: none;
+  font-size: .6rem;
+}
+.repairMidd>p {
+  margin:0.933333rem 0 0.4rem;
+  color: #767676;
+  font-size: 0.72rem;
+}
+.repairPic {
+  position: relative;
+  height:5rem;
+}
+.repairPic i{
+  font-size: 3.0rem;
+  color: #DCF8FF;
+  margin-left: -0.2rem;
+  border: 1px dashed #A3E4F4;
+}
+.repairPic>span:nth-of-type(1){
+  font-size: 0.68rem;
+  position: absolute;
+  left: 1.2rem;
+  bottom: 0.2rem;
+  color: #FFF;
+}
+.repairPic>span:nth-of-type(2){
+  width: 20%;
+  position: relative;
+}
+.repairPic>span:nth-of-type(2)>img {
+  width: 100%;
+  display: block;
+}
+.repairPic > .picnum {
+  position: absolute !important;
+  font-size: .3rem;
+  bottom: .5rem;
+  left: -.3rem;
+  width: 40% !important;
+}
+.hide {
+  width: 4.5rem;
+  height: 4.5rem;
+  display: none;
+  position: absolute;
+  top: .4rem;
+  z-index: 999;
+}
+.delPic {
+  width: 5vmin;
+  height: 5vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: -2vmin;
+  margin-right: -2vmin;
+  border-radius: 5vmin;
+  color: #fff;
+  background: red;
+}
+.repairPic>input {
+  opacity: 0;
+  display: block;
+  width: 3.2rem;
+  height: 3.2rem;
+  position: absolute;
+  top: 0rem;
+  left: -0.3rem;
+  z-index: 99;
+  font-size: 0.6rem;
+}
+/* 用户信息 */
+.repairCom{
+  background-color: white;
+  font-size: 0.7rem;
+}
+.repairCom li{
+  border-bottom:1px solid #E0E0E0;
+  padding: 0 1.5rem 0 .8rem;
+}
+.repairCom li p {
+  width: 100%;
+  padding: .5rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.repairCom li p > span:nth-child(1) {
+  white-space: nowrap;
+}
+.repairCom li input{
+  border:none;
+  text-align: right;
+}
+.repaireSet {
+  position:relative;
+}
+.repaireSet > i {
+  position: absolute;
+  right: -1rem; 
+  top: .6rem;;
+}
+.repairCom li:last-child {
+  border-bottom: none;
+}
+.repairCom li textarea{
+  font-size: 0.453333rem;
+  width: 100%;
+  resize: none;
+  border: none;
+  text-align: left;
+  padding-top: .3rem;
+  font-size: 0.6rem;
+}
+.repairBtn{
+  margin: 2.0rem auto 1.0rem;
+  width: 86%;
+}
+.repairBtn input{
+  width: 86vw;
+  border:none;
+  background: #2EB6AA;
+  padding: 0.133333rem;
+  border-radius: 0.2rem;
+  color: #fff;
+  font-size: 0.82rem;
+  height: 1.8rem;
+  letter-spacing: 0.1rem;
+}
+.repairTop ul li p input.devicetype{
+  width: 100%;
+  text-align: left;
+}
+.layui-laydate, .layui-laydate-main{
+  width: 98vw !important;
+  left: 50%;
+}
+.laydate-footer-btns {
+  width: 50%;
+  display: flex;
+  position: relative !important;
+  right: 0 !important;
+  top: 0 !important;
+  align-items: center;
+}
+.laydate-btns-clear,
+.laydate-btns-now,
+.laydate-btns-confirm {
+  width: 33.33%;
+  display: inline-block;
+  padding: 10% !important;
+}
+.layui-laydate-content table {
+  width: 90%;
+  position: relative;
+  left: 50%;
+  margin-left: -45%;
+}
+.layui-laydate-footer {
+  display: flex !important;
+  justify-content: flex-end;
+  height: auto;
+}
+.laydate-footer-btns span {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px !important;
+}
+/*显示上传的图片*/
+#picShow { 
+  position: absolute;
+  width: 75%;
+  height: 4rem;
+  bottom: .6rem;
+  right: 0;
+  top:0rem;
+  /*display: block;*/
+}
+#picShow>span {
+  width: 3rem;
+  height: 3rem;
+  display: inline-block;
+  position: relative;
+  margin: 0 3px;
+}
+#picShow>span>img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.delPic {
+  position: absolute;
+  width: .8rem;
+  height: .8rem;
+  top: -1px;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: red;
+}
+.serverZhe, .deviceZhe {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  display: none;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  background: rgba(30,30,30,.2);
+}
+.serverZhe > ul, .deviceZhe > ul {
+  width: 70vw;
+  min-height: 20vh;
+  max-height: 70vh;
+  border-radius: 5px;
+  margin: 5rem auto 0;
+  padding: .2rem 1rem;
+  background-color: white;
+  overflow-y: scroll;
+}
+.serverZhe > ul > li, .deviceZhe > ul > li {
+  padding: .5rem 0;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #F2F2F2;
+}
+.serverZhe > ul > li:first-child, .deviceZhe > ul > li:first-child {
+  border-top: none;
+}
+.serverZhe > ul > p, .deviceZhe > ul > p {
+  width: 3rem;
+  height: 1.5rem;
+  border-radius: 5px;
+  line-height: 1.5rem;
+  text-align: center;
+  background: #00BCD4;
+  color: white;
+  float: right;
+}
+.serverZhe > ul > li > i, .deviceZhe > ul > li > i {
+  font-style: normal;
+  font-size: 1.2rem;
+  margin-right: .5rem;
+  color: #00BCD4;
+}
 
-  }
-  .repairMidd h3 {
-    font-size: 0.8rem;
-    line-height: 0.8rem;
-    margin-bottom: 0.266667rem;
-  }
-  .repairMidd h3>span {
-    color: red;
-  }
-  .repairMidd textarea {
-    margin-top: 0.133333rem;
-    height:5.333333rem;
-    width: calc(100% - 20px);
-    padding:0 10px;
-    display: inline-block;
-    resize: none;
-    overflow: hidden;
-    border: 1px dashed #CCC;
-    font-size: .6rem;
-  }
-  .repairMidd>p {
-    margin:0.933333rem 0 0.4rem;
-    color: #767676;
-    font-size: 0.72rem;
-  }
-  .repairPic {
-    position: relative;
-    height:5rem;
-  }
-  .repairPic i{
-    font-size: 5.0rem;
-    color: #68B1F1;
-    margin-left: -0.2rem;
-  }
-  .repairPic>span:nth-of-type(1){
-    font-size: 0.68rem;
-      position: absolute;
-      left: 1.2rem;
-      bottom: 0.2rem;
-      color: #FFF;
-  }
-  .repairPic>span:nth-of-type(2){
-      width: 20%;
-      position: relative;
-  }
-  .repairPic>span:nth-of-type(2)>img {
-    width: 100%;
-    display: block;
-  }
+/*地区选择*/
+#areaChoose {
+	width: 100vw;
+	height: 100vh;
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+  -ms-flex-flow: column;
+  flex-flow: column;
+	padding: 0;
+	border-bottom: none;
+	z-index: 1000;
+}
+.areaChoosebg {
+	width: 100vw;
+	height: 40vh;
+	background: rgba(0,0,0, .4);
+}
+.areaDiv {
+	height: 60vh;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+	-webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+	flex-flow: column;
+	background: #fff;
+}
 
-  .hide {
-    width: 4.5rem;
-    height: 4.5rem;
-    display: none;
-    position: absolute;
-    top: .4rem;
-    z-index: 999;
-  }
-  .delPic {
-    width: 5vmin;
-    height: 5vmin;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin-top: -2vmin;
-    margin-right: -2vmin;
-    border-radius: 5vmin;
-    color: #fff;
-    background: red;
-  }
-  .repairPic>input {
-      opacity: 0;
-      display: block;
-      width: 4.2rem;
-      height: 4.2rem;
-      position: absolute;
-      top: 0.6rem;
-      left: 0.0rem;
-      z-index: 99;
-      font-size: 0.6rem;
-  }
-  .repairFoot{
-    padding:0.533333rem 5% 0.933333rem 5%;
-  }
-  .repairFoot h3{
-    font-size: 0.8rem;
-    line-height: 0.8rem;
-    margin-bottom: 0.266667rem;
-  }
-  .repairFoot li{
-    border:1px solid #ccc;
-    border-radius: 0.2rem;
-    margin-top: 0.533333rem;
-  }
-  .repairFoot li label{
-    height: 0.933333rem;
-    line-height: 0.933333rem;
-  }
-
-  .repairFoot li label span{
-    display: inline-block;
-    width: 24%;
-    text-align: right;
-    font-size: 0.7rem;
-    padding:0.15rem;
-  }
-  .repairFoot li label input{
-    width: 70%;
-    height: 1.8rem;
-    line-height: 0.933333rem;
-    border:none;
-    font-size: 0.7rem;
-  }
-  .repairFoot li p{
-    width: 27%;
-    text-align: right;
-    font-size: 0.68rem;
-    letter-spacing: 0.053333rem;
-  }
-  .repairFoot li textarea{
-    font-size: 0.453333rem;
-    height:4.0rem;
-    width: 100%;
-    line-height: 0.8rem;
-    resize: none;
-    border: none;
-    margin-top: 0;
-    padding: 0.3rem;
-    font-size: 0.6rem;
-    box-sizing: border-box;
-  }
-  .repairBtn{
-    margin: 2.0rem auto 1.0rem;
-    width: 86%;
-  }
-  .repairBtn input{
-    width: 86vw;
-    border:none;
-    background: #2EB6AA;
-    padding: 0.133333rem;
-    border-radius: 0.2rem;
-    color: #fff;
-    font-size: 0.82rem;
-    height: 1.8rem;
-    letter-spacing: 0.1rem;
-  }
-  .repairTop ul li p input.devicetype{
-    width: 100%;
-    /*padding-left: 10px;*/
-    text-align: left;
-  }
-  .layui-laydate, .layui-laydate-main{
-    width: 98vw !important;
-    left: 50%;
-    /*transform: translateX(-49vw);*/
-  }
-  .laydate-footer-btns {
-    width: 50%;
-    display: flex;
-    position: relative !important;
-    right: 0 !important;
-    top: 0 !important;
-    align-items: center;
-  }
-  .laydate-btns-clear,
-  .laydate-btns-now,
-  .laydate-btns-confirm {
-    width: 33.33%;
-    display: inline-block;
-    padding: 10% !important;
-  }
-  .layui-laydate-content table {
-    width: 90%;
-    position: relative;
-    left: 50%;
-    margin-left: -45%;
-  }
-  .layui-laydate-footer {
-    display: flex !important;
-    justify-content: flex-end;
-    height: auto;
-  }
-  .laydate-footer-btns span {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    margin: 0 10px !important;
-  }
-
-  /*显示上传的图片*/
-  #picShow { 
-    position: absolute;
-    width: 66%;
-    height: 4rem;
-    bottom: .6rem;
-    right: 0;
-    top:0.7rem;
-    /*display: block;*/
-  }
-  #picShow>span {
-    width: 30%;
-    height: 100%;
-    display: inline-block;
-    position: relative;
-    margin: 0 3px;
-  }
-  #picShow>span>img {
-    width: 100%;
-    height: auto;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  .delPic {
-    position: absolute;
-    width: .8rem;
-    height: .8rem;
-    top: -1px;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    border-radius: 50%;
-    background: red;
-  }
+/*弹出地区选择底部的确认按钮*/
+#confirmAreaChoose {
+	height: 14vh;
+	width: 100%;
+	background: #fff;
+}
+#confirmAreaChoose>div {
+	width: 80%;
+	height: 6vh;
+	line-height: 6vh;
+	position: relative;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	text-align: center;
+	color: #fff;
+	border-radius: 4px;
+	background: #2EB6AA;
+}
+.areaDiv>div {
+	width: 100%;
+	height: 12vmin;
+	line-height: 12vmin;
+	border-bottom: 1px solid #eee;
+}
+.areaDiv>div::after {
+	content: '';
+	visibility: hidden;
+	zoom: 1;
+	clear: both;
+}
+.areaDiv>div>span {
+	width: 33%;
+	float: left;
+	text-align: center;
+}
+.areaDiv>ul {
+	width: 80%;
+	height: 100%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	height: 100%;
+	overflow-y: hidden;
+}
+.areaDiv>ul>li {
+	flex: 1;
+	width: 80%;
+	height: 100%;
+	padding: 1% 2%;
+	margin: 10px auto;
+	border-radius: 4px;
+	background: #fff;
+	overflow-y: scroll;
+}
+.addrselect {
+	color: #2eb6aa;
+	font-weight: 600;
+}
+.areaDiv>ul p {
+	margin: 20px 0;
+}

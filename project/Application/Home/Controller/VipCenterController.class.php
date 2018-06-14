@@ -1,6 +1,8 @@
 <?php
 namespace Home\Controller;
 
+use Common\Tool\Work;
+
 class VipCenterController extends CommonController
 {
     public function _initialize()
@@ -167,6 +169,7 @@ class VipCenterController extends CommonController
         if(!empty($_GET['machineNo'])){
             $device = M('devices')->where('device_code='.$_GET['machineNo'])->find();
             if(empty($device))$this->error('改设备不存在,请联系经销商.');
+
         }
         $map['uid'] = session('user.id');
         $map['status'] = 1;
@@ -457,4 +460,114 @@ class VipCenterController extends CommonController
         $this->ajaxReturn($message);
 
     }
+    
+    
+    //会员 服务记录
+    public function service_record()
+    {
+        $this->display();
+    }
+    public function get_service_record()
+    {
+        $p = I('p',1);
+        $_GET['p']=$p;
+
+        $map['uid'] =session('user.id');
+        if(!empty($_GET['word'])){
+            $map['number'] = ['like','%'.$_GET['word'].'%'];
+        }
+
+        $total =  M('work')->where($map)->count();
+        if(empty($total)){
+            $this->toJson(['data'=>[]],'获取成功!');
+        }
+        $page  = new \Think\Page($total,10);
+        $work_data =  M('work')->where($map)
+            ->limit($page->firstRow.','.$page->listRows)
+            ->select();
+        
+        $this->toJson(['data'=>$work_data],'获取成功!');
+    }
+
+    //会员 服务记录
+    public function record_detail()
+    {
+        $this->display();
+    }
+
+    // 工单信息(时间线)
+    public function showWorkTimeInfo()
+    {
+        try {
+            $number = I('number');
+            if( empty($number ) ) {
+                E('请确认工单号',400022);
+            }
+            $info = M('work')->where('number='.$number)->find();
+            if( empty($info ) ) {
+                E('工单信息不存在',400022);
+            }
+            $list = M('work_note')->where('wid='.$info['id'])->order('id desc')->select();
+            $evaluaction = 0;
+            if($info['result'] ==3){
+                $evaluaction = 1;
+            }
+            $res = [
+                'data'=>$list,
+                'evaluaction'=> $evaluaction
+            ];
+            $this->toJson($res,'获取成功!');
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+    
+    // 评价
+    public function evaluAction()
+    {
+        try {
+            $post = I('post.');
+            if(empty($post['workid'])){
+                E('工单号错误!',40001);
+            }
+
+            if(empty($post['star'])){
+                E('请选择评级星级!',40002);
+            }
+
+            $map['result'] = 3;
+            $map['number'] = $post['workid'];
+            $work = M('work')->where($map)->find();   // 服务人员
+            if(empty($work)){
+                E('工单信息错误,请刷新重试!',400001);
+            }
+
+            if(!empty($post['evalid'])){
+                $evalids = implode(',',$post['evalid']);
+                $evalu = M('service_evaluate')->where(array('in',$evalids))->select();
+                $saveData['evaluate'] = json_encode($evalu);
+            }
+
+            $saveData['star'] = $post['star'];
+            if(!empty($post['text'])){
+                $saveData['evaluateinfo'] = $post['text'];
+            }
+            $saveData['result'] = 4;
+            $res = M('work')->where($map)->save($saveData);
+            Work::evaluAction($post['workid']);
+
+            if ($res){
+                E('提交成功',200);
+            }else{
+                E('提交失败',202);
+            }
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+
+
+
 }

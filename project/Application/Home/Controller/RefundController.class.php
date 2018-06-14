@@ -11,6 +11,8 @@ class RefundController extends CommonController
     public function showGoods()
     {
         if (IS_AJAX) {
+
+
            $data = D('Refund')->relation(['goods'])->where(['uid'=>$_SESSION['user']['id']])->select();
 
             foreach ($data as $key => $value) {
@@ -34,6 +36,7 @@ class RefundController extends CommonController
                     }
                } 
             }
+            // dump($data);die;
             if ($data) {
                return $this->ajaxReturn(['code'=>200,'data'=>$data]);
             }else{
@@ -47,9 +50,12 @@ class RefundController extends CommonController
      * @return [type] [description]
      */
     public function create()
-    {
+    {   
+
+
         $post = I('post.');
         $order_id = $post['order_id'];
+
         // 商品
         $data['serial_num'] = $this->getNumber();
         $data['uid']        = $_SESSION['user']['id'];
@@ -57,7 +63,8 @@ class RefundController extends CommonController
         $data['method']     = $post['method'];
         $data['reason']     = $post['reason'];
         $data['description'] = $post['description'];
-        $data['create_time'] = time();      
+        $data['create_time'] = time();
+
         foreach ($post['gid'] as $key => $value) {
             $data['goods'][$key] = ['oid'=>$post['order_id'],'gid'=>$value,'amount'=>$post['price']];
             $res = D('RefundGoods')->where(['oid'=>$order_id,'gid'=>$value])->select();
@@ -65,65 +72,115 @@ class RefundController extends CommonController
                 return $this->ajaxReturn(['code'=>601,'msg'=>'商品已经退过款了']);
             }
         }
-        
-        
 
-        try {
-            $refund = D('Refund');
-            $savePath = 'Uploads/pic/';
-            if($data['method'] == 2){            
-                // 二进制文件上传简单处理
-                if (!empty($_FILES["UploadForm"])) {
-                    foreach ($_FILES["UploadForm"]["tmp_name"] as $key => $value) {
-                        $image = $_FILES["UploadForm"]["tmp_name"][$key];
-                        $imageSize = $_FILES["UploadForm"]["size"][$key];
-                        $info[] = $this->upload($image,$imageSize);                        
+        $refund = D('Refund');
+        //订单状态
+        $ostatus = M('shop_order')->where("order_id='{$order_id}'")->find()['status'];
+
+        try {        
+            if ($ostatus=='11' or $ostatus=='12' or $ostatus=='2') {
+                //待收货中 申请退款或退货
+                // dump($_FILES);die;
+                $savePath = 'Uploads/pic/';
+                if($data['method'] == 2){            
+                    // 二进制文件上传简单处理
+                    if (!empty($_FILES["UploadForm"])) {
+                        foreach ($_FILES["UploadForm"]["tmp_name"] as $key => $value) {
+                            $image = $_FILES["UploadForm"]["tmp_name"][$key];
+                            $imageSize = $_FILES["UploadForm"]["size"][$key];
+                            $info[] = $this->upload($image,$imageSize);                        
+                        }
+                    }else{
+                        E('没有文件上传', 602);
+                    }   
+                    
+                    if(!$info) {// 上传错误提示错误信息
+                        E('上传错误',606);
                     }
-                }else{
-                    E('没有文件上传', 602);
-                }   
-                
-                if(!$info) {// 上传错误提示错误信息
-                    E('上传错误',606);
-                }
-                if(!(count($info) <= 3)){
-                    E('只能添加三张图片',604);
-                }
-                 foreach ($info as $k => $val) {
-                    $path .= $val.'|';
-                }
-                $data['pic'] = $path;
-            }
-            
-            $refund->startTrans();
-            // print_r($data);die;                    
-            $result = D('Refund')->relation(true)->add($data);
+                    if(!(count($info) <= 3)){
+                        E('只能添加三张图片',604);
+                    }
 
-            //查看退货表中退货商品的总数
-            $rgNum = M('refund_goods')->where('oid='.$order_id)->count();
-            //查看订单表中所有的商品总数
-            $odNum = M('shop_order_detail')->where('order_id='.$order_id)->count();
 
-            //如果退货数量小于总数，说明订单还有产品是要发的
-            if ($rgNum < $odNum) {
-                // 将订单状态更改为退货处理中
-                D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>10]);
-                D('shop_order_detail')->where(['order_id'=>$order_id])->setField(['status'=>10]);
-            } else {
-                // 将订单状态更改为退货处理中
-                D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>6]);
-                D('shop_order_detail')->where(['order_id'=>$order_id])->setField(['status'=>6]);
-            }
+                    foreach ($info as $k => $val) {
+                        $path .= $val.'|';
+                    }
+                    $data['pic'] = $path;
 
+                    // dump($data);
+                    $refund->startTrans();
+                    // print_r($data);die;                    
+                    $result = D('Refund')->relation(true)->add($data);
+
+
+                    //查看退货表中退货商品的总数
+                    $rgNum = M('refund_goods')->where('oid='.$order_id)->count();
+                    //查看订单表中所有的商品总数
+                    $odNum = M('shop_order_detail')->where('order_id='.$order_id)->count();
+
+                    //如果退货数量小于总数，说明订单还有产品是要发的
+                    if ($rgNum < $odNum) {
+                        // 将订单状态更改为退货处理中
+                        D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>11]);
+                        D('shop_order_detail')->where(['order_id'=>$order_id])->setField(['status'=>11]);
+                    } else {
+                        // 将订单状态更改为退货处理中
+                        D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>13]);
+                        D('shop_order_detail')->where(['order_id'=>$order_id])->setField(['status'=>13]);
+                    }
+
+                } else {
+                    //只退款
+                    $refund->startTrans();
+                    // print_r($data);die;                    
+                    $result = D('Refund')->relation(true)->add($data);
+
+                    //查看退货表中退货商品的总数
+                    $rgNum = M('refund_goods')->where('oid='.$order_id)->count();
+                    //查看订单表中所有的商品总数
+                    $odNum = M('shop_order_detail')->where('order_id='.$order_id)->count();
+
+                    //如果退货数量小于总数，说明订单还有产品是要发的
+                    if ($rgNum < $odNum) {
+                        // 将订单状态更改为退货处理中
+                        D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>12]);
+                        D('shop_order_detail')->where(['order_id'=>$order_id])->setField(['status'=>12]);
+                    } else {
+                        // 将订单状态更改为退货处理中
+                        D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>13]);
+                        D('shop_order_detail')->where(['order_id'=>$order_id])->setField(['status'=>13]);
+                    }
+                }
+
+            } elseif($ostatus=='10' or $ostatus=='9') {
+                //待发货中 申请退款
+                $refund->startTrans();
+                // print_r($data);die;                    
+                $result = D('Refund')->relation(true)->add($data);
+
+                //查看退货表中退货商品的总数
+                $rgNum = M('refund_goods')->where('oid='.$order_id)->count();
+                //查看订单表中所有的商品总数
+                $odNum = M('shop_order_detail')->where('order_id='.$order_id)->count();
+
+                //如果退货数量小于总数，说明订单还有产品是要发的
+                if ($rgNum < $odNum) {
+                    // 将订单状态更改为退货处理中
+                    D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>10]);
+                    D('shop_order_detail')->where(['order_id'=>$order_id])->setField(['status'=>10]);
+                } else {
+                    // 将订单状态更改为退货处理中
+                    D('shop_order')->where(['order_id'=>$order_id])->setField(['status'=>6]);
+                    D('shop_order_detail')->where(['order_id'=>$order_id])->setField(['status'=>6]);
+                }
+            } 
             
             if($result){
                 $refund->commit();
-                E('申请成功', 200);
-                // $this->success('评论成功');
+                $this->ajaxReturn(['code'=>200,'msg'=>'申请成功'],'JSON');
             } else {
                 $comment->rollback();
                 E('申请失败', 603);
-                // $this->error('评论失败');
             }
         } catch (\Exception $e) {
             $this->rmfiles($info);

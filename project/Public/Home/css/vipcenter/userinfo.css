@@ -1,0 +1,251 @@
+.cfix::after {
+	content: '';
+	clear: both;
+	display: block;
+	visibility: hidden;
+}
+.fl {
+	float: left;
+}
+.fr {
+	float: right;
+}
+.container{
+	width:92%;
+	position: relative;
+	margin:0 auto;
+}
+.Information h3{
+	font-size: 0.75rem;
+	margin: 0.666667rem 0;
+	color: 373737;
+}
+.Information label {
+	display: block;
+	width: 100%;
+	height: 3rem;
+}
+.Information label i{
+	display: inline-block;
+    width: 8%;
+    font-size: 1.2rem;
+    color: #307DBB;
+    font-weight: 500;
+}
+.Information label div{
+	float: right;
+	width: 90%;
+	border-bottom: 1px solid #ccc;
+	display: inline-block;
+}
+.Information label div span{
+	display: inline-block;
+    width: 29%;
+    text-align: right;
+    line-height: 3vh;
+    font-size: 0.72rem;
+    margin-left: -0.32rem;
+}
+.Information label div input,.Information label div select{
+	background: #fff!important;
+	font-size: 0.72rem;
+    width: 68%;
+    border: none;
+    height: 1.5rem;
+    padding-left:0.2rem;
+    margin-bottom: 0.1rem;
+    color: #737373;
+    appearance:none;
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	
+}
+.areabtn {
+	text-align: left;
+}
+.Information label div select{
+	appearance:none;
+  	-moz-appearance:none;
+  	-webkit-appearance:none;
+}
+select::-ms-expand { display: none; }
+select::-webkit-expand { display: none; }
+select::expand { display: none; }
+
+.bandBtn{
+	width: 100%;
+	position: absolute;
+	/*bottom: 6rem;*/
+	border-radius: 0.106667rem;
+	padding: 3.9rem 0 1rem;
+}
+.bandBtn input{
+	height: 1.9rem;
+	width: 86vw;
+	text-align: center;
+	display: block;
+	font-size: 0.82rem;
+	border-radius: 0.2rem;
+	border:none;
+	margin:0 auto;
+	color: #fff;
+	background: #2EB6AA;
+
+}
+.layui-laydate, .layui-laydate-main{
+    width: 98vw !important;
+    left: 50%;
+    /*transform: translateX(-49vw);*/
+}
+.laydate-footer-btns {
+    width: 50%;
+    display: flex;
+    position: relative !important;
+    right: 9vw !important;
+    top: 0 !important;
+    align-items: center;
+}
+  .laydate-btns-clear,
+  .laydate-btns-now,
+  .laydate-btns-confirm {
+    width: 33.33%;
+    display: inline-block;
+    padding: 10% !important;
+}
+.layui-laydate-content table {
+    width: 90%;
+    position: relative;
+    left: 50%;
+    margin-left: -45%;
+}
+.layui-laydate-footer {
+    display: flex !important;
+    justify-content: flex-end;
+    height: auto;
+}
+.laydate-footer-btns span {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px !important;
+}
+
+/*兼容解决*/
+@media screen and (max-height:520px) {
+	.bandBtn {
+
+    padding: 2.5rem 0 0;
+    
+	}
+}
+.addrdetail {
+	padding-bottom: 1rem;
+}
+.addrdetail>span {
+	width: 20%;
+}
+.addrdetail>textarea {
+	width: 96%;
+	padding: 4px;
+	border: 1px solid #ccc;
+}
+/*地区选择*/
+#areaChoose {
+	width: 100vw;
+	height: 100vh;
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	    -ms-flex-flow: column;
+	        flex-flow: column;
+	padding: 0;
+	border-bottom: none;
+	z-index: 1000;
+}
+.areaChoosebg {
+	width: 100vw;
+	height: 40vh;
+	background: rgba(0,0,0, .4);
+}
+.areaDiv {
+	height: 60vh;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	flex-flow: column;
+	background: #fff;
+}
+
+/*弹出地区选择底部的确认按钮*/
+#confirmAreaChoose {
+	height: 14vh;
+	width: 100%;
+	background: #fff;
+}
+#confirmAreaChoose>div {
+	width: 80%;
+	height: 6vh;
+	line-height: 6vh;
+	position: relative;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	text-align: center;
+	color: #fff;
+	border-radius: 4px;
+	background: #2EB6AA;
+}
+.areaDiv>div {
+	width: 100%;
+	height: 12vmin;
+	line-height: 12vmin;
+	border-bottom: 1px solid #eee;
+}
+.areaDiv>div::after {
+	content: '';
+	visibility: hidden;
+	zoom: 1;
+	clear: both;
+}
+.areaDiv>div>span {
+	width: 33%;
+	float: left;
+	text-align: center;
+}
+.areaDiv>ul {
+	width: 80%;
+	height: 100%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	height: 100%;
+	overflow-y: hidden;
+}
+.areaDiv>ul>li {
+	flex: 1;
+	width: 80%;
+	height: 100%;
+	padding: 1% 2%;
+	margin: 10px auto;
+	border-radius: 4px;
+	background: #fff;
+	overflow-y: scroll;
+}
+.addrselect {
+	color: #2eb6aa;
+	font-weight: 600;
+}
+.areaDiv>ul p {
+	margin: 20px 0;
+}

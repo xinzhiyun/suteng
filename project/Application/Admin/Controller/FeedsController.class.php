@@ -72,7 +72,8 @@ class FeedsController extends CommonController
     public function repairlist()
     {
         // 根据用户昵称进行搜索
-        $map = '';
+        // $_GET['keywords'] = \urldecode($_GET['keywords']);
+        $map = [];
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
             $map[I('get.key')] = array('like',"%".I('get.keywords')."%");
 

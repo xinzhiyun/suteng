@@ -7,6 +7,10 @@
 	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_3mgodvjd6sp833di.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/order/index.css">
 	<title>商品订单</title>
+    <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+    <script>
+        // var vconsole = new VConsole();
+    </script>
 </head> 
 <body>
 	<header id="header">
@@ -150,11 +154,50 @@
 			<div class="modal-backup"></div>
 		</div> -->
 	<!-- 支付方式选择部分结束 -->
-
+	<div class='expressPanel'>
+		<h3>填写退货物流等信息</h3>
+		<span>发货人：</span>
+		<p>
+			<label for="">姓名：</label>&emsp;
+			<input type="text" class='toname' placeholder="请输入姓名">
+		</p>
+		<p>
+			<label for="">电话：</label>&emsp;
+			<input type="text" class='tophone' placeholder="请输入电话">
+		</p>
+		<p>
+			<label for="">地址：</label>&emsp;
+			<input type="text" class='toaddr' placeholder="请输入地址">
+		</p>
+		<div class='divide'></div>
+		<span>收货人：</span>
+		<p>
+			<label for="">姓名：</label>&emsp;
+			<input type="text" class='recname' placeholder="请输入姓名">
+		</p>
+		<p>
+			<label for="">电话：</label>&emsp;
+			<input type="text" class='recphone' placeholder="请输入电话">
+		</p>
+		<p>
+			<label for="">地址：</label>&emsp;
+			<input type="text" class='recaddr' placeholder="请输入地址">
+		</p>
+		<p>
+			<label for="">快递名称：</label>&emsp;
+			<input type="text" class='recexpress' placeholder="请输入快递名称">
+		</p>
+		<p>
+			<label for="">快递单号：</label>&emsp;
+			<input type="text" class='recexpressnum'placeholder="请输入快递单号">
+		</p>
+		<button class='exconfirm' onclick='exconfirm()'>确认</button>
+	</div>
 	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<!-- 微信支付支持JS部分代码 -->
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script>
 		$(function(){
 			// 首页按钮
@@ -302,7 +345,7 @@
      * @param  {[type]} status 	[8：未支付，9：待发货，2：待收货，7：待评论 4：退款处理中 5：已退货]
      * @return {[type]}    		[description]
      */
-    // refundStatus   处理进度（0：未处理 1：同意退款 2：不同意退款 3：同意退货 4：不同意退货 5：已退款 6：正在退货 7：已收货 ）
+    // refundStatus   处理进度（0：未处理 1：同意退款 2：不同意退款 3：同意退货 4：不同意退货 5：已退款 6：正在退货 7：已收货 10.待发货订单退部分商品  11.待收货订单部分商品退货退款  12.待收货订单部分商品进退款 ）
     (function unpaid_order(){
     	var imgpath = '/Uploads/';
     	var noimg = '__PUBLIC__/images/noimg.jpg';
@@ -533,6 +576,7 @@
 							var noimg_show = waitsendlist[i]['productList'][k]['gpic']
 							? (imgpath + waitsendlist[i]['productList'][k]['gpic'])
 							: noimg;
+							var tuihou = waitsendlist[i]['productList'][k]['tuihuo'] ? '已退货' : '';
 							// alert(orderList[i]['productList'].length);
 							var sendBrief = waitsendlist[i]['productList'][k]['productbrief'];
 							var sendName = waitsendlist[i]['productList'][k]['productname'];
@@ -540,6 +584,7 @@
 							sendName = sendName ? sendName : "暂无描述";
 							dingdanDaifahuo2+='<div class="goodsItem">'+
 							'<div class="giPicture" gid="'+ waitsendlist[i]['productList'][k].gid +'">'+
+							'<em class="tuihuo">'+ tuihou +'</em>'+ 
 							'<img src="'+ noimg_show +'" alt="">'+
 							'</div>'+
 							'<div class="giDescription">'+
@@ -601,7 +646,7 @@
 				url:"{{:U('Home/Order/order_list')}}",
 				data:{
             	"g_type":1,//订单类型：{0：租赁订单，1：商品订单，2：耗材订单，3：兑换订单}
-            	"status":[2]
+            	"status":[2,11,12,13]
             },
             dataType:"json",
             type: 'post',
@@ -625,16 +670,18 @@
 							var noimg_show = waitgainlist[i]['productList'][k]['gpic']
 							? (imgpath + waitgainlist[i]['productList'][k]['gpic'])
 							: noimg;
+							var tuihou = waitgainlist[i]['productList'][k]['tuihuo'] ? '已退货' : '';
 							var productBrief = waitgainlist[i]['productList'][k]['productbrief'];
 							var productName = waitgainlist[i]['productList'][k]['productname'];
 							productBrief = productBrief ? productBrief : "暂无描述";
 							productName = productName ? productName : "暂无标题";
 							// 快递单号
-							dingdanDaishouhuo2+='<p>'+waitgainlist[i]['productList'][k]['express_name'] +':'+ waitgainlist[i]['productList'][k]['express']  +
+							dingdanDaishouhuo2+='<p>'+waitgainlist[i]['productList'][k]['express_name'] +'单号:'+ waitgainlist[i]['productList'][k]['express']  +
 	                		'<span>卖家已发货</span>'+
 	                		'</p>'+
 							'<div class="goodsItem">'+
 							'<div class="giPicture" gid="'+ waitgainlist[i]['productList'][k]['gid'] +'">'+
+							'<em class="tuihuo">'+ tuihou +'</em>'+ 
 							'<img src="'+ noimg_show +'" alt="">'+
 							'</div>'+
 							'<div class="giDescription">'+
@@ -736,6 +783,7 @@
                 		'<span>交易完成</span>'+
                 		'</p>';
 						for(var k=0;k<waitcommentlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
+							var tuihou = waitcommentlist[i]['productList'][k]['tuihuo'] ? '已退货' : '';
 							// 无图片时显示
 							var noimg_show = waitcommentlist[i]['productList'][k]['gpic']
 							? (imgpath + waitcommentlist[i]['productList'][k]['gpic'])
@@ -747,6 +795,7 @@
 							// 拼接数据
 							dingdanDaipinglun2+='<div class="goodsItem">'+
 							'<div class="giPicture" gid="'+ waitcommentlist[i]['productList'][k].gid +'">'+
+							'<em class="tuihuo">'+ tuihou +'</em>'+ 
 							'<img src="'+ noimg_show +'" alt="">'+
 							'</div>'+
 							'<div class="giDescription">'+
@@ -827,6 +876,7 @@
             // dataType:"json",
             type: 'get',
             success:function(res){
+            	// alert(1);
             	console.log(res);
             	var tuihuo = 0;
                 if(res.code == 200){
@@ -841,12 +891,14 @@
                 				var noimg_show = res.data[i]['goods'][k]['orderimg']
                 				? (imgpath + res.data[i]['goods'][k]['orderimg'])
                 				: noimg;
+                				var tuihou = res.data[i]['goods'][k]['tuihuo'] ? '已退货' : '';
 								// 无标题是显示暂无标题显示
 								var infoTitle = res.data[i]['goods'][k]['productname'] ? res.data[i]['goods'][k]['productname'] : "暂无标题"; 
                 				// console.log(res.data[i]['dw_time']);
                 				returned1+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i]['goods'][k].gid +'">'+
+                				'<em class="tuihuo">'+ tuihou +'</em>'+ 
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -854,11 +906,12 @@
                 				'<p><b>￥'+res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
                 				'</div>'+
                 				'</div>'+
-                				'<p><b>等待商家同意退款</b></p>';
+                				'<p><b>等待商家同意</b></p>';
                 			}
 							tuihuo += res.data[i]['goods'].length;
                 		}else if(res.data[i]['status']=='1'){
                 			for(var k=0;k<res.data[i]['goods'].length;k++){
+                				var tuihou = res.data[i]['goods'][k]['tuihuo'] ? '已退货' : '';
                 				// 无图片时显示
                 				var noimg_show = res.data[i]['goods'][k]['orderimg']
                 				? (imgpath + res.data[i]['goods'][k]['orderimg'])
@@ -868,6 +921,7 @@
                 				returned4+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i]['goods'][k].gid +'">'+
+                				'<em class="tuihuo">'+ tuihou +'</em>'+ 
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -875,13 +929,14 @@
                 				'<p><b>￥'+ res.data[i]['goods'][k]['price'] +'</b><span>x '+ res.data[i]['goods'][k]['productnumber'] +'</span></p>'+
                 				'</div>'+
                 				'</div>'+
-                				'<p><b>商家同意退款</b></p>';
+                				'<p><b>商家同意退货</b></p>';
                 			}
 							tuihuo += res.data[i]['goods'].length;
 							// console.log(res.data[i]['goods'][k]['productname']);
                 		}else if(res.data[i]['status']=='3'){//商家已同意
                 			// console.log(1111);
                 			for(var k=0;k<res.data[i]['goods'].length;k++){
+                				var tuihou = res.data[i]['goods'][k]['tuihuo'] ? '已退货' : '';
                 				// 无图片时显示
                 				var noimg_show = res.data[i]['goods'][k]['orderimg']
                 				? (imgpath + res.data[i]['goods'][k]['orderimg'])
@@ -891,6 +946,7 @@
                 				returned2+='<p>信息更新时间：'+timestampToTime(res.data[i]['create_time'])+'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i]['goods'][k].gid +'">'+
+                				'<em class="tuihuo">'+ tuihou +'</em>'+ 
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -901,12 +957,8 @@
                 				'<p><b>商家同意退款，请尽早退货</b><span>点击展开<i class="iconfont icon-shuangxiajiantou"></i></span></p>'+
                 				'<!-- 隐藏的评论内容 -->'+
                 				'<div class="commentHidden">'+
-                				'<div class="hidTop">'+
-                				'<p><span>收货人： 张三</span>18475698574</p>'+
-                				'<p>广东省韶关市</p>'+
-                				'</div>'+
                 				'<div class="hidBott">'+
-                				'<div class="hidbotttxt">'+
+                				'<div class="hidbotttxt writeExpress" serial_num='+ res.data[i].serial_num +' gid='+res.data[i]['goods'][k].gid+'>'+
                 				'<a class="writeOrder">'+
                 				'<p>我已寄件</p>'+
                 				'<p>点击填写物流单号</p>'+
@@ -919,6 +971,7 @@
 
                 		}else if(res.data[i]['status']=='5'){
                 			for(var k=0;k<res.data[i]['goods'].length;k++){
+                				var tuihou = res.data[i]['goods'][k]['tuihuo'] ? '已退货' : '';
                 				// 无图片时显示
                 				var noimg_show = res.data[i]['goods'][k]['orderimg']
                 				? (imgpath + res.data[i]['goods'][k]['orderimg'])
@@ -928,6 +981,7 @@
                 				returned4+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i]['goods'][k].gid +'">'+
+                				'<em class="tuihuo">'+ tuihou +'</em>'+ 
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -941,15 +995,19 @@
                 		}else if(res.data[i]['status']=='6'){//正在退货
                 			
                 			for(var k=0;k<res.data[i]['goods'].length;k++){
+                				var tuihou = res.data[i]['goods'][k]['tuihuo'] ? '已退货' : '';
+                				// var tuihou = waitpaylist[i]['productList'][k]['tuihuo'] ? '已退货' : '';
                 				// 无图片时显示
-                				var noimg_show = waitpaylist[i]['productList'][k]['orderimg']
-                				? (imgpath + waitpaylist[i]['productList'][k]['orderimg'])
+                				// var noimg_show = waitpaylist[i]['productList'][k]['orderimg']
+                				var noimg_show = res.data[i]['goods'][k]['orderimg']
+                				? (imgpath + res.data[i]['goods'][k]['orderimg'])
                 				: noimg;
 								// 无标题是显示暂无标题显示
 								var infoTitle = res.data[i]['goods'][k]['productname'] ? res.data[i]['goods'][k]['productname'] : "暂无标题"; 
                 				returned3+='<p>信息更新时间：'+ timestampToTime(res.data[i]['create_time']) +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
-                				'<div class="tuikuangLeft giPicture" gid="'+ waitpaylist[i]['productList'][k].gid +'">'+
+                				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i]['goods'][k].gid +'">'+
+                				'<em class="tuihuo">'+ tuihou +'</em>'+ 
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -962,6 +1020,7 @@
 							tuihuo += res.data[i]['goods'].length;
                 		}else if(res.data[i]['status']=='7'){
                 			for(var k=0;k<res.data[i].length;k++){
+                				var tuihou = res.data[i][productList][0]['tuihuo'] ? '已退货' : '';
                 				// 无图片时显示
                 				var noimg_show = res.data[i][productList][0]['orderimg']
                 				? (imgpath + res.data[i][productList][0]['orderimg']) : noimg;
@@ -970,6 +1029,7 @@
                 				returned4+='<p>信息更新时间：'+ res.data[i]['ordertime'] +'</p>'+
                 				'<div class="shangpingnei clearfix">'+
                 				'<div class="tuikuangLeft giPicture" gid="'+ res.data[i][productList][0].gid +'">'+
+                				'<em class="tuihuo">'+ tuihou +'</em>'+ 
                 				'<img src="'+ noimg_show +'" alt="">'+
                 				'</div>'+
                 				'<div class="tuikuangRight">'+
@@ -1035,7 +1095,7 @@
 						// 产品列表循环
 						for(var j = 0; j < productLists; j++) {
 							// console.log(res.data[i].productList[j])
-						
+							var tuihou = res.data[i].productList[j]['tuihuo'] ? '已退货' : '';
 							// 无图片时显示
 							var noimg_show = res.data[i].productList[j]['gpic']
 							? (imgpath + res.data[i].productList[j]['gpic'])
@@ -1043,6 +1103,7 @@
 							returned6+='<p>信息更新时间：'+ res.data[i].ordertime +'</p>'+
 							'<div class="shangpingnei clearfix">'+
 							'<div class="tuikuangLeft giPicture" gid="'+ res.data[i].productList[j].gid +'">'+
+							'<em class="tuihuo">'+ tuihou +'</em>'+ 
 							'<img src="'+ noimg_show +'" alt="">'+
 							'</div>'+
 							'<div class="tuikuangRight">'+
@@ -1143,14 +1204,138 @@
 		m = date.getMinutes() + ':';
 		s = date.getSeconds();
 		return Y+M+D+h+m+s;
-	}
+	} 
 
 	// 点击图片跳到商品详情界面
-	$('body').on('click', '.giPicture', function(){
+	$('body').on('touchend', '.giPicture', function(){
 		var gid = $(this).attr('gid');
 		if(!gid) return;
 		location.href = '{{:U("Home/Shop/shoppingdetail")}}' + '?gid=' + gid;
 	})
+
+	var expressPanel = document.querySelector('.expressPanel');
+	var expressData = {};
+	// 填写物流单号
+	 $('body').on('touchend','.writeExpress', function(){
+		var serial_num = $(this).attr('serial_num');
+		var gid = $(this).attr('gid');
+		// 流水号， 商品id
+		console.log('serial_num, gid', serial_num, gid);
+		location.href = location.href + '#writeExpress';
+		sessionStorage.setItem('serial_num', serial_num);
+		sessionStorage.setItem('gid', gid);
+	})
+
+	// 提交快递信息
+	function exconfirm(){
+		var toname = $('.toname').val().trim();
+		var tophone = $('.tophone').val().trim();
+		var toaddr = $('.toaddr').val().trim();
+		var recname = $('.recname').val().trim();
+		var recphone = $('.recphone').val().trim();
+		var recaddr = $('.recaddr').val().trim();
+		var recexpress = $('.recexpress').val().trim();
+		var recexpressnum = $('.recexpressnum').val().trim();
+		
+		if(!toname){
+			layuiHint('请输入发货人姓名');
+			return
+		}
+		if(!tophone){
+			layuiHint('请输入发货人电话');
+			return
+		}
+		if(!toaddr){
+			layuiHint('请输入发货人地址');
+			return
+		}
+		if(!recname){
+			layuiHint('请输入收货人姓名');
+			return
+		}
+		if(!recphone){
+			layuiHint('请输入收货人电话');
+			return
+		}
+		if(!recaddr){
+			layuiHint('请输入收货人地址');
+			return
+		}
+		if(!recexpress){
+			layuiHint('请输入快递名称');
+			return
+		}
+		if(!recexpressnum){
+			layuiHint('请输入快递单号');
+			return
+		}
+		expressData['serial_num'] = sessionStorage.getItem('serial_num');
+		expressData['gid'] = sessionStorage.getItem('gid');
+
+		expressData['toname'] = toname;
+		expressData['tophone'] = tophone;
+		expressData['toaddr'] = toaddr;
+		expressData['recname'] = recname;
+		expressData['recphone'] = recphone;
+		expressData['recaddr'] = recaddr;
+		expressData['recexpress'] = recexpress;
+		expressData['recexpressnum'] = recexpressnum;
+		
+		// 提交数据
+		$.ajax({
+			url: '{{:U("Home/Order/refundMessage")}}',
+			type: 'post',
+			data: expressData,
+			success: function(res){
+				console.log('res: ',res);
+				if(res.code == 200){
+					layuiHint('提交成功');
+					setTimeout(function(){
+						history.go(-1);
+						setTimeout(function(){
+							location.reload();
+						},300);
+					},500);
+				}else{
+					layuiHint(res.msg);
+				}
+			},
+			error: function(err){
+				console.log('err: ',err);
+				layuiHint('系统遇到问题，请稍后再试!');
+			}
+		})
+	}
+
+	hashchangeFn(function(hash){
+		if(hash.indexOf('#writeExpress') < 0){
+			// 隐藏
+			expressPanel.setAttribute('style', 'transform:translateY(100%)');
+			$('.recname').val('');
+			$('.recphone').val('');
+			$('.recaddr').val('');
+			$('.recexpress').val('');
+			$('.recexpressnum').val('');
+		}else{
+			// 显示
+			expressPanel.setAttribute('style', 'transform:translateY(0%)');
+		}
+	})
+
+	// 监听hashchange事件
+	function hashchangeFn(callback) {
+		var haschangeflag = false;
+		window.addEventListener('hashchange', function(){
+			haschangeflag = true;
+			callback(location.hash);
+		}, false);
+		// console.log('haschangeflag: ',haschangeflag);
+		// console.log('hash: ',location.hash);
+		// 刷新保持
+		if(!haschangeflag){
+			callback(location.hash);
+		}
+	}
 </script>
 </body>
 </html>

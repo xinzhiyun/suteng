@@ -95,10 +95,16 @@ class ShopController extends CommonController
             $res = $cate->where('pid='.$id)->find();
             if(!empty($res)){
                 E('该分类存在子类，不可删除',204);
-            } else {
-                $res = $cate->where('id='.$id)->delete();
-                if($res) E('分类删除成功', 200);
             }
+            // 判断该分类下的商品
+            $count = D('goods')->where(['cid'=>$id,'status'=>['NEQ',2]])->count();
+            if($count > 0){
+                E('该分类下存在商品，不可删除',204);
+            }
+            
+            $res = $cate->where('id='.$id)->delete();
+            if($res) E('分类删除成功', 200);
+            
         } catch (\Exception $e) {
             $err = [
                 'code' => $e->getCode(),
@@ -196,7 +202,7 @@ class ShopController extends CommonController
     public function goodsAction()
     {
         // dump($_POST);die;
-       
+    //    p($_FILES);die;
         try{
             $goods_add = D('Goods');
             $attr_val = D('AttrVal');
@@ -424,7 +430,7 @@ class ShopController extends CommonController
         $goodsDetail = $goodsInfo['goods_detail'];
 
         $goodsPics = D('pic')->where(['gid'=>$id])->select();
-        p($goodsPics);
+     
         //处理属性所属
         foreach ($attrVal as $value) {
             $attrValArr[]=$value['aid'];
@@ -500,9 +506,9 @@ class ShopController extends CommonController
             }else{// 上传成功
                 // $this->success('上传成功！');
             }
-            p($info);
+            // p($info);
         }
-        p($_FILES);die;
+        // p($_FILES);die;
 
         // die;
         try{
@@ -912,9 +918,29 @@ class ShopController extends CommonController
         } else {
             $data = $orderDetail->getInfo($map);
         }
-        // dump($data);
-        //将订单商品总价加上商品的快递费
+
+
+
+        $rids = array();
+        $refund_goods =  M('refund_goods')->where('oid='."'{$order['order_id']}'")->select();
+
+        //查找退货的商品id
+        foreach ($refund_goods as $rd => $rdvalue) {
+            $rids[] = $rdvalue['gid'];
+        }
+
+        //将订单商品总价加上商品的快递费 及判断该订单是否有退货商品
         foreach ($data as $key => $value) {
+           
+            if (in_array($value['gid'],$rids)) {
+                    
+                $data[$key]['tuihuo'] = '退货';     
+                
+            } else {
+                $data[$key]['tuihuo'] = '正常';
+            }
+
+            
             $userInfo['g_price'] += $value['cprice']*$value['num'];
         }
 
@@ -1082,6 +1108,11 @@ class ShopController extends CommonController
             $id = $_POST['id'];
 
             $inventory = M('inventory');
+            //比较异常库存与总库存
+            $allnum = $inventory->where(['gid'=>$id])->find();
+            if($data['abnormalnum'] > $allnum['allnum']){
+                E('超过总库存了',203);
+            }
             //修改库存数据
             $info = $inventory->where('gid='.$id)->save($data);
 

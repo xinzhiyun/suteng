@@ -56,7 +56,7 @@ class WeixinEventController extends Controller
                                 break;
                             case '1':
                                     // 新增成功，回复分销商注册图文消息
-                                    $this->reactVendor($toUser,$fromUser);
+//                                    $this->reactVendor($toUser,$fromUser);
                                 break;
                             default:
                                     // 查询微信二维码信息表注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员 4:分公司邀请分销商 5:分销商邀请分销商}

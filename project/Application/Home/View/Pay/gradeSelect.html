@@ -7,6 +7,10 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/gradeSelect.css">
 	<title>会员升级</title>
+    <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+    <script>
+        // var vconsole = new VConsole();
+    </script>
 </head>
 <body>
 <div class="main">
@@ -103,7 +107,7 @@
 					<span class="iconfont icon-xuanzhongduigou xuanzhong" style="color:#56AAF1"></span>
 				</div>
 
-				<div class="payWay">
+				<!-- <div class="payWay">
 					<p>
 						<span class="iconfont icon-zhifubao" style="color:rgb(0,170,239)"></span>支付宝支付
 					</p>
@@ -114,7 +118,7 @@
 						<img src="__PUBLIC__/Home/images/yl.png" alt="">银联支付
 					</p>
 					<span class="iconfont icon-weixuanzhong xuanzhong"></span>
-				</div>
+				</div> -->
 
 				<div class="payConfirm">
 					<p>立即付款</p>
@@ -150,7 +154,6 @@
     });
     var status = '{{$annual["status"]}}';
     console.log('status: ',status);
-    status = 0;
     if(status == 0){
     	$('.goldGrade').eq(0).show();
     	$('.goldGrade').eq(1).show();
@@ -190,7 +193,7 @@
 
                         $(".payKuan").css("display", "block");
                         // 选中会员价格
-                        $(".selectFinall").html(selectPrice);
+                        $(".selectFinall").html(money);
                     }
                 },
                 error: function(res){

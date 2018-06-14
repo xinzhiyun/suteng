@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
+	<title>工单详情</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/station/detail.css">
+	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
+	<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
+</head>
+<body>
+	<div id='servicedetail'>
+		<!-- 待办工单选择日期和安装工人 -->
+		<ul class='cfixed' v-if="result == '0'">
+			<li class='fled'>
+				<p>
+					<span>预约日期：&emsp;</span> 
+					<input type="text" class="currentdate" id="currentdate" name="date" value="" placeholder="请选择" readonly="readonly" @click="selectDate">
+				</p>
+				<p>
+					<span>预约时间：&emsp;</span>
+					<select name="nyr" id="changeC" @change="changeC">
+						<option value="">请选择</option>
+						<option value="上午 8:00-11:00">上午 8:00-11:00</option>
+						<option value="下午 2:00-6:00点">下午 2:00-6:00点</option>
+					</select>
+				</p>
+				<p>
+					<span>安装工人：&emsp;</span>
+					<select name="nyr" id="changeC2" @change="changeC2($event)">
+						<option value="">请选择</option>
+						<option :value="intalls.name" :index="intalls.phone" :title="intalls.id" v-for="(intalls, index) in installer">{{intalls.name}}</option>
+					</select>
+				</p>
+			</li>
+		</ul>
+		<div class="allInfo">
+			<!-- 工单信息开始 -->
+			<div class='dTop'>
+				<div>
+					<div class="gongdan"@click="tiemF">
+						<i class="iconfont icon-icon123" ></i>
+						工单号：<span v-text='info.number'></span>
+					</div>
+					<!-- 时间线 -->
+					<ul class="dTime">
+						<li><span>工单生成：</span><span v-text="info.create_at"></span></li>
+						<li><span>工单审核：</span><span v-text="info.examine_at"></span></li>
+						<li v-if="this.result != 0"><span>服务站派工：</span><span v-text="info.anry_at"></span></li>
+						<li v-if="this.result != 0"><span>售后确认：</span><span v-text="info.check_at"></span></li>
+						<li v-if="this.result == 2 || this.result == 3"><span>工单完成：</span><span v-text="info.pass_at"></span></li>
+						<li v-if="this.result == 3"><span>结束工单：</span><span v-text="info.over_at"></span></li>
+					</ul>
+				</div>
+				
+			</div>
+			<!-- 工单信息结束 -->
+			<!-- 用户信息开始 -->
+			<div class='dBot'>
+				<ul>
+					<li>用户名：&emsp;<span v-text='info.kname'></span><span></span></li>
+					<li>手机号码</i>：&emsp;<a v-text='info.kphone'></a></li>
+					<li>服务类型：&emsp;<span v-text='info.type'></span></li>
+					<li>设备信息：&emsp;<span v-text='info.device_code'></span></li>
+					<li class='len'>
+						<span>详细地址：&emsp;</span>
+						<span v-text='info.province+info.city+info.address'></span>
+					</li>
+				</ul>
+				<ul class='ques' v-if="result == 0 || result == 1">
+					<li class='lens'>
+						<span>问题描述：&emsp;</span>
+						<div v-html='info.content'></div>
+					</li>
+					<li>
+						<span class="pics">
+							<img :src="i" alt="" v-for='i in info.pic' @click="openPhotoSwipe">
+						</span>
+					</li>
+				</li>
+			</ul>
+		</div>
+		<!-- 用户信息结束 -->
+		
+		<!-- 安装人员信息开始 -->
+		<div class='dBot' v-if="result == '1' || result == '2' || result == '3'" >
+			<ul>
+				<li>售后人员：&emsp;<span v-text='info.name'></span></li>
+				<li>手机号码：&emsp;<a v-text='info.phone'></a></li>
+				<li>服务工号：&emsp;<span v-text='info.sn'></span></li>
+			</ul>
+			<ul class='ques' v-if="result == '2' || result == '3'">
+				<li class='len'>
+					<span>工作备注：&emsp;</span>
+					<span v-text='info.content'></span>
+				</li>
+				<li>
+					<span class="pics">
+						<img :src="i" alt="" @click="openPhotoSwipe" v-for='i in info.pic'>
+					</span>
+				</li>
+			</ul>
+		</div>
+		<!-- 安装人员信息结束 -->
+		<button class='btnup' @click='getit' v-text="confirm">提交</button>
+	</div>
+	<!-- Root element of PhotoSwipe. Must have class pswp. -->
+	<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+		
+		<!-- Background of PhotoSwipe. 
+			It's a separate element as animating opacity is faster than rgba(). -->
+			<div class="pswp__bg"></div>
+			
+			<!-- Slides wrapper with overflow:hidden. -->
+			<div class="pswp__scroll-wrap">
+				
+				<!-- Container that holds slides. 
+					PhotoSwipe keeps only 3 of them in the DOM to save memory.
+					Don't modify these 3 pswp__item elements, data is added later on. -->
+					<div class="pswp__container">
+						<div class="pswp__item"></div>
+						<div class="pswp__item"></div>
+						<div class="pswp__item"></div>
+					</div>
+					
+					<!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+					<div class="pswp__ui pswp__ui--hidden">
+						
+						<div class="pswp__top-bar">
+							
+							<!--  Controls are self-explanatory. Order can be changed. -->
+							
+							<div class="pswp__counter"></div>
+							
+							<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+							
+							<!-- <button class="pswp__button pswp__buttonshare" title="Share"></button> -->
+							
+							<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+							
+							<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+							
+							<!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+							<!-- element will get class pswp__preloader-active when preloader is running -->
+							<div class="pswp__preloader">
+								<div class="pswp__preloader__icn">
+									<div class="pswp__preloader__cut">
+										<div class="pswp__preloader__donut"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+							<div class="pswp__share-tooltip"></div> 
+						</div>
+						
+						<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+						</button>
+						
+						<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+						</button>
+						
+						<div class="pswp__caption">
+							<div class="pswp__caption__center"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				
+			</div>
+		</div>
+		<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+		<script src='__PUBLIC__/Home/js/public.js'></script>
+		<script src="__PUBLIC__/Home/js/laydate.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+		<link rel="stylesheet" href="__PUBLIC__/Home/photoswipe/photoswipe.css">
+		<link rel="stylesheet" href="__PUBLIC__/Home/photoswipe/default-skin/default-skin.css"> 
+		<script src="__PUBLIC__/Home/photoswipe/photoswipe.min.js"></script> 
+		<script src="__PUBLIC__/Home/photoswipe/photoswipe-ui-default.min.js"></script> 
+		<script>
+			var servicedetail = new Vue({
+				el: '#servicedetail',
+				data () {
+					return {
+						type: '',
+						result: '',// result: 0待处理 1处理中 2待验收 3(完成)
+						workid: '',//工单号
+						info: {},//用户信息
+						confirm : "提交",
+						installer: "",//安装工人信息
+						installInfo : {
+							id: "",
+							name: "",
+							phone: ""
+						},//安装工人提交信息
+						ifFlag : false
+					} 
+				},
+				created (){
+					this.workid = GetQueryString('workid');//工单号
+					this.result = GetQueryString('result');
+					// 不同状态改变按钮 标题
+					if(this.result == 0) {
+						this.confirm = "提交";
+						$("title").html("待办工单");
+					}else if(this.result == 1) {
+						// $(".btnup").attr("disabled", "disabled").css("backgroundColor", "rgb(46,182,170,.5)");
+						$(".btnup").css("display", "none");//隐藏提交按钮
+						$("title").html("处理中工单");
+					}else if(this.result == 2) {
+						this.confirm = "审核通过";
+						$("title").html("待验收工单");
+					}else if(this.result == 3) {
+						$(".btnup").remove();
+						$("title").html("已完成工单");
+					}
+					
+					console.log('result: ',this.result, "wordid", this.workid);
+					// 根据工单号请求后台拿到数据
+					this.getDetail(this.workid);
+				},
+				methods: {
+					getDetail (workid){
+						// 获取详情信息
+						$.ajax({
+							url: '{{:U("Home/Service/getDetail")}}',
+							type: 'post',
+							data: {number: workid},
+							success: function(res){
+								console.log('res: ',res.data);
+								if(res.status == 200){
+									var typeList = ['安装', '维修', '维护'];
+									res.data.name = res.data.name ? res.data.name : '未派工';
+									res.data.type = typeList[res.data.type];// 工单类型
+									res.data.pic = res.data.pic ? JSON.parse(res.data.pic) : [];// 工单图片
+									servicedetail.info = res.data;//用户信息
+									if(res.people.length) { 
+										servicedetail.installer = res.people;//安装工人
+									}else {
+										servicedetail.installer = ['请选择','暂无工人'];
+									}
+									// 时间线
+									res.data.create_at = dateformat(res.data.create_at); //工单生成时间
+									res.data.examine_at = res.data.examine_at ? dateformat(res.data.examine_at) : '-- -- -- ';//后台审核时间
+									res.data.anry_at = res.data.anry_at ? dateformat(res.data.anry_at) : '-- -- --';//派工时间
+									res.data.check_at = res.data.check_at ? dateformat(res.data.check_at) : '-- -- --';//售后确认时间
+									res.data.pass_at = res.data.pass_at ? dateformat(res.data.pass_at) : '-- -- --';//工单完成时间
+									res.data.over_at = res.data.over_at ? dateformat(res.data.over_at) : '-- -- --';//工单结束时间
+									
+								}else{
+									layuiHint(res.msg);
+								}
+							},
+							error: function(err){
+								console.log('err: ',err);
+							}
+						})
+					},
+					changeC () {
+						$("#changeC").css("color", "#7A7A7A");
+					},
+					changeC2 (e) {
+						
+						var el = e.currentTarget;
+						this.installInfo.phone = $(el).find('option:selected').attr("index");
+						this.installInfo.id = $(el).find('option:selected').attr("title");
+						this.installInfo.name = $(el).find('option:selected').val();
+						$("#changeC2").css("color", "#7A7A7A");
+					},
+					getit () {
+						var vm = this;
+						// 我要接单
+						if(vm.result == "0") {
+							// dw_uid 服务人员的ID name 服务人 phone 服务人电话 anry_time   年月日 anry_period 时间段
+							var date = $(".currentdate").val();//预约日期
+							var anzhuang = $("#changeC2").val();
+							var time = $("#changeC").val();//预约时间
+							// 验证提示
+							if(!date) {
+								layuiHint("请选择预约日期");
+								return ;
+							}
+							if(!time) {
+								layuiHint("请选择预约时间");
+								return ;
+							}
+							if(!anzhuang) {
+								layuiHint("请选择安装人员");
+								return ;
+							}
+							console.log("预约时间", time, "预约日期", date, "安装工人信息",vm.installInfo);
+							$.ajax({
+								url: getURL("Home", "Service/packwork"),
+								type: "post",
+								data: {
+									dw_uid: vm.installInfo.id,
+									name: vm.installInfo.name,
+									phone: vm.installInfo.phone,
+									anry_time: date,
+									anry_period: time,
+									number: vm.workid
+								},
+								success: function(res) {
+									console.log("成功", res);
+									if(res.status == 200) {
+										layuiHint(res.msg);
+										setTimeout(function() {
+											location.href = "{{:U('Home/Service/paySuccess')}}?title=提交成功";
+										}, 1000);
+									}else {
+										layuiHint(res.msg);
+									}
+								},
+								error: function(res) {
+									console.log("出错", res);
+									layuiHint("系统出错，请稍后重试");
+								}
+							})
+						}else if(vm.result == "2") {
+							console.log(vm.workid)
+							layui.use('layer', function(){
+								var layer = layui.layer;
+								layer.confirm("确认通过审核?", function(index) {
+									$.ajax({
+										url: getURL("Home", "Service/checkPass"),
+										type: "post",
+										data: {number: vm.workid},
+										success: function(res) {
+											console.log("待验收", res)
+											if(res.status == 200) {
+												layuiHint(res.msg)
+												setTimeout(function() {
+													location.href = "{{:U('Home/Service/paySuccess')}}?title=提交成功";
+												}, 1000);
+											}else {
+												layuiHint(res.msg);
+											}
+										},
+										error: function(res) {
+											console.log("失败", res)
+											layuiHint("系统出错, 请稍后再试");	
+										}
+									})
+									layer.close(index);
+								})
+							});  
+							
+						}
+					},
+					// 日期
+					selectDate () {
+						//选择服务日期，
+						laydate.render({
+							elem: '#currentdate', //指定元素
+							show: true,
+							format: 'yyyy-MM-dd',
+							btns: ['clear', 'confirm'],
+							min: 0,
+							done: function(value, date, endDate){
+								$(".currentdate").css("color", "#7A7A7A");
+							}
+						});
+					},
+					// 显示时间线
+					tiemF() {
+						if(this.ifFlag) {
+							$(".icon-icon123").removeClass("iconfont icon-icon123 rdeg").addClass("iconfont icon-icon123 rdeg2");
+							$(".dTime").slideUp("slow");
+							this.ifFlag = false;
+						}else {
+							$(".icon-icon123").removeClass("iconfont icon-icon123 rdeg2").addClass("iconfont icon-icon123 rdeg");
+							$(".dTime").slideDown("slow");
+							this.ifFlag = true;
+						}
+					},
+					openPhotoSwipe() {
+						var pswpElement = document.querySelectorAll('.pswp')[0];
+						var items = [];
+						for(var i = 0; i < servicedetail.info.pic.length; i++) {
+							items.push({
+								src: servicedetail.info.pic[i],
+								w: 1024,
+								h: 683
+							});
+						}
+						// define options (if needed)
+						var options = {
+							// history & focus options are disabled on CodePen        
+							history: false,
+							focus: false,
+							
+							showAnimationDuration: 0,
+							hideAnimationDuration: 0
+							
+						};
+						
+						var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+						gallery.init();
+					}
+				}
+			})
+		</script>
+	</body>
+	</html>
