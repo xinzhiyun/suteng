@@ -407,8 +407,17 @@ class ServiceController extends CommonController
     {
         $area = M('area')->where('parentid=0')->select();
         $map = [];
+        if(!empty($_GET['keywords'])){
+            if($_GET['key']=='company'){
+                $map['s.company']=['like',"%".$_GET['keywords']."%"];
+            }
+        }
 
-        $count = M('service_users')->where($map)->count();
+        if(strlen($_GET['status'])){
+            $map['st_service_users.status']=$_GET['status'];
+        }
+
+        $count = M('service_users')->where($map)->join('__SERVICE__ s ON st_service_users.sid=s.id', 'LEFT')->count();
         $Page = new \Think\Page($count,15);
         $data = M('service_users')->where($map)
             ->join('__SERVICE__ s ON st_service_users.sid=s.id', 'LEFT')
@@ -428,6 +437,33 @@ class ServiceController extends CommonController
         ];
         $this->assign($assign);
         $this->display();
+    }
+
+    //编辑服务人员
+    public function setPeople()
+    {
+        try {
+            $data = I('post.');
+            if(empty($data['id'])){
+                E('数据错误',40001);
+            }
+            if(!empty($data['password'])){
+                $saveData['password'] = md5($data['password']);
+            }
+            $saveData['sn'] = $data['sn'];
+            $saveData['name'] = $data['name'];
+            $saveData['phone'] = $data['phone'];
+
+            $res = M('service_users')->where('id='.$data['id'])->save($_POST);
+            if($res){
+                E('修改成功',200);
+            }else{
+                E('修改失败',40002);
+            }
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
     }
 
     // 添加人员
@@ -543,7 +579,27 @@ class ServiceController extends CommonController
 
     // 服务站参数设置
     public function setService(){
-        $this->display();
+        $service_model = M('service_seting');
+
+        if(IS_POST){
+
+            $saveData['joinsost'] = (int)$_POST['joinsost']*100;
+            $saveData['updatetime'] = time();
+
+            $res = $service_model->where('1')->save($saveData);
+            if($res){
+                $this->toJson([],'修改成功',200);
+            }else{
+                $this->toJson([],'修改失败',40002);
+            }
+
+        }else{
+            $data = $service_model->find();
+            $data['joinsost'] = number_format(intval(trim($data['joinsost']), 10)/100,2,'.','');
+
+            $this->assign('data',$data);
+            $this->display();
+        }
     }
 
     // 服务评价设置
@@ -562,7 +618,9 @@ class ServiceController extends CommonController
     {
         $parentid = I('pid',0);
 
-        $data = M('service_evaluate')->where('pid='.$parentid)->select();
+        $data = M('service_evaluate')->where('pid='.$parentid)
+            ->order('sort')
+            ->select();
 
         $this->toJson(['data'=>$data],'获取成功');
     }
@@ -580,18 +638,35 @@ class ServiceController extends CommonController
         }
     }
 
-    // 添加评价项
+    // 编辑评价项
     public function evalEdit()
     {
-
-        $res=M('service_evaluate')->add($_POST);
+        $res=M('service_evaluate')->save($_POST);
 
         if(empty($res)){
-            $this->error('添加失败......');
+            $this->error('编辑失败......');
         }else{
-            $this->success('添加成功......');
+            $this->success('编辑成功......');
         }
     }
+    // 编辑评价项
+    public function evalDel($id)
+    {
+        $re=M('service_evaluate')->where('pid='.$id)->find();
+        if($re){
+            $this->error('有子评价项不能删除......');die;
+        }
+
+        $res=M('service_evaluate')->delete($id);
+
+        if(empty($res)){
+            $this->error('删除失败......');
+        }else{
+            $this->success('删除成功......');
+        }
+    }
+
+
 
 
 }

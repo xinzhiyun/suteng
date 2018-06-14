@@ -67,8 +67,12 @@ class ServicePeopleController extends Controller
             $map['result']=['gt',2];
         }
 
-        if (!empty($map['phone'])) {
-            $map['kphone']=['like','%'.$map['phone'].'%'];
+        if (!empty($map['word'])) {
+            if(is_numeric($map['word'])){
+                $map['kphone']=['like','%'.$map['word'].'%'];
+            }else{
+                $map['kname']=['like','%'.$map['word'].'%'];
+            }
         }
 
 
