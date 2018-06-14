@@ -20,7 +20,7 @@ class ServiceLoginController extends Controller
                     ->alias('au')
                     ->where("user='{$_POST['name']}'")
                     ->join('__SERVICE__ s ON s.auid=au.id', 'LEFT')
-                    ->field('au.password,au.user,s.id,s.company')
+                    ->field('au.password,au.user,s.id,s.company,s.auid')
                     ->find();
 
                 if($info){

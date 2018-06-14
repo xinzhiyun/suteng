@@ -1,6 +1,7 @@
 <?php
 namespace Home\Controller;
 use Common\Tool\File;
+use Common\Tool\Weixin;
 use \Org\Util\WeixinJssdk;
 use Common\Tool\Work;
 /**
@@ -277,6 +278,45 @@ class ServiceController extends ServiceCommonController
             $this->toJson($e);
         }
 
+    }
+
+    // 微信 解绑
+    public function removeWeixin()
+    {
+        try {
+            $saveData = [
+                'open_id'=>'',
+                'wxname'=>'',
+                'updatetime'=>time()
+            ];
+            $res = M('admin_user')->where(['id'=>$_SESSION['serviceInfo']['auid']])->save($saveData);
+
+            if ($res) {
+                E('解绑成功!',200);
+            }else{
+                E('解绑失败,请重试!',400001);
+            }
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+    // 微信 绑定
+    public function bindingWeixin()
+    {
+        $data = Weixin::getWeiXinUserInfo($_SESSION['open_id']);
+        if(!empty($data['open_id'])){
+            $saveData = [
+                'open_id'=> $data['open_id'],
+                'wxname'=>  $data['nickname'],
+                'updatetime'=>time()
+            ];
+            $res = M('admin_user')->where(['id'=>$_SESSION['serviceInfo']['auid']])->save($saveData);
+            if($res){
+                notice('绑定成功!','index');
+            }
+        }
+        notice('绑定失败,请重试!','index');
     }
 
 }

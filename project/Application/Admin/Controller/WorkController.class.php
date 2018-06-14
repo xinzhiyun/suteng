@@ -193,7 +193,7 @@ class WorkController extends CommonController
             if($res){
                 $status = [
                     '9'=>99,// 关闭
-                    '3'=>6
+                    '3'=>8
                 ];
                 if(in_array($data['result'], $status)){
                     Work::add($post['id'], $status[$data['result']]);

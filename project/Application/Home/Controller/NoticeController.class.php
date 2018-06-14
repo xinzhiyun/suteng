@@ -7,6 +7,11 @@ class NoticeController extends Controller
     {
     	$this->display();
     }
+
+    public function notice($url,$arr)
+    {
+        $this->redirect($url,$arr);
+    }
 }
 
 

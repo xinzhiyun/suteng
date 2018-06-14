@@ -23,6 +23,8 @@ class Work
         '7'=>  '服务完成',      //安装工人 完成
         '8'=>  '服务站验收',    //服务站验收成功
 
+        '9'=>  '评价完成',
+
         '99'=>  '工单完成',      // 工单完成(关闭)
     ];
 
@@ -49,21 +51,20 @@ class Work
                 break;
 
             case '2':
-                if($work['is_examine'] == 1){
-                    $data['content'] = '系统审核通过.';
-                } else {
-                    $data['content'] = '系统审核未通过,请检查.';
-                }
+                $data['content'] = '系统审核通过.';
                 break;
 
             case '3':
+                $data['content'] = '系统审核未通过,请检查.';
+
+                break;
+            case '4':
                 if (empty($work['sid'])) { return false; }
                 if ($work['service_mode']==1) { // 第三方
                     $service_info =  M('service_other')->where('id='.$work['sid'])->find();
                 }else{
                     $service_info =  M('service')->where('id='.$work['sid'])->find();
                 }
-
 
                 $_html  = '站点名称:'.$service_info['company'].'<br>';
                 $_html .= '地址:'.$service_info['addressinfo'].'<br>';
@@ -73,18 +74,21 @@ class Work
                 $data['content'] = $_html;
                 break;
 
-            case '4':
+            case '5':
                 if (empty($work['name'])) { return false; }
                 $_html  = '安装师傅:'.$work['name'].'<br>';
                 $_html .= '联系电话:'.$work['phone'].'<br>';
-                $_html .= '预约上门时间:'.$work['anry_time'].$work['anry_period'].'<br>';
+                $_html .= '预约时间:'.$work['anry_time'].$work['anry_period'].'<br>';
                 $_html .= '请保持电话通畅,方便师傅联系上门服务.';
                 $data['content'] = $_html;
                 break;
-
-            case '5':
+            case '8':
                 $data['content'] = '任务已完成,请点击下面 评价 对本次服务进行评价.';
                 break;
+            case '99':
+                $data['content'] = '工单已关闭';
+                break;
+
         }
         return M('work_note')->add($data);
     }
@@ -98,7 +102,6 @@ class Work
         $map['number'] = $number;
         $work = M('work')->where($map)->find();   // 服务人员
         if(empty($work)){ return false; }
-
 
     }
 
