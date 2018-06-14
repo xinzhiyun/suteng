@@ -139,15 +139,26 @@ class ServicePeopleController extends Controller
     {
         try {
             $post = I('post.');
-            if(!empty($post['password'])){
+            if(!empty($post['opassword'])){
+                if(empty($post['password'])){
+                    E('密码不能为空!',40002);
+                }
+
+                $info = M('service_users')->where('id='.$_SESSION['servicepeople']['id'])->find();
+                if (md5($post['opassword']) != $info['password']) {
+                    E('旧密码不对,请重试!',40003);
+                }
+
                 $saveData['password'] = md5($post['password']);
             }
+
             if(!empty($post['name'])){
                 $saveData['name'] = $post['name'];
             }
             if(!empty($post['phone'])){
                 $saveData['phone'] = $post['phone'];
             }
+
             if (empty($saveData))E('无信息提交!',40001);
 
             $saveData['updatetime']=time();
