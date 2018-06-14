@@ -18,7 +18,7 @@ class ServicePeopleController extends Controller
             $openid = Weixin::GetOpenid();
             $_SESSION['open_id']=$openid;
         }
-        
+
         // 自动登录
         if(empty($_SESSION['servicepeople'])){
             $info = M('service_users')->where("open_id='{$_SESSION['open_id']}'")->find();
@@ -73,7 +73,6 @@ class ServicePeopleController extends Controller
             ->limit($page->firstRow.','.$page->listRows)
 //            ->field('id,kname,kphone,create_at')
             ->select();
-        $list = replace_array_value($list,['create_at'=>['date','Y-m-d H:i:s']]);
         $this->toJson(['data'=>$list],'获取成功');
     }
 
@@ -134,6 +133,46 @@ class ServicePeopleController extends Controller
         $this->assign('info',$info);
         $this->display();
     }
+    
+    //用户信息编辑
+    public function setInfo()
+    {
+        try {
+            $post = I('post.');
+            if(!empty($post['opassword'])){
+                if(empty($post['password'])){
+                    E('密码不能为空!',40002);
+                }
+
+                $info = M('service_users')->where('id='.$_SESSION['servicepeople']['id'])->find();
+                if (md5($post['opassword']) != $info['password']) {
+                    E('旧密码不对,请重试!',40003);
+                }
+
+                $saveData['password'] = md5($post['password']);
+            }
+
+            if(!empty($post['name'])){
+                $saveData['name'] = $post['name'];
+            }
+            if(!empty($post['phone'])){
+                $saveData['phone'] = $post['phone'];
+            }
+
+            if (empty($saveData))E('无信息提交!',40001);
+
+            $saveData['updatetime']=time();
+
+            $res = M('service_users')->where('id='.$_SESSION['servicepeople']['id'])->save($saveData);
+            if ($res) {
+                E('修改成功!',200);
+            }else{
+                E('修改失败,请重试!',40001);
+            }
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }    
 
     // 微信 解绑
     public function removeWeixin()
@@ -159,27 +198,18 @@ class ServicePeopleController extends Controller
     // 微信 绑定
     public function bindingWeixin()
     {
-
         $data = Weixin::getWeiXinUserInfo($_SESSION['open_id']);
-
-        $saveData = [
-            'open_id'=> $data['open_id'],
-            'wxname'=>  $data['nickname'],
-            'updatetime'=>time()
-        ];
-
-        $res = M('service_users')->where(['id'=>$_SESSION['servicepeople']['id']])->save($saveData);
-        if($res){
-            $this->redirect('Notice/index', array('title' =>'绑定成功','url'=>U('ServicePeople/servicePersonal')));
-        }else{
-            $this->redirect('Notice/index', array('title' =>'绑定失败','url'=>U('ServicePeople/servicePersonal')));
-
+        if(!empty($data['open_id'])){
+            $saveData = [
+                'open_id'=> $data['open_id'],
+                'wxname'=>  $data['nickname'],
+                'updatetime'=>time()
+            ];
+            $res = M('service_users')->where(['id'=>$_SESSION['servicepeople']['id']])->save($saveData);
+            if($res){
+                notice('绑定成功!','servicePersonal');
+            }
         }
+        notice('绑定失败,请重试!','servicePersonal');
     }
-
-
-
-
-
-
 }

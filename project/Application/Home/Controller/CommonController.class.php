@@ -23,6 +23,7 @@ class CommonController extends Controller
 
         // 前端调试通道
         $_SESSION['open_id'] = C('open_id');
+//        $_SESSION['open_id'] = 'onLe70fYcrqU71RjzfYUjkNf90_E';
 
         // 获取用户open_id
         if(empty($_SESSION['open_id'])){

@@ -328,8 +328,9 @@ class OrderController extends CommonController
                     //查出当前推荐商人
                     $c_info = M('vendors')->where(['code'=>$list['invitation_code'],'status'=>7])->find();
                     //查找所有有直系关系的人
-                   $us_path = M('vendors')->where(['open_id'=>$list['open_id']])->getField('path');
-
+//                   $us_path = M('vendors')->where(['open_id'=>$list['open_id']])->getField('path');
+                    //查找所有有直系关系的人
+                    $us_path = $c_info['path'].'-'.$c_info['id'];
                    //查出推荐人的推荐人
 //                    $f_info = M('vendors')->where(['code'=>$c_info['office_code']])->find();
 //                    dump($com_c);

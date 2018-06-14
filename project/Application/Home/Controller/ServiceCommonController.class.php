@@ -1,5 +1,6 @@
 <?php
 namespace Home\Controller;
+use Common\Tool\Weixin;
 use Think\Controller;
 use \Org\Util\WeixinJssdk;
 /**
@@ -11,18 +12,26 @@ class ServiceCommonController extends Controller
 
     public function _initialize()
     {
-//        $_SESSION['open_id'] = C('open_id'); // 前端调试通道
-//
-//        // 获取用户open_id
-//        if (empty($_SESSION['open_id'])) {
-//            $weixin = new WeixinJssdk;
-//            $_SESSION['open_id'] = $weixin->GetOpenid();
-//        }
+        // 检查微信
+        if(empty($_SESSION['open_id'])){
+            $openid = Weixin::GetOpenid();
+            $_SESSION['open_id']=$openid;
+        }
 
-        // 后续添加 绑定微信进行自动登录
-
+        // 自动登录
         if(empty($_SESSION['serviceInfo'])){
-            $this->redirect("Home/ServiceLogin/index");
+            $info = M('admin_user')
+                ->alias('au')
+                ->where("open_id='{$_SESSION['open_id']}'")
+                ->join('__SERVICE__ s ON s.auid=au.id', 'LEFT')
+                ->field('au.password,au.user,s.id,s.company,s.auid')
+                ->find();
+            if($info) {
+                unset($info['password']);
+                $_SESSION['serviceInfo'] = $info;
+            }else{
+                $this->redirect("Home/ServiceLogin/index");
+            }
         }
     }
 

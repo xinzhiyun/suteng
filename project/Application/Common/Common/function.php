@@ -1353,6 +1353,26 @@ function replace_array_value($data, array $replace, $suffix="")
     return $data;
 }
 
+/**
+ * 提示跳转
+ * notice('绑定失败,请重试!','index');
+ * @param $title
+ * @param $urlv
+ * @param mixed|string $urlc
+ * @param mixed|string $urlm
+ * @param int $time
+ */
+function notice($title, $urlv, $urlc=CONTROLLER_NAME, $urlm=MODULE_NAME,$time=3){
+    $arr = array(
+        'title' =>$title,
+        'urlm'=>$urlm,
+        'urlc'=>$urlc,
+        'urlv'=>$urlv,
+        'time'=>$time
+    );
+    R('Home/Notice/notice',["Notice/index",$arr]);exit;
+}
+
 
 
 
