@@ -103,5 +103,8 @@ var service = new Vue({
 				_this.detail = detail;  //服务详情
 			}
 		}
+	},
+	mounted() {
+		$('.loadingdiv').hide();
 	}
 });

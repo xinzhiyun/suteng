@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
-    <title>服务站</title>
+    <title>服务人员</title>
     <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
     <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
     <link rel="stylesheet" href="__PUBLIC__/Home/css/service/people/index.css">
@@ -28,14 +28,14 @@
                 <p>我的任务</p>
                 <ul>
                     <li>
-                        <a href="{{:U('Home/ServicePeople/wait_task')}}?type=0">
+                        <a href="{{:U('Home/ServicePeople/list')}}?type=0">
                             <p><img src="__PUBLIC__/Home/images/install@2x.png" alt=""></p> 
                             <span>待安装</span>
                             <i class="tipNum" v-text='task.wait_install'>0</i>
                         </a>
                     </li>
                     <li>
-                        <a href="{{:U('Home/ServicePeople/wait_task')}}?type=1">
+                        <a href="{{:U('Home/ServicePeople/list')}}?type=1">
                             <p>
                                 <img src="__PUBLIC__/Home/images/repair@2x.png" alt=""> 
                             </p>
@@ -44,7 +44,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{:U('Home/ServicePeople/wait_task')}}?type=2">
+                        <a href="{{:U('Home/ServicePeople/list')}}?type=2">
                             <p>
                                 <img src="__PUBLIC__/Home/images/maintain@2x.png" alt=""> 
                             </p>
@@ -82,7 +82,8 @@
     <script src='__PUBLIC__/Home/js/vue.min.js'></script>
     <script src="__PUBLIC__/Home/js/service/people/index.js"></script>
     <script>
-        var task = {{$work|json_encode}};
+        peopleindex.task = {{$work|json_encode}};
+        console.log('task: ',peopleindex.task);
     </script>
 </body>
 </html>

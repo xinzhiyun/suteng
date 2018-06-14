@@ -350,8 +350,11 @@ class PayController extends Controller
         if ($orderData) {
 
             $annual_money = M('annual')->find();
+
             //证明是续费
-            $type_info = M('users_order')->where(['user_id'=>$grade['id'],'is_pay'=>1])->save(['type'=>2]);
+//            $type_info = M('users_order')->where(['user_id'=>$grade['id'],'is_pay'=>1])->save(['type'=>2]);
+            $type_info = M('users_order')->where(['user_id'=>$grade['id'],'is_pay'=>1])->find(['type'=>2]);
+
             if ($type_info) {
                 switch ($orderData['annual_status']) {
                     case '1':
@@ -360,6 +363,7 @@ class PayController extends Controller
                         ];
                         break;
                     case '2':
+
                         $data['annual_ey'] = $annual_money['annual_money']/365;
                         $data['medal_ey'] = $annual_money['medal_money']/365;
                         //计算出当前会员剩余天数
@@ -371,6 +375,7 @@ class PayController extends Controller
                             'dia_describe' => $annual_money['dia_describe'],
                             'status' => 2
                         ];
+
                         break;
                     case '3':
 
@@ -397,6 +402,7 @@ class PayController extends Controller
                         ];
                         break;
                 }
+
                 $this->assign('grade',$grade);
                 $this->assign('annual',$pp);
                 $this->display();
