@@ -21,15 +21,21 @@
 			<ul>
 				<li class="link_b">
 					<span class="left">用户名</span>
-					<span class="right" v-text="detail.name">建军</span>
+					<span class="right" v-text="detail.kname">建军</span>
 				</li>
 				<li class="link_b">
 					<span class="left">手机号码</span>
-					<span class="right" v-text="detail.phone">13526325411</span>
+					<span class="right"><a :href="'tel:'+detail.kphone" v-text="detail.kphone"></a></span>
 				</li>
-				<li class="link_b">
-					<span class="left">维护地址</span>
-					<span class="right" v-text="detail.province+detail.city+detail.district+detail.address">广州市番禺区创源路三楼</span>
+				<li class="link_b cfix">
+					<div>
+						<span class="left fl">维护地址</span>
+						<span class="right fl" v-text="detail.province+detail.city+detail.district">广州市番禺区创源路三楼</span>
+					</div>
+					<div>
+						<span>&emsp;</span>
+						<span class="right" v-text="detail.address">广州市番禺区创源路三楼</span>
+					</div>
 				</li>
 			</ul>
 		</div>
@@ -48,15 +54,21 @@
 				</li>
 				<li class="link_b">
 					<span class="left">请求时间</span>
-					<span class="right" v-text="detail.time">2018-06-01</span>
+					<span class="right" v-text="detail.anrytime">2018-06-01</span>
 				</li>
 				<li class="link_b">
 					<span class="left">服务类型</span>
-					<span class="right" v-text="detail.type">安装</span>
+					<span class="right" v-if='detail.type == 0'>安装</span>
+					<span class="right" v-if='detail.type == 1'>维修</span>
+					<span class="right" v-if='detail.type == 2'>维护</span>
 				</li>
 				<li class="link_b">
-					<span class="left">来源</span>
-					<span class="right" v-text="detail.origin">用户</span>
+					<span class="left">服务信息</span>
+					<span class="right" v-html="detail.content"></span>
+				</li>
+				<li class='picShow pics' v-if='picList.length'>
+					<p class='left'>图片</p>
+					<img v-for='(p, index) in picList' :src="p" alt="加载中" @click='photoSwipe(index)'>
 				</li>
 			</ul>
 		</div>
@@ -89,7 +101,69 @@
         </div>  
     </div>  
 	<!-- 模态框部分结束 -->
-
+	<!-- Root element of PhotoSwipe. Must have class pswp. -->
+	<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+		
+		<!-- Background of PhotoSwipe. 
+			It's a separate element as animating opacity is faster than rgba(). -->
+		<div class="pswp__bg"></div>
+		
+		<!-- Slides wrapper with overflow:hidden. -->
+		<div class="pswp__scroll-wrap">
+			
+			<!-- Container that holds slides. 
+			PhotoSwipe keeps only 3 of them in the DOM to save memory.
+			Don't modify these 3 pswp__item elements, data is added later on. -->
+			<div class="pswp__container">
+				<div class="pswp__item"></div>
+				<div class="pswp__item"></div>
+				<div class="pswp__item"></div>
+			</div>
+			
+			<!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+			<div class="pswp__ui pswp__ui--hidden">
+				
+				<div class="pswp__top-bar">
+					
+					<!--  Controls are self-explanatory. Order can be changed. -->
+					
+					<div class="pswp__counter"></div>
+					
+					<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+					
+					<!-- <button class="pswp__button pswp__buttonshare" title="Share"></button> -->
+					
+					<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+					
+					<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+					
+					<!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+					<!-- element will get class pswp__preloader-active when preloader is running -->
+					<div class="pswp__preloader">
+						<div class="pswp__preloader__icn">
+							<div class="pswp__preloader__cut">
+								<div class="pswp__preloader__donut"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+					<div class="pswp__share-tooltip"></div> 
+				</div>
+				
+				<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+				</button>
+				
+				<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+				</button>
+				
+				<div class="pswp__caption">
+					<div class="pswp__caption__center"></div>
+				</div>
+			</div>	
+		</div>
+	</div>
 	<p class='notice' :style='{display: noticestyle}' v-text='notice'></p>
 </div>
 	<script src="__PUBLIC__/Home/js/head.js"></script>
@@ -98,5 +172,9 @@
 	<script src="__PUBLIC__/Home/js/amazeui.min.js"></script>
 	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
 	<script src="__PUBLIC__/Home/js/service/people/detail.js"></script>
+	<link rel="stylesheet" href="__PUBLIC__/Home/photoswipe/photoswipe.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/photoswipe/default-skin/default-skin.css"> 
+	<script src="__PUBLIC__/Home/photoswipe/photoswipe.min.js"></script> 
+	<script src="__PUBLIC__/Home/photoswipe/photoswipe-ui-default.min.js"></script> 
 </body>
 </html>
