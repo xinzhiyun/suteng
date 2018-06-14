@@ -45,9 +45,9 @@
                 var vm = this;
                 var get = {{$_GET|json_encode}};
                 vm.title = decodeURI(get.title);
-                vm.link = get.url;
+                vm.link = 'http://test.dianqiukj.com/index.php/'+ decodeURI(get.urlm) +'/'+ decodeURI(get.urlc) +'/'+ decodeURI(get.urlv);
                 vm.time = get.time || '3';
-                console.log('get: ',get)
+                console.log('get: ',get);
                 // 倒计时
                 setInterval(function(){
                     vm.time = vm.time-- > 0 ? vm.time-- : 0;

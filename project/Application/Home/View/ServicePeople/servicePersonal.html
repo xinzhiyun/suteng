@@ -3,51 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
-    <title>服务站</title>
+    <title>个人中心</title>
     <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
     <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
     <link rel="stylesheet" href="__PUBLIC__/Home/css/service/people/personal.css">
 </head>
-<body>
+<body ontouchstart='console.log()'>
     <div class="main">
         <ul>
             <!-- 姓名 -->
             <li>
-                <a href="####">
+                <a href="javascript:;">
                     <span>姓名：</span>
-                    <span>张三</span>
+                    <span v-if='!edit_status' v-text='info.name'></span>
+                    <span style='display: none;' :style='{display: edit_status ? "block" : "none"}'><input type="text" :value='info.name' v-model='info.name'></span>
                 </a>
             </li>
             <li>
-                <a href="{{:U('Home/Index/personalDetail')}}?index=0">
+                <a href="javascript:;">
                     <span>联系电话：</span>
-                    <span>13554265148</span>
-                    <i class="iconfont icon-right"></i>
+                    <span v-if='!edit_status' v-text='info.phone'></span>
+                    <span style='display: none;' :style='{display: edit_status ? "block" : "none"}'><input type="text" :value='info.phone' v-model='info.phone'></span>
+                    <!-- <i class="iconfont icon-right"></i> -->
                 </a>
             </li>
             <!-- 密码 -->
-            <li>
-                <a href="####">
-                    <span>登录工号：</span>
-                    <span>46253164875</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{:U('Home/Index/personalDetail')}}?index=1">
-                    <span>登录密码：</span>
-                    <span>135264</span>
-                    <i class="iconfont icon-right"></i>
-                </a>
-            </li>
-            <li class='bindweixin'>
+            <li v-if='!edit_status'>
                 <a href="javascript:;">
-                    <span>绑定微信</span>
+                    <span>工号：</span>
+                    <span v-text='info.sn'></span>
+                </a>
+            </li>
+            <li :style='{display: edit_status ? "block" : "none"}' style='display:none;'>
+                <a href="javascript:;">
+                    <span>旧密码：</span>
+                    <span v-show='edit_status'><input type="password" v-model='oldpwd'></span>
+                    <!-- <i class="iconfont icon-right"></i> -->
+                </a>
+            </li>
+            <li :style='{display: edit_status ? "block" : "none"}' style='display:none;'>
+                <a href="javascript:;">
+                    <span>新密码：</span>
+                    <span v-show='edit_status'><input type="password" v-model='info.pwd'></span>
+                    <!-- <i class="iconfont icon-right"></i> -->
+                </a>
+            </li>
+            <li :style='{display: edit_status ? "block" : "none"}' style='display:none;'>
+                <a href="javascript:;">
+                    <span>确认密码：</span>
+                    <span v-show='edit_status'><input type="password" v-model='info.repwd'></span>
+                    <!-- <i class="iconfont icon-right"></i> -->
+                </a>
+            </li>
+            <li :style='{display: edit_status ? "block" : "none"}' style='display:none;'>
+                <a href="javascript:;">
+                    <span>不修改的项目请留空</span>
+                    <span>&emsp;</span>
+                </a>
+            </li>
+            <li class='bindweixin' :style='{display: !edit_status ? "block" : "none"}' style='display:none;'>
+                <a href="javascript:;">
+                    <span v-if='bindstatus'>绑定的微信账号: <span v-text='info.wxname' style='color:#00BCD4;'></span></span>
+                    <span @click='bindwx(bindstatus)' v-if='bindstatus' style='color: red !important'>解绑微信</span>
+                    <span @click='bindwx(bindstatus)' v-if='!bindstatus' style='color: red !important'>绑定微信</span>
                 </a>
             </li>
         </ul>
+        <button class='edit' @click='edit(edit_status)' v-if='!edit_status'>编辑</button>
+        <button class='edit' @click='edit(edit_status)' v-if='edit_status'>保存</button>
     </div>
+    <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+    <script src="__PUBLIC__/Home/js/public.js"></script>
+    <script src='__PUBLIC__/Home/js/vue.min.js'></script>
+    <script src='__PUBLIC__/Home/js/md5.js'></script>
+    <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '.main',
+            data() {
+                return {
+                    _url: '',
+                    info: '',
+                    oldpwd: '',
+                    bakeinfo: '',
+                    bindstatus: false,
+                    edit_status: false
+                }
+            },
+            created() {
+                this.info = {{$info|json_encode}};
+                this.info['pwd'] = '';
+                this.info['repwd'] = '';
+                this.bakeinfo = {{$info|json_encode}};
+                this.bindstatus = this.info['open_id'] ? true : false;
+                console.log('info: ',this.info);
+            },
+            methods: {
+                // 绑定微信/ 解绑微信
+                bindwx(bindstatus) {
+                    console.log('bindstatus: ',bindstatus);
+                    // Home/ServicePeople/bindingWeixin 绑定
+                    // Home/ServicePeople/removeWeixin 解绑
+                    if(bindstatus){
+                        // 解绑
+                        $.ajax({
+                            url: '{{:U("Home/ServicePeople/removeWeixin")}}',
+                            type: 'post',
+                            success: function(res){
+                                console.log('res: ',res);
+                                layuiHint(res.msg);
+                                setTimeout(function(){
+                                    location.reload();
+                                },2000)
+                            },
+                            error: function(err){
+                                console.log('err: ',err);
+                                layuiHint('系统出错，请稍后再试');
+                            }
+                        })
+                    }else{
+                        location.href = '{{:U("Home/ServicePeople/bindingWeixin")}}';
+                    }
+                    
+                },
+                // 编辑保存
+                edit() {
+                    var vm = this;
+                    // console.log('edit_status: ',vm.edit_status);
+                    if(vm.edit_status){
+                        var data = {};
+                        if(vm.info['name'] != vm.bakeinfo['name']){
+                            data['name'] = vm.info['name'];
+                        }
+                        if(vm.info['phone'] != vm.bakeinfo['phone']){
+                            if(!phoneReg.test(vm.info['phone'])){
+                                layuiHint('请输入正确的手机号');
+                                return
+                            }
+                            data['phone'] = vm.info['phone'];
+                        }
+
+                        if((vm.info['pwd'] || vm.info['repwd']) && !vm.oldpwd){
+                            layuiHint('请输入旧密码');
+                            return
+                        }else if(vm.oldpwd){
+                            data['opassword'] = hex_md5(vm.oldpwd);
+                        }
+                        if(vm.info['pwd'] && !vm.info['repwd']){
+                            layuiHint('请输入确认密码');
+                            return
+
+                        }else if(vm.info['pwd'] != vm.info['repwd']){
+                            layuiHint('两次密码不一致');
+                            return
+                        }else if(vm.info['pwd'] == vm.info['repwd'] && vm.info['pwd'] && vm.info['repwd']){
+                            data['password'] = hex_md5(vm.info['pwd']);
+                        }
+                        console.log('data: ',data);
+                        if(JSON.stringify(data) == '{}'){
+                            layuiHint('你什么都没改');
+                            vm.edit_status = false;
+                            return
+                        }
+                        // 保存
+                        $.ajax({
+                            url: '{{:U("Home/ServicePeople/setInfo")}}',
+                            type: 'post',
+                            data: data,
+                            success: function(res){
+                                console.log('res: ',res);
+                                if(res.status == 200){
+                                    
+                                    layuiHint(res.msg);
+                                    setTimeout(function(){
+                                        vm.edit_status = false;
+                                        location.reload();
+                                    },2000)
+                                }else{
+                                    layuiHint(res.msg);
+                                }
+                            },
+                            error: function(err){
+                                console.log('err: ',err);
+                            }
+                        })
+                    }else{
+                        // 编辑
+                        
+                    }
+
+                    vm.edit_status = true;
+                }
+            }
+        })
+    </script>
 </body>
-<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
-<script src="__PUBLIC__/Home/js/public.js"></script>
-<script src="__PUBLIC__/Home/js/service/people/personal.js"></script>
 </html>
