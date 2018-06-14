@@ -59,10 +59,13 @@ class ServicePeopleController extends Controller
 
         $map['sid'] = $_SESSION['servicepeople']['sid'];
 
-        if (!empty($_GET['result'])) {
+
+        strlen(I('type'))?$map['type'] = I('type'):'';
+
+        if (!empty($map['type']) && $map['type']=='all') {
+            unset($map['type']);
             $map['result']=['gt',2];
         }
-        strlen(I('type'))?$map['type'] = I('type'):'';
         $total = M('work')
             ->where($map)
             ->count('id');
