@@ -3,6 +3,7 @@ var take = new Vue({
 	data(){
 		return{
 			search: "",
+			timetype: '预约时间',
 			list: [],		//列表
 			type: '',
 			notice: '加载中...',
@@ -82,9 +83,16 @@ var take = new Vue({
 		// 显示服务类型
 		var textList = ['待安装', '待维修', '待维护'];
 		this.type = GetQueryString('type');
+		if(this.type != 'all'){
+			$('#navbar>h2').text(textList[+this.type]);
+			document.title = textList[+this.type];
+		}else{
+			vm.timetype = '完成时间';
+			$('#navbar>h2').text('服务记录');
+			document.title = '服务记录';
+		}
 		console.log('textList[+this.type]', textList[+this.type]);
-		$('#navbar>h2').text(textList[+this.type]);
-		document.title = textList[+this.type];
+
 
 		// 获取列表数据
 		this.getList(function(res){
