@@ -3,48 +3,15 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
-	<title>待安装</title>
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/wait_task/css/wait_task.css">
+	<title>待安装详情</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/people/detail.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/amazeui.min.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/common.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css">
 </head>
 <body>
 <div id="app">
-	<!-- 待办任务列表部分开始 -->
-	<div class="wrap">
-		<!-- 搜索部分开始 -->
-		<div class="header">
-			<div class="sub_head" @keyup.enter="lookup">
-				<label for="">
-					<i class="iconfont icon-sousuo" @click="subSea"></i>
-					<input type="text" name="searchInfo" placeholder="请输入姓名/手机号码" v-model="search">
-				</label>
-			</div>
-		</div>
-
-		<!-- 用户列表 -->
-		<div class="list">
-			<ul class="link_b">
-				<li>
-					<span class="am-u-sm-3">用户名</span>
-					<span class="am-u-sm-4">手机号码</span>
-					<span class="am-u-sm-4">请求时间</span>
-					<i class="am-u-sm-1">&nbsp;</i>
-				</li>
-			</ul>
-			<ul>
-				<li class="link_b" v-for="(l,index) in list" @click="userList(l.name,l.phone)">
-					<span class="am-u-sm-3" v-text="l.name">沈腾</span>
-					<span class="am-u-sm-4" v-text="l.phone">135 263 25411</span>
-					<span class="am-u-sm-4" v-text="l.time">2018-06-01</span>
-					<i class="am-u-sm-1">></i>
-				</li>
-			</ul>
-		</div>
-	</div>
-	<!-- 待办任务列表部分结束 -->
-
+	
 	<!-- 服务详情页面部分开始 -->
 	<div class="detail">
 		<div class="user">
@@ -123,14 +90,14 @@
     </div>  
 	<!-- 模态框部分结束 -->
 
+	<p class='notice' :style='{display: noticestyle}' v-text='notice'></p>
 </div>
 	<script src="__PUBLIC__/Home/js/head.js"></script>
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script src="__PUBLIC__/Home/js/amazeui.min.js"></script>
 	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
-	<script src="__PUBLIC__/Home/js/wait_task/wait_task.js"></script>
-	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
+	<script src="__PUBLIC__/Home/js/service/people/detail.js"></script>
 	<script>	
 		// url type: 0待安装, 1待维修，2待维护
 		var infos = [

@@ -347,7 +347,7 @@ class OrderController extends CommonController
                         //销售奖收益记录
                         if ($earnings_comc) {
 //                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
-                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s'),'content'=>'销售奖']);
+                            M('earnings')->add(['orderid'=>$list['order_id'],'bid'=>$list['uid'], 'type_cont'=>'1','type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
                         }
                     }
                     //查找推荐人的推荐人
@@ -361,7 +361,7 @@ class OrderController extends CommonController
                         //销售奖收益记录
                         if ($earnings_comd) {
 //                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
-                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s'),'content'=>'市场推广奖']);
+                            M('earnings')->add(['orderid'=>$list['order_id'],'bid'=>$list['uid'], 'type_cont'=>'2','type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
                         }
                     }
 
@@ -389,7 +389,7 @@ class OrderController extends CommonController
                         $earnings_comp = M('vendors')->where(['id'=>$c_info['id'],'status'=>7])->setInc('abonus',$com_p);
                         //市场培育收益记录
                         if ($earnings_comp) {
-                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s'),'content'=>'市场培育奖']);
+                            M('earnings')->add(['orderid'=>$list['order_id'],'bid'=>$list['uid'], 'type_cont'=>'3','type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
                         }
 
                     } else {
@@ -408,7 +408,7 @@ class OrderController extends CommonController
                                 M('vendors')->where(['id'=>$my_level_info['id']])->setInc('abonus',$com_p);
 //
                                 if ($earnings_comc) {
-                                    M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s'),'content'=>'市场培育奖']);
+                                    M('earnings')->add(['orderid'=>$list['order_id'],'bid'=>$list['uid'], 'type_cont'=>'3','type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
                             }
                         }
@@ -433,7 +433,7 @@ class OrderController extends CommonController
                             if ($earnings_ta) {
                                 M('earnings')->add(['orderid'=>$list['order_id'],'bid'=>$list['uid'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$vid,'abonus'=>$com_t,'create_time'=>date
                                 ('Y-m-d H:i:s')
-                                    ,'content'=>'4']);
+                                    ,'type_cont'=>'4']);
                             }
                         } else {
                             $in_info = M('vendors')->where($in_B)->select();
@@ -457,7 +457,7 @@ class OrderController extends CommonController
 
                         //市场培育收益记录
                         if ($earnings_ta) {
-                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s'),'content'=>'团队管理奖2']);
+                            M('earnings')->add(['orderid'=>$list['order_id'],'bid'=>$list['uid'], 'type_cont'=>'5','type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
                         }
 
                     } else {
@@ -474,7 +474,8 @@ class OrderController extends CommonController
 //                            M('vendors')->where(['id'=>$path_info_A['id']])->save(['updatetime'=>time()]);
                                 $earnings_ta = M('vendors')->where(['id'=>$path_info_A['id']])->setInc('abonus',$com_ta);
                                 if ($earnings_ta) {
-                                    M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$path_info_A['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s'),'content'=>'团队管理奖2']);
+                                    M('earnings')->add(['orderid'=>$list['order_id'],'bid'=>$list['uid'], 'type_cont'=>'5','type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$path_info_A['id'],
+                                        'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
                             }
                         }

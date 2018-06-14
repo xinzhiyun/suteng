@@ -24,6 +24,7 @@ class WorkController extends CommonController
             if ( empty($post['device_code']) ) {
                 E('请确认设备信息',400022);
             }
+
             //工单类型(0：安装 1：维修 2：维护)
             $content_pre = ['1'=>'设备维修','2'=>'设备维护'];
             $data['content'] = $content_pre[$data['type']] .'-设备:'.$post['device_code'].'<br/>'.$post['content'];
@@ -71,8 +72,11 @@ class WorkController extends CommonController
 
 
             $data['device_code'] = $post['device_code'];
+            // device_type
+            $type = M('devices')->where('device_code='.$post['device_code'])->getField('type_id');
+            $device_type = M('type')->where('id='.$type)->getField('typename');
 
-
+            $data['device_type'] = $device_type;
             $data['is_examine'] = 0;
             $data['create_at']=time();
             $data['update_at']=time();
@@ -152,6 +156,7 @@ class WorkController extends CommonController
             $data['title']   = '设备安装';
 
             $data['device_code'] = $post['device_code'];
+            $data['device_type'] = $post['device_type'];
 
             $data['is_examine'] = 0;
             $data['create_at']=time();

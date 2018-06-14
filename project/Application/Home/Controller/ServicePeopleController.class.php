@@ -3,6 +3,7 @@ namespace Home\Controller;
 use \Org\Util\WeixinJssdk;
 use Think\Controller;
 use Common\Tool\Work;
+use Common\Tool\Weixin;
 /**
  * 服务站 工作人员
  */
@@ -12,8 +13,21 @@ class ServicePeopleController extends Controller
     public function __construct()
     {
         parent::__construct();
+        // 检查微信
+        if(empty($_SESSION['open_id'])){
+            $openid = Weixin::GetOpenid();
+            $_SESSION['open_id']=$openid;
+        }
+        
+        // 自动登录
         if(empty($_SESSION['servicepeople'])){
-            $this->redirect("Home/ServiceLogin/peopleIndex");
+            $info = M('service_users')->where("open_id='{$_SESSION['open_id']}'")->find();
+            if($info) {
+                unset($info['password']);
+                $_SESSION['servicepeople'] = $info;
+            }else{
+                $this->redirect("Home/ServiceLogin/peopleIndex");
+            }
         }
     }
 
@@ -43,7 +57,7 @@ class ServicePeopleController extends Controller
         $p = I('p',1);
         $_GET['p']=$p;
 
-        $map['sid'] = $_SESSION['serviceInfo']['id'];
+        $map['sid'] = $_SESSION['servicepeople']['sid'];
 
         strlen(I('type'))?$map['type'] = I('type'):'';
         $total = M('work')
@@ -57,8 +71,9 @@ class ServicePeopleController extends Controller
         $list = M('work')
             ->where($map)
             ->limit($page->firstRow.','.$page->listRows)
-            ->field('id,kname,kphone,create_at')
+//            ->field('id,kname,kphone,create_at')
             ->select();
+        $list = replace_array_value($list,['create_at'=>['date','Y-m-d H:i:s']]);
         $this->toJson(['data'=>$list],'获取成功');
     }
 
@@ -112,9 +127,58 @@ class ServicePeopleController extends Controller
         }
     }
 
+    // 用户信息
+    public function servicePersonal()
+    {
+        $info = M('service_users')->where(['id'=>$_SESSION['servicepeople']['id']])->find();
+        $this->assign('info',$info);
+        $this->display();
+    }
 
-    // 代缴费 搜索
-    
+    // 微信 解绑
+    public function removeWeixin()
+    {
+        try {
+            $saveData = [
+                'open_id'=>'',
+                'wxname'=>'',
+                'updatetime'=>time()
+            ];
+            $res = M('service_users')->where(['id'=>$_SESSION['servicepeople']['id']])->save($saveData);
+
+            if ($res) {
+                E('解绑成功!',200);
+            }else{
+                E('解绑失败,请重试!',400001);
+            }
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+    // 微信 绑定
+    public function bindingWeixin()
+    {
+
+        $data = Weixin::getWeiXinUserInfo($_SESSION['open_id']);
+
+        $saveData = [
+            'open_id'=> $data['open_id'],
+            'wxname'=>  $data['nickname'],
+            'updatetime'=>time()
+        ];
+
+        $res = M('service_users')->where(['id'=>$_SESSION['servicepeople']['id']])->save($saveData);
+        if($res){
+            $this->redirect('Notice/index', array('title' =>'绑定成功','url'=>U('ServicePeople/servicePersonal')));
+        }else{
+            $this->redirect('Notice/index', array('title' =>'绑定失败','url'=>U('ServicePeople/servicePersonal')));
+
+        }
+    }
+
+
+
 
 
 
