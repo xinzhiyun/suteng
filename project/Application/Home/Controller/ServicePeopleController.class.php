@@ -66,6 +66,12 @@ class ServicePeopleController extends Controller
             unset($map['type']);
             $map['result']=['gt',2];
         }
+
+        if (!empty($map['phone'])) {
+            $map['kphone']=['like','%'.$map['phone'].'%'];
+        }
+
+
         $total = M('work')
             ->where($map)
             ->count('id');
