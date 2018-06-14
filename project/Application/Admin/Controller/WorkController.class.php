@@ -286,7 +286,9 @@ class WorkController extends CommonController
                     'name'=>$user['name'],
                     'sn'=>$user['sn'],
                     'phone'=>$user['phone'],
-                    'result'=>1
+                    'result'=>1,
+                    'anry_period'=>$post['anry_period'],
+                    'anry_time'=>$post['anry_time']
                 ];
                 $res =  M('work')->where('id='.$post['wid'])->save($saveData);
                 Work::add($post['wid'], 5);
