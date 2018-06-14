@@ -73,9 +73,7 @@
   text-align: center;
   color: #808080;
 }
-.detail {
-  display: none;
-}
+
 .detail .user ul:nth-child(1) {
   width: 100%;
 }

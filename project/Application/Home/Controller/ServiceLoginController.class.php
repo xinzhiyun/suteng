@@ -94,12 +94,6 @@ class ServiceLoginController extends Controller
         $this->redirect('ServiceLogin/index');
     }
 
-    // 服务站申请
-    public function apply()
-    {
-        
-    }
-
     // 验证码方法
     public function yzm()
     {
@@ -111,5 +105,52 @@ class ServiceLoginController extends Controller
         $Verify = new \Think\Verify($config);
         $Verify->entry();
     }
+
+
+
+//    // 服务站申请
+//    public function apply()
+//    {
+//
+//    }
+
+    // 服务站申请 -获取未开通的服务站
+    /**
+     * 获取服务站
+     */
+    public function getService()
+    {
+        try {
+            $data = I('post.');
+            if(!empty($data['province_id'])){
+                $map['province_id'] = $data['province_id'];
+            }
+            if(!empty($data['city_id'])){
+                $map['city_id'] = $data['city_id'];
+            }
+            if(!empty($data['district_id'])){
+                $map['district_id'] = $data['district_id'];
+            }
+            $map['status'] = ['neq',1];
+            $count = M('service')->where($map)->count();
+            if(empty($count)){
+                $this->toJson(['data'=>[]],'无数据,请重试!',40001);
+            }
+            $Page       = new \Think\Page($count,15);
+            $data = M('service')->where($map)
+                ->limit($Page->firstRow.','.$Page->listRows)
+                ->select();
+
+            $this->toJson(['data'=>$data],'获取成功!',200);
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+
+
+
+
 
 }

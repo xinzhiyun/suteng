@@ -3,10 +3,13 @@ var take = new Vue({
 	data(){
 		return{
 			search: "",
+			timetype: '预约时间',
 			list: [],		//列表
 			type: '',
 			notice: '加载中...',
-			noticestyle: 'block'
+			noticestyle: 'block',
+			loadstyle: 'block',
+			page: ''
 		}
 	},
 	methods:{
@@ -62,19 +65,75 @@ var take = new Vue({
 			var _this = this;
 			_this.subPub();
 		}, 
-		// 点击搜索小图标
-		subSea(){
-			var _this = this;
-			_this.subPub();
+		// 点击搜索小图标或回车
+		subSea(word){
+			var vm = this;
+			console.log('word: ',word);
+			if(!word){
+				layuiHint('请输入手机号');
+				return
+			}
+			$.ajax({
+				url: getURL('Home', 'servicePeople/getList'),
+				type: 'get',
+				data: {word: word},
+				success: function(res){
+					console.log('res: ',res);
+					if(res.status == 200){
+						if(!res.data.length){
+							layuiHint('查无记录');
+							vm.loadstyle = 'none';
+							return
+						}
+						vm.noticestyle = 'none';
+						vm.list = res.data;
+						vm.page = 1;
+					}else{
+						layuiHint('查无记录');
+						vm.loadstyle = 'none';
+					}
+				},
+				error: function(err){
+					console.log('err: ',err);
+				}
+			})
+		},
+		// 加载更多
+		loadmore() {
+			var vm = this;
+			// 请求分页数据
+			this.getList(function(res){
+				console.log('more_res: ',res);
+				if(res.status == 200){
+					if(!res.data.length){
+						layuiHint('没有更多数据');
+						vm.loadstyle = 'none';
+						return
+					}
+					vm.noticestyle = 'none';
+					for(var i=0; i<res.data.length; i++){
+						vm.list.push({
+							number: res.data[i].number,
+							device_type: res.data[i].device_type,
+							anry_time: res.data[i].anry_time,
+							pass_at: res.data[i].pass_at
+						})
+					}
+					vm.page++;
+				}else{
+					layuiHint('没有更多数据');
+					vm.loadstyle = 'none';
+				}
+			}, this.type, this.page++)
 		},
 	    // 服务详情
-		getDetail(number){
+		getDetail(wid){
 			// number 工单号
 			// type: 工单类型：1
 			var _this = this;
 			location.href = getURL('Home', 'servicePeople/detail')
 			 + '?type=' + this.type
-			 + '&number=' + number;
+			 + '&wid=' + wid;
 		}
 	},
 	created() {
@@ -82,23 +141,32 @@ var take = new Vue({
 		// 显示服务类型
 		var textList = ['待安装', '待维修', '待维护'];
 		this.type = GetQueryString('type');
+		if(this.type != 'all'){
+			$('#navbar>h2').text(textList[+this.type]);
+			document.title = textList[+this.type];
+		}else{
+			vm.timetype = '完成时间';
+			$('#navbar>h2').text('服务记录');
+			document.title = '服务记录';
+		}
 		console.log('textList[+this.type]', textList[+this.type]);
-		$('#navbar>h2').text(textList[+this.type]);
-		document.title = textList[+this.type];
 
 		// 获取列表数据
 		this.getList(function(res){
-			console.log('res: ',res);
+			console.log('listres: ',res);
 			if(res.status == 200){
 				if(!res.data.length){
 					vm.notice = '暂无数据';
 					layuiHint('查无数据');
+					vm.loadstyle = 'none';
 					return
 				}
 				vm.noticestyle = 'none';
 				vm.list = res.data;
+				vm.page = 1;
 			}else{
 				layuiHint(res.msg);
+				vm.loadstyle = 'none';
 			}
 		}, this.type);
 
