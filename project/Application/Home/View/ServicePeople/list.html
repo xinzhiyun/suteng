@@ -17,8 +17,8 @@
 		<div class="header">
 			<div class="sub_head" @keyup.enter="lookup">
 				<label for="">
-					<i class="iconfont icon-sousuo" @click="subSea"></i>
-					<input type="text" name="searchInfo" placeholder="请输入姓名/手机号码" v-model="search">
+					<i class="iconfont icon-sousuo" @click="subSea(search)"></i>
+					<input type="text" name="searchInfo" placeholder="请输入姓名/手机号码" v-model="search" @keyup.enter='subSea(search)'>
 				</label>
 			</div>
 		</div>
@@ -34,12 +34,14 @@
 				</li>
 			</ul>
 			<ul>
-				<li class="link_b am-g" v-for="(l,index) in list" @click="getDetail(l.number)">
+				<li class="link_b am-g" v-for="(l,index) in list" @click="getDetail(l.id)">
 					<span class="am-u-sm-3" v-text="l.number"></span>
 					<span class="am-u-sm-4" v-text="l.device_type"></span>
-					<span class="am-u-sm-4" v-text="l.anry_time"></span>
+					<span class="am-u-sm-4" v-if='type != "all"' v-text="l.anry_time"></span>
+					<span class="am-u-sm-4" v-if='type == "all"' v-text="l.pass_at"></span>
 					<i class="am-u-sm-1">></i>
 				</li>
+				<div class='loadmore' @click='loadmore' :style='{display: loadstyle}'>加载更多</div>
 			</ul>
 		</div>
 	</div>
