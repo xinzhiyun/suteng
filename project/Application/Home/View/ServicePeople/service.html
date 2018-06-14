@@ -28,18 +28,16 @@
 			<ul class="link_b">
 				<li>
 					<span class="am-u-sm-3">工单号</span>
-					<span class="am-u-sm-4">状态</span>
-					<span class="am-u-sm-4">请求时间</span>
+					<span class="am-u-sm-4">设备型号</span>
+					<span class="am-u-sm-4">完成时间</span>
 					<i class="am-u-sm-1">&nbsp;</i>
 				</li>
 			</ul>
 			<ul>
 				<li class="link_b" v-for="(l,index) in list" @click="userList(l.status)">
-					<span class="am-u-sm-3" v-text="l.name">沈腾</span>
-					<span class="am-u-sm-4" v-if="l.status == 0" style="color:#f43030">未处理</span>
-					<span class="am-u-sm-4" v-if="l.status == 1" style="color:#4398f0">进行中</span>
-					<span class="am-u-sm-4" v-if="l.status == 2" style="color:#32c97c">已处理</span>
-					<span class="am-u-sm-4" v-text="l.time">2018-06-01</span>
+					<span class="am-u-sm-3" v-text="l.number"></span>
+					<span class="am-u-sm-4" v-if="l.device_type"></span>
+					<span class="am-u-sm-4" v-text="l.pass_at"></span>
 					<i class="am-u-sm-1">></i>
 				</li>
 			</ul>
@@ -110,40 +108,5 @@
 	<script src="__PUBLIC__/Home/js/amazeui.min.js"></script>
 	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
 	<script src="__PUBLIC__/Home/js/service/people/service.js"></script>
-	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
-	<script>	
-		var infos = [
-			{
-				name:"沈腾",
-				status:"0",
-				time:"2018-06-01"
-			},
-			{
-				name:"古天乐",
-				status:"1",
-				time:"2018-06-02"
-			},
-			{
-				name:"黄渤",
-				status:"2",
-				time:"2018-06-03"
-			}
-		];
-		// status: 0未处理 1进行中 2已完成
-		var detail = {
-			name:"沈腾",
-			phone:"13526325411",
-			add:"广州市番禺区创源路三楼",
-			model:"净水机BL(axl-114)",
-			code:"868575025659808",
-			time:"2018-06-01",
-			type:"安装",
-			origin:"用户",
-			status:"0",
-		}
-		service.list = infos;     //用户列表
-		service.detail = detail;  //服务详情
-		$(".loadingdiv").hide();
-	</script>
 </body>
 </html>

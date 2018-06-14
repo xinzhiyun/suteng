@@ -218,9 +218,16 @@ class OrderController extends CommonController
             //在确认收货前判断该订单是否有退货未处理完
             $rf_id = M('RefundGoods')->where("oid='{$oid}'")->find()['rf_id'];
 
-            $rstatus = M('refund')->where('id='.$rf_id)->find()['status'];
+            //判断该订单是否有退货
+            if ($rf_id) {
+                
+                //有退货先判断退货是否已经处理完
+                $rstatus = M('refund')->where('id='.$rf_id)->find()['status'];
 
-            if ($rstatus != 5) $this->ajaxReturn(array('code'=>'400', 'msg'=>'商家还没处理好您的退货商品，请耐心等待'));
+                if ($rstatus != 5) $this->ajaxReturn(array('code'=>'400', 'msg'=>'商家还没处理好您的退货商品，请耐心等待'));
+            }
+
+            
 
 //            $map['order_id'] = '661320342352019';
             $data['status'] = 3;
