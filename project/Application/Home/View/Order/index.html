@@ -741,6 +741,9 @@
 								},
 								success:function(res){
 									// 切换到待评价模块
+									if (res.code == '400') {
+										alert(res.msg);
+									}
 			       	    			var href = location.href.substr(0, location.href.indexOf('?tab='));
 				       	   			location.href = href + '?tab=' + 3;
 			       	   				 console.log( res);

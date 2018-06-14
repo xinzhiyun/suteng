@@ -212,82 +212,166 @@ class OrderController extends CommonController
 
             $map = I('post.');
 
-            $map['order_id'] = $map['order_id'];
+            $map['order_id'] = $oid = $map['order_id'];
 
-//            $map['order_id'] = '756742671570657';
+
+            //在确认收货前判断该订单是否有退货未处理完
+            $rf_id = M('RefundGoods')->where("oid='{$oid}'")->find()['rf_id'];
+
+            $rstatus = M('refund')->where('id='.$rf_id)->find()['status'];
+
+            if ($rstatus != 5) $this->ajaxReturn(array('code'=>'400', 'msg'=>'商家还没处理好您的退货商品，请耐心等待'));
+
+//            $map['order_id'] = '661320342352019';
             $data['status'] = 3;
 //            $data['addtime'] = '12';
             $info = M('shop_order')->where($map)->save($data);
+//            $info = M('shop_order')->where($map)->find($data);
+
+
 
 
             if ($info) {
 //                  $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.g_cost,a.g_price,a.g_num,b.vid,c.id ccid,c.code,c.invitation_code,c.superiors_code,c.superior_code,c.abonus,b.name')->join
 //                  ('st_goods b on a.gid = b.id')->join('st_vendors c on b.vid = c.id')->where(['a
 //                .g_type'=>1,'a.status'=>3,'a.order_id'=>$map['order_id']])->find();
-                $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.g_cost,a.g_price,a.g_num,b.name,d.invitation_code,d.id,d.open_id')
-                   ->join('st_users d on d.id = a.uid')->join
-                  ('st_goods b on a.gid = b.id')->where(['a
+//                $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.g_cost,a.g_price,a.g_num,b.name,d.invitation_code,d.id,d.open_id')
+//                   ->join('st_users d on d.id = a.uid')->join
+//                  ('st_goods b on a.gid = b.id')->where(['a
+//                .g_type'=>1,'a.status'=>3,'a.order_id'=>$map['order_id']])->find();
+                $list = M('ShopOrder as a')->field('a.id,a.order_id,a.gid,a.uid,a.g_cost,a.g_price,a.g_num,b.name,d.invitation_code,d.id,d.open_id')
+                    ->join('st_users d on d.id = a.uid')->join
+                    ('st_goods b on a.gid = b.id')->where(['a
                 .g_type'=>1,'a.status'=>3,'a.order_id'=>$map['order_id']])->find();
+//                dump($list);exit;
 
-
+                //退商品总额
+                $total_amount = 0.00;
+                //退商品总成本价
+                $cost_nu = 0.00;
                 //多个商品
                 if($list) {
                     $list['detail'] =  M('shop_order_detail')->where(['order_id'=>$list['order_id']])->select();
+                    //查找是否有退款
+                    $refund_goods = M('refund_goods')->where(['oid'=>$list['order_id']])->getField('rf_id');
+                    if ($refund_goods) {
+                        //寻找成本价
+                        $gid = M('refund_goods')->field('gid')->where(['oid'=>$list['order_id']])->select();
+                        foreach ($gid as $v) {
+                            $shop_order_detail = M('shop_order_detail')->field('cost,num')->where(['order_id'=>$list['order_id'],'gid'=>$v['gid']])->find();
+                            $cost_nu  += intval($shop_order_detail['cost']*$shop_order_detail['num']);
+
+                        }
+
+
+//                        if ($shop_order_detail) {
+//                            foreach ($shop_order_detail as $v) {
+//                                $cost_nu  += intval($v['cost']);
+//                            }
+//
+//                        }
+//                        if ($gid) {
+//                            foreach ($gid as $v) {
+//                                $goods_cost = M('goods')->field('cost')->where(['id'=>$v['gid']])->find();
+//                                //退商品的总成本价
+//                                $cost_nu  += intval($goods_cost['cost']);
+//                                $a = $list['g_cost']-$cost_nu
+//
+//                            }
+//
+//                        }
+                        //退款总金额
+                       $total_amount = M('refund')->where(['id'=>$refund_goods,['status']=>5])->getField('total_amount');
+                    }
 
                 }
 
                 if ($list['invitation_code'] != null) {
 
                     if ($list['g_price'] < $list['g_cost']) {
-                        $money = 0;
-                    } else {
-                        $money = $list['g_price']-$list['g_cost'];
-                    }
 
+                        exit;
+                    } else {
+                        $money = $list['g_price']-$list['g_cost']-$total_amount+$cost_nu;
+//                     dump( $list['g_price']);
+//                     dump($list['g_cost']);
+//                     dump($total_amount);
+//                     dump($cost_nu);exit;
+                    }
+                    if ($money < 0) {
+
+                        exit;
+                    }
                     //查询分配比例
                     $butros = M('butros')->find();
                     //销售奖(定义 卖商品的经销商)
                     $com_c = $money*($butros['com_c']/ 100);
                     //市场推广奖
-                    $com_d = $money*(($butros['com_b']/ 100)*(50/ 100));
+//                    $com_d = $money*(($butros['com_b']/ 100)*(50/ 100));
+                    $com_d = $money*(($butros['com_b']/ 100)*($butros['com_b']/ 100));
                     //市场培育将
-                    $com_p = $money*(($butros['com_b']/100)*((50/100)));
+//                    $com_p = $money*(($butros['com_b']/100)*((50/100)));
+                    $com_p = $money*(($butros['com_b']/100)*(((100-$butros['com_b'])/100)));
                     //团队管理奖 B级加盟商
-                    $com_t =  $money*(($butros['com_a']/ 100)*(50/ 100));
+//                    $com_t =  $money*(($butros['com_a']/ 100)*(50/ 100));
+                    $com_t =  $money*(($butros['com_a']/ 100)*($butros['com_b']/ 100));
                     //团队管理奖 A级加盟商
-                    $com_ta =  $money*(($butros['com_a']/100)*((100-50)/100));
+//                    $com_ta =  $money*(($butros['com_a']/100)*((100-50)/100));
+                    $com_ta =  $money*(($butros['com_a']/100)*(((100-$butros['com_b']))/100));
                     //查出当前推荐商人
-                    $c_info = M('vendors')->where(['code'=>$list['invitation_code']])->find();
+                    $c_info = M('vendors')->where(['code'=>$list['invitation_code'],'status'=>7])->find();
+                    //查找所有有直系关系的人
+                   $us_path = M('vendors')->where(['open_id'=>$list['open_id']])->getField('path');
+
                    //查出推荐人的推荐人
-                    $f_info = M('vendors')->where(['code'=>$c_info['office_code']])->find();
+//                    $f_info = M('vendors')->where(['code'=>$c_info['office_code']])->find();
+//                    dump($com_c);
+//                    dump($com_d);
+//                    dump($com_p);
+//                    dump($com_t);
+//                    dump($com_ta);exit;
+
 //                    dump($c_info);exit;
                     
                     //销售奖(卖商品的经销商)
-                    if ($f_info) {
+                    if ($c_info) {
 //                        $earnings_comc = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_c);
                         $earnings_comc = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_c);
-
                         //销售奖收益记录
                         if ($earnings_comc) {
 //                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
-                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s'),'content'=>'销售奖']);
+                        }
+                    }
+                    //查找推荐人的推荐人
+                    if ($c_info['invitation_code']) {
+                        $f_info = M('vendors')->where(['code'=>$c_info['invitation_code'],'status'=>7])->find();
+
+                        //市场推广奖
+                        if ($f_info) {
+                            $earnings_comd = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_d);
+                        }
+                        //销售奖收益记录
+                        if ($earnings_comd) {
+//                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s'),'content'=>'市场推广奖']);
                         }
                     }
 
 //                $earnings_comc = M('vendors')->where(['id'=>$list['ccid']])->setInc('abonus',$com_c);
 
                     //市场推广奖(定义 卖商品的经销商推荐人) 只查询存在的
-                    if ($c_info){
-
-//                        $earnings_comd = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_d);
-                        $earnings_comd = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_d);
-
-                        //销售奖收益记录
-                        if ($earnings_comd) {
-//                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
-                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
-                        }
-                    }
+//                    if ($c_info){
+//
+////                        $earnings_comd = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_d);
+//                        $earnings_comd = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_d);
+//
+//                        //销售奖收益记录
+//                        if ($earnings_comd) {
+////                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+//                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s'),'content'=>'市场推广奖']);
+//                        }
+//                    }
                     //查找直系推荐关系中的最近B级加盟商(包括自己)
 //                    $my_level_info = M('vendors')->field('id,leavel,code,path,updatetime')->where(['id'=>$list['ccid']])->find();
                     //如果自己是B级 利润给自己 不是的话 给最近的加盟商呢( 市场培育将)
@@ -295,44 +379,66 @@ class OrderController extends CommonController
 
 //                         //市场培育奖励
 //                    M('vendors')->where(['id'=>$my_level_info['id']])->save(['updatetime'=>time()]);
-                        $earnings_comp = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_p);
+                        $earnings_comp = M('vendors')->where(['id'=>$c_info['id'],'status'=>7])->setInc('abonus',$com_p);
                         //市场培育收益记录
                         if ($earnings_comp) {
-                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s'),'content'=>'市场培育奖']);
                         }
 
                     } else {
-                        if ($c_info['path'] != null) {
+                        if ($us_path != null) {
 
                             //查找直系推荐关系中的最近B级经销商(包括自己)
-                            $path = explode('-',$c_info['path']);
+                            $path = explode('-',$us_path);
                             $in_B['id']  = array('in',$path);
+                            $in_B['status'] = 7;
                             $in_B['leavel'] = 3;
-                            //查找最近的B级经销商
+                            //查找最近的经销
                             $my_level_info = M('vendors')->field('id,leavel,code,path,updatetime')->order('id desc')->where($in_B)->find();
+
                             if ($my_level_info) {
 //                            M('vendors')->where(['id'=>$my_level_info['id']])->save(['updatetime'=>time()]);
                                 M('vendors')->where(['id'=>$my_level_info['id']])->setInc('abonus',$com_p);
 //
                                 if ($earnings_comc) {
-                                    M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s'),'content'=>'市场培育奖']);
                                 }
                             }
                         }
                     }
+
                     //查找团队管理奖收益人
-                    if ($c_info['path'] != null) {
+                    if ($us_path != null) {
 
                         //查找直系推荐关系中的最近B级经销商(包括自己)
-                        $path = explode('-',$c_info['path']);
+                        $path = explode('-',$us_path);
                         $in_B['id']  = array('in',$path);
                         $in_B['leavel'] = 3;
-                        $in_B['updatetime'] = array('lt',$c_info['updatetime']);
-                        $in_info = M('vendors')->where($in_B)->find();
-                        $earnings_ta = M('vendors')->where(['id'=>$in_info['id']])->setInc('abonus',$com_t);
-                        //市场培育收益记录
-                        if ($earnings_ta) {
-                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$in_info['id'],'abonus'=>$com_t,'create_time'=>date('Y-m-d H:i:s')]);
+                        $in_B['status'] = 7;
+                        //查找是否有分销有这个奖记录
+                        $ea['type_cont'] = 4;
+                        $ea['bid'] = $list['uid'];
+                        //查找第一次这个用户产生的团队管理奖1是谁
+                        $vid =  M('earnings')->where($ea)->order('id asc')->getField('vid');
+                        if ($vid) {
+                            $earnings_ta = M('vendors')->where(['id'=>$vid])->setInc('abonus',$com_t);
+                            //市场培育收益记录
+                            if ($earnings_ta) {
+                                M('earnings')->add(['orderid'=>$list['order_id'],'bid'=>$list['uid'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$vid,'abonus'=>$com_t,'create_time'=>date
+                                ('Y-m-d H:i:s')
+                                    ,'content'=>'4']);
+                            }
+                        } else {
+                            $in_info = M('vendors')->where($in_B)->select();
+                            unset($in_info[0]);
+                            if ($in_info) {
+                                $earnings_ta = M('vendors')->where(['id'=>$in_info[1]['id']])->setInc('abonus',$com_t);
+                                if ($earnings_ta) {
+                                    M('earnings')->add(['orderid'=>$list['order_id'],'bid'=>$list['uid'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$in_info[1]['id'],'abonus'=>$com_t,'create_time'=>date
+                                    ('Y-m-d H:i:s')
+                                        ,'type_cont'=>'4']);
+                                }
+                            }
                         }
                     }
                     //B级加盟商受益人
@@ -344,23 +450,24 @@ class OrderController extends CommonController
 
                         //市场培育收益记录
                         if ($earnings_ta) {
-                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s'),'content'=>'团队管理奖2']);
                         }
 
                     } else {
-                        if ($c_info['path'] != null) {
+                        if ($us_path != null) {
 
                             //查找直系推荐关系中的最近B级加盟商(包括自己)
-                            $path = explode('-',$c_info['path']);
+                            $path = explode('-',$us_path);
                             $in_A['id']  = array('in',$path);
                             $in_A['leavel'] = 2;
+                            $in_A['status'] = 7;
                             $path_info_A = M('vendors')->field('id,leavel,code,path')->order('id desc')->where($in_A)->find();
 
                             if ($path_info_A) {
 //                            M('vendors')->where(['id'=>$path_info_A['id']])->save(['updatetime'=>time()]);
                                 $earnings_ta = M('vendors')->where(['id'=>$path_info_A['id']])->setInc('abonus',$com_ta);
                                 if ($earnings_ta) {
-                                    M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$path_info_A['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$path_info_A['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s'),'content'=>'团队管理奖2']);
                                 }
                             }
                         }

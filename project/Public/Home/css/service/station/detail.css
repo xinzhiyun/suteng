@@ -214,7 +214,8 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
 	display: flex;
 	/* justify-content: space-between; */
 }
-.pics > img {
+.pics > img{
 	width: 4rem;
 	height: 5rem;
+	margin-right: .3rem;
 }
