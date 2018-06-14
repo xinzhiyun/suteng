@@ -59,6 +59,9 @@ class ServicePeopleController extends Controller
 
         $map['sid'] = $_SESSION['servicepeople']['sid'];
 
+        if (!empty($_GET['result'])) {
+            $map['result']=['gt',2];
+        }
         strlen(I('type'))?$map['type'] = I('type'):'';
         $total = M('work')
             ->where($map)
@@ -73,6 +76,9 @@ class ServicePeopleController extends Controller
             ->limit($page->firstRow.','.$page->listRows)
 //            ->field('id,kname,kphone,create_at')
             ->select();
+        $list = replace_array_value($list,[
+            'pass_at'=>['date','Y-m-d H:i:s'],
+        ]);
         $this->toJson(['data'=>$list],'获取成功');
     }
 
@@ -112,6 +118,7 @@ class ServicePeopleController extends Controller
             }
 
             $data['update_at']=time();
+            $data['pass_at'] = time();
             $data['result'] = 2;
             $res = M('work')->where($map)->save($data);
 
