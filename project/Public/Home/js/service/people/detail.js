@@ -8,7 +8,8 @@ var take = new Vue({
 			wid: '',		// 工单id
 			notice: '加载中...',
 			noticestyle: 'block',
-			success: false
+			success: false,
+			picList: [],
 		}
 	},
 	methods:{
@@ -56,6 +57,29 @@ var take = new Vue({
 				}
 			})
 		},
+		// 图片查看
+		photoSwipe(index) {
+			var vm = this;
+			var pswpElement = document.querySelectorAll('.pswp')[0];
+			var items = [];
+			for(var i = 0; i < vm.picList.length; i++) {
+				items.push({
+					src: vm.picList[i],
+					w: 320,
+					h: 640
+				});
+			}
+			// define options (if needed)
+			var options = {
+			    // optionName: 'option value'
+			    // for example:
+			    history: true,
+			    index: index // start at first slide
+			};
+			
+			var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+			gallery.init();
+		}
 	},
 	created() {
 		var vm = this;
@@ -83,6 +107,7 @@ var take = new Vue({
 				for(var i in res.data){
 					vm.detail[i] = res.data[i];
 				}
+				vm.picList = JSON.parse(vm.detail.pic);
 				console.log('vm.detail: ',vm.detail);
 			}else{
 				vm.notice = res.msg;
