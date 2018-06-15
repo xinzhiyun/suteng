@@ -449,29 +449,29 @@ class WeiXinPayController extends Controller
         }
     }
     /*
-     * 充值会员年费回调
-     */
+         * 充值会员年费回调
+         */
     public function annualNotify() {
         $xml=file_get_contents('php://input', 'r');
-//         file_put_contents('./wx_payFee.txt',$xml."\r\n", FILE_APPEND);
+        file_put_contents('./wx_payFee.txt',$xml."\r\n", FILE_APPEND);
 // //
 //         $xml= '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
-//<attach><![CDATA[861972672227041]]></attach>
+//<attach><![CDATA[232551924488665]]></attach>
 //<bank_type><![CDATA[CFT]]></bank_type>
 //<cash_fee><![CDATA[1]]></cash_fee>
 //<fee_type><![CDATA[CNY]]></fee_type>
 //<is_subscribe><![CDATA[Y]]></is_subscribe>
 //<mch_id><![CDATA[1501254081]]></mch_id>
-//<nonce_str><![CDATA[sxr8g7r7rq0adth5d22jh28sdbwydlod]]></nonce_str>
+//<nonce_str><![CDATA[403voozb1vidnchl30ng36ivamli4pob]]></nonce_str>
 //<openid><![CDATA[onLe70al8Nsr48CH4lpTPDhAuNVM]]></openid>
-//<out_trade_no><![CDATA[771736881379929]]></out_trade_no>
+//<out_trade_no><![CDATA[637858073356141]]></out_trade_no>
 //<result_code><![CDATA[SUCCESS]]></result_code>
 //<return_code><![CDATA[SUCCESS]]></return_code>
-//<sign><![CDATA[C8343E9D4FF89D512DC0948093A32C19]]></sign>
-//<time_end><![CDATA[20180614150458]]></time_end>
+//<sign><![CDATA[BC26C7FB98087EB78B33FB7820FC90E8]]></sign>
+//<time_end><![CDATA[20180614160147]]></time_end>
 //<total_fee>1</total_fee>
 //<trade_type><![CDATA[JSAPI]]></trade_type>
-//<transaction_id><![CDATA[4200000134201806145332165906]]></transaction_id>
+//<transaction_id><![CDATA[4200000131201806146894374860]]></transaction_id>
 //</xml>';
 
         if ($xml) {
@@ -484,8 +484,9 @@ class WeiXinPayController extends Controller
 
             //查找最后一条用户充值会员的记录
             $ordertype = M('users_order')->where(['user_id'=>$orderData['user_id'],'is_pay'=>1])->field('type')->order('id desc')->find();
-
+//                dump($ordertype);exit;
             if (empty($orderData['is_pay'])) {
+
                 $save_info =M('users_order')->where($data)->save(['is_pay'=>1]);
                 $save_info =M('users_order')->where($data)->find();
 
@@ -532,6 +533,7 @@ class WeiXinPayController extends Controller
                                     break;
 
                             }
+
 //                            switch ($orderData['annual_status']) {
 //                                case '1':
 //                                    $data['price'] = $annual_money['annual_money']-$cost;
@@ -558,7 +560,8 @@ class WeiXinPayController extends Controller
                     //查询当前用户
                     $user_info = M('users')->field('id,invitation_code,open_id,grade,start_time,end_time')->where(['open_id'=> $result['openid']])->find();
 
-                    if ($user_info['type']  > 1) {
+                    if ($ordertype['type']  > 1) {
+
                         switch ($user_info['grade']) {
                             case '4':
                                 //每天的会员费
@@ -577,9 +580,12 @@ class WeiXinPayController extends Controller
                         $time = intval(($user_info['end_time']-time())/86400);
                         $money= (round($data['mon_ey'], 2)-round($data['mo_ey'], 2)) * $time ;
                         $money = $money-$cost;
+
+
 //                        file_put_contents('./wx_payFee2.txt',$cost."\r\n", FILE_APPEND);
                     } else {
                         $money =    $data['price'];
+
                     }
                     if ($money < 0) {
 
@@ -647,7 +653,7 @@ class WeiXinPayController extends Controller
                         if ($earnings_comc) {
 
 //                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
-                            M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$orderData['user_id'], 'type_cont'=>'1','type'=>3,'open_id'=>$user_info['open_id'],'vid'=>$c_info['id'],
+                            M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$orderData['user_id'], 'type_cont'=>'1','type'=>3,'vid'=>$c_info['id'],
                                 'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
                         }
                     }
@@ -671,7 +677,7 @@ class WeiXinPayController extends Controller
                         //销售奖收益记录
                         if ($earnings_comd) {
 //                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
-                            M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$orderData['user_id'], 'type_cont'=>'2','type'=>3,'open_id'=>$user_info['open_id'],'vid'=>$f_info['id'],
+                            M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$orderData['user_id'], 'type_cont'=>'2','type'=>3,'vid'=>$f_info['id'],
                                 'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
                         }
                     }
@@ -685,7 +691,7 @@ class WeiXinPayController extends Controller
                         $earnings_comp = M('vendors')->where(['id'=>$c_info['id'],'status'=>7])->setInc('abonus',$com_p);
                         //市场培育收益记录
                         if ($earnings_comp) {
-                            M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$orderData['user_id'], 'type_cont'=>'3','type'=>3,'open_id'=>$user_info['open_id'],'vid'=>$c_info['id'],
+                            M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$orderData['user_id'], 'type_cont'=>'3','type'=>3,'vid'=>$c_info['id'],
                                 'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
                         }
 
@@ -705,7 +711,7 @@ class WeiXinPayController extends Controller
                                 M('vendors')->where(['id'=>$my_level_info['id']])->setInc('abonus',$com_p);
 //
                                 if ($earnings_comc) {
-                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$orderData['user_id'], 'type_cont'=>'3','type'=>3,'open_id'=>$user_info['open_id'],
+                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$orderData['user_id'], 'type_cont'=>'3','type'=>3,
                                         'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
                             }
@@ -767,16 +773,16 @@ class WeiXinPayController extends Controller
                         $in_B['status'] = 7;
                         //查找是否有分销有这个奖记录
                         $ea['type_cont'] = 4;
-                        $ea['bid'] = $list['uid'];
+                        $ea['bid'] = $orderData['user_id'];
                         //查找第一次这个用户产生的团队管理奖1是谁
                         $vid =  M('earnings')->where($ea)->order('id asc')->getField('vid');
                         if ($vid) {
                             $earnings_ta = M('vendors')->where(['id'=>$vid])->setInc('abonus',$com_t);
                             //市场培育收益记录
                             if ($earnings_ta) {
-                                M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$orderData['user_id'],'type'=>3,'open_id'=>$user_info['open_id'],'vid'=>$vid,'abonus'=>$com_t,
+                                M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$orderData['user_id'],'type'=>3,'vid'=>$vid,'abonus'=>$com_t,
                                     'create_time'=>date
-                                ('Y-m-d H:i:s')
+                                    ('Y-m-d H:i:s')
                                     ,'type_cont'=>'4']);
                             }
                         } else {
@@ -785,7 +791,7 @@ class WeiXinPayController extends Controller
                             if ($in_info) {
                                 $earnings_ta = M('vendors')->where(['id'=>$in_info[1]['id']])->setInc('abonus',$com_t);
                                 if ($earnings_ta) {
-                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$orderData['user_id'],'type'=>3,'open_id'=>$user_info['open_id'],'vid'=>$in_info[1]['id'],'abonus'=>$com_t,'create_time'=>date
+                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$orderData['user_id'],'type'=>3,'vid'=>$in_info[1]['id'],'abonus'=>$com_t,'create_time'=>date
                                     ('Y-m-d H:i:s')
                                         ,'type_cont'=>'4']);
                                 }
@@ -801,7 +807,7 @@ class WeiXinPayController extends Controller
 
                         //市场培育收益记录
                         if ($earnings_ta) {
-                            M('earnings')->add(['orderid'=>$list['order_id'],'bid'=>$list['uid'], 'type_cont'=>'5','type'=>3,'open_id'=>$user_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['orderid'=>$list['order_id'],'bid'=>$list['uid'], 'type_cont'=>'5','type'=>3,'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
                         }
 
                     } else {
@@ -818,7 +824,7 @@ class WeiXinPayController extends Controller
 //                            M('vendors')->where(['id'=>$path_info_A['id']])->save(['updatetime'=>time()]);
                                 $earnings_ta = M('vendors')->where(['id'=>$path_info_A['id']])->setInc('abonus',$com_ta);
                                 if ($earnings_ta) {
-                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$orderData['user_id'], 'type_cont'=>'5','type'=>3,'open_id'=>$user_info['open_id'],'vid'=>$path_info_A['id'],
+                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$orderData['user_id'], 'type_cont'=>'5','type'=>3,'vid'=>$path_info_A['id'],
                                         'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
                             }
@@ -870,22 +876,22 @@ class WeiXinPayController extends Controller
         // file_put_contents('./uid.txt',$uid ."\r\n", FILE_APPEND);
         // file_put_contents('./wx_payFee.txt',$xml."\r\n", FILE_APPEND);
 //        $xml = '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
-//<attach><![CDATA[563420921526937]]></attach>
+//<attach><![CDATA[878201598080583]]></attach>
 //<bank_type><![CDATA[CFT]]></bank_type>
 //<cash_fee><![CDATA[1]]></cash_fee>
 //<fee_type><![CDATA[CNY]]></fee_type>
 //<is_subscribe><![CDATA[Y]]></is_subscribe>
 //<mch_id><![CDATA[1501254081]]></mch_id>
-//<nonce_str><![CDATA[xe7p4q5rivnzv2x5hqcpsuv0mvjngfti]]></nonce_str>
-//<openid><![CDATA[onLe70fYcrqU71RjzfYUjkNf90_E]]></openid>
-//<out_trade_no><![CDATA[823015972963031]]></out_trade_no>
+//<nonce_str><![CDATA[lwltmatatlrpnbvdk5g1d3gv0axbvxxg]]></nonce_str>
+//<openid><![CDATA[onLe70al8Nsr48CH4lpTPDhAuNVM]]></openid>
+//<out_trade_no><![CDATA[217183193330504]]></out_trade_no>
 //<result_code><![CDATA[SUCCESS]]></result_code>
 //<return_code><![CDATA[SUCCESS]]></return_code>
-//<sign><![CDATA[DF47E2D692068E2793E2227479FD1700]]></sign>
-//<time_end><![CDATA[20180421160517]]></time_end>
+//<sign><![CDATA[BD7B3D74F1D1207DB66E8589B99E0079]]></sign>
+//<time_end><![CDATA[20180614183033]]></time_end>
 //<total_fee>1</total_fee>
 //<trade_type><![CDATA[JSAPI]]></trade_type>
-//<transaction_id><![CDATA[4200000056201804213161230696]]></transaction_id>
+//<transaction_id><![CDATA[4200000138201806148585599289]]></transaction_id>
 //</xml>';
 
 
@@ -920,7 +926,7 @@ class WeiXinPayController extends Controller
 
                 // dump($data);die;
                 // 如果订单未处理，订单支付金额等于订单实际金额
-                if(empty($orderData['is_pay']) && $orderData['total_price'] == $result['total_fee']){
+                if(!empty($orderData['is_pay']) && $orderData['total_price'] == $result['total_fee']){
 
                     //file_put_contents('./wx_pay121.txt',$xml."\r\n", FILE_APPEND);
                     //                    dump($result);
@@ -1030,7 +1036,7 @@ class WeiXinPayController extends Controller
 
                             // 修改设备剩余流量
                             $FlowRes = $devicesStatu->where($deviceCode)->save($Flow);
-                            echo $devicesStatu->getlastsql();
+
 
 
                             // file_put_contents('jfdsk',var_export($devicesStatu->_sql(), true),FILE_APPEND);
@@ -1108,21 +1114,47 @@ class WeiXinPayController extends Controller
                             if ($setmeal_money['money'] < $setmeal['money']) {
                                 $money = 0;
                             } else {
-                                $money =      $setmeal_money['money']-($setmeal['money']+$setmeal['cost']*$setmeal_money['flow']);
+                                $money =      $setmeal_money['money']-($setmeal['price']+$setmeal['cost']*$setmeal_money['flow']);
                             }
 
+                            if ($money < 0) {
+                                exit;
+                            }
+
+//                            //查询分配比例
+//                            $butros = M('butros')->find();
+//                            //销售奖(定义 卖商品的经销商)
+//                            $com_c = $money*($butros['com_c']/ 100);
+//                            //市场推广奖
+//                            $com_d = $money*(($butros['com_b']/ 100)*(50/ 100));
+//                            //市场培育将
+//                            $com_p = $money*(($butros['com_b']/100)*((50/100)));
+//                            //团队管理奖 B级加盟商
+//                            $com_t =  $money*(($butros['com_a']/ 100)*(50/ 100));
+//                            //团队管理奖 A级加盟商
+//                            $com_ta =  $money*(($butros['com_a']/100)*((100-50)/100));
                             //查询分配比例
                             $butros = M('butros')->find();
                             //销售奖(定义 卖商品的经销商)
                             $com_c = $money*($butros['com_c']/ 100);
                             //市场推广奖
-                            $com_d = $money*(($butros['com_b']/ 100)*(50/ 100));
+//                          $com_d = $money*(($butros['com_b']/ 100)*(50/ 100));
+                            $com_d = $money*(($butros['com_b']/ 100)*($butros['com_b']/ 100));
                             //市场培育将
-                            $com_p = $money*(($butros['com_b']/100)*((50/100)));
+//                          $com_p = $money*(($butros['com_b']/100)*((50/100)));
+                            $com_p = $money*(($butros['com_b']/100)*(((100-$butros['com_b'])/100)));
                             //团队管理奖 B级加盟商
-                            $com_t =  $money*(($butros['com_a']/ 100)*(50/ 100));
+//                           $com_t =  $money*(($butros['com_a']/ 100)*(50/ 100));
+                            $com_t =  $money*(($butros['com_a']/ 100)*($butros['com_b']/ 100));
                             //团队管理奖 A级加盟商
-                            $com_ta =  $money*(($butros['com_a']/100)*((100-50)/100));
+//                           $com_ta =  $money*(($butros['com_a']/100)*((100-50)/100));
+                            $com_ta =  $money*(($butros['com_a']/100)*(((100-$butros['com_b']))/100));
+                            //查出当前推荐商人
+                            $c_info = M('vendors')->where(['code'=>$user_info['invitation_code'],'status'=>7])->find();
+                            //查找所有有直系关系的人
+//                           $us_path = M('vendors')->where(['open_id'=>$user_info['open_id']])->getField('path');
+                            //查找所有有直系关系的人
+                             $us_path = $c_info['path'].'-'.$c_info['id'];
 //                                dump($com_c);
 //                                dump($com_d);
 //                                dump($com_p);
@@ -1131,81 +1163,173 @@ class WeiXinPayController extends Controller
 //                                dump($money);exit;
                             //查出当前推荐商人
 
-                            $c_info = M('vendors')->where(['code'=>$user_info['invitation_code']])->find();
-                            // echo M('vendors')->getLastSql();
-
-                            // file_put_contents('./wx3333333_payFee.txt',M('vendors')->getLastSql()."\r\n", FILE_APPEND);
-                            //查出推荐人的分公司
-                            $f_info = M('vendors')->where(['code'=>$c_info['office_code']])->find();
+//                            $c_info = M('vendors')->where(['code'=>$user_info['invitation_code']])->find();
+//                            // echo M('vendors')->getLastSql();
+//
+//                            // file_put_contents('./wx3333333_payFee.txt',M('vendors')->getLastSql()."\r\n", FILE_APPEND);
+//                            //查出推荐人的分公司
+//                            $f_info = M('vendors')->where(['code'=>$c_info['office_code']])->find();
                             //销售奖(卖商品的经销商 分公司)
-                            if ($f_info) {
+//                            if ($f_info) {
+//                                $earnings_comc = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_c);
+//
+//                                file_put_contents('./wx2_payFee.txt', M('vendors')->getLastSql()."\r\n", FILE_APPEND);
+//
+//                                //销售奖收益记录
+//                                if ($earnings_comc) {
+//
+//                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$c_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d
+//                                    H:i:s')]);
+//                                    // file_put_contents('./wx2_payFee.txt', M('earnings')->getLastSql()."\r\n", FILE_APPEND);
+//
+//                                }
+//                            }
+                            //销售奖(卖商品的经销商)
+                            if ($c_info) {
+//                          $earnings_comc = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_c);
                                 $earnings_comc = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_c);
-
-                                file_put_contents('./wx2_payFee.txt', M('vendors')->getLastSql()."\r\n", FILE_APPEND);
-
                                 //销售奖收益记录
                                 if ($earnings_comc) {
-
-                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$c_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d
-                                    H:i:s')]);
-                                    // file_put_contents('./wx2_payFee.txt', M('earnings')->getLastSql()."\r\n", FILE_APPEND);
-
+//                               M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'1','type'=>2,'opoen_id'=>$c_info['open_id'],'vid'=>$c_info['id'],
+                                        'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
                             }
+//                            //市场推广奖(定义 卖商品的经销商推荐人) 只查询存在的
+//                            if ($c_info){
+//                                $earnings_comd = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_d);
+//                                //销售奖收益记录
+//                                if ($earnings_comd) {
+//                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$f_info['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+//                                }
+//                            }
+                            //查找推荐人的推荐人
+                            if ($c_info['invitation_code']) {
+                                $f_info = M('vendors')->where(['code'=>$c_info['invitation_code'],'status'=>7])->find();
 
-                            //市场推广奖(定义 卖商品的经销商推荐人) 只查询存在的
-                            if ($c_info){
-                                $earnings_comd = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_d);
+                                //市场推广奖
+                                if ($f_info) {
+                                    $earnings_comd = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_d);
+                                }
                                 //销售奖收益记录
                                 if ($earnings_comd) {
-                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$f_info['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+//                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'2','type'=>2,'opoen_id'=>$f_info['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
                             }
                             //查找直系推荐关系中的最近B级加盟商(包括自己)
                             //                    $my_level_info = M('vendors')->field('id,leavel,code,path,updatetime')->where(['id'=>$list['ccid']])->find();
                             //如果自己是B级 利润给自己 不是的话 给最近的加盟商呢( 市场培育将)
+//                            if ($c_info['leavel'] == 3) {
+//
+//                                //                         //市场培育奖励
+//                                //                    M('vendors')->where(['id'=>$my_level_info['id']])->save(['updatetime'=>time()]);
+//                                $earnings_comp = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_p);
+//                                //市场培育收益记录
+//                                if ($earnings_comp) {
+//                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$c_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
+//                                }
+//
+//                            } else {
+//                                if ($c_info['path'] != null) {
+//
+//                                    //查找直系推荐关系中的最近B级经销商(包括自己)
+//                                    $path = explode('-',$c_info['path']);
+//                                    $in_B['id']  = array('in',$path);
+//                                    $in_B['leavel'] = 3;
+//                                    //查找最近的B级经销商
+//                                    $my_level_info = M('vendors')->field('id,leavel,code,path,updatetime,open_id')->order('id desc')->where($in_B)->find();
+//                                    if ($my_level_info) {
+//                                        //                            M('vendors')->where(['id'=>$my_level_info['id']])->save(['updatetime'=>time()]);
+//                                        M('vendors')->where(['id'=>$my_level_info['id']])->setInc('abonus',$com_p);
+//                                        //
+//                                        if ($earnings_comc) {
+//                                            M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$my_level_info['open_id'],'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
+//                                        }
+//                                    }
+//                                }
+//                            }
                             if ($c_info['leavel'] == 3) {
 
-                                //                         //市场培育奖励
-                                //                    M('vendors')->where(['id'=>$my_level_info['id']])->save(['updatetime'=>time()]);
-                                $earnings_comp = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_p);
+//                         //市场培育奖励
+//
+                                $earnings_comp = M('vendors')->where(['id'=>$c_info['id'],'status'=>7])->setInc('abonus',$com_p);
                                 //市场培育收益记录
                                 if ($earnings_comp) {
-                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$c_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'3','type'=>2,'opoen_id'=>$user_info['open_id'],'vid'=>$c_info['id'],
+                                        'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
 
                             } else {
-                                if ($c_info['path'] != null) {
+                                if ($us_path != null) {
 
                                     //查找直系推荐关系中的最近B级经销商(包括自己)
-                                    $path = explode('-',$c_info['path']);
+                                    $path = explode('-',$us_path);
                                     $in_B['id']  = array('in',$path);
+                                    $in_B['status'] = 7;
                                     $in_B['leavel'] = 3;
-                                    //查找最近的B级经销商
-                                    $my_level_info = M('vendors')->field('id,leavel,code,path,updatetime,open_id')->order('id desc')->where($in_B)->find();
+                                    //查找最近的经销
+                                    $my_level_info = M('vendors')->field('id,leavel,code,path,updatetime')->order('id desc')->where($in_B)->find();
+
                                     if ($my_level_info) {
-                                        //                            M('vendors')->where(['id'=>$my_level_info['id']])->save(['updatetime'=>time()]);
+//                            M('vendors')->where(['id'=>$my_level_info['id']])->save(['updatetime'=>time()]);
                                         M('vendors')->where(['id'=>$my_level_info['id']])->setInc('abonus',$com_p);
-                                        //
+//
                                         if ($earnings_comc) {
-                                            M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$my_level_info['open_id'],'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
+                                            M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'3','type'=>2,'opoen_id'=>$my_level_info['open_id'],
+                                                'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
                                         }
                                     }
                                 }
                             }
+//                            //查找团队管理奖收益人
+//                            if ($c_info['path'] != null) {
+//
+//                                //查找直系推荐关系中的最近B级经销商(包括自己)
+//                                $path = explode('-',$c_info['path']);
+//                                $in_B['id']  = array('in',$path);
+//                                $in_B['leavel'] = 3;
+//                                $in_B['updatetime'] = array('lt',$c_info['updatetime']);
+//                                $in_info = M('vendors')->where($in_B)->find();
+//                                $earnings_ta = M('vendors')->where(['id'=>$in_info['id']])->setInc('abonus',$com_t);
+//                                //市场培育收益记录
+//                                if ($earnings_ta) {
+//                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$in_info['open_id'],'vid'=>$in_info['id'],'abonus'=>$com_t,'create_time'=>date('Y-m-d H:i:s')]);
+//                                }
+//                            }
                             //查找团队管理奖收益人
-                            if ($c_info['path'] != null) {
+                            if ($us_path != null) {
 
                                 //查找直系推荐关系中的最近B级经销商(包括自己)
-                                $path = explode('-',$c_info['path']);
+                                $path = explode('-',$us_path);
                                 $in_B['id']  = array('in',$path);
                                 $in_B['leavel'] = 3;
-                                $in_B['updatetime'] = array('lt',$c_info['updatetime']);
-                                $in_info = M('vendors')->where($in_B)->find();
-                                $earnings_ta = M('vendors')->where(['id'=>$in_info['id']])->setInc('abonus',$com_t);
-                                //市场培育收益记录
-                                if ($earnings_ta) {
-                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$in_info['open_id'],'vid'=>$in_info['id'],'abonus'=>$com_t,'create_time'=>date('Y-m-d H:i:s')]);
+                                $in_B['status'] = 7;
+                                //查找是否有分销有这个奖记录
+                                $ea['type_cont'] = 4;
+                                $ea['bid'] = $user_info['id'];
+                                //查找第一次这个用户产生的团队管理奖1是谁
+                                $vid =  M('earnings')->where($ea)->order('id asc')->getField('vid');
+                                if ($vid) {
+                                    $earnings_ta = M('vendors')->where(['id'=>$vid])->setInc('abonus',$com_t);
+                                    //市场培育收益记录
+                                    if ($earnings_ta) {
+                                        M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'],'type_cont'=>'4','type'=>2,'vid'=>$vid,'abonus'=>$com_t,'create_time'=>date
+                                        ('Y-m-d H:i:s')
+                                            ,'type_cont'=>'4']);
+                                    }
+                                } else {
+                                    $in_info = M('vendors')->where($in_B)->select();
+                                    unset($in_info[0]);
+                                    if ($in_info) {
+                                        $earnings_ta = M('vendors')->where(['id'=>$in_info[1]['id']])->setInc('abonus',$com_t);
+                                        if ($earnings_ta) {
+                                            M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'4','type'=>2,'vid'=>$in_info[1]['id'],
+                                                'abonus'=>$com_t,'create_time'=>date
+                                            ('Y-m-d H:i:s')
+                                                ,'type_cont'=>'4']);
+                                        }
+                                    }
                                 }
                             }
                             //B级加盟商受益人
@@ -1217,27 +1341,58 @@ class WeiXinPayController extends Controller
 
                                 //市场培育收益记录
                                 if ($earnings_ta) {
-                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$c_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'5','type'=>2,'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
 
                             } else {
-                                if ($c_info['path'] != null) {
+                                if ($us_path != null) {
 
                                     //查找直系推荐关系中的最近B级加盟商(包括自己)
-                                    $path = explode('-',$c_info['path']);
+                                    $path = explode('-',$us_path);
                                     $in_A['id']  = array('in',$path);
                                     $in_A['leavel'] = 2;
-                                    $path_info_A = M('vendors')->field('id,leavel,code,path,open_id')->order('id desc')->where($in_A)->find();
+                                    $in_A['status'] = 7;
+                                    $path_info_A = M('vendors')->field('id,leavel,code,path')->order('id desc')->where($in_A)->find();
 
                                     if ($path_info_A) {
 //                            M('vendors')->where(['id'=>$path_info_A['id']])->save(['updatetime'=>time()]);
                                         $earnings_ta = M('vendors')->where(['id'=>$path_info_A['id']])->setInc('abonus',$com_ta);
                                         if ($earnings_ta) {
-                                            M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$path_info_A['open_id'],'vid'=>$path_info_A['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                                            M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'5','type'=>2,
+                                                'vid'=>$path_info_A['id'],
+                                                'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
                                         }
                                     }
                                 }
                             }
+//                            if ($c_info['leavel'] == 2) {
+//                                //团队管理奖 A级加盟商
+//                                M('vendors')->where(['id'=>$c_info['id']])->save(['updatetime'=>time()]);
+//                                $earnings_ta = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_ta);
+//
+//                                //市场培育收益记录
+//                                if ($earnings_ta) {
+//                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$c_info['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+//                                }
+//
+//                            } else {
+//                                if ($c_info['path'] != null) {
+//
+//                                    //查找直系推荐关系中的最近B级加盟商(包括自己)
+//                                    $path = explode('-',$c_info['path']);
+//                                    $in_A['id']  = array('in',$path);
+//                                    $in_A['leavel'] = 2;
+//                                    $path_info_A = M('vendors')->field('id,leavel,code,path,open_id')->order('id desc')->where($in_A)->find();
+//
+//                                    if ($path_info_A) {
+////                            M('vendors')->where(['id'=>$path_info_A['id']])->save(['updatetime'=>time()]);
+//                                        $earnings_ta = M('vendors')->where(['id'=>$path_info_A['id']])->setInc('abonus',$com_ta);
+//                                        if ($earnings_ta) {
+//                                            M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$path_info_A['open_id'],'vid'=>$path_info_A['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+//                                        }
+//                                    }
+//                                }
+//                            }
                             // 充值和流水完成，状态设为1
                             $status = 1;
                         }
