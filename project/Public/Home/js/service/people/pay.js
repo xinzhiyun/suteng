@@ -9,7 +9,7 @@ var payment = new Vue({
 			setMeal:[],			//套餐
 			money:"0",			//支付金额
 			index:"",			//支付方式的下标
-			seplaceholder: '请输入搜索关键字',		// 按照手机或设备编码搜索
+			seplaceholder: '请输入手机号',		// 按照手机或设备编码搜索
 			searchtype: '1',
 			way:["微信支付","支付宝支付","银联支付"],	//支付方式
 		}
@@ -24,7 +24,7 @@ var payment = new Vue({
 	    searchchange(e) {
 	    	var type = e.currentTarget.getAttribute('value');
 	    	this.searchtype = type;
-	    	console.log('type: ',type);
+	    	// console.log('type: ',type);
 	    	if(this.searchtype == 2){
 	    		this.seplaceholder = '请输入设备编码';
 
@@ -34,21 +34,32 @@ var payment = new Vue({
 	    },
 		// 查找
 		lookup(word){
+			var vm = this;
 			console.log('word: ',word);
 			// 查找手机号码/设备编码
 			// type: 1手机号，2设备编码
 			$.ajax({
 				url: getURL('Home', 'ServicePeople/deviceSearch'),
 				data: {word: word, type: this.searchtype},
-				type: "post",
+				type: "get",
 				success: function(res){
 					console.log("res: ",res);
+					if(res.status == 200){
+						if(!res.data.length){
+							layuiHint('查无数据');
+							return
+						}
+						vm.deviceCode = res.data;
+						$("#mask").show();
+					}else{
+						layuiHint(res.msg);
+					}
 				},
 				error: function(err){
 					console.log("err: ",err);
 				}
 			});
-			$("#mask").show();
+			
 		},
 		// 选择设备编码
 		select(even){
