@@ -219,3 +219,12 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
 	height: 5rem;
 	margin-right: .3rem;
 }
+.pswp__img {
+  width: 100%;
+  height: auto !important;
+  position: relative;
+  display: block;
+  top: 50% !important;
+  -webkit-transform: translateY(-50%) !important;
+          transform: translateY(-50%) !important;
+}

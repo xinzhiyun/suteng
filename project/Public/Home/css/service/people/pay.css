@@ -123,6 +123,21 @@
   margin: 10px;
   text-align: right;
 }
+.btn {
+  margin: 14vw 0;
+}
+.btn>button {
+  width: 80%;
+  position: relative;
+  padding: 10px 0;
+  left: 50%;
+  margin-left: -40%;
+  text-align: center;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  background: #2eb6aa;
+}
 #mask {
   display: none;
   width: 100%;

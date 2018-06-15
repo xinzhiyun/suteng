@@ -11,16 +11,16 @@
 </head>
 <body>
 	<div class="main"> 
-        <ul class="firstCon">
+        <ul class="firstCon" v-if="indexs == 2 || indexs == 3">
             <li><span class="iconfont icon-chenggong"></span></li>
-            <li><span>最终审核</span></li>
+            <li><span v-text="text"></span></li>
             <li>
                 <p>我们将在1-2个工作日内进行审核，审核通过后会有专人联系您。</p>
                 <p>请保持电话畅通，谢谢!</p> 
             </li>
             <li><a href="####">关闭页面</a></li>
         </ul>
-        <ul class="secondCon">
+        <ul class="secondCon" v-if="indexs == 1">
             <li>
                 <img src="__PUBLIC__/Home/images/shz.png" alt="">
             </li>
@@ -38,4 +38,27 @@
 <script>
 </script>
 <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script>
+    var vm = new Vue({
+        el: ".main",
+        data() {
+            return {
+                indexs: "",
+                text: "",
+            }
+        },
+        created() {
+            this.indexs = +GetQueryString("index");
+            console.log(GetQueryString("index"), typeof this.indexs);
+            if(this.indexs == 2) {
+                this.text = "支付成功";
+            }else if(this.indexs == 3) {
+                this.text = "最终审核";
+            }
+        },
+        methods: {
+
+        }
+    })
+</script>
 </html>

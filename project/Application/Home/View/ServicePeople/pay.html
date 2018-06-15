@@ -50,6 +50,9 @@
 				</span>
 			</div>
 		</div>
+		<div class='btn'>
+			<button>搜索</button>
+		</div>
 	<!-- 搜索部分结束 -->
 
 	<!-- 蒙版部分开始 -->
@@ -58,7 +61,7 @@
 				<p>相关设备</p>
 				<ul @click="select">
 					<li v-for="(d,num) in deviceCode" :index="num">
-						<span class="am-u-sm-10" v-text="d.code">868575025659808</span>
+						<span class="am-u-sm-10" v-text="d.device_code">868575025659808</span>
 						<span class="am-u-sm-2 iconfont icon-selectcircle" v-if="showModel == num ? true : false"></span>
 						<span class="am-u-sm-2 iconfont icon-emptycircle" v-if="showModel == num ? false : true"></span>
 					</li>

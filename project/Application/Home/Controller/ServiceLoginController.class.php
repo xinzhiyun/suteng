@@ -35,13 +35,10 @@ class ServiceLoginController extends Controller
                 }else{
                     E('您输入的用户名不存在!',40002);
                 }
-
             } catch (\Exception $e) {
                 $this->toJson($e);
             }
-
         }else{
-
             // 如果用户已经登录
             if(!empty($_SESSION['serviceInfo']['open_id'])  && $_SESSION['vendorInfo']['status']==7){
                 // 主页
@@ -106,17 +103,130 @@ class ServiceLoginController extends Controller
         $Verify->entry();
     }
 
+    // 服务站注册
+    public function register()
+    {
+        if( empty($_SESSION['open_id']) ){
+            $_SESSION['open_id'] = Weixin::GetOpenid();
+        }
+        $weixin = new \Org\Util\WeixinJssdk();
+        $signPackage = $weixin->getSignPackage();
+        $phone = M('service_seting')->cache('service_kfphone',60)->where(1)->getField('kfphone');
+
+        $this->assign('kfphone',$phone);
+        $this->assign('wxinfo',$signPackage);
+        $this->display();
+    }
+
+    // 地址加载
+    public function getNextArea()
+    {
+        $parentid = I('parentid',0);
+        $data = M('area')->where('parentid='.$parentid)->select();
+
+        $this->toJson(['data'=>$data],'获取成功');
+    }
+
+    // 服务站申请-提交
+    public function apply()
+    {
+        try {
+            $post = I('post.');
+            if(!empty($post['type'])){ ///提交审核
+                if(empty($post['sid'])){
+                    E('请选择服务站',40001);
+                }
+
+                $service_status = M('service')->where('id='.$post['sid'])->getField('status');
+                if($service_status==1){
+                    E('该服务站已经被开通',40002);
+                }
+
+                if( empty($post['name']) || empty($post['phone']) || empty($post['sex']) || empty($post['idcard']) ){
+                    E('请确认身份信息!',40003);
+                }
+
+                if( empty($post['province']) || empty($post['city']) || empty($post['district']) || empty($post['addressinfo']) ){
+                    E('请确认地址信息!',40004);
+                }
+
+                if( empty($post['account']) || empty($post['password'])  || empty($post['repassword'])){
+                    E('请确认账号信息!',40005);
+                }
+
+                if( $post['password'] != $post['repassword'] ){
+                    E('请确认账号信息!',40006);
+                }
+
+                if( empty($post['telephone']) ){
+                    E('请确认客服电话!',40007);
+                }
+
+                if( empty($post['company']) || empty($post['legal']) || empty($post['business']) || empty($post['agreement']) ){
+                    E('请确认申请资质信息!',40008);
+                }
+                $post['password'] = md5($post['password']);
+
+                $post['open_id'] = $_SESSION['open_id'];
+                $post['status'] = 0;
+                $res = M('service_apply')->add($post);
+                if($res){
+                    E('您的申请已提交,请等待工作人员审核',200);
+                }else{
+                    E('提交失败,请联系工作人员!',40010);
+                }
+            }
 
 
-//    // 服务站申请
-//    public function apply()
-//    {
-//
-//    }
+            $info = M('service_apply')->where(['open_id'=>$_SESSION['open_id'], 'status'=>0])->find();
+            if(empty($info)){
+                $res = M('service_apply')->add($post);
+            }else{
+                $res = M('service_apply')->where('id='.$info['id'])->save($post);
+            }
+            if($res){
+                E('您的申请已提交,请等待工作人员审核',200);
+            }else{
+                E('提交失败,请联系工作人员!',40010);
+            }
 
-    // 服务站申请 -获取未开通的服务站
+
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+    // 支付押金
+    public function registerPay()
+    {
+        if( empty($_SESSION['open_id']) ){
+            $_SESSION['open_id'] = Weixin::GetOpenid();
+        }
+
+        $map=[
+            'open_id'=>$_SESSION['open_id'],
+            'status'=>1,
+        ];
+        $res = M('service_apply')->where($map)->find();
+        if(empty($res)){
+            notice('请等待审核!','finalTip');
+        }
+
+        $weixin = new \Org\Util\WeixinJssdk();
+        $signPackage = $weixin->getSignPackage();
+        $joinsost = M('service_seting')->where(1)->getField('joinsost');
+        $joinsost = number_format(intval(trim($joinsost), 10)/100,0,'.','');
+
+        $this->assign('serviceInfo',$res);
+        $this->assign('joinsost',$joinsost);
+        $this->assign('wxinfo',$signPackage);
+        $this->display();
+    }
+
+
     /**
-     * 获取服务站
+     * 服务站申请 -获取未开通的服务站
      */
     public function getService()
     {
@@ -132,20 +242,17 @@ class ServiceLoginController extends Controller
                 $map['district_id'] = $data['district_id'];
             }
 
-            $phone = '13532643349';
-
-
             $map['status'] = ['neq',1];
             $count = M('service')->where($map)->count();
             if(empty($count)){
-                $this->toJson(['data'=>[],'phone'=>$phone],'无数据,请重试!',200);
+                $this->toJson(['data'=>[]],'无数据,请重试!',200);
             }
             $Page       = new \Think\Page($count,15);
             $data = M('service')->where($map)
                 ->limit($Page->firstRow.','.$Page->listRows)
                 ->select();
 
-            $this->toJson(['data'=>$data,'phone'=>$phone],'获取成功!',200);
+            $this->toJson(['data'=>$data],'获取成功!',200);
 
         } catch (\Exception $e) {
             $this->toJson($e);

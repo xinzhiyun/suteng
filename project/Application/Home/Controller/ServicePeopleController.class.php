@@ -47,9 +47,123 @@ class ServicePeopleController extends Controller
         $work['wait_install']  = $work_model->where($map)->where(['type'=>0])->count();
         $work['wait_repair']   = $work_model->where($map)->where(['type'=>1])->count();
         $work['wait_maintain'] = $work_model->where($map)->where(['type'=>2])->count();
-        dump($work);
         $this->assign('work',$work);
         $this->display();
+    }
+
+    // 代缴费搜索
+    public function deviceSearch()
+    {
+        try {
+            if( empty($_GET['type']) || empty($_GET['word']) ) {
+                E('参数错误!',40001);
+            }
+
+            if($_GET['type'] == 1){
+                $map['ud.phone']=['like','%'.$_GET['word'].'%'];  //客户手机
+            }elseif($_GET['type'] == 2){
+                $map['d.device_code']=['like','%'.$_GET['word'].'%'];   //设备编码
+            }else{
+                E('参数错误!',40002);
+            }
+
+            $list = M('devices')
+                ->alias('d')
+                ->where($map)
+                ->join('__USER_DEVICE__ ud ON d.id=ud.did', 'LEFT')
+                ->field('d.device_code,d.type_id')
+                ->select();
+
+            $this->toJson(['data'=>$list],'获取成功');
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+    public function getSetmeal()
+    {
+        try {
+            if( empty($_POST['type_id'])) {
+                E('参数错误!',40001);
+            }
+            $list =  M('setmeal')->where('tid='.$_POST['type_id'])->select();
+            $this->toJson(['data'=>$list],'获取成功');
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+    // 代缴费
+    public function pay(){
+        $weixin = new \Org\Util\WeixinJssdk();
+        $signPackage = $weixin->getSignPackage();
+        $this->assign('wxinfo',$signPackage);
+        $this->display();
+    }
+
+    // 代缴费 订单
+    public function order()
+    {
+        // 订单金额
+        $money = 100;
+        // 订单号码
+        $order_id = time().mt_rand(1000,9999);
+        // 订单描述
+        $content = '速腾商城套餐购买';
+
+        $openId = $_SESSION['open_id'];
+
+//        $url = 'http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/setmealNotify');
+
+        $this->uniformOrder($openId,$money,$order_id,$content,$url);
+    }
+
+    /**
+     * 统一下单订单支付并返回数据 JsApi
+     * @return string json格式的数据，可以直接用于js支付接口的调用
+     * @param  [type] $openId    用户openid
+     * @param  [type] $money     订单金额(原金额 未乘100的)
+     * @param  [type] $order_id  订单id
+     * @param  [type] $content    订单详情
+     * @param  [type] $notify_url 回调地址
+     */
+    public function uniformOrder($openId,$money,$order_id,$content,$notify_url)
+    {
+        $content = substr($content,0,80);
+        $money = $money * 100;                          // 将金额强转换整数
+
+        $money = 1;                                     // 冲值测试额1分钱 上线取消此行
+
+        vendor('WxPay.jsapi.WxPay#JsApiPay');
+        $tools = new \JsApiPay();
+
+        vendor('WxPay.jsapi.WxPay#JsApiPay');
+        $input = new \WxPayUnifiedOrder();
+        //$input->SetDetail($uid);
+
+        $input->SetBody($content);                      // 产品内容
+
+        $input->SetAttach($order_id);                   // 唯一订单ID
+
+        $input->SetOut_trade_no(gerOrderId());          // 设置商户系统内部的订单号,32个字符内、可包含字母, 其他说明见商户订单号
+        $input->SetTotal_fee($money);                   // 产品金额单位为分
+
+        //$input->SetTime_start(date("YmdHis"));        // 设置订单生成时间
+        //$input->SetTime_expire(date("YmdHis", time() + 300));// 设置订单失效时间
+        //$input->SetGoods_tag($uid);
+
+        $input->SetNotify_url($notify_url);             // 微信充值回调地址
+        $input->SetTrade_type("JSAPI");           // 支付方式 JS-SDK 类型是：JSAPI
+        // 用户在公众号的唯一标识
+        $input->SetOpenid($openId);
+
+        $order = \WxPayApi::unifiedOrder($input);       // 统一下单
+
+        // 返回支付需要的对象JSON格式数据
+        $jsApiParameters = $tools->GetJsApiParameters($order);
+
+        echo $jsApiParameters;
+        exit;
     }
 
     // 获取服务(任务)列表
@@ -58,8 +172,7 @@ class ServicePeopleController extends Controller
         $p = I('p',1);
         $_GET['p']=$p;
 
-        $map['sid'] = $_SESSION['servicepeople']['sid'];
-
+        $map['dw_uid'] = $_SESSION['servicepeople']['id'];
 
         strlen(I('type'))?$map['type'] = I('type'):'';
         $map['result'] = 1;
@@ -68,14 +181,13 @@ class ServicePeopleController extends Controller
             $map['result']=['gt',2];
         }
 
-        if (!empty($map['word'])) {
-            if(is_numeric($map['word'])){
-                $map['kphone']=['like','%'.$map['word'].'%'];
+        if (!empty($_GET['word'])) {
+            if(is_numeric($_GET['word'])){
+                $map['kphone']=['like','%'.$_GET['word'].'%'];
             }else{
-                $map['kname']=['like','%'.$map['word'].'%'];
+                $map['kname']=['like','%'.$_GET['word'].'%'];
             }
         }
-
 
         $total = M('work')
             ->where($map)
@@ -126,12 +238,13 @@ class ServicePeopleController extends Controller
             }
 
             /*
+             * 下版本启用 取消下面固定的状态值
             // 1 拒绝 2 完成
             if( empty($post['operate']) ){
                 E('信息错误',400023);
             }
 
-            取消下面写死的状态值
+
             if($post['operate']=='1'){
                 $data['result'] = 1;
                 $data['refuse'] = 1;// 拒绝状态
@@ -151,7 +264,7 @@ class ServicePeopleController extends Controller
 
             $data['update_at']=time();
             $data['pass_at'] = time();
-            $data['result'] = 2;
+            $data['result'] = 2;///------------------固定的状态值----------------------------------
             $res = M('work')->where($map)->save($data);
 
             if ($res) {
@@ -237,6 +350,9 @@ class ServicePeopleController extends Controller
     // 微信 绑定
     public function bindingWeixin()
     {
+        if( empty($_SESSION['open_id']) ){
+            $_SESSION['open_id'] = Weixin::GetOpenid();
+        }
         $data = Weixin::getWeiXinUserInfo($_SESSION['open_id']);
         if(!empty($data['open_id'])){
             $saveData = [
