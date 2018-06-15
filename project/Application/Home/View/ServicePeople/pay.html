@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
 	<title>代缴费</title>
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/payment/css/payment.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/people/pay.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/amazeui.min.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/common.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css">
@@ -13,7 +13,7 @@
         var vconsole = new VConsole();
     </script>
 </head>
-<body>
+<body ontouchstart='console.log()'>
 	<div id="app">
 	<!-- 头部部分开始 2EB6AA  B3B3B3-->
 		<div class="header">
@@ -38,12 +38,17 @@
 
 	<!-- 搜过部分开始 -->
 		<div class="search">
-			<input type="text" placeholder="请输入手机号码/设备编码" v-model="search" @keyup.enter="lookup">
-			<span>
-				<label for=""></label>
-				<input id='' type="radio" name='searchtype'>
-				<input type="radio" name='searchtype'>
-			</span>
+			<input type="text" :placeholder="seplaceholder" v-model="search" @keyup.enter="lookup(search)">
+			<div class='type'>
+				<span :style='{color: searchtype == 1 ? "#333" : "#808080"}'>
+					<input id='rphone' type="radio" name='searchtype' @click='searchchange($event)' value='1' checked>
+					<label for="rphone">搜索手机号</label>
+				</span>
+				<span :style='{color: searchtype == 2 ? "#333" : "#808080"}'>
+					<input id='rdevice' type="radio" name='searchtype' @click='searchchange($event)' value='2'>
+					<label for="rdevice">搜索设备编码</label>
+				</span>
+			</div>
 		</div>
 	<!-- 搜索部分结束 -->
 
@@ -155,7 +160,7 @@
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script src="__PUBLIC__/Home/js/amazeui.min.js"></script>
 	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
-	<script src="__PUBLIC__/Home/js/payment/payment.js"></script>
+	<script src="__PUBLIC__/Home/js/service/people/pay.js"></script>
 	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script>

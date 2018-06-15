@@ -8,12 +8,12 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/amazeui.min.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/common.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css">
-    <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+    <!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
     <script>
         // var vconsole = new VConsole();
     </script>
 </head>
-<body>
+<body ontouchstart='console.log()'>
 <div id="app">
 	
 	<!-- 服务详情页面部分开始 -->
@@ -85,7 +85,7 @@
 			<input type="button" value="我要接单" @click="openModal(0)">
 		</div> -->
 		<!-- 忽略按钮 -->
-		<div class="success" v-if='type == 0 && detail.refuse != 1'>
+		<div class="success" v-if='detail.refuse != 1'>
 			<input type="button" value="忽略此单" @click="openModal(1)" style='background:#f43030;'>
 			<input type="button" value="完成" @click="openModal(2)">
 		</div>

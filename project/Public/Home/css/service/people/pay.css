@@ -92,7 +92,7 @@
   color: #808080;
   font-size: 0.33333333rem;
 }
-.search input {
+.search>input {
   margin-top: 0.71428571rem;
   width: 100%;
   height: 2.38095238rem;
@@ -110,6 +110,18 @@
 }
 .search input::-moz-placeholder {
   color: #ccc;
+}
+.search input[type="radio"] {
+  -webkit-appearance: radio;
+     -moz-appearance: radio;
+          appearance: radio;
+}
+.search>span {
+  color: #808080;
+}
+.type {
+  margin: 10px;
+  text-align: right;
 }
 #mask {
   display: none;
@@ -184,9 +196,11 @@
   color: #808080;
 }
 .detail .meal ul {
-  display: -webkit-flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-around;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
   width: 100%;
 }
 .detail .meal ul li {
@@ -216,7 +230,8 @@
   height: 2.61904762rem;
   line-height: 2.61904762rem;
   text-align: center;
-  display: -webkit-flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
 }
 .pay p:nth-child(1) span:nth-child(2) {
