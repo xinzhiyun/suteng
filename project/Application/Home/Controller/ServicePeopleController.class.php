@@ -83,11 +83,22 @@ class ServicePeopleController extends Controller
     public function getSetmeal()
     {
         try {
-            if( empty($_POST['type_id'])) {
+            if( empty($_POST['device_code'])) {
                 E('参数错误!',40001);
             }
-            $list =  M('setmeal')->where('tid='.$_POST['type_id'])->select();
-            $this->toJson(['data'=>$list],'获取成功');
+            $device = M('devices')->where('device_code='.$_POST['device_code'])->find();
+
+            $user=M('user_device')->where('did='.$device['id'])->find();
+
+            $device_type = M('type')->where('id='.$device['type_id'])->getField('typename');
+            $info=[
+                'name'=>$user['name'],
+                'phone'=>$user['phone'],
+                'device_type'=>$device_type,
+            ];
+
+            $list =  M('setmeal')->where('tid='.$device['type_id'])->select();
+            $this->toJson(['data'=>$list,'info'=>$info],'获取成功');
         } catch (\Exception $e) {
             $this->toJson($e);
         }
