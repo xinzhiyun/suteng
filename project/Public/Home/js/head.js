@@ -30,7 +30,7 @@
     navbar.setAttribute('class','am-cf');
     navbar.innerHTML = '<span class="iconfont icon-zuojiantou" style="color:#808080;font-size:0.8rem;" onclick="history.go(-1)">&emsp;</span>'+
         '<h2>title</h2>'+
-        '<a class="back2home">首页</a>';
+        '<a class="back2home"></a>';
     var fc = document.body.firstChild;
     fresh.setAttribute('id','refresh');
     fresh.setAttribute('style','width: 50px;height: 50px;line-height: 40px;position: fixed;font-size:1rem;top: 0;left:50%;padding:4px;border-radius:50%;text-align: center;transition: .3s ease-in;transform: translate(-50%,-120%);background:#f6f6f6;box-shadow:0 0 10px rgba(0,0,0,.2);z-index: 99999;');
@@ -49,21 +49,6 @@
     loaddiv.setAttribute('id', 'fadeshow');
     loaddiv.setAttribute('style', 'display:flex;');
 
-    // 设置首页链接
-    var homebtn = document.getElementsByClassName('back2home');
-    // var href = location.href;
-    // var homeurl, homeindex;
-    // if(href.indexOf('Home') > -1){
-    //     homeindex = href.indexOf('Home') + 4;
-    // }else if(href.indexOf('Coms') > -1){
-    //     homeindex = href.indexOf('Coms') + 4;
-    // }
-    // homeurl = href.substring(0, homeindex);
-    if(location.href.indexOf('Home') > -1){
-        homebtn[0].setAttribute('href', getURL('Home', 'Index/index'));
-    }else if(location.href.indexOf('Coms') > -1){
-        homebtn[0].setAttribute('href', getURL('Coms', 'Index/index'));
-    }
 }()
 
 /**

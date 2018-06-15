@@ -12,11 +12,18 @@
                 </div>
                     <div class="ibox-content">
                         <form action="javascript:false;" method="post" class="form-horizontal" enctype="multipart/form-data">
-                            <h3>服务站加盟费 <small style="color: red"></small></h3>
+                            <!--<h3>服务站加盟费 <small style="color: red"></small></h3>-->
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">服务站加盟费</label>
                                 <div class="col-md-3">
-                                    <input type="text" name="deposit_money" class="form-control"  value="{{$data.annual_money}}" placeholder="标准价钱格式，例如：2.00">
+                                    <input type="text" name="joinsost" class="form-control"  value="{{$data.joinsost}}" placeholder="标准价钱格式，例如：2.00">
+                                </div>
+                            </div>
+                            <h3> <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">服务站加盟客服电话</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="kfphone" class="form-control"  value="{{$data.kfphone}}" >
                                 </div>
                             </div>
 
@@ -57,48 +64,23 @@ $(".per_describe").val(decodeURI('{{$data.per_describe}}'));
      * @return {[type]}    [json数据]
      */
     $('#proportion').click(function(){
-        var id      = $("input[name='id']").val();
-        var annual_money      = $("input[name='annual_money']").val();
-        var cost_money      = $("input[name='cost_money']").val();
-        var medal_money      = $("input[name='medal_money']").val();
-        var gold_money      = $("input[name='gold_money']").val();
-        var personal_money      = $("input[name='personal_money']").val();
-        var per_money      = $("input[name='per_money']").val();
-        var single_money      = $("input[name='single_money']").val();
-        var members_money      = $("input[name='members_money']").val();
-        var dia_describe      = $("input[name='dia_describe']").val();
-        var gold_describe      = $("input[name='gold_describe']").val();
-        var per_describe      = $("input[name='per_describe']").val();
 
-
+        var data = {};
+        data.joinsost  = $("input[name='joinsost']").val();
 
         $.ajax({
-
-            url:"{{:U('Admin/Butros/annual')}}",
+            url:"{{:U('Admin/Service/setService')}}",
             contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            data:{
-                "id":id,
-                "annual_money":annual_money,
-                "cost_money":cost_money,
-                "medal_money":medal_money,
-                "gold_money":gold_money,
-                "personal_money":personal_money,
-                "per_money":per_money,
-                "single_money":single_money,
-                "members_money":members_money,
-                "dia_describe":  encodeURIComponent(dia_describe),
-                "gold_describe":encodeURIComponent(gold_describe),
-                "per_describe":encodeURIComponent(per_describe)
-            },
+            data,
             dataType:"json",
             type: 'post',
             contentType: "application/x-www-form-urlencoded; charset=utf-8",
             success:function(res){
                 console.dir(res);
-                if(res.code==200){
+                if(res.status==200){
                     swal("设置成功！", res.message, "success");
                     window.setTimeout(function() {
-                        location.href="{{:U('Admin/Butros/annual')}}";
+                        location.href="{{:U('Admin/Service/setService')}}";
                     },1000);
                 }else{
                     swal("设置失败！", res.message, "error");

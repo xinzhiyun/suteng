@@ -193,7 +193,7 @@ class WorkController extends CommonController
             if($res){
                 $status = [
                     '9'=>99,// 关闭
-                    '3'=>6
+                    '3'=>8
                 ];
                 if(in_array($data['result'], $status)){
                     Work::add($post['id'], $status[$data['result']]);
@@ -286,7 +286,11 @@ class WorkController extends CommonController
                     'name'=>$user['name'],
                     'sn'=>$user['sn'],
                     'phone'=>$user['phone'],
-                    'result'=>1
+                    'result'=>1,
+                    'anry_at'=>time(),
+                    'refuse' => 0,
+                    'anry_period'=>$post['anry_period'],
+                    'anry_time'=>$post['anry_time']
                 ];
                 $res =  M('work')->where('id='.$post['wid'])->save($saveData);
                 Work::add($post['wid'], 5);

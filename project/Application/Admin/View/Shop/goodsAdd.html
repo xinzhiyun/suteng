@@ -10,6 +10,11 @@
     <link href="__PUBLIC__/Home/fonts/iconfontHome.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/style.css?v=4.1.0" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/switchery.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/ueditor/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="__PUBLIC__/Admin/ueditor/third-party/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/Admin/ueditor/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/Admin/ueditor/umeditor.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Admin/ueditor/lang/zh-cn/zh-cn.js"></script>
 </block>
 <block name="content">
     <div class="wrapper wrapper-content animated fadeInRight">
@@ -52,7 +57,7 @@
                             <label class="col-sm-2 control-label">商品图片：</label>
                             <div class="col-sm-10 disPics">
                                 <p class="btn btn-outline btn-primary col-sm-2">选择图片</p>
-                                <input type="file" class="form-control" name="pics[]" multiple="multiple">
+                                <input type="file" class="form-control chooseimg" multiple="multiple">
                                 <!-- 显示上传图片 -->
                                 <div class="picShow col-sm-10">
                                 </div>
@@ -104,6 +109,12 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">快递费：</label>
                             <div class="col-sm-6 courier_val">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品描述：</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="myEditor" style="width:1000px;height:340px;" name="desc" ></textarea>
                             </div>
                         </div>
                         <!-- 快递运费新添加结束 -->
@@ -312,6 +323,11 @@
 </block>
 <block name="myjs">
     <script>
+        
+        //实例化编辑器
+        var um = UM.getEditor('myEditor');
+   
+
         $("select[name='firscate']").change(function(){
             var firscateId = $(this).children('option:selected').val();
             var html = "";
@@ -362,29 +378,51 @@
                 })
             }
         })
-        
+        var arr = [];
         // 点击添加图片  每张filereader对象只能读取一张图片的路径
-        $("input[type='file']").on("change", function() {
+        $(".chooseimg").on("click", function() {
+            console.log("lick")
+            var _this = this;
+            // 读取图片
+            upImg(_this, function() {
+                notison.innerHTML = '图片加载中...';
+                fadeFn({elem: notidiv});
+            }, function(res) {
+                console.log(res);
+                arr.push({"pics": res.src});
+                //图片显示
+                var span = document.createElement('span');
+                span.innerHTML = "<i class='iconfont icon-shibai'></i>";
+                var img = new Image();
+                
+                if(res.src){
+                    img.src = res.src;      // 显示图片
+                    span.appendChild(img);
+                    $(span).addClass("selectimg");
+                    $(".picShow").append(span);
+                }
+            }) 
             // 获取文件
-            var file = $(this)[0].files;
-            var fileHtml = "";
-            for(var i = 0; i < file.length; i++) {
+            // var file = $(this)[0].files;
+            // var fileHtml = "";
+            // for(var i = 0; i < file.length; i++) {
+                // picarr[i] = file[i];
                 //创建读取文件的对象  
-                var reader = new FileReader();  
+                // var reader = new FileReader();  
                 //创建文件读取相关的变量  
                 // var imgFile; 
-                reader.error = function() {
-                    console.log("文件读取异常");
-                } 
+                // reader.error = function() {
+                    // console.log("文件读取异常");
+                // } 
                 //为文件读取成功设置事件  
-                reader.onload = function(e) {  
+                // reader.onload = function(e) {  
                     // imgFile = e.target.result;  
-                    fileHtml = "<span class='selectimg'><img src='"+ e.target.result +"' /><i class='iconfont icon-shibai'></i></span>";
-                    $(".picShow").append(fileHtml);
-                }; 
+                    // fileHtml = "<span class='selectimg'><img src='"+ e.target.result +"' /><i class='iconfont icon-shibai'></i></span>";
+                    // $(".picShow").append(fileHtml);
+                // }; 
                 // 读取文件 
-                reader.readAsDataURL(file[i]);//发起异步请求
-            }
+                // reader.readAsDataURL(file[i]);//发起异步请求
+            // }
         });
         // 点击删除小图标删除图片
         $(".picShow").on("click", ".icon-shibai", function() {
@@ -508,6 +546,7 @@
         })
         
     </script>
+    <script src="__PUBLIC__/Home/js/upImg.js"></script>
     <script src="__PUBLIC__/Admin/js/plugins/iCheck/icheck.min.js"></script>
     <!-- SUMMERNOTE -->
     <script src="__PUBLIC__/Admin/js/plugins/summernote/summernote.min.js"></script>
@@ -640,6 +679,9 @@
         $(".goodsAdd").click(function(){
             // var data = $("#form").serializeArray();
             var data = new FormData($("#form")[0]);
+            console.log(arr, JSON.stringify(arr));
+            arr = JSON.stringify(arr);
+            data.append("pics", arr);
             $.ajax({
                 url:'goodsAction',
                 type:'post',

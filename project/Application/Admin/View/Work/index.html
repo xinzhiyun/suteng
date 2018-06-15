@@ -307,6 +307,21 @@
                                     </select>
                                 </td>
                             </tr>
+                            <tr class="send_service_user">
+                                <th>预约日期：</th>
+                                <td>
+                                    <input type="text" class="layui-input" id="time_sel" placeholder="请选择日期">
+                                </td>
+                            </tr>
+                            <tr class="send_service_user">
+                                <th>预约时间：</th>
+                                <td>
+                                    <select class="form-control"  name="anry_period" id="anry_period">
+                                        <option value="上午 09:00-11:00">上午 09:00-11:00</option>
+                                        <option value="下午 02:00-06:00">下午 02:00-06:00</option>
+                                    </select>
+                                </td>
+                            </tr>
                             <tr>
                                 <td colspan="2">
                                     <input class="btn btn-success " type="button" onclick="send_submit()" value="确认">
@@ -449,6 +464,8 @@
     <script src="__PUBLIC__/Admin/js/Bootstrap_shengshiqu/js/distpicker.data.js"></script>
     <script src="__PUBLIC__/Admin/js/Bootstrap_shengshiqu/js/distpicker.js"></script>  
     <script src="__PUBLIC__/Admin/js/plugins/validate/jquery.validate.min.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/Admin/layui2/css/layui.css" media="all">
+    <script type="text/javascript" src="__PUBLIC__/Admin/layui2/layui.js"></script>
     <script type="text/javascript">
          // 添加工单
 
@@ -557,6 +574,8 @@
 
     });
     function pullAgentList(){
+        var _html = '<option value="">--请选择--</option>';
+
         $("#st_set_agent_sel").html(_html);
 
         var data = {};
@@ -585,13 +604,15 @@
          var sid    = obj.data('sid');
 
          if(sid){
+             var _shtml = '<option value="">--请选择--</option>';
+
              // 加载 服务站人员
              var getUser = "{{:U('Service/getServiceUser')}}";
              getInfo(getUser,{sid:sid},function (res) {
                  $.each(res.data,function (i,val) {
-                     _html += '<option value="'+val.id+'">'+val.name+'</option>';
+                     _shtml += '<option value="'+val.id+'">'+val.name+'</option>';
                  })
-                 $("#service_user").html(_html);
+                 $("#service_user").html(_shtml);
              });
 
              $('#st-send .service_name').html(obj.find('.service_name').html());
@@ -622,10 +643,22 @@
         var osid = $("#st-send input[name='sid']").val();// 原服务站
         var data = {wid:wid};
 
+
+
         if(osid){
             var suid = $("#service_user").val();// 原服务站
             if(!suid){ parent.layer.msg('请选择服务人员!'); return;}
             data.suid = suid;
+
+            var anry_time = $("#time_sel").val();
+            var anry_period = $("#anry_period").val();
+
+            if(!anry_period || !anry_time){
+                parent.layer.msg('请选择预约时间!'); return;
+            }
+            data.anry_time=anry_time;
+            data.anry_period=anry_period;
+
         }else{
             var sid = $('#st_set_agent_sel').val();// 选择的服务站
             if(!sid){ parent.layer.msg('请选择服务站!'); return;}
@@ -745,7 +778,15 @@
     pageHtml = $(".page").html();
     $('.page').remove();
     $('ul.pagination').html(pageHtml);
-
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#time_sel', //指定元素
+            min:0,
+            max: 30,
+        });
+    });
 
     </script>
 </block>
