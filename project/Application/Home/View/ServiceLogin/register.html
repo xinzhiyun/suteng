@@ -24,7 +24,7 @@
 			</div>
 			<div class="chooseArea">
 				<label for="">服务站选择：</label>
-				<select name="" id="" @change="stachoose($event)">
+				<select name="" id="sel" @change="stachoose($event)">
 					<option value="" v-text="ifstation"></option>
 					<option :value="areachooses.id" v-for="areachooses in areachoose" v-text="areachooses.company"></option>
 				</select>
@@ -83,14 +83,40 @@
 				<p>营业执照：</p>
 				<div>
 					<span class="iconfont icon-41" @click="imageChoose($event)"></span>
-					<div class="picShow yinye"></div>
+					<div class="picShow yinye">
+						<!-- <span class="bottx">
+							<span class="topx">x</span>
+							<img src="__PUBLIC__/Home/images/1a.jpg" alt="">
+						</span>
+						<span class="bottx">
+							<span class="topx">x</span>
+							<img src="__PUBLIC__/Home/images/1a.jpg" alt="">
+						</span>
+						<span class="bottx">
+							<span class="topx">x</span>
+							<img src="__PUBLIC__/Home/images/1a.jpg" alt="">
+						</span> -->
+					</div>
 				</div>
 			</div>
 			<div class="yinyePic" id="hezuo">
 				<p>合作协议：</p>
 				<div>
 					<span class="iconfont icon-41" @click="imageChoose($event)"></span>
-					<div class="picShow hezuo"></div>
+					<div class="picShow hezuo">
+						<!-- <span class="bottx">
+							<span class="topx">x</span>
+							<img src="__PUBLIC__/Home/images/1a.jpg" alt="">
+						</span>
+						<span class="bottx">
+							<span class="topx">x</span>
+							<img src="__PUBLIC__/Home/images/1a.jpg" alt="">
+						</span>
+						<span class="bottx">
+							<span class="topx">x</span>
+							<img src="__PUBLIC__/Home/images/1a.jpg" alt="">
+						</span> -->
+					</div>
 				</div>
 			</div>
 		</div>
@@ -118,8 +144,8 @@
 		
 		<!-- 保存和提交审核 -->
 		<div class="save">
-			<p @click="saveInfo">保存</p>
-			<p @click="verify">提交审核</p>
+			<p @click="verify(0)">保存</p>
+			<p @click="verify(1)">提交审核</p>
 		</div>
 		
 		<!-- 地区选择 -->
@@ -160,6 +186,12 @@
 				</p>
 			</div>
 		</div>
+
+		<!-- 客服电话 -->
+		<div class="telphone">
+			<a href="tel:18318642973"><span class="iconfont icon-kefu"></span></a>
+		</div>
+
 	</div>
 </body>
 <script src="__PUBLIC__/Home/js/jquery.min.js"></script>
@@ -167,18 +199,18 @@
 </script>
 <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 <script src="__PUBLIC__/Home/js/public.js"></script>
-<script src="__PUBLIC__/Home/js/service/register.js?qwe={{:time()}}"></script>
 <script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 <script src="__PUBLIC__/Home/js/wx_imgUpload.js"></script>
 <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+<script src="__PUBLIC__/Home/js/service/register.js?qwe={{:time()}}"></script>
 <script>
 	var vConsole = new VConsole();
 	(function() {
 		//微信接口
 		wx.config({
-			debug: true,
+			debug: false,
 			appId: '{{$wxinfo["appId"]}}',
-			timestamp: '{{wx$info["timestamp"]}}',
+			timestamp: '{{$wxinfo["timestamp"]}}',
 			nonceStr: '{{$wxinfo["nonceStr"]}}',
 			signature: '{{$wxinfo["signature"]}}',
 			jsApiList: [

@@ -91,10 +91,12 @@ class ServiceController extends CommonController
         }
         if(isset($_GET['status']) && $_GET['status'] != '' ){
             $map['status'] = $_GET['status'];
+        }else{
+            $map['status'] = ['gt',0];
         }
 
         $count = M('service_apply')->where($map)->count();
-        $Page       = new \Think\Page($count,15);
+        $Page = new \Think\Page($count,15);
         $data = M('service_apply')->where($map)
             ->limit($Page->firstRow.','.$Page->listRows)
             ->select();

@@ -1,5 +1,6 @@
 <?php
 namespace Home\Controller;
+use Common\Tool\File;
 use Common\Tool\Weixin;
 use Think\Controller;
 
@@ -260,7 +261,25 @@ class ServiceLoginController extends Controller
     }
 
 
-
+    // 图片上传
+    public function picUpload()
+    {
+        $pic = I('pic');
+        if(!empty($pic)){
+            if(is_string($pic)){
+                $pic = explode(',',$pic);
+            }
+            if( is_array($pic) ){
+                foreach ($pic as $p) {
+                    $pics[] = File::downloadPic('service_apply',$p);
+                }
+            }
+            $data['pic'] = json_encode($pics);
+            $this->toJson(['data'=>$data],'上传成功!',200);
+        }else{
+            $this->toJson(['data'=>[]],'无图片上传!',400001);
+        }
+    }
 
 
 
