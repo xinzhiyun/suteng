@@ -17,18 +17,26 @@
 				<span class="iconfont icon-gongsi"></span>
 				<span>服务站信息</span>
 			</div>
-			<div class="chooseArea">
+			<div class="chooseArea" @click="chooseArea()">
 				<label for="">开通区域：</label>
-				<input type="text" disabled placeholder="请选择区域">
+				<span id="areaID" class="areabtn" v-text="serviceInfos.station"></span>
+				<span class="iconfont icon-right"></span>
+			</div>
+			<div class="chooseArea">
+				<label for="">服务站选择：</label>
+				<select name="" id="" @change="stachoose($event)">
+					<option value="" v-text="ifstation"></option>
+					<option :value="areachooses.id" v-for="areachooses in areachoose" v-text="areachooses.company"></option>
+				</select>
 				<span class="iconfont icon-right"></span>
 			</div>
 			<div>
 				<label for="">详细地址：</label>
-				<input type="text" placeholder="请输入详细地址">
+				<input type="text" placeholder="请输入详细地址" v-model="serviceInfos.detailAddress">
 			</div>
 			<div>
 				<label for="">服务站客服：</label>
-				<input type="text" placeholder="请输入客服电话">
+				<input type="text" placeholder="请输入客服电话" v-model="serviceInfos.stationer">
 			</div>
 		</div>
 		
@@ -40,20 +48,20 @@
 			</div>
 			<div>
 				<label for="">联系人：</label>
-				<input type="text" disabled placeholder="请输入姓名">
+				<input type="text" placeholder="请输入姓名" v-model="userInfos.name">
 			</div>
 			<div class="chooseSex">
 				<label for="">性别：</label>
-				<span><i class="iconfont icon-selectcircle"></i>男</span>
-				<span><i class="iconfont icon-emptycircle"></i>女</span>
+				<span @click="chooseSex($event)"><i class="iconfont icon-selectcircle"></i>男</span>
+				<span @click="chooseSex($event)"><i class="iconfont icon-emptycircle"></i>女</span>
 			</div>
 			<div>
 				<label for="">联系电话：</label>
-				<input type="text" placeholder="请输入联系电话">
+				<input type="text" placeholder="请输入联系电话" v-model="userInfos.phone">
 			</div>
 			<div>
 				<label for="">身份证号码：</label>
-				<input type="text" placeholder="请输入身份证号码">
+				<input type="text" placeholder="请输入身份证号码" v-model="userInfos.idcard">
 			</div>
 		</div>
 		
@@ -65,24 +73,24 @@
 			</div>
 			<div>
 				<label for="">所属公司：</label>
-				<input type="text" disabled placeholder="请输入公司名称">
+				<input type="text" placeholder="请输入公司名称" v-model="companyInfos.comName">
 			</div>
 			<div>
 				<label for="">公司法人：</label>
-				<input type="text" placeholder="请输入公司法人姓名">
+				<input type="text" placeholder="请输入公司法人姓名" v-model="companyInfos.comUser">
 			</div>
 			<div class="yinyePic">
 				<p>营业执照：</p>
 				<div>
-					<span class="iconfont icon-41"></span>
-					<div class="picShow"></div>
+					<span class="iconfont icon-41" @click="imageChoose($event)"></span>
+					<div class="picShow yinye"></div>
 				</div>
 			</div>
 			<div class="yinyePic" id="hezuo">
 				<p>合作协议：</p>
 				<div>
-					<span class="iconfont icon-41"></span>
-					<div class="picShow"></div>
+					<span class="iconfont icon-41" @click="imageChoose($event)"></span>
+					<div class="picShow hezuo"></div>
 				</div>
 			</div>
 		</div>
@@ -95,23 +103,62 @@
 			</div>
 			<div class="chooseArea">
 				<label for="">账号：</label>
-				<input type="text" disabled placeholder="请输入账号">
-				<span class="iconfont icon-right"></span>
+				<input type="text" placeholder="请输入账号" v-model="accountInfos.account">
+				<!-- <span class="iconfont icon-right" ></span> -->
 			</div>
 			<div>
 				<label for="">密码：</label>
-				<input type="text" placeholder="请输入密码">
+				<input type="password" placeholder="请输入密码" v-model="accountInfos.password">
 			</div>
 			<div>
 				<label for="">再次确认：</label>
-				<input type="text" placeholder="请再次确认">
+				<input type="password" placeholder="请再次确认" v-model="accountInfos.confirmPassword">
 			</div>
 		</div>
-
+		
 		<!-- 保存和提交审核 -->
 		<div class="save">
-			<p>保存</p>
-			<p>提交审核</p>
+			<p @click="saveInfo">保存</p>
+			<p @click="verify">提交审核</p>
+		</div>
+		
+		<!-- 地区选择 -->
+		<div id="areaChoose" class="citys" v-if="areaDis" @click="areaY($event)">
+			<div class="areaChoosebg"></div>
+			<div class="areaDiv">
+				<div>
+					<span>省份</span>
+					<span>城市</span>
+					<span>区县</span>
+				</div>
+				<ul>
+					<li class='province' @click="getArea($event)">
+						<p v-for="areaProvinces in areaProvince" :aid="areaProvinces.id" v-text="areaProvinces.areaname"></p>
+					</li>
+					<li class='city' @click="getArea($event)">
+						<p v-for="areaCitys in areaCity" :aid="areaCitys.id" v-text="areaCitys.areaname"></p>
+					</li>
+					<li class='area' @click="getArea($event)">
+						<p v-for="areas in area" :aid="areas.id" v-text="areas.areaname"></p>
+					</li>
+				</ul>
+			</div>
+			<!-- <div id="confirmAreaChoose">
+				<div>确定</div>
+			</div> -->
+		</div>
+		
+		<!-- 已有服务站注册提示 -->
+		<div class="hasRegister" v-if="aleady">
+			<div>
+				<p>该区域已有服务站注册</p>
+				<p>
+					<span @click="notPhone">取消</span>
+					<span>
+						<a :href="stationPhone" @click="notPhone">联系客服</a>
+					</span>
+				</p>
+			</div>
 		</div>
 	</div>
 </body>
@@ -120,4 +167,28 @@
 </script>
 <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 <script src="__PUBLIC__/Home/js/public.js"></script>
+<script src="__PUBLIC__/Home/js/service/register.js?qwe={{:time()}}"></script>
+<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
+<script src="__PUBLIC__/Home/js/wx_imgUpload.js"></script>
+<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+<script>
+	var vConsole = new VConsole();
+	(function() {
+		//微信接口
+		wx.config({
+			debug: true,
+			appId: '{{$wxinfo["appId"]}}',
+			timestamp: '{{wx$info["timestamp"]}}',
+			nonceStr: '{{$wxinfo["nonceStr"]}}',
+			signature: '{{$wxinfo["signature"]}}',
+			jsApiList: [
+			// 所有要调用的 API 都要加到这个列表中
+			'chooseImage',
+			'uploadImage',
+			'getLocalImgData',
+			'downloadImage'
+			]
+		});
+	})();
+</script>
 </html>
