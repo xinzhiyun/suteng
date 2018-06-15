@@ -46,7 +46,7 @@ $(function(){
 			
 			// 轮播图片
 			for(var i = 0; i < goodsDetail.pics.length; i++) {
-				console.log(goodsDetail.pics[i].path)
+				// console.log(goodsDetail.pics[i].path)
 				// 商品图片
 				goodsPicArr.push(goodsDetail.pics[i].path);
 			}
@@ -182,7 +182,7 @@ $(function(){
 		    history: true,
 		    index: 0 // start at first slide
 		};
-		$('#wrapul').on('touchend', 'li', function(){
+		$('#wrapul').on('click', 'li', function(){
 			var index = $(this).attr('index');
 			options.index = +index;
 			// console.log('options: ',options);
@@ -224,7 +224,7 @@ $(function(){
 							'</span><span>&nbsp;'+ nickname +'</span><span>'+ timestampToTime(res.data[i].addtime) +'</span></p>'+
 							'<p class="cfix xingx">'+
 								'<i index="1" class="iconfont pingfen fleft"><span style="width:'+ statusList[res.data[i].grade-0-1] +'%"></span></i>'+
-								'<span class="fleft">'+ statusText[res.data[i].grade-0-1] + '<span>（'+ statusDesc[res.data[i].grade-0-1] +'）</span></span>'+
+								'<span class="fleft desc">'+ statusText[res.data[i].grade-0-1] + '<span>（'+ statusDesc[res.data[i].grade-0-1] +'）</span></span>'+
 							'</p>'+
 							'<p class="ccontent">'+ res.data[i].content +'</p>'+
 							'<div class="commpic">'+
@@ -261,7 +261,7 @@ $(function(){
 					for(var j=0; j<res.data[i].pics.length; j++){
 						numindex++;
 						// console.log('numindex',numindex);
-						picStr += '<li><img class="compic" index="'+ numindex +'" src="'+'/Public/'+res.data[i].pics[j].path+'" alt="图片加载中"></li>';
+						picStr += '<li><img class="compic" index="'+ numindex +'" src="'+res.data[i].pics[j].path+'" alt="图片加载中"></li>';
 					}
 					picArr.push({'picHTML':picStr});
 				}
@@ -312,7 +312,7 @@ $(function(){
 		    history: true,
 		    index: 0 // start at first slide
 		};
-		$('body').on('touchend', '.compic', function(){
+		$('body').on('click', '.compic', function(){
 			var index = $(this).attr('index');
 			options.index = +index-1;
 			// console.log('options: ',options);
@@ -511,7 +511,7 @@ $(function(){
 
 })
 setTimeout(function(){
-	console.log($('img[data-src]'));
+	// console.log($('img[data-src]'));
 	lazyLoad($('img[data-src]'));
 	
 },0);

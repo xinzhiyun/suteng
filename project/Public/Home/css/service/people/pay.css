@@ -159,15 +159,23 @@
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 99;
 }
 #mask .sel {
-  width: 90%;
-  background: #fff;
-  border-radius: 0.23809524rem;
-  margin: 0 auto;
-  position: fixed;
-  left: 5%;
-  top: 35%;
+    width: 90%;
+    max-height: 70vh;
+    background: #fff;
+    border-radius: 0.23809524rem;
+    margin: auto;
+    position: fixed;
+    left: 5%;
+    top: 0;
+    bottom: 0;
+    overflow-y: scroll;
+}
+#mask .sel>ul {
+  max-height: 60vh;
+  overflow-y: scroll;
 }
 #mask .sel p {
   height: 1.9047619rem;
