@@ -138,7 +138,7 @@ class ServiceLoginController extends Controller
             $map['status'] = ['neq',1];
             $count = M('service')->where($map)->count();
             if(empty($count)){
-                $this->toJson(['data'=>[],'phone'=>$phone],'无数据,请重试!',40001);
+                $this->toJson(['data'=>[],'phone'=>$phone],'无数据,请重试!',200);
             }
             $Page       = new \Think\Page($count,15);
             $data = M('service')->where($map)

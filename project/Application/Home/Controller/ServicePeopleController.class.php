@@ -47,6 +47,7 @@ class ServicePeopleController extends Controller
         $work['wait_install']  = $work_model->where($map)->where(['type'=>0])->count();
         $work['wait_repair']   = $work_model->where($map)->where(['type'=>1])->count();
         $work['wait_maintain'] = $work_model->where($map)->where(['type'=>2])->count();
+        dump($work);
         $this->assign('work',$work);
         $this->display();
     }
@@ -61,7 +62,7 @@ class ServicePeopleController extends Controller
 
 
         strlen(I('type'))?$map['type'] = I('type'):'';
-
+        $map['result'] = 1;
         if (!empty($map['type']) && $map['type']=='all') {
             unset($map['type']);
             $map['result']=['gt',2];
