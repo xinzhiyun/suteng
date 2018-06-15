@@ -76,11 +76,12 @@ var take = new Vue({
 			$.ajax({
 				url: getURL('Home', 'servicePeople/getList'),
 				type: 'get',
-				data: {word: word},
+				data: {word: word, type: vm.type},
 				success: function(res){
 					console.log('res: ',res);
 					if(res.status == 200){
 						if(!res.data.length){
+							vm.list = [];
 							layuiHint('查无记录');
 							vm.loadstyle = 'none';
 							return
@@ -89,6 +90,7 @@ var take = new Vue({
 						vm.list = res.data;
 						vm.page = 1;
 					}else{
+						vm.list = [];
 						layuiHint('查无记录');
 						vm.loadstyle = 'none';
 					}

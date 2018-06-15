@@ -1,5 +1,5 @@
 .link_b {
-  border-bottom: 0.02380952rem solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
 }
 .left {
   color: #aeaeae;
@@ -85,16 +85,17 @@ float: right;
   text-align: center;
   color: #808080;
 }
-
+.detail {
+  padding: 10px 0;
+}
 .detail .user ul:nth-child(1) {
   width: 100%;
 }
 .detail .user ul:nth-child(1) li {
   width: 100%;
-  padding: 0 0.71428571rem;
-  height: 1.9047619rem;
-  line-height: 1.9047619rem;
+  padding: 1vw 0 0 4vw;
   color: #2eb6aa;
+  font-size: .6rem;
 }
 .detail .user ul:nth-child(2) {
   width: 100%;
@@ -105,11 +106,11 @@ float: right;
   background: #fff;
 }
 .detail .user ul:nth-child(2) li span {
-  width: 74%;
+  width: 66%;
   display: inline-block;
 }
 .detail .user ul:nth-child(2) li span:nth-child(1) {
-  width: 24%;
+  width: 30%;
   vertical-align: top;
 }
 .detail .success {

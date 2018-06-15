@@ -353,7 +353,7 @@ class PayController extends Controller
 
             //证明是续费
 //            $type_info = M('users_order')->where(['user_id'=>$grade['id'],'is_pay'=>1])->save(['type'=>2]);
-            $type_info = M('users_order')->where(['user_id'=>$grade['id'],'is_pay'=>1])->find(['type'=>2]);
+            $type_info = M('users_order')->where(['user_id'=>$grade['id'],'is_pay'=>1])->save(['type'=>2]);
 
             if ($type_info) {
                 switch ($orderData['annual_status']) {

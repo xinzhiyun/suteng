@@ -8,8 +8,12 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/amazeui.min.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/common.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css">
+    <!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
+    <script>
+        // var vconsole = new VConsole();
+    </script>
 </head>
-<body>
+<body ontouchstart='console.log()'>
 <div id="app">
 	
 	<!-- 服务详情页面部分开始 -->
@@ -30,7 +34,7 @@
 				<li class="link_b cfix">
 					<div>
 						<span class="left fl">维护地址</span>
-						<span class="right fl" v-text="detail.province+detail.city+detail.district">广州市番禺区创源路三楼</span>
+						<span class="right fl" v-text="detail.province+detail.city+detail.district+','">广州市番禺区创源路三楼</span>
 					</div>
 					<div>
 						<span>&emsp;</span>
@@ -54,7 +58,7 @@
 				</li>
 				<li class="link_b">
 					<span class="left">请求时间</span>
-					<span class="right" v-text="detail.anrytime">2018-06-01</span>
+					<span class="right" v-text="detail.create_at">2018-06-01</span>
 				</li>
 				<li class="link_b">
 					<span class="left">服务类型</span>
@@ -66,15 +70,28 @@
 					<span class="left">服务信息</span>
 					<span class="right" v-html="detail.content"></span>
 				</li>
-				<li class='picShow pics' v-if='picList.length'>
+				<li class='picShow pics link_b' v-if='picList && picList.length'>
 					<p class='left'>图片</p>
 					<img v-for='(p, index) in picList' :src="p" alt="加载中" @click='photoSwipe(index)'>
 				</li>
+				<li class="link_b" v-if='detail.result >= 2'>
+					<span class='left'>状态</span>
+					<span calss='right' style='color:#2eb6aa;'>完成</span>
+				</li>
 			</ul>
 		</div>
+		<!-- 接单按钮 -->
+		<!-- <div class="success" v-if='type == "0"'>
+			<input type="button" value="我要接单" @click="openModal(0)">
+		</div> -->
+		<!-- 忽略按钮 -->
+		<div class="success" v-if='detail.refuse != 1'>
+			<input type="button" value="忽略此单" @click="openModal(1)" style='background:#f43030;'>
+			<input type="button" value="完成" @click="openModal(2)">
+		</div>
 		<!-- 完成按钮 -->
-		<div class="success" v-if='!success'>
-			<input type="button" value="完成" @click="openModal()">
+		<div class="success" v-if='detail.refuse == 1'>
+			<input type="button" value="已拒绝此单"  disabled="">
 		</div>
 	</div>
 	<!-- 服务详情页面部分结束 -->
@@ -91,7 +108,7 @@
 	<!-- 模态框部分开始 -->
 	<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
         <div class="am-modal-dialog" style="border-radius:0.3rem;">  
-            <div class="am-modal-bd" style="fontSize:1rem;">  
+            <div class="am-modal-bd" style="fontSize:1rem;" v-text='noticetext'>  
                 确定提交任务？  
             </div>   
             <div class="am-modal-footer">  
@@ -171,7 +188,7 @@
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script src="__PUBLIC__/Home/js/amazeui.min.js"></script>
 	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
-	<script src="__PUBLIC__/Home/js/service/people/detail.js"></script>
+	<script src="__PUBLIC__/Home/js/service/people/detail.js?v={{:time()}}"></script>
 	<link rel="stylesheet" href="__PUBLIC__/Home/photoswipe/photoswipe.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/photoswipe/default-skin/default-skin.css"> 
 	<script src="__PUBLIC__/Home/photoswipe/photoswipe.min.js"></script> 

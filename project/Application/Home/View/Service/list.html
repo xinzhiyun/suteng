@@ -8,13 +8,17 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/station/list.css">
 	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
+    <!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
+    <script>
+        // var vconsole = new VConsole();
+    </script>
 </head>
-<body>
+<body ontouchstart='console.log()'>
 	<div id='servicelist'>
 		<div class='search' v-if="result != 4">
 			<span>
 				<i class='iconfont icon-sousuo' @click='search(word)'></i>
-				<input type="text" placeholder="请输入工单号/设备编码" v-model='word' @keyup.enter='search(word)'>
+				<input type="text" placeholder="请输入工单号" v-model='word' @keyup.enter='search(word)'>
 			</span>
 		</div>
 		<div class='title spli'>
@@ -26,7 +30,7 @@
 			<li class='spli' v-for='li in list' @click='getDetail(li.number, li.result)'>
 				<span v-text='li.number'></span>
 				<span v-if='result == 0 || result == "undefined"' :style='li.style' v-text='li.text'></span>
-				<span v-if='result == 1 || result == 2 || result == 3 || result == 4' v-text='li.name'></span>
+				<span v-else v-text='li.name'></span>
 				<span v-text='li.create_at'></span>
 				<!-- <p class="stars" v-if="result == 4 || result == 0 || result == 'undefined'">
 					<i class="iconfont icon-star1" v-for="starnumN in starN"></i>
@@ -74,6 +78,8 @@
 			},
 			created (){
 				var vm = this;
+				vm.titleList[9] = '已完成工单';
+				vm.colorList[9] = 'color:#00d4c2;';
 				this.result = GetQueryString('result');
 				console.log('result: ',this.result);
 				document.title = vm.titleList[!this.result ? 5 : +this.result];
@@ -162,7 +168,7 @@
 				},
 				// 跳到详情界面
 				getDetail (workid, result) {
-					// console.log(result);return;
+					console.log('result: ',result);
 					if(this.result == 4) {
 						location.href = getURL('Home', 'Service/installInfo') + '?uid=' + result;
 					}else {
@@ -224,13 +230,23 @@
 								vm.list = [];
 								if(res.data.length){
 									for(var i=0; i<res.data.length; i++){
-										vm.list.push({
-											name: res.data[i].name,
-											number: res.data[i].number,
-											text: vm.titleList[+res.data[i].type],
-											style: vm.colorList[+res.data[i].type],
-											create_at: timetrans(res.data[i].create_at)
-										});
+										if(vm.result == '4') {
+											vm.list.push({
+												name: res.data[i].name,
+												number: res.data[i].sn,
+												create_at: timetrans(res.data[i].addtime),
+												result: res.data[i].id
+											});
+										}else {
+											vm.list.push({
+												name: res.data[i].name,
+												number: res.data[i].number,
+												text: vm.titleList[+res.data[i].result],
+												style: vm.colorList[+res.data[i].result],
+												create_at: timetrans(res.data[i].create_at),
+												result: res.data[i].result
+											});
+										}
 									}
 								}else{
 									layuiHint('查无数据');

@@ -57,7 +57,7 @@
             </li>
             <li :style='{display: edit_status ? "block" : "none"}' style='display:none;'>
                 <a href="javascript:;">
-                    <span>不修改的项目请留空</span>
+                    <span style='font-size:14px;'>不修改的项目请留空</span>
                     <span>&emsp;</span>
                 </a>
             </li>
@@ -147,7 +147,8 @@
                             layuiHint('请输入旧密码');
                             return
                         }else if(vm.oldpwd){
-                            data['opassword'] = hex_md5(vm.oldpwd);
+                            // data['opassword'] = hex_md5(vm.oldpwd);
+                            data['opassword'] = vm.oldpwd;
                         }
                         if(vm.info['pwd'] && !vm.info['repwd']){
                             layuiHint('请输入确认密码');
@@ -157,7 +158,7 @@
                             layuiHint('两次密码不一致');
                             return
                         }else if(vm.info['pwd'] == vm.info['repwd'] && vm.info['pwd'] && vm.info['repwd']){
-                            data['password'] = hex_md5(vm.info['pwd']);
+                            data['password'] = vm.info['pwd'];
                         }
                         console.log('data: ',data);
                         if(JSON.stringify(data) == '{}'){

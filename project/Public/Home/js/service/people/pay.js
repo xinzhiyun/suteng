@@ -9,44 +9,57 @@ var payment = new Vue({
 			setMeal:[],			//套餐
 			money:"0",			//支付金额
 			index:"",			//支付方式的下标
+			seplaceholder: '请输入手机号',		// 按照手机或设备编码搜索
+			searchtype: '1',
 			way:["微信支付","支付宝支付","银联支付"],	//支付方式
 		}
 	},
 	methods:{
-		urlPub:function(key,value){
+		urlPub(key,value){
 	      var url = window.document.location.href.toString();
 	      var href = url.split("?")[0];
 	      location.href = href+"?"+key+"="+value;
 	    },
+	    // 选择手机号或者设备编码搜索
+	    searchchange(e) {
+	    	var type = e.currentTarget.getAttribute('value');
+	    	this.searchtype = type;
+	    	// console.log('type: ',type);
+	    	if(this.searchtype == 2){
+	    		this.seplaceholder = '请输入设备编码';
+
+	    	}else if(this.searchtype == 1){
+	    		this.seplaceholder = '请输入手机号码';
+	    	}
+	    },
 		// 查找
-		lookup(){
-			var _this = this;
-			var reg = /^(1[35789]\d{9}|\d{15})$/;//手机号码
-			console.log(_this.search)
-			if(_this.search == ""){
-				noticeFn({text:"请输入手机号码/设备编码",time:"1500"});
-				return false;
-			}else if(!reg.test(_this.search)){
-				noticeFn({text:"您输入的格式不正确！",time:"1500"});
-				return false;
-			}else{
-				// 查找手机号码/设备编码
-				$.ajax({
-					url:"",
-					data:"",
-					type:"post",
-					Type:"json",
-					success:function(res){
-						console.log("成功",res);
-					},
-					error:function(res){
-						console.log("失败",res);
+		lookup(word){
+			var vm = this;
+			console.log('word: ',word);
+			// 查找手机号码/设备编码
+			// type: 1手机号，2设备编码
+			$.ajax({
+				url: getURL('Home', 'ServicePeople/deviceSearch'),
+				data: {word: word, type: this.searchtype},
+				type: "get",
+				success: function(res){
+					console.log("res: ",res);
+					if(res.status == 200){
+						if(!res.data.length){
+							layuiHint('查无数据');
+							return
+						}
+						vm.deviceCode = res.data;
+						$("#mask").show();
+					}else{
+						layuiHint(res.msg);
 					}
-				});
-				console.log("成功查找数据!");
-				$("#mask").show();
-				_this.deviceCode = [{code:"868575025659777"},{code:"86857502565888"},{code:"86857502565999"}];
-			}
+				},
+				error: function(err){
+					console.log("err: ",err);
+				}
+			});
+			
 		},
 		// 选择设备编码
 		select(even){

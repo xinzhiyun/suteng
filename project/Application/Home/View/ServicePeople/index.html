@@ -7,8 +7,12 @@
     <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
     <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
     <link rel="stylesheet" href="__PUBLIC__/Home/css/service/people/index.css">
+    <!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
+    <script>
+        // var vconsole = new VConsole();
+    </script>
 </head>
-<body>
+<body ontouchstart='console.log()'>
     <div class="backColor"></div>
     <div class="main">
         <!-- 用户信息 -->
@@ -31,7 +35,7 @@
                         <a href="{{:U('Home/ServicePeople/list')}}?type=0">
                             <p><img src="__PUBLIC__/Home/images/install@2x.png" alt=""></p> 
                             <span>待安装</span>
-                            <i class="tipNum" v-text='task.wait_install'>0</i>
+                            <i class="tipNum">{{$work.wait_install}}</i>
                         </a>
                     </li>
                     <li>
@@ -40,7 +44,7 @@
                                 <img src="__PUBLIC__/Home/images/repair@2x.png" alt=""> 
                             </p>
                             <span>待维修</span>
-                            <i class="tipNum" v-text='task.wait_repair'>0</i>
+                            <i class="tipNum">{{$work.wait_repair}}</i>
                         </a>
                     </li>
                     <li>
@@ -49,7 +53,7 @@
                                 <img src="__PUBLIC__/Home/images/maintain@2x.png" alt=""> 
                             </p>
                             <span>待维护</span>
-                            <i class="tipNum" v-text='task.wait_maintain'>0</i>
+                            <i class="tipNum">{{$work.wait_maintain}}</i>
                         </a>
                     </li>
                 </ul>
@@ -63,7 +67,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{:U('Home/ServicePeople/payment')}}">
+                    <a href="{{:U('Home/ServicePeople/pay')}}">
                         <span class="iconfont icon-chongzhi"></span>
                         <span>代缴费</span>
                     </a>
@@ -80,10 +84,5 @@
     <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
     <script src="__PUBLIC__/Home/js/public.js"></script>
     <script src='__PUBLIC__/Home/js/vue.min.js'></script>
-    <script src="__PUBLIC__/Home/js/service/people/index.js"></script>
-    <script>
-        peopleindex.task = {{$work|json_encode}};
-        console.log('task: ',peopleindex.task);
-    </script>
 </body>
 </html>
