@@ -182,7 +182,7 @@ class ServicePeopleController extends Controller
                 $orderSetmeal->rollback();
                 E('订单创建失败',40010);
             }
-            
+
             $content = '套餐代充:'.$info['describe'];
             $openId = $_SESSION['open_id'];
             $url = 'http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/setmealNotify');

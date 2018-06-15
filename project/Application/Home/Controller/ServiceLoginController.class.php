@@ -114,6 +114,9 @@ class ServiceLoginController extends Controller
         $signPackage = $weixin->getSignPackage();
         $phone = M('service_seting')->cache('service_kfphone',60)->where(1)->getField('kfphone');
 
+        $info = M('service_apply')->where(['open_id'=>$_SESSION['open_id'], 'status'=>0])->find();
+
+        $this->assign('info',$info);
         $this->assign('kfphone',$phone);
         $this->assign('wxinfo',$signPackage);
         $this->display();
