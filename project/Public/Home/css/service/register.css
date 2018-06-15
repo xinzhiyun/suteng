@@ -120,12 +120,30 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
 	background: #53C2B8;
 }
 /* 图片上传 */
+.bottx {
+	position: relative;
+}
 .picShow > span {
 	height: 3rem;
+	width: 40%;
 	display: inline-block;
+	margin-right: .3rem;
 } 
 .picShow > span > img {
 	height: 100%;
+	width: 100%;
+}
+.topx {
+	position: absolute;
+	top: -.3rem;
+	right: 0;
+	color: white;
+	padding: 0 .2rem;
+	font-size: .4rem;
+	vertical-align: middle;
+	/* padding: 0 3px; */
+	background:red;
+	border-radius: 10px;
 }
 /*地区选择*/
 #areaChoose {
@@ -274,4 +292,17 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
 }
 .hasRegister > div > p:nth-child(2) > span:nth-child(2) > a {
 	color: #53C2B8;
+}
+/* 客服电话 */
+.telphone {
+	position: fixed;
+	bottom: 4rem;
+	right:.7rem;
+	z-index: 100;
+}
+.telphone > a {
+	color: #17AEA1;
+}
+.telphone > a > span {
+	font-size: 2rem;
 }

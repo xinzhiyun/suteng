@@ -5,8 +5,10 @@ var payment = new Vue({
 			search:"",			//搜索
 			deviceCode:[],		//设备编码
 			showModel: "8" ,		//选择设备编码字体图标
-			userInfo:"",		//用户信息
+			userInfo: {},		//用户信息
 			setMeal:[],			//套餐
+			device_code: '',	// 设备id
+			mealid: '',			// 选中的套餐id
 			money:"0",			//支付金额
 			index:"",			//支付方式的下标
 			seplaceholder: '请输入手机号',		// 按照手机或设备编码搜索
@@ -36,6 +38,10 @@ var payment = new Vue({
 		lookup(word){
 			var vm = this;
 			console.log('word: ',word);
+			if(!word){
+				layuiHint('请输入手机号或设备编码查询');
+				return
+			}
 			// 查找手机号码/设备编码
 			// type: 1手机号，2设备编码
 			$.ajax({
@@ -62,10 +68,8 @@ var payment = new Vue({
 			
 		},
 		// 选择设备编码
-		select(even){
+		select(device_code, e){
 			var _this = this;
-			var e = even || window.event;
-			e.preventDefault();
 			var el = e.target;
 			$(el).parent("li").css({"background":"#f5f5f5"}).siblings().css({"background":"#fff"});
 			var index = $(el).parent("li").attr("index");
@@ -74,20 +78,21 @@ var payment = new Vue({
 					_this.showModel = index;
 					break;
 			}
-			var deCode = $(el).parent("li").children().eq(0).text();
+			console.log("device_code: ",device_code);
 			setTimeout(function(){
-				_this.urlPub("deCode",deCode);
+				_this.urlPub("device_code",device_code);
 				$(".search").hide().next().hide().next().show();
-			},1000);
+			},100);
 		},
 		// 选择套餐
-		mealSelect(money,even){
+		mealSelect(money,mealid,even){
 			var e = even || window.event;
 			e.preventDefault();
 			var el = e.currentTarget;
 			var _this = this;
 			_this.money = money;
-			$(el).css({"background":"#2EB6AA","color":"#fff"}).siblings().css({"background":"#fff","color":"#808080"});
+			_this.mealid = mealid;
+			$(el).css({"background":"#2EB6AA","color":"#fff",border:'none'}).siblings().css({"background":"#fff","color":"#808080",border:'1px solid #cccccc'});
 			$("#Pay").css({"background":"#2eb6aa"});
 		},
 		// 支付
@@ -99,6 +104,7 @@ var payment = new Vue({
 			$(".mask2").show();
 			$("#two").css("color","#B3B3B3");
 			$("#three").css("color","#2EB6AA");
+
 		},
 		// 选择支付方式字体图标
 		Wayselect(even){
@@ -123,15 +129,16 @@ var payment = new Vue({
 			var _this = this;
 			if(_this.way[_this.index] == "微信支付"){
 				console.log("微信支付");
-				_this.urlPub("Pay",1);
+				getPayInfo(_this.device_code, _this.mealid);
+				// _this.urlPub("Pay",1);
 				return false;
 			}else if(_this.way[_this.index] == "支付宝支付"){
 				console.log("支付宝支付");
-				_this.urlPub("Pay",1);
+				// _this.urlPub("Pay",1);
 				return false;
 			}else if(_this.way[_this.index] == "银联支付"){
 				console.log("银联支付");
-				_this.urlPub("Pay",1);
+				// _this.urlPub("Pay",1);
 				return false;
 			}else{
 				noticeFn({text:"请选择支付方式",time:"1500"});
@@ -139,50 +146,61 @@ var payment = new Vue({
 			}
 		}
 	},
-	created:function(){
+	created (){
 		var _this = this;
 		var href = location.search.split("?")[1];
+		_this.device_code = GetQueryString('device_code');
+		var pay = GetQueryString('Pay');
 		if(href == undefined){
 			$("#one").css("color","#2EB6AA");
-		}else{
-			var key = href.split("=")[0];
-			var value = href.split("=")[1];
+		}
+		if(_this.device_code){
+			console.log('device_code: ',_this.device_code);
 			$("#two").css("color","#2EB6AA");
-			if(key == "deCode"){
-				$(".search").hide().next().hide().next().show();
-				// 将设备编码传后台
-				$.ajax({
-					url:"",
-					data:{code:value},
-					type:"post",
-					Type:"json",
-					success:function(res){
-						console.log("成功",res);
-					},
-					error:function(res){
-						console.log("失败",res);
-
+			$(".search").hide().next().hide();
+			$(".detail").show();
+			// 将设备编码传后台
+			$.ajax({
+				url: getURL('Home', 'ServicePeople/getSetmeal'),
+				data: {device_code:_this.device_code},
+				type: "post",
+				success:function(res){
+					console.log("res: ",res);
+					if(res.status == 200){
+						if(!res.data.length){
+							layuiHint('暂无套餐数据，无法充值');
+							return
+						}
+						_this.userInfo = {
+							name: res.info.name,
+							phone: res.info.phone,
+							device_code: _this.device_code,
+							device_type: res.info.device_type
+						}
+						_this.setMeal = res.data;
+						console.log('setMeal: ',_this.setMeal);
+					}else{
+						layuiHint(res.msg);
 					}
-				});
-				// 用户信息
-				var userInfo = {name:"沈腾",phone:"13526325422",code:"868575025659666",model:"净水机 BL (axl-114)"};
-				// 套餐
-				var setMeal = [{day:"30",money:"100"},{day:"60",money:"200"},{day:"90",money:"300"}]
-				_this.userInfo = userInfo;
-				_this.setMeal = setMeal;
-			}else if(key == "Pay"){
-				$("#two").css("color","#B3B3B3");
-				$("#three").css("color","#2EB6AA");
-				$(".search").hide().next().hide().next().hide().next().hide().next().show();
-				$("body").css({"background":"#fff"});
-				setTimeout(function(){
-					var url = getURL("Home","Index/payment");
-					location.href = url;
-				},1000);
-			}
+				},
+				error:function(res){
+					console.log("err: ",res);
+
+				}
+			})
+		}else if(pay){
+			$("#two").css("color","#B3B3B3");
+			$("#three").css("color","#2EB6AA");
+			$(".search").hide().next().hide();
+			$('.paySuc').show();
+			$("body").css({"background":"#fff"});
+			setTimeout(function(){
+				
+				location.href = url;
+			},1000);
 		}
 	},
-	mounted:function(){
+	mounted(){
 	}
 });
 // 13526241555

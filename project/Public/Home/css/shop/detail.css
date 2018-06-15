@@ -45,6 +45,9 @@ body{
     -webkit-transform: translateY(-50%) !important;
             transform: translateY(-50%) !important;
 }
+.desc {
+	display: block;
+}
 /*商品说明*/
 .detailTxt{
 	width: 100%;
@@ -484,7 +487,7 @@ ul, li {
 }/*第一类item的底部评论设置结束*/
 
 .itemgoodsBott .pingfen {
-	display: block;
+	display: inline-block;
 	position: relative;
 	font-size: 20px;
 }

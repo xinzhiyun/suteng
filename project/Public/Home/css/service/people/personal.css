@@ -44,6 +44,20 @@ body {
 .bindweixin {
     padding: 10px 0;
 }
+.bindwx {
+    height: 1.4rem;
+    position: relative;
+    line-height: 1.4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff !important;
+    background: #f43030;
+    padding: 2px 6px;
+    border-radius: 6px;
+}
+.bindwx:active {
+    background: #b90707;
+}
 .main input {
     border: 1px dashed #ccc;
     border-radius: 4px;

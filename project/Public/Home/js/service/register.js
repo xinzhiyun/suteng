@@ -1,4 +1,4 @@
-$(function() {
+(function() {
     var codeFlag = false;//存放验证码
     var vm = new Vue({
         el: ".main",
@@ -31,15 +31,16 @@ $(function() {
                 areaProvince: "",//省
                 areaCity: "",//市
                 area: "",//区
-                province_id: "",
-                city_id: "",
-                area_id: "",
+                // province_id: "",
+                // city_id: "",
+                // area_id: "",
                 pics: [],//存放图片的路径
                 aleady: false,//服务站是否被注册
                 areachoose: "",//选择相对应的服务站
                 stationPhone: "",//客服电话
                 ifstation: "请选择服务站",
                 stationId: "",//服务站id
+                imgURL: []
             }
         },
         created() {
@@ -77,7 +78,7 @@ $(function() {
             // 获取省份数据
             getAddress(parentid, callback) {
                 $.ajax({
-                    url: getURL("Home", "Address/getNextArea"),
+                    url: getURL("Home", "ServiceLogin/getNextArea"),
                     type: 'post',
                     data: {parentid: parentid},
                     success: function(res){
@@ -117,22 +118,23 @@ $(function() {
                             vm.areaCity = res;
                             
                             vm.province = $(target).text();
-                            vm.province_id = $(target).attr("aid");
+                            // vm.province_id = $(target).attr("aid");
                         }else if(className == "city") {
                             vm.area = res;
                             
                             vm.city = $(target).text();
-                            vm.city_id = $(target).attr("aid");
+                            // vm.city_id = $(target).attr("aid");
                         }else if(className == "area") {
                             vm.area = $(target).text();
-                            vm.area_id = $(target).attr("aid");
+                            // vm.area_id = $(target).attr("aid");
                             vm.serviceInfos.station = vm.province + ' ' + vm.city + ' ' + vm.area;
                             
                             $(".icon-right").css("display", "none");
+                            $(".areabtn").css("color", "#373737");
                             setTimeout(function(){
                                 vm.areaDis = false;
                             },300);
-                            
+                            vm.areachoose = "";
                             // console.log(vm.province, vm.city, vm.area, vm.province_id, vm.city_id, vm.area_id)
                             data = {
                                 province_id: vm.province_id,
@@ -188,7 +190,7 @@ $(function() {
                     layuiHint("暂时只支持三张图片！");
                     return
                 }
-                _this.pic = [];   // 初始化
+                _this.pics = [];   // 初始化
                 var nums = 3 - len;  // 最多三张图片
                 if(window.__wxjs_is_wkwebview){
                     nums = 1 //苹果只能上传一张
@@ -201,23 +203,22 @@ $(function() {
                         if(res[i].media_Id){
                             (function locfn(media_Id, src, i){
                                 console.log("传给后台的id",media_Id);
-                                this.pic.push(media_Id);
+                                _this.pics.push(media_Id);
                             })(res[i].media_Id, res[i].src, i)
                         }
                     }
                     setTimeout(function(){
-                        picUpload(target);
+                        _this.picUpload(target);
                     },0)
                 })
             },
             // 图片显示
             picUpload(target) {
                 var _this = this;
-                console.log('pic: ',pic);
                 $.ajax({
-                    url: getURL('Home', 'Work/picUpload'),
+                    url: getURL('Home', 'ServiceLogin/picUpload'),
                     type: 'post',
-                    data: {pic: _this.pic},
+                    data: {pic: _this.pics},
                     success: function(res){
                         console.log('res: ',res);
                         if(res.status == 200){
@@ -225,9 +226,9 @@ $(function() {
                             picList = JSON.parse(res.data.pic);
                             for(var i=0; i<picList.length; i++){
                                 (function upfn(src){
-                                    
-                                    var $span = $("<span></span>");
-                                    var $span1 = $("<span @click='removePic($event)'>X</span>");
+                                    console.log("图片src", src);
+                                    var $span = $("<span class='bottx'></span>");
+                                    var $span1 = $("<span @click='removePic($event)' class='topx'>x</span>");
                                     var $img = $('<img src="" alt="" index="" />');
                                     $img[0].width = "100%";
                                     $img[0].height = "90%";
@@ -258,18 +259,9 @@ $(function() {
                 var target = ev.target || ev.srcElement;
                 $(target).parent().remove();
             },
-            // 保存 - session
-            saveInfo() {
-                // 清空
-                sessionStorage.setItem("allInfo", "");
-                // 存入session中的数据
-                allInfo = {"serviceInfos": this.serviceInfos, "userInfos": this.userInfos, "companyInfos": this.companyInfos, "accountInfos": this.accountInfos};
-                sessionStorage.setItem("saveAllInfo", 1);
-                sessionStorage.setItem("allInfo", JSON.stringify(allInfo));
-                // console.log(sessionStorage.getItem("allInfo"));
-            },
             // 获取服务站
             getStation(data, callback) {
+                console.log("开始获取")
                 $.ajax({
                     url: getURL("Home", "ServiceLogin/getService"),
                     type: "post",
@@ -291,10 +283,11 @@ $(function() {
             stachoose(e) {
                 var ev = ev || window.event;  
                 var target = ev.target || ev.srcElement;
-                this.stationId = $(target).val();
+                this.stationId = $(target).val();//服务站id
+                $("#sel").css("color", "#373737");
             },
             // 提交审核
-            verify() {
+            verify(val) {
                 var vm = this;
                 console.log(
                     "开通区域",vm.serviceInfos.station,
@@ -381,16 +374,83 @@ $(function() {
                     return;
                 }
                 // 男/女
-                $(".icon-selectcircle").parent().text();
+                var sex = $(".icon-selectcircle").parent().text();
+                sex = sex == "男" ? 1: 2;
+                console.log(sex);
+                // 营业执照图片
+                console.log($(".yinye").find("img").length);
+                var yinyePic = [];
+                for(var i = 0; i < $(".yinye").find("img").length; i++) {
+                    yinyePic.push($($(".yinye").find("img")[i]).prop("src"))
+                }
+                console.log("yinyepic", yinyePic);
+                // 合作协议图片
+                var hezuoPic = [];
+                for(var i = 0; i < $(".hezuo").find("img").length; i++) {
+                    hezuoPic.push($($(".hezuo").find("img")[i]).prop("src"))
+                }
+                console.log("hezuo", hezuoPic);
+                // 保存 type - 0  审核 type - 1 
+                if(val == 1) {
+                    var data = {
+                        sid: vm.stationId,//服务站id
+                        name: vm.userInfos.name,//姓名
+                        sex: sex,//性别
+                        phone: vm.userInfos.phone,//手机
+                        idcard: vm.userInfos.idcard,//身份证号
+                        province: vm.province,//省
+                        city: vm.city,//市
+                        district: vm.area,//区
+                        addressinfo: vm.serviceInfos.detailAddress,//地址详情
+                        telephone: vm.serviceInfos.stationer,//客服电话
+                        account: vm.accountInfos.account,//账号
+                        password: vm.accountInfos.password,//密码
+                        repassword: vm.accountInfos.confirmPassword,//确认密码
+                        company: vm.companyInfos.comName,//公司名称
+                        legal: vm.companyInfos.comUser,//公司法人
+                        business: yinyePic,//营业照片
+                        agreement: hezuoPic,//协议照片
+                        type: 1
+                    }
+                }else {
+                    var data = {
+                        // sid: vm.stationId,//服务站id
+                        name: vm.userInfos.name,//姓名
+                        sex: sex,//性别
+                        phone: vm.userInfos.phone,//手机
+                        idcard: vm.userInfos.idcard,//身份证号
+                        // province: vm.province,//省
+                        // city: vm.city,//市
+                        // district: vm.area,//区
+                        addressinfo: vm.serviceInfos.detailAddress,//地址详情
+                        telephone: vm.serviceInfos.stationer,//客服电话
+                        account: vm.accountInfos.account,//账号
+                        // password: vm.accountInfos.password,//密码
+                        // repassword: vm.accountInfos.confirmPassword,//确认密码
+                        company: vm.companyInfos.comName,//公司名称
+                        legal: vm.companyInfos.comUser,//公司法人
+                        business: yinyePic,//营业照片
+                        agreement: hezuoPic //协议照片
+                    }
+                }
+                console.log(data);
                 $.ajax({
-                    url: getURL("Home", ""),
+                    url: getURL("Home", "ServiceLogin/apply"),
                     type: "post",
                     data: data,
                     success: function(res) {
-                        
+                        console.log("success",res);
+                        if(res.status == 200) {
+                            layer.msg(res.msg);
+                            setTimeout(function() {
+                                location.href = getURL("Home", "ServiceLogin/finalTip") + "?index=1";
+                            }, 1000);
+                        }else {
+                            layer.msg(res.msg);
+                        }
                     },
                     error: function(res) {
-                        
+                        console.log("err", res);
                     }
                 })
                 
@@ -401,4 +461,4 @@ $(function() {
             },
         }
     })
-})
+})();
