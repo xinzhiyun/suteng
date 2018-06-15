@@ -131,17 +131,21 @@ class ServiceLoginController extends Controller
             if(!empty($data['district_id'])){
                 $map['district_id'] = $data['district_id'];
             }
+
+            $phone = '13532643349';
+
+
             $map['status'] = ['neq',1];
             $count = M('service')->where($map)->count();
             if(empty($count)){
-                $this->toJson(['data'=>[]],'无数据,请重试!',40001);
+                $this->toJson(['data'=>[],'phone'=>$phone],'无数据,请重试!',40001);
             }
             $Page       = new \Think\Page($count,15);
             $data = M('service')->where($map)
                 ->limit($Page->firstRow.','.$Page->listRows)
                 ->select();
 
-            $this->toJson(['data'=>$data],'获取成功!',200);
+            $this->toJson(['data'=>$data,'phone'=>$phone],'获取成功!',200);
 
         } catch (\Exception $e) {
             $this->toJson($e);

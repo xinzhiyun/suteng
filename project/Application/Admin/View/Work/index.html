@@ -316,7 +316,7 @@
                             <tr class="send_service_user">
                                 <th>预约时间：</th>
                                 <td>
-                                    <select class="form-control"  name="anry_period" id="period_sel">
+                                    <select class="form-control"  name="anry_period" id="anry_period">
                                         <option value="上午 09:00-11:00">上午 09:00-11:00</option>
                                         <option value="下午 02:00-06:00">下午 02:00-06:00</option>
                                     </select>
@@ -652,6 +652,7 @@
 
             var anry_time = $("#time_sel").val();
             var anry_period = $("#anry_period").val();
+
             if(!anry_period || !anry_time){
                 parent.layer.msg('请选择预约时间!'); return;
             }

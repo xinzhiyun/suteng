@@ -163,6 +163,7 @@ class ServiceController extends ServiceCommonController
 
             $post['update_at']=time();
             $post['anry_at']=time();
+            $post['refuse'] = 0;
             $post['result'] = 1;
             $res = M('work')->where($map)->save($post);
 

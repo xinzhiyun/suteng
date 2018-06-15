@@ -287,6 +287,8 @@ class WorkController extends CommonController
                     'sn'=>$user['sn'],
                     'phone'=>$user['phone'],
                     'result'=>1,
+                    'anry_at'=>time(),
+                    'refuse' => 0,
                     'anry_period'=>$post['anry_period'],
                     'anry_time'=>$post['anry_time']
                 ];

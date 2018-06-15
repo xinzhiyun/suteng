@@ -124,6 +124,24 @@ class ServicePeopleController extends Controller
                 E('工单信息错误',400022);
             }
 
+            /*
+            // 1 拒绝 2 完成
+            if( empty($post['operate']) ){
+                E('信息错误',400023);
+            }
+
+            取消下面写死的状态值
+            if($post['operate']=='1'){
+                $data['result'] = 1;
+                $data['refuse'] = 1;// 拒绝状态
+            } elseif($post['operate']=='2') {
+                $data['result'] = 2;
+            } else {
+                E('信息错误',400024);
+            }
+             */
+
+
             $map['id'] = $post['wid'];
             $info = M('work')->where($map)->find();
             if( empty($info) ){
