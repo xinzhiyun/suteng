@@ -800,6 +800,7 @@ class VendorsController extends CommonController
             // 查询失败，设置返回前端的数据
             $message     = ['code' => 403, 'message' => '审核失败'];
         }
+
         // 返回JSON格式数据
         $this->ajaxReturn($message);
     }

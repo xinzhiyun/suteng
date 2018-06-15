@@ -420,7 +420,7 @@
                     }else{
                         // 查询失败提示
                         // parent.layer.msg(resdata.res.message);
-                        swal("协议文件审核失败！", "请重新审核。", "success");
+                        swal("协议文件审核失败！", "请重新审核。", "error");
                     }
                 }
             });
@@ -442,14 +442,14 @@
                 success:function(res){
                     console.dir(res);
                     if(res.code == 200){
-                        swal("协议文件审核成功！", "等待用户重新提交资料。", "success");
+                        swal("协议文件审核失败！", "等待用户重新提交资料。", "error");
                         setTimeout(function(){  //使用  setTimeout（）方法设定定时2000毫秒
                             window.location.reload();//页面刷新
                         },2000)
                     }else{
                         // 查询失败提示
                         // parent.layer.msg(resdata.res.message);
-                        swal("协议文件审核失败！", "请重新审核。", "success");
+                        swal("协议文件审核失败！", "请重新审核。", "error");
                     }
                 }
             });
@@ -500,7 +500,7 @@
                 dataType:"json",
                 type: 'post',
                 success:function(res){
-                    console.dir(res);
+                    console.dir(res.code);
                     if(res.code == 200){
                         swal("公司信息审核成功！", "请尽快完成协议文件审核。", "success");
                         setTimeout(function(){  //使用  setTimeout（）方法设定定时2000毫秒
@@ -509,7 +509,7 @@
                     }else{
                         // 查询失败提示
                         // parent.layer.msg(resdata.res.message);
-                        swal("公司信息审核失败！", "请重新审核。", "success");
+                        swal("公司信息审核失败！", "请重新审核。", "error");
                     }
                 }
             });
@@ -531,14 +531,14 @@
                 success:function(res){
                     console.dir(res);
                     if(res.code == 200){
-                        swal("公司信息审核成功！", "等待用户重新提交资料。", "success");
+                        swal("公司信息审核失败！", "请重新审核。", "error");
                         setTimeout(function(){  //使用  setTimeout（）方法设定定时2000毫秒
                             window.location.reload();//页面刷新
                         },2000)
                     }else{
                         // 查询失败提示
                         // parent.layer.msg(resdata.res.message);
-                        swal("公司信息审核失败！", "请重新审核。", "success");
+                        swal("公司信息审核失败！", "请重新审核。", "error");
                     }
                 }
             });
@@ -567,7 +567,7 @@
                     }else{
                         // 查询失败提示
                         // parent.layer.msg(resdata.res.message);
-                        swal("身份证审核失败！", "请重新审核。", "success");
+                        swal("身份证审核失败！", "请重新审核。", "error");
                     }
                 }
             });
@@ -589,14 +589,14 @@
                 success:function(res){
                     console.dir(res);
                     if(res.code == 200){
-                        swal("身份证审核成功！", "等待用户重新提交资料。", "success");
+                        swal("身份证审核失败！", "等待用户重新提交资料。", "error");
                         setTimeout(function(){  //使用  setTimeout（）方法设定定时2000毫秒
                             window.location.reload();//页面刷新
                         },2000)
                     }else{
                         // 查询失败提示
                         // parent.layer.msg(resdata.res.message);
-                        swal("身份证审核失败！", "请重新审核。", "success");
+                        swal("身份证审核失败！", "请重新审核。", "error");
                     }
                 }
             });

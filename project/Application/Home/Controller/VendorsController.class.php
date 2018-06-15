@@ -329,6 +329,7 @@ class VendorsController extends Controller
     public function identity_refillings()
     {
         if(IS_POST){
+
             // 获取缓存用户微信标识
             $open_id = $_SESSION['vendorInfo']['open_id'];
             // 接收表单信息
@@ -423,11 +424,22 @@ class VendorsController extends Controller
                 $newData = array_merge($data,$info);
                 // 分销商状态
                 // $newData['status'] = 3;
-                $newData['status'] = 1;
+                // $newData['status'] = 1;
                 // 更新条件
                 $saveData['open_id'] = $open_id;
+                $info = M('vendors')->where($saveData)->getField('status');
                 // 更新分销商信息
-                $vandorRes = M('vendors')->where($saveData)->save($newData);
+                if ($info ==4) {
+                    $newData['status'] = 3;
+                    // 更新分销商信息
+                    $vandorRes = M('vendors')->where($saveData)->save($newData);
+                } else {
+                    $newData['status'] = 1;
+                    // 更新分销商信息
+                    $vandorRes = M('vendors')->where($saveData)->save($newData);
+
+                }
+                // $vandorRes = M('vendors')->where($saveData)->save($newData);
 
                 // 如果分销商数据更新成功
                 if($vandorRes){
@@ -542,15 +554,27 @@ class VendorsController extends Controller
             $info['licence'] = $this->downloadPic($_POST['pic']);
 
 
+
             if($info){
                 // 将图片和表单数据合并
                 $newData = array_merge($data,$info);
                 // 分销商状态
-                $newData['status'] = 2;
+                // $newData['status'] = 2;
                 // 更新条件
                 $saveData['open_id'] = $open_id;
+                $info = M('vendors')->where($saveData)->getField('status');
+                if ($info == 5) {
+                    $newData['status'] = 3;
+                    // 更新分销商信息
+                    $vandorRes = M('vendors')->where($saveData)->save($newData);
+                } else {
+                    $newData['status'] = 2;
+                    // 更新分销商信息
+                    $vandorRes = M('vendors')->where($saveData)->save($newData);
+
+                }
                 // 更新分销商信息
-                $vandorRes = M('vendors')->where($saveData)->save($newData);
+                // $vandorRes = M('vendors')->where($saveData)->save($newData);
 
                 // 如果分销商数据更新成功
                 if($vandorRes){
@@ -574,6 +598,7 @@ class VendorsController extends Controller
      */
     public function company_refillings()
     {
+
         if(IS_POST){
 
             // 获取缓存用户微信标识
@@ -663,6 +688,7 @@ class VendorsController extends Controller
 
 
             if($info){
+
                 // 将图片和表单数据合并
                 $newData = array_merge($data,$info);
                 // 分销商状态
@@ -684,6 +710,7 @@ class VendorsController extends Controller
             }
 
         }else{
+
             $this->wx_info();
             $this->display('company_refillings');
         }
@@ -695,6 +722,7 @@ class VendorsController extends Controller
      */
     public function protocol()
     {
+
         if (IS_POST) {
 
             //       // 实例化微信JSSDK类对象
@@ -816,8 +844,10 @@ class VendorsController extends Controller
         if(!empty($paths)){
             $path_info = '/Pic/Vendors/'.date('Y-m-d',time());
 
+
             $file=md5($paths).".jpg";
             $dir =rtrim(THINK_PATH,"ThinkPHP/").'/Public'.$path_info;
+
 
             if(!is_dir($dir)){
                 mkdir($dir,0777,true);
@@ -829,6 +859,7 @@ class VendorsController extends Controller
 
             $weixin = new WeixinJssdk;
             $ACCESS_TOKEN = $weixin->getAccessToken();
+
 
             $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=$ACCESS_TOKEN&media_id=$paths";
             // $url = "http://img.taopic.com/uploads/allimg/140729/240450-140HZP45790.jpg";

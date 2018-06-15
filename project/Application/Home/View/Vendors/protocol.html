@@ -444,11 +444,11 @@
                              window.location.href="{{:U('Home/Vendors/index')}}";
                         } else {
                             
-                            swal('提交失败',res.msg, "error");
+                            swal(res.msg,res.msg, "error");
                         }
                     },
                     error: function (res) {
-                        swal('提交失败',res.msg, "error");
+                        swal(res.msg,res.msg, "error");
                     }
                 });
             }else{
