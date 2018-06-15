@@ -10,35 +10,55 @@ var take = new Vue({
 			noticestyle: 'block',
 			success: false,
 			picList: [],
+			qa: '',
+			noticetext: ''
 		}
 	},
 	methods:{
 		// 完成，确认弹框
-		openModal(){
+		openModal(number){
+			// number: 1拒绝，2完成
+			if(number == 1){
+				this.noticetext = '确定忽略此单?';
+			}else if(number == 2){
+				this.noticetext = '确定完成了吗?';
+			}
+			this.qa = number;
 			$('#my-alert').modal();  
 		},
 		// 确认发送数据给后台
 		Yes(){
-			console.log(333);
-			// 传变量
-			$.ajax({
-				url:"",
-				data:{},
-				type:"post",
-				Type:"json",
-				success:function(res){
-					console.log("成功",res);
-				},
-				error:function(res){
-					console.log("失败",res);
-
-				}
-			});
+			// qa: 1拒绝，2完成
+			console.log('qa: ',this.qa);
+			this.operateWork(this.qa);
+			
+			// 隐藏弹出框
 			$(".wrap").hide().next().hide().next().show();
-			setTimeout(function(){
-				var url = getURL("Home","ServicePeople/wait_task");
-				location.href = url;
-			},1000);
+		},
+		// 工单操作
+		operateWork(qa){
+			// qa: 1拒绝，2完成
+			$.ajax({
+				url: getURL('Home', 'ServicePeople/passWork'),
+				type: 'post',
+				data: {wid: this.wid, operate: this.qa},
+				success: function(res){
+					console.log('res: ',res);
+					if(res.status == 200){
+						setTimeout(function(){
+							history.replaceState({}, null, getURL('Home', 'ServicePeople/index'));
+							location.href = getURL('Home', 'ServicePeople/list');
+						},1000)
+					}else{
+						layuiHint(res.msg);
+					}
+
+				},
+				error: function(err){
+					console.log('err: ',err);
+					layuiHint('系统出错，请稍后再试');
+				}
+			})
 		},
 		// 获取详情数据
 		getDetail (workid, callback) {

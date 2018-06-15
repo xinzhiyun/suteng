@@ -8,6 +8,10 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/amazeui.min.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/common.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css">
+    <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+    <script>
+        var vconsole = new VConsole();
+    </script>
 </head>
 <body>
 	<div id="app">
@@ -35,6 +39,11 @@
 	<!-- 搜过部分开始 -->
 		<div class="search">
 			<input type="text" placeholder="请输入手机号码/设备编码" v-model="search" @keyup.enter="lookup">
+			<span>
+				<label for=""></label>
+				<input id='' type="radio" name='searchtype'>
+				<input type="radio" name='searchtype'>
+			</span>
 		</div>
 	<!-- 搜索部分结束 -->
 
@@ -114,7 +123,7 @@
 					<i class="iconfont icon-xuanzhongduigou am-u-sm-1" v-if="showModel == 0 ? true : false" style="color:#56AAF1;"></i>
 					<i class="iconfont icon-fangxingweixuanzhong am-u-sm-1" v-if="showModel == 0 ? false : true"></i>
 				</li>
-				<li index="1" @click="Wayselect">
+				<!-- <li index="1" @click="Wayselect">
 					<i class="iconfont icon-zhifubao am-u-sm-2"></i>
 					<span class="am-u-sm-8">支付宝支付</span>
 					<i class="iconfont icon-xuanzhongduigou am-u-sm-1" v-if="showModel == 1 ? true : false" style="color:#56AAF1;"></i>
@@ -124,7 +133,7 @@
 					<span class="am-u-sm-8">银联支付</span>
 					<i class="iconfont icon-xuanzhongduigou am-u-sm-1" v-if="showModel == 2 ? true : false" style="color:#56AAF1;"></i>
 					<i class="iconfont icon-fangxingweixuanzhong am-u-sm-1" v-if="showModel == 2 ? false : true"></i>			
-				</li>
+				</li> -->
 			</ul>
 			<div class="payBot" @click="payBut" :index="index">
 				<input type="botton" value="立即支付">
@@ -148,8 +157,71 @@
 	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
 	<script src="__PUBLIC__/Home/js/payment/payment.js"></script>
 	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
+	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script>
+		//微信接口
+		wx.config({
+			debug: false,
+			appId: '{{$wxinfo["appId"]}}',
+			timestamp: '{{$wxinfo["timestamp"]}}',
+			nonceStr: '{{$wxinfo["nonceStr"]}}',
+			signature: '{{$wxinfo["signature"]}}',
+			jsApiList: [
+			// 所有要调用的 API 都要加到这个列表中
+			'chooseWXPay'
+			]
+		});
+		// 微信支付方法
+		function weixinPay(res, callback){
+			var type = Object.prototype.toString.call(res);
+			if(type === '[object Object]'){
+				res = JSON.stringify(res);
+			}
+			WeixinJSBridge.invoke(
+				'getBrandWCPayRequest',
+				JSON.parse(res),
+				function(res){
+					if (res.err_msg.substr(-2) == 'ok') {
+		                // 付款成功
+		                callback({result: 'ok'});
+		            } else if (res.err_msg.substr(-6) == 'cancel') {
+		                // 取消付款
+		                callback({result: 'cancel'});
+		            }else{
+		                // 付款失败
+		                callback({result: 'other'});
+		            }
+		        }
+		    );
+		};
 		$(".loadingdiv").hide();
+
+		function pay(){
+			// 获取支付数据
+			getPayInfo();
+		}
+
+		function getPayInfo(){
+			$.ajax({
+				url: '{{:U("Home/ServicePeople/order")}}',
+				type: 'post',
+				success: function(res){
+					console.log('res: ',res);
+					var href = location.href;
+					history.replaceState({}, null, '{{:U("Home/Pay/payConfirm")}}');
+					weixinPay(res, function(res){
+						history.replaceState({}, null, href);
+						console.log('res: ',res);
+					});
+					if(res.status == 200){
+
+					}
+				},
+				error: function(err){
+					console.log('err: ',err);
+				}
+			})
+		}
 	</script>
 </body>
 </html>
