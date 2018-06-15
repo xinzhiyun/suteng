@@ -37,9 +37,7 @@ class ServiceController extends CommonController
         if(isset($_GET['status']) && $_GET['status'] != '' ){
             $map['status'] = $_GET['status'];
         }
-
-
-
+        
         $area = M('area')->where('parentid=0')->select();
 
         $count = M('service')->where($map)->count();
@@ -48,6 +46,57 @@ class ServiceController extends CommonController
             ->join('__ADMIN_USER__ ad ON st_service.auid=ad.id', 'LEFT')
             ->limit($Page->firstRow.','.$Page->listRows)
             ->field('st_service.*,ad.user auser')
+            ->select();
+        page_config($Page);
+        $show       = $Page->show();
+
+        $assign = [
+            'area' => $area,
+            'city'=>$city,
+            'district'=>$district,
+            'data' => $data,
+            'page'=> bootstrap_page_style($show),
+        ];
+        $this->assign($assign);
+        $this->display();
+    }
+
+    /**
+     * 服务站申请
+     */
+    public function apply()
+    {
+        $map = [];
+
+        if(I('sou')){
+            $_GET['p'] = 1;
+            unset($_GET['sou']);
+        }
+        if(!empty($_GET['province_id'])){
+            $map['province_id'] = $_GET['province_id'];
+            $city = M('area')->where('parentid='.$_GET['province_id'])->select();
+        }
+        if(!empty($_GET['city_id'])){
+            $map['city_id'] = $_GET['city_id'];
+            $district = M('area')->where('parentid='.$_GET['city_id'])->select();
+        }
+        if(!empty($_GET['district_id'])){
+            $map['district_id'] = $_GET['district_id'];
+        }
+        if(!empty($_GET['status'])){
+            $map['status'] = $_GET['status'];
+        }
+        if(!empty($_GET['keywords'])){
+            $map[$_GET['key']] = array('like',"%".$_GET['keywords']."%");
+        }
+        if(isset($_GET['status']) && $_GET['status'] != '' ){
+            $map['status'] = $_GET['status'];
+        }
+
+        $count = M('service_apply')->where($map)->count();
+        $Page       = new \Think\Page($count,15);
+        $data = M('service_apply')->where($map)
+            ->limit($Page->firstRow.','.$Page->listRows)
             ->select();
         page_config($Page);
         $show       = $Page->show();
@@ -584,6 +633,7 @@ class ServiceController extends CommonController
         if(IS_POST){
 
             $saveData['joinsost'] = (int)$_POST['joinsost']*100;
+            $saveData['kfphone'] = $_POST['kfphone'];
             $saveData['updatetime'] = time();
 
             $res = $service_model->where('1')->save($saveData);

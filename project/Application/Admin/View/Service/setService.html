@@ -67,6 +67,7 @@ $(".per_describe").val(decodeURI('{{$data.per_describe}}'));
 
         var data = {};
         data.joinsost  = $("input[name='joinsost']").val();
+        data.kfphone  = $("input[name='kfphone']").val();
 
         $.ajax({
             url:"{{:U('Admin/Service/setService')}}",
