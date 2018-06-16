@@ -34,9 +34,10 @@ class ServicePeopleController extends Controller
     }
 
     public function index(){
+
         $_SESSION['servicepeople']['company'] = M('service')
-            ->cache('cache_company_name',60)
             ->where('id='.$_SESSION['servicepeople']['sid'])
+//            ->cache('cache_company_name',60)
             ->getField('company');
 
         $work_model = M('work');
@@ -106,13 +107,7 @@ class ServicePeopleController extends Controller
         }
     }
 
-    // 代缴费
-    public function pay(){
-        $weixin = new \Org\Util\WeixinJssdk();
-        $signPackage = $weixin->getSignPackage();
-        $this->assign('wxinfo',$signPackage);
-        $this->display();
-    }
+
 
     // 代缴费 订单
     public function order()
@@ -308,6 +303,7 @@ class ServicePeopleController extends Controller
             ->where($map)
             ->limit($page->firstRow.','.$page->listRows)
 //            ->field('id,kname,kphone,create_at')
+            ->order('id desc')
             ->select();
         $list = replace_array_value($list,[
             'pass_at'=>['date','Y-m-d H:i:s'],

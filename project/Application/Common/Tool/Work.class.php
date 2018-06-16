@@ -46,19 +46,19 @@ class Work
         $data['title'] = self::$title[$mode];
 
         switch ($mode) {
-            case '1':
+            case 1:
                 $data['content'] = '系统正在优先为您就近安排服务站,预计10分钟.';
                 break;
 
-            case '2':
+            case 2:
                 $data['content'] = '系统审核通过.';
                 break;
 
-            case '3':
+            case 3:
                 $data['content'] = '系统审核未通过,请检查.';
 
                 break;
-            case '4':
+            case 4:
                 if (empty($work['sid'])) { return false; }
                 if ($work['service_mode']==1) { // 第三方
                     $service_info =  M('service_other')->where('id='.$work['sid'])->find();
@@ -74,7 +74,7 @@ class Work
                 $data['content'] = $_html;
                 break;
 
-            case '5':
+            case 5:
                 if (empty($work['name'])) { return false; }
                 $_html  = '安装师傅:'.$work['name'].'<br>';
                 $_html .= '联系电话:'.$work['phone'].'<br>';
@@ -82,10 +82,10 @@ class Work
                 $_html .= '请保持电话通畅,方便师傅联系上门服务.';
                 $data['content'] = $_html;
                 break;
-            case '8':
+            case 8:
                 $data['content'] = '任务已完成,请点击下面 评价 对本次服务进行评价.';
                 break;
-            case '99':
+            case 99:
                 $data['content'] = '工单已关闭';
                 break;
 

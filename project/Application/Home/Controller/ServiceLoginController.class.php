@@ -114,19 +114,26 @@ class ServiceLoginController extends Controller
         $signPackage = $weixin->getSignPackage();
         $phone = M('service_seting')->cache('service_kfphone',60)->where(1)->getField('kfphone');
 
-        $info = M('service_apply')->where(['open_id'=>$_SESSION['open_id'], 'status'=>0])->find();
+        $info = M('service_apply')->where(['open_id'=>$_SESSION['open_id']])->find();
+        //状态  0保存 1基础信息审核 2基础信息通过 待缴费 3 已交押金 待审核 4 开通
+        switch ($info['status']) {
+            case '1':
+                $this->redirect('finalTip', array('index' => 1)); // 审核中
+                break;
+            case '2':
+                $this->redirect('Home/Pay/registerPay'); // 支付页面
+                break;
+            case '3':
+                $this->redirect('finalTip', array('index' => 2)); // 支付审核中
+                break;
+            default :
+                $this->assign('info',$info);
+                $this->assign('kfphone',$phone);
+                $this->assign('wxinfo',$signPackage);
+                $this->display('register');
+        }
 
-//        if( !empty($info['business']) && is_json($info['business'])) {
-//            $info['business'] = json_decode($info['business']);
-//        }
-//        if( !empty($info['agreement']) && is_json($info['agreement'])) {
-//            $info['agreement'] = json_decode($info['agreement']);
-//        }
 
-        $this->assign('info',$info);
-        $this->assign('kfphone',$phone);
-        $this->assign('wxinfo',$signPackage);
-        $this->display();
     }
 
     // 地址加载
@@ -179,22 +186,22 @@ class ServiceLoginController extends Controller
                 $post['password'] = md5($post['password']);
 
                 $post['open_id'] = $_SESSION['open_id'];
-                $post['status'] = 0;
+                $post['status'] = 1;
 
-                if( !empty($post['business']) && is_array($post['business'])) {
-                    $post['business'] = json_encode($post['business']);
-                }
-                if( !empty($post['agreement']) && is_array($post['agreement'])) {
-                    $post['agreement'] = json_encode($post['agreement']);
-                }
-
-
-                $res = M('service_apply')->add($post);
-                if($res){
-                    E('您的申请已提交,请等待工作人员审核',200);
-                }else{
-                    E('提交失败,请联系工作人员!',40010);
-                }
+//                if( !empty($post['business']) && is_array($post['business'])) {
+//                    $post['business'] = json_encode($post['business']);
+//                }
+//                if( !empty($post['agreement']) && is_array($post['agreement'])) {
+//                    $post['agreement'] = json_encode($post['agreement']);
+//                }
+//
+//
+//                $res = M('service_apply')->add($post);
+//                if($res){
+//                    E('您的申请已提交,请等待工作人员审核',200);
+//                }else{
+//                    E('提交失败,请联系工作人员!',40010);
+//                }
             }
 
 
@@ -226,32 +233,32 @@ class ServiceLoginController extends Controller
         }
     }
 
-    // 支付押金
-    public function registerPay()
-    {
-        if( empty($_SESSION['open_id']) ){
+//    // 支付押金
+//    public function registerPay()
+//    {
+//        if( empty($_SESSION['open_id']) ){
 //            $_SESSION['open_id'] = Weixin::GetOpenid();
-        }
-
-        $map=[
-            'open_id'=>$_SESSION['open_id'],
-            'status'=>1,
-        ];
-        $res = M('service_apply')->where($map)->field('id,servicename,name,company,legal,phone')->find();
-        if(empty($res)){
-            notice('请等待审核!','finalTip');
-        }
-
+//        }
+//
+//        $map=[
+//            'open_id'=>$_SESSION['open_id'],
+//            'status'=>2,
+//        ];
+//        $res = M('service_apply')->where($map)->field('id,servicename,name,company,legal,phone')->find();
+//        if(empty($res)){
+//            notice('请等待审核!','finalTip');
+//        }
+//
 //        $weixin = new \Org\Util\WeixinJssdk();
 //        $signPackage = $weixin->getSignPackage();
-        $joinsost = M('service_seting')->where(1)->getField('joinsost');
-        $joinsost = number_format(intval(trim($joinsost), 10)/100,0,'.','');
-
-        $this->assign('serviceInfo',$res);
-        $this->assign('joinsost',$joinsost);
-        $this->assign('wxinfo',$signPackage);
-        $this->display();
-    }
+//        $joinsost = M('service_seting')->where(1)->getField('joinsost');
+//        $joinsost = number_format(intval(trim($joinsost), 10)/100,0,'.','');
+//
+//        $this->assign('serviceInfo',$res);
+//        $this->assign('joinsost',$joinsost);
+//        $this->assign('wxinfo',$signPackage);
+//        $this->display('registerPay');
+//    }
 
     // 缴费
     public function registerPayOrder()
@@ -263,9 +270,9 @@ class ServiceLoginController extends Controller
             }
 
             if($post['paytype'] == 1){
-                $res = M('service_apply')->where('id='.$post['id'])->save(['paytype'=>1]);
+                $res = M('service_apply')->where('id='.$post['id'])->save(['paytype'=>1, 'updatetime'=>time()]);
 
-                if(!$res){
+                if(empty($res)){
                     E('支付失败,请重试!',40005);
                 }
 
@@ -274,9 +281,11 @@ class ServiceLoginController extends Controller
                 $content = '速腾服务站加盟费';
                 $url = 'http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/setmealNotify');
 
-                Weixin::uniformOrder($_SESSION['open_id'],$money,$orderId,$content,$url);
+                $resault  = Weixin::uniformOrder($_SESSION['open_id'],$money,$orderId,$content,$url);
+                $this->toJson(['res'=>$resault],'请求成功',200);
+
             }elseif($post['paytype'] == 2){
-                $res = M('service_apply')->where('id='.$post['id'])->save(['paytype'=>1]);
+                $res = M('service_apply')->where('id='.$post['id'])->save(['paytype'=>1, 'updatetime'=>time()]);
 
                 if($res){
                     E('提交成功!请等待审核!',200);

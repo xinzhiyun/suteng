@@ -196,7 +196,7 @@ class WorkController extends CommonController
                     '3'=>8
                 ];
                 if(in_array($data['result'], $status)){
-                    Work::add($post['id'], $status[$data['result']]);
+                    Work::add($post['id'], (int)$status[$data['result']]);
                 }
 
                 E('修改成功',200);

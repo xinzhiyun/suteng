@@ -1,5 +1,6 @@
 <?php
 namespace Home\Controller;
+use Common\Tool\Weixin;
 use Think\Controller;
 
 /**
@@ -8,6 +9,67 @@ use Think\Controller;
  */
 class PayController extends Controller
 {
+    // 服务人员 代缴费
+    public function servicePeoplePay(){
+        $weixin = new \Org\Util\WeixinJssdk();
+        $signPackage = $weixin->getSignPackage();
+        $this->assign('wxinfo',$signPackage);
+        $this->display();
+    }
+
+    // 个人中心 - 设备 租赁转个人 支付
+    public function deviceIndex()
+    {
+        $this->wx_info();   //加载微信信息
+
+        if(empty($_SESSION['open_id'])){
+            $openId =  Weixin::GetOpenid();
+            $_SESSION['open_id'] = $openId;
+        }
+
+        // 查询绑定设备
+        $user_device = D('UserDevice');
+        $map['ud.uid'] = session('user.id');
+
+        $bind_device = $user_device->getBindInof($map); //where('uid='.session('user.id'))->select();
+        // 将当前设备的ID存到SESSION中
+        $where['status'] = 1;
+        $where['uid'] = session('user.id');
+        $cur_device = $user_device->where($where)->find();
+        session('device.did',$cur_device['did']);
+        session('user.did',$cur_device['did']);
+        //分配数据
+        $this->assign('bindInfo',$bind_device);
+        $this->assign('openId',$openId);
+        $this->display();
+    }
+
+    // 服务站申请 支付押金
+    public function registerPay()
+    {
+        if( empty($_SESSION['open_id']) ){
+            $_SESSION['open_id'] = Weixin::GetOpenid();
+        }
+
+        $map=[
+            'open_id'=>$_SESSION['open_id'],
+            'status'=>2,
+        ];
+        $res = M('service_apply')->where($map)->field('id,servicename,name,company,legal,phone')->find();
+        if(empty($res)){
+            notice('请等待审核!','finalTip','ServiceLogin');
+        }
+
+        $weixin = new \Org\Util\WeixinJssdk();
+        $signPackage = $weixin->getSignPackage();
+        $joinsost = M('service_seting')->where(1)->getField('joinsost');
+        $joinsost = number_format(intval(trim($joinsost), 10)/100,0,'.','');
+
+        $this->assign('serviceInfo',$res);
+        $this->assign('joinsost',$joinsost);
+        $this->assign('wxinfo',$signPackage);
+        $this->display('registerPay');
+    }
 
     /**
      * 金币银币 充值

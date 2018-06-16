@@ -514,6 +514,7 @@ class VipCenterController extends CommonController
             }
             $res = [
                 'data'=>$list,
+                'name'=>$info['name'],
                 'evaluaction'=> $evaluaction
             ];
             $this->toJson($res,'获取成功!');
@@ -540,6 +541,9 @@ class VipCenterController extends CommonController
             $map['number'] = $post['workid'];
             $work = M('work')->where($map)->find();   // 服务人员
             if(empty($work)){
+                E('工单信息错误,请刷新重试!',400001);
+            }
+            if(!empty($work['star'])){
                 E('工单信息错误,请刷新重试!',400001);
             }
 

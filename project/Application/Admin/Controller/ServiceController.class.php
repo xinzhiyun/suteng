@@ -18,24 +18,24 @@ class ServiceController extends CommonController
             unset($_GET['sou']);
         }
         if(!empty($_GET['province_id'])){
-            $map['province_id'] = $_GET['province_id'];
+            $map['st_service.province_id'] = $_GET['province_id'];
             $city = M('area')->where('parentid='.$_GET['province_id'])->select();
         }
         if(!empty($_GET['city_id'])){
-            $map['city_id'] = $_GET['city_id'];
+            $map['st_service.city_id'] = $_GET['city_id'];
             $district = M('area')->where('parentid='.$_GET['city_id'])->select();
         }
         if(!empty($_GET['district_id'])){
-            $map['district_id'] = $_GET['district_id'];
+            $map['st_service.district_id'] = $_GET['district_id'];
         }
         if(!empty($_GET['status'])){
-            $map['status'] = $_GET['status'];
+            $map['st_service.status'] = $_GET['status'];
         }
         if(!empty($_GET['keywords'])){
-            $map[$_GET['key']] = array('like',"%".$_GET['keywords']."%");
+            $map['st_service.'.$_GET['key']] = array('like',"%".$_GET['keywords']."%");
         }
         if(isset($_GET['status']) && $_GET['status'] != '' ){
-            $map['status'] = $_GET['status'];
+            $map['st_service.status'] = $_GET['status'];
         }
         
         $area = M('area')->where('parentid=0')->select();
@@ -113,6 +113,39 @@ class ServiceController extends CommonController
         $this->assign($assign);
         $this->display();
     }
+
+    // 服务站申请 - 审核操作
+    public function applyExamine()
+    {
+        try {
+            $post = I('post.');
+            if(empty($post['id']) || empty($post['action'])){
+                E('数据错误',40001);
+            }
+            // 状态 1基础信息审核 2基础信息通过 待缴费 3 已交押金 待审核 4 开通
+            if($post['action'] == '1'){ // 基础信息 不通过
+                $post['status'] = 0;
+            }elseif($post['action'] == '2'){ // 基础信息通过
+                $post['status'] = 2;
+            }elseif($post['action'] == '3'){ // 支付信息审核通过
+                $post['status'] = 4;
+            }
+
+            unset($post['action']);
+            $post['updatetime'] = time();
+
+            $res = M('service_apply')->where('id='.$post['id'])->save($post);
+            if ($res) {
+                E('开通成功',200);
+            }
+            E('添加失败,请重试!',201);
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+    
+    
 
     /**
      * 添加服务站

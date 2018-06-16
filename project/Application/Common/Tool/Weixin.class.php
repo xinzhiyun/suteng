@@ -162,10 +162,9 @@ class Weixin
         $order = \WxPayApi::unifiedOrder($input);       // 统一下单
 
         // 返回支付需要的对象JSON格式数据
-        $jsApiParameters = $tools->GetJsApiParameters($order);
+        return $tools->GetJsApiParameters($order);
 
-        echo $jsApiParameters;
-        exit;
+
     }
 
 

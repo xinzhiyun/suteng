@@ -67,7 +67,11 @@ class ServiceController extends ServiceCommonController
 
         //处理结果 (0：待处理(服务站) 1处理中(工作人员) 2已完成(工作人员) 3(完成) 9 工单关闭 )
         if(isset($_GET['result']) && strlen($_GET['result'])){
-            $map['result'] = $_GET['result'];
+            if($_GET['result']==3){  //已完成的
+                $map['result']=['egt',3];
+            }else{
+                $map['result'] = $_GET['result'];
+            }
         }
 
         $total = M('work')
@@ -81,6 +85,7 @@ class ServiceController extends ServiceCommonController
         $list = M('work')
             ->where($map)
             ->limit($page->firstRow.','.$page->listRows)
+            ->order('id desc')
             ->select();
         $this->toJson(['data'=>$list],'获取成功');
     }
