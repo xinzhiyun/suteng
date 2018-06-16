@@ -344,8 +344,7 @@ class ServicePeopleController extends Controller
                 E('工单信息错误',400022);
             }
 
-            /*
-             * 下版本启用 取消下面固定的状态值
+
             // 1 拒绝 2 完成
             if( empty($post['operate']) ){
                 E('信息错误',400023);
@@ -360,7 +359,7 @@ class ServicePeopleController extends Controller
             } else {
                 E('信息错误',400024);
             }
-             */
+
 
 
             $map['id'] = $post['wid'];
@@ -371,7 +370,7 @@ class ServicePeopleController extends Controller
 
             $data['update_at']=time();
             $data['pass_at'] = time();
-            $data['result'] = 2;///------------------固定的状态值----------------------------------
+            //$data['result'] = 2;///------------------固定的状态值----------------------------------
             $res = M('work')->where($map)->save($data);
 
             if ($res) {
