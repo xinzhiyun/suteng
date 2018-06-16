@@ -117,7 +117,7 @@ class ServicePeopleController extends Controller
     {
         try {
             $post = I('post.');
-            if(empty($post['setmeal_id']) || empty($post['device_code']) || empty($post['uid'])){
+            if(empty($post['setmeal_id']) || empty($post['device_code'])){
                E('参数错误!',40001);
             }
             $info =  M('setmeal')->where('id='.$post['setmeal_id'])->find();

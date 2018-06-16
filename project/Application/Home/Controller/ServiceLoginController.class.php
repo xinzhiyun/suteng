@@ -108,10 +108,10 @@ class ServiceLoginController extends Controller
     public function register()
     {
         if( empty($_SESSION['open_id']) ){
-            $_SESSION['open_id'] = Weixin::GetOpenid();
+//            $_SESSION['open_id'] = Weixin::GetOpenid();
         }
-        $weixin = new \Org\Util\WeixinJssdk();
-        $signPackage = $weixin->getSignPackage();
+//        $weixin = new \Org\Util\WeixinJssdk();
+//        $signPackage = $weixin->getSignPackage();
         $phone = M('service_seting')->cache('service_kfphone',60)->where(1)->getField('kfphone');
 
         $info = M('service_apply')->where(['open_id'=>$_SESSION['open_id'], 'status'=>0])->find();
