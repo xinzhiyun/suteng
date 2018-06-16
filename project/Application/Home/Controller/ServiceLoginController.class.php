@@ -261,12 +261,36 @@ class ServiceLoginController extends Controller
             if(empty($post['paytype'])){
                 E('参数错误',40001);
             }
-            $money = M('service_seting')->where(1)->getField('joinsost');
-            $orderId = getOrderId();
-            $content = '速腾服务站加盟费';
-            $url = 'http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/setmealNotify');
 
-            Weixin::uniformOrder($_SESSION['open_id'],$money,$orderId,$content,$url);
+
+
+            if($post['paytype'] == 1){
+                $res = M('service_apply')->where('id='.$post['id'])->save(['paytype'=>1]);
+
+                if(!$res){
+                    E('支付失败,请重试!',40005);
+                }
+
+                $money = M('service_seting')->where(1)->getField('joinsost');
+                $orderId = getOrderId();
+                $content = '速腾服务站加盟费';
+                $url = 'http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/setmealNotify');
+
+                Weixin::uniformOrder($_SESSION['open_id'],$money,$orderId,$content,$url);
+            }elseif($post['paytype'] == 2){
+                $res = M('service_apply')->where('id='.$post['id'])->save(['paytype'=>1]);
+
+                if($res){
+                    E('提交成功!请等待审核!',200);
+                }else{
+                    E('提交失败,请重试!',40005);
+                }
+            }else{
+                E('参数错误',40001);
+            }
+
+
+
 
         }catch (\Exception $e) {
             $this->toJson($e);
