@@ -194,10 +194,6 @@ var payment = new Vue({
 			$(".search").hide().next().hide();
 			$('.paySuc').show();
 			$("body").css({"background":"#fff"});
-			setTimeout(function(){
-				
-				location.href = url;
-			},1000);
 		}
 	},
 	mounted(){

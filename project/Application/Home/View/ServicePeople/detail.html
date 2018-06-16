@@ -74,7 +74,7 @@
 					<p class='left'>图片</p>
 					<img v-for='(p, index) in picList' :src="p" alt="加载中" @click='photoSwipe(index)'>
 				</li>
-				<li class="link_b" v-if='detail.result >= 2'>
+				<li class="link_b" v-if='detail.result > 2'>
 					<span class='left'>状态</span>
 					<span calss='right' style='color:#2eb6aa;'>完成</span>
 				</li>
@@ -85,7 +85,7 @@
 			<input type="button" value="我要接单" @click="openModal(0)">
 		</div> -->
 		<!-- 忽略按钮 -->
-		<div class="success" v-if='detail.refuse != 1'>
+		<div class="success" v-if='detail.result < 2'>
 			<input type="button" value="忽略此单" @click="openModal(1)" style='background:#f43030;'>
 			<input type="button" value="完成" @click="openModal(2)">
 		</div>

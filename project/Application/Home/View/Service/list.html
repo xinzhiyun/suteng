@@ -110,7 +110,7 @@
 						for(var i=0; i<res.data.length; i++){
 							
 							if(vm.result == 4) {	// 安装人员管理
-								var star = res.data[i].star ? +Math.floor(res.data[i].star) : 0;
+								var star = res.data[i].star ? Math.floor(+res.data[i].star) : 0;
 								console.log("星星个数: ", star, res.data[i].star);
 								vm.list.push({
 									name: res.data[i].name,
