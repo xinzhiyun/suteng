@@ -18,9 +18,9 @@
                 <p>我们将在1-2个工作日内进行审核，审核通过后会有专人联系您。</p>
                 <p>请保持电话畅通，谢谢!</p> 
             </li>
-            <li><a href="####">关闭页面</a></li>
+            <li><a href="####" @click="closeWindow">关闭页面</a></li>
         </ul>
-        <ul class="secondCon" v-if="indexs == 1 || indexs == '' ">
+        <ul class="secondCon" v-if="indexs == 1 || indexs == 'undefined'">
             <li>
                 <img src="__PUBLIC__/Home/images/shz.png" alt="">
             </li>
@@ -28,7 +28,7 @@
                 <span>申请成功，正在审核中，请耐心等待...</span>
             </li>
             <li>
-                <a href="####">关闭页面</a>
+                <a href="####" @click="closeWindow">关闭页面</a>
             </li>
         </ul>
 	</div>
@@ -38,9 +38,22 @@
 <script>
 </script>
 <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
 <script>
     var vConsole = new VConsole();
+    //微信接口
+    wx.config({
+        debug: false,
+        appId: '{{$wxinfo["appId"]}}',
+        timestamp: '{{$wxinfo["timestamp"]}}',
+        nonceStr: '{{$wxinfo["nonceStr"]}}',
+        signature: '{{$wxinfo["signature"]}}',
+        jsApiList: [
+        // 所有要调用的 API 都要加到这个列表中
+        'closeWindow'
+        ]
+    });
     var vm = new Vue({
         el: ".main",
         data() {
@@ -51,9 +64,10 @@
         },
         created() {
             // this.indexs = +GetQueryString("index");
-            this.indexs = +{{$_GET['index']}}
-
-            console.log(this.indexs, typeof this.indexs);
+            this.indexs = {{$_GET['index']}}
+            this.indexs = this.indexs ? this.indexs : "undefined";
+            
+            console.log("234", this.indexs, typeof this.indexs);
             if(this.indexs == 2) {
                 this.text = "支付成功";
             }else if(this.indexs == 3) {
@@ -61,7 +75,10 @@
             }
         },
         methods: {
-
+            // 关闭窗口
+            closeWindow() {
+                wx.closeWindow();
+            }
         }
     })
 </script>
