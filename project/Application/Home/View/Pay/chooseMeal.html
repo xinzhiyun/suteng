@@ -7,9 +7,11 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/mall/chooseMeal.css">
+	<!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
 	<script>
-	var infos = {{$infos['user']}};
-	console.log("金银币",infos);
+		// var vConsole = new VConsole();
+		var infos = {{$infos['user']}};
+		console.log("金银币",infos);
 	</script>
 </head>
 <body>
@@ -46,8 +48,8 @@
 						<li index="1"><i class="iconfont icon-tubiao207"></i>金币<span class="iconfont icon-kuang1"></span></li>
 						<li index="2"><i class="iconfont icon-tubiao207-copy"></i>银币<span class="iconfont icon-kuang1"></span></li>
 						<li index="3"><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-xuanze"></span></li>
-						<li index="4"><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
-						<li index="5"><i class="iconfont icon-yinlian"></i>银联<span class="iconfont icon-kuang1"></span></li>
+						<!-- <li index="4"><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
+						<li index="5"><i class="iconfont icon-yinlian"></i>银联<span class="iconfont icon-kuang1"></span></li> -->
 					</ul>
 				</div>
 				<div class="payBott start">
@@ -77,9 +79,7 @@
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<!-- 微信支付支持JS部分代码 -->
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
-	<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
 	<script>
-		var vConsole = new VConsole();
 		$(function(){
 			// 首页按钮
 			!function(){
