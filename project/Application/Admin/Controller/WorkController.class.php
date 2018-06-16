@@ -270,7 +270,8 @@ class WorkController extends CommonController
                 $saveData=[
                     'sid'=>$sid,
                     'service_mode'=>$service_mode,
-                    'company'=>$name
+                    'company'=>$name,
+                    'leaflets_at'=>time()
                 ];
                 $res =  M('work')->where('id='.$post['wid'])->save($saveData);
                 Work::add($post['wid'], 4);
@@ -342,7 +343,7 @@ class WorkController extends CommonController
                 $service_mode = 1;
             }
 
-            $work_res = M('work')->where('id='.$wid)->save( ['sid'=>$sid, 'service_mode'=>$service_mode, 'company'=>$name ] );
+            $work_res = M('work')->where('id='.$wid)->save( ['sid'=>$sid, 'service_mode'=>$service_mode, 'company'=>$name ,'leaflets_at'=>time()] );
 
             if($work_res){
                 // 写工单记录
