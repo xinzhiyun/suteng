@@ -132,7 +132,7 @@
                     sn: info.sn,
                     password: "",
                     uImg: "__PUBLIC__" + (info.uimg ? info.uimg : "/Home/images/normal.png"),
-                    star: +info.star,   //显示星星
+                    star: Math.floor(+info.star),   //显示星星
                 }
                 console.log("star", info.starD);
             }

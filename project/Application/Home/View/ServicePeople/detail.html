@@ -85,7 +85,7 @@
 			<input type="button" value="我要接单" @click="openModal(0)">
 		</div> -->
 		<!-- 忽略按钮 -->
-		<div class="success" v-if='detail.result < 2'>
+		<div class="success" v-if='detail.result < 2 && detail.refuse == 0'>
 			<input type="button" value="忽略此单" @click="openModal(1)" style='background:#f43030;'>
 			<input type="button" value="完成" @click="openModal(2)">
 		</div>

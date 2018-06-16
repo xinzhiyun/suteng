@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/device/index.css">
     <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
     <script>
-        // var vconsole = new VConsole();
+        var vconsole = new VConsole();
     </script>
 </head>
 <body>
@@ -308,7 +308,7 @@
 		// 获取微信支付的数据
 		function getPayinfo(data, callback){
 			$.ajax({
-				url: '{{:U("Home/Pay/index")}}',
+				url: '{{:U("Home/Pay/devicePay")}}',
 				type: 'post',
 				data: data,
 				success: function(res){

@@ -46,8 +46,7 @@ var take = new Vue({
 					console.log('res: ',res);
 					if(res.status == 200){
 						setTimeout(function(){
-							history.replaceState({}, null, getURL('Home', 'ServicePeople/index'));
-							location.href = getURL('Home', 'ServicePeople/list');
+							location.href = getURL('Home', 'ServicePeople/index');
 						},1000)
 					}else{
 						layuiHint(res.msg);
