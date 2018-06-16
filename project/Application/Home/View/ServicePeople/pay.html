@@ -40,11 +40,11 @@
 		<div class="search">
 			<input type="text" :placeholder="seplaceholder" v-model="search" @keyup.enter="lookup(search)">
 			<div class='type'>
-				<span :style='{color: searchtype == 1 ? "#333" : "#808080"}'>
+				<span :style='{color: searchtype == 1 ? "#333" : "#a0a0a0"}'>
 					<input id='rphone' type="radio" name='searchtype' @click='searchchange($event)' value='1' checked>
 					<label for="rphone">搜索手机号</label>
 				</span>
-				<span :style='{color: searchtype == 2 ? "#333" : "#808080"}'>
+				<span :style='{color: searchtype == 2 ? "#333" : "#a0a0a0"}'>
 					<input id='rdevice' type="radio" name='searchtype' @click='searchchange($event)' value='2'>
 					<label for="rdevice">搜索设备编码</label>
 				</span>
@@ -99,7 +99,7 @@
 					<p>套餐选择</p>
 				</div>
 				<ul>
-					<li class="mealli" v-for="(s,index) in setMeal" @click="mealSelect(s.money)">
+					<li class="mealli" v-for="(s,index) in setMeal" @click="mealSelect(s.money, s.id)">
 						<p><span v-text='s.flow'></span>天</p>
 						<p>售价：<span v-text='s.money'></span>元</p>
 					</li>
@@ -206,10 +206,14 @@
 		$(".loadingdiv").hide();
 
 		// 获取微信支付信息
-		function getPayInfo(){
+		function getPayInfo(device_code, mealid){
 			$.ajax({
 				url: '{{:U("Home/ServicePeople/order")}}',
 				type: 'post',
+				data: {
+					device_code: device_code,
+					mealid: mealid
+				},
 				success: function(res){
 					console.log('res: ',res);
 					var href = location.href;

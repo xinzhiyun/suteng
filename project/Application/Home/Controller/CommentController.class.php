@@ -153,7 +153,7 @@ class CommentController extends CommonController
                 }
             }
         }
-dump($info);
+
         // 5.处理添加评论
         $comment->startTrans();
             // 根据订单获取所有商品

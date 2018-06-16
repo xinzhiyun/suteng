@@ -7,6 +7,8 @@ var payment = new Vue({
 			showModel: "8" ,		//选择设备编码字体图标
 			userInfo: {},		//用户信息
 			setMeal:[],			//套餐
+			device_code: '',	// 设备id
+			mealid: '',			// 选中的套餐id
 			money:"0",			//支付金额
 			index:"",			//支付方式的下标
 			seplaceholder: '请输入手机号',		// 按照手机或设备编码搜索
@@ -36,6 +38,10 @@ var payment = new Vue({
 		lookup(word){
 			var vm = this;
 			console.log('word: ',word);
+			if(!word){
+				layuiHint('请输入手机号或设备编码查询');
+				return
+			}
 			// 查找手机号码/设备编码
 			// type: 1手机号，2设备编码
 			$.ajax({
@@ -79,12 +85,13 @@ var payment = new Vue({
 			},100);
 		},
 		// 选择套餐
-		mealSelect(money,even){
+		mealSelect(money,mealid,even){
 			var e = even || window.event;
 			e.preventDefault();
 			var el = e.currentTarget;
 			var _this = this;
 			_this.money = money;
+			_this.mealid = mealid;
 			$(el).css({"background":"#2EB6AA","color":"#fff",border:'none'}).siblings().css({"background":"#fff","color":"#808080",border:'1px solid #cccccc'});
 			$("#Pay").css({"background":"#2eb6aa"});
 		},
@@ -122,7 +129,7 @@ var payment = new Vue({
 			var _this = this;
 			if(_this.way[_this.index] == "微信支付"){
 				console.log("微信支付");
-				getPayInfo();
+				getPayInfo(_this.device_code, _this.mealid);
 				// _this.urlPub("Pay",1);
 				return false;
 			}else if(_this.way[_this.index] == "支付宝支付"){
@@ -142,20 +149,20 @@ var payment = new Vue({
 	created (){
 		var _this = this;
 		var href = location.search.split("?")[1];
-		var device_code = GetQueryString('device_code');
+		_this.device_code = GetQueryString('device_code');
 		var pay = GetQueryString('Pay');
 		if(href == undefined){
 			$("#one").css("color","#2EB6AA");
 		}
-		if(device_code){
-			console.log('device_code: ',device_code);
+		if(_this.device_code){
+			console.log('device_code: ',_this.device_code);
 			$("#two").css("color","#2EB6AA");
 			$(".search").hide().next().hide();
 			$(".detail").show();
 			// 将设备编码传后台
 			$.ajax({
 				url: getURL('Home', 'ServicePeople/getSetmeal'),
-				data: {device_code:device_code},
+				data: {device_code:_this.device_code},
 				type: "post",
 				success:function(res){
 					console.log("res: ",res);
@@ -167,7 +174,7 @@ var payment = new Vue({
 						_this.userInfo = {
 							name: res.info.name,
 							phone: res.info.phone,
-							device_code: device_code,
+							device_code: _this.device_code,
 							device_type: res.info.device_type
 						}
 						_this.setMeal = res.data;

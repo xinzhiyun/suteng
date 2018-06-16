@@ -1231,58 +1231,130 @@
 
 	// 提交快递信息
 	function exconfirm(){
-		var toname = $('.toname').val().trim();
-		var tophone = $('.tophone').val().trim();
-		var toaddr = $('.toaddr').val().trim();
-		var recname = $('.recname').val().trim();
-		var recphone = $('.recphone').val().trim();
-		var recaddr = $('.recaddr').val().trim();
-		var recexpress = $('.recexpress').val().trim();
-		var recexpressnum = $('.recexpressnum').val().trim();
+		var toname = $('.toname');
+		var tophone = $('.tophone');
+		var toaddr = $('.toaddr');
+		var recname = $('.recname');
+		var recphone = $('.recphone');
+		var recaddr = $('.recaddr');
+		var recexpress = $('.recexpress');
+		var recexpressnum = $('.recexpressnum');
 		
-		if(!toname){
+		if(!toname.val().trim()){
 			layuiHint('请输入发货人姓名');
+			toname.css({border: '1px solid red'});
 			return
+		}else{
+			if(!nameReg.test(toname.val().trim())){
+				layuiHint('姓名只能含有中文、英文、数字、下划线');
+				toname.css({border: '1px solid red'});
+				return
+			}else{
+				toname.css({border: 'none',borderBottom: '1px solid #ccc'});
+			}
 		}
-		if(!tophone){
+		if(!tophone.val().trim()){
 			layuiHint('请输入发货人电话');
+			tophone.css({border: '1px solid red'});
 			return
+		}else{
+			if(!phoneReg.test(tophone.val().trim())){
+				tophone.css({border: '1px solid red'});
+				layuiHint('请输入正确的手机号码');
+				return
+			}else{
+				tophone.css({border: 'none',borderBottom: '1px solid #ccc'});
+			}
 		}
-		if(!toaddr){
+		if(!toaddr.val().trim()){
 			layuiHint('请输入发货人地址');
+			toaddr.css({border: '1px solid red'});
 			return
+		}else{
+			if(!nameReg.test(toaddr.val().trim())){
+				layuiHint('地址只能含有中文、英文、数字、下划线');
+				toaddr.css({border: '1px solid red'});
+				return
+			}else{
+				toaddr.css({border: 'none',borderBottom: '1px solid #ccc'});
+			}
 		}
-		if(!recname){
+		if(!recname.val().trim()){
 			layuiHint('请输入收货人姓名');
+			recname.css({border: '1px solid red'});
 			return
+		}else{
+			if(!nameReg.test(recname.val().trim())){
+				layuiHint('姓名只能含有中文、英文、数字、下划线');
+				recname.css({border: '1px solid red'});
+				return
+			}else{
+				recname.css({border: 'none',borderBottom: '1px solid #ccc'});
+			}
 		}
-		if(!recphone){
+		if(!recphone.val().trim()){
 			layuiHint('请输入收货人电话');
+			recphone.css({border: '1px solid red'});
 			return
+		}else{
+			if(!phoneReg.test(recphone.val().trim())){
+				recphone.css({border: '1px solid red'});
+				layuiHint('请输入正确的手机号码');
+				return
+			}else{
+				recphone.css({border: 'none',borderBottom: '1px solid #ccc'});
+			}
 		}
-		if(!recaddr){
+		if(!recaddr.val().trim()){
 			layuiHint('请输入收货人地址');
+			recaddr.css({border: '1px solid red'});
 			return
+		}else{
+			if(!nameReg.test(recaddr.val().trim())){
+				layuiHint('地址只能含有中文、英文、数字、下划线');
+				recaddr.css({border: '1px solid red'});
+				return
+			}else{
+				recaddr.css({border: 'none',borderBottom: '1px solid #ccc'});
+			}
 		}
-		if(!recexpress){
+		if(!recexpress.val().trim()){
 			layuiHint('请输入快递名称');
+			recexpress.css({border: '1px solid red'});
 			return
+		}else{
+			if(!nameReg.test(recexpress.val().trim())){
+				layuiHint('地址只能含有中文、英文、数字、下划线');
+				recexpress.css({border: '1px solid red'});
+				return
+			}else{
+				recexpress.css({border: 'none',borderBottom: '1px solid #ccc'});
+			}
 		}
-		if(!recexpressnum){
+		if(!recexpressnum.val().trim()){
 			layuiHint('请输入快递单号');
+			recexpressnum.css({border: '1px solid red'});
 			return
+		}else{
+			if(!/[a-zA-Z0-9]/.test(recexpressnum.val().trim())){
+				recexpressnum.css({border: '1px solid red'});
+				return
+			}else{
+				recexpressnum.css({border: 'none',borderBottom: '1px solid #ccc'});
+			}
 		}
-		expressData['serial_num'] = sessionStorage.getItem('serial_num');
-		expressData['gid'] = sessionStorage.getItem('gid');
-
-		expressData['toname'] = toname;
-		expressData['tophone'] = tophone;
-		expressData['toaddr'] = toaddr;
-		expressData['recname'] = recname;
-		expressData['recphone'] = recphone;
-		expressData['recaddr'] = recaddr;
-		expressData['recexpress'] = recexpress;
-		expressData['recexpressnum'] = recexpressnum;
+		expressData = {
+			serial_num: sessionStorage.getItem('serial_num'),
+			gid: sessionStorage.getItem('gid'),
+			toname: toname.val().trim(),
+			tophone: tophone.val().trim(),
+			toaddr: toaddr.val().trim(),
+			recname: recname.val().trim(),
+			recphone: recphone.val().trim(),
+			recaddr: recaddr.val().trim(),
+			recexpress: recexpress.val().trim(),
+			recexpressnum: recexpressnum.val().trim()
+		}
 		
 		// 提交数据
 		$.ajax({

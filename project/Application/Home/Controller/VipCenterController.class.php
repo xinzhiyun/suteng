@@ -545,7 +545,8 @@ class VipCenterController extends CommonController
 
             if(!empty($post['evalid'])){
                 $evalids = implode(',',$post['evalid']);
-                $evalu = M('service_evaluate')->where(array('in',$evalids))->select();
+
+                $evalu = M('service_evaluate')->where(['id'=>array('in',$evalids)])->select();
                 $saveData['evaluate'] = json_encode($evalu);
             }
 
@@ -554,9 +555,10 @@ class VipCenterController extends CommonController
                 $saveData['evaluateinfo'] = $post['text'];
             }
             $saveData['result'] = 4;
+            $saveData['evaluatetype']=1;
             $res = M('work')->where($map)->save($saveData);
 
-//            Work::evaluAction($post['workid']);
+            Work::evaluAction($post['workid']);
 
             if ($res){
                 Work::add($post['workid'],99);

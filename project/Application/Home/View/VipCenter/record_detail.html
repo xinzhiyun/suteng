@@ -6,9 +6,13 @@
 	<title>工单详情</title>
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/record_detail.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/record_detail.css?v={{:time()}}">
 	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
 	<script src='__PUBLIC__/Home/js/public.js'></script>
+    <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+    <script>
+        var vconsole = new VConsole();
+    </script>
 </head>
 <body>
 	<div id='recoed_detail'>
@@ -189,9 +193,7 @@
 					var textEval = document.querySelector('.text').querySelectorAll('.eval');
 					// 遍历评论选项的id
 					for(var i=0; i<textEval.length; i++){
-						evalidArr.push({
-							id: textEval[i].getAttribute('tid')
-						})
+						evalidArr.push(textEval[i].getAttribute('tid'))
 					}
 					if(!evalidArr.length){
 						layuiHint('请至少选择一个评价');
@@ -214,9 +216,15 @@
 						data: info,
 						success: function(res){
 							console.log('res: ',res);
+							if(res.status == 200){
+								layuiHint('提交成功')
+							}else{
+								layuiHint(res.msg);
+							}
 						},
 						error: function(err){
 							console.log('err: ',err);
+							layuiHint('系统遇到问题，请稍后再试');
 						}
 					})
 				},

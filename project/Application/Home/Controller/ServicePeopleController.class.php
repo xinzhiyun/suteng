@@ -13,11 +13,13 @@ class ServicePeopleController extends Controller
     public function __construct()
     {
         parent::__construct();
+        //$_SESSION='';
         // 检查微信
         if(empty($_SESSION['open_id'])){
             $openid = Weixin::GetOpenid();
             $_SESSION['open_id']=$openid;
         }
+
 
         // 自动登录
         if(empty($_SESSION['servicepeople'])){
@@ -115,18 +117,82 @@ class ServicePeopleController extends Controller
     // 代缴费 订单
     public function order()
     {
-        // 订单金额
-        $money = 100;
-        // 订单号码
-        $order_id = time().mt_rand(1000,9999);
-        // 订单描述
-        $content = '速腾商城套餐购买';
+        try {
+            $post = I('post.');
+            if(empty($post['setmeal_id']) || empty($post['device_code'])){
+               E('参数错误!',40001);
+            }
+            $info =  M('setmeal')->where('id='.$post['setmeal_id'])->find();
+            if(empty($info)){
+                E('套餐信息错误!',40002);
+            }
+            $devicesInfo =  M('devices')->where('device_code='.$post['device_code'])->find();
+            if(empty($devicesInfo)){
+                E('设备信息错误!',40003);
+            }
+            $uid = M('userDevice')->where('did='.$devicesInfo['id'])->getField('uid');
+            if(empty($uid)){
+                E('设备未绑定用户!',40004);
+            }
 
-        $openId = $_SESSION['open_id'];
+            $orders = M('orders');
+            $orderSetmeal = M('order_setmeal');
 
-//        $url = 'http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/setmealNotify');
+            $orders->startTrans();
+            $orderSetmeal->startTrans();
 
-        $this->uniformOrder($openId,$money,$order_id,$content,$url);
+            $orderId = getOrderId();
+
+
+            $order['order_id']      = $orderId;
+            $order['user_id']       = $uid;
+            $order['device_id']     = $devicesInfo['id'];
+
+            $order['total_num']     = 1;
+            $order['total_price']   = $info['money'];
+            $order['created_at']    = time();
+
+
+
+            $dataDS = [
+                'order_id'      =>  $orderId,
+                'uid'           =>  $uid,
+                'device_id'     =>  $devicesInfo['id'],
+                'setmeal_id'    =>  $info['id'],
+                'type_id'       =>  $devicesInfo['type_id'],
+                'remodel'       =>  $info['remodel'],
+                'money'         =>  $info['money'],
+                'flow'          =>  $info['flow'],
+                'describe'      =>  $info['describe'],
+                'goods_num'     =>  1,
+                'goods_price'   =>  $info['money'],
+                'status'        =>  0,
+                'created_at'    =>  time()
+            ];
+            $insertId = $orderSetmeal->data($dataDS)->add();
+
+            $ordersRes = $orders->add($order);
+
+            if($ordersRes && $insertId){
+                // 执行事务
+                $orders->commit();
+                $orderSetmeal->commit();
+
+            }else{
+                // 事务回滚
+                $orders->rollback();
+                $orderSetmeal->rollback();
+                E('订单创建失败',40010);
+            }
+
+            $content = '套餐代充:'.$info['describe'];
+            $openId = $_SESSION['open_id'];
+            $url = 'http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/setmealNotify');
+
+            $this->uniformOrder($openId,$info['money'],$orderId,$content,$url);
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
     }
 
     /**
@@ -175,6 +241,36 @@ class ServicePeopleController extends Controller
 
         echo $jsApiParameters;
         exit;
+    }
+
+    // 其他方式支付-提交
+    public function applyOtherPay()
+    {
+        try {
+            $post = I('post.');
+            $map=[
+                'open_id'=>$_SESSION['open_id'],
+                'status'=>2
+            ];
+            $info = M('service_apply')->where($map)->count();
+            if( empty($info) ){
+                E('信息错误',40001);
+            }
+
+            $saveData = [
+                'paytype'=>2,
+                'status'=>3
+            ];
+            $res = M('service_apply')->where('id='.$info['id'])->save($saveData);
+
+            if( $res ){
+                E('工单不存在',40002);
+            }else{
+                E('工单不存在',40002);
+            }
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
     }
 
     // 获取服务(任务)列表
@@ -248,8 +344,7 @@ class ServicePeopleController extends Controller
                 E('工单信息错误',400022);
             }
 
-            /*
-             * 下版本启用 取消下面固定的状态值
+
             // 1 拒绝 2 完成
             if( empty($post['operate']) ){
                 E('信息错误',400023);
@@ -264,7 +359,7 @@ class ServicePeopleController extends Controller
             } else {
                 E('信息错误',400024);
             }
-             */
+
 
 
             $map['id'] = $post['wid'];
@@ -275,7 +370,7 @@ class ServicePeopleController extends Controller
 
             $data['update_at']=time();
             $data['pass_at'] = time();
-            $data['result'] = 2;///------------------固定的状态值----------------------------------
+            //$data['result'] = 2;///------------------固定的状态值----------------------------------
             $res = M('work')->where($map)->save($data);
 
             if ($res) {

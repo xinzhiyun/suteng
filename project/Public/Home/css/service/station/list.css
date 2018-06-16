@@ -48,6 +48,7 @@ body {
 	flex: 1 0 33%;
 	text-align: center;
 }
+
 .spli {
 	position: relative;
 	display: flex;
@@ -69,9 +70,11 @@ body {
 .content {
 	padding: 0 8px 10vw;
 }
-.content .spli>span{
+.content .spli>span,
+.content .spli>p {
 	flex: 1 0 33%;
-	text-align: center;
+	display: inline-flex;
+	justify-content: center;
 }
 .loadmore {
 	width: 100%;
@@ -111,4 +114,21 @@ body {
 	color: #2EB6AA;
 	font-size: 1.5rem;
 	padding: 0 .5rem 0 .7rem;
+}
+.stars {
+	width: 26%;
+	position: relative;
+}
+.stars>i {
+	color: #909090;
+}
+.solidxing {
+	position: absolute;
+	top: 50%;
+    left: 16%;
+    transform: translateY(-51%);
+}
+
+.solidxing>i {
+	color: #FEE071;
 }

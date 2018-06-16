@@ -1374,7 +1374,10 @@ function notice($title, $urlv, $urlc=CONTROLLER_NAME, $urlm=MODULE_NAME,$time=3)
 }
 
 
-
+// 是否是json 数据
+function is_json($str){
+    return !is_null(json_decode($str));
+}
 
 
 

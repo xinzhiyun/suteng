@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
   	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
-  	<link rel="stylesheet" href="__PUBLIC__/Home/css/comment/index.css?v={{:time()}}">
+  	<link rel="stylesheet" href="__PUBLIC__/Home/css/comment/index.css">
  	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<title>发表评论</title>
-	<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+	<!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
     <script>
-        var vconsole = new VConsole();
+        // var vconsole = new VConsole();
     </script>
 </head>
 <body>
@@ -64,7 +64,7 @@
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
   	<script src="__PUBLIC__/Home/js/public.js"></script>
-  	<script src="__PUBLIC__/Home/js/wx_imgUpload.js?v={{:time()}}"></script>
+  	<script src="__PUBLIC__/Home/js/wx_imgUpload.js"></script>
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>	
 	<script>
 	  	$(function(){
@@ -213,7 +213,8 @@
 		        	orderid: orderid,
 		        	gid: gid,
 		        	pic: filePic,
-		        	status: status
+		        	status: status,
+		        	content: $("#shopping").val()
 		        }
 		        console.log('info: ',info);
 				if(!$("#shopping").val()){
