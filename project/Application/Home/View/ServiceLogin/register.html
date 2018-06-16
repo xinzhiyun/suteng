@@ -29,7 +29,7 @@
 				<label for="">服务站选择：</label>
 				<select name="" id="sel" @change="stachoose($event)">
 					<option value="" v-text="ifstation"></option>
-					<option :value="areachooses.id" v-for="areachooses in areachoose" v-text="areachooses.company"></option>
+					<option :value="areachooses.company + '&' + areachooses.id " v-for="areachooses in areachoose" v-text="areachooses.company"></option>
 				</select>
 				<span class="iconfont icon-right can"></span>
 			</div>
