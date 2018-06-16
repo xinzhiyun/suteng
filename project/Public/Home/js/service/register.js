@@ -41,6 +41,7 @@
                 stationPhone: "",//客服电话
                 ifstation: "请选择服务站",
                 stationId: "",//服务站id
+                servicename: "",//服务站名称
                 imgURL: []
             }
         },
@@ -311,7 +312,14 @@
             stachoose(e) {
                 var ev = ev || window.event;  
                 var target = ev.target || ev.srcElement;
-                this.stationId = $(target).val();//服务站id
+                console.log(target);
+                // if($(target).val()) {
+                //     var str = $(target).val().split("&");
+                // }
+                var str = $(target).val().split("&");
+                this.servicename = str[0];//服务站id
+                this.stationId = str[1];
+                console.log(this.servicename, this.stationId)
                 $("#sel").css("color", "#373737");
                 $(".can").css("display", "none");
             },
@@ -354,7 +362,8 @@
                         layer.msg("请选择区域");
                         return;
                     }
-                    if(vm.stationId == "") {
+                    console.log("服务站id", vm.stationId)
+                    if(vm.stationId == undefined || vm.stationId == "") {
                         layer.msg("请选择服务站");
                         return;
                     }
@@ -439,7 +448,8 @@
                         legal: vm.companyInfos.comUser,//公司法人
                         business: yinyePic,//营业照片
                         agreement: hezuoPic,//协议照片
-                        type: 1
+                        type: 1,
+                        servicename: vm.servicename//服务站名字
                     }
                     vm.toAjax(data, 1);
                 }else {
