@@ -237,7 +237,7 @@ class ServiceLoginController extends Controller
             'open_id'=>$_SESSION['open_id'],
             'status'=>1,
         ];
-        $res = M('service_apply')->where($map)->find();
+        $res = M('service_apply')->where($map)->getField('id,servicename,name,company,legal,phone');
         if(empty($res)){
             notice('请等待审核!','finalTip');
         }
@@ -251,6 +251,26 @@ class ServiceLoginController extends Controller
         $this->assign('joinsost',$joinsost);
         $this->assign('wxinfo',$signPackage);
         $this->display();
+    }
+
+    // 缴费
+    public function registerPayOrder()
+    {
+        try {
+            $post = I('post.');
+            if(empty($post['paytype'])){
+                E('参数错误',40001);
+            }
+            $money = M('service_seting')->where(1)->getField('joinsost');
+            $orderId = getOrderId();
+            $content = '速腾服务站加盟费';
+            $url = 'http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/setmealNotify');
+
+            Weixin::uniformOrder($_SESSION['open_id'],$money,$orderId,$content,$url);
+
+        }catch (\Exception $e) {
+            $this->toJson($e);
+        }
     }
 
 

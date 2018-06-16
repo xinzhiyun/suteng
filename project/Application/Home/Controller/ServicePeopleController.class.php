@@ -13,11 +13,13 @@ class ServicePeopleController extends Controller
     public function __construct()
     {
         parent::__construct();
+        //$_SESSION='';
         // 检查微信
         if(empty($_SESSION['open_id'])){
             $openid = Weixin::GetOpenid();
             $_SESSION['open_id']=$openid;
         }
+
 
         // 自动登录
         if(empty($_SESSION['servicepeople'])){
