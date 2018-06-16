@@ -20,7 +20,7 @@
 			<div class="chooseArea" @click="chooseArea()">
 				<label for="">开通区域：</label>
 				<span id="areaID" class="areabtn" v-text="serviceInfos.station"></span>
-				<span class="iconfont icon-right"></span>
+				<span class="iconfont icon-right yin"></span>
 			</div>
 			<div class="chooseArea">
 				<label for="">服务站选择：</label>
@@ -28,7 +28,7 @@
 					<option value="" v-text="ifstation"></option>
 					<option :value="areachooses.id" v-for="areachooses in areachoose" v-text="areachooses.company"></option>
 				</select>
-				<span class="iconfont icon-right"></span>
+				<span class="iconfont icon-right can"></span>
 			</div>
 			<div>
 				<label for="">详细地址：</label>
@@ -177,7 +177,7 @@
 		<!-- 已有服务站注册提示 -->
 		<div class="hasRegister" v-if="aleady">
 			<div>
-				<p>该区域已有服务站注册</p>
+				<p>该区域无服务站</p>
 				<p>
 					<span @click="notPhone">取消</span>
 					<span>
@@ -189,7 +189,7 @@
 
 		<!-- 客服电话 -->
 		<div class="telphone">
-			<a href="tel:18318642973"><span class="iconfont icon-kefu"></span></a>
+			<a href="tel:{{$kfphone}}"><span class="iconfont icon-kefu"></span></a>
 		</div>
 
 	</div>
