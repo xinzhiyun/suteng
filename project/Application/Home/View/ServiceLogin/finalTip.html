@@ -64,7 +64,8 @@
         },
         created() {
             // this.indexs = +GetQueryString("index");
-            this.indexs = {{$_GET['index']}}
+            this.indexs = "{{$_GET['index']}}";
+            
             this.indexs = this.indexs ? this.indexs : "undefined";
             
             console.log("234", this.indexs, typeof this.indexs);
