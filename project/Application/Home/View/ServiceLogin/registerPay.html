@@ -18,23 +18,23 @@
             </div>
 			<div>
                 <span>服务站名称：</span>
-                <span>广州番禺区服务站</span>
+                <span>{{$serviceInfo.servicename}}</span>
 			</div>
 			<div class="chooseArea">
                 <span>所属公司：</span>
-                <span>广州悦龙集团</span>
+                <span>{{$serviceInfo.company}}</span>
 			</div>
 			<div>
                 <span>公司法人：</span>
-                <span>周星星</span>
+                <span>{{$serviceInfo.legal}}</span>
 			</div>
 			<div>
                 <span>联系人：</span>
-                <span>西门</span>
+                <span>{{$serviceInfo.name}}</span>
             </div>
             <div>
                 <span>联系人电话：</span>
-                <span>13554236543</span>
+                <span>{{$serviceInfo.phone}}</span>
             </div>
 		</div>
         
@@ -42,16 +42,16 @@
 		<div class="money">
             <div>
                 <span>应交押金</span>
-                <span>200元</span>
+                <span>{{$joinsost}}元</span>
             </div>
         </div>
-
+        
         <!-- 支付 -->
         <div class="pay">
-            <p @click="anotherPay">已通过其他方式支付</p>
-            <p @click="toPay">立即支付</p>
+            <p @click="toPay(2)">已通过其他方式支付</p>
+            <p @click="toPay(1)">立即支付</p>
         </div>
-
+        
         <!-- 支付面板 -->
         <div class="payBan" v-if="canpay">
             <ul>
@@ -59,7 +59,7 @@
                     <span class="iconfont icon-chacha" @click="yincang"></span>
                     <p>
                         <span class="iconfont icon-552cd51ece753"></span>
-                        <span>200.00</span>
+                        <span>{{$joinsost}}</span>
                     </p>
                 </li>
                 <li>
@@ -68,7 +68,7 @@
                         <span>微信支付</span>
                     </p>
                 </li>
-                <li class="toPay">
+                <li class="toPay" @click="Pay">
                     <p>立即付款</p>
                 </li>
             </ul>
@@ -80,25 +80,129 @@
 </script>
 <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 <script src="__PUBLIC__/Home/js/public.js"></script>
+<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
+<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+<script>
+    var vConsole = new VConsole();
+    var id = "{{$serviceInfo.id}}";
+    console.log(id);
+    (function() {
+        // 微信接口
+        wx.config({
+            debug: false,
+			appId: '{{$wxinfo["appId"]}}',
+			timestamp: '{{$wxinfo["timestamp"]}}',
+			nonceStr: '{{$wxinfo["nonceStr"]}}',
+			signature: '{{$wxinfo["signature"]}}',
+			jsApiList: [
+			// 所有要调用的 API 都要加到这个列表中
+			'chooseWXPay'
+			]
+        })
+    })();
+</script>
 <script>
     var vm = new Vue({
         el: ".main",
         data() {
             return {
                 canpay: false,
+                userId: id,//用户id
             }
         },
         methods: {
-            toPay() {
-                this.canpay = true;
+            toPay(val) {
+                var vm = this;
+                if(val == 2) {
+                    console.log("其他方式支付");
+                    var data = {
+                        id: vm.userId,
+                        paytype: val
+                    }
+                    console.log("data", data);
+                    vm.getPayInfo(data);
+                }else if(val == 1) {
+                    this.canpay = true;
+                }
             },
             yincang() {
                 this.canpay = false;
             },
-            anotherPay() {
-                setTimeout(function() {
-                    location.href = getURL("Home", "ServiceLogin/finalTip") + "?index=3";
-                }, 1000);
+            // 立即付款
+            Pay() {
+                var vm = this;
+                var data = {
+                    id: vm.userId,
+                    paytype: 1
+                }
+                vm.getPayInfo(data);
+            },
+            getPayInfo(data) {
+                $.ajax({
+                    url: '{{:U("Home/ServiceLogin/registerPayOrder")}}',
+                    type: 'post',
+                    data: data,
+                    success: function(res){
+                        console.log('res: ',res);
+                        var href = location.href;
+                        if(res.status == 200){
+                            if(data.paytype == 2) {
+                                layuiHint(res.msg);
+                                setTimeout(function() {
+                                    location.href= getURL("Home", "ServiceLogin/finalTip") + "?index=3";
+                                }, 1000);
+                            }
+                            if(data.paytype == 1) {
+                                history.replaceState({}, null, '{{:U("Home/Pay/pay_page")}}');
+                                console.log(location.href);
+                                // 调用微信支付
+                                setTimeout(function() {
+                                    vm.weixinPay(res.res, function(res){
+                                        console.log('回来res: ',res);
+                                        if(res.result == 'ok'){
+                                            layuiHint("支付成功");
+                                            setTimeout(function() {
+                                                location.href= getURL("Home", "ServiceLogin/finalTip") + "?index=2";
+                                            }, 1000);
+                                        }else{
+                                            history.replaceState({}, null, href);
+                                        }
+                                    });
+                                }, 100);
+                                
+                            }
+                            
+                        }else{
+                            layuiHint(res.msg);
+                        }
+                    },
+                    error: function(err){
+                        console.log('err: ',err);
+                    }
+                })
+            },
+            weixinPay(res, callback) {
+                var type = Object.prototype.toString.call(res);
+                if(type === '[object Object]'){
+                    res = JSON.stringify(res);
+                }
+                WeixinJSBridge.invoke(
+				'getBrandWCPayRequest',
+				JSON.parse(res),
+				function(res){
+                    console.log("weixinpay", res);
+					if (res.err_msg.substr(-2) == 'ok') {
+                        // 付款成功
+                        callback({result: 'ok'});
+                    } else if (res.err_msg.substr(-6) == 'cancel') {
+                        // 取消付款
+                        callback({result: 'cancel'});
+                    }else{
+                        // 付款失败
+                        callback({result: 'other'});
+                    }
+                }
+                );
             }
         }
     })

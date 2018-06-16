@@ -38,7 +38,9 @@
 <script>
 </script>
 <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
 <script>
+    var vConsole = new VConsole();
     var vm = new Vue({
         el: ".main",
         data() {
@@ -48,8 +50,10 @@
             }
         },
         created() {
-            this.indexs = +GetQueryString("index");
-            console.log(GetQueryString("index"), typeof this.indexs);
+            // this.indexs = +GetQueryString("index");
+            this.indexs = +{{$_GET['index']}}
+
+            console.log(this.indexs, typeof this.indexs);
             if(this.indexs == 2) {
                 this.text = "支付成功";
             }else if(this.indexs == 3) {
