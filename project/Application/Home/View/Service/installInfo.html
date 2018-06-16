@@ -44,10 +44,7 @@
                 <li v-if="editNo"> 
                     <span>星级：</span>
                     <p class="stars">
-                        <i class="iconfont icon-star1" v-for="starnum in starN"></i>
-                        <span>
-                            <i class="iconfont icon-star" v-for="starnums in starD"></i>
-                        </span>
+                        <i class="iconfont icon-star" v-for="(starnumN,index) in starN" :style='{color: (index < userInfos.star)?"#FEE071":""}'></i>
                     </p>
                 </li>
             </ul>
@@ -111,8 +108,7 @@
                 editFlag :false,//编辑状态
                 addInfo: false,//添加安装人员
                 imgId: "",
-                starN: 5,
-                starD: ""
+                starN: [{star:1},{star:1},{star:1},{star:1},{star:1}],
             }
         },
         created (){
@@ -136,9 +132,9 @@
                     sn: info.sn,
                     password: "",
                     uImg: "__PUBLIC__" + (info.uimg ? info.uimg : "/Home/images/normal.png"),
+                    star: +info.star,   //显示星星
                 }
-                this.starD = +info.star;//显示星星
-                console.log("star", this.starD);
+                console.log("star", info.starD);
             }
             layui.use("layer", function() {
                 layer = layui.layer;

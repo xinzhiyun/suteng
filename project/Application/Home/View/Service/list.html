@@ -6,7 +6,7 @@
 	<title>服务站</title>
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/station/list.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/station/list.css?v={{:time()}}">
 	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
     <!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
     <script>
@@ -23,21 +23,34 @@
 		</div>
 		<div class='title spli'>
 			<span>工单号</span>
-			<span v-text='status'>状态</span>
-			<span>生成时间</span>
+			<span v-if='result < 4'>类型</span>
+			<span v-if='result == 4'>姓名</span>
+			<span v-if='result === "0"'>派单时间</span>
+			<span v-if='result == 3'>用户评价</span>
+			<span v-if='result == 1 || result == 2'>派工时间</span>
+			<span v-if='result == ""'>状态</span>
+			<!-- 员工管理 result == 4 -->
+			<span v-if='result == 4'>星级</span>
 		</div>
 		<ul class='content'>
 			<li class='spli' v-for='li in list' @click='getDetail(li.number, li.result)'>
 				<span v-text='li.number'></span>
-				<span v-if='result == 0 || result == "undefined"' :style='li.style' v-text='li.text'></span>
-				<span v-else v-text='li.name'></span>
-				<span v-text='li.create_at'></span>
-				<!-- <p class="stars" v-if="result == 4 || result == 0 || result == 'undefined'">
-					<i class="iconfont icon-star1" v-for="starnumN in starN"></i>
-					<span>
-						<i class="iconfont icon-star" v-for="starnumD in starD"></i>
-					</span>
-				</p> -->
+				<span v-text='li.type' v-if='result < 4'></span>
+				<!-- 待办 -->
+				<span v-if='result === "0"' v-text='li.leaflets_at'></span>
+				<!-- 处理中，待验收 -->
+				<span v-if='result == 1 || result == 2' v-text='li.anry_at'></span>
+				<!-- 已完成 -->
+				<p class="stars" v-if="result == 3">
+					<i class="iconfont icon-star" v-for="(starnumN,index) in starN" :style='{color: (index < li.star)?"#FEE071":""}'></i>
+				</p>
+				<!-- 员工管理 -->
+				<span v-if='result == 4' v-text='li.name'></span>
+				<p class="stars" v-if="result == 4">
+					<i class="iconfont icon-star" v-for="(starnumN,index) in starN" :style='{color: (index < li.star)?"#FEE071":""}'></i>
+				</p>
+				<!-- 全部 -->
+				<span v-else v-text='li.text' :style='li.style'></span>
 			</li>
 			<div class='loadmore' @click='loadmore' :style='{display: loadstyle}'>加载更多</div>
 		</ul>
@@ -66,12 +79,13 @@
 					list: [],			// 数据列表
 					result: '',			// 工单类型 0待处理 1处理中 2待验收 3(完成)
 					page: 1,			// 分页
-					// diffStatrs: "",	
-					// starN: 5,	
+					diffStatrs: "",	
+					starN: [{star:1},{star:1},{star:1},{star:1},{star:1}],
 					loadstyle: 'block',
-					colorList: ['color:#f16e65;', 'color:#2196F3;', 'color:#2196F3;', 'color:#00d4c2;'],
-					titleList: ['未派工工单', '处理中工单', '待验收工单', '已完成工单', '员工管理', '全部工单'],
-					statusList: ['状态', '作业人员', '作业人员', '作业人员', '姓名', '状态'],
+					colorList: ['color:#f16e65;', 'color:#2196F3;', 'color:#2196F3;', 'color:#00d4c2;', 'color:#00d4c2;', 'color:#00d4c2;', 'color:#00d4c2;'],
+					titleList: ['待办工单', '处理中工单', '待验收工单', '已完成工单', '员工管理', '全部工单'],
+					textList: ['未派工', '处理中', '待验收', '已完成', '已完成', '已完成', '已完成', '已完成', '已完成', '已完成'],
+					typeList: ['安装', '维修', '维护'],
 					notice: '正在加载...',
 					noticestyle: 'block',
 				}
@@ -83,34 +97,55 @@
 				this.result = GetQueryString('result');
 				console.log('result: ',this.result);
 				document.title = vm.titleList[!this.result ? 5 : +this.result];
-				this.status = vm.statusList[!this.result ? 5 : +this.result];
-				// if(this.result == 4 || this.result == 0 ||this.result == "undefined") {
-				// 	this.diffStatrs = "星级";
-				// }else {
-				// 	this.diffStatrs = "生成时间";
-				// }
+				if(this.result == 4 || this.result == 0 ||this.result == "undefined") {
+					this.diffStatrs = "星级";
+				}else {
+					this.diffStatrs = "生成时间";
+				}
 				// result: 0待处理 1处理中 2待验收 3(完成)
 				// 获取列表
 				this.getList(function(res){
 					console.log('res: ',res);
 					if(res.data.length){
 						for(var i=0; i<res.data.length; i++){
-							// this.starD = +res.data[i].star;
-							// console.log("星星个数",res.data[i].name, +res.data[i].star);
-							if(vm.result == '4') {
+							
+							if(vm.result == 4) {	// 安装人员管理
+								var star = res.data[i].star ? +res.data[i].star : 0;
+								console.log("星星个数: ", star);
 								vm.list.push({
 									name: res.data[i].name,
 									number: res.data[i].sn,
-									create_at: timetrans(res.data[i].addtime),
-									result: res.data[i].id
+									type: vm.typeList[+res.data[i].type],
+									style: vm.colorList[+res.data[i].result],
+									text: vm.textList[res.data[i].result],
+									leaflets_at: timetrans(res.data[i].leaflets_at),
+									anry_at: timetrans(res.data[i].anry_at),
+									result: res.data[i].id,
+									star: star
+								});
+							}else if(vm.result >= 3){
+								var star = res.data[i].star ? +res.data[i].star : 0;
+								console.log("星星个数: ", star);
+								vm.list.push({
+									name: res.data[i].name,
+									number: res.data[i].number,
+									type: vm.typeList[+res.data[i].type],
+									style: vm.colorList[+res.data[i].result],
+									text: vm.textList[res.data[i].result],
+									leaflets_at: timetrans(res.data[i].leaflets_at),
+									anry_at: timetrans(res.data[i].anry_at),
+									result: res.data[i].result,
+									star: star
 								});
 							}else {
 								vm.list.push({
 									name: res.data[i].name,
 									number: res.data[i].number,
-									text: vm.titleList[+res.data[i].result],
+									type: vm.typeList[+res.data[i].type],
 									style: vm.colorList[+res.data[i].result],
-									create_at: timetrans(res.data[i].create_at),
+									text: vm.textList[res.data[i].result],
+									leaflets_at: timetrans(res.data[i].leaflets_at),
+									anry_at: timetrans(res.data[i].anry_at),
 									result: res.data[i].result
 								});
 							}
@@ -186,20 +221,46 @@
 						console.log('res: ',res);
 						if(res.data.length){
 							for(var i=0; i<res.data.length; i++){
-								if(vm.result == 4) {
+								
+								if(vm.result == 4) {	// 安装人员管理
+									var star = res.data[i].star ? +res.data[i].star : 0;
+									console.log("星星个数: ", star);
 									vm.list.push({
 										name: res.data[i].name,
 										number: res.data[i].sn,
-										create_at: timetrans(res.data[i].addtime),
-										result: res.data[i].id
-									})
+										type: vm.typeList[+res.data[i].type],
+										style: vm.colorList[+res.data[i].result],
+										text: vm.textList[res.data[i].result],
+										leaflets_at: timetrans(res.data[i].leaflets_at),
+										anry_at: timetrans(res.data[i].anry_at),
+										result: res.data[i].id,
+										star: star
+									});
+								}else if(vm.result >= 3){
+									var star = res.data[i].star ? +res.data[i].star : 0;
+									console.log("星星个数: ", star);
+									vm.list.push({
+										name: res.data[i].name,
+										number: res.data[i].number,
+										type: vm.typeList[+res.data[i].type],
+										style: vm.colorList[+res.data[i].result],
+										text: vm.textList[res.data[i].result],
+										leaflets_at: timetrans(res.data[i].leaflets_at),
+										anry_at: timetrans(res.data[i].anry_at),
+										result: res.data[i].result,
+										star: star
+									});
 								}else {
 									vm.list.push({
 										name: res.data[i].name,
 										number: res.data[i].number,
-										text: vm.titleList[+res.data[i].type],
-										style: vm.colorList[+res.data[i].type],
-										create_at: timetrans(res.data[i].create_at)
+										type: vm.typeList[+res.data[i].type],
+										style: vm.colorList[+res.data[i].result],
+										text: vm.textList[res.data[i].result],
+										leaflets_at: timetrans(res.data[i].leaflets_at),
+										anry_at: timetrans(res.data[i].anry_at),
+										result: res.data[i].result,
+										star: star
 									});
 								}
 								
@@ -230,20 +291,44 @@
 								vm.list = [];
 								if(res.data.length){
 									for(var i=0; i<res.data.length; i++){
-										if(vm.result == '4') {
+										
+										if(vm.result == 4) {	// 安装人员管理
+											var star = res.data[i].star ? +res.data[i].star : 0;
+											console.log("星星个数: ", star);
 											vm.list.push({
 												name: res.data[i].name,
 												number: res.data[i].sn,
-												create_at: timetrans(res.data[i].addtime),
-												result: res.data[i].id
+												type: vm.typeList[+res.data[i].type],
+												style: vm.colorList[+res.data[i].result],
+												text: vm.textList[res.data[i].result],
+												leaflets_at: timetrans(res.data[i].leaflets_at),
+												anry_at: timetrans(res.data[i].anry_at),
+												result: res.data[i].id,
+												star: star
+											});
+										}else if(vm.result >= 3){
+											var star = res.data[i].star ? +res.data[i].star : 0;
+											console.log("星星个数: ", star);
+											vm.list.push({
+												name: res.data[i].name,
+												number: res.data[i].number,
+												type: vm.typeList[+res.data[i].type],
+												style: vm.colorList[+res.data[i].result],
+												text: vm.textList[res.data[i].result],
+												leaflets_at: timetrans(res.data[i].leaflets_at),
+												anry_at: timetrans(res.data[i].anry_at),
+												result: res.data[i].result,
+												star: star
 											});
 										}else {
 											vm.list.push({
 												name: res.data[i].name,
 												number: res.data[i].number,
-												text: vm.titleList[+res.data[i].result],
+												type: vm.typeList[+res.data[i].type],
 												style: vm.colorList[+res.data[i].result],
-												create_at: timetrans(res.data[i].create_at),
+												text: vm.textList[res.data[i].result],
+												leaflets_at: timetrans(res.data[i].leaflets_at),
+												anry_at: timetrans(res.data[i].anry_at),
 												result: res.data[i].result
 											});
 										}
