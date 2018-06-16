@@ -127,6 +127,7 @@ var take = new Vue({
 				for(var i in res.data){
 					vm.detail[i] = res.data[i];
 				}
+				vm.detail.create_at = timetrans(vm.detail.create_at);
 				vm.picList = JSON.parse(vm.detail.pic);
 				console.log('vm.detail: ',vm.detail);
 			}else{

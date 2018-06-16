@@ -308,13 +308,15 @@
 		// 获取微信支付的数据
 		function getPayinfo(data, callback){
 			$.ajax({
-				url: '{{:U("Home/Device/index")}}',
+				url: '{{:U("Home/Pay/index")}}',
 				type: 'post',
 				data: data,
 				success: function(res){
 					console.log('res: ',res);
 					if(res.status == 200){
 						callback(res);
+					}else{
+						layuiHint(res.msg);
 					}
 				},
 				error:function(err){
