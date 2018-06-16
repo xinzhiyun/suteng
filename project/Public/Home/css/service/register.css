@@ -124,7 +124,7 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
 	position: relative;
 }
 .picShow > span {
-	height: 3rem;
+	height: 3.5rem;
 	width: 40%;
 	display: inline-block;
 	margin-right: .3rem;
