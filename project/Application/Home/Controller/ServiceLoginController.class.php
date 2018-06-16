@@ -116,12 +116,12 @@ class ServiceLoginController extends Controller
 
         $info = M('service_apply')->where(['open_id'=>$_SESSION['open_id'], 'status'=>0])->find();
 
-        if( !empty($info['business']) && is_json($info['business'])) {
-            $info['business'] = json_decode($info['business']);
-        }
-        if( !empty($info['agreement']) && is_json($info['agreement'])) {
-            $info['agreement'] = json_decode($info['agreement']);
-        }
+//        if( !empty($info['business']) && is_json($info['business'])) {
+//            $info['business'] = json_decode($info['business']);
+//        }
+//        if( !empty($info['agreement']) && is_json($info['agreement'])) {
+//            $info['agreement'] = json_decode($info['agreement']);
+//        }
 
         $this->assign('info',$info);
         $this->assign('kfphone',$phone);
@@ -196,6 +196,15 @@ class ServiceLoginController extends Controller
                     E('提交失败,请联系工作人员!',40010);
                 }
             }
+
+
+            if( !empty($post['business']) && is_array($post['business'])) {
+                $post['business'] = json_encode($post['business']);
+            }
+            if( !empty($post['agreement']) && is_array($post['agreement'])) {
+                $post['agreement'] = json_encode($post['agreement']);
+            }
+            $post['updatetime'] = time();
 
 
             $info = M('service_apply')->where(['open_id'=>$_SESSION['open_id'], 'status'=>0])->find();

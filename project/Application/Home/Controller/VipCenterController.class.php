@@ -555,9 +555,10 @@ class VipCenterController extends CommonController
                 $saveData['evaluateinfo'] = $post['text'];
             }
             $saveData['result'] = 4;
+            $saveData['evaluatetype']=1;
             $res = M('work')->where($map)->save($saveData);
 
-//            Work::evaluAction($post['workid']);
+            Work::evaluAction($post['workid']);
 
             if ($res){
                 Work::add($post['workid'],99);

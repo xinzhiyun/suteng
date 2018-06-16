@@ -93,17 +93,50 @@ class Work
         return M('work_note')->add($data);
     }
 
-    // 自动评价功能 默认4星
+    //  评价算法 自动评价 默认4星
     public static function evaluAction($number)
     {
         if(empty($number)){
             return false;
         }
         $map['number'] = $number;
-        $work = M('work')->where($map)->find();   // 服务人员
+        $work = M('work')->where($map)->find();
         if(empty($work)){ return false; }
 
+        if($work['result']==4){  // 客户评价
+            if (is_json($work['evaluate'])){
+                $evaluate = json_decode($work['evaluate']);
+            }
+            $num = 0;
+            foreach ($evaluate as $value){
+                if( is_array($value)) {
+                    $num += $value['num'];
+                } else {
+                    $num += $value->num;
+                }
+            }
+            $num += M('service_evaluate')->where('star='.$work['star'])->getField('num');
+
+            $service_users = M('service_users')->where('id='.$work['dw_uid'])->find();
+
+            if(!empty($service_users)){
+                $starnum = $service_users['star'] + $num;
+                if($starnum>5){ $starnum = 5; }
+                M('service_users')->where('id='.$work['dw_uid'])->save(['star'=>$starnum]);
+            }
+
+        }else{ //自动评价 默认4星
+            $saveData = [
+                'evaluatetype'=>2,
+                'update_at'=>time(),
+                'star'=>4,
+            ];
+            M('work')->where($map)->save($saveData);
+        }
     }
+
+
+
 
 
 }
