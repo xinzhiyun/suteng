@@ -33,10 +33,6 @@
 .main > .firstCon > li:nth-child(4) > a{
     color: #50B8FF;
 }
-/* 第一部分 */
-/* .firstCon {
-    display: none;
-} */
 /* 第二部分 */
 .secondCon > li > img {
     height: 3.5rem;
