@@ -258,7 +258,7 @@ class ServiceLoginController extends Controller
     {
         try {
             $post = I('post.');
-            if(empty($post['paytype'])){
+            if(empty($post['paytype']) || empty($post['id']) ){
                 E('参数错误',40001);
             }
 
