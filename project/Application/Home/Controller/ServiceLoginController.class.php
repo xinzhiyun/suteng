@@ -237,7 +237,7 @@ class ServiceLoginController extends Controller
             'open_id'=>$_SESSION['open_id'],
             'status'=>1,
         ];
-        $res = M('service_apply')->where($map)->getField('id,servicename,name,company,legal,phone');
+        $res = M('service_apply')->where($map)->field('id,servicename,name,company,legal,phone')->find();
         if(empty($res)){
             notice('请等待审核!','finalTip');
         }
@@ -261,8 +261,6 @@ class ServiceLoginController extends Controller
             if(empty($post['paytype']) || empty($post['id']) ){
                 E('参数错误',40001);
             }
-
-
 
             if($post['paytype'] == 1){
                 $res = M('service_apply')->where('id='.$post['id'])->save(['paytype'=>1]);
