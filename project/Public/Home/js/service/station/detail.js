@@ -145,8 +145,12 @@ var servicedetail = new Vue({
 						layuiHint("系统出错，请稍后重试");
 					}
 				})
-			}else if(vm.result == "2") {
+			}else if(vm.result == "2") {	// 点击审核通过
 				console.log(vm.workid)
+				if(vm.info.name == '未派工')｛
+					layuiHint('未派工，请先派工处理');
+					return
+				｝
 				layui.use('layer', function(){
 					var layer = layui.layer;
 					layer.confirm("确认通过审核?", function(index) {

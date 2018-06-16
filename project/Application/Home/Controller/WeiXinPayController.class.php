@@ -807,7 +807,7 @@ class WeiXinPayController extends Controller
 
                         //市场培育收益记录
                         if ($earnings_ta) {
-                            M('earnings')->add(['orderid'=>$list['order_id'],'bid'=>$list['uid'], 'type_cont'=>'5','type'=>3,'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                            M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$orderData['user_id'], 'type_cont'=>'5','type'=>3,'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
                         }
 
                     } else {

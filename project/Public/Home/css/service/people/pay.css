@@ -71,14 +71,17 @@
 .header div:nth-child(1) p {
   margin-top: -0.71428571rem;
   color: #808080;
-  font-size: 0.33333333rem;
+  font-size: 0.5rem;
+  margin-left: -0.4rem;
+  text-align: center;
 }
 .header div:nth-child(2) {
-  width: 18%;
+  width: 15%;
   position: absolute;
   top: 50%;
   left: 45%;
   transform: translateY(-50%);
+  text-align: center;
 }
 .header div:nth-child(2) #two {
   font-size: 2.2rem;
@@ -87,14 +90,15 @@
 .header div:nth-child(2) p {
   margin-top: -0.71428571rem;
   color: #808080;
-  font-size: 0.33333333rem;
+  font-size: 0.5rem;
 }
 .header div:nth-child(3) {
-  width: 18%;
+  width: 15%;
   position: absolute;
   top: 50%;
   left: 75%;
   transform: translateY(-50%);
+  text-align: center;
 }
 .header div:nth-child(3) #three {
   font-size: 2.2rem;
@@ -103,7 +107,7 @@
 .header div:nth-child(3) p {
   margin-top: -0.71428571rem;
   color: #808080;
-  font-size: 0.33333333rem;
+  font-size: 0.5rem;
 }
 .search>input {
   margin-top: 0.71428571rem;

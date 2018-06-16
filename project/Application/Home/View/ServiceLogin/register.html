@@ -8,6 +8,9 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/register.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
+	<script>
+		var info = {{$info|json_encode}};
+	</script>
 </head>
 <body>
 	<div class="main"> 
@@ -26,7 +29,7 @@
 				<label for="">服务站选择：</label>
 				<select name="" id="sel" @change="stachoose($event)">
 					<option value="" v-text="ifstation"></option>
-					<option :value="areachooses.id" v-for="areachooses in areachoose" v-text="areachooses.company"></option>
+					<option :value="areachooses.company + '&' + areachooses.id " v-for="areachooses in areachoose" v-text="areachooses.company"></option>
 				</select>
 				<span class="iconfont icon-right can"></span>
 			</div>
@@ -85,15 +88,15 @@
 					<span class="iconfont icon-41" @click="imageChoose($event)"></span>
 					<div class="picShow yinye">
 						<!-- <span class="bottx">
-							<span class="topx">x</span>
+							<span class="topx" @click="removePic($event)">x</span>
 							<img src="__PUBLIC__/Home/images/1a.jpg" alt="">
 						</span>
 						<span class="bottx">
-							<span class="topx">x</span>
+							<span class="topx" @click="removePic($event)">x</span>
 							<img src="__PUBLIC__/Home/images/1a.jpg" alt="">
 						</span>
 						<span class="bottx">
-							<span class="topx">x</span>
+							<span class="topx" @click="removePic($event)">x</span>
 							<img src="__PUBLIC__/Home/images/1a.jpg" alt="">
 						</span> -->
 					</div>
@@ -177,11 +180,11 @@
 		<!-- 已有服务站注册提示 -->
 		<div class="hasRegister" v-if="aleady">
 			<div>
-				<p>该区域无服务站</p>
+				<p>该区域无服务站 联系客服</p>
 				<p>
-					<span @click="notPhone">取消</span>
+					<span @click="notPhone">确定</span>
 					<span>
-						<a :href="stationPhone" @click="notPhone">联系客服</a>
+						<a href="tel:{{$kfphone}}" >联系客服</a>
 					</span>
 				</p>
 			</div>
@@ -206,9 +209,10 @@
 <script>
 	var vConsole = new VConsole();
 	(function() {
+		console.log("infos",info);
 		//微信接口
 		wx.config({
-			debug: false,
+			debug: true,
 			appId: '{{$wxinfo["appId"]}}',
 			timestamp: '{{$wxinfo["timestamp"]}}',
 			nonceStr: '{{$wxinfo["nonceStr"]}}',

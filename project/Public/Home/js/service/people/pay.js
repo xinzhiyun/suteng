@@ -194,10 +194,11 @@ var payment = new Vue({
 			$(".search").hide().next().hide();
 			$('.paySuc').show();
 			$("body").css({"background":"#fff"});
+			history.replaceState({}, null, getURL('Home', 'ServicePeople/index'));
+			var href = location.href;
 			setTimeout(function(){
-				
-				location.href = url;
-			},1000);
+				location.href = href.substr(0,href.indexOf('?'));
+			},1000)
 		}
 	},
 	mounted(){

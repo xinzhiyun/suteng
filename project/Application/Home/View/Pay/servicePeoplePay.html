@@ -4,14 +4,14 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
 	<title>代缴费</title>
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/people/pay.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/people/pay.css?v={{:time()}}">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/amazeui.min.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/common.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/iconfont.css">
-    <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+    <!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
     <script>
         var vconsole = new VConsole();
-    </script>
+    </script> -->
 </head>
 <body ontouchstart='console.log()'>
 	<div id="app">
@@ -159,27 +159,28 @@
 	<!-- 支付成功部分结束 -->
 	</div>
 	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
-	<script src="__PUBLIC__/Home/js/head.js"></script>
+	<script src="__PUBLIC__/Home/js/head.js?v={{:time()}}"></script>
 	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Home/js/public.js"></script>
 	<script src="__PUBLIC__/Home/js/amazeui.min.js"></script>
 	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
-	<script src="__PUBLIC__/Home/js/service/people/pay.js"></script>
-	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
+	<script src="__PUBLIC__/Home/js/service/people/pay.js?v={{:time()}}"></script>
 	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 	<script>
-		//微信接口
-		wx.config({
-			debug: false,
-			appId: '{{$wxinfo["appId"]}}',
-			timestamp: '{{$wxinfo["timestamp"]}}',
-			nonceStr: '{{$wxinfo["nonceStr"]}}',
-			signature: '{{$wxinfo["signature"]}}',
-			jsApiList: [
-			// 所有要调用的 API 都要加到这个列表中
-			'chooseWXPay'
-			]
-		});
+		wx.ready(function(){
+			//微信接口
+			wx.config({
+				debug: false,
+				appId: '{{$wxinfo["appId"]}}',
+				timestamp: '{{$wxinfo["timestamp"]}}',
+				nonceStr: '{{$wxinfo["nonceStr"]}}',
+				signature: '{{$wxinfo["signature"]}}',
+				jsApiList: [
+				// 所有要调用的 API 都要加到这个列表中
+				'chooseWXPay'
+				]
+			});
+		})
 		// 微信支付方法
 		function weixinPay(res, callback){
 			var type = Object.prototype.toString.call(res);
@@ -212,29 +213,28 @@
 				type: 'post',
 				data: {
 					device_code: device_code,
-					mealid: mealid
+					setmeal_id: mealid
 				},
 				success: function(res){
 					console.log('res: ',res);
-					var href = location.href;
+					// 调用微信支付
+					weixinPay(res, function(res){
+						console.log('res: ',res);
+						if(res.result == 'ok'){
+							payment.urlPub("Pay",1);
+							
+						}else{
+						}
+					});
+					
 					if(res.status == 200){
-						history.replaceState({}, null, '{{:U("Home/Pay/pay_page")}}');
-						// 调用微信支付
-						weixinPay(res, function(res){
-								console.log('res: ',res);
-							if(res.result == 'ok'){
-								payment.urlPub("Pay",1);
-
-							}else{
-								history.replaceState({}, null, href);
-							}
-						});
 					}else{
 						layuiHint(res.msg);
 					}
 				},
 				error: function(err){
 					console.log('err: ',err);
+					layuiHint(res.msg);
 				}
 			})
 		}
