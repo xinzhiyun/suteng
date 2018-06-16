@@ -108,10 +108,10 @@ class ServiceLoginController extends Controller
     public function register()
     {
         if( empty($_SESSION['open_id']) ){
-//            $_SESSION['open_id'] = Weixin::GetOpenid();
+            $_SESSION['open_id'] = Weixin::GetOpenid();
         }
-//        $weixin = new \Org\Util\WeixinJssdk();
-//        $signPackage = $weixin->getSignPackage();
+        $weixin = new \Org\Util\WeixinJssdk();
+        $signPackage = $weixin->getSignPackage();
         $phone = M('service_seting')->cache('service_kfphone',60)->where(1)->getField('kfphone');
 
         $info = M('service_apply')->where(['open_id'=>$_SESSION['open_id'], 'status'=>0])->find();
@@ -230,7 +230,7 @@ class ServiceLoginController extends Controller
     public function registerPay()
     {
         if( empty($_SESSION['open_id']) ){
-            $_SESSION['open_id'] = Weixin::GetOpenid();
+//            $_SESSION['open_id'] = Weixin::GetOpenid();
         }
 
         $map=[
@@ -242,8 +242,8 @@ class ServiceLoginController extends Controller
             notice('请等待审核!','finalTip');
         }
 
-        $weixin = new \Org\Util\WeixinJssdk();
-        $signPackage = $weixin->getSignPackage();
+//        $weixin = new \Org\Util\WeixinJssdk();
+//        $signPackage = $weixin->getSignPackage();
         $joinsost = M('service_seting')->where(1)->getField('joinsost');
         $joinsost = number_format(intval(trim($joinsost), 10)/100,0,'.','');
 
