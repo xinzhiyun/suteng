@@ -116,6 +116,13 @@ class ServiceLoginController extends Controller
 
         $info = M('service_apply')->where(['open_id'=>$_SESSION['open_id'], 'status'=>0])->find();
 
+        if( !empty($info['business']) && is_json($info['business'])) {
+            $info['business'] = json_decode($info['business']);
+        }
+        if( !empty($info['agreement']) && is_json($info['agreement'])) {
+            $info['agreement'] = json_decode($info['agreement']);
+        }
+
         $this->assign('info',$info);
         $this->assign('kfphone',$phone);
         $this->assign('wxinfo',$signPackage);
@@ -173,6 +180,15 @@ class ServiceLoginController extends Controller
 
                 $post['open_id'] = $_SESSION['open_id'];
                 $post['status'] = 0;
+
+                if( !empty($post['business']) && is_array($post['business'])) {
+                    $post['business'] = json_encode($post['business']);
+                }
+                if( !empty($post['agreement']) && is_array($post['agreement'])) {
+                    $post['agreement'] = json_encode($post['agreement']);
+                }
+
+
                 $res = M('service_apply')->add($post);
                 if($res){
                     E('您的申请已提交,请等待工作人员审核',200);

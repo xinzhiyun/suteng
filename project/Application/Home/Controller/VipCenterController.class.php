@@ -545,7 +545,8 @@ class VipCenterController extends CommonController
 
             if(!empty($post['evalid'])){
                 $evalids = implode(',',$post['evalid']);
-                $evalu = M('service_evaluate')->where(array('in',$evalids))->select();
+
+                $evalu = M('service_evaluate')->where(['id'=>array('in',$evalids)])->select();
                 $saveData['evaluate'] = json_encode($evalu);
             }
 
