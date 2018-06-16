@@ -1,5 +1,6 @@
 (function() {
     var codeFlag = false;//存放验证码
+    
     var vm = new Vue({
         el: ".main",
         data() {
@@ -31,9 +32,9 @@
                 areaProvince: "",//省
                 areaCity: "",//市
                 area: "",//区
-                // province_id: "",
-                // city_id: "",
-                // area_id: "",
+                province_id: "",
+                city_id: "",
+                area_id: "",
                 pics: [],//存放图片的路径
                 aleady: false,//服务站是否被注册
                 areachoose: "",//选择相对应的服务站
@@ -49,16 +50,42 @@
             layui.use("layer", function() {
                 layer = layui.layer;
             });
-            // var isIsset = sessionStorage.getItem("saveAllInfo");
-            // if(isIsset == '1') {
-            //     var infos = JSON.parse(sessionStorage.getItem("allInfo"))
-            //     console.log(JSON.parse(sessionStorage.getItem("allInfo")));
-            //     vm.serviceInfos.detailAddress = infos.serviceInfos.detailAddress;//详细地址
-            //     vm.serviceInfos.stationer = infos.serviceInfos.stationer; //客服电话
-            //     vm.userInfos = infos.userInfos;//用户信息
-            //     vm.companyInfos = infos.companyInfos;//公司信息
-            //     vm.accountInfos.account = infos.accountInfos.account;//账号设置
-            // }
+            if(info) {
+                vm.serviceInfos.detailAddress = info.addressinfo;
+                vm.serviceInfos.stationer = info.telephone;
+                vm.userInfos.name = info.name;
+                vm.userInfos.phone = info.phone;
+                vm.userInfos.idcard = info.idcard;
+                vm.companyInfos.comName = info.company;
+                vm.companyInfos.comUser = info.legal;
+                vm.accountInfos.account = info.account;
+                if(info.business) {
+                    console.log(123)
+                    appendPic(JSON.parse(info.business), ".yinye");
+                }
+                if(info.agreement) {
+                    appendPic(JSON.parse(info.agreement), ".hezuo");
+                }
+                function appendPic(objlength, obj) {
+                    // alert(objlength.length);
+                    for(var i = 0; i < objlength.length; i++) {
+                        var $span = $("<span class='bottx'></span>");
+                        var $span1 = $("<span @click='removePic($event)' class='topx'>x</span>");
+                        var $img = $('<img src="" alt="" index="" />');
+                        $img[0].width = "100%";
+                        $img[0].height = "90%";
+                        $img[0].src = objlength[i];
+                        
+                        $span1.addClass("delPic");
+                        $span1.css({zIndex: '9'});
+                        $span.append($span1);
+                        $span.append($img[0]);
+                        // 显示图片
+                        $(obj).append($span);
+                        console.log(i)
+                    }
+                }
+            }
         },
         methods: {
             // 选择地区
@@ -118,15 +145,15 @@
                             vm.areaCity = res;
                             
                             vm.province = $(target).text();
-                            // vm.province_id = $(target).attr("aid");
+                            vm.province_id = $(target).attr("aid");
                         }else if(className == "city") {
                             vm.area = res;
                             
                             vm.city = $(target).text();
-                            // vm.city_id = $(target).attr("aid");
+                            vm.city_id = $(target).attr("aid");
                         }else if(className == "area") {
                             vm.area = $(target).text();
-                            // vm.area_id = $(target).attr("aid");
+                            vm.area_id = $(target).attr("aid");
                             vm.serviceInfos.station = vm.province + ' ' + vm.city + ' ' + vm.area;
                             
                             $(".yin").css("display", "none");
@@ -135,7 +162,7 @@
                                 vm.areaDis = false;
                             },300);
                             vm.areachoose = "";
-                            // console.log(vm.province, vm.city, vm.area, vm.province_id, vm.city_id, vm.area_id)
+                            console.log(vm.province, vm.city, vm.area, vm.province_id, vm.city_id, vm.area_id)
                             data = {
                                 province_id: vm.province_id,
                                 city_id : vm.city_id,
@@ -257,6 +284,7 @@
             removePic() {
                 var ev = ev || window.event;
                 var target = ev.target || ev.srcElement;
+                console.log("删除图片", target);
                 $(target).parent().remove();
             },
             // 获取服务站
@@ -303,78 +331,7 @@
                     "密码",vm.accountInfos.password,
                     "确认密码",vm.accountInfos.confirmPassword
                 );
-                if(!vm.serviceInfos.station || vm.serviceInfos.station == "请选择区域") {
-                    layer.msg("请选择区域");
-                    return;
-                }
-                if(vm.stationId == "") {
-                    layer.msg("请选择服务站");
-                    return;
-                }
-                if(!vm.serviceInfos.detailAddress) {
-                    layer.msg("请填入详细地址");
-                    return;
-                }
-                if(!vm.serviceInfos.stationer) {
-                    layer.msg("请输入客服电话");
-                    return;
-                }else {
-                    if(!phoneReg.test(vm.serviceInfos.stationer)) {
-                        layer.msg("请输入正确的电话号码");
-                        return;
-                    }
-                }
-                if(!vm.userInfos.name) {
-                    layer.msg("姓名不能为空");
-                    return;
-                }
-                if(!vm.userInfos.phone) {
-                    layer.msg("请输入联系电话");
-                    return;
-                }else {
-                    if(!phoneReg.test(vm.serviceInfos.stationer)) {
-                        layer.msg("请输入正确的电话号码");
-                        return;
-                    }
-                }
-                if(!vm.userInfos.idcard) {
-                    layer.msg("请输入身份证号码");
-                    return;
-                }else {
-                    if(!cardCheck(vm.userInfos.idcard)) {
-                        layer.msg("请输入正确的身份证号码");
-                        return;
-                    }
-                }
-                if(!vm.companyInfos.comName) {
-                    layer.msg("请输入公司名称");
-                    return;
-                }
-                if(!vm.companyInfos.comUser) {
-                    layer.msg("请输入公司法人");
-                    return;
-                }
-                if(!$(".yinye").children().length) {
-                    layer.msg("请上传营业执照")
-                    return;
-                }
-                if(!$(".hezuo").children().length) {
-                    layer.msg("请上传合作协议")
-                    return;
-                }
-                if(!vm.accountInfos.account) {
-                    layer.msg("请输入账号");
-                    return;
-                }
-                if(!vm.accountInfos.password) {
-                    layer.msg("请输入密码");
-                    return;
-                }
-                if(vm.accountInfos.confirmPassword != vm.accountInfos.password) {
-                    layer.msg("两次密码不一样");
-                    return;
-                }
-                // 男/女
+                // // 男/女
                 var sex = $(".icon-selectcircle").parent().text();
                 sex = sex == "男" ? 1: 2;
                 console.log(sex);
@@ -393,6 +350,77 @@
                 console.log("hezuo", hezuoPic);
                 // 保存 type - 0  审核 type - 1 
                 if(val == 1) {
+                    if(!vm.serviceInfos.station || vm.serviceInfos.station == "请选择区域") {
+                        layer.msg("请选择区域");
+                        return;
+                    }
+                    if(vm.stationId == "") {
+                        layer.msg("请选择服务站");
+                        return;
+                    }
+                    if(!vm.serviceInfos.detailAddress) {
+                        layer.msg("请填入详细地址");
+                        return;
+                    }
+                    if(!vm.serviceInfos.stationer) {
+                        layer.msg("请输入客服电话");
+                        return;
+                    }else {
+                        if(!phoneReg.test(vm.serviceInfos.stationer)) {
+                            layer.msg("请输入正确的电话号码");
+                            return;
+                        }
+                    }
+                    if(!vm.userInfos.name) {
+                        layer.msg("姓名不能为空");
+                        return;
+                    }
+                    if(!vm.userInfos.phone) {
+                        layer.msg("请输入联系电话");
+                        return;
+                    }else {
+                        if(!phoneReg.test(vm.serviceInfos.stationer)) {
+                            layer.msg("请输入正确的电话号码");
+                            return;
+                        }
+                    }
+                    if(!vm.userInfos.idcard) {
+                        layer.msg("请输入身份证号码");
+                        return;
+                    }else {
+                        if(!cardCheck(vm.userInfos.idcard)) {
+                            layer.msg("请输入正确的身份证号码");
+                            return;
+                        }
+                    }
+                    if(!vm.companyInfos.comName) {
+                        layer.msg("请输入公司名称");
+                        return;
+                    }
+                    if(!vm.companyInfos.comUser) {
+                        layer.msg("请输入公司法人");
+                        return;
+                    }
+                    if(!$(".yinye").children().length) {
+                        layer.msg("请上传营业执照")
+                        return;
+                    }
+                    if(!$(".hezuo").children().length) {
+                        layer.msg("请上传合作协议")
+                        return;
+                    }
+                    if(!vm.accountInfos.account) {
+                        layer.msg("请输入账号");
+                        return;
+                    }
+                    if(!vm.accountInfos.password) {
+                        layer.msg("请输入密码");
+                        return;
+                    }
+                    if(vm.accountInfos.confirmPassword != vm.accountInfos.password) {
+                        layer.msg("两次密码不一样");
+                        return;
+                    }
                     var data = {
                         sid: vm.stationId,//服务站id
                         name: vm.userInfos.name,//姓名
@@ -413,28 +441,27 @@
                         agreement: hezuoPic,//协议照片
                         type: 1
                     }
+                    vm.toAjax(data, 1);
                 }else {
                     var data = {
-                        // sid: vm.stationId,//服务站id
                         name: vm.userInfos.name,//姓名
                         sex: sex,//性别
                         phone: vm.userInfos.phone,//手机
                         idcard: vm.userInfos.idcard,//身份证号
-                        // province: vm.province,//省
-                        // city: vm.city,//市
-                        // district: vm.area,//区
                         addressinfo: vm.serviceInfos.detailAddress,//地址详情
                         telephone: vm.serviceInfos.stationer,//客服电话
                         account: vm.accountInfos.account,//账号
-                        // password: vm.accountInfos.password,//密码
-                        // repassword: vm.accountInfos.confirmPassword,//确认密码
                         company: vm.companyInfos.comName,//公司名称
                         legal: vm.companyInfos.comUser,//公司法人
                         business: yinyePic,//营业照片
                         agreement: hezuoPic //协议照片
                     }
+                    vm.toAjax(data, 0);
                 }
                 console.log(data);
+            },
+            // 提交后台
+            toAjax (data, val){
                 $.ajax({
                     url: getURL("Home", "ServiceLogin/apply"),
                     type: "post",
@@ -442,10 +469,15 @@
                     success: function(res) {
                         console.log("success",res);
                         if(res.status == 200) {
-                            layer.msg(res.msg);
-                            setTimeout(function() {
-                                location.href = getURL("Home", "ServiceLogin/finalTip") + "?index=1";
-                            }, 1000);
+                            if(val == 1) {
+                                layer.msg(res.msg);
+                                setTimeout(function() {
+                                    location.href = getURL("Home", "ServiceLogin/finalTip") + "?index=1";
+                                }, 1000);
+                            }else {
+                                layer.msg("保存成功");
+                            }
+                            
                         }else {
                             layer.msg(res.msg);
                         }
@@ -454,7 +486,6 @@
                         console.log("err", res);
                     }
                 })
-                
             },
             // 取消打电话给客服
             notPhone() {
