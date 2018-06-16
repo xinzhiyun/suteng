@@ -124,7 +124,9 @@
                 this.editFlag = true;
                 this.addInfo = true;
                 // 用户信息清空
-                this.userInfos = {};
+                this.userInfos = {
+                    uImg: "__PUBLIC__/Home/images/normal.png",//默认图片
+                };
             }else {
                 // 将该用户信息放入userinfo遍历
                 this.userInfos ={
@@ -133,7 +135,7 @@
                     idCard: info.idcard,
                     sn: info.sn,
                     password: "",
-                    uImg: "__PUBLIC__" + info.uimg,
+                    uImg: "__PUBLIC__" + (info.uimg ? info.uimg : "/Home/images/normal.png"),
                 }
                 this.starD = +info.star;//显示星星
                 console.log("star", this.starD);

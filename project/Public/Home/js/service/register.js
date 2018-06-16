@@ -49,16 +49,16 @@
             layui.use("layer", function() {
                 layer = layui.layer;
             });
-            var isIsset = sessionStorage.getItem("saveAllInfo");
-            if(isIsset == '1') {
-                var infos = JSON.parse(sessionStorage.getItem("allInfo"))
-                console.log(JSON.parse(sessionStorage.getItem("allInfo")));
-                vm.serviceInfos.detailAddress = infos.serviceInfos.detailAddress;//详细地址
-                vm.serviceInfos.stationer = infos.serviceInfos.stationer; //客服电话
-                vm.userInfos = infos.userInfos;//用户信息
-                vm.companyInfos = infos.companyInfos;//公司信息
-                vm.accountInfos.account = infos.accountInfos.account;//账号设置
-            }
+            // var isIsset = sessionStorage.getItem("saveAllInfo");
+            // if(isIsset == '1') {
+            //     var infos = JSON.parse(sessionStorage.getItem("allInfo"))
+            //     console.log(JSON.parse(sessionStorage.getItem("allInfo")));
+            //     vm.serviceInfos.detailAddress = infos.serviceInfos.detailAddress;//详细地址
+            //     vm.serviceInfos.stationer = infos.serviceInfos.stationer; //客服电话
+            //     vm.userInfos = infos.userInfos;//用户信息
+            //     vm.companyInfos = infos.companyInfos;//公司信息
+            //     vm.accountInfos.account = infos.accountInfos.account;//账号设置
+            // }
         },
         methods: {
             // 选择地区
@@ -129,7 +129,7 @@
                             // vm.area_id = $(target).attr("aid");
                             vm.serviceInfos.station = vm.province + ' ' + vm.city + ' ' + vm.area;
                             
-                            $(".icon-right").css("display", "none");
+                            $(".yin").css("display", "none");
                             $(".areabtn").css("color", "#373737");
                             setTimeout(function(){
                                 vm.areaDis = false;
@@ -285,6 +285,7 @@
                 var target = ev.target || ev.srcElement;
                 this.stationId = $(target).val();//服务站id
                 $("#sel").css("color", "#373737");
+                $(".can").css("display", "none");
             },
             // 提交审核
             verify(val) {

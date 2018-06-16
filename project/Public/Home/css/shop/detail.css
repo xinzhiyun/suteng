@@ -20,7 +20,7 @@ body{
 	box-sizing: border-box;
 	width: 100%;
 	text-align: center;
-}
+} 
 .detailpic>img{
 	width: 100%;
 }
@@ -60,8 +60,10 @@ body{
 	line-height: 1.6rem;
 	background: #F04B7E;
 	color: #FFF;
-	
-	
+}
+.detailItemall {
+	max-height: 70vh;
+	overflow-y: hidden;
 }
 .detailTxt>span>b{
 	float: left;
