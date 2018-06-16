@@ -65,12 +65,12 @@
         created() {
             // this.indexs = +GetQueryString("index");
             this.indexs = "{{$_GET['index']}}";
-            
+
             this.indexs = this.indexs ? this.indexs : "undefined";
             
             console.log("234", this.indexs, typeof this.indexs);
             if(this.indexs == 2) {
-                this.text = "支付成功";
+                this.text = "支付成功"; 
             }else if(this.indexs == 3) {
                 this.text = "最终审核";
             }
