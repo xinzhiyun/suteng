@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_3mgodvjd6sp833di.css">
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/order/index.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/order/index.css?v={{:time()}}">
 	<title>商品订单</title>
     <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
     <script>
-        // var vconsole = new VConsole();
+        var vconsole = new VConsole();
     </script>
 </head> 
 <body>
@@ -173,23 +173,23 @@
 		<span>收货人：</span>
 		<p>
 			<label for="">姓名：</label>&emsp;
-			<input type="text" class='recname' placeholder="请输入姓名">
+			<input type="text" class='recname' placeholder="请输入姓名" onclick='scrollUp(this)'>
 		</p>
 		<p>
 			<label for="">电话：</label>&emsp;
-			<input type="text" class='recphone' placeholder="请输入电话">
+			<input type="text" class='recphone' placeholder="请输入电话" onclick='scrollUp(this)'>
 		</p>
 		<p>
 			<label for="">地址：</label>&emsp;
-			<input type="text" class='recaddr' placeholder="请输入地址">
+			<input type="text" class='recaddr' placeholder="请输入地址" onclick='scrollUp(this)'>
 		</p>
 		<p>
 			<label for="">快递名称：</label>&emsp;
-			<input type="text" class='recexpress' placeholder="请输入快递名称">
+			<input type="text" class='recexpress' placeholder="请输入快递名称" onclick='scrollUp(this)'>
 		</p>
 		<p>
 			<label for="">快递单号：</label>&emsp;
-			<input type="text" class='recexpressnum'placeholder="请输入快递单号">
+			<input type="text" class='recexpressnum'placeholder="请输入快递单号" onclick='scrollUp(this)'>
 		</p>
 		<button class='exconfirm' onclick='exconfirm()'>确认</button>
 	</div>
@@ -1410,6 +1410,22 @@
 		if(!haschangeflag){
 			callback(location.hash);
 		}
+	}
+
+	var height = window.innerHeight;
+	var expressoffsetTop;
+	var expressPanel = document.querySelector('.expressPanel');
+	window.onresize = function(){
+		if(height == window.innerHeight){	// 软键盘弹起
+			expressPanel.style.transform = 'translateY(0%)';
+		}
+
+	}
+
+	// 点击退货输入框
+	function scrollUp(el){
+		expressoffsetTop = el.parentNode.offsetTop;
+		expressPanel.style.transform = 'translateY(-'+ expressoffsetTop/2 +'px)';
 	}
 </script>
 </body>

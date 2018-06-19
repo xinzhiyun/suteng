@@ -153,7 +153,6 @@
                                 }, 1000);
                             }
                             if(data.paytype == 1) {
-                                history.replaceState({}, null, '{{:U("Home/Pay/pay_page")}}');
                                 console.log(location.href);
                                 // 调用微信支付
                                 setTimeout(function() {
@@ -165,7 +164,7 @@
                                                 location.href= getURL("Home", "ServiceLogin/finalTip") + "?index=2";
                                             }, 1000);
                                         }else{
-                                            history.replaceState({}, null, href);
+                                            layuiHint(res.result);
                                         }
                                     });
                                 }, 100);

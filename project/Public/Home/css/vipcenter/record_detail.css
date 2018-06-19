@@ -58,19 +58,28 @@ body {
 .fr {
 	float: right;
 }
+.upbtn {
+    width: 110%;
+	position: relative;
+    background: #eee;
+    padding: 2vh 0;
+    left: 50%;
+    margin-left: -55%;
+    margin-top: 4vh;
+}
 .evaluate {
-	width: 80%;
+	width: 92%;
 	display: none;
 	position: relative;
-    padding: 12px;
+    padding: 6px 12px;
     left: 50%;
     transform: translateX(-50%);
-    margin: 4vh 0 1vh;
     bottom: 0;
     border: none;
     border-radius: 4px;
     color: #fff;
-    background: #00BCD4;
+    font-size: .7rem;
+    background: #3ADCCF;
 }
 .evaluate:active::after {
 	content: '';
@@ -88,7 +97,7 @@ body {
 	height: 100vh;
 	min-height: 500px;
 	position: fixed;
-	padding: 0 4vw 4vw;
+	padding: 0 4vw 0 4vw;
     top: 0;
     left: 0;
     background: #fff;
@@ -97,6 +106,8 @@ body {
             transform: translateY(100%);
     -webkit-transition: .3s ease;
     transition: .3s ease;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 .evalPanel>h3 {
 	padding: 4vw; 
@@ -107,11 +118,24 @@ body {
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
-	padding: 2vw 0;
+	padding: 2vw 4vw;
+}
+.evalPanel>ul {
+	margin-top: 2vw;
+}
+.evalPanel .title {
+	width: 92%;
+    position: relative;
+    left: 50%;
+    margin-left: -46%;
+    padding-top: 4vw;
+    text-align: center;
+    color: #808080;
+    border-top: 1px solid #f1f1f1;
 }
 .xinx {
 	position: relative;
-	margin: 2vw 0;
+	padding: 4vw 4vw;
 	text-align: center;
 	font-size: 40px;
 }
@@ -121,20 +145,29 @@ body {
 	color: #ccc;
 }
 .activeClass {
-	color: #FF5722 !important;
+	color: #FD9A02 !important;
 }
 .text {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	padding: 2vw 4vw;
 	margin-bottom: 2vh;
 }
 .text>span {
-	min-width: 40%;
+	flex: 0 0 30%;
     display: inline-block;
-	margin: 1vw 4vw;
-	text-align: center;
+   	text-align: center;
+   	margin: 6px 0;
+    padding: 6px 0;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    align-self: center;
 }
 .eval {
 	padding: 2px 4px;
 	color: #fff;
+	border: none !important;
 	background: #FF5722;
 }
 
@@ -143,11 +176,20 @@ input[type="radio"] {
 	   -moz-appearance: radio !important;
 	        appearance: radio !important;
 }
-
+.say {
+	position: relative;
+}
 .say>textarea {
 	width: 100%;
-	padding: 2px 4px;
+	padding: 8px 14px;
 	margin-top: 10px;
+	border: 1px solid #ccc;
+}
+
+.say>p {
+	position: absolute;
+	bottom: 0;
+	right: 14px;
 }
 .noti {
 	color: #808080;
