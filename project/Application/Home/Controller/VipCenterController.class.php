@@ -565,6 +565,7 @@ class VipCenterController extends CommonController
             Work::evaluAction($post['workid']);
 
             if ($res){
+                Work::add($work['id'],'9');
                 Work::add($work['id'],'99');
                 E('提交成功',200);
             }else{

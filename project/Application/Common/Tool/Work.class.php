@@ -34,7 +34,7 @@ class Work
      * @param $mode int 信息类型
      * @param array $info array 信息
      */
-    public static function adds($wid, $mode)
+    public static function add($wid, $mode)
     {
         $work =  M('work')->where('id='.$wid)->find();
         if(empty($work)) {
@@ -45,21 +45,26 @@ class Work
         $data['time'] = date("Y-m-d H:i:s",time());
 
         $data['title'] = self::$title[$mode];
-
+        $content = [];
+        $content[] = ['title'=>'工单号','value'=>$work['number']];
         switch ($mode) {
             case 1:
-
-                $data['content'] = json_encode([['title'=>'系统正在优先为您就近安排服务站,预计10分钟.']]);
+                $content[] = ['title'=>'系统正在优先为您就近安排服务站,预计10分钟.'];
+                $data['content'] = json_encode($content);
                 break;
 
             case 2:
-                $data['content'] = json_encode([['title'=>'系统审核通过.']]);
+                $content[] = ['title'=>'我们将尽快为您安排上门服务，请稍等待.'];
+                $data['content'] = json_encode($content);
                 break;
 
             case 3:
-                $data['content'] = json_encode([['title'=>'系统审核未通过,请检查.']]);
+                $content[] = ['title'=>'您提交的工单不符合售后服务相关规定,请重新提交.'];
+                $content[] = ['title'=>'若有疑问，请致电客服：<a href="tel:020-23325238">020-23325238</a>'];
+                $data['content'] = json_encode($content);
 
                 break;
+
             case 4:
                 if (empty($work['sid'])) { return false; }
                 if ($work['service_mode']==1) { // 第三方
@@ -67,11 +72,12 @@ class Work
                 }else{
                     $service_info =  M('service')->where('id='.$work['sid'])->find();
                 }
-                $content =[
-                    ['title'=>'站点名称', 'value'=>$service_info['company']],
-                    ['title'=>'地址', 'value'=>$service_info['addressinfo']],
-                    ['title'=>'客服电话', 'value'=>$service_info['telephone']],
-                    ['title'=>'服务站点正在为您优先安排安装师傅上门安装预计需要1-3个工作日.'],
+
+                $content[] = ['title'=>'系统已分配“'.$service_info['company'].'”为您服务.'];
+                $content[] = ['title'=>'服务站联系人', 'value'=>$service_info['name']];
+                $content[] = [
+                    'title'=>'服务站客服电话',
+                    'value'=>"<a href='tel:{$service_info['telephone']}'>".$service_info['telephone'].'</a>'
                 ];
 
                 $data['content'] = json_encode($content);
@@ -79,22 +85,54 @@ class Work
 
             case 5:
                 if (empty($work['name'])) { return false; }
-                $_html  = '安装师傅:'.$work['name'].'<br>';
-                $_html .= '联系电话:'.$work['phone'].'<br>';
-                $_html .= '预约时间:'.$work['anry_time'].$work['anry_period'].'<br>';
-                $_html .= '请保持电话通畅,方便师傅联系上门服务.';
-                $data['content'] = $_html;
-                break;
-            case 7:
-                $data['content'] = "服务人员完成任务,待验收!";
-                break;
-            case 8:
-                $data['content'] = '任务已完成,请点击下面 评价 对本次服务进行评价.';
-                break;
-            case 99:
-                $data['content'] = '工单已关闭';
+
+                $content[] = ['title'=>'已委派服务人员', 'value'=>$work['name']];
+                $content[] = ['title'=>'电话', 'value'=>"<a href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
+                $content[] = ['title'=>'上门服务时间', 'value'=>$work['anry_time'].$work['anry_period']];
+                $content[] = ['title'=>'服务人员会电话联系您,请保持电话畅通，谢谢.'];
+
+                $data['content'] = json_encode($content);
                 break;
 
+            case 6:
+                $content[] = ['title'=>'已委派服务人员', 'value'=>$work['name']];
+                $content[] = ['title'=>'电话', 'value'=>"<a href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
+                $content[] = ['title'=>'上门服务时间', 'value'=>$work['anry_time'].$work['anry_period']];
+                $content[] = ['title'=>'服务人员会电话联系您,请保持电话畅通，谢谢.'];
+
+                $data['content'] = json_encode($content);
+                break;
+
+            case 7:
+                $content[] = ['title'=>'服务人员', 'value'=>$work['name']];
+                $content[] = ['title'=>'电话', 'value'=>"<a href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
+                $content[] = ['title'=>'系统已收到安装人员为您上门服务的详细记录.'];
+
+                $data['content'] = json_encode($content);
+                break;
+
+            case 8:
+                $content[] = ['title'=>'服务人员', 'value'=>$work['name']];
+                $content[] = ['title'=>'电话', 'value'=>"<a href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
+                $content[] = ['title'=>'您好,请您对此次的售后服务进行评价.'];
+                $data['content'] = json_encode($content);
+                break;
+
+            case 9:
+                $content[] = ['title'=>'服务人员', 'value'=>$work['name']];
+                $content[] = ['title'=>'电话', 'value'=>"<a href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
+                $content[] = ['title'=>'评价成功,感谢您对我们工作的支持.'];
+
+                $data['content'] = json_encode($content);
+                break;
+
+            case 99:
+                $content[] = ['title'=>'服务人员', 'value'=>$work['name']];
+                $content[] = ['title'=>'电话', 'value'=>"<a href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
+                $content[] = ['title'=>'您好,您此次的工单服务圆满完成.'];
+                $content[] = ['title'=>'再次感谢您对我们工作的支持.'];
+                $data['content'] = json_encode($content);
+                break;
         }
         return M('work_note')->add($data);
     }
@@ -105,7 +143,7 @@ class Work
      * @param $mode int 信息类型
      * @param array $info array 信息
      */
-    public static function add($wid, $mode)
+    public static function adds($wid, $mode)
     {
         $work =  M('work')->where('id='.$wid)->find();
         if(empty($work)) {
