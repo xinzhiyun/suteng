@@ -1,0 +1,342 @@
+/*GLOBALS*/
+*{margin:0; padding:0; list-style:none;-webkit-box-sizing:border-box;box-sizing:border-box;}
+body {
+	padding: 6% 0;
+	overflow-x: hidden;
+	padding-bottom: 14vh;
+	color: #333;
+}
+.bgg {
+	width: 100%;
+    height: 14vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+	background: -webkit-gradient(linear, left top, right top, from(#35CBBF), to(#B6D5FF));
+	background: linear-gradient(to right, #35CBBF, #B6D5FF);
+}
+#recoed_detail {
+	width: 92vw;
+    position: relative;
+    padding: 10px;
+    left: 50%;
+    margin-left: -46vw;
+    border-radius: 6px;
+    background: #fff;
+   	-webkit-box-shadow: 0 0 10px rgba(0,0,0,.1);
+   	        box-shadow: 0 0 10px rgba(0,0,0,.1);
+}
+.timeline>li.fr::before {
+	content: '';
+    width: 1px;
+    height: 88%;
+    position: absolute;
+    top: 30px;
+    left: 6.4%;
+    border-radius: 4px;
+    background: #f1f1f1;
+}
+.content {
+	overflow: hidden;
+}
+.title {
+	color: #333 !important;
+	font-size: .8rem;
+}
+.timeline {
+	position: relative;
+}
+.timeline>li {
+	position: relative;
+	margin-top: 10px;
+	line-height: 2; 
+	text-align: center;
+}
+.timeline>li.fr::before {
+	content: '';
+	width: 8px;
+	height: 8px;
+	position: absolute;
+	left: -7%;
+	top: 10px;
+	border-radius: 50%;
+	background: #3ADCCF;
+	z-index: 9;
+}
+.timeline>li.fr::after {
+	content: '';
+	width: 1px;
+	height: 116%;
+	position: absolute;
+	left: -5.6%;
+	top: 10px;
+	border-radius: 50%;
+	background: #f1f1f1;
+}
+.timeline>li:first-child {
+	width: 16%;
+	font-size: .5rem;
+}
+.timeline>li:last-child {
+	width: 76%;
+	padding-bottom: 1vh;
+}
+.timeline:not(:last-child)>li:last-child {
+	border-bottom: 1px solid #f1f1f1;
+}
+
+.timeline>li.fl>span {
+	color: #333;
+}
+.timeline:first-child>li.fl>span {
+	color: red;
+}
+.timeline:first-child>li.fr::before {
+	content: '';
+	width: 10px;
+	height: 10px;
+	left: -7.6%;
+	box-shadow: 0 0 10px rgba(116, 232, 223, 0.8), 
+	0 0 10px rgba(116, 232, 223, 0.8), 
+	0 0 10px rgba(116, 232, 223, 0.8), 
+	0 0 10px rgba(116, 232, 223, 0.8);
+}
+.timeline img {
+	height: .7rem;
+    width: auto;
+    position: relative;
+    transform: translateY(2px);
+}
+.keyvalue>span:first-child {
+	width: 30%;
+	display: inline-block;
+	text-align: right;
+	vertical-align: top;
+}
+
+.keyvalue>span:last-child {
+	width: 66%;
+	display: inline-block;
+	text-align: left;
+}
+
+.timeline>li>div,
+.timeline>li>p,
+.timeline>li>span {
+	color: #999;
+}
+.timeline>li.fr{
+	font-size: .6rem;
+}
+.notice {
+	position: fixed;
+    top: 30%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    text-align: center;
+}
+.cfix::after {
+	content: '';
+	clear: both;
+	display: block;
+	visibility: hidden;
+}
+.fl {
+	float: left;
+}
+.fr {
+	float: right;
+}
+.upbtn {
+    width: 100%;
+	position: absolute;
+    background: #eee;
+    padding: 2vh 0;
+    left: 50%;
+    margin-left: -50%;
+    margin-top: 4vh;
+}
+.evaluatebtn {
+	width: 92%;
+	display: none;
+	position: fixed;
+    padding: 6px 12px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+    bottom: 1vh;
+    margin-bottom: 2vh;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: .7rem;
+    background: #3ADCCF;
+}
+.evaluate {
+	width: 92%;
+	display: none;
+	position: relative;
+    padding: 6px 12px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: .7rem;
+    background: #3ADCCF;
+}
+.evaluatebtn:active::after,
+.evaluate:active::after {
+	content: '';
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	border-radius: 4px;
+	background: rgba(0,0,0,.2);
+}
+/*评论服务*/
+.evalPanel {
+	width: 100%;
+	height: 100vh;
+	min-height: 600px;
+	position: fixed;
+	padding: 0 4vw 0 4vw;
+    top: 0;
+    left: 0;
+    background: #fff;
+    z-index: 999;
+    -webkit-transform: translateY(100%);
+            transform: translateY(100%);
+    -webkit-transition: .3s ease;
+    transition: .3s ease;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.evalPanel>h3 {
+	padding: 4vw; 
+	text-align: center;
+}
+
+.evalPanel>p {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	padding: 2vw 4vw;
+}
+.evalPanel>ul {
+	margin-top: 2vw;
+}
+.evalPanel .title {
+	width: 92%;
+    position: relative;
+    left: 50%;
+    margin-left: -46%;
+    padding-top: 4vw;
+    text-align: center;
+    color: #808080;
+    border-top: 1px solid #f1f1f1;
+}
+.xinx {
+	position: relative;
+	padding: 4vw 4vw;
+	text-align: center;
+	font-size: 40px;
+}
+
+.xinx>span {
+	font-size: 40px;
+	color: #ccc;
+	margin: 0 4px;
+}
+.activeClass {
+	color: #FD9A02 !important;
+}
+.text {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	    -ms-flex-pack: justify;
+	        justify-content: space-between;
+	-ms-flex-wrap: wrap;
+	    flex-wrap: wrap;
+	padding: 2vw 4vw;
+	margin-bottom: 2vh;
+}
+.text>span {
+	-webkit-box-flex: 0;
+	    -ms-flex: 0 0 30%;
+	        flex: 0 0 30%;
+    display: inline-block;
+   	text-align: center;
+   	margin: 6px 0;
+    padding: 6px 0;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    -ms-flex-item-align: center;
+        -ms-grid-row-align: center;
+        align-self: center;
+}
+.eval {
+	padding: 2px 4px;
+	color: #fff;
+	border: none !important;
+	background: #FD9A02;
+}
+
+input[type="radio"] {
+	-webkit-appearance: radio !important;
+	   -moz-appearance: radio !important;
+	        appearance: radio !important;
+}
+.say {
+	position: relative;
+}
+.say>textarea {
+	width: 100%;
+	padding: 8px 14px;
+	margin-top: 10px;
+	border: 1px solid #ccc;
+}
+
+.say>p {
+	position: absolute;
+	bottom: 0;
+	right: 14px;
+}
+.noti {
+	color: #808080;
+	text-align: right;
+	font-size: .6rem;
+	margin-bottom: 10px;
+}
+.icon-xuanzhongduigou {
+	color: #00BCD4;
+}
+/*成功提示*/
+.notic {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	    -ms-flex-flow: column;
+	        flex-flow: column;
+	-webkit-box-pack: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	margin-top: 20vh;
+}
+.notic>i {
+	font-size: 80px;
+	color: #04be02;
+}
+.notic>i,
+.notic>p {
+	margin: 6px;
+	text-align: center;
+}
