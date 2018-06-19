@@ -348,7 +348,7 @@ class ServicePeopleController extends Controller
 
 
             if($post['operate']=='1'){
-                $data['result'] = 1;
+                $data['result'] = 0;// 重新派遣
                 $data['refuse'] = 1;// 拒绝状态
             } elseif($post['operate']=='2') {
                 $data['result'] = 2;
