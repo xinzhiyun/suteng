@@ -224,15 +224,15 @@ class ServiceController extends CommonController
             $saveData['updatetime'] = time();
 
             $saveData['addressinfo'] = $data['province'].$data['city'].$data['district'].$data['addressinfo'];
-            $saveData['address'] = $data['addressinfo'];
+            $saveData['address']   = $data['addressinfo'];
             $saveData['telephone'] = $data['telephone'];
             $saveData['phone'] = $data['phone'];
-            $saveData['name'] = $data['name'];
-            $saveData['auid'] = $data['auid'];
+            $saveData['name']  = $data['name'];
+            $saveData['auid']  = $data['auid'];
             $saveData['status'] = 1;
 
-            return M('service')->where('id='.$_POST['id'])->save($saveData);
 
+             return M('service')->where('id='.$sid)->save($saveData);
         } catch (\Exception $e) {
             $this->toJson($e);
         }

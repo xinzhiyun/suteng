@@ -82,6 +82,9 @@ class Work
                 $_html .= '请保持电话通畅,方便师傅联系上门服务.';
                 $data['content'] = $_html;
                 break;
+            case 7:
+                $data['content'] = "服务人员完成任务,待验收!";
+                break;
             case 8:
                 $data['content'] = '任务已完成,请点击下面 评价 对本次服务进行评价.';
                 break;
