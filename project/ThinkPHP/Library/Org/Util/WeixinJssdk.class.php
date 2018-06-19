@@ -165,6 +165,24 @@ class WeixinJssdk
   
     return $res;
   }
+
+    // 专用于发HTTP POST请求
+    public function httpPost($url, $post='')
+    {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 500);
+
+        // https请求 不验证证书和hosts
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_URL, $url);
+
+        $res = curl_exec($curl);
+        curl_close($curl);
+
+        return $res;
+    }
   
   // 读取文的方法
   public function get_php_file($filename) 

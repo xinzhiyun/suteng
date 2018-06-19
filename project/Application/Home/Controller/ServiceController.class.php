@@ -173,7 +173,7 @@ class ServiceController extends ServiceCommonController
             $res = M('work')->where($map)->save($post);
 
             if ($res) {
-                Work::add($info['id'], 5); //派遣
+                Work::add($info['id'], '5'); //派遣
                 E('派工成功!',200);
             }else{
                 E('派工成功,请重试!',400001);
@@ -205,7 +205,7 @@ class ServiceController extends ServiceCommonController
             $res = M('work')->where($map)->save(['result'=>3,'update_at'=>time(),'check_at'=>time()]);
 
             if ($res) {
-                Work::add($info['id'], 8); //验收
+                Work::add($info['id'], '8'); //验收
                 E('验收成功!',200);
             }else{
                 E('验收失败,请重试!',400001);

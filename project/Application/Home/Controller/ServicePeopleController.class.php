@@ -370,7 +370,7 @@ class ServicePeopleController extends Controller
             $res = M('work')->where($map)->save($data);
 
             if ($res) {
-                Work::add($info['id'], 7); //完成
+                Work::add($info['id'], '7'); //完成
                 E('提交成功!',200);
             }else{
                 E('提交失败,请重试!',400001);

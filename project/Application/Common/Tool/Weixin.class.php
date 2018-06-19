@@ -19,6 +19,15 @@ class Weixin
         return self::$_wx;
     }
 
+
+    public function sendMsg($openid, $template_id, $data, $url)
+    {
+
+        $api = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=".self::getAccessToken();
+        $userInfo = self::httpGet($api);
+    }
+    
+
     /**
      * 获取 Openid
      * @return
@@ -27,9 +36,7 @@ class Weixin
     {
         return  self::wx_sdk()->GetOpenid();
     }
-
-
-
+    
     /**
      * 获取用户信息
      * @param $openid
@@ -55,6 +62,17 @@ class Weixin
     {
         return  self::wx_sdk()->httpGet($url);
     }
+
+    /**
+     * POST请求
+     * @param $url
+     * @return mixed
+     */
+    public static function httpPost($url)
+    {
+        return  self::wx_sdk()->httpGet($url);
+    }
+
 
     /**
      * 获取 SignPackage

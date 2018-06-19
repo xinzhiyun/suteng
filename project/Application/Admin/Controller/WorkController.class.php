@@ -141,9 +141,9 @@ class WorkController extends CommonController
             $res = M('work')->where($map)->save($savetata);
             if($res) {
                 if($data['is_examine']==1){
-                    Work::add($data['id'],2);
+                    Work::add($data['id'],'2');
                 }else{
-                    Work::add($data['id'],3);
+                    Work::add($data['id'],'3');
                 }
 
                 // 分配工单
@@ -196,7 +196,7 @@ class WorkController extends CommonController
                     '3'=>8
                 ];
                 if(in_array($data['result'], $status)){
-                    Work::add($post['id'], (int)$status[$data['result']]);
+                    Work::add($post['id'], (string)$status[$data['result']]);
                 }
 
                 E('修改成功',200);
@@ -274,7 +274,7 @@ class WorkController extends CommonController
                     'leaflets_at'=>time()
                 ];
                 $res =  M('work')->where('id='.$post['wid'])->save($saveData);
-                Work::add($post['wid'], 4);
+                Work::add($post['wid'], '4');
 
             }
             if(!empty($post['suid'])){
@@ -294,7 +294,7 @@ class WorkController extends CommonController
                     'anry_time'=>$post['anry_time']
                 ];
                 $res =  M('work')->where('id='.$post['wid'])->save($saveData);
-                Work::add($post['wid'], 5);
+                Work::add($post['wid'], '5');
             }
 
             if($res){
@@ -347,7 +347,7 @@ class WorkController extends CommonController
 
             if($work_res){
                 // 写工单记录
-                return  Work::add($wid, 4);
+                return  Work::add($wid, '4');
             }
         }
     }

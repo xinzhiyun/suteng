@@ -84,7 +84,7 @@ class WorkController extends CommonController
 
             if ($res) {
 
-                Work::add($res,1);
+                Work::add($res,'1');
 
                 E('工单开启成功,请等待安装服务人员联系',200);
             }else{
@@ -164,7 +164,7 @@ class WorkController extends CommonController
             $res = M('work')->add($data);
 
             if ($res) {
-                Work::add($res,1);
+                Work::add($res,'1');
                 E('工单开启成功,请等待安装服务人员联系',200);
             }else{
                 E('添加失败请重试',200);
