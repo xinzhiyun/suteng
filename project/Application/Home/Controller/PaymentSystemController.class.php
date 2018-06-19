@@ -110,11 +110,20 @@ class PaymentSystemController extends CommonController
 //        $result = [];
         foreach($data as $val){
             $result[] =  [
-                    'status'=> D('inventory')->where(['gid'=>$val['gid'],'(CAST(allnum AS SIGNED) - CAST(abnormalnum AS SIGNED))'=>['LT',(int)$val['num']]])->getField('allnum')?'fail':'pass',
+                    'status'=> D('inventory')->where(['gid'=>$val['gid'],'(CAST(allnum AS SIGNED) - CAST(abnormalnum AS SIGNED))'=>['LT',(int)$val['num']]])->getField('allnum'),
                     'gid'=>$val['gid']
-
-
             ];
+            foreach ($result as $key => $v) {
+                if ($v['status'] < $val['num']) {
+
+
+                    $result[$key]['status'] = 'fail';
+                } else {
+                    $result[$key]['status'] = 'pass';
+
+                }
+            }
+
 
 //            $count = M('inventory')->where(['gid'=>$val['gid']])->count('allnum');
 //            if ($count < $val['num']) {
