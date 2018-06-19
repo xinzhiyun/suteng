@@ -492,7 +492,7 @@ class VipCenterController extends CommonController
     //会员 服务记录
     public function record_detail()
     {
-        $this->display();
+        $this->display('record_detail1');
     }
 
     // 工单信息(时间线)

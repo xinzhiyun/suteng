@@ -6,7 +6,7 @@
 	<title>工单详情</title>
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/record_detail.css?v={{:time()}}">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/record_detail1.css?v={{:time()}}">
 	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
 	<script src='__PUBLIC__/Home/js/public.js'></script>
     <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
@@ -29,7 +29,7 @@
 					<div class='title' v-text='d.title'></div>
 					<div v-for='c in detailList.content'>
 						<!-- 提示 -->
-						<!-- <div v-if='!c.value' v-text='c.title'></div> -->
+						 <div v-if='!c.value' v-text='c.title'></div>
 						<div v-if='c.value && c.title != "地址"' class='keyvalue'>
 							<span v-text='c.title'></span>
 							<span>:
