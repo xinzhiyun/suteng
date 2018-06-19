@@ -9,12 +9,13 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/record_detail.css?v={{:time()}}">
 	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
 	<script src='__PUBLIC__/Home/js/public.js'></script>
-    <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+    <!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
     <script>
-        var vconsole = new VConsole();
+        // var vconsole = new VConsole();
     </script>
 </head>
 <body>
+	<div class='bgg'></div>
 	<div id='recoed_detail'>
 		<div class='content'>
 			<ul class='timeline' v-for='d in detailList'>
@@ -26,7 +27,7 @@
 			</ul>
 		</div>
 		<p class='notice' :style='{display: noticestyle}' v-text='notice'></p>
-		<button :style='{display: showEval}' class='evaluate' @click='evaluate'>评价</button>
+		<button :style='{display: showEval}' class='evaluatebtn' @click='evaluate'>评价</button>
 		<div class='evalPanel' :style='evalPanel'>
 			<!-- <h3>评论本次服务</h3> -->
 			<p>工单号：<span v-text='workid'></span></p>
@@ -34,11 +35,11 @@
 			<ul>
 				<h2 class='title'>为服务打星</h2>
 				<li class='xinx'>
-					<span class="iconfont icon-xingxing" :class='{activeClass: star >= 1}' @click='xingx(1)'></span>
-					<span class="iconfont icon-xingxing" :class='{activeClass: star >= 2}' @click='xingx(2)'></span>
-					<span class="iconfont icon-xingxing" :class='{activeClass: star >= 3}' @click='xingx(3)'></span>
-					<span class="iconfont icon-xingxing" :class='{activeClass: star >= 4}' @click='xingx(4)'></span>
-					<span class="iconfont icon-xingxing" :class='{activeClass: star == 5}' @click='xingx(5)'></span>
+					<span class="iconfont icon-star" :class='{activeClass: star >= 1}' @click='xingx(1)'></span>
+					<span class="iconfont icon-star" :class='{activeClass: star >= 2}' @click='xingx(2)'></span>
+					<span class="iconfont icon-star" :class='{activeClass: star >= 3}' @click='xingx(3)'></span>
+					<span class="iconfont icon-star" :class='{activeClass: star >= 4}' @click='xingx(4)'></span>
+					<span class="iconfont icon-star" :class='{activeClass: star == 5}' @click='xingx(5)'></span>
 				</li>
 				<li class='text'>
 					<span v-for='t in textList' v-text='t.desc' :tid='t.id' @click='textSelect($event)'></span>
@@ -117,14 +118,10 @@
 					}
 				}
 				var height = window.innerHeight;
-				var top = $('.say>textarea').offset().top;
 				window.onresize = function(){
 					console.log('top: ',top);
 					var evalpanel = document.querySelector('.evalPanel');
-
-					if(height > window.innerHeight){
-						// evalpanel.style.transform = 'translateY(-'+ top +'px)';	
-					}else{
+					if(height == window.innerHeight){
 						evalpanel.style.transform = 'translateY(0%)';
 					}
 					
@@ -279,8 +276,10 @@
 				},
 				// text点击
 				textfocus() {
+					var top = $('.say>textarea').offset().top;
+					// console.log('top: ',top);
 					var evalpanel = document.querySelector('.evalPanel');
-					evalpanel.style.transform = 'translateY(-40%)';
+					evalpanel.style.transform = 'translateY(-'+ top/3 +'px)';
 				},
 				// 失去焦点
 				textblur() {
