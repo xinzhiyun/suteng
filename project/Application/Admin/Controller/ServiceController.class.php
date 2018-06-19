@@ -229,7 +229,6 @@ class ServiceController extends CommonController
             $saveData['phone'] = $data['phone'];
             $saveData['name'] = $data['name'];
             $saveData['auid'] = $data['auid'];
-            $saveData['auid'] = $data['auid'];
             $saveData['status'] = 1;
 
             return M('service')->where('id='.$_POST['id'])->save($saveData);

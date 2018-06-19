@@ -69,7 +69,7 @@
                 </div>
                 <div class="form-group checkCode loginDiv">
                     <input name="code" type="text" class="form-control" placeholder="验证码" required="">
-                    <img class="" src="__URL__/yzm" onclick="this.src='__URL__/yzm?id=' + Math.random()">
+                    <img class="" src="__URL__/yzm?id={{:time()}}"   onclick="this.src='__URL__/yzm?id=' + Math.random()">
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b loginbtn">登 录</button>
             </form>

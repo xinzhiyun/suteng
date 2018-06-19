@@ -20,18 +20,18 @@ class ServiceCommonController extends Controller
 
         // 自动登录
         if(empty($_SESSION['serviceInfo'])){
-            $info = M('admin_user')
-                ->alias('au')
-                ->where("open_id='{$_SESSION['open_id']}'")
-                ->join('__SERVICE__ s ON s.auid=au.id', 'LEFT')
-                ->field('au.password,au.user,s.id,s.company,s.auid')
-                ->find();
-            if($info) {
-                unset($info['password']);
-                $_SESSION['serviceInfo'] = $info;
-            }else{
+//            $info = M('admin_user')
+//                ->alias('au')
+//                ->where("open_id='{$_SESSION['open_id']}'")
+//                ->join('__SERVICE__ s ON s.auid=au.id', 'LEFT')
+//                ->field('au.password,au.user,s.id,s.company,s.auid')
+//                ->find();
+//            if($info) {
+//                unset($info['password']);
+//                $_SESSION['serviceInfo'] = $info;
+//            }else{
                 $this->redirect("Home/ServiceLogin/index");
-            }
+//            }
         }
     }
 

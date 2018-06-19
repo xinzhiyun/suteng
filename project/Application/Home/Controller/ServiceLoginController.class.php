@@ -114,7 +114,7 @@ class ServiceLoginController extends Controller
         $signPackage = $weixin->getSignPackage();
         $phone = M('service_seting')->cache('service_kfphone',60)->where(1)->getField('kfphone');
 
-        $info = M('service_apply')->where(['open_id'=>$_SESSION['open_id']])->find();
+        $info = M('service_apply')->where(['open_id'=>$_SESSION['open_id']])->order('id desc')->find();
         //状态  0保存 1基础信息审核 2基础信息通过 待缴费 3 已交押金 待审核 4 开通
         switch ($info['status']) {
             case '1':
@@ -197,33 +197,49 @@ class ServiceLoginController extends Controller
             }
             $post['updatetime'] = time();
 
-
-            $info = M('service_apply')->where(['open_id'=>$_SESSION['open_id'], 'status'=>0])->find();
+            $info = M('service_apply')->where(['open_id'=>$_SESSION['open_id'], 'status'=>0])->order('id desc')->find();
             if(empty($info)){
                 if( !empty($post['account']) ){
-                    $userInfo = M('admin_user')->where('user='.$post['account'])->find();
+                    $userInfo = M('admin_user')->where("user='{$post['account']}'")->find();
+                    $post['auid'] = $userInfo['id'];
+
                     if(!empty($userInfo)){
                         E('账号已被使用,请修改账号信息!',40006);
+                    }else{
+                        $post['auid']=M('admin_user')->add([
+                            'user'=>$post['account'],
+                            'password'=>$post['password'],
+                            'status'=>0,
+                            'addtime'=>time(),
+                            'type'=>1,
+                            'open_id'=>$_SESSION['open_id'],
+                            'phone'=>$post['phone']
+                        ]);
                     }
-                    $post['auid'] = $userInfo['id'];
+
                 }
                 $res = M('service_apply')->add($post);
             }else{
                 if( !empty($post['account']) ){
                     if(empty($info['account'])){
-                        $userInfo = M('admin_user')->where('user='.$post['account'])->find();
+                        $userInfo = M('admin_user')->where("user='{$post['account']}'")->find();
                         if(!empty($userInfo)){
-                            E('账号已被使用,请修改账号信息!',40006);
+                            E('账号已被使用,请修改账号信息!',40007);
                         }
                         $post['auid'] = $userInfo['id'];
                     }else{
                         if($post['account'] != $info['account']){
                             // 生成新的账号绑定
-                            $userInfo = M('admin_user')->where('user='.$info['account'])->find();
+                            $userInfo = M('admin_user')->where("user='{$info['account']}'")->find();
                             if(!empty($userInfo)){
-                                E('账号已被使用,请修改账号信息!',40006);
+                                E('账号已被使用,请修改账号信息!',40008);
                             }
                             $post['auid'] = $userInfo['id'];
+                        }else{
+                            if(empty($info['auid'])){
+                                $userInfo = M('admin_user')->where("user='{$info['account']}'")->find();
+                                $post['auid'] = $userInfo['id'];
+                            }
                         }
                     }
                 }
