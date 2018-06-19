@@ -42,7 +42,9 @@
                 ifstation: "请选择服务站",
                 stationId: "",//服务站id
                 servicename: "",//服务站名称
-                imgURL: []
+                imgURL: [],
+                imgContent: [], //存入图片
+                imgHezuo : []
             }
         },
         created() {
@@ -253,24 +255,18 @@
                             var picList = '';
                             picList = JSON.parse(res.data.pic);
                             for(var i=0; i<picList.length; i++){
-                                (function upfn(src){
-                                    console.log("图片src", src);
-                                    var $span = $("<span class='bottx'></span>");
-                                    var $span1 = $("<span @click='removePic($event)' class='topx'>x</span>");
-                                    var $img = $('<img src="" alt="" index="" />');
-                                    $img[0].width = "100%";
-                                    $img[0].height = "90%";
-                                    $img[0].src = '/Public'+src;
-                                    
-                                    $span1.addClass("delPic");
-                                    $span1.css({zIndex: '9'});
-                                    $span.append($span1);
-                                    $span.append($img[0]);
-                                    // 显示图片
-                                    $(target).siblings(".picShow").append($span);
-                                    
-                                })(picList[i])
+                                if($(target).siblings("div").hasClass('yinye')) {
+                                    _this.imgContent.push({
+                                        src: '/Public'+picList[i]
+                                    });
+                                }else if($(target).siblings("div").hasClass('hezuo')) {
+                                    _this.imgHezuo.push({
+                                        src: '/Public'+picList[i]
+                                    })
+                                }
+                                
                             }
+                            console.log(_this.imgContent)
                         }else{
                             layuiHint(res.msg);
                         }
