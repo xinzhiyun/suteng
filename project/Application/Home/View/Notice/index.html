@@ -5,21 +5,35 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
     <title>跳转提示</title>
     <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
     <style>
         .notice {
             width: 100vw;
-            min-height: 100vh;
-            padding-top: 30vh;
+            /* min-height: 100vh; */
+            padding-top: 20vh;
         }
         .notice p,
-        .notice h2 {
-            margin: 6px 0;
+        .notice h2,
+        .notice div {
             text-align: center;
+        }
+        .notice div {
+            margin-bottom: 4rem;
+        }
+        .notice h2 {
+            margin-bottom: 1rem;
+        }
+        .notice div span {
+            font-size: 4rem;
+            color: #2196F3;
         }
     </style>
 </head>
 <body>
     <div class='notice'>
+        <div>
+            <span class="iconfont icon-tishi"></span>
+        </div>
         <h2 v-text='title'></h2>
         <p>
             <span>
@@ -54,7 +68,7 @@
                 },1000);
                 // 跳转
                 setTimeout(function(){
-                    location.href = vm.link;
+                    // location.href = vm.link;
                 },vm.time*1000)
             }
         })
