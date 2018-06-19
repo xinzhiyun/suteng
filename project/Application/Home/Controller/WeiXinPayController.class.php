@@ -41,6 +41,24 @@ class WeiXinPayController extends Controller
         $this->uniformOrderVendor($money,$code,$content);
     }
 
+    // 服务站押金支付回调
+    public function serviceNotify()
+    {
+        $xml=file_get_contents('php://input', 'r');
+        //解析微信返回数据数组格式
+        $result = $this->notifyData($xml);
+        // dump($result);die;
+        // 实例化订单模型
+        $order = M('service_apply');
+        // 准备查询订单的条件
+        $showOrder['orderid'] = $result['attach'];
+        // 查询订单表
+        $orderData = $order->where($showOrder)->find();
+        if($orderData['ispay']==0){
+            $order->where('id='.$orderData['id'])->save(['ispay'=>1, 'status'=>4, 'updatetime'=>time()]);
+        }
+    }
+
     /**
      * 统一收分销商加盟费并返回数据
      * @return string json格式的数据，可以直接用于js支付接口的调用
@@ -109,27 +127,27 @@ class WeiXinPayController extends Controller
     public function notify()
     {
         // 获取微信服务器返回的xml文档
-//        $xml=file_get_contents('php://input', 'r');
+        $xml=file_get_contents('php://input', 'r');
 //        Log::write( $xml,'测试一号');
-        $xml = '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
-<attach><![CDATA[819818675126975]]></attach>
-<bank_type><![CDATA[CFT]]></bank_type>
-<cash_fee><![CDATA[1]]></cash_fee>
-<fee_type><![CDATA[CNY]]></fee_type>
-<is_subscribe><![CDATA[Y]]></is_subscribe>
-<mch_id><![CDATA[1501254081]]></mch_id>
-<nonce_str><![CDATA[5wgcm1ptarl19i0v3k06k93p8osbderw]]></nonce_str>
-<openid><![CDATA[onLe70fYcrqU71RjzfYUjkNf90_E]]></openid>
-<out_trade_no><![CDATA[841179983093492]]></out_trade_no>
-<result_code><![CDATA[SUCCESS]]></result_code>
-<return_code><![CDATA[SUCCESS]]></return_code>
-<sign><![CDATA[CA0B6D87B669E772C9297B65832B3EA2]]></sign>
-<time_end><![CDATA[20180411145314]]></time_end>
-<total_fee>1</total_fee>
-<trade_type><![CDATA[JSAPI]]></trade_type>
-<transaction_id><![CDATA[4200000052201804116501776653]]></transaction_id>
-</xml>
-';
+//        $xml = '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
+//<attach><![CDATA[819818675126975]]></attach>
+//<bank_type><![CDATA[CFT]]></bank_type>
+//<cash_fee><![CDATA[1]]></cash_fee>
+//<fee_type><![CDATA[CNY]]></fee_type>
+//<is_subscribe><![CDATA[Y]]></is_subscribe>
+//<mch_id><![CDATA[1501254081]]></mch_id>
+//<nonce_str><![CDATA[5wgcm1ptarl19i0v3k06k93p8osbderw]]></nonce_str>
+//<openid><![CDATA[onLe70fYcrqU71RjzfYUjkNf90_E]]></openid>
+//<out_trade_no><![CDATA[841179983093492]]></out_trade_no>
+//<result_code><![CDATA[SUCCESS]]></result_code>
+//<return_code><![CDATA[SUCCESS]]></return_code>
+//<sign><![CDATA[CA0B6D87B669E772C9297B65832B3EA2]]></sign>
+//<time_end><![CDATA[20180411145314]]></time_end>
+//<total_fee>1</total_fee>
+//<trade_type><![CDATA[JSAPI]]></trade_type>
+//<transaction_id><![CDATA[4200000052201804116501776653]]></transaction_id>
+//</xml>
+//';
 
 //
 //

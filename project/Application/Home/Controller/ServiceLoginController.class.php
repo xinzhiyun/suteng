@@ -120,10 +120,10 @@ class ServiceLoginController extends Controller
             case '1':
                 $this->redirect('finalTip', array('index' => 1)); // 审核中
                 break;
-            case '2':
+            case '3':
                 $this->redirect('Home/Pay/registerPay'); // 支付页面
                 break;
-            case '3':
+            case '4':
                 $this->redirect('finalTip', array('index' => 2)); // 支付审核中
                 break;
             default :
@@ -132,8 +132,6 @@ class ServiceLoginController extends Controller
                 $this->assign('wxinfo',$signPackage);
                 $this->display('register');
         }
-
-
     }
 
     // 地址加载
@@ -188,20 +186,6 @@ class ServiceLoginController extends Controller
                 $post['open_id'] = $_SESSION['open_id'];
                 $post['status'] = 1;
 
-//                if( !empty($post['business']) && is_array($post['business'])) {
-//                    $post['business'] = json_encode($post['business']);
-//                }
-//                if( !empty($post['agreement']) && is_array($post['agreement'])) {
-//                    $post['agreement'] = json_encode($post['agreement']);
-//                }
-//
-//
-//                $res = M('service_apply')->add($post);
-//                if($res){
-//                    E('您的申请已提交,请等待工作人员审核',200);
-//                }else{
-//                    E('提交失败,请联系工作人员!',40010);
-//                }
             }
 
 
@@ -216,8 +200,33 @@ class ServiceLoginController extends Controller
 
             $info = M('service_apply')->where(['open_id'=>$_SESSION['open_id'], 'status'=>0])->find();
             if(empty($info)){
+                if( !empty($post['account']) ){
+                    $userInfo = M('admin_user')->where('user='.$post['account'])->find();
+                    if(!empty($userInfo)){
+                        E('账号已被使用,请修改账号信息!',40006);
+                    }
+                    $post['auid'] = $userInfo['id'];
+                }
                 $res = M('service_apply')->add($post);
             }else{
+                if( !empty($post['account']) ){
+                    if(empty($info['account'])){
+                        $userInfo = M('admin_user')->where('user='.$post['account'])->find();
+                        if(!empty($userInfo)){
+                            E('账号已被使用,请修改账号信息!',40006);
+                        }
+                        $post['auid'] = $userInfo['id'];
+                    }else{
+                        if($post['account'] != $info['account']){
+                            // 生成新的账号绑定
+                            $userInfo = M('admin_user')->where('user='.$info['account'])->find();
+                            if(!empty($userInfo)){
+                                E('账号已被使用,请修改账号信息!',40006);
+                            }
+                            $post['auid'] = $userInfo['id'];
+                        }
+                    }
+                }
                 $res = M('service_apply')->where('id='.$info['id'])->save($post);
             }
             if($res){
@@ -225,8 +234,6 @@ class ServiceLoginController extends Controller
             }else{
                 E('提交失败,请联系工作人员!',40010);
             }
-
-
 
         } catch (\Exception $e) {
             $this->toJson($e);
@@ -260,7 +267,7 @@ class ServiceLoginController extends Controller
 //        $this->display('registerPay');
 //    }
 
-    // 缴费
+    // 缴费-提交  paytype 微信和其他支付
     public function registerPayOrder()
     {
         try {
@@ -270,22 +277,23 @@ class ServiceLoginController extends Controller
             }
 
             if($post['paytype'] == 1){
-                $res = M('service_apply')->where('id='.$post['id'])->save(['paytype'=>1, 'updatetime'=>time()]);
+                $orderId = getOrderId();
+                $res = M('service_apply')->where('id='.$post['id'])->save(['paytype'=>1,'orderid'=>$orderId, 'updatetime'=>time()]);
 
                 if(empty($res)){
                     E('支付失败,请重试!',40005);
                 }
 
                 $money = M('service_seting')->where(1)->getField('joinsost');
-                $orderId = getOrderId();
+
                 $content = '速腾服务站加盟费';
-                $url = 'http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/setmealNotify');
+                $url = 'http://'.$_SERVER['SERVER_NAME'].U('Home/WeiXinPay/serviceNotify');
 
                 $resault  = Weixin::uniformOrder($_SESSION['open_id'],$money,$orderId,$content,$url);
                 $this->toJson(['res'=>$resault],'请求成功',200);
 
             }elseif($post['paytype'] == 2){
-                $res = M('service_apply')->where('id='.$post['id'])->save(['paytype'=>1, 'updatetime'=>time()]);
+                $res = M('service_apply')->where('id='.$post['id'])->save(['paytype'=>2,'status'=>4, 'updatetime'=>time()]);
 
                 if($res){
                     E('提交成功!请等待审核!',200);
@@ -295,9 +303,6 @@ class ServiceLoginController extends Controller
             }else{
                 E('参数错误',40001);
             }
-
-
-
 
         }catch (\Exception $e) {
             $this->toJson($e);

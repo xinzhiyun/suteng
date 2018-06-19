@@ -114,27 +114,62 @@ class ServiceController extends CommonController
         $this->display();
     }
 
+    // 服务站的申请详情
+    public function getApplyInfo()
+    {
+        try {
+            $post = I('post.');
+            if(empty($post['id']) ){
+                E('数据错误',40001);
+            }
+
+            $res = M('service_apply')->where('id='.$post['id'])->find();
+            if(empty($res)) {E('无数据',200);}
+            $this->toJson(['data'=>$res],'获取成功',200);
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
     // 服务站申请 - 审核操作
     public function applyExamine()
     {
         try {
             $post = I('post.');
-            if(empty($post['id']) || empty($post['action'])){
+            if(empty($post['id']) || empty($post['status'])){
                 E('数据错误',40001);
             }
-            // 状态 1基础信息审核 2基础信息通过 待缴费 3 已交押金 待审核 4 开通
-            if($post['action'] == '1'){ // 基础信息 不通过
-                $post['status'] = 0;
-            }elseif($post['action'] == '2'){ // 基础信息通过
-                $post['status'] = 2;
-            }elseif($post['action'] == '3'){ // 支付信息审核通过
-                $post['status'] = 4;
+
+            $saveData=[];
+            if ($post['action'] == '1') { // 基础信息审核
+                if ($post['status'] == 1 ) {
+                    $saveData['status'] = 3;
+                } else {
+                    $saveData['status'] = 2;
+                }
+
+            } elseif ($post['action'] == '2') { //支付审核 (开通)
+                if ($post['status'] == 1 ) {
+                    // 开通服务站
+                    $info = M('service_apply')->where('id='.$post['id'])->find();
+                    if(empty($info['sid'])){
+                        E('服务站参数为空',200);
+                    }
+                    if(empty($this->openApplyService($info['sid'], $info))){
+                        E('开通失败!',40002);
+                    }
+                    $saveData['status'] = 5;
+                } else {
+                    $saveData['status'] = 3;
+                }
+            } else {
+                E('数据错误',40001);
             }
 
-            unset($post['action']);
-            $post['updatetime'] = time();
+            $saveData['updatetime'] = time();
 
-            $res = M('service_apply')->where('id='.$post['id'])->save($post);
+            $res = M('service_apply')->where('id='.$post['id'])->save($saveData);
             if ($res) {
                 E('开通成功',200);
             }
@@ -169,6 +204,35 @@ class ServiceController extends CommonController
                 E('开通成功',200);
             }
             E('添加失败,请重试!',201);
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+    /**
+     * 开通服务站(申请模式)
+     */
+    public function openApplyService($sid,$data)
+    {
+        try {
+
+            $old = M('service')->find($sid);
+            if(empty($old))E('服务站不存在',201);
+
+            $saveData['addtime'] = time();
+            $saveData['updatetime'] = time();
+
+            $saveData['addressinfo'] = $data['province'].$data['city'].$data['district'].$data['addressinfo'];
+            $saveData['address'] = $data['addressinfo'];
+            $saveData['telephone'] = $data['telephone'];
+            $saveData['phone'] = $data['phone'];
+            $saveData['name'] = $data['name'];
+            $saveData['auid'] = $data['auid'];
+            $saveData['auid'] = $data['auid'];
+            $saveData['status'] = 1;
+
+            return M('service')->where('id='.$_POST['id'])->save($saveData);
 
         } catch (\Exception $e) {
             $this->toJson($e);

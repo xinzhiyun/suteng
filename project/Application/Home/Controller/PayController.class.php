@@ -53,7 +53,7 @@ class PayController extends Controller
 
         $map=[
             'open_id'=>$_SESSION['open_id'],
-            'status'=>2,
+            'status'=>3,
         ];
         $res = M('service_apply')->where($map)->field('id,servicename,name,company,legal,phone')->find();
         if(empty($res)){

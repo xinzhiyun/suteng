@@ -30,7 +30,6 @@
                     </div>
                     <button type="submit" class="btn btn btn-primary submitbtn" name="sou" value="1">搜索</button>
 
-
                 </form>
                     <div class="ibox-content">
                         <table class="table">
@@ -38,50 +37,45 @@
                                 <tr>
                                     <th>序号</th>
                                     <th>服务站名称</th>
-                                    <th>地区(省)</th>
-                                    <th>地区(市)</th>
-                                    <th>地区(区)</th>
+                                    <th>地区</th>
                                     <th>详细地址</th>
-                                    <th>账号</th>
+                                    <th>申请人信息</th>
                                     <th>状态</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <empty name="data">
-                                    <tr><td><h3>暂无服务站</h3></td></tr>
+                                    <tr><td><h3>暂无申请中的服务站</h3></td></tr>
                                 <else />
                                     <volist name="data" id="val">
                                         <tr data-id="{{$val.id}}" data-company="{{$val.company}}" data-area="{{$val.province}} - {{$val.city}} - {{$val.district}}" >
                                             <td>{{$i}}</td>
                                             <td>{{$val.servicename}}</td>
-                                            <td>{{$val.province}}</td>
-                                            <td>{{$val.city}}</td>
-                                            <td>{{$val.district}}</td>
+                                            <td>{{$val.province}}-{{$val.city}}-{{$val.district}}</td>
                                             <td>{{$val.address}}</td>
-                                            <td></td>
+                                            <td>{{$val.name}}<br/>{{$val.phone}}</td>
                                             <switch name="val.status">
-                                                <case value="0"><td>222</td></case>
-                                                <case value="1"><td>222</td></case>
-                                                <case value="2"><td>222</td></case>
-                                                <case value="3"><td>222</td></case>
-                                                <case value="4"><td>222</td></case>
+                                                <case value="1"><td>信息初审</td></case>
+                                                <case value="2"><td>信息初审未通过</td></case>
+                                                <case value="3"><td>待缴费</td></case>
+                                                <case value="4"><td>缴费审核</td></case>
+                                                <case value="5"><td>已开通</td></case>
                                                 <default />
                                                 <td></td>
                                             </switch>
 
                                             <td>
+                                                <a href="javascript:;" class="_show btn btn-success">查看</a>
                                                 <switch name="val.status">
                                                     <case value="1">
-                                                        <a href="javascript:;" class="_close">基础信息审核</a>
+                                                        <a href="javascript:;" class="_open btn btn-success" data-action="1">基础信息审核</a>
                                                     </case>
-                                                    <case value="3">
-                                                        <a href="javascript:;" class="_open">开通审核</a>
+                                                    <case value="4">
+                                                        <a href="javascript:;" class="_open" data-action="2">押金审核</a>
                                                     </case>
                                                     <default />
-                                                    <a href="javascript:;" class="_open">查看</a>
                                                 </switch>
-
 
                                             </td>
                                         </tr>
@@ -97,7 +91,7 @@
             </div>
         </div>
     </div>
-    <div class="modal inmodal" id="st_set_agent" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal inmodal" id="st-show" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
@@ -105,64 +99,67 @@
                         &times;
                     </button>
                     <h4 class="modal-title" >
-                        设置代管
+                        服务站申请详情
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <div>下列表表单中，带 * 项表示必填项</div>
-                    <form id="setAgentformdata" method="post" >
-                        <input type="hidden" name="id" class="data_sid">
-                        <table class="table table-striped table-bordered table-hover table-condensed">
-                            <tr>
-                                <th width="25%">代管模式：</th>
-                                <td class="form-inline set_agent_search">
-                                    <select class="form-control"  name="agent_mode">
-                                        <option value="1">服务站代管</option>
-                                        <option value="2">第三方服务站代管</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th width="25%">服务商检索：</th>
-                                <td class="form-inline set_agent_search set_agent_area_search">
-                                    <select class="form-control set_agent_province_id" style="width: 32%;" name="province_id">
-                                        <option value="">--请选择--</option>
-                                        <volist name="area" id="vl">
-                                            <option value="{{$vl.id}}">{{$vl.areaname}}</option>
-                                        </volist>
-                                    </select>
-                                    <select class="form-control set_agent_city_id" style="width: 32%;" name="city_id">
-                                        <option value="">--请选择--</option>
-                                    </select>
-                                    <select class="form-control set_agent_district_id" style="width: 32%;" name="district_id">
-                                        <option value="">--请选择--</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th width="25%">代管服务商：<span style="color: red;">*</span></th>
-                                <td >
-                                    <select class="form-control" name="t_id" id="st_set_agent_sel">
-                                        <option value="">--请选择--</option>
-                                    </select>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th>
-                                </th>
-                                <td>
-                                    <input class="btn btn-success st-add" type="button" onclick="setAgent()" value="确认">
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
+                    <table class="table table-striped table-bordered table-hover table-condensed show-table">
+                        <tr>
+                            <th width="25%">公司名称：</th>
+                            <td class="service-company"></td>
+                        </tr>
+                        <tr>
+                            <th width="25%">公司法人：</th>
+                            <td class="service-legal"></td>
+                        </tr>
+                        <tr>
+                            <th width="25%">申请资质：</th>
+                            <td class="pics"></td>
+                        </tr>
+                        <tr>
+                            <th width="25%">服务站名称：</th>
+                            <td class="service-name"></td>
+                        </tr>
+                        <tr>
+                            <th width="25%">服务站区域：</th>
+                            <td class="service-area"></td>
+                        </tr>
+                        <tr>
+                            <th width="25%">服务站地址：</th>
+                            <td class="service-address"></td>
+                        </tr>
+                        <tr>
+                            <th width="25%">申请人：</th>
+                            <td class="service-name"></td>
+                        </tr>
+                        <tr>
+                            <th width="25%">联系方式：</th>
+                            <td class="service-phone"></td>
+                        </tr>
+                        <tr>
+                            <th width="25%">客服电话：</th>
+                            <td class="service-telephone"></td>
+                        </tr>
+                        <tr>
+                            <th width="25%">身份证号：</th>
+                            <td class="service-idcard"></td>
+                        </tr>
+                        <tr>
+                            <th width="25%">账号：</th>
+                            <td class="service-account"></td>
+                        </tr>
+                        <tr>
+                            <th width="25%">押金支付方式：</th>
+                            <td class="service-paytype"></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
     <script>
         var where_map = JSON.parse(JSON.stringify({{$_GET|json_encode}}));
 
@@ -175,7 +172,99 @@
         if(where_map.keywords){
             $(".where_key_box").val(where_map.keywords);
         }
-        
+
+        $('._open').click(function() {
+            var data = {};
+            var obj = $(this).parents('tr');
+            data.id  = obj.data('id');
+            data.action = $(this).data('action');
+
+            var url = "{{:U('Admin/Service/applyExamine')}}";
+
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                layer.confirm('审核确认?',{
+                    btn: ['通过!','不通过!'] //按钮
+                }, function(index){
+                    // 1通过 2 不通过
+                    data.status = 1;
+                    getInfo(url,data);
+
+                },function (index) {
+                    data.status = 2;
+                    getInfo(url,data);
+                });
+            });
+        });
+        // 查看信息
+        $('._show').click(function() {
+            var obj = $(this).parents('tr');
+            var data = {};
+            data.id  = obj.data('id');
+            var url = "{{:U('getApplyInfo')}}";
+            getInfo(url,data,function (res) {
+                var table = $('#st-show .show-table');
+                table.find('.service-company').html(res.data.company);
+                table.find('.service-legal').html(res.data.legal);
+                console.log(res.data)
+                var picBox = table.find('.pics');
+                picBox.html('');
+                $.each(JSON.parse(res.data.business),function (i,k) {
+                    var img = "<img src='"+k+"' width='30px' class='show-pic'>";
+                    picBox.append(img);
+                })
+                $.each(JSON.parse(res.data.agreement),function (i,k) {
+                    var img = "<img src='"+k+"' width='30px' class='show-pic'>";
+                    picBox.append(img);
+                })
+
+
+                table.find('.service-name').html(res.data.name);
+                table.find('.service-phone').html(res.data.phone);
+                table.find('.service-area').html(res.data.province+'-'+res.data.city+'-'+res.data.district);
+                table.find('.service-address').html(res.data.addressinfo);
+                table.find('.service-telephone').html(res.data.telephone);
+                table.find('.service-idcard').html(res.data.idcard);
+                table.find('.service-account').html(res.data.account);
+                if(res.data.paytype){
+                    res.data.paytype = '其他方式支付';
+                    if(res.data.paytype==1){
+                        res.data.paytype = '微信支付';
+                    }
+                }else{
+                    res.data.paytype = '未支付';
+                }
+                table.find('.service-paytype').html(res.data.paytype);
+
+                $('#st-show').modal('show');
+            })
+        });
+
+
+        // ajax
+        function getInfo(url, data, Callback) {
+            if(url){
+                $.ajax({
+                    url:url,
+                    type:'post',
+                    dataType:'json',
+                    cache: false,
+                    data:data,
+                    success:function(res){
+                        console.log(res);
+                        if(res.status == 200) {
+                            if(Callback){
+                                Callback(res);
+                            }else{
+                                parent.layer.msg(res.msg);
+                                location.reload();
+                            }
+                        }
+                        layer.closeAll();
+                    }
+                });
+            }
+        }
 
         console.log(where_map);
 

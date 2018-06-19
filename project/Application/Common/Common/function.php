@@ -1240,8 +1240,8 @@ function getOrderId()
         $oid = M('shop_order')->where("`order_id`='{$orderId}'")->field('id')->find();
         $osid = D('OrderSetmeal')->where("`order_id`='{$orderId}'")->field('id')->find();
         $flow = M('flow')->where("`order_id`='{$orderId}'")->field('id')->find();
-
-        if ($oid || $osid || $flow) {
+        $servicepay = M('service_apply')->where("`orderid`='{$orderId}'")->field('id')->find();
+        if ($oid || $osid || $flow || $servicepay) {
             $res = true;
         } else {
             $res = false;
