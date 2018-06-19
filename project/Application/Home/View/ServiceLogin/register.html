@@ -87,18 +87,10 @@
 				<div>
 					<span class="iconfont icon-41" @click="imageChoose($event)"></span>
 					<div class="picShow yinye">
-						<!-- <span class="bottx">
+						<span class="bottx" v-for="(imgContents, index) in imgContent">
 							<span class="topx" @click="removePic($event)">x</span>
-							<img src="__PUBLIC__/Home/images/1a.jpg" alt="">
+							<img :src="imgContents.src" alt="">
 						</span>
-						<span class="bottx">
-							<span class="topx" @click="removePic($event)">x</span>
-							<img src="__PUBLIC__/Home/images/1a.jpg" alt="">
-						</span>
-						<span class="bottx">
-							<span class="topx" @click="removePic($event)">x</span>
-							<img src="__PUBLIC__/Home/images/1a.jpg" alt="">
-						</span> -->
 					</div>
 				</div>
 			</div>
@@ -107,18 +99,10 @@
 				<div>
 					<span class="iconfont icon-41" @click="imageChoose($event)"></span>
 					<div class="picShow hezuo">
-						<!-- <span class="bottx">
-							<span class="topx">x</span>
-							<img src="__PUBLIC__/Home/images/1a.jpg" alt="">
+						<span class="bottx" v-for="(imgHezuos, index) in imgHezuo">
+							<span class="topx" @click="removePic($event)">x</span>
+							<img :src="imgHezuos.src" alt="">
 						</span>
-						<span class="bottx">
-							<span class="topx">x</span>
-							<img src="__PUBLIC__/Home/images/1a.jpg" alt="">
-						</span>
-						<span class="bottx">
-							<span class="topx">x</span>
-							<img src="__PUBLIC__/Home/images/1a.jpg" alt="">
-						</span> -->
 					</div>
 				</div>
 			</div>
@@ -203,7 +187,7 @@
 <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 <script src="__PUBLIC__/Home/js/public.js"></script>
 <script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
-<script src="__PUBLIC__/Home/js/wx_imgUpload.js"></script>
+<script src="__PUBLIC__/Home/js/wx_imgUpload.js?qwe={{:time()}}"></script>
 <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
 <script src="__PUBLIC__/Home/js/service/register.js?qwe={{:time()}}"></script>
 <script>
@@ -212,7 +196,7 @@
 		console.log("infos",info);
 		//微信接口
 		wx.config({
-			debug: true,
+			debug: false,
 			appId: '{{$wxinfo["appId"]}}',
 			timestamp: '{{$wxinfo["timestamp"]}}',
 			nonceStr: '{{$wxinfo["nonceStr"]}}',
