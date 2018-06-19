@@ -102,20 +102,44 @@ class PaymentSystemController extends CommonController
 
     // 信息确认并生成订单
     public function information()
-    {   
+    {
         // echo json_decode($_POST['data']);
         $data = json_decode($_POST['data'],'true');
         
         // 库存检测
-
+//        $result = [];
         foreach($data as $val){
             $result[] =  [
-                    'status'=> D('inventory')->where(['gid'=>$val['gid'],'(CAST(allnum AS SIGNED) - CAST(abnormalnum AS SIGNED))'=>['LT',(int)$val['num']]])->count()?'fail':'pass',
+                    'status'=> D('inventory')->where(['gid'=>$val['gid'],'(CAST(allnum AS SIGNED) - CAST(abnormalnum AS SIGNED))'=>['LT',(int)$val['num']]])->getField('allnum'),
                     'gid'=>$val['gid']
             ];
+            foreach ($result as $key => $v) {
+                if ($v['status'] < $val['num']) {
+
+
+                    $result[$key]['status'] = 'fail';
+                } else {
+                    $result[$key]['status'] = 'pass';
+
+                }
+            }
+
+
+//            $count = M('inventory')->where(['gid'=>$val['gid']])->count('allnum');
+//            if ($count < $val['num']) {
+//                $result['status'] = 'fail';
+//                $result['gid'] = $val['gid'];
+////                $this->ajaxReturn(['code'=>604,'msg'=>'商品库存不足','data'=>$result]);
+//            }
         }
 
+
+//      $a  =  M('inventory')->where(['gid'=>$val['gid']])->count('allnum');
+
+
+////
         if(in_array('fail',\array_column($result,'status'))){
+
             $this->ajaxReturn(['code'=>604,'msg'=>'商品库存不足','data'=>$result]);
         }
 
