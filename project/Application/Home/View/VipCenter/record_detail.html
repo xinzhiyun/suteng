@@ -29,9 +29,10 @@
 		<button :style='{display: showEval}' class='evaluate' @click='evaluate'>评价</button>
 		<div class='evalPanel' :style='evalPanel'>
 			<!-- <h3>评论本次服务</h3> -->
-			<p>工单号：&nbsp;&nbsp;&nbsp;<span v-text='workid'></span></p>
-			<p>安装人员：<span v-text='name'></span></p>
+			<p>工单号：<span v-text='workid'></span></p>
+			<p>安装师傅：<span v-text='name'></span></p>
 			<ul>
+				<h2 class='title'>为服务打星</h2>
 				<li class='xinx'>
 					<span class="iconfont icon-xingxing" :class='{activeClass: star >= 1}' @click='xingx(1)'></span>
 					<span class="iconfont icon-xingxing" :class='{activeClass: star >= 2}' @click='xingx(2)'></span>
@@ -44,14 +45,16 @@
 				</li>
 				<li class='say'>
 					<!-- <label for="">其他想对师傅说的话</label> -->
-					<textarea name="" id="" cols="30" rows="7" placeholder="想对安装师傅的悄悄话，大胆说出来吧" v-model='text'></textarea>
+					<textarea name="" id="" cols="30" rows="9" placeholder="请写下您的宝贵评价吧" v-model='text' @click='textfocus' @focus='textfocus' @blur='textblur'></textarea>
+					<p class='noti'>仅限120字以内</p>
 				</li>
-				<p class='noti'>仅限120字以内</p>
 				<p>
 					<i :class='nonameclass'></i>
 					<label for="noname" @click='noname'>匿名提交</label>
 				</p>
-				<button class='evaluate' :style='{display: showEval}' @touchend='upEval'>提交</button>
+				<div class='upbtn'>
+					<button class='evaluate' :style='{display: showEval}' @touchend='upEval'>提交评价</button>
+				</div>
 			</ul>
 		</div>
 	</div>
@@ -81,9 +84,7 @@
 					nonameclass: 'iconfont icon-fangxingweixuanzhong',
 				}
 			},
-			mounted() {
-				
-			},
+			mounted() {},
 			created (){
 				var vm = this;
 				// 获取详情数据
@@ -115,7 +116,19 @@
 						callback(location.hash);
 					}
 				}
-				
+				var height = window.innerHeight;
+				var top = $('.say>textarea').offset().top;
+				window.onresize = function(){
+					console.log('top: ',top);
+					var evalpanel = document.querySelector('.evalPanel');
+
+					if(height > window.innerHeight){
+						// evalpanel.style.transform = 'translateY(-'+ top +'px)';	
+					}else{
+						evalpanel.style.transform = 'translateY(0%)';
+					}
+					
+				}
 			},
 			methods: { 
 				// 获取详情数据
@@ -263,6 +276,16 @@
 						this.nonameclass = 'iconfont icon-fangxingweixuanzhong';
 					}
 					
+				},
+				// text点击
+				textfocus() {
+					var evalpanel = document.querySelector('.evalPanel');
+					evalpanel.style.transform = 'translateY(-40%)';
+				},
+				// 失去焦点
+				textblur() {
+					var evalpanel = document.querySelector('.evalPanel');
+					evalpanel.style.transform = 'translateY(0%)';
 				}
 			}
 		})

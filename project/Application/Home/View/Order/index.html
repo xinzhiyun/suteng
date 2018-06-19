@@ -1411,6 +1411,20 @@
 			callback(location.hash);
 		}
 	}
+
+	var height = window.innerHeight;
+	var top = $('.say>textarea').offset().top;
+	window.onresize = function(){
+		console.log('top: ',top);
+		var evalpanel = document.querySelector('.evalPanel');
+
+		if(height > window.innerHeight){
+			// evalpanel.style.transform = 'translateY(-'+ top +'px)';	
+		}else{
+			evalpanel.style.transform = 'translateY(0%)';
+		}
+		
+	}
 </script>
 </body>
 </html>
