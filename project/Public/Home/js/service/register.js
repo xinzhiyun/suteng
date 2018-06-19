@@ -371,8 +371,9 @@
                         layer.msg("请输入客服电话");
                         return;
                     }else {
-                        if(!phoneReg.test(vm.serviceInfos.stationer)) {
-                            layer.msg("请输入正确的电话号码");
+                        var regexp = /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/;
+                        if(!regexp.test(vm.serviceInfos.stationer)) {
+                            layer.msg("请输入正确的客服电话");
                             return;
                         }
                     }
