@@ -28,6 +28,78 @@ class Work
         '99'=>  '工单完成',      // 工单完成(关闭)
     ];
 
+
+    /** 添加工单记录  //下版本的方法
+     * @param $wid int 工单ID
+     * @param $mode int 信息类型
+     * @param array $info array 信息
+     */
+    public static function adds($wid, $mode)
+    {
+        $work =  M('work')->where('id='.$wid)->find();
+        if(empty($work)) {
+            Log::write('工单'.$wid.'不存在','ERR 工单记录');
+            return false;
+        }
+        $data['wid']  = $wid;
+        $data['time'] = date("Y-m-d H:i:s",time());
+
+        $data['title'] = self::$title[$mode];
+
+        switch ($mode) {
+            case 1:
+
+                $data['content'] = json_encode([['title'=>'系统正在优先为您就近安排服务站,预计10分钟.']]);
+                break;
+
+            case 2:
+                $data['content'] = json_encode([['title'=>'系统审核通过.']]);
+                break;
+
+            case 3:
+                $data['content'] = json_encode([['title'=>'系统审核未通过,请检查.']]);
+
+                break;
+            case 4:
+                if (empty($work['sid'])) { return false; }
+                if ($work['service_mode']==1) { // 第三方
+                    $service_info =  M('service_other')->where('id='.$work['sid'])->find();
+                }else{
+                    $service_info =  M('service')->where('id='.$work['sid'])->find();
+                }
+                $content =[
+                    ['title'=>'站点名称', 'value'=>$service_info['company']],
+                    ['title'=>'地址', 'value'=>$service_info['addressinfo']],
+                    ['title'=>'客服电话', 'value'=>$service_info['telephone']],
+                    ['title'=>'服务站点正在为您优先安排安装师傅上门安装预计需要1-3个工作日.'],
+                ];
+
+                $data['content'] = json_encode($content);
+                break;
+
+            case 5:
+                if (empty($work['name'])) { return false; }
+                $_html  = '安装师傅:'.$work['name'].'<br>';
+                $_html .= '联系电话:'.$work['phone'].'<br>';
+                $_html .= '预约时间:'.$work['anry_time'].$work['anry_period'].'<br>';
+                $_html .= '请保持电话通畅,方便师傅联系上门服务.';
+                $data['content'] = $_html;
+                break;
+            case 7:
+                $data['content'] = "服务人员完成任务,待验收!";
+                break;
+            case 8:
+                $data['content'] = '任务已完成,请点击下面 评价 对本次服务进行评价.';
+                break;
+            case 99:
+                $data['content'] = '工单已关闭';
+                break;
+
+        }
+        return M('work_note')->add($data);
+    }
+
+
     /** 添加工单记录
      * @param $wid int 工单ID
      * @param $mode int 信息类型
