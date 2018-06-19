@@ -18,33 +18,12 @@
 	<div class='bgg'></div>
 	<div id='recoed_detail'>
 		<div class='content'>
-			<ul class='timeline cfix' v-for='(d,index) in detailList'>
-				<li class='fl'>
-					<span v-text='d.time[1].substr(0,5)'></span>
-					<p v-text='d.time[0].substr(2).replace("-","/").replace("-","/")'></p>
+			<ul class='timeline' v-for='d in detailList'>
+				<li class='cfix'>
+					<b class='fl' v-text='d.title'></b>
+					<span class='fr' v-text='d.time'></span>
 				</li>
-				<li class='fr'>
-					<!-- 标题 -->
-					<div class='title' v-if='index == 0'>工单号：<span v-text='workid'></span></div>
-					<div class='title' v-text='d.title'></div>
-					<div v-for='c in detailList.content'>
-						<!-- 提示 -->
-						<!-- <div v-if='!c.value' v-text='c.title'></div> -->
-						<div v-if='c.value && c.title != "地址"' class='keyvalue'>
-							<span v-text='c.title'></span>
-							<span>:
-								<span v-text='c.value'></span>
-							</span>
-						</div>
-						<div v-if='c.title == "地址" && index == (detailList.length-1)' style='margin-top:2vh;'>
-							<img src="__PUBLIC__/Home/images/addr.png" alt="">
-							<span v-text='c.title'></span>
-							<span>:
-								<span v-text='c.value'></span>
-							</span>
-						</div>
-					</div>
-				</li>
+				<li v-html='d.content'></li>
 			</ul>
 		</div>
 		<p class='notice' :style='{display: noticestyle}' v-text='notice'></p>
@@ -163,10 +142,6 @@
                             	vm.name = res.name;
                             	if(res.data && res.data.length){
                             		vm.noticestyle = "none";
-                            		for(var i=0; i<res.data.length; i++){
-                            			res.data[i].time = res.data[i].time.split(' ');
-                            			res.data.content = JSON.parse(res.data[i].content);
-                            		}
 									vm.detailList = res.data;
 									
 								}else{

@@ -26,10 +26,7 @@ body {
    	-webkit-box-shadow: 0 0 10px rgba(0,0,0,.1);
    	        box-shadow: 0 0 10px rgba(0,0,0,.1);
 }
-#recoed_detail>div.content {
-	padding-left: 9%;
-}
-#recoed_detail>div.content::before {
+.timeline>li.fr::before {
 	content: '';
     width: 1px;
     height: 88%;
@@ -39,15 +36,23 @@ body {
     border-radius: 4px;
     background: #f1f1f1;
 }
+.content {
+	overflow: hidden;
+}
+.title {
+	color: #333 !important;
+	font-size: .8rem;
+}
 .timeline {
 	position: relative;
-	margin: 2vh 0;
 }
 .timeline>li {
+	position: relative;
 	margin-top: 10px;
-	line-height: 2;
+	line-height: 2; 
+	text-align: center;
 }
-.timeline::before {
+.timeline>li.fr::before {
 	content: '';
 	width: 8px;
 	height: 8px;
@@ -56,13 +61,72 @@ body {
 	top: 10px;
 	border-radius: 50%;
 	background: #3ADCCF;
+	z-index: 9;
 }
+.timeline>li.fr::after {
+	content: '';
+	width: 1px;
+	height: 116%;
+	position: absolute;
+	left: -5.6%;
+	top: 10px;
+	border-radius: 50%;
+	background: #f1f1f1;
+}
+.timeline>li:first-child {
+	width: 16%;
+	font-size: .5rem;
+}
+.timeline>li:last-child {
+	width: 76%;
+	padding-bottom: 1vh;
+}
+.timeline:not(:last-child)>li:last-child {
+	border-bottom: 1px solid #f1f1f1;
+}
+
+.timeline>li.fl>span {
+	color: #333;
+}
+.timeline:first-child>li.fl>span {
+	color: red;
+}
+.timeline:first-child>li.fr::before {
+	content: '';
+	width: 10px;
+	height: 10px;
+	left: -7.6%;
+	box-shadow: 0 0 10px rgba(116, 232, 223, 0.8), 
+	0 0 10px rgba(116, 232, 223, 0.8), 
+	0 0 10px rgba(116, 232, 223, 0.8), 
+	0 0 10px rgba(116, 232, 223, 0.8);
+}
+.timeline img {
+	height: .7rem;
+    width: auto;
+    position: relative;
+    transform: translateY(2px);
+}
+.keyvalue>span:first-child {
+	width: 30%;
+	display: inline-block;
+	text-align: right;
+	vertical-align: top;
+}
+
+.keyvalue>span:last-child {
+	width: 66%;
+	display: inline-block;
+	text-align: left;
+}
+
+.timeline>li>div,
+.timeline>li>p,
 .timeline>li>span {
 	color: #999;
 }
-
-.timeline>li:nth-of-type(2) {
-	color: #999;
+.timeline>li.fr{
+	font-size: .6rem;
 }
 .notice {
 	position: fixed;
