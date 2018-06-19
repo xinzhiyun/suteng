@@ -53,8 +53,9 @@ body {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 4% 0;
+	padding: 4% 2vw;
 	border-bottom: 1px solid #f6f6f6;
+	background: #fff;
 }
 .spli:active::after {
 	content: '';
@@ -68,8 +69,12 @@ body {
 }
 .content {
 	min-height: 83vh;
-	padding: 0 8px 10vw;
+	padding: 0 0 10vw;
+	background: #f1f1f1;
 	transform: translate3d(0,0,0);
+}
+.content .spli {
+	border-bottom: 4px solid #f1f1f1;
 }
 .content .spli>span{
 	flex: 1 0 33%;
@@ -83,7 +88,7 @@ body {
     left: 0;
     line-height: 10vw;
     text-align: center;
-    background: #f1f1f1;
+    background: #e6e6e6;
 }
 .notice {
 	position: fixed;
