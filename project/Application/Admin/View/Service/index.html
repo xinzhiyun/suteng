@@ -86,7 +86,7 @@
                                     <volist name="data" id="val">
                                         <tr data-id="{{$val.id}}" data-company="{{$val.company}}" data-area="{{$val.province}} - {{$val.city}} - {{$val.district}}" >
                                             <td>{{$i}}</td>
-                                            <td><a shref="{{:U('detail')}}?id={{$val.id}}">{{$val.company}}</a></td>
+                                            <td><a shref="{{:U('detail')}}?id={{$val.id}}" class="_show">{{$val.company}}</a></td>
                                             <td>{{$val.province}}</td>
                                             <td>{{$val.city}}</td>
                                             <td>{{$val.district}}</td>
@@ -98,13 +98,10 @@
                                                         <else/>{{$val.auser}}
                                                     </if>
                                                     <elseif condition="$val['status'] eq 2"/>
-                                                    代管:<a href="{{:U('detail')}}?id={{$val.t_id}}">{{$val.t_company}}</a>
+                                                    代管:<a shref="{{:U('detail')}}?id={{$val.t_id}}" class="_show">{{$val.t_company}}</a>
                                                     <elseif condition="$val['status'] eq 3"/>
-                                                    第三方:<a href="{{:U('detail')}}?id={{$val.t_id}}">{{$val.t_company}}</a>
+                                                    第三方:<a shref="{{:U('detail')}}?id={{$val.t_id}}" class="_show">{{$val.t_company}}</a>
                                                 </if>
-
-
-
                                             </td>
                                             <switch name="val.status">
                                                 <case value="0"><td>未开通</td></case>
@@ -437,7 +434,7 @@
                 </div>
                 <div class="modal-body">
                     <div>下列表表单中，带 * 项表示必填项</div>
-                    <form id="setAccountformdata" method="post" >
+                    <form id="setAccountformdata1" method="post" >
                         <input type="hidden" name="id" class="data_sid">
                         <table class="table table-striped table-bordered table-hover table-condensed">
                             <tr>
@@ -526,6 +523,60 @@
             </div>
         </div>
     </div>
+    <div class="modal inmodal" id="st-show" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" >
+                        服务站详情
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-bordered table-hover table-condensed show-table">
+                        <tr>
+                            <th width="25%">服务站名称：</th>
+                            <td class="service-company"></td>
+                        </tr>
+                        <tr>
+                            <th width="25%">服务站负责人：</th>
+                            <td class="service-name"></td>
+                        </tr>
+                        <tr>
+                            <th width="25%">联系方式：</th>
+                            <td class="service-phone"></td>
+                        </tr>
+                        <tr>
+                            <th width="25%">服务站区域：</th>
+                            <td class="service-area"></td>
+                        </tr>
+                        <tr>
+                            <th width="25%">服务站地址：</th>
+                            <td class="service-address"></td>
+                        </tr>
+
+                        <tr>
+                            <th width="25%">客服电话：</th>
+                            <td class="service-telephone"></td>
+                        </tr>
+                        <!--<tr>-->
+                            <!--<th width="25%">服务站状态：</th>-->
+                            <!--<td class="service-status"></td>-->
+                        <!--</tr>-->
+                        <tr>
+                            <th width="25%">账号：</th>
+                            <td class="service-account"></td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
     <script>
         var where_map = JSON.parse(JSON.stringify({{$_GET|json_encode}}));
@@ -573,6 +624,39 @@
                     parent.layer.msg(res.msg);
                 }
             },{parentid:parentid});
+        });
+
+        // 查看信息
+        $('._show').click(function() {
+            var obj = $(this).parents('tr');
+            var data = {};
+            data.id  = obj.data('id');
+            var url = "{{:U('getServiceInfo')}}";
+            getInfo(url,function (res) {
+                var table = $('#st-show .show-table');
+                table.find('.service-company').html(res.data.company);
+                table.find('.service-legal').html(res.data.legal);
+                console.log(res.data)
+
+                table.find('.service-name').html(res.data.name);
+                table.find('.service-phone').html(res.data.phone);
+                table.find('.service-area').html(res.data.province+'-'+res.data.city+'-'+res.data.district);
+                table.find('.service-address').html(res.data.address);
+                table.find('.service-telephone').html(res.data.telephone);
+
+                table.find('.service-account').html(res.data.admin_user);
+                if(res.data.paytype){
+                    res.data.paytype = '其他方式支付';
+                    if(res.data.paytype==1){
+                        res.data.paytype = '微信支付';
+                    }
+                }else{
+                    res.data.paytype = '未支付';
+                }
+                table.find('.service-paytype').html(res.data.paytype);
+
+                $('#st-show').modal('show');
+            },data)
         });
 
 

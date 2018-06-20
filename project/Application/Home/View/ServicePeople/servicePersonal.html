@@ -61,12 +61,14 @@
                     <span>&emsp;</span>
                 </a>
             </li>
-            <li class='bindweixin' :style='{display: !edit_status ? "block" : "none"}' style='display:none;'>
-                <a href="javascript:;">
-                    <span v-if='bindstatus'>绑定的微信账号: <span v-text='info.wxname' style='color:#00BCD4;'></span></span>
-                    <span @click='bindwx(bindstatus)' v-if='bindstatus' class='bindwx'>解绑微信</span>
-                    <span @click='bindwx(bindstatus)' v-if='!bindstatus' class='bindwx'>绑定微信</span>
+            <li class='bindweixin clearfix' :style='{display: !edit_status ? "block" : "none"}' style='display:none;'>
+                <a href="javascript:;" class="jiebang">
+                    <span v-if='bindstatus' style="white-space:nowrap;">绑定的微信账号: </span>
+                    <span v-text='info.wxname' style='color:#00BCD4;'></span>
+                    
                 </a>
+                <span @click='bindwx(bindstatus)' v-if='bindstatus' class='bindwx'>解绑微信</span>
+                <!-- <span @click='bindwx(bindstatus)' v-if='!bindstatus' class='bindwx'>绑定微信</span> -->
             </li>
         </ul>
         <button class='edit' @click='edit(edit_status)' v-if='!edit_status'>编辑</button>
@@ -142,7 +144,7 @@
                             }
                             data['phone'] = vm.info['phone'];
                         }
-
+                        
                         if((vm.info['pwd'] || vm.info['repwd']) && !vm.oldpwd){
                             layuiHint('请输入旧密码');
                             return
@@ -153,7 +155,7 @@
                         if(vm.info['pwd'] && !vm.info['repwd']){
                             layuiHint('请输入确认密码');
                             return
-
+                            
                         }else if(vm.info['pwd'] != vm.info['repwd']){
                             layuiHint('两次密码不一致');
                             return
@@ -192,7 +194,7 @@
                         // 编辑
                         
                     }
-
+                    
                     vm.edit_status = true;
                 }
             }

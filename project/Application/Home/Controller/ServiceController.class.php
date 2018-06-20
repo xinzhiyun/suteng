@@ -23,10 +23,23 @@ class ServiceController extends ServiceCommonController
         $workModel = M('work');
 
         $map['result'] = 0;
+        $work[0] = $workModel->where($map)->count();
+
+        $map['result'] = 1;
         $work[1] = $workModel->where($map)->count();
 
-        $map['result'] = 2;
+        $map['result'] = 3;
         $work[2] = $workModel->where($map)->count();
+
+        $map['result']=['egt',3];
+        $work[3] = $workModel->where($map)->count();
+
+        unset($map['result']);
+        $work[4] = $workModel->where($map)->count();
+
+        $map = ['sid'=>$sid];
+        $work[5] = M('service_users')->where($map)->count();
+
 
         $this->assign('work',$work);
         $this->display();

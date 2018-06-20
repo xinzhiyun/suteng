@@ -61,6 +61,25 @@ class ServiceController extends CommonController
         $this->display();
     }
 
+    //服务站详情
+    public function getServiceInfo()
+    {
+        try {
+            $post = I('post.');
+            if(empty($post['id']) ){
+                E('数据错误',40001);
+            }
+
+            $res = M('service')->where('id='.$post['id'])->find();
+            if(empty($res)) {E('无数据',200);}
+            $res['admin_user']=M('admin_user')->find($res['auid']);
+            $this->toJson(['data'=>$res],'获取成功',200);
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
     /**
      * 服务站申请
      */
@@ -231,8 +250,11 @@ class ServiceController extends CommonController
             $saveData['auid']  = $data['auid'];
             $saveData['status'] = 1;
 
+            // 开通账号
 
-             return M('service')->where('id='.$sid)->save($saveData);
+            M('admin_user')->where('id='.$data['auid'])->save(['status'=>1, 'updatetime'=>time()]);
+
+            return M('service')->where('id='.$sid)->save($saveData);
         } catch (\Exception $e) {
             $this->toJson($e);
         }

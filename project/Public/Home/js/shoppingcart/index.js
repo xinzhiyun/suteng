@@ -75,7 +75,7 @@ $(function(){
 			
 			// 将购物车选中的商品存到本地sessionStorage, 给订单确认页面使用
 			sessionStorage.setItem("shopCar_data",JSON.stringify(shopCar_data));
-			console.log(shopCar_data)
+			// console.log(shopCar_data)
 			// 发送ajax请求让后台生成订单号
 			$.ajax({
 				url: getURL('Home','PaymentSystem/information'),
@@ -95,17 +95,20 @@ $(function(){
 							for(var i = 0; i < res.data.length; i++) {
 								// 库存余额剩余为零
 								if(res.data[i].status == "fail") {
+									console.log("无库存");
 									// 显示无库存提示
 									$("."+res.data[i].gid).text("剩余库存" + allNum[res.data[i].gid] + "件").css("display", "block");
 									// 让无库存的商品去掉勾勾
 									$("."+res.data[i].gid).parent(".itemcarRight").siblings(".itemcarLeft").children(".xuanzhong").children("i").removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
 								}else {
 									// 有库存但是库存小于用户选中的数量
-									var userNum = $("." + res.data[i].gid).siblings(".roPrice").children(".num").children(".number").val(); //用户选择的数量
-									if(userNum > allNum[res.data[i].gid]) {
+									var userNum = parseInt($("." + res.data[i].gid).siblings(".roPrice").children(".num").children(".number").val()); //用户选择的数量
+									if(userNum > +allNum[res.data[i].gid]) {
 										$("."+res.data[i].gid).text("剩余库存" + allNum[res.data[i].gid] + "件").css("display", "block");
 										// 让无库存的商品去掉勾勾
 										$("."+res.data[i].gid).parent(".itemcarRight").siblings(".itemcarLeft").children(".xuanzhong").children("i").removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+									}else {
+										console.log("有库存而且可以买")
 									}
 
 								}

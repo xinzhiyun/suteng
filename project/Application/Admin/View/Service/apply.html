@@ -8,29 +8,29 @@
                     <div class="ibox-title">
                         <h5>服务站管理 <small>服务站申请列表</small></h5>
                     </div>
-                <form method="get" action="{{:U('apply')}}" class="form-inline" id='searchdiv'>
-                    <div class="form-group " >
-                        <select name="key" class="form-control where_key" >
-                            <option class="where_key_company" value="company">服务站名称</option>
-                            <option class="where_key_user" value="user">客户名称</option>
-                            <option class="where_key_phone" value="user">客户电话</option>
-                        </select>
-                        <input type="text" name="keywords" placeholder="输入搜索关键字"  value="{{$_GET['keywords']}}"
-                               class="input form-control where_key_box where_key_box_name where_key_box_user"
-                               style="width:40%">
-                        <select name="status" class="form-control where_status" name="account" style="width:30%;">
-                            <option  class="where_status_"  value="">-- 状态 --</option>
-                            <option  class="where_status_0" value="0">未开通</option>
-                            <option  class="where_status_1" value="1">已开通</option>
-                            <option  class="where_status_2" value="2">被代管</option>
-                            <option  class="where_status_3" value="3">第三方代管</option>
-                            <option  class="where_status_4" value="4">被关闭</option>
-                        </select>
-                        <!--状态{0:未开通 1:已开通 2:被代管(服务站代管) 3:被代管(第三方代管) 4:被关闭 }-->
-                    </div>
-                    <button type="submit" class="btn btn btn-primary submitbtn" name="sou" value="1">搜索</button>
+                <!--<form method="get" action="{{:U('apply')}}" class="form-inline" id='searchdiv'>-->
+                    <!--<div class="form-group " >-->
+                        <!--<select name="key" class="form-control where_key" >-->
+                            <!--<option class="where_key_company" value="company">服务站名称</option>-->
+                            <!--<option class="where_key_user" value="user">客户名称</option>-->
+                            <!--<option class="where_key_phone" value="user">客户电话</option>-->
+                        <!--</select>-->
+                        <!--<input type="text" name="keywords" placeholder="输入搜索关键字"  value="{{$_GET['keywords']}}"-->
+                               <!--class="input form-control where_key_box where_key_box_name where_key_box_user"-->
+                               <!--style="width:40%">-->
+                        <!--<select name="status" class="form-control where_status" name="account" style="width:30%;">-->
+                            <!--<option  class="where_status_"  value="">&#45;&#45; 状态 &#45;&#45;</option>-->
+                            <!--<option  class="where_status_0" value="0">未开通</option>-->
+                            <!--<option  class="where_status_1" value="1">已开通</option>-->
+                            <!--<option  class="where_status_2" value="2">被代管</option>-->
+                            <!--<option  class="where_status_3" value="3">第三方代管</option>-->
+                            <!--<option  class="where_status_4" value="4">被关闭</option>-->
+                        <!--</select>-->
+                        <!--&lt;!&ndash;状态{0:未开通 1:已开通 2:被代管(服务站代管) 3:被代管(第三方代管) 4:被关闭 }&ndash;&gt;-->
+                    <!--</div>-->
+                    <!--<button type="submit" class="btn btn btn-primary submitbtn" name="sou" value="1">搜索</button>-->
 
-                </form>
+                <!--</form>-->
                     <div class="ibox-content">
                         <table class="table">
                             <thead>

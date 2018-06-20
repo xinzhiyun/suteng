@@ -8018,19 +8018,19 @@ body.skin-3 {
     width: 8rem;
     opacity: 0;
 }
-.picShow > span{
+.picShows > span{
     display: inline-block;
-    width: 8rem;
+    /* width: 8rem; */
     height: 5rem;
     text-align: center;
     position: relative;
-    margin-right: .8rem;
+    margin-right: 1rem;
 }
-.picShow > span > img {
+.picShows > span > img {
     height: 100%;
-    width: 100%;
+    
 }
-.picShow > span > i {
+.picShows > span > .delPic {
     position: absolute;
     top: -1rem;
     right: -.4rem;

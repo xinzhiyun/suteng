@@ -26,6 +26,10 @@ class ServiceLoginController extends Controller
 
                 if($info){
                     if ($info['password'] == $password) {
+
+                        if(empty($info['status'])){
+                            E('您的账号还未开通!',40002);
+                        }
                         unset($info['password']);
                         // 万事大吉
                         $_SESSION['serviceInfo'] = $info;
@@ -71,6 +75,9 @@ class ServiceLoginController extends Controller
             if($info){
                 if ($info['password'] == $password) {
                     unset($info['password']);
+                    if(empty($info['status'])){
+                        E('您的账号还未开通!',40002);
+                    }
                     // 万事大吉
                     $_SESSION['servicepeople'] = $info;
                     E('登录成功',200);// 主页

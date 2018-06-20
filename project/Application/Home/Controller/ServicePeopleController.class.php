@@ -24,6 +24,9 @@ class ServicePeopleController extends Controller
         // 自动登录
         if(empty($_SESSION['servicepeople'])){
             $info = M('service_users')->where("open_id='{$_SESSION['open_id']}'")->find();
+            if(empty($info['status'])){
+                notice('您的账号还未开通','peopleIndex','ServiceLogin');
+            }
             if($info) {
                 unset($info['password']);
                 $_SESSION['servicepeople'] = $info;
@@ -348,7 +351,7 @@ class ServicePeopleController extends Controller
 
 
             if($post['operate']=='1'){
-                $data['result'] = 1;
+                $data['result'] = 0;// 重新派遣
                 $data['refuse'] = 1;// 拒绝状态
             } elseif($post['operate']=='2') {
                 $data['result'] = 2;

@@ -16,8 +16,9 @@ body {
     position: relative;
 }
 .main > ul > li > a {
-    height: 2rem;
-    line-height: 2rem;
+    /* height: 2rem; */
+    /* line-height: 2rem; */
+    padding: .6rem 0;
     display: flex;
     justify-content: space-between;
     font-size: .7rem;
@@ -45,15 +46,15 @@ body {
     padding: 10px 0;
 }
 .bindwx {
-    height: 1.4rem;
-    position: relative;
-    line-height: 1.4rem;
-    top: 50%;
-    transform: translateY(-50%);
+    padding: .2rem .4rem;
     color: #fff !important;
     background: #f43030;
-    padding: 2px 6px;
     border-radius: 6px;
+    font-size: .5rem;
+    float:right;
+}
+.bindweixin {
+    padding-bottom: .3rem !important;
 }
 .bindwx:active {
     background: #b90707;

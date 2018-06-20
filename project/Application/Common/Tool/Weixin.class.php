@@ -12,6 +12,11 @@ class Weixin
 {
     public static $_wx;
 
+    public static $templates=[  // 信息模板ID
+        'apply_pass'=>'',   // 服务站申请-审核通过
+        'apply_fall'=>'',   // 服务站申请-审核不通过
+    ];
+
     public static function wx_sdk(){
         if(!(self::$_wx instanceof WeixinJssdk)){
             self::$_wx = new WeixinJssdk;
@@ -19,12 +24,28 @@ class Weixin
         return self::$_wx;
     }
 
-
-    public function sendMsg($openid, $template_id, $data, $url)
+    /**
+     * 模板消息通知
+     *
+     * $data = ['keyword1'=>["value"=>"巧克力","color"=>"#173177"], ....  ]
+     */
+    public function sendTplNotice($openid, $template_id, $data, $url='')
     {
 
         $api = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=".self::getAccessToken();
-        $userInfo = self::httpGet($api);
+
+        $sendData=[
+            'touser'=>$openid,
+            'template_id'=>$template_id,
+            'data'=>$data
+        ];
+
+        if(!empty($url)){
+            $sendData['url']=$url;
+        }
+
+        return self::httpPost($api,json_encode($sendData));
+
     }
     
 
@@ -46,7 +67,6 @@ class Weixin
     {
         $accessToken = self::getAccessToken();
         $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$accessToken.'&openid='.$openid.'&lang=zh_CN';
-
         // 发送请求获取用户信息
         $userInfo = self::httpGet($url);
         // 把 JSON 格式的字符串转换为PHP数组
@@ -68,9 +88,9 @@ class Weixin
      * @param $url
      * @return mixed
      */
-    public static function httpPost($url)
+    public static function httpPost($url,$data)
     {
-        return  self::wx_sdk()->httpGet($url);
+        return  self::wx_sdk()->httpPost($url, $data);
     }
 
 
