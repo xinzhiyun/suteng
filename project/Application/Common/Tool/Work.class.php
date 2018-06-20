@@ -58,7 +58,7 @@ class Work
 
             case '3':
                 $content[] = ['title'=>'您提交的工单不符合售后服务相关规定,请重新提交.'];
-                $content[] = ['title'=>'若有疑问，请致电客服：<a href="tel:020-23325238">020-23325238</a>'];
+                $content[] = ['title'=>'若有疑问，请致电客服：<a class="tel" href="tel:020-23325238">020-23325238</a>'];
                 break;
 
             case '4':
@@ -73,7 +73,7 @@ class Work
                 $content[] = ['title'=>'服务站联系人', 'value'=>$service_info['name']];
                 $content[] = [
                     'title'=>'服务站客服电话',
-                    'value'=>"<a href='tel:{$service_info['telephone']}'>".$service_info['telephone'].'</a>'
+                    'value'=>"<a class='tel' href='tel:{$service_info['telephone']}'>".$service_info['telephone'].'</a>'
                 ];
                 break;
 
@@ -81,14 +81,14 @@ class Work
                 if (empty($work['name'])) { return false; }
 
                 $content[] = ['title'=>'已委派服务人员', 'value'=>$work['name']];
-                $content[] = ['title'=>'电话', 'value'=>"<a href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
+                $content[] = ['title'=>'联系电话', 'value'=>"<a class='tel' href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
                 $content[] = ['title'=>'上门服务时间', 'value'=>$work['anry_time'].$work['anry_period']];
                 $content[] = ['title'=>'服务人员会电话联系您,请保持电话畅通，谢谢.'];
                 break;
 
             case '6':
                 $content[] = ['title'=>'已委派服务人员', 'value'=>$work['name']];
-                $content[] = ['title'=>'电话', 'value'=>"<a href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
+                $content[] = ['title'=>'联系电话', 'value'=>"<a class='tel' href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
                 $content[] = ['title'=>'上门服务时间', 'value'=>$work['anry_time'].$work['anry_period']];
                 $content[] = ['title'=>'服务人员会电话联系您,请保持电话畅通，谢谢.'];
 
@@ -96,26 +96,26 @@ class Work
 
             case '7':
                 $content[] = ['title'=>'服务人员', 'value'=>$work['name']];
-                $content[] = ['title'=>'电话', 'value'=>"<a href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
+                $content[] = ['title'=>'联系电话', 'value'=>"<a class='tel' href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
                 $content[] = ['title'=>'系统已收到安装人员为您上门服务的详细记录.'];
 
                 break;
 
             case '8':
                 $content[] = ['title'=>'服务人员', 'value'=>$work['name']];
-                $content[] = ['title'=>'电话', 'value'=>"<a href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
+                $content[] = ['title'=>'联系电话', 'value'=>"<a class='tel' href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
                 $content[] = ['title'=>'您好,请您对此次的售后服务进行评价.'];
                 break;
 
             case '9':
                 $content[] = ['title'=>'服务人员', 'value'=>$work['name']];
-                $content[] = ['title'=>'电话', 'value'=>"<a href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
+                $content[] = ['title'=>'联系电话', 'value'=>"<a class='tel' href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
                 $content[] = ['title'=>'评价成功,感谢您对我们工作的支持.'];
                 break;
 
             case '99':
                 $content[] = ['title'=>'服务人员', 'value'=>$work['name']];
-                $content[] = ['title'=>'电话', 'value'=>"<a href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
+                $content[] = ['title'=>'联系电话', 'value'=>"<a class='tel' href='tel:{$work['phone']}'>".$work['phone'].'</a>'];
                 $content[] = ['title'=>'您好,您此次的工单服务圆满完成.'];
                 $content[] = ['title'=>'再次感谢您对我们工作的支持.'];
                 break;
