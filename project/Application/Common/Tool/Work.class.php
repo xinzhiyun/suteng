@@ -4,11 +4,9 @@
  * User: 李振东
  * Time: 2018/3/29 下午2:37
  */
-
 namespace Common\Tool;
 
 use Think\Log;
-
 class Work
 {
     public static $title = [
