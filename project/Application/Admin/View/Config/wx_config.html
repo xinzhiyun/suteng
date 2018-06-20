@@ -74,7 +74,7 @@ $(".per_describe").val(decodeURI('{{$data.per_describe}}'));
 
         var data = {};
         data.title  = $("input[name='title']").val();
-        data.description  = $("input[name='description']").val();
+        data.description  = $("textarea[name='description']").val();
 
         $.ajax({
             url:"{{:U('Admin/Config/wx_config')}}",
