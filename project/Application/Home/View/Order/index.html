@@ -1425,8 +1425,13 @@
 
 	// 点击退货输入框
 	function scrollUp(el){
-		expressoffsetTop = el.parentNode.offsetTop;
-		expressPanel.style.transform = 'translateY(-'+ expressoffsetTop/2.2 +'px)';
+		if(window.__wxjs_is_wkwebview){ // IOS
+		
+		}else{	// 非IOS（webkit内核）
+			expressoffsetTop = el.parentNode.offsetTop/2.2;
+			console.log('expressoffsetTop: ',expressoffsetTop);
+			expressPanel.style.transform = 'translateY(-'+ expressoffsetTop +'px)';
+		}
 	}
 </script>
 </body>
