@@ -198,6 +198,50 @@ class ShopController extends CommonController
         }
     }
 
+
+    /**
+     * 二进制流图片上传
+     * @param  [type] $image     二进制图片
+     * @param  [type] $imageSize 图片大小
+     * @return mix            图片路径，false
+     */
+    public function upload($image,$imageSize)
+    {
+        $key = fopen($image, "r");
+        $file = fread($key, $imageSize); //二进制数据流
+        fclose ( $key );
+
+        do{
+             //设置目录+图片完整路径
+            $save_name = md5 (time().mt_rand(100000,9999999)).'.png';
+            $save_dir = './Uploads/goods';
+            ! is_dir ( $save_dir ) && mkdir ( $save_dir,0777,1 );
+            $save_fullpath = $save_dir . '/' . $save_name;
+        }while (file_exists());
+
+        @$fp = fopen ( $save_fullpath, 'w+' );
+        
+        if (fwrite ( $fp, $file ) != false) {
+            return $save_fullpath;
+        } else {
+            return false;
+        }
+        fclose ( $fp );        
+    }
+
+    /**
+     * [删除文件]
+     * @param  Array $files 文件路径数组
+     * @return Boolean        
+     */
+    public function rmfiles($files)
+    {
+        foreach ($files as $key => $value) {
+            return unlink($value);
+        }
+    }
+
+
     // 商品添加处理
     public function goodsAction()
     {
@@ -211,9 +255,39 @@ class ShopController extends CommonController
             $cate = D('Category');
             $data = I('post.');
             $price = $data['price'];
+
+            //图片上传         
+            // 二进制文件上传简单处理
+            if (!empty($_FILES["UploadForm"])) {
+                foreach ($_FILES["UploadForm"]["tmp_name"] as $key => $value) {
+                    $image = $_FILES["UploadForm"]["tmp_name"][$key];
+                    $imageSize = $_FILES["UploadForm"]["size"][$key];
+                    $info[] = $this->upload($image,$imageSize);                        
+                }
+            }else{
+                E('没有文件上传', 602);
+            }   
+            
+            if(!$info) {// 上传错误提示错误信息
+                E('上传错误',606);
+            }
+            if(!(count($info) <= 5)){
+                E('只能添加五张张图片',604);
+            }
+
+
+            foreach ($info as $k => $val) {
+                $path .= $val.'|';
+            }
+            $goods['pic'] = $path;
+
+
+            
             $goods['cid'] = $cate->sureCate();
             if(!$goods['cid']) E('请选择分类', 605);
             $goods['name'] = $data['name'];
+            dump($goods);die;
+            
             // 事务开启
             $goods_add->startTrans();
             if(!$goods_add->create($goods)) {
