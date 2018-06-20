@@ -682,6 +682,8 @@
         });
         // 添加服务站
         $(".company_add").click(function () {
+            parent.layer.msg('已临时禁用服务站添加功能!');
+            return  false;
             var tr = $(this).parents('tr');
 
             $('#add_company').val(tr.data('company'));
