@@ -6,8 +6,8 @@
 	var fileList;	// 获取的图片文件
 	formData.append("file",file);
 	/*
-		图片压缩上传
-	 */
+	图片压缩上传
+	*/
 	filePic = false;
 	$(".file_upload").on('change',function(e){
 		var fileList = e.target.files;
@@ -15,11 +15,11 @@
 		if(fileList.length == 1){
 			filePic = true;
 			var reader =new FileReader();
-				
+			
 			//图片显示
 			var span = $("<span></span>"),
-				span1 = $("<span>X</span>"),
-				img = $('<img src="" alt="" />');
+			span1 = $("<span>X</span>"),
+			img = $('<img src="" alt="" />');
 			reader.readAsDataURL(fileList[0]);
 			reader.onload = function readerFun(e){
 				var result = this.result;
@@ -28,7 +28,7 @@
 					console.log("文件大小大于1M");
 					//文件大于1M则压缩后上传
 					img[0].src = compressImage(result);
-
+					
 				}else{
 					img[0].src = result;
 					// img[0].src = compressImage(result);	//测试用
@@ -46,26 +46,26 @@
 				}
 				
 				//最多3张图片
-				if($('#picShow>span').length > 2){
-					console.log('3张了');
-					$(".file_upload").css({display: 'none'});
-				}else{
-					$(".file_upload").css({display: 'block'});
-				}
-
+				// if($('#picShow>span').length > 2){
+				// 	console.log('3张了');
+				// 	$(".file_upload").css({display: 'none'});
+				// }else{
+				// 	$(".file_upload").css({display: 'block'});
+				// }
+				
 				/*
-					图片压缩
-				 */
+				图片压缩
+				*/
 				function compressImage(url) {
 					var canvas = document.createElement("canvas");
 					var ctx = canvas.getContext("2d");
 					var img = new Image();
 					img.src = url;
-
+					
 					img.onload = function(){
 						canvas.width = img.width*8;
 						canvas.height = img.height*8;
-
+						
 						setTimeout(function(){
 							ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 							img.src = canvas.toDataURL('image/jpeg', .5);
@@ -96,11 +96,11 @@
 				if(Object.prototype.toString.call(fileList[i]) === '[object File]'){
 					var reader =new FileReader();
 					(function(file){
-
+						
 						//图片显示
 						var span = $("<span></span>"),
-							span1 = $("<span>X</span>"),
-							img = $('<img src="" alt="" />');
+						span1 = $("<span>X</span>"),
+						img = $('<img src="" alt="" />');
 						reader.readAsDataURL(file);
 						reader.onload = function readerFun(e){
 							var result = this.result;
@@ -109,7 +109,7 @@
 								console.log("文件大小大于1M");
 								//文件大于1M则压缩后上传
 								img[0].src = compressImage(result);
-
+								
 							}else{
 								img[0].src = result;
 								// img[0].src = compressImage(result);	//测试用
@@ -127,26 +127,26 @@
 							}
 							
 							//最多3张图片
-							if($('#picShow>span').length > 2){
-								console.log('3张了');
-								$(".file_upload").css({display: 'none'});
-							}else{
-								$(".file_upload").css({display: 'block'});
-							}
-
+							// if($('#picShow>span').length > 2){
+							// 	console.log('3张了');
+							// 	$(".file_upload").css({display: 'none'});
+							// }else{
+							// 	$(".file_upload").css({display: 'block'});
+							// }
+							
 							/*
-								图片压缩
-							 */
+							图片压缩
+							*/
 							function compressImage(url) {
 								var canvas = document.createElement("canvas");
 								var ctx = canvas.getContext("2d");
 								var img = new Image();
 								img.src = url;
-
+								
 								img.onload = function(){
 									canvas.width = img.width*8;
 									canvas.height = img.height*8;
-
+									
 									setTimeout(function(){
 										ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 										img.src = canvas.toDataURL('image/jpeg', .5);
@@ -176,45 +176,50 @@
 		}
 		
 	})
-
+	
 	/**
-		点击上传的图片右上角的" x "，删除这张图片
-	 */ 
+	点击上传的图片右上角的" x "，删除这张图片
+	*/ 
 	$("#picShow").on("click", ".delPic", function(){
-		// console.log($(this).parent());
-		$(this).parent().remove()
-		//最多3张图片
-		$(".file_upload").css({display: 'block'});
-		var imgUpload = formData.getAll('UploadForm[]');
-		var index = Number($(this).attr('index'));		//第几张图片
+		var _this = this
+		layer.confirm('确认删除图片吗？', function(indexs){
+			// console.log($(this).parent());
+			$(_this).parent().remove()
+			//最多3张图片
+			$(".file_upload").css({display: 'block'});
+			var imgUpload = formData.getAll('UploadForm[]');
+			var index = Number($(_this).attr('index'));		//第几张图片
+			
+			// console.log('before: ',imgUpload);
+			//	清空formData数据
+			formData.delete('UploadForm[]');
+			
+			//删除当前元素在formData中的数据
+			imgUpload.splice(index,1);
+			// console.log(Object.prototype.toString.call(imgUpload[index]));
+			// console.log('after: ',imgUpload);
+			
+			//重新将图片数据添加到formData中
+			for(var i=0; i<imgUpload.length; i++){
+				formData.append('UploadForm[]', imgUpload[i])
+			}
+			console.log('after: ',formData.getAll('UploadForm[]'));
+			if(imgUpload.length == 0) {
+				filePic = false;
+			}
+			layer.close(indexs);
+		}); 
 		
-		// console.log('before: ',imgUpload);
-		//	清空formData数据
-		formData.delete('UploadForm[]');
-
-		//删除当前元素在formData中的数据
-		imgUpload.splice(index,1);
-		// console.log(Object.prototype.toString.call(imgUpload[index]));
-		// console.log('after: ',imgUpload);
 		
-		//重新将图片数据添加到formData中
-		for(var i=0; i<imgUpload.length; i++){
-			formData.append('UploadForm[]', imgUpload[i])
-		}
-		console.log('after: ',formData.getAll('UploadForm[]'));
-		if(imgUpload.length == 0) {
-			filePic = false;
-		}
- 
 	})
 	/*
-		将base64字符串转换为2进制
-	 */
+	将base64字符串转换为2进制
+	*/
 	function convert2Binary(dataURI){
 		var byteString = window.atob(dataURI.split(',')[1]);
 		var ab = new ArrayBuffer(byteString.length);
 		var ua = new Uint8Array(ab);
-
+		
 		for(var i=0; i<byteString.length; i++){
 			ua[i] = byteString.charCodeAt(i)
 		}
