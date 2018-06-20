@@ -250,8 +250,11 @@ class ServiceController extends CommonController
             $saveData['auid']  = $data['auid'];
             $saveData['status'] = 1;
 
+            // 开通账号
 
-             return M('service')->where('id='.$sid)->save($saveData);
+            M('admin_user')->where('id='.$data['auid'])->save(['status'=>1, 'updatetime'=>time()]);
+
+            return M('service')->where('id='.$sid)->save($saveData);
         } catch (\Exception $e) {
             $this->toJson($e);
         }
