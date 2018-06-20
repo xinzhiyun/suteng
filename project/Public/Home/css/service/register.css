@@ -134,16 +134,20 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
 	width: 100%;
 }
 .topx {
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	text-align: center;
+	display: inline-block;
 	position: absolute;
 	top: -.3rem;
 	right: 0;
 	color: white;
-	padding: 0 .2rem;
-	font-size: .4rem;
+	font-size: .5rem;
 	vertical-align: middle;
-	/* padding: 0 3px; */
+	border: 2px solid #fff;
 	background:red;
-	border-radius: 10px;
+	border-radius: 30px;
 }
 /*地区选择*/
 #areaChoose {
@@ -305,4 +309,13 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
 }
 .telphone > a > span {
 	font-size: 2rem;
+}
+.pswp__img {
+	width: 100%;
+	height: auto !important;
+	position: relative;
+	display: block;
+	top: 50% !important;
+	-webkit-transform: translateY(-50%) !important;
+	transform: translateY(-50%) !important;
 }
