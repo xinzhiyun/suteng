@@ -94,24 +94,24 @@ $(function(){
 							console.log(typeof res.data)
 							for(var i = 0; i < res.data.length; i++) {
 								// 库存余额剩余为零
-								if(res.data[i].status == "fail") {
-									console.log("无库存");
+								// if(res.data[i].status == "fail") {
+									// console.log("无库存");
 									// 显示无库存提示
 									$("."+res.data[i].gid).text("剩余库存" + allNum[res.data[i].gid] + "件").css("display", "block");
 									// 让无库存的商品去掉勾勾
 									$("."+res.data[i].gid).parent(".itemcarRight").siblings(".itemcarLeft").children(".xuanzhong").children("i").removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-								}else {
+								// }else {
 									// 有库存但是库存小于用户选中的数量
-									var userNum = parseInt($("." + res.data[i].gid).siblings(".roPrice").children(".num").children(".number").val()); //用户选择的数量
-									if(userNum > +allNum[res.data[i].gid]) {
-										$("."+res.data[i].gid).text("剩余库存" + allNum[res.data[i].gid] + "件").css("display", "block");
-										// 让无库存的商品去掉勾勾
-										$("."+res.data[i].gid).parent(".itemcarRight").siblings(".itemcarLeft").children(".xuanzhong").children("i").removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-									}else {
-										console.log("有库存而且可以买")
-									}
+									// var userNum = parseInt($("." + res.data[i].gid).siblings(".roPrice").children(".num").children(".number").val()); //用户选择的数量
+									// if(userNum > +allNum[res.data[i].gid]) {
+									// 	$("."+res.data[i].gid).text("剩余库存" + allNum[res.data[i].gid] + "件").css("display", "block");
+									// 	// 让无库存的商品去掉勾勾
+									// 	$("."+res.data[i].gid).parent(".itemcarRight").siblings(".itemcarLeft").children(".xuanzhong").children("i").removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+									// }else {
+									// 	console.log("有库存而且可以买")
+									// }
 
-								}
+								// }
 							}
 							// 重新计算商品的价格
 							var noStock = $(".itemCar").find("i[class='iconfont icon-xuanze']");

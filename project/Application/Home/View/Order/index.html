@@ -189,7 +189,7 @@
 		</p>
 		<p>
 			<label for="">快递单号：</label>&emsp;
-			<input type="text" class='recexpressnum'placeholder="请输入快递单号" onclick='scrollUp(this)'>
+			<input type="text" class='recexpressnum' placeholder="请输入快递单号" onclick='scrollUp(this)'>
 		</p>
 		<button class='exconfirm' onclick='exconfirm()'>确认</button>
 	</div>
@@ -1337,6 +1337,7 @@
 			return
 		}else{
 			if(!/[a-zA-Z0-9]/.test(recexpressnum.val().trim())){
+				layuiHint('快递单号只能英文数字组合');
 				recexpressnum.css({border: '1px solid red'});
 				return
 			}else{
@@ -1424,8 +1425,13 @@
 
 	// 点击退货输入框
 	function scrollUp(el){
-		expressoffsetTop = el.parentNode.offsetTop;
-		expressPanel.style.transform = 'translateY(-'+ expressoffsetTop/2 +'px)';
+		if(window.__wxjs_is_wkwebview){ // IOS
+		
+		}else{	// 非IOS（webkit内核）
+			expressoffsetTop = el.parentNode.offsetTop/2.2;
+			console.log('expressoffsetTop: ',expressoffsetTop);
+			expressPanel.style.transform = 'translateY(-'+ expressoffsetTop +'px)';
+		}
 	}
 </script>
 </body>

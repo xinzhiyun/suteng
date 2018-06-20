@@ -498,6 +498,28 @@
             notPhone() {
                 vm.aleady = false;
             },
+            openPhotoSwipe(index, arr) {
+                console.log('index: ',index);
+                var pswpElement = document.querySelectorAll('.pswp')[0];
+                var items = [];
+                for(var i = 0; i < arr.length; i++) {
+                    items.push({
+                        src: arr[i].src,
+                        w: 320,
+                        h: 640
+                    });
+                }
+                // define options (if needed)
+                var options = {
+                    // optionName: 'option value'
+                    // for example:
+                    history: true,
+                    index: index // start at first slide
+                };
+                
+                var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+                gallery.init();
+            }
         }
     })
 })();

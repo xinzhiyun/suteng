@@ -1,0 +1,102 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                    <h5>系统设置 <small>微信关注事件设置</small></h5>
+                </div>
+                    <div class="ibox-content">
+                        <form action="javascript:false;" method="post" class="form-horizontal" enctype="multipart/form-data">
+                            <!--<h3>服务站加盟费 <small style="color: red"></small></h3>-->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">微信关注消息标题</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="title" class="form-control"  value="{{$data.title}}">
+                                </div>
+                            </div>
+                            <h3> <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">微信关注消息描述</label>
+                                <div class="col-md-3">
+                                    <textarea name="description" cols="48" rows="5" class="_textarea">{{$data.description}}</textarea>
+                                </div>
+                            </div>
+                           <!--  <h3> <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">微信关注消息图片</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="src" class="form-control"  value="{{$data.src}}" >
+                                </div>
+                            </div>
+                            <h3> <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">微信关注消息链接</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="url" class="form-control"  value="{{$data.url}}" >
+                                </div>
+                            </div> -->
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" id="proportion" type="submit">保存</button>
+                                    <button class="btn btn-white" type="reset">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/switchery.min.js"></script>
+    <!-- iCheck -->
+    <script src="__PUBLIC__/Admin/js/plugins/iCheck/icheck.min.js"></script>
+<script>
+
+$(".dia_describe").val(decodeURI('{{$data.dia_describe}}'));
+$(".gold_describe").val(decodeURI('{{$data.gold_describe}}'));
+$(".per_describe").val(decodeURI('{{$data.per_describe}}'));
+    /**
+     * [ajaxData 设置佣金分配]
+     * @return {[type]}    [json数据]
+     */
+    $('#proportion').click(function(){
+
+        var data = {};
+        data.title  = $("input[name='title']").val();
+        data.description  = $("textarea[name='description']").val();
+
+        $.ajax({
+            url:"{{:U('Admin/Config/wx_config')}}",
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            data,
+            dataType:"json",
+            type: 'post',
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            success:function(res){
+                console.dir(res);
+                if(res.status==200){
+                    swal("设置成功！", res.message, "success");
+                    window.setTimeout(function() {
+                        location.href="{{:U('Admin/Config/wx_config')}}";
+                    },1000);
+                }else{
+                    swal("设置失败！", res.message, "error");
+                }
+
+            }
+        });
+
+    });
+</script>
+</block>

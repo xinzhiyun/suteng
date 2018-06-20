@@ -14,16 +14,42 @@
         // var vconsole = new VConsole();
     </script>
 </head>
-<body>
+<body> 
 	<div class='bgg'></div>
 	<div id='recoed_detail'>
 		<div class='content'>
-			<ul class='timeline' v-for='d in detailList'>
-				<li class='cfix'>
-					<b class='fl' v-text='d.title'></b>
-					<span class='fr' v-text='d.time'></span>
+			<ul class='timeline cfix' v-for='(d,index) in detailList'>
+				<li class='fl'>
+					<span v-text='d.time[1].substr(0,5)'></span>
+					<p v-text='d.time[0].substr(2).replace("-","/").replace("-","/")'></p>
 				</li>
-				<li v-html='d.content'></li>
+				<li class='fr'>
+					<div class='title' v-if='index == 0'>工单号：<span v-text='workid'></span></div>
+					<div v-if='index == 0' class='okdone' :style='{display: showEval ? "block" : "none"}'>
+						<img src="__PUBLIC__/Home/images/ok.png" alt="">
+						<p><b>工单已经完成</b></p>
+						<p>请对此次服务进行评价</p>
+					</div>
+					<!-- 标题 -->
+					<div class='title' v-text='d.title'></div>
+					<div v-for='(c, sonindex) in detailList.content[index]'>
+						<!-- 提示 -->
+						<div v-if='!c.value' v-text='c.title' class='novalue'></div>
+						<div v-if='c.value && c.title != "地址"' class='keyvalue'>
+							<span v-text='c.title'></span>
+							<span>:
+								<span v-html='c.value' :class='c.title=="电话" ? "tel" : ""'></span>
+							</span>
+						</div>
+						<!-- <div v-if='c.title == "地址"' style='margin-top:2vh;'>
+							<img src="__PUBLIC__/Home/images/addr.png" alt="">
+							<span v-text='c.title'></span>
+							<span>:
+								<span v-text='c.value'></span>
+							</span>
+						</div> -->
+					</div>
+				</li>
 			</ul>
 		</div>
 		<p class='notice' :style='{display: noticestyle}' v-text='notice'></p>
@@ -142,7 +168,22 @@
                             	vm.name = res.name;
                             	if(res.data && res.data.length){
                             		vm.noticestyle = "none";
+                            		var content = [];
+                            		for(var i=0; i<res.data.length; i++){
+                            			res.data[i].time = res.data[i].time.split(' ');
+                            			// 二维数组
+                            			content.push([]);
+                            			var temp = [];
+                            			temp = JSON.parse(res.data[i].content);
+                            			for(var j=0; j<temp.length; j++){
+                            				content[i].push(temp[j]);
+
+                            			}
+
+                            		}
+                            		console.log('content:',content);
 									vm.detailList = res.data;
+									vm.detailList['content'] = content;
 									
 								}else{
                             		vm.notice = "工单未审核或不存在";

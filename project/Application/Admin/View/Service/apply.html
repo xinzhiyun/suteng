@@ -1,6 +1,12 @@
 <extend name="Public/base" />
 
 <block name="content">
+    <style>
+        .layui-layer-content img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-sm-12">
@@ -210,11 +216,11 @@
                 var picBox = table.find('.pics');
                 picBox.html('');
                 $.each(JSON.parse(res.data.business),function (i,k) {
-                    var img = "<img src='"+k+"' width='30px' class='show-pic'>";
+                    var img = "<a class='bigPic'><img src='"+k+"' width='30px' class='show-pic' alt='"+(i+1)+"p'></a>";
                     picBox.append(img);
                 })
                 $.each(JSON.parse(res.data.agreement),function (i,k) {
-                    var img = "<img src='"+k+"' width='30px' class='show-pic'>";
+                    var img = "<a class='bigPic'><img src='"+k+"' width='30px' class='show-pic' alt='"+(i+1)+"p'></a>";
                     picBox.append(img);
                 })
 
@@ -227,20 +233,43 @@
                 table.find('.service-idcard').html(res.data.idcard);
                 table.find('.service-account').html(res.data.account);
                 if(res.data.paytype){
-                    res.data.paytype = '其他方式支付';
+                    res.data.paytypes = '其他方式支付';
                     if(res.data.paytype==1){
-                        res.data.paytype = '微信支付';
+                        res.data.paytypes = '微信支付';
                     }
                 }else{
-                    res.data.paytype = '未支付';
+                    res.data.paytypes = '未支付';
                 }
-                table.find('.service-paytype').html(res.data.paytype);
+                table.find('.service-paytype').html(res.data.paytypes);
 
                 $('#st-show').modal('show');
             })
         });
 
-
+        // 点击放大图片
+        $(".pics").on("click", ".bigPic", function() {
+            console.log($(this).children("img").prop("src"), $(this).children("img").prop("alt"));
+            var name = $(this).children("img").prop("alt");
+            var url = $(this).children("img").prop("src");
+            DataHtml(name, url);
+        })
+        // layer图片放大插件方法
+        function DataHtml(name, url) {
+            $("#displayimg").attr("src", url);
+            // var height = $("#displayimg").height();
+            // var height= 80;
+            // var width = $("#displayimg").width();
+            var width = 90;
+            var height= 90;
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                shadeClose: true,
+                area: [width + '%', height + '%'], //宽高
+                content: "<img alt=" + name + " title=" + name + " src=" + url + " />"
+            });
+        }
         // ajax
         function getInfo(url, data, Callback) {
             if(url){
