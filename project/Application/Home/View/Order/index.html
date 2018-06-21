@@ -1271,8 +1271,8 @@
 			toaddr.css({border: '1px solid red'});
 			return
 		}else{
-			if(!nameReg.test(toaddr.val().trim())){
-				layuiHint('地址只能含有中文、英文、数字、下划线');
+			if(!/^(?=.*?[\u4E00-\u9FA5])[\d\u4E00-\u9FA5]+/.test(toaddr.val().trim())){
+				layuiHint('地址只能含有中文、英文、数字');
 				toaddr.css({border: '1px solid red'});
 				return
 			}else{
