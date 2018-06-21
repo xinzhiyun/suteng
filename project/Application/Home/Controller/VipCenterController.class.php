@@ -509,7 +509,7 @@ class VipCenterController extends CommonController
             }
             $list = M('work_note')->where('wid='.$info['id'])->order('id desc')->select();
             $evaluaction = 0;
-            if($info['result'] == 3){
+            if($info['result'] >= 2 and $info['result'] <4){
                 $evaluaction = 1;
             }
 
