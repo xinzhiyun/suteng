@@ -245,8 +245,8 @@ class ShopController extends CommonController
     // 商品添加处理
     public function goodsAction()
     {
-        dump($_POST);
-        dump($_FILES);die;
+        // dump($_POST);
+        // dump($_FILES);die;
         try{
             $goods_add = D('Goods');
             $attr_val = D('AttrVal');

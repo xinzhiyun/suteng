@@ -104,7 +104,7 @@ st_shop_order_detail.gid ='.$value['gid']);
                 //待收货处退款  有退货退款跟仅退款
                 if ($refundList['method'] == 2) {
                 //退货退款的
-                // dump($refundList);
+                // dump($refundList);die;
                 //根据退款订单状态进行
                 switch ($refundList['status']) {
                     //同意退货退款，将status更改为  正在退货=>6
@@ -271,7 +271,7 @@ st_shop_order_detail.gid ='.$value['gid']);
                             case '3':
                                 //金币
                                 //先查询商品订单总价
-                                
+                                // echo 111;die;
                                 $odetail = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
 
                                 foreach ($odetail as $key => $value) {
@@ -319,7 +319,7 @@ st_shop_order_detail.gid ='.$value['gid']);
                                     switch ($status) {
                                         //已发货的退货退款
                                         case '11':
-
+                                            // echo 11;die;
                                             //修改订单状态前先判断该订单下是否还有未发货的商品
                                             //1.先查询订单中的商品
                                             $od = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
@@ -403,7 +403,15 @@ st_shop_order_detail.gid ='.$value['gid']);
                                             }
                                             break;
 
-
+                                        //已发货的申诉中
+                                        case '13':
+                                                
+                                            $shop['status'] = 7;
+                                            $shop['updatetime'] = time();
+                                            $bool3 = M('shop_order')->where("order_id='{$order_id}'")->save($shop);
+                                            
+                                            
+                                            break;
                                         default:
                                             # code...
                                             break;
