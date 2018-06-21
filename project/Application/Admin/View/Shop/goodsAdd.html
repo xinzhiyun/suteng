@@ -649,6 +649,19 @@
                 }
             });
         }
+        // 删除图片
+        $("#picShow").on("click", ".delPic", function() {
+            console.log("删除");
+            var _this = this;
+            layui.use("layer", function(){
+                layer = layui.layer;
+            })
+            layer.confirm("确定删除?", function(index) {
+                $(_this).parent().remove();
+                layer.close(index);
+            })
+            
+        });
         $(".goodsAdd").click(function(){
             // var data = $("#form").serializeArray();
             console.log(picArr);
