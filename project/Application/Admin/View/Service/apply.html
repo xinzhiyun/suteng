@@ -1,6 +1,7 @@
 <extend name="Public/base" />
 
 <block name="content">
+    <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
     <style>
         .layui-layer-content img {
             width: 100%;
@@ -264,7 +265,7 @@
             layer.open({
                 type: 1,
                 title: false,
-                closeBtn: 0,
+                closeBtn: 1,
                 shadeClose: true,
                 area: [width + '%', height + '%'], //宽高
                 content: "<img alt=" + name + " title=" + name + " src=" + url + " />"
