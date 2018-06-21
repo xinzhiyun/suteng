@@ -52,10 +52,12 @@ class WorkController extends CommonController
                         ];
             $this->ajaxReturn($message);
         }
-        $work = D('work');
-        $data = $work->getWorkInfoByID($id);
-                $data = $work->getAll($data);
-                // dump($workList);die;
+//        $work = D('work');
+//        $data = $work->getWorkInfoByID($id);
+//                $data = $work->getAll($data);
+                // dump($data);die;
+
+        $data = M('work')->where('id='.$id)->find();
         if ($data) {
             $message = ['code' => 10,
                         'data' => $data,

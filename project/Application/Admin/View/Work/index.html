@@ -544,7 +544,7 @@
 
     });
 
-    function getInfo(url, data, Callback) {
+    function getInfo(url, data, Callback='') {
         if(url){
             $.ajax({
                 url:url,
@@ -815,25 +815,24 @@
            data: "id=" + id,
            success: function(msg){
                 if (msg.code == 10) {
-                    msg.data.name?name=msg.data.name:name="";
-                    msg.data.phone?phone=msg.data.phone:phone="";
-                    msg.data.time?time=msg.data.time:time="";
-                    msg.data.diqu = msg.data.province + ' ' + msg.data.city + ' ' + msg.data.district;
-                    console.log(id)
+                    // msg.data.name?var name=msg.data.name:name="";
+                    // msg.data.phone?var phone=msg.data.phone:phone="";
+                    // msg.data.time?var time=msg.data.time:time="";
+                    var diqu = msg.data.province + ' ' + msg.data.city + ' ' + msg.data.district;
 
                     $('#details_number').text(msg.data.number);
                     $('#details_title').text(msg.data.title);                   
-                    $('#details_name').text(msg.data.Vendors.name);
-                    $('#details_phone').text(msg.data.Vendors.phone);
-                    $('#details_dw_name').text(name);
-                    $('#details_dw_phone').text(phone);
+                    $('#details_name').text(msg.data.kname);
+                    $('#details_phone').text(msg.data.kphone);
+                    $('#details_dw_name').text(msg.data.name);
+                    $('#details_dw_phone').text(msg.data.phone);
                     $('#details_type').text(msg.data.type);
                     $('#details_content').text(msg.data.content);
-                    $('#details_diqu').text(msg.data.diqu);
+                    $('#details_diqu').text(diqu);
                     $('#details_address').text(msg.data.address);
                     $('#details_result').text(msg.data.result);
                     $('#details_create_at').text(msg.data.create_at);
-                    $('#details_time').text(time);                    
+                    $('#details_time').text(msg.data.time);
                 }
            }
         });
