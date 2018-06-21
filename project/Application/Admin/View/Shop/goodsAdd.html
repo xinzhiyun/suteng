@@ -57,7 +57,7 @@
                             <label class="col-sm-2 control-label">商品图片：</label>
                             <div class="col-sm-10 disPics">
                                 <p class="btn btn-outline btn-primary col-sm-2">选择图片</p>
-                                <input type="file" class="form-control file_upload" multiple="multiple" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
+                                <input type="file" class="form-control file_upload" multiple="multiple" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" id="file">
                                 <!-- 显示上传图片 -->
                                 <div class="picShows col-sm-10" id="picShow">
                                 </div>
@@ -322,7 +322,6 @@
     </div>
 </block>
 <block name="myjs">
-    <script src="__PUBLIC__/Home/js/upFile.js"></script>
     <script>
         //实例化编辑器
         var um = UM.getEditor('myEditor');
@@ -377,59 +376,6 @@
             }
         })
         var arr = [];
-        // 点击添加图片  每张filereader对象只能读取一张图片的路径
-        // $(".chooseimg").on("click", function() {
-        //     console.log("lick")
-        //     var _this = this;
-        //     // 读取图片
-        //     upImg(_this, function() {
-        //         notison.innerHTML = '图片加载中...';
-        //         fadeFn({elem: notidiv});
-        //     }, function(res) {
-        //         console.log(res);
-        //         arr.push({"pics": res.src});
-        //         //图片显示
-        //         var span = document.createElement('span');
-        //         span.innerHTML = "<i class='iconfont icon-shibai'></i>";
-        //         var img = new Image();
-                
-        //         if(res.src){
-        //             img.src = res.src;      // 显示图片
-        //             span.appendChild(img);
-        //             $(span).addClass("selectimg");
-        //             $(".picShow").append(span);
-        //         }
-        //     }) 
-        //     // 获取文件
-        //     // var file = $(this)[0].files;
-        //     // var fileHtml = "";
-        //     // for(var i = 0; i < file.length; i++) {
-        //         // picarr[i] = file[i];
-        //         //创建读取文件的对象  
-        //         // var reader = new FileReader();  
-        //         //创建文件读取相关的变量  
-        //         // var imgFile; 
-        //         // reader.error = function() {
-        //             // console.log("文件读取异常");
-        //         // } 
-        //         //为文件读取成功设置事件  
-        //         // reader.onload = function(e) {  
-        //             // imgFile = e.target.result;  
-        //             // fileHtml = "<span class='selectimg'><img src='"+ e.target.result +"' /><i class='iconfont icon-shibai'></i></span>";
-        //             // $(".picShow").append(fileHtml);
-        //         // }; 
-        //         // 读取文件 
-        //         // reader.readAsDataURL(file[i]);//发起异步请求
-        //     // }
-        // });
-        // 点击删除小图标删除图片
-        // $(".picShows").on("click", ".icon-shibai", function() {
-        //     var _this = this;
-        //     layer.confirm('确认删除图片吗？', function(index){
-        //         $(_this).parent("span").remove();
-        //         layer.close(index);
-        //     }); 
-        // });
         // 添加属性
         function add() {
             $("input[name='attrname']").val('');
@@ -543,7 +489,7 @@
             });
         })
         
-    </script>
+    </script> 
     <script src="__PUBLIC__/Home/js/upImg.js"></script>
     <script src="__PUBLIC__/Admin/js/plugins/iCheck/icheck.min.js"></script>
     <!-- SUMMERNOTE -->
@@ -674,18 +620,46 @@
             var aHTML = $('.click2edit').code(); //save HTML If you need(aHTML: array).
             $('.click2edit').destroy();
         };
+        var file = document.querySelector('#file');
+        var picShow = document.querySelector('#picShow');
+        var picArr = [];
+        
+        file.onclick = function(){
+            var _this = this;
+            
+            // 读取图片
+            upImg( _this, function(){
+                // 压缩提示(不压缩不进来)
+                notison.innerHTML = '图片加载中...';
+                fadeFn({elem: notidiv});
+                
+            }, function(res){
+                console.log('ress: ',res);
+                picArr.push(res.binsrc)
+                //图片显示
+                var span = document.createElement('span');
+                span.innerHTML = '<span class="delPic" style="z-index:99;">X</span>';
+                var img = new Image();
+                
+                if(res.src){
+                    img.src = res.src;      // 显示图片
+                    span.appendChild(img);
+                    picShow.appendChild(span);
+                    // console.log(formdata.getAll('UploadForm[]'));
+                }
+            });
+        }
         $(".goodsAdd").click(function(){
             // var data = $("#form").serializeArray();
-            // var data = new FormData($("#form")[0]);
-            // console.log(arr, JSON.stringify(arr));
-            // arr = JSON.stringify(arr);
-            // data.append("pics", arr);
-            console.log('UploadForm[]: ', formData.getAll('UploadForm[]'));
-            // return;
+            console.log(picArr);
+            var data = new FormData($("#form")[0]);
+            for(var i = 0; i < picArr.length; i++) {
+                data.append("UploadForm[]", picArr[i]);
+            }
             $.ajax({
                 url:'goodsAction',
                 type:'post',
-                data:formData,
+                data:data,
                 processData: false,
                 contentType: false,
                 success:function(res){
