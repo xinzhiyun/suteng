@@ -526,8 +526,9 @@
     <script>
         window.onresize = function() {
             document.getElementById("J_iframe").contentWindow.location.reload(true);
-            console.log($(".layui-layer"))
+            // console.log($(".layui-layer"))
             $(".layui-layer").remove();
+            $(".layui-layer-shade").remove();
         }
 
         var locahref = '{{:U("Admin/Index/index")}}';       //首页地址
