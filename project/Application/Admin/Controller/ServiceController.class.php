@@ -622,8 +622,7 @@ class ServiceController extends CommonController
             $saveData['sn'] = $data['sn'];
             $saveData['name'] = $data['name'];
             $saveData['phone'] = $data['phone'];
-
-            $res = M('service_users')->where('id='.$data['id'])->save($_POST);
+            $res = M('service_users')->where('id='.$data['id'])->save($saveData);
             if($res){
                 E('修改成功',200);
             }else{
