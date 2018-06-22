@@ -17,7 +17,7 @@
 <body> 
 	<div class='bgg'></div>
 	<div id='recoed_detail'>
-		<div class='content'>
+		<div class='content' :style='{display: showEvalPanel ? "none": "block"}'>
 			<ul class='timeline cfix' v-for='(d,index) in detailList'>
 				<li class='fl'>
 					<span v-text='d.time[1].substr(0,5)'></span>
@@ -34,7 +34,7 @@
 					<div class='title' v-text='d.title'></div>
 					<div v-for='(c, sonindex) in detailList.content[index]'>
 						<!-- 提示 -->
-						<div v-if='!c.value' v-text='c.title' class='novalue'></div>
+						<div v-if='!c.value' v-html='c.title' class='novalue'></div>
 						<div v-if='c.value && c.title != "地址"' class='keyvalue'>
 							<span v-text='c.title'></span>
 							<span>:
@@ -53,7 +53,7 @@
 			</ul>
 		</div>
 		<p class='notice' :style='{display: noticestyle}' v-text='notice'></p>
-		<button :style='{display: showEval}' class='evaluatebtn' @click='evaluate'>评价</button>
+		<button :style='{display: showEval}' v-if='!showEvalPanel' class='evaluatebtn' @click='evaluate'>评价</button>
 		<div class='evalPanel' :style='evalPanel'>
 			<!-- <h3>评论本次服务</h3> -->
 			<p>工单号：<span v-text='workid'></span></p>
@@ -109,6 +109,8 @@
 					star: 5,			// 星星数量
 					text: '',			// 对安装师傅说的话
 					nonameclass: 'iconfont icon-fangxingweixuanzhong',
+					showEvalPanel: false,
+					text_focus: false
 				}
 			},
 			mounted() {},
@@ -121,8 +123,10 @@
 					if(hash.indexOf('#evaluate') < 0){
 						// 隐藏
 						document.title = '工单详情';
+						vm.showEvalPanel = false;
 						vm.evalPanel = 'transform:translateY(100%)';
 					}else{
+						vm.showEvalPanel = true;
 						document.title = '服务评价';
 						// 显示
 						vm.evalPanel = 'transform:translateY(0%)';
@@ -149,6 +153,7 @@
 					var evalpanel = document.querySelector('.evalPanel');
 					if(height == window.innerHeight){
 						evalpanel.style.transform = 'translateY(0%)';
+						vm.text_focus = false;
 					}
 					
 				}
@@ -226,6 +231,7 @@
 				// 点击评论按钮
 				evaluate () {
 					var vm = this;
+					vm.showEvalPanel = true;
 					vm.evalPanel = 'transform:translateY(0);';
 					location.href = location.href + '#evaluate';
 				},
@@ -317,15 +323,20 @@
 				},
 				// text点击
 				textfocus() {
-					var top = $('.say>textarea').offset().top;
-					// console.log('top: ',top);
-					var evalpanel = document.querySelector('.evalPanel');
-					evalpanel.style.transform = 'translateY(-'+ top/3 +'px)';
+					if(!this.text_focus){
+						this.text_focus = true;
+						var top = $('.say>textarea').offset().top;
+						// console.log('top: ',top);
+						var evalpanel = document.querySelector('.evalPanel');
+						evalpanel.style.transform = 'translateY(0)';
+						evalpanel.style.transform = 'translateY(-'+ top/3 +'px)';
+					}
 				},
 				// 失去焦点
 				textblur() {
+					this.text_focus = false;
 					var evalpanel = document.querySelector('.evalPanel');
-					evalpanel.style.transform = 'translateY(0%)';
+					evalpanel.style.transform = 'translateY(0)';
 				}
 			}
 		})
