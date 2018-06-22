@@ -136,7 +136,7 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
 .topx {
 	width: 16px;
 	height: 16px;
-	line-height: 16px;
+	line-height: 12px;
 	text-align: center;
 	display: inline-block;
 	position: absolute;
@@ -247,6 +247,7 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
 	border-radius: 4px;
 	background: #fff;
 	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
 }
 .addrselect {
 	color: #2eb6aa;

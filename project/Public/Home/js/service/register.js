@@ -44,7 +44,10 @@
                 servicename: "",//服务站名称
                 imgURL: [],
                 imgContent: [], //存入图片
-                imgHezuo : []
+                imgHezuo : [],
+                pclkprovince: '',
+                pclkcity: '',
+                pclkarea: ''
             }
         },
         created() {
@@ -385,7 +388,7 @@
                         layer.msg("请输入联系电话");
                         return;
                     }else {
-                        if(!phoneReg.test(vm.serviceInfos.stationer)) {
+                        if(!phoneReg.test(vm.userInfos.phone)) {
                             layer.msg("请输入正确的电话号码");
                             return;
                         }
@@ -519,6 +522,15 @@
                 
                 var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
                 gallery.init();
+            },
+            pclk1(clkel) {
+                this.pclkprovince = clkel;
+            },
+            pclk2(clkel) {
+                this.pclkcity = clkel;
+            },
+            pclk3(clkel) {
+                this.pclkarea = clkel;
             }
         }
     })
