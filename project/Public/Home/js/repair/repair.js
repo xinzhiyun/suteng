@@ -263,7 +263,7 @@
     });
     
     // 选择省份，城市，区县
-    $('.areaDiv').on('touchend', 'p', function(){
+    $('.areaDiv').on('click', 'p', function(){
         var parent = $(this).parent()[0].className;
         var aid = $(this).attr('aid');	// 省份id
         var _this = $(this);
