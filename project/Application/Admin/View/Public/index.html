@@ -514,6 +514,7 @@
     <script src="__PUBLIC__/Admin/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="__PUBLIC__/Admin/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
 
     <!-- 自定义js -->
     <script src="__PUBLIC__/Admin/js/hplus.js?v=4.1.0"></script>
@@ -525,6 +526,8 @@
     <script>
         window.onresize = function() {
             document.getElementById("J_iframe").contentWindow.location.reload(true);
+            console.log($(".layui-layer"))
+            $(".layui-layer").remove();
         }
 
         var locahref = '{{:U("Admin/Index/index")}}';       //首页地址
@@ -570,7 +573,6 @@
             // console.log(ind);
             sessionStorage.setItem('ind', ind);
         })
-
     </script>
 
 </body>
