@@ -107,8 +107,8 @@ class GoodsModel extends RelationModel
             // ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
             ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
             ->join('__INVENTORY__ i on i.gid=g.id' , 'LEFT')
-            ->field('c.name cname,av.val,a.attr,gd.*,i.allnum,i.abnormalnum,g.*,gd.status gdstatus')
-            ->order(' addtime desc')
+            ->field('c.name cname,av.val,a.attr,gd.*,g.*')
+            // ->order(' addtime desc')
             // ->limit($Page->firstRow.','.$Page->listRows)
             // ->relation('pics')
             ->count();
@@ -123,10 +123,10 @@ class GoodsModel extends RelationModel
             // ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
             ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
             ->join('__INVENTORY__ i on i.gid=g.id' , 'LEFT')
-            ->field('c.name cname,gd.*,i.allnum,i.abnormalnum,g.*,gd.status gdstatus')
-            ->order(' addtime desc')
+            ->field('c.name cname,gd.*,g.*')
+            // ->order(' addtime desc')
             ->limit($Page->firstRow.','.$Page->listRows)
-            ->relation(['attr_val'])
+            // ->relation(['attr_val'])
             ->select();
             // p($goodsData);
         $goodsData = [
