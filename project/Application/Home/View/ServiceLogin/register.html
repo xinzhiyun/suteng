@@ -146,13 +146,25 @@
 				</div>
 				<ul>
 					<li class='province' @click="getArea($event)">
-						<p v-for="areaProvinces in areaProvince" :aid="areaProvinces.id" v-text="areaProvinces.areaname"></p>
+						<p v-for="areaProvinces in areaProvince" 
+						:aid="areaProvinces.id" 
+						v-text="areaProvinces.areaname" 
+						@click='pclk1(areaProvinces)'
+						:class='{addrselect: areaProvinces == pclkprovince}'></p>
 					</li>
 					<li class='city' @click="getArea($event)">
-						<p v-for="areaCitys in areaCity" :aid="areaCitys.id" v-text="areaCitys.areaname"></p>
+						<p v-for="areaCitys in areaCity" 
+						:aid="areaCitys.id" 
+						v-text="areaCitys.areaname"
+						@click='pclk2(areaCitys)'
+						:class='{addrselect: areaCitys == pclkcity}'></p>
 					</li>
 					<li class='area' @click="getArea($event)">
-						<p v-for="areas in area" :aid="areas.id" v-text="areas.areaname"></p>
+						<p v-for="areas in area" 
+						:aid="areas.id" 
+						v-text="areas.areaname"
+						@click='pclk3(areas)'
+						:class='{addrselect: areas == pclkarea}'></p>
 					</li>
 				</ul>
 			</div>

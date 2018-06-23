@@ -423,6 +423,7 @@
                     dataType:'json',
                     data:{'aid':aid},
                     success:function(res){
+                        // $("input[data-id='"+aid+"']").parent().parent().remove();
                         location.reload();
                         parent.layer.msg(res.msg);
                     }
@@ -677,7 +678,7 @@
                 contentType: false,
                 success:function(res){
                     if(res.code == 200){
-                        // location.reload();
+                        location.reload();
                         parent.layer.msg(res.msg);
                     } else {
                         parent.layer.msg(res.msg);

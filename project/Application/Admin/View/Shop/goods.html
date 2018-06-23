@@ -255,7 +255,6 @@
     </div>
 </block>
 <block name="myjs">
-    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
     <script>
         // 图片添加
         function addpic(obj)
@@ -358,7 +357,7 @@
             status == 0 ? msg = '上架' : msg = '下架';
                 parent.layer.confirm("确定"+ msg +"吗？", {
                     btn: ['确认', '取消'], //按钮
-                    shade: false //不显示遮罩
+                    shade: true //不显示遮罩
                 }, function() {
                     // alert(status);
                     $.ajax({
