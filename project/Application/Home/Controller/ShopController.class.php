@@ -30,7 +30,7 @@ class ShopController extends CommonController
                     $arr[$key]['attr'] = $val['attr'].':'.$val['val'].'|';
                 }
             }
-            $banner = D('pic')->page(1,5)->order('id desc')->field('gid as id,path as pic')->select();
+            // $banner = D('pic')->page(1,5)->order('id desc')->field('gid as id,path as pic')->select();
             // dump($banner);
             $goodsList = array_values($arr);
             $assign = [
@@ -66,7 +66,7 @@ class ShopController extends CommonController
         $arr = [];
         $goodsDetail = $goods->getGoodsList($map);
     	foreach($goodsDetail as $key => $val){
-            $goodsDetail[$key]['pics'] = D('Pic')->field('path')->where(['gid'=>$val['gid']])->select();
+            // $goodsDetail[$key]['pics'] = D('Pic')->field('path')->where(['gid'=>$val['gid']])->select();
     		$key = $val['gid'];
     		if(isset($arr[$key])) {
     			$arr[$key]['attr'] .= $val['attr'].':'.$val['val'].'|';

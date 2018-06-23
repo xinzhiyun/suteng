@@ -42,13 +42,13 @@ class GoodsModel extends RelationModel
                 'mapping_fields' => 'id,cid,cprice,cname'
         ),
 
-        'pic'=>array(
-            'mapping_type'  => self::HAS_MANY,
-            'class_name'    => 'pic',
-            'foreign_key'   => 'gid',
-            'mapping_name'  => 'pics',
-            'mapping_fields' => 'path'
-        ),
+        // 'pic'=>array(
+        //     'mapping_type'  => self::HAS_MANY,
+        //     'class_name'    => 'pic',
+        //     'foreign_key'   => 'gid',
+        //     'mapping_name'  => 'pics',
+        //     'mapping_fields' => 'path'
+        // ),
 
         'goods_detail'=>array(
                 'mapping_type'  => self::HAS_MANY,
@@ -110,7 +110,7 @@ class GoodsModel extends RelationModel
             ->field('c.name cname,av.val,a.attr,gd.*,i.allnum,i.abnormalnum,g.*,gd.status gdstatus')
             ->order(' addtime desc')
             // ->limit($Page->firstRow.','.$Page->listRows)
-            ->relation('pics')
+            // ->relation('pics')
             ->count();
             $Page  = new \Think\Page($count,8   );
             $pageButton =$Page->show();
@@ -126,7 +126,7 @@ class GoodsModel extends RelationModel
             ->field('c.name cname,gd.*,i.allnum,i.abnormalnum,g.*,gd.status gdstatus')
             ->order(' addtime desc')
             ->limit($Page->firstRow.','.$Page->listRows)
-            ->relation(['pics','attr_val'])
+            ->relation(['attr_val'])
             ->select();
             // p($goodsData);
         $goodsData = [
