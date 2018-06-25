@@ -83,15 +83,15 @@ window.onload = function(){
     var reflow = getdataList.reflow;
     var reday = getdataList.reday;
     if(getdataList.leasingmode=="0"){//按零售
-        $(".surplusVal").html("已用流量："+(usedflow?usedflow:'--')+"L");
-        $(".alreadyUsedVal").html("已用天数："+(usedday?usedday:'--')+"天");
+        $(".surplusVal").html("<b>"+(usedflow?usedflow:'--')+"L</b></br>已用流量");
+        $(".alreadyUsedVal").html("<b>"+(usedday?usedday:'--')+"天</b></br>已用天数");
 
     }else if(getdataList.leasingmode=="1"){//按流量
-        $(".surplusVal").html("剩余流量："+(reflow?reflow:'--')+"L");
-        $(".alreadyUsedVal").html("已用流量："+(usedflow?usedflow:'--')+"L");
+        $(".surplusVal").html("<b>"+(reflow?reflow:'--')+"L</b></br>剩余流量");
+        $(".alreadyUsedVal").html("<b>"+(usedflow?usedflow:'--')+"L</b></br>已用流量");
     }else if(getdataList.leasingmode=="2"){//按天数
-        $(".surplusVal").html("剩余天数："+(reday?reday:'--')+"天");
-        $(".alreadyUsedVal").html("已用天数：" + (usedday?usedday:'--') + "天");
+        $(".surplusVal").html("<b>"+(reday?reday:'--')+"天</b></br>剩余天数");
+        $(".alreadyUsedVal").html("<b>"+(usedday?usedday:'--') + "天</b></br>已用天数");
     }else if(getdataList.leasingmode=="3"){//流量&时间
 
     }

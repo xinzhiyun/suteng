@@ -159,8 +159,6 @@ body{
 	height: 8vh;
 	display: inline-block;
 	font-size: 0.80rem;
-	line-height: 6vh;
-	margin-top: 1.5vh;
 }
 .chbuTop>ul>li:nth-of-type(even){
 	float: right;
@@ -179,16 +177,30 @@ body{
 }
 .chbuBotom{
 	margin-top: 2.5vh;
-	width:100%;
-	height: 10vh;
+	width: 100%;
+	position: fixed;
+    bottom: 0;
+}
+.chbuBotom>ul {
+	background: #fff;
+}
+.chbuBotom::before {
+	content: '';
+	width: 100%;
+	height: 5vh;
+	display: block;
+	position: absolute;
+	top: -10px;
 	background: url(../images/dibu_01.png) no-repeat;
 	background-size: contain;
+	z-index: -1;
 }
 .chbuBotom ul li {
 	display: inline-block;
-	padding-top:3vh;
+	padding: 0 2vh;
 	width: 20%;
 	text-align: center;
+	box-sizing: border-box;
 }
 .chbuBotom ul li a i{
 	font-size: 1.3rem;
@@ -203,8 +215,8 @@ body{
 	color:#4EB9BB; 
 }
 .chbuBotom ul li a p{
-	font-size: 0.7rem;
-	padding-top:0.8vh;
+	font-size: 0.5rem;
+    padding: 0.4vh 0;
 }
 /*净水机开机状态*/
 .kaiji{
@@ -473,9 +485,84 @@ body{
 		   
 		    padding: 1vw 5vw;
 		}
-		}
+	}
 
+.icon-guanji,
+.icon-lvxin, 
+.icon-chongxi1,
+.icon-chongzhi,
+.icon-wode {
+	width: 100%;
+    height: 1.5rem;
+    display: block;
+	background-size: 1000% !important;
+}
 
+.icon-guanji {
+	background: url('../images/spritepng.png');
+	background-position: 0 -4px;
+}
+.icon-lvxin {
+	background: url('../images/spritepng.png') -2.4rem -4px;
+}
+.icon-chongxi1 {
+	margin-top: -16px;
+	background: url('../images/spritepng.png') -9rem -8px;
+}
+.icon-chongzhi {
+	background: url('../images/spritepng.png') -4.6rem -4px;
+}
+.icon-wode {
+	background: url('../images/spritepng.png') -6.84rem -4px;
+}
+
+.icon-chunshui,
+.icon-shengyutianshu,
+.icon-yuanshui1,
+.icon-yiyongtianshu {
+	width: 1.6rem;
+    height: 1.8rem;
+	background-size: 1500% !important;
+	z-index: 10;
+	transition: all .16s ease;
+}
+.icon-chunshui {
+	background: url('../images/spritepng.png') .2rem -7.4rem;
+}
+.icon-shengyutianshu {
+	margin-top: -8px;
+	background: url('../images/spritepng.png') -1.1rem -7.4rem;
+}
+.icon-yuanshui1 {
+	background: url('../images/spritepng.png') -2.4rem -7.4rem;
+}
+.icon-yiyongtianshu {
+	margin-top: -8px;
+	background: url('../images/spritepng.png') -3.76rem -7.4rem;
+}
+.chbuBotom>ul>li:active p {
+	color: #4D70FF;
+}
+.chbuBotom>ul>li:nth-of-type(1):active i {
+	background-position: 0 -2.46rem;
+}
+.chbuBotom>ul>li:nth-of-type(2):active i {
+	background-position: -2.4rem -2.46rem;
+}
+.chbuBotom>ul>li:nth-of-type(3):active i {
+	background-position: -9rem -6px;
+}
+.chbuBotom>ul>li:nth-of-type(4):active i {
+	background-position: -4.6rem -2.46rem;
+}
+.chbuBotom>ul>li:nth-of-type(5):active i {
+	background-position: -6.84rem -2.46rem;
+}
+.fblue>span,
+.fblue>b {
+	font-weight: blod;
+	color: #4D70FF;
+}
 /*首页键*/
 #back2Home {
 	width: 40px;
@@ -523,3 +610,54 @@ body{
 	      padding-left: 6px;
 	}
 }
+.menu {
+	width: 100%;
+	display: flex;
+  }
+  .menu>li {
+	flex: 1 1 20%;
+  }
+  .chbuTop{
+	width: 100vw;
+	height: auto;
+	padding: 0;
+	box-sizing: border-box;
+  }
+  .chbuTop>ul{
+	width: 100%;
+	flex-wrap: wrap;
+	box-sizing: border-box;
+	overflow: hidden;
+	background: #fff;
+  }
+  .chbuTop>ul>li{
+	width: 100%;
+	display: inline-flex;
+	justify-content: center;
+	padding: 1vh 0;
+	font-size: 0.7rem;
+	white-space: nowrap;
+  }
+  
+  .chbuTop>ul>li:first-child {
+	  border-bottom: 1px solid #f1f1f1;
+  }
+  .chbuTop>ul>li>div {
+	flex: 1 0 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	white-space: nowrap;
+	text-align: left;
+	border-left: 1px solid #e8e8e8;
+  }
+  
+  .xuantext{
+	width: auto;
+	height: 30vw;
+	text-align: center;
+	position: absolute;
+	top:30vw;
+	left: 50%;
+	  transform: translateX(-50%);
+  }

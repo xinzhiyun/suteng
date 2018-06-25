@@ -5,62 +5,13 @@
   <meta charset="UTF-8">
   <title>速腾水家电</title>
   <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
-  <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+  <!-- <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css"> -->
   <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
   <script>
       // var vconsole = new VConsole();
   </script>
-  <style>
-    .menu {
-      width: 100%;
-      display: flex;
-    }
-    .menu>li {
-      flex: 1 1 20%;
-    }
-    .chbuTop{
-      width: 100vw;
-      height: auto;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    .chbuTop>ul{
-      width: 100%;
-      padding: 1% 2%;
-      display: flex;
-      flex-wrap: wrap;
-      box-sizing: border-box;
-      overflow: hidden;
-    }
-    .chbuTop>ul>li{
-      flex: 49% 1 0;
-      width: 49%;
-      height: 8vh;
-      display: inline-block;
-      font-size: 0.80rem;
-      line-height: 6vh;
-      margin-top: 1.5vh;
-      white-space: nowrap;
-    }
-    
-    .chbuTop>ul>li>p {
-      /*width: 80%;*/
-      white-space: nowrap;
-      text-align: left;
-    }
-    
-    .xuantext{
-      width: auto;
-      height: 30vw;
-      text-align: center;
-      position: absolute;
-      top:30vw;
-      left: 50%;
-        transform: translateX(-50%);
-    }
-  </style>
 </head>
-<body>
+<body style='background: #f1f1f1;'>
 <input type="hidden" value={{$device|json_encode}} class="deviceInfo">
 <input type="hidden" value={{$data|json_encode}} class="res">
 
@@ -123,22 +74,40 @@
           <div class="chbuTop">
             <ul>
               <li>
-                <i class="iconfont icon-chunshui"></i>
-                <b>纯水</b>
-                <span class="rawtdsVal2 puretds">--</span>ppm
+                <div>
+                  <i class="iconfont icon-chunshui"></i>
+                  <div>
+                    <p class="fblue">
+                      <span class="rawtdsVal2 puretds">--</span>
+                      <span>PPM</span>
+                    </p>
+                    <b>纯水TDS值</b>
+                  </div>
+                </div>
+                <div>
+                    <i class="iconfont icon-shengyutianshu"></i>
+                    <div style="display: inline-block">
+                      <span class="surplusVal fblue"></span>
+                    </div>
+                </div>
               </li>
               <li>
-                <i class="iconfont icon-shengyutianshu"></i>
-                <p style="display: inline-block" class="surplusVal">剩余天数：--天</p>
-              </li>
-              <li>
-                <i class="iconfont icon-yuanshui1" ></i>
-                <b>原水</b>
-                <span class="puretdsVal rawtds">--</span>ppm
-              </li>
-              <li>
-                <i class="iconfont icon-yiyongtianshu"></i>
-                <p style="display: inline-block" class="alreadyUsedVal">已用天数：--天</p>
+                <div>
+                  <i class="iconfont icon-yuanshui1" ></i>
+                  <div>
+                    <p class="fblue">
+                      <span class="puretdsVal rawtds">--</span>
+                      <span>PPM</span>
+                    </p> 
+                    <p><b>原水TDS值</b></p>
+                  </div>
+                </div>
+                <div>
+                  <i class="iconfont icon-yiyongtianshu"></i>
+                  <div style="display: inline-block">
+                    <span class="alreadyUsedVal fblue"></span>
+                  </div>
+                </div>
               </li>
             </ul>
           </div>
