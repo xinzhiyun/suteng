@@ -2,43 +2,47 @@ window.onload = function(){
     function addwater(){//制水状态
         $(".makewater").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
-        $(".btmTxt").html("制水");
+        $(".btmTxt>div").html("制水");
     }
     function wash(){//冲洗状态 1
-        $(".btmTxt").html("冲洗");
         $(".xuanhuan").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'}); 
+        $(".btmTxt>div").html("冲洗");
+        $(".btmTxt>p").css({backgroundPosition: '-7.94rem -4px'});
     }
     function lesswater(){// 缺水状态
         $(".queshui").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
-        $(".btmTxt").html("缺水");
+        $(".btmTxt>div").html("缺水");
+        $(".btmTxt>p").css({backgroundPosition: '-8.1rem -5.4rem'});
     }
     function fullwater(){// 水满状态2
         $(".shuiman").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
-        $(".btmTxt").html("水满");
+        $(".btmTxt>div").html("水满");
+        $(".btmTxt>p").css({backgroundPosition: '-9.26rem -5.4rem'});
     }
     function service (){// 修检状态 5
         $(".service").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
-        $(".btmTxt").html("检修");
+        $(".btmTxt>div").html("检修");
+        $(".btmTxt>p").css({backgroundPosition: '-6.76rem -5.4rem'});
     }
     function shutdown(){//关机状态 7
         $(".shutdown").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(100%)'});
-        $(".btmTxt").html("设备已关机");
         $(".clickBtn").css({color:'#f00',filter:'grayscale(0%)'});
+        $(".btmTxt>div").html("设备已关机");
     }
     function arrearage(){//欠费 6
         $(".arrearage").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(100%)'});
-        $(".btmTxt").html("欠费");
+        $(".btmTxt>div").html("欠费");
     }
     function outLine(){//离线 7
         $(".outLine").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(100%)'});
-        $(".btmTxt").html("设备已离线");
+        $(".btmTxt>div").html("设备已离线");
     }
     function machineStatus() {
         if(_status=="0"){// 制水状态
@@ -78,7 +82,7 @@ window.onload = function(){
     console.log(getdataList)
     var res = JSON.parse($(".res").val());//滤芯详情数据
     var _status=getdataList.devicestause;//获取设备当前状态-> 0:制水 1:冲洗 2:水满 3:缺水 4漏水 5:检修 6:欠费停机 7:关机 8:开机(仅命令)
-
+    // _status = 5;    // 模拟
     machineStatus();//执行当前设备状态
 
     // $(".rawtdsVal").html(getdataList.rawtds?getdataList.rawtds:'--');//纯水TDS
@@ -364,26 +368,9 @@ window.onload = function(){
     $('.chbuBotom li').on('click', function(){
         var thisicon = $(this).find('i');
         var text = $(this).find('p');
-        if(text.text() == '电源'){
-            thisicon.css({backgroundPosition: '0 -2.46rem'});
-            text.css({color: '#4D70FF'});
+        thisicon.css({backgroundPosition: '0 -1.6em'});
+        text.css({color: '#4D70FF'});
 
-        }else if(text.text() == '滤芯'){
-            thisicon.css({backgroundPosition: '-2.4rem -2.46rem'});
-            text.css({color: '#4D70FF'});
-
-        }else if(text.text() == '冲洗'){
-            thisicon.css({backgroundPosition: '-9rem -6px'});
-            text.css({color: '#4D70FF'});
-
-        }else if(text.text() == '充值'){
-            thisicon.css({backgroundPosition: '-4.6rem -2.46rem'});
-            text.css({color: '#4D70FF'});
-
-        }else if(text.text() == '我的'){
-            thisicon.css({backgroundPosition: '-6.84rem -2.46rem'});
-            text.css({color: '#4D70FF'});
-        }
     })
 
 }
