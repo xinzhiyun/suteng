@@ -17,7 +17,7 @@ var recoed_detail = new Vue({
             nonameclass: 'iconfont icon-fangxingweixuanzhong',
             showEvalPanel: false,
             text_focus: false
-        }
+        } 
     },
     mounted() {},
     created (){
