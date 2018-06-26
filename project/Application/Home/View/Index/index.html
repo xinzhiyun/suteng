@@ -20,8 +20,18 @@
     <div class="chongContainer">
       <div class="chongTop ">
           <div style="height: 3rem">
-            <div class="heat"></div>
-          <span style="max-width: 15vw;max-height: 15vw; position: fixed; right: 7vw;top:9vw; display: inline-block;" class="heatTxt">加热</span>
+            <div class="wendu">
+              <p>
+                <b></b>
+                <span>&nbsp;(当前水温<b class="redu hotwater"></b></span>)
+              </p>
+              <p>&nbsp;加热</p>
+              <!-- <p><span>(冷)</span><b class="lengdu coldwater"></b></p> -->
+            </div>
+            <div class="heat">
+                <b></b>
+                <span class="heatTxt">切换设备</span>
+            </div>
           </div>
           <div class="statusList">
               <!--冲洗-->
@@ -59,11 +69,6 @@
           </div>
           <div class="btmTxt">冲洗</div>
           <!-- 接口的内容 -->
-          <div class="wendu">
-            <p>出水温度</p>
-            <p><span>(热)</span><b class="redu hotwater"></b></p>
-            <!-- <p><span>(冷)</span><b class="lengdu coldwater"></b></p> -->
-          </div>
           <!-- <div class="shiwen">
             <p>室温</p>
             <p><b class="redu roomtemperature">24~16 &#8451;</b></p>
@@ -76,7 +81,7 @@
               <li>
                 <div>
                   <i class="iconfont icon-chunshui"></i>
-                  <div>
+                  <div class='sbright'>
                     <p class="fblue">
                       <span class="rawtdsVal2 puretds">--</span>
                       <span>PPM</span>
@@ -86,7 +91,7 @@
                 </div>
                 <div>
                     <i class="iconfont icon-shengyutianshu"></i>
-                    <div style="display: inline-block">
+                    <div class='sbright' style="display: inline-block">
                       <span class="surplusVal fblue"></span>
                     </div>
                 </div>
@@ -94,7 +99,7 @@
               <li>
                 <div>
                   <i class="iconfont icon-yuanshui1" ></i>
-                  <div>
+                  <div class='sbright'>
                     <p class="fblue">
                       <span class="puretdsVal rawtds">--</span>
                       <span>PPM</span>
@@ -104,7 +109,7 @@
                 </div>
                 <div>
                   <i class="iconfont icon-yiyongtianshu"></i>
-                  <div style="display: inline-block">
+                  <div class='sbright' style="display: inline-block">
                     <span class="alreadyUsedVal fblue"></span>
                   </div>
                 </div>

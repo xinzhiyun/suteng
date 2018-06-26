@@ -43,20 +43,34 @@ window.onload = function(){
     function machineStatus() {
         if(_status=="0"){// 制水状态
             addwater();
+            $('.icon-guanji').addClass('poweron');
+            $('.icon-guanji').siblings('p').css({color:'#4D70FF'});
         }else if(_status=="2"){// 水满状态
             fullwater();
+            $('.icon-guanji').addClass('poweron');
+            $('.icon-guanji').siblings('p').css({color:'#4D70FF'});
         }else if(_status=="3"){// 缺水状态
             lesswater();
+            $('.icon-guanji').addClass('poweron');
+            $('.icon-guanji').siblings('p').css({color:'#4D70FF'});
         }else if(_status=="4"){// 漏水状态
 
         }else if(_status=="5"){// 检修状态
             service();
+            $('.icon-guanji').addClass('poweron');
+            $('.icon-guanji').siblings('p').css({color:'#4D70FF'});
         }else if(_status=="6"){// 欠费停机状态
             arrearage();
+            $('.icon-guanji').addClass('poweroff');
+            $('.icon-guanji').siblings('p').css({color:'#333'});
         }else if(_status=="7"){// 关机状态
             shutdown();
+            $('.icon-guanji').addClass('poweroff');
+            $('.icon-guanji').siblings('p').css({color:'#333'});
         }else{// 冲洗状态
             wash();
+            $('.icon-guanji').addClass('poweron');
+            $('.icon-guanji').siblings('p').css({color:'#4D70FF'});
         }
     }
     //页面加载时获取数据
@@ -345,5 +359,31 @@ window.onload = function(){
     window.onunload=function(){
         websoket.close();
     };
+
+    // 点击底部按钮
+    $('.chbuBotom li').on('click', function(){
+        var thisicon = $(this).find('i');
+        var text = $(this).find('p');
+        if(text.text() == '电源'){
+            thisicon.css({backgroundPosition: '0 -2.46rem'});
+            text.css({color: '#4D70FF'});
+
+        }else if(text.text() == '滤芯'){
+            thisicon.css({backgroundPosition: '-2.4rem -2.46rem'});
+            text.css({color: '#4D70FF'});
+
+        }else if(text.text() == '冲洗'){
+            thisicon.css({backgroundPosition: '-9rem -6px'});
+            text.css({color: '#4D70FF'});
+
+        }else if(text.text() == '充值'){
+            thisicon.css({backgroundPosition: '-4.6rem -2.46rem'});
+            text.css({color: '#4D70FF'});
+
+        }else if(text.text() == '我的'){
+            thisicon.css({backgroundPosition: '-6.84rem -2.46rem'});
+            text.css({color: '#4D70FF'});
+        }
+    })
 
 }
