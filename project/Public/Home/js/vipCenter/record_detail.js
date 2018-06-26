@@ -200,7 +200,7 @@ var recoed_detail = new Vue({
                 success: function(res){
                     console.log('res: ',res);
                     if(res.status == 200){
-                        history.replaceState({}, null, '{{:U("Home/VipCenter/service_record")}}');
+                        history.replaceState({}, null, getURL('Home', 'VipCenter/service_record'));
                         document.body.innerHTML = '<div class="notic">'+
                             '<i class="iconfont icon-dagouyouquan"></i>'+
                             '<p>评价成功</p>'+
