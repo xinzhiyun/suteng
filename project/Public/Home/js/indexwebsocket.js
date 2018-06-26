@@ -3,18 +3,19 @@ window.onload = function(){
         $(".makewater").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
         $(".btmTxt>div").html("制水");
+        $(".btmTxt>p").css({animation: 'aImg3 3s linear infinite'});
     }
     function wash(){//冲洗状态 1
         $(".xuanhuan").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'}); 
         $(".btmTxt>div").html("冲洗");
-        $(".btmTxt>p").css({backgroundPosition: '-7.94rem -4px'});
+        $(".btmTxt>p").css({backgroundPosition: '-7.94rem -4px',animation: 'aImg3 3s linear infinite'});
     }
     function lesswater(){// 缺水状态
         $(".queshui").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
         $(".btmTxt>div").html("缺水");
-        $(".btmTxt>p").css({backgroundPosition: '-8.1rem -5.4rem'});
+        $(".btmTxt>p").css({backgroundPosition: '-8.1rem -5.4rem',animation: 'aImg3 3s linear infinite'});
     }
     function fullwater(){// 水满状态2
         $(".shuiman").show().siblings().hide();
@@ -26,7 +27,7 @@ window.onload = function(){
         $(".service").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
         $(".btmTxt>div").html("检修");
-        $(".btmTxt>p").css({backgroundPosition: '-6.76rem -5.4rem'});
+        $(".btmTxt>p").css({backgroundPosition: '-6.76rem -5.4rem',animation: 'aImg3 3s linear infinite'});
     }
     function shutdown(){//关机状态 7
         $(".shutdown").show().siblings().hide();
@@ -82,7 +83,7 @@ window.onload = function(){
     console.log(getdataList)
     var res = JSON.parse($(".res").val());//滤芯详情数据
     var _status=getdataList.devicestause;//获取设备当前状态-> 0:制水 1:冲洗 2:水满 3:缺水 4漏水 5:检修 6:欠费停机 7:关机 8:开机(仅命令)
-    // _status = 5;    // 模拟
+    // _status = 1;    // 模拟
     machineStatus();//执行当前设备状态
 
     // $(".rawtdsVal").html(getdataList.rawtds?getdataList.rawtds:'--');//纯水TDS

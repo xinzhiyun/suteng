@@ -106,7 +106,8 @@ body{
 	line-height: 10vw;
 	font-size: 7vw;
 }
-.xuanhuan {
+.xuanhuan,
+.aa {
 	position: relative;
 	width: 52vw;
 	height: 52vw;
@@ -297,8 +298,8 @@ body{
 	border-radius: 40vw;
 	width: 60vw;
 	height: 60vw;
-	margin:0 auto;
-	background: url(../images/kaiji.png) no-repeat;
+	margin: 0 auto;
+	/* background: url(../images/kaiji.png) no-repeat; */
 	background-size: 100% 100%;
 	position: relative;
 	
@@ -356,26 +357,25 @@ body{
 
 /*制水*/
 .makewater{
-	border-radius: 40vw;
-	width: 60vw;
-	height: 60vw;
-	margin:0 auto;
-	background: url(../images/makewater_01.png) no-repeat;
-	background-size: 100% 100%;
 	position: relative;
-	-webkit-animation:aImg 20s linear infinite;
-	animation:aImg 20s linear infinite;
+    width: 52vw;
+    height: 52vw;
+    margin: 0 auto;
+    border: 1px solid #e6e6e6;
+    border-bottom: 1px solid transparent;
+    border-radius: 50%;
+    color: #44406F;
 }
 /*修检*/
   .overxuanhuan{
-        border-radius: 40vw;
-        width: 60vw;
-        height: 60vw;
-        margin:0 auto; 
-        background-image: url(../images/gx.gif); 
-        background-size: cover;
-        opacity: 1;
-        position: relative;
+	position: relative;
+    width: 52vw;
+    height: 52vw;
+    margin: 0 auto;
+    border: 1px solid #e6e6e6;
+    border-bottom: 1px solid transparent;
+    border-radius: 50%;
+    color: #44406F;
         /*-webkit-animation:aImg5 4s linear  infinite;
         animation:aImg5 4s linear  infinite;*/
       }
@@ -405,18 +405,19 @@ body{
 		}*/
  /*缺水*/
 	.queshui{
-		border-radius: 40vw;
-		width: 60vw;
-		height: 60vw;
-		margin:0 auto;
-		background: url(../images/queshgui_1.png) no-repeat;
-		background-size: 100% 100%;
 		position: relative;
+		width: 52vw;
+		height: 52vw;
+		margin: 0 auto;
+		border: 1px solid #e6e6e6;
+		border-bottom: 1px solid transparent;
+		border-radius: 50%;
+		color: #44406F;
 		z-index: 0;
 		display: none;
 	}
 
-	 .queshui>.cen1{
+	 /* .queshui>.cen1{
 	 	border-radius: 40vw;
 		width: 100%;
 		height: 100%;
@@ -443,19 +444,20 @@ body{
 		top:0;
 		left: 0;
 		z-index: 300;
-	 }
+	 } */
 
 	.shuiman{
-		border-radius: 40vw;
-		width: 60vw;
-		height: 60vw;
-		margin:0 auto;
-		background: url(../images/queshudi_03.png) no-repeat;
-		background-size: 100% 100%;
 		position: relative;
+		width: 52vw;
+		height: 52vw;
+		margin: 0 auto;
+		border: 1px solid #e6e6e6;
+		border-bottom: 1px solid transparent;
+		border-radius: 50%;
+		color: #44406F;
 	}
 
-	.shuiman>.cen1{
+	/* .shuiman>.cen1{
 	 	border-radius: 40vw;
 		width: 100%;
 		height: 100%;
@@ -469,7 +471,7 @@ body{
 		z-index: 200;
 		-webkit-animation:aImg2 3s linear infinite;
 		animation:aImg2 3s linear infinite;
-	 }
+	 } */
 	/*水满的动画*/
 	@keyframes aImg2{
 				0%{-webkit-transform:rotate(0deg);transform:rotate(0deg);}
