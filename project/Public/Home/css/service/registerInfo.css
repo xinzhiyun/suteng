@@ -1,0 +1,339 @@
+body {
+	font-size: .7rem;
+	width: 100vw;
+	background-color: #EDF2F2;
+	padding-bottom: 2rem !important;
+}
+.backPic {
+	width: 100vw;
+	background: url("../../images/infoBack.png") no-repeat;
+	height: 20vh;
+	background-size: 100%;
+	position: absolute;
+	top: 0;
+	z-index: 1;
+}
+.main {
+	z-index: 100;
+	position: relative;
+	margin-top: 3rem;
+}
+/* 公司信息 */
+.company {
+	background: white;
+	width: 77%;
+	margin: 0 auto;
+	border-radius: 4px;
+	padding: .8rem 1.3rem 1rem;
+	box-shadow: 0px 1px 5px #cecccc;
+}
+.company > div:nth-child(1){
+	position: relative;
+} 
+.company > div:nth-child(1)> span:nth-child(1) {
+	font-size: .9rem;
+	color: #51608C;
+	font-weight: bold;
+	position: absolute;
+	left: -1.1rem;
+	top: -.1rem;
+} 
+.inputInfo{
+	display: flex;
+	justify-content: space-between;
+	padding: 1rem 0 .5rem 0;
+	border-bottom: 1px solid #EFEFEF;
+	position: relative;
+} 
+.icon-right {
+	position: absolute;
+	right: .2rem;
+	font-size: .7rem;
+	bottom: .55rem;
+}
+.inputInfo > input {
+	border: none;
+}
+/* 地区选择 */
+.areaC {
+	justify-content: flex-start;
+}
+.areaC > label {
+	width: 35%;
+}
+.areaC > span, .areaC > select {
+	color: #D3D3D3;
+	border: none;
+}
+/* 上传图片显示 */
+.yinyePic {
+	padding: .8rem 0 0 0;
+}
+.icon-paizhao {
+	color: #D4D3D3;
+	font-size: 3rem;
+	margin: 1rem 0 .3rem 0;
+}
+.pics {
+	display: flex;
+}
+.pics >div:nth-child(1) {
+	display: flex;
+	flex-direction: column;
+	margin-right: 1rem;
+	text-align: center;
+}
+.pics >div:nth-child(1) > span:nth-child(2) {
+	color: #666666;
+	font-size:.5rem;
+	white-space: nowrap;
+}
+.bottx {
+	position: relative;
+	display: inline-block;
+	margin: 0 .3rem .5rem 0;
+}
+.bottx > .topx {
+	position: absolute;
+	right: -.2rem;
+	top: -.3rem;
+	color:white;
+	width: .6rem;
+	height: .7rem;
+	background: red;
+	text-align: center;
+	line-height: .5rem;
+	font-size: .5rem;
+	border-radius: 50%;
+}
+.bottx > img {
+	height: 2rem;
+}
+/* 服务站信息 */
+.stationInfo {
+	margin-top: .5rem;
+}
+/* 详细地址 */
+.detailAddress {
+	padding-top: .8rem;
+}
+.detailAddress > textarea {
+	border: 1px solid #EFEFEF;
+	width: 95%;
+	height: 3rem;
+	resize:none;
+	margin-top: .5rem;
+	font-size: .5rem;
+	padding: .3rem;
+}
+.userPhone {
+	margin-top: .8rem;
+	display: flex;
+}
+.userPhone > label {
+	white-space: nowrap;
+	margin-right: .7rem;
+}
+.userPhone > input {
+	border: 1px solid #EFEFEF;
+	width: 100%;
+	font-size: .5rem;
+	padding: .2rem 0 .2rem .5rem ;
+}
+/* 提交信息 */
+.payInfo > p{
+	width: 90%;
+	height: 1.8rem;
+	line-height: 1.8rem;
+	text-align: center;
+	border-radius: 2rem;
+	background: #4C88F6;
+	color: white;
+	margin: 2rem auto 0;
+}
+/* 输入框颜色 */
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder{
+	color:#D3D3D3;
+}
+input::-moz-placeholder, textarea::-moz-placeholder{   /* Mozilla Firefox 19+ */
+	color:#D3D3D3;
+}
+input:-moz-placeholder, textarea:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+	color:#D3D3D3;
+}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+	color:#D3D3D3;
+}
+
+
+/*地区选择*/
+#areaChoose {
+	width: 100vw;
+	height: 100vh;
+	/* display: none; */
+	position: fixed;
+	top: 0;
+	left: 0;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-flow: column;
+	flex-flow: column;
+	padding: 0;
+	border-bottom: none;
+	z-index: 1000;
+}
+.areaChoosebg {
+	width: 100vw;
+	height: 40vh;
+	background: rgba(0,0,0, .4);
+}
+.areaDiv {
+	height: 60vh;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	flex-flow: column;
+	background: #fff;
+}
+.areabtn {
+	width: 65%;
+	/* height: 1rem; */
+	/* border: none; */
+	/* background: white; */
+}
+
+/*弹出地区选择底部的确认按钮*/
+#confirmAreaChoose {
+	height: 14vh;
+	width: 100%;
+	background: #fff;
+}
+#confirmAreaChoose>div {
+	width: 80%;
+	height: 6vh;
+	line-height: 6vh;
+	position: relative;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	text-align: center;
+	color: #fff;
+	border-radius: 4px;
+	background: #2EB6AA;
+}
+.areaDiv>div {
+	width: 100%;
+	height: 12vmin;
+	line-height: 12vmin;
+	border-bottom: 1px solid #eee;
+}
+.areaDiv>div::after {
+	content: '';
+	visibility: hidden;
+	zoom: 1;
+	clear: both;
+}
+.areaDiv>div>span {
+	width: 33%;
+	float: left;
+	text-align: center;
+}
+.areaDiv>ul {
+	width: 80%;
+	height: 100%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	height: 100%;
+	overflow-y: hidden;
+}
+.areaDiv>ul>li {
+	flex: 1;
+	width: 80%;
+	height: 100%;
+	padding: 1% 2%;
+	margin: 10px auto;
+	border-radius: 4px;
+	background: #fff;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}
+.addrselect {
+	color: #2eb6aa;
+	font-weight: 600;
+}
+.areaDiv>ul p {
+	margin: 20px 0;
+}
+/* 已有服务站注册提示 */
+.hasRegister {
+	width:100vw;
+	height: 100vh;
+	background: rgba(30,30,30, .3);
+	position: fixed;
+	top: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.hasRegister > div {
+	width: 60%;
+	/* height: 4rem; */
+	background: white;
+	border-radius: 10px;
+}
+.hasRegister > div > p:nth-child(1) {
+	height: 2rem;
+	line-height: 2rem;
+	text-align: center;
+	color: red;
+	border-bottom: 1px solid #F2F2F2;
+}
+.hasRegister > div > p:nth-child(2) {
+	display: flex;
+	text-align: center;
+}
+.hasRegister > div > p:nth-child(2) > span {
+	width: 50%;
+	padding: .3rem 0;
+	
+}
+.hasRegister > div > p:nth-child(2) > span:nth-child(2) {
+	border-left: 1px solid #F2F2F2;
+}
+.hasRegister > div > p:nth-child(2) > span:nth-child(1) {
+	color: 1px solid #9B9B9A;
+}
+.hasRegister > div > p:nth-child(2) > span:nth-child(2) > a {
+	color: #53C2B8;
+}
+/* 客服电话 */
+.telphone {
+	position: fixed;
+	bottom: 4rem;
+	right:.7rem;
+	z-index: 100;
+}
+.telphone > a {
+	color: #17AEA1;
+}
+.telphone > a > span {
+	font-size: 2rem;
+}
+.pswp__img {
+	width: 100%;
+	height: auto !important;
+	position: relative;
+	display: block;
+	top: 50% !important;
+	-webkit-transform: translateY(-50%) !important;
+	transform: translateY(-50%) !important;
+}

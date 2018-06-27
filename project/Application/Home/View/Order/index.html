@@ -639,7 +639,10 @@
                     $("#dingdanDaifahuo").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
                     $('.waitsend').text(0);
                 }
-            }
+			},
+			error: function(err) {
+				console.log("待发货err", err);
+			}
         });
 
 		$.ajax({//2：待收货

@@ -108,7 +108,8 @@
      * 编辑快递公司
      */
     $('.addbtn').click(function(){
-        var id = {{$v['id']}};
+        var id = ('#del').value;
+        alert(id);
         $.ajax({
                 url:"courierDel",
                 data:{"id":id},

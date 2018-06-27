@@ -423,6 +423,7 @@
                     dataType:'json',
                     data:{'aid':aid},
                     success:function(res){
+                        // $("input[data-id='"+aid+"']").parent().parent().remove();
                         location.reload();
                         parent.layer.msg(res.msg);
                     }
@@ -649,6 +650,19 @@
                 }
             });
         }
+        // 删除图片
+        $("#picShow").on("click", ".delPic", function() {
+            console.log("删除");
+            var _this = this;
+            layui.use("layer", function(){
+                layer = layui.layer;
+            })
+            layer.confirm("确定删除?", function(index) {
+                $(_this).parent().remove();
+                layer.close(index);
+            })
+            
+        });
         $(".goodsAdd").click(function(){
             // var data = $("#form").serializeArray();
             console.log(picArr);
@@ -664,7 +678,7 @@
                 contentType: false,
                 success:function(res){
                     if(res.code == 200){
-                        // location.reload();
+                        location.reload();
                         parent.layer.msg(res.msg);
                     } else {
                         parent.layer.msg(res.msg);

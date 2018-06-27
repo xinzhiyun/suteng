@@ -1,141 +1,52 @@
-
 body{
 	font-size: 0.72rem;
-	color:#373737;
+	color:#333333;
 }
-._chooseMeal{
-	width: 100%;
-}
-.chooseMeal{
-	width: 90%;
-	padding:0.533333rem 5% 0rem;
-	margin-bottom: 3.2rem;
-	position: relative;
-}
-.chooseContain h3{
-	font-size: 0.8rem;
-    margin-bottom: 0.8rem;
-    font-weight: 600;
-}
-.chooseContain ul{
-	width: 86%;
-	margin:0 auto;
-}
-.chooseContain ul li{
-	height: 1.333333rem;
-	width: 100%;
-	border:1px solid #E5E5E5;
-	margin-top: 0.6rem;
-	font-size: 0.766667rem;
-	line-height: 1.333333rem;
-	text-align: center;
-	padding: 0.4rem 0;
-	border-radius: 0.2rem;
-	font-weight: 600;
-}
-.chooseContain ul li b{
-	padding: 0 0.1rem;
-}
-.chooseFoot{
-	position: fixed;
-	bottom: 0;
-	width: 100%;
-}
-.chooseFoot input{
-	width: 100%;
-	height: 1.8rem;
-	background:#2EB6AA;
-	color: #fff; 
-	border:none;
-	font-size: 0.82rem;
-	letter-spacing: 0.1rem;
-}
-/*隐藏付款块*/
-.devicepay{
-	box-sizing: border-box;
-	width: 82%;
-	float: right;
-	padding:0.8rem 0.5rem;
-	background: #E6E6E6;
-	position: absolute;
-	top:-0.65rem;
-	border-radius: 0.2rem;
-	display: none;
-	-webkit-box-shadow: 1px 1px 3px; 
-	-moz-box-shadow: 1px 1px 3px; 
-	box-shadow: 1px 1px 3px;
-
-}
-.devicepay>span{
-	font-size: 0.2rem;
-	font-weight: 600;
-	color:#F00;
-}
-.devicepay>span>em{
-	padding-left:0.8rem; 
-	font-size: 0.2rem;
-	font-weight: 600;
-	color:#F00;
-
-}
-.devicepay>i{
-	display: inline-block;
-    width: 2rem;
-    height: 1rem;
-    line-height: 1rem;
-    font-weight: normal;
-    background: #F00;
-    color: #FFF;
-    border-radius: 0.2rem;
-    font-size: 0.3rem;
+.main > div:nth-child(1) > span {
+    display: block;
+    height: 6rem;
     text-align: center;
-    float: right;
+    margin:1rem 0;
 }
-.deviceFoot{
-	width: 100%;
-	padding:0.266667rem;
-	position: fixed;
-	left: 0;
-	bottom: 0;
-	border-top: 1px solid #ccc;
-
+.main > div:nth-child(1) > span > img {
+    height: 100%;
 }
-.deviceFoot i{
-	margin:0 0.4rem;
+.main > div:nth-child(2) {
+    width: 90%;
+    border: 1px solid #4D70FF;
+    text-align: center;
+    margin: 0 auto;
+    padding: 1rem 0 1rem 0;
 }
-.deviceFoot span{
-	font-size: 0.373333rem;
+.main > div:nth-child(2) > span {
+    font-size: .5rem;
+    font-weight: bold;
 }
-/*没有设备的页面*/
-.noDevice{
-	display: none;
-	width:100%;
-	margin-top: 6.666667rem;
+/* 选择套餐 */
+.chooseMeal > li {
+   width: 80%;
+   border: 2px solid #4D70FF;
+   border-radius: 2rem; 
+   padding: .3rem 0;
+   margin: 1rem auto 0;
 }
-.noContainer{
-	width: 5.333333rem;
-	margin:0 auto;
-	height: 5.333333rem;
-	/*background: green;*/
-	/*line-height: 2.666667rem;*/
-	text-align: center;
+/* 立即充值 */
+.toPay {
+    height: 1.8rem;
+    line-height: 1.8rem;
+    width: 80%;
+    margin: 2rem auto 0;
+    text-align: center;
+    color: white;
+    border-radius: 2rem;
+    /* background: #4C88F6; */
+    background: rgba(76,136,246,.7);
 }
-.taocanSelectNow {
-	color: #fff;
-	background: #56AAF1;
+/* 选中 */
+.chooseAleady {
+    background: #4C88F6;;
+    color: white;
 }
-.noContainer i{
-	font-size: 4.0rem;
-	color:#64A0F2;
-}
-.noContainer p{
-	font-size: 0.8rem;
-}
-.icon-xuanze{
-	color: #68B1F1;
-
-}
-
 /*付款页面*/
 .paystyle{
 	position:fixed;
@@ -183,6 +94,9 @@ body{
 .icon-z-weixin{
 	color:#149E23;
 	
+}
+.icon-xuanze {
+    color: #4C88F6;
 }
 .icon-zhifubao{
 	color:#22A8FF;
@@ -238,40 +152,9 @@ body{
 	border:none;
 	padding:1.5vh  0;
 	width: 86vw;
-	background: #2EB6AA;
+	background: #4C88F6;
 	border-radius:0.2rem;
 	color: #FFF;
 	font-size: 0.82rem;
 	letter-spacing: 0.1rem;
 }
-/*模态框样式*/
-.modelAll{width:100vw;height:100%;font-family: "mircoft yahei";font-size:14px;font-size: 0.7rem;line-height: 1; display: none;overflow: hidden;}
-.modal{position:absolute;left:0;right:0;z-index: -1;}
-.fade{opacity:0;top:-10%;display:block;-webkit-transition:top 0.3s linear;-o-transition:top 0.3s linear;transition:top 0.3s linear;}
-.fade.in{opacity:1;top:10%;}
-.modal-body{width:80%;margin:5rem auto;background-color: #fff;border-radius:0.5rem;}
-.modal-title{position:relative;height:40px;background-color: #D31145;line-height: 40px;border-bottom:1px solid #ccc;}
-.modal-backup{position:fixed;top:0;left:0;right:0;width:100%;height:100%;background-color: rgba(0, 0, 0, 0.5);z-index: 1000;display:none;}
-.modal-content>p{
-	padding:0.8rem;
-	text-align: center;
-	border-bottom:1px solid #E5E5E5;
-}
-.modal-content>p>a{
-	color:#64A0F2;
-}
-.modal-content>p>input{
-	border:none;
-	background: none;
-	color:#64A0F2;
-}
-.modal-content>p:nth-child(4){
-	border:none;
-}
-/*兼容解决*/
-@media screen and (max-height:520px) {
-	.paymidd>ul>li {
-    	padding: 0.4rem 0.5rem;
-	}
-}
-

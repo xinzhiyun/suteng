@@ -1,155 +1,93 @@
-
 body{
   font-size: 0.7rem;
-  color:#373737;
+  color:#333;
+  background: #EDF2F2;
+  height: 100vh;
+  width: 100vw;
+}
+body::after {
+  content: "";
+  height: 25vh;
+  width: 100vw;
+  background: url("../../images/myback.png") no-repeat;
+  background-size: 100% 100%;
+  position: absolute;
+  top:0;
+  left: 0;
+  z-index: 1;
 }
 ._Mine{
-  width: 100%;
-}
-.MineContainer{
+  width: 100vw;
   position: relative;
+  z-index: 2;
+  padding-top: 3rem;
 }
-.MineTop{
-  height:7rem;
-  width: 100%;
-  border-bottom: 0.4rem solid #F3F3F3;
-   background: linear-gradient(to bottom right, #7aecdc 20%,#5291ee); 
+.userInfos {
+  background: url("../../images/touxiang.png") no-repeat;
+  background-size: 100% 100%;
+  width: 93%;
+  margin:0 auto;
+  text-align: center;
+  padding: .8rem 0;
 }
-/*.mineLeft{
-  margin-right: 5%;
-  width: 25%;
-}*/
-.mineLeft span{
-  margin:1.3rem auto;
-  display: block;
-  width:  3.4rem;
-  height:  3.4rem;
-  background:#2EB6AA;
-  border-radius:  3.0rem;
-  overflow: hidden;
-}
-.mineLeft span img{
-  width: 100%;
-}
-.mineRight{
-  width: 70%;
-}
-.mineRight>ul>li>p,.mineRight>ul>li>b,.mineRight>ul>li>span{
-  color: #FFF;
-}
-.mineLeft,.mineRight{
-  height:60%;
-  width:40;
-
-  float: left;
-}
-.mineLeft{
-  width: 30%;
-}
-.mineRight{
-  width: 62%;
-}
-.mineRight ul li{
-  margin-top: 0.5rem;
-  display: block;
-  width: 100%;
-  height: 1.2rem;
-  line-height:1.2rem;
-  font-size: 0.7rem;
-}
-.mineRight ul li p{
-  font-size: 0.72rem;
-}
- .mineRight ul li:first-child{
-  margin-top: 1.2rem;
-}
-.mineRight ul li b{
-  display: inline-block;
-  color: #FFF;
-  font-weight: 400;
-}
-.mineRight .m-left{
-  margin:0 0.4rem;
-}
-.mineRight>ul>li>i{
-  position: relative;
-  top:0.15rem;
-}
-.mineRight>ul>li>i.icon-tubiao207{
-  color:#f9df04; 
-  font-size: 1.2rem;
-  font-weight: 800;
-}
-.mineRight>ul>li>i.icon-tubiao207-copy{
-  color: #dadad5;
-   font-size: 1.2rem;
-  font-weight: 800;
-}
-.mineRight .yingIcon{
-  width: 70%;
-  float: right;
-}
-.MineFoot ul li{
-  height: 1.5rem;
-  line-height: 1.5rem;
-  position: relative;
-  font-size: 0.7rem;
-  border-bottom:1px solid #F3F3F3;
-  padding:0.3rem 3% ;
-}
-.MineFoot ul li:active {
-  background: rgba(0,0,0,.04);
-}
-.MineFoot ul li a{
+.userInfos > div:nth-child(1) > span:nth-child(1){
+  height: 3rem;
   display: block;
 }
-
-.MineFoot ul li:nth-child(3){
-  border-bottom:0.4rem solid #F3F3F3;
+.userInfos > div:nth-child(1) > span:nth-child(1) > img {
+  height: 100%;
+  border-radius: 50%;
 }
-.MineFoot ul li.Mf-infor{
-  border-top:0.4rem solid #F3F3F3;
-  border-bottom: 0.4rem solid #F3F3F3;
+.userInfos > div:nth-child(1) > span:nth-child(2) {
+  display: block;
+  margin: .2rem 0 .4rem 0;
 }
-.MineFoot .Mf-left{
-  margin-right:0.4rem;
-  font-size: 1.1rem;
+.userInfos > div:nth-child(1) > a {
+  font-size: .5rem;
+  color: #4D70FF;
 }
-/*设备管理字体*/
-.MineFoot .icon-shebeiguanli{
-  /*font-size: 1.05rem;*/
+/* 金银币 */
+.jinyin {
+  display: flex;
+  margin-top: .5rem;
 }
-.MineFoot .icon-dengpao1{
-  font-size: 1.15rem;
+.jinyin > p {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.MineFoot .icon-wuyebaoxiu{
-  font-size: 1.15rem;
+/* 功能列表 */
+.lists {
+  background: white;
+  margin-top: .7rem;
 }
-.MineFoot>ul>li>a>span{
-  font-weight: 500;
-  font-size: 0.72rem;
+.lists > li {
+  position: relative;
+  border-bottom: #F5F8F8;
+  padding: .5rem .8rem;
 }
-.MineFoot>ul>li>a>b{
-  display: inline-block;
-  float: right;
-  font-size: 0.6rem;
-  font-weight: 400;
-  color:#909393;
+.lists > li:active {
+  background: rgba(0,0,0,.03);
 }
-.MineFoot .Mf-right{
-  float: right;
-  margin-left: 0.133333rem;
+.lists > li > a {
+  display: flex;
+  justify-content: space-between;
+  /* width: 100vw; */
 }
-/*图标颜色*/
-.icon-shebeiguanli,.icon-jilu1,.icon-dengpao1,.icon-naozhong{
-  color: #308BE8;
+.lists > li > a > span:nth-child(1) {
+  display: flex;
+  align-items: center;
 }
-.icon-renwu,.icon-gerenxinxi{
-  color:#EA802B;
+.lists > li > a > span:nth-child(1) > i:nth-child(1) {
+  height: 1rem;
+  display: block;
+  margin-right: .4rem;
+  font-style: normal;
 }
-.icon-yongshuijilu,.icon-wuyebaoxiu{
-  color:#26A085;
+.lists > li > a > span:nth-child(1) > i:nth-child(2) {
+  font-style: normal;
 }
-/* .MineFoot ul li a i..icon-wuyebaoxiu,.MineFoot ul li a i.icon-dengpao1{
-
-}*/
+.lists > li > a > span:nth-child(1) > i:nth-child(1) > img {
+  height: 100%;
+}

@@ -285,12 +285,12 @@
 					if(res.status == 200){
 						callback(res.data);	
 					}else{
-						layHint(res.msg);
+						layuiHint(res.msg);
 					}
 				},
 				error: function(err){
 					console.log('err: ',err);
-					layHint('系统遇到问题，请稍后再试');
+					layuiHint('系统遇到问题，请稍后再试');
 				}
 			})
 		}

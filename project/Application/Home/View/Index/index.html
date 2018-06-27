@@ -4,75 +4,38 @@
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
   <meta charset="UTF-8">
   <title>速腾水家电</title>
-  <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
-  <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
-  <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+  <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css?v={{:time()}}">
+  <!-- <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css"> -->
+  <!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
   <script>
       // var vconsole = new VConsole();
   </script>
-  <style>
-    .menu {
-      width: 100%;
-      display: flex;
-    }
-    .menu>li {
-      flex: 1 1 20%;
-    }
-    .chbuTop{
-      width: 100vw;
-      height: auto;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    .chbuTop>ul{
-      width: 100%;
-      padding: 1% 2%;
-      display: flex;
-      flex-wrap: wrap;
-      box-sizing: border-box;
-      overflow: hidden;
-    }
-    .chbuTop>ul>li{
-      flex: 49% 1 0;
-      width: 49%;
-      height: 8vh;
-      display: inline-block;
-      font-size: 0.80rem;
-      line-height: 6vh;
-      margin-top: 1.5vh;
-      white-space: nowrap;
-    }
-    
-    .chbuTop>ul>li>p {
-      /*width: 80%;*/
-      white-space: nowrap;
-      text-align: left;
-    }
-    
-    .xuantext{
-      width: auto;
-      height: 30vw;
-      text-align: center;
-      position: absolute;
-      top:30vw;
-      left: 50%;
-        transform: translateX(-50%);
-    }
-  </style>
 </head>
-<body>
+<body style='background: #f1f1f1;'>
 <input type="hidden" value={{$device|json_encode}} class="deviceInfo">
 <input type="hidden" value={{$data|json_encode}} class="res">
 
- 
   <div class="_chongxi">
     <div class="chongContainer">
       <div class="chongTop ">
           <div style="height: 3rem">
-            <div class="heat"></div>
-          <span style="max-width: 15vw;max-height: 15vw; position: fixed; right: 7vw;top:9vw; display: inline-block;" class="heatTxt">加热</span>
+            <div class="wendu">
+              <p>
+                <b></b>
+                <span>&nbsp;(当前水温<b class="redu hotwater"></b>)</span>
+              </p>
+              <p class='heatTxt'>&nbsp;加热</p>
+              <!-- <p><span>(冷)</span><b class="lengdu coldwater"></b></p> -->
+            </div>
+            <!-- <div class="changeDevice">
+                <b></b>
+                <span>切换设备</span>
+            </div> -->
           </div>
           <div class="statusList">
+              <div class='canvasdiv'>
+                  <canvas id='canvas' width="200" height="200"></canvas>
+              </div>
               <!--冲洗-->
               <div class="xuanhuan clear">
                   <div class="xuannei"></div>
@@ -100,19 +63,21 @@
               <div class="kaiji clear outLine"></div>
           </div>
 
-
           <div class="xuantext">
-            <p>纯水TDS</p>
+            <p>-&nbsp;<span>纯水TDS</span>&nbsp;-</p>
             <h3 class="rawtdsVal puretds"></h3>
-            <!-- <p>PH值：<span class="phVal"></span></p> -->
+            <p class="waterDesc">
+              <b></b>
+              <span>水质优良</span>
+            </p>
           </div>
-          <div class="btmTxt">冲洗</div>
+          <div class="btmTxt">
+            <p>
+              <img src="__PUBLIC__/Home/images/wash.png" alt="">
+            </p>
+            <div>冲洗</div>
+          </div>
           <!-- 接口的内容 -->
-          <div class="wendu">
-            <p>出水温度</p>
-            <p><span>(热)</span><b class="redu hotwater"></b></p>
-            <!-- <p><span>(冷)</span><b class="lengdu coldwater"></b></p> -->
-          </div>
           <!-- <div class="shiwen">
             <p>室温</p>
             <p><b class="redu roomtemperature">24~16 &#8451;</b></p>
@@ -123,22 +88,40 @@
           <div class="chbuTop">
             <ul>
               <li>
-                <i class="iconfont icon-chunshui"></i>
-                <b>纯水</b>
-                <span class="rawtdsVal2 puretds">--</span>ppm
+                <div>
+                  <i class="iconfont icon-chunshui"></i>
+                  <div class='sbright'>
+                    <p class="fblue">
+                      <span class="rawtdsVal2 puretds">--</span>
+                      <span>PPM</span>
+                    </p>
+                    <b>纯水TDS值</b>
+                  </div>
+                </div>
+                <div>
+                    <i class="iconfont icon-shengyutianshu"></i>
+                    <div class='sbright' style="display: inline-block">
+                      <span class="surplusVal fblue"></span>
+                    </div>
+                </div>
               </li>
               <li>
-                <i class="iconfont icon-shengyutianshu"></i>
-                <p style="display: inline-block" class="surplusVal">剩余天数：--天</p>
-              </li>
-              <li>
-                <i class="iconfont icon-yuanshui1" ></i>
-                <b>原水</b>
-                <span class="puretdsVal rawtds">--</span>ppm
-              </li>
-              <li>
-                <i class="iconfont icon-yiyongtianshu"></i>
-                <p style="display: inline-block" class="alreadyUsedVal">已用天数：--天</p>
+                <div>
+                  <i class="iconfont icon-yuanshui1" ></i>
+                  <div class='sbright'>
+                    <p class="fblue">
+                      <span class="puretdsVal rawtds">--</span>
+                      <span>PPM</span>
+                    </p> 
+                    <p><b>原水TDS值</b></p>
+                  </div>
+                </div>
+                <div>
+                  <i class="iconfont icon-yiyongtianshu"></i>
+                  <div class='sbright' style="display: inline-block">
+                    <span class="alreadyUsedVal fblue"></span>
+                  </div>
+                </div>
               </li>
             </ul>
           </div>
@@ -156,8 +139,101 @@
   </div>
   <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
   <script src="__PUBLIC__/Home/js/public.js"></script>
-  <script src="__PUBLIC__/Home/js/indexwebsocket.js"></script>
-<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
-<link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
+  <script src="__PUBLIC__/Home/js/indexwebsocket.js?v={{:time()}}"></script>
+  <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+  <link rel="stylesheet" href="__PUBLIC__/Admin/layui/css/layui.css" />
+  <script>
+     function toCanvas(canvas ,progress){
+        //canvas进度条
+        ctx = canvas.getContext("2d"),
+        percent = progress,  //最终百分比
+        circleX = canvas.width / 2,  //中心x坐标
+        circleY = canvas.height / 2,  //中心y坐标
+        radius = 94, //圆环半径
+        lineWidth = 5,  //圆形线条的宽度
+        fontSize = 20; //字体大小
+        
+        // 画圆
+        function circle(cx, cy, r) {
+            ctx.beginPath();
+            //ctx.moveTo(cx + r, cy);
+            ctx.lineWidth = lineWidth;
+            ctx.strokeStyle = '#CBDCFD';
+            ctx.arc(cx, cy, r, Math.PI*7/9, Math.PI*1/4);
+            ctx.stroke();
+        }
+
+        // 画弧线
+        function sector(cx, cy, r, startAngle, endAngle, anti) {
+            ctx.beginPath();
+            //ctx.moveTo(cx, cy + r); // 从圆形底部开始画
+            ctx.lineWidth = lineWidth;
+
+            // 渐变色 - 可自定义
+            var linGrad = ctx.createLinearGradient(
+                circleX-radius-lineWidth, circleY, circleX+radius+lineWidth, circleY
+            );
+            linGrad.addColorStop(0.0, '#49BAFE');
+            //linGrad.addColorStop(0.5, '#9bc4eb');
+            linGrad.addColorStop(1.0, '#4D70FF');
+            ctx.strokeStyle = linGrad;
+
+            // 圆弧两端的样式
+            ctx.lineCap = 'round';
+
+            // 圆弧
+            ctx.arc(
+                cx, cy, r,
+                (Math.PI*7/9),
+                (Math.PI*7.2/9) + endAngle/100 * (Math.PI*7/5),
+                false
+            );
+            ctx.stroke();
+        }
+
+        // 刷新
+        function loading() {
+            if (process >= percent) {
+                clearInterval(circleLoading);
+            }
+
+            // 清除canvas内容
+            ctx.clearRect(0, 0, circleX * 2, circleY * 2);
+
+          // 中间的字
+            ctx.font = fontSize + 'px April';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#999';
+            // ctx.fillText(parseFloat(process).toFixed(0) + '%', circleX, circleY);    
+        
+            // 圆形
+            circle(circleX, circleY, radius);
+            
+            // 圆弧
+            sector(circleX, circleY, radius, Math.PI*2/6, process);
+            // 控制结束时动画的速度
+            if (process / percent > 0.90) {
+                process += 0.30;
+            } else if (process / percent > 0.80) {
+                process += 0.55;
+            } else if (process / percent > 0.70) {
+                process += 0.75;
+            } else {
+                process += 1.0;
+            }
+        }
+
+        var process = 0.0;  //进度
+        var circleLoading = window.setInterval(function () {
+            loading();
+        }, 20);
+              
+    }
+    $(function(){
+      var canvas = document.querySelector('#canvas');
+      toCanvas(canvas, 98);
+    })
+  </script>
 </body>
 </html>                                                                                                                                                                                                                                                                    

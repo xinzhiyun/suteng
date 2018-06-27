@@ -1,0 +1,39 @@
+.main {
+    width: 100vw;
+    height: 100vh;
+}
+.main > ul > li {
+    text-align: center;
+}
+.main > ul > li > p {
+    text-align: left;
+}
+.main > ul {
+    padding: 2rem;
+}
+.main > .firstCon > li:nth-child(1) > span {
+    height: 7rem;
+    display: block;
+}
+.main > .firstCon > li:nth-child(1) > span > img{
+    height: 100%;
+}
+.main > .firstCon > li:nth-child(2) {
+    margin: .3rem 0 .5rem 0;
+}
+.main > .firstCon > li:nth-child(2) > span{
+    font-size: .7rem;
+    font-weight: bold;
+}
+.main > .firstCon > li:nth-child(3) > p{
+    font-size: .5rem;
+    color: #6F6F6F;
+    line-height: .9rem;
+    text-align: center;
+}
+.main > .firstCon > li:nth-child(4) {
+    margin-top: 7rem;
+}
+/* .main > .firstCon > li:nth-child(4) > a{
+    color: #50B8FF;
+} */
