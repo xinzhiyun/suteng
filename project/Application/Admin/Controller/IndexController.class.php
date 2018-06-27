@@ -30,6 +30,10 @@ class IndexController extends CommonController
 
 	    	//当天时间段充值套餐的用户数
 	    	$flowUsers = $this->getFlowUsers();
+
+	    	//设备对应省份的数量
+	    	$provinceDevice = M("user_device")->field("province as name,count(*) as num")->group("province")->select();
+	    	
 	
 	    	$data = [
 	    		'flows' => $flows,
@@ -38,7 +42,8 @@ class IndexController extends CommonController
 	    		'repairs' => $repairs,
 	    		'feeds' => $feeds,
 	    		'users' => $users,
-	    		'flowUsers' => $flowUsers
+	    		'flowUsers' => $flowUsers,
+	    		'provinceDevice' => $provinceDevice
 	    	];
 	    	// print_r($data);
 	    	$this->ajaxReturn($data);
