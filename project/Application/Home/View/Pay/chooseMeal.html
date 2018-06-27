@@ -6,30 +6,30 @@
 	<title>选择充值方式</title>
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/mall/chooseMeal.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/mall/chooseMealx.css">
 	<!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
 	<script>
 		// var vConsole = new VConsole();
-		var infos = {{$infos['user']}};
-		console.log("金银币",infos);
+		var infos = {{$infos|json_encode}};
+		var mealval = {{$list}};
+		console.log("金银币",infos, mealval);
 	</script>
 </head>
 <body>
-	<input type="hidden" value='{{$list}}' id="meal">
-	<!-- <input type="hidden" value='{{$user}}' id="jinyinbi">
-	<input type="hidden" value='{{$rate}}' id="rate"> -->
-	<div class="_chooseMeal">
-		<div class="chooseMeal">
-			<div class="chooseContain">
-				<h3>选择套餐</h3>
-				<ul>
-					<!-- <li class="taocanSelectNow">100元套餐含<b>1000L</b>流量</li>
-					<li>100元套餐含<b>1000天</b>流量</li> -->
-				</ul>
-			</div>
+	<div class="main">
+		<div>
+			<span><img src="__PUBLIC__/Home/images/chongzhi.png" alt=""></span>
 		</div>
-		<div class="chooseFoot">
-			<input type="submit" value="立即购买">
+		<div>
+			<span>请选择套餐</span>
+			<ul class="chooseMeal">
+				<li>8元购买8天</li>
+				<li>7元购买7天</li>
+				<li>365元购买450天</li>
+			</ul>
+		</div>
+		<div>
+			<p class="toPay">立即充值</p>
 		</div>
 		<!-- 付款页面 -->
 		<div class="paystyle">
@@ -48,8 +48,6 @@
 						<li index="1"><i class="iconfont icon-tubiao207"></i>金币<span class="iconfont icon-kuang1"></span></li>
 						<li index="2"><i class="iconfont icon-tubiao207-copy"></i>银币<span class="iconfont icon-kuang1"></span></li>
 						<li index="3"><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-xuanze"></span></li>
-						<!-- <li index="4"><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
-						<li index="5"><i class="iconfont icon-yinlian"></i>银联<span class="iconfont icon-kuang1"></span></li> -->
 					</ul>
 				</div>
 				<div class="payBott start">
@@ -57,341 +55,273 @@
 				</div>
 			</div>
 		</div>
-		<!-- 模态框的内容 -->
-		<div class="modal-backup">
-			<div class="modelAll">
-				<div class="modal fade">
-					<div class="modal-body">
-						<div class="modal-content">
-							<p>您还没有绑定银行卡</p>
-							<p class="close"><a href="#">去绑定</a></p>
-							<p class="close"><a href="#">其他支付方式</a></p>
-							<p><input class="close" type="submit" value="取消"></p>
-						</div>
-					</div>
-				</div>
-
-			</div>
-		</div>
 	</div>
-	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
-	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
-	<script src="__PUBLIC__/Home/js/public.js"></script>
-	<!-- 微信支付支持JS部分代码 -->
-	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
-	<script>
-		$(function(){
-			// 首页按钮
-			!function(){
-				// 创建 a 标签
-				var home = document.createElement('a');
-				home.innerText = '首\n页';
-
-				home.href = '{{:U("Home/Index/index")}}';
-				home.setAttribute("id", 'back2Home');
-
-				// 添加到页面
-				document.body.appendChild(home);
-				home.onclick = function(){
-					home.style.background = '#aaa';
-				}
-				return
-				// console.log(home)
-			}()
-		})
-		//微信接口
-		wx.config({
-		    debug: false,
-		    appId: '{{$wxinfo["appId"]}}',
-		    timestamp: '{{$wxinfo["timestamp"]}}',
-		    nonceStr: '{{$wxinfo["nonceStr"]}}',
-		    signature: '{{$wxinfo["signature"]}}',
-		    jsApiList: [
-		      // 所有要调用的 API 都要加到这个列表中
-		      'chooseWXPay'
-		    ]
-		});
-
-		var dingdanID;		//存储后台返回的订单号
-		var meal, mealHTML = '';		//遍历套餐的数据
-		if($("#meal").val()){
-			//后台传过来的数据
-			meal = JSON.parse($("#meal").val());
-
-			//遍历套餐充值数据
-			for(var i=0; i<meal.length; i++){
-				mealHTML += '<li remodel="'+meal[i].remodel+'" flow="'+meal[i].flow+'" money="'+meal[i].money+'" tid="'+meal[i].id+'">'+ meal[i].describe +'</li>'
+</body>
+<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
+<script src="__PUBLIC__/Home/js/public.js"></script>
+<!-- 微信支付支持JS部分代码 -->
+<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
+<script>
+	$(function(){
+		// 首页按钮
+		!function(){
+			// 创建 a 标签
+			var home = document.createElement('a');
+			home.innerText = '首\n页';
+			
+			home.href = '{{:U("Home/Index/index")}}';
+			home.setAttribute("id", 'back2Home');
+			
+			// 添加到页面
+			document.body.appendChild(home);
+			home.onclick = function(){
+				home.style.background = '#aaa';
 			}
-			//将套餐数据添加到页面上
-			$(".chooseContain>ul").html(mealHTML);
-		}else{
-			$(".chooseContain>ul").html('<h3 style="width:100%;height:50vh;text-align:center;padding:20vh 0">暂无数据</h3>');
+			return
+			// console.log(home)
+		}()
+	})
+	//微信接口
+	wx.config({
+		debug: false,
+		appId: '{{$wxinfo["appId"]}}',
+		timestamp: '{{$wxinfo["timestamp"]}}',
+		nonceStr: '{{$wxinfo["nonceStr"]}}',
+		signature: '{{$wxinfo["signature"]}}',
+		jsApiList: [
+		// 所有要调用的 API 都要加到这个列表中
+		'chooseWXPay'
+		]
+	});
+	
+	// 选中套餐
+	$(".chooseMeal").on("click", function(e) {
+		var ev = e || window.event;
+		var target = ev.target || ev.srcElement;
+		$(".toPay").css("background", "#4C88F6");
+		if(target.nodeName.toLowerCase() == "li") {
+			$(target).addClass("chooseAleady").siblings("li").removeClass("chooseAleady");
 		}
-
-
-		var money, tid, remodel;	
-		// 用户金币数量：gold_num;
-		var gold_num = parseInt(infos.gold_num);
-		// 用户银币数量：silver;
-		var silver = parseInt(infos.silver);
-		// {"gold_rate":"1.00","silver_rate":"0.50"}	
-		var gold_rate = "1.00";
-		var silver_rate = "0.50";
-		console.log(gold_num,silver)
-		/*
-			点击立即购买，选择支付方式
-		 */
-		//获取需要传到后台的套餐价钱，id, 套餐类型
-		$('.chooseFoot>input').click(function(){
-			// console.log($(".taocanSelectNow"))
-			if($(".taocanSelectNow").length){
-				$('.paystyle').slideDown("slow");
-			}else{
-	       		parent.layer.msg('请先选择购买的套餐');
-			}
-			money = $(".taocanSelectNow").attr("money");
-			tid = $(".taocanSelectNow").attr("tid");
-			console.log(money,tid)
-			//发送请求让后台生成订单号
-			$.ajax({
-				url: '{{:U("Home/Mall/information")}}',
-				type: 'post',
-				async: false,
-				data: {'num':1,'id':tid,'money':money,'remodel':remodel},
-				success: function(res){
-					console.log('成功！ ', res);
-					$("#money").text('￥'+money);
-					//如果返回的是订单号
-					if(typeof JSON.parse(res) == 'number'){
-						dingdanID = res;
-					}
-				},
-				error: function(res){
-					console.log('失败！ ', res);
+	})
+	var dingdanID;		//存储后台返回的订单号
+	var money, tid, remodel;
+	// 立即充值 //获取需要传到后台的套餐价钱，id, 套餐类型
+	$(".toPay").on("click", function() {
+		if(!$(".chooseMeal>li").hasClass("chooseAleady")) {
+			parent.layer.msg('请选择套餐');
+			return;
+		}
+		money = $(".chooseAleady").attr("money");
+		tid = $(".chooseAleady").attr("tid");
+		remodel = $(".chooseAleady").attr("remodel");
+		console.log(money,tid, remodel)
+		//发送请求让后台生成订单号
+		$.ajax({
+			url: '{{:U("Home/Mall/information")}}',
+			type: 'post',
+			async: false,
+			data: {'num':1,'id':tid,'money':money,'remodel':remodel},
+			success: function(res){
+				$('.paystyle').slideDown("slow");//支付方式面板
+				console.log('成功！ ', res);
+				$("#money").text('￥'+money);
+				//如果返回的是订单号
+				if(typeof JSON.parse(res) == 'number'){
+					dingdanID = res;
 				}
-			})
+			},
+			error: function(res){
+				console.log('失败！ ', res);
+			}
 		})
-		/*
-			点击立即支付
-		*/
-		
-		$(".payBott").click(function(){
-			var index = $(".icon-xuanze").parents("li").attr("index");
-			console.log(index,money,dingdanID)
-			switch(index){
-				case '1':
-				console.log('金币');
-				if((gold_num * gold_rate) < money) {
-					parent.layer.msg('金币不足!');
-					setTimeout(function(){
-						$(".paystyle").slideUp("slow");
-					}, 1000);
-					return false;
-				}else{
-					console.log(dingdanID)
-					$.ajax({
-						url: "{{:U('Home/PaymentSystem/choosePayByGold')}}",
-						type: 'post',
-						data: {order: dingdanID},
-						success: function(res){
-							sessionStorage.setItem("金银币",JSON.stringify(res))
-							console.log("金币支付",res);
-							if(res.code == 200) {
-								parent.layer.msg('支付成功');
-								setTimeout(function(){
-									history.replaceState({}, null, "{{:U('Index/index')}}");//改变历史记录
-									location.href = '{{:U("Index/index")}}';
-								},500);
-							}else if(res.code == -1) {
-								parent.layer.msg('已经支付过啦!');
-								setTimeout(function(){
-									location.href = '{{:U("Index/index")}}';
-								},500);
-							}else if(res.code == 1001) {
-								parent.layer.msg('金币不足');
-								setTimeout(function(){
-									$(".paystyle").slideUp("slow");
-								}, 1000);
-							}else {
-								parent.layer.msg('支付失败，请重试!');
-								setTimeout(function(){
-									$(".paystyle").slideUp("slow");
-								}, 1000);
-							}
-						},
-						error: function(res){
-							console.log('失败！ ',res);
-							parent.layer.msg('系统出了一点小问题，请稍后再试！');
-						}
-					});
-				};
-				break;
-				case '2':
-					console.log('银币');
-					if((silver * silver_rate) < money) {
-						parent.layer.msg('银币不足!');
+	})
+	
+	// 遍历充值套餐
+	var mealHTML = '';		//遍历套餐的数据
+	if(mealval){
+		//遍历套餐充值数据
+		for(var i = 0; i< mealval.length; i++){
+			mealHTML += '<li remodel="'+mealval[i].remodel+'" flow="'+mealval[i].flow+'" money="'+mealval[i].money+'" tid="'+mealval[i].id+'">'+ mealval[i].describe +'</li>'
+		}
+		// 将套餐数据添加到页面上
+		$(".chooseMeal").html(mealHTML);
+	}else{
+		$(".main").html('<h3 style="width:100%;height:50vh;text-align:center;padding:20vh 0">暂无数据</h3>');
+	}
+	
+	var rate = JSON.parse(infos.rate);//金银币率
+	var user = JSON.parse(infos.user);//用户信息
+	// 用户金币数量：gold_num;
+	var gold_num = user.gold_num ? parseInt(user.gold_num) : 0;
+	// 用户银币数量：silver;
+	var silver = user.silver ? parseInt(user.silver) : 0;
+	// {"gold_rate":"1.00","silver_rate":"0.50"}	
+	var gold_rate = rate.gold_rate ? rate.gold_rate : "1.00";
+	var silver_rate = rate.silver_rate ? rate.silver_rate : "0.50";
+	console.log("金银钱",gold_num,silver,gold_rate,silver_rate);
+	
+	$(".payBott").click(function(){
+		var index = $(".icon-xuanze").parents("li").attr("index");
+		console.log(index,money,dingdanID)
+		switch(index){
+			case '1':
+			console.log('金币');
+			if((gold_num * gold_rate) < money) {
+				parent.layer.msg('金币不足!');
+				setTimeout(function(){
+					$(".paystyle").slideUp("slow");
+				}, 1000);
+			}else{
+				console.log(dingdanID);
+				var url = "{{:U('Home/PaymentSystem/choosePayByGold')}}";
+				canPay(url, dingdanID, function(res) {
+					if(res.code == 200) {
+						parent.layer.msg('支付成功');
+						setTimeout(function(){
+							history.replaceState({}, null, "{{:U('Index/index')}}");//改变历史记录
+							location.href = '{{:U("Index/index")}}';
+						},500);
+					}else if(res.code == -1) {
+						parent.layer.msg('已经支付过啦!');
+						setTimeout(function(){
+							location.href = '{{:U("Index/index")}}';
+						},500);
+					}else if(res.code == 1001) {
+						parent.layer.msg('金币不足');
 						setTimeout(function(){
 							$(".paystyle").slideUp("slow");
 						}, 1000);
-						return false
-					}else{
-						$.ajax({
-							url: "{{:U('Home/PaymentSystem/choosePayBySilver')}}",
-							type: 'post',
-							data: {order: dingdanID},
-							success: function(res){
-								console.log("银币支付",res);
-								if(res.code == 200) {
-									parent.layer.msg('支付成功');
-									setTimeout(function(){
-										history.replaceState({}, null, "{{:U('Index/index')}}");//改变历史记录
-										location.href = '{{:U("Index/index")}}';
-									},500);
-								}else if(res.code == -1) {
-									parent.layer.msg('已经支付过啦!');
-									setTimeout(function(){
-										location.href = '{{:U("Shop/index")}}';
-									},500);
-								}else if(res.code == 1001) {
-									parent.layer.msg('银币不足');
-									setTimeout(function(){
-										$(".paystyle").slideUp("slow");
-									}, 1000);
-								}else {
-									parent.layer.msg('支付失败，请重试!');
-									setTimeout(function(){
-										$(".paystyle").slideUp("slow");
-									}, 1000);
-								}
-							},
-							error: function(res){
-								console.log('失败！ ',res);
-								parent.layer.msg('系统出了一点小问题，请稍后再试！');
-							}
-						});
-					};
-					break;
-					case '3':
-					console.log('微信支付');
-					$.ajax({
-						url: '{{:U("Home/PaymentSystem/choosePay")}}',
-						type: 'post',
-						async: false,
-						data: {order: dingdanID},
-						success: function(res){
-							console.log('成功！ ', res);
-							if(res == -1){
-								console.log('支付错误！');
-								parent.layer.msg('支付错误！');
-							}else{
-								weixinPay(res);
-							}
-						},
-						error: function(res){
-							console.log('失败！ ', res);
-			       			parent.layer.msg('系统出了一点小问题，请稍后再试！');
-						}
-					})
+					}else {
+						parent.layer.msg('支付失败，请重试!');
+						setTimeout(function(){
+							$(".paystyle").slideUp("slow");
+						}, 1000);
+					}
+				});
+			};
+			break;
+			case '2':
+			console.log('银币');
+			if((silver * silver_rate) < money) {
+				parent.layer.msg('银币不足!');
+				setTimeout(function(){
+					$(".paystyle").slideUp("slow");
+				}, 1000);
+				return false
+			}else{
+				var url = "{{:U('Home/PaymentSystem/choosePayBySilver')}}";
+				canPay(url, dingdanID, function(res) {
+					if(res.code == 200) {
+						parent.layer.msg('支付成功');
+						setTimeout(function(){
+							history.replaceState({}, null, "{{:U('Index/index')}}");//改变历史记录
+							location.href = '{{:U("Index/index")}}';
+						},500);
+					}else if(res.code == -1) {
+						parent.layer.msg('已经支付过啦!');
+						setTimeout(function(){
+							location.href = '{{:U("Shop/index")}}';
+						},500);
+					}else if(res.code == 1001) {
+						parent.layer.msg('银币不足');
+						setTimeout(function(){
+							$(".paystyle").slideUp("slow");
+						}, 1000);
+					}else {
+						parent.layer.msg('支付失败，请重试!');
+						setTimeout(function(){
+							$(".paystyle").slideUp("slow");
+						}, 1000);
+					}
+				});
+			};
+			break;
+			case '3':
+			console.log('微信支付');
+			var url = '{{:U("Home/PaymentSystem/choosePay")}}';
+			canPay(url, dingdanID, function(res) {
+				if(res == -1){
+					console.log('支付错误！');
+					parent.layer.msg('支付错误！');
+				}else{
+					weixinPay(res);
+				}
+			});
+		}
+	})
+	
+	// 支付
+	function canPay(url,dingdanID, callback) {
+		$.ajax({
+			url: url,
+			type: 'post',
+			data: {order: dingdanID},
+			success: function(res){
+				console.log("支付成功",res);
+				callback(res);
+			},
+			error: function(res){
+				console.log('失败！ ',res);
+				parent.layer.msg('系统出了一点小问题，请稍后再试！');
 			}
-			// $.ajax({
-			// 	url: '{{:U("Home/PaymentSystem/choosePayByGold")}}',
-			// 	type: 'post',
-			// 	async: false,
-			// 	data: {order: dingdanID},
-			// 	success: function(res){
-			// 		console.log('成功！ ', res);
-			// 		if(res == -1){
-			// 			console.log('支付错误！');
-			// 			parent.layer.msg('支付错误！');
-			// 		}else{
-			// 			weixinPay(res);
-			// 		}
-			// 	},
-			// 	error: function(res){
-			// 		console.log('失败！ ', res);
-	  //      			parent.layer.msg('系统出了一点小问题，请稍后再试！');
-			// 	}
-			// })
-		})
-
-		// 选中背景改变
-		$('.chooseContain>ul').on('click','li',function(){
-			$(this).addClass('taocanSelectNow').siblings().removeClass("taocanSelectNow");
-		})
-
-		// 付款方式的单选框
-		$('.paymidd>ul>li>span').click(function(){
-			$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
-			$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
-			var fuhao = $(this).parent().text();//获取购买方式
-			// 判断选择方式是否为：金币或者银币
-			if(fuhao == "金币") {
-				// 金额兑换成金币
-				var goldPrice = (money / gold_rate);
-				// 将￥替换成$符号
-				$(".paytopRight>p").text("$"+goldPrice);
-			}else if(fuhao == "银币") {
-				// 金额兑换成银币
-				var silverPrice = (money / silver_rate);
-				// 将￥替换成$符号
-				$(".paytopRight>p").text("$"+silverPrice);
+		});
+	}
+	// 付款方式的单选框
+	$('.paymidd>ul>li>span').click(function(){
+		$('.paymidd>ul>li>span').removeClass('iconfont icon-xuanze').addClass('iconfont icon-kuang1');
+		$(this).removeClass('iconfont icon-kuang1').addClass('iconfont icon-xuanze');
+		var fuhao = $(this).parent().text();//获取购买方式
+		// 判断选择方式是否为：金币或者银币
+		if(fuhao == "金币") {
+			// 金额兑换成金币
+			var goldPrice = (money / gold_rate);
+			// 将￥替换成$符号
+			$(".paytopRight>p").text("$"+goldPrice);
+		}else if(fuhao == "银币") {
+			// 金额兑换成银币
+			var silverPrice = (money / silver_rate);
+			// 将￥替换成$符号
+			$(".paytopRight>p").text("$"+silverPrice);
+		}
+		else {
+			// 将$替换成￥符号
+			$(".paytopRight>p").text("￥"+ money);
+		}
+		console.log("选中的支付方式",$(this).parent().text());
+		
+	})
+	// 付款方式页面隐藏
+	$('.paytop>.paytopLeft>i').click(function(){
+		$('.paystyle').slideUp("slow");
+	})
+	/*
+	微信支付方法
+	*/
+	function weixinPay(res){
+		WeixinJSBridge.invoke(
+		'getBrandWCPayRequest',
+		JSON.parse(res),
+		function(res){
+			console.log("微信",res);
+			if(res.err_msg.substr(-2) == 'ok'){
+				parent.layer.msg('付款成功！');
+				//付款成功后的操作
+				setTimeout(function(){
+					location.href = '{{:U("PaymentSystem/paytosuccess")}}';
+				},500);
+			}else if(res.err_msg.substr(-6) == 'cancel'){
+				//取消订单操作
+			}else{
+				parent.layer.msg('付款失败！');
+				//付款失败操作
+				setTimeout(function(){
+					location.href = '{{:U("PaymentSystem/paytofailed")}}';
+				},500);
+				
 			}
-			else {
-				// 将$替换成￥符号
-				$(".paytopRight>p").text("￥"+ money);
-			}
-			console.log("选中的支付方式",$(this).parent().text());
-
-		})
-		// 付款方式页面隐藏
-		$('.paytop>.paytopLeft>i').click(function(){
-			$('.paystyle').slideUp("slow");
-		})
-
-		// 模态框的js
-		// $(function(){
-		//   	$(".start").on("click",function(){
-		//   	   $(".modelAll").css('display','block');
-		//    	   $(".modal").addClass("in");
-		//    	   $(".modal").css('z-index','1001');
-		//    	   $(".modal-backup").css('display','block');
-		//    });
-		//   	$(".close").on("click",function(){
-		//    	   $(".modal").removeClass('in');
-		//    	   $(".modal").css('z-index','-1');
-		//    	   $(".modal-backup").fadeOut('slow');
-		//    });
-		// 	})
-		// .icon-kuang1{background:#57BFEE; }
-
-      	/*
-      		微信支付方法
-      	 */
-      	function weixinPay(res){
-      		WeixinJSBridge.invoke(
-      			'getBrandWCPayRequest',
-      			JSON.parse(res),
-      			function(res){
-      				console.log("微信",res);
-      				if(res.err_msg.substr(-2) == 'ok'){
-       					parent.layer.msg('付款成功！');
-      					//付款成功后的操作
-      					setTimeout(function(){
-      						location.href = '{{:U("PaymentSystem/paytosuccess")}}';
-      					},500);
-      				}else if(res.err_msg.substr(-6) == 'cancel'){
-      					//取消订单操作
-      				}else{
-       					parent.layer.msg('付款失败！');
-      					//付款失败操作
-      					setTimeout(function(){
-      						location.href = '{{:U("PaymentSystem/paytofailed")}}';
-      					},500);
-
-      				}
-      			}
-      		)
-      	}
-	</script>
-</body>
+		}
+		)
+	}
+</script>
 </html>
