@@ -28,8 +28,8 @@ class IndexController extends CommonController
 	    	//倒数7天添加的会员数
 	    	$users = $this->getUserCount();
 
-	    	
-	    	
+	    	//当天时间段充值套餐的用户数
+	    	$flowUsers = $this->getFlowUsers();
 	
 	    	$data = [
 	    		'flows' => $flows,
@@ -37,7 +37,8 @@ class IndexController extends CommonController
 	    		'orders' => $orders[0],
 	    		'repairs' => $repairs,
 	    		'feeds' => $feeds,
-	    		'users' => $users
+	    		'users' => $users,
+	    		'flowUsers' => $flowUsers
 	    	];
 	    	// print_r($data);
 	    	$this->ajaxReturn($data);
@@ -101,5 +102,41 @@ class IndexController extends CommonController
     	$users[1]['today'] = date('Y-m-d',time()-6*24*60*60);
 
     	return $users;
+    }
+
+    /**
+     * [getFlowUsers 当天时间段充值的用户数量]
+     * @return [type] [description]
+     */
+    public function getFlowUsers()
+    {
+    	//当天凌晨0点0时0分的时间戳
+    	$times = strtotime(date("Y-m-d"),time());
+
+    	//8:00-12:00
+    	$starttime1 = $times + 8*60*60;
+    	$endtime1 = $times + 12*60*60;
+    	$map['addtime'] = array('between',array($starttime1,$endtime1));
+	    $flowUsers[1] = M("flow")->where($map)->field("count(*) as count,describe")->group("`describe`")->select();
+
+	    //12:00-16:00
+    	$starttime2 = $times + 12*60*60;
+    	$endtime2 = $times + 16*60*60;
+    	$map['addtime'] = array('between',array($starttime2,$endtime2));
+	    $flowUsers[2] = M("flow")->where($map)->field("count(*) as count,describe")->group("`describe`")->select();
+
+	    //16:00-20:00
+    	$starttime3 = $times + 16*60*60;
+    	$endtime3 = $times + 20*60*60;
+    	$map['addtime'] = array('between',array($starttime3,$endtime3));
+	    $flowUsers[3] = M("flow")->where($map)->field("count(*) as count,describe")->group("`describe`")->select();
+
+	    //20:00-24:00
+    	$starttime4 = $times + 20*60*60;
+    	$endtime4 = $times + 24*60*60;
+    	$map['addtime'] = array('between',array($starttime4,$endtime4));
+	    $flowUsers[4] = M("flow")->where($map)->field("count(*) as count,describe")->group("`describe`")->select();
+
+	    return $flowUsers;
     }
 }
