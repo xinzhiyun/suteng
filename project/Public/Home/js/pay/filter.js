@@ -45,30 +45,30 @@ var filter = new Vue({
                         "Vison": 0,
                     };
                     var type = 0;
-                    ajson['ReFlowFilter'+(index+1)] = vm.restoreData[index].flowlife;
-                    ajson['ReDayFilter'+(index+1)] = vm.restoreData[index].timelife;
-                    ajson['FlowLifeFilter'+(index+1)] = vm.restoreData[index].flowlife;
-                    ajson['DayLifeFiter'+(index+1)] = vm.restoreData[index].timelife;
+                    ajson['ReFlowFilter'+(index)] = vm.restoreData[index].reflow;
+                    ajson['ReDayFilter'+(index)] = vm.restoreData[index].reday;
+                    ajson['FlowLifeFilter'+(index)] = Number(vm.restoreData[index].reflow)+Number(vm.restoreData[index].sumflow);
+                    ajson['DayLifeFiter'+(index)] = Number(vm.restoreData[index].reday)+Number(vm.restoreData[index].sumday);
                     ajson['type'] = '复位中';
                     type = index;
                     //发送数据
                     console.log('ajson: ',ajson);
-                    websoket.send(JSON.stringify(ajson));
-                    CmdList.push({
-                        cmd: ajson,
-                        type: type
-                    });
-                    identify = 1;
-                    timer = setTimeout(function(){
-                        if(identify == 1){
-                            // layui.use('layer', function(){
-                            //     var layer = layui.layer;
-                            //     layer.msg('复位超时！');
-                            // });
+                    websocket.send(JSON.stringify(ajson));
+                    // CmdList.push({
+                    //     cmd: ajson,
+                    //     type: type
+                    // });
+                    // identify = 1;
+                    // timer = setTimeout(function(){
+                    //     if(identify == 1){
+                    //         // layui.use('layer', function(){
+                    //         //     var layer = layui.layer;
+                    //         //     layer.msg('复位超时！');
+                    //         // });
 
-                            identify=0;
-                        }
-                    },10000)
+                    //         identify=0;
+                    //     }
+                    // },10000)
                 })
             })
         }
