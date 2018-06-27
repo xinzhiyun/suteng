@@ -1501,4 +1501,229 @@ class ShopController extends CommonController
             }
         }
     }
+
+    /**
+     * [block 主题活动显示]
+     * @return [type] [description]
+     */
+    public function block()
+    {
+        //接受处理搜索条件
+        if (!empty(I('get.keywords'))) {
+            $map['bname'] = array('like',"%".I('get.keywords')."%");
+        }
+
+        $goodsblock = D('goods_block');
+        $blist = $goodsblock->where($map)->select();
+
+        $this->assign('blist', $blist);
+        $this->display();
+    }
+
+    /**
+     * [blockAddList 加载主题活动编辑页面]
+     * @return [type] [description]
+     */
+    public function blockAddList()
+    {
+        $this->display('block_add');
+    }
+
+    /**
+     * [uploads description]
+     * @return [type] [description]
+     */
+    public function uploads(){
+        $upload = new \Think\Upload();// 实例化上传类
+        $upload->maxSize   =     3145728 ;// 设置附件上传大小
+        $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
+        $upload->rootPath  =     './Uploads/'; // 设置附件上传根目录
+        $upload->savePath  =     ''; // 设置附件上传（子）目录
+        $upload->autoSub = true;
+        // 上传文件 
+        $info   =   $upload->upload();
+
+        if(!$info) {
+            // 上传错误提示错误信息
+            return 0;
+        }else{
+            // 上传成功
+            return $info;
+        }
+    }
+     /**
+     * [courierAdd 执行活动添加]
+     * @return [type] [description]
+     */
+    public function blockAdd()
+    {
+        try {      
+            //接受POST数据
+            $data['bname'] = $_POST['name'];
+            $data['status'] = $_POST['status'];
+            $data['addtime'] = time();
+            $data['updatetime'] = time();
+
+            //图片上传
+            $info = $this->uploads();
+            if ($info == 0) E('图片上传失败',203);
+
+            $data['pic'] = $info['pic']['savepath'].$info['pic']['savename'];
+            $path = './Uploads/'.$info['pic']['savepath'].$info['pic']['savename'];
+            
+            $goodsblock = M('goods_block');
+
+            //添加活动前先判断活动是否已经存在于表中
+            if ($goodsblock->where("bname = '{$data['bname']}'")->find()) {
+                unlink($path);
+                E('该活动名已存在，如需改名请前往更改页面更改','203');
+
+            } else {
+                //添加主题活动
+                $infos = $goodsblock->add($data);
+
+                if ($infos) {
+                        E('添加成功',200);
+                    }else{
+                        //
+                        unlink($path);
+                        E('添加失败',203);
+                }      
+            }
+                    
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [courierEditList 活动编辑页面加载]
+     * @return [type] [description]
+     */
+    public function blockEditList($id)
+    {
+        if (empty($bid)) {
+            $bid = $id;
+        }
+
+        // dump($bid);
+        $binfo = M('goods_block')->find($bid);
+
+        $this->assign('binfo', $binfo);
+        $this->display('block_edit');
+    }
+
+    /**
+     * [courierEdit 执行修改活动]
+     * @return [type] [description]
+     */
+    public function blockEdit()
+    {
+        try {
+                
+            //接受POST数据
+            $data['bname'] = $_POST['name'];
+            $id = $_POST['id'];
+            $data['status'] = $_POST['status'];
+            $data['updatetime'] = time();
+
+            // dump($_POST);die;
+            //如果有文件上传的话，取新文件
+            if ($_FILES['pic']['error'] == 0) {
+                //图片上传
+                $info = $this->uploads();
+                if ($info == 0) E('图片上传失败',203);
+                $data['pic'] = $info['pic']['savepath'].$info['pic']['savename'];
+                $path = './Uploads/'.$info['pic']['savepath'].$info['pic']['savename'];
+
+                //原图
+                $path1 = './Uploads/'.M('goods_block')->field('pic')->find($id)['pic'];
+            } 
+            
+            $goods_block = M('goods_block');
+            //修改库存数据
+            $info = $goods_block->where('id='.$id)->save($data);
+
+            if ($info) {
+
+                    //修改成功就删除原图
+                    unlink($path1);
+                    E('修改成功',$info);
+                }else{
+
+                    //失败删除新图
+                    unlink($path);
+                    E('修改失败',203);
+            }         
+            
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [courierDel 主题活动删除]
+     * @return [type] [description]
+     */
+    public function blockDel()
+    {
+        try {
+                
+            //接收要删除数据的id
+            $id = $_GET['id'];
+
+            //图片路径
+            $path = './Uploads/'.M('goods_block')->field('pic')->find($id)['pic'];
+
+            $goods_block = M('goods_block');
+            //删除主题活动之前先判断该活动下是否有商品存在，存在则先要清空商品
+            $glList = M('goods_relation_block')->where('bid='.$id)->select();
+
+            if (!empty($glList)) E('改专题下还有商品，请先清除商品再删除',203);
+
+            
+            $info = $goods_block->where('id='.$id)->delete();
+            
+            
+            if ($info) {
+                unlink($path);
+                E('删除成功',$info);
+            } else {
+                    E('删除失败',203);
+            }         
+            
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [attr 属性显示]
+     * @return [type] [description]
+     */
+    public function attr()
+    {
+        $map = [];
+        if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
+            $map[I('get.key')] = array('like',"%".trim(I('get.keywords'))."%");
+        }
+        $data = D('attr')->select();
+        $assign = [
+            'data' => $data['data']
+        ];
+        $this->assign($assign);
+        $this->display();
+    }
 }
