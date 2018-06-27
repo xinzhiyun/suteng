@@ -22,8 +22,8 @@ class IndexController extends CommonController
 	    	// 保修数量统计->保修列表 
 	    	$repairs['total'] = D('Repair')->count();	    	
 
-	    	// 建议数量统计->建议列表
-	    	$feeds['total'] = D('Feeds')->count();
+	    	// 总用户量统计->用户列表
+	    	$feeds['total'] = D('Users')->count();
 
 	    	$data = [
 	    		'flows' => $flows,
