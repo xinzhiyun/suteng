@@ -11,7 +11,7 @@ class LoginController extends Controller
             // 验证验证码是否OK
             $Verify = new \Think\Verify();
             $res = $Verify->check($_POST['code']);
-            if(!$res) $this->error('验证码不对');
+            if(!$res) $this->ajaxReturn(array('msg'=>'验证码不对','code'=>'201'));
 
             $password = md5($_POST['password']);
             $info = M('adminUser')->where("user='{$_POST['name']}'")->find();
@@ -22,10 +22,10 @@ class LoginController extends Controller
                     $_SESSION['adminInfo'] = $info;
                     $this->redirect('Index/index');
                 }else{
-                    $this->error('您的密码输入错误！');
+                    $this->ajaxReturn(array('msg'=>'您的密码输入错误','code'=>'201'));
                 }
             }else{
-                $this->error('您输入的用户名不存在！');
+                $this->ajaxReturn(array('msg'=>'您输入的用户名不存在！','code'=>'201'));
             }
 
         }else{
