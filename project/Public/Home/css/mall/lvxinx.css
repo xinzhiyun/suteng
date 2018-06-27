@@ -7,69 +7,86 @@ body {
     background: white;
     text-align: center;
     padding: .6rem 0 1rem 0;
-    margin-bottom: .5rem;
+    margin-bottom: 6px;
+    transition: all .6s ease;
 }
-.PPmain > h1 {
-    font-weight: bold;
+.PPmain > h2 {
+    font-weight: normal;
     font-size: .8rem;
     margin-bottom: .6rem;
 }
-.PPmain > p:nth-child(2) {
+.PPmain > .desc {
     font-size: .5rem;
     color: #999999;
 }
-.PPmain > p:nth-child(3) {
+.PPmain > .desc {
+    width: 60vw;
+    position: relative;
+    left: 50%;
+    margin-left: -30vw;
     display: flex;
     justify-content: center;
     flex-direction: column;
-    margin: .8rem 0 .4rem 0;
+    margin-top: .6rem;
+    margin-bottom: .4rem;
 }
-.PPmain > p:nth-child(3) > span:nth-child(1) {
+.PPmain > p:nth-child(3) > b {
+    display: block;
+    line-height: 1.5rem;
     color: #C6C6C6;
+    font-weight: normal;
 } 
-.PPmain > p:nth-child(3) > span:nth-child(2) {
-    color: #FF6363;
+.PPmain > p:nth-child(3) > span {
+    color: #547AAF;
 }
-.PPmain > p:nth-child(3) > span:nth-child(2) > i {
+.PPmain > p:nth-child(3) > span > i {
     font-style: normal;
     font-size: 1.5rem;
-    font-weight: bold;
     margin-right: .1rem;
 }
-.PPmain > p:nth-child(4) {
+.PPmain > .process {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.PPmain > p:nth-child(4) > span:nth-child(1) {
+.PPmain .little {
     height: 1.3rem;
-    display: block;
+    opacity: 0;
 }
-.PPmain > p:nth-child(4) > span:nth-child(1) > img {
+.PPmain .little > img {
     height: 100%;
 }
-.PPmain > p:nth-child(4) > span:nth-child(2) {
+.PPmain > .process > span:nth-child(2) {
     width: 50%;
     display: block;
     height: .4rem;
     background: #C8D6E7;
     border-radius: 2rem;
     margin: 0 .5rem 0 .1rem;
+    overflow: hidden;
 }
-.PPmain > p:nth-child(4) > span:nth-child(2) > i {
+.PPmain > .process > span:nth-child(2) > i {
     font-style: normal;
-    background: #FF6363;
-    width: 95%;
+    width: 0%;
     border-radius: 2rem;
     height: inherit;
     display: block;
-    
+    color: #79A4FF;
+    background: #79A4FF;
+    transition: .3s ease;
 }
-.PPmain > p:nth-child(4) > span:nth-child(3) {
-    color: #FF6363;
+.PPmain > .process > span:nth-child(3) {
+    color: #547AAF;
     font-size: .8rem;
 }
-.PPmain > p:nth-child(5) {
+
+.fwarn {
+    color: #FF6363 !important;
+}
+.bgwarn {
+    background: #FF6363 !important;
+}
+.PPmain > .reset {
     width: 35%;
     height: 1.5rem;
     line-height: 1.5rem;
@@ -78,4 +95,7 @@ body {
     color: white;
     text-align: center;
     margin: .7rem auto 0;
+}
+.reset:active {
+    background: rgb(34, 104, 235);
 }

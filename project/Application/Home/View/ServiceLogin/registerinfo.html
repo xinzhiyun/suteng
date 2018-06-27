@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<title>服务站详情</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/registerInfo.css?v={{:time()}}">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
+	<script>
+		var info = {{$info|json_encode}};
+	</script>
+</head>
+<body>
+	<div class="backPic"></div>
+	<div class="main"> 
+		<!-- 公司信息 -->
+		<div class="stationWide">
+			<div class="company">
+				<div>
+					<span class="iconfont icon-gongsi"></span>
+					<span>公司信息</span>
+				</div>
+				<div class="inputInfo">
+					<label for="">所属公司</label>
+					<input type="text" placeholder="请输入公司名称" v-model="companyInfos.comName">
+				</div>
+				<div class="inputInfo">
+					<label for="">公司法人</label>
+					<input type="text" placeholder="请输入公司法人姓名" v-model="companyInfos.comUser">
+				</div>
+				<div class="yinyePic">
+					<p>营业执照</p>
+					<div class="pics">
+						<div>
+							<span class="iconfont icon-paizhao" @click="imageChoose($event)"></span>
+							<span>拍摄营业执照</span>
+						</div>
+						<div class="picShow yinye">
+							<!-- <span class="bottx" v-for="(imgContents, index) in imgContent">
+								<span class="topx" @click="removePic($event)">x</span>
+								<img :src="imgContents.src" alt="" @click="openPhotoSwipe(index, imgContent)">
+								
+							</span> -->
+							<span class="bottx">
+								<span class="topx" @click="removePic($event)">x</span>
+								<img src="__PUBLIC__/Home/images/regiterBack.png" alt="" @click="openPhotoSwipe(index, imgContent)">
+							</span>
+							<span class="bottx">
+								<span class="topx" @click="removePic($event)">x</span>
+								<img src="__PUBLIC__/Home/images/regiterBack.png" alt="" @click="openPhotoSwipe(index, imgContent)">
+							</span>
+							<span class="bottx">
+								<span class="topx" @click="removePic($event)">x</span>
+								<img src="__PUBLIC__/Home/images/comm_03.png" alt="" @click="openPhotoSwipe(index, imgContent)">
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="yinyePic" id="hezuo">
+					<p>合作协议</p>
+					<div class="pics">
+						<div>
+							<span class="iconfont icon-paizhao" @click="imageChoose($event)"></span>
+							<span>拍摄合作协议</span>
+						</div>
+						<div class="picShow hezuo">
+							<!-- <span class="bottx" v-for="(imgContents, index) in imgContent">
+								<span class="topx" @click="removePic($event)">x</span>
+								<img :src="imgContents.src" alt="" @click="openPhotoSwipe(index, imgContent)">
+								
+							</span> -->
+							<span class="bottx">
+								<span class="topx" @click="removePic($event)">x</span>
+								<img src="__PUBLIC__/Home/images/regiterBack.png" alt="">
+							</span>
+							<span class="bottx">
+								<span class="topx" @click="removePic($event)">x</span>
+								<img src="__PUBLIC__/Home/images/regiterBack.png" alt="">
+							</span>
+							<span class="bottx">
+								<span class="topx" @click="removePic($event)">x</span>
+								<img src="__PUBLIC__/Home/images/comm_03.png" alt="">
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 服务站信息 -->
+		<div class="stationInfo">
+			<div class="company">
+				<div>
+					<span class="iconfont icon-shouye"></span>
+					<span>服务站信息</span>
+				</div>
+				<div class="inputInfo areaC">
+					<label for="">所属区域</label>
+					<span v-text="serviceInfos.station" @click="chooseArea()" class="areabtn"></span>
+					<span class="iconfont icon-right yin"></span>
+				</div>
+				<div class="inputInfo areaC">
+					<label for="">服务站名称</label>
+					<select name="" id="selects" @change="stachoose($event)">
+						<option value="" v-text="ifstation"></option>
+						<option v-for="areachooses in areachoose" :value="areachooses.company + '&' + areachooses.id " v-text="areachooses.company"></option>
+					</select>
+					<span class="iconfont icon-right yins"></span>
+				</div>
+				<div class="detailAddress">
+					<label for="">详细地址</label>
+					<textarea name="" id="" placeholder="请输入详细地址" v-model="serviceInfos.detailAddress"></textarea>
+				</div>
+				<div class="inputInfo">
+					<label for="">服务站客服</label>
+					<input type="text" placeholder="请输入客服电话" v-model="serviceInfos.stationer">
+				</div>
+				<div class="userPhone">
+					<label for="">联系人</label>
+					<input type="text" placeholder="请输入联系人电话" v-model="serviceInfos.lianxier">
+				</div>
+			</div>
+		</div>
+		<!-- 提交 -->
+		<div class="payInfo">
+			<p @click="verify()">提交信息</p>
+		</div>
+		<!-- 地区选择 -->
+		<div id="areaChoose" class="citys" v-if="areaDis" @click="areaY($event)">
+			<div class="areaChoosebg"></div>
+			<div class="areaDiv">
+				<div>
+					<span>省份</span>
+					<span>城市</span>
+					<span>区县</span>
+				</div>
+				<ul>
+					<li class='province' @click="getArea($event)">
+						<p v-for="areaProvinces in areaProvince" 
+						:aid="areaProvinces.id" 
+						v-text="areaProvinces.areaname" 
+						@click='pclk1(areaProvinces)'
+						:class='{addrselect: areaProvinces == pclkprovince}'></p>
+					</li>
+					<li class='city' @click="getArea($event)">
+						<p v-for="areaCitys in areaCity" 
+						:aid="areaCitys.id" 
+						v-text="areaCitys.areaname"
+						@click='pclk2(areaCitys)'
+						:class='{addrselect: areaCitys == pclkcity}'></p>
+					</li>
+					<li class='area' @click="getArea($event)">
+						<p v-for="areas in area" 
+						:aid="areas.id" 
+						v-text="areas.areaname"
+						@click='pclk3(areas)'
+						:class='{addrselect: areas == pclkarea}'></p>
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<!-- 已有服务站注册提示 -->
+		<div class="hasRegister" v-if="aleady">
+			<div>
+				<p>该区域无服务站 联系客服</p>
+				<p>
+					<span @click="notPhone">确定</span>
+					<span>
+						<a href="tel:{{$kfphone}}" >联系客服</a>
+					</span>
+				</p>
+			</div>
+		</div>
+		
+		<!-- 客服电话 -->
+		<div class="telphone">
+			<a href="tel:{{$kfphone}}"><span class="iconfont icon-kefu"></span></a>
+		</div>
+		
+	</div>
+	<!-- Root element of PhotoSwipe. Must have class pswp. -->
+	<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+		
+		<!-- Background of PhotoSwipe. 
+			It's a separate element as animating opacity is faster than rgba(). -->
+			<div class="pswp__bg"></div>
+			
+			<!-- Slides wrapper with overflow:hidden. -->
+			<div class="pswp__scroll-wrap">
+				
+				<!-- Container that holds slides. 
+					PhotoSwipe keeps only 3 of them in the DOM to save memory.
+					Don't modify these 3 pswp__item elements, data is added later on. -->
+					<div class="pswp__container">
+						<div class="pswp__item"></div>
+						<div class="pswp__item"></div>
+						<div class="pswp__item"></div>
+					</div>
+					
+					<!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+					<div class="pswp__ui pswp__ui--hidden">
+						
+						<div class="pswp__top-bar">
+							
+							<!--  Controls are self-explanatory. Order can be changed. -->
+							
+							<div class="pswp__counter"></div>
+							
+							<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+							
+							<!-- <button class="pswp__button pswp__buttonshare" title="Share"></button> -->
+							
+							<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+							
+							<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+							
+							<!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+							<!-- element will get class pswp__preloader-active when preloader is running -->
+							<div class="pswp__preloader">
+								<div class="pswp__preloader__icn">
+									<div class="pswp__preloader__cut">
+										<div class="pswp__preloader__donut"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+							<div class="pswp__share-tooltip"></div> 
+						</div>
+						
+						<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+						</button>
+						
+						<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+						</button>
+						
+						<div class="pswp__caption">
+							<div class="pswp__caption__center"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				
+			</div>
+		</div>
+	</body>
+	<script src="__PUBLIC__/Home/js/jquery.min.js"></script>
+	<script>
+	</script>
+	<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
+	<script src="__PUBLIC__/Home/js/wx_imgUpload.js"></script>
+	<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+	<script src="__PUBLIC__/Home/js/service/registerInfo.js?qwe={{:time()}}"></script>
+	<link rel="stylesheet" href="__PUBLIC__/Home/photoswipe/photoswipe.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/photoswipe/default-skin/default-skin.css"> 
+	<script src="__PUBLIC__/Home/photoswipe/photoswipe.min.js"></script> 
+	<script src="__PUBLIC__/Home/photoswipe/photoswipe-ui-default.min.js"></script>
+	<script>
+		var vConsole = new VConsole();
+		(function() {
+			console.log("infos",info);
+			//微信接口
+			wx.config({
+				debug: false,
+				appId: '{{$wxinfo["appId"]}}',
+				timestamp: '{{$wxinfo["timestamp"]}}',
+				nonceStr: '{{$wxinfo["nonceStr"]}}',
+				signature: '{{$wxinfo["signature"]}}',
+				jsApiList: [
+				// 所有要调用的 API 都要加到这个列表中
+				'chooseImage',
+				'uploadImage',
+				'getLocalImgData',
+				'downloadImage'
+				]
+			});
+		})();
+	</script>
+	</html>

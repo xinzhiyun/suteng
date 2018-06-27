@@ -151,7 +151,7 @@ body{
 	line-height: 3.6rem;
 }
 .xuantext p{
-	font-size: .7rem;
+	font-size: .6rem;
 } 
 .puretds {
 	position: relative;
@@ -159,7 +159,7 @@ body{
 .xuantext .puretds::after {
 	content: 'PPM';
 	position: absolute;
-	top: 50%;
+	top: 65%;
 	left: 106%;
 	transform: translateY(-50%);
 	font-size: .3rem;
@@ -195,14 +195,18 @@ body{
 .btmTxt h3{
 	font-size:1.066667rem;line-height: 0.8rem;
 }
-.btmTxt>p {    
-	width: 1.2rem;
-    height: 1.4rem;
-    background-size: 1500% !important;
-	background: url('../images/spritepng.png') -.8rem -5.4rem;
+.btmTxt > p {    
+	/* width: 1.2rem; */
+    height: 1.2rem;
+    /* background-size: 1500% !important; */
+	/* background: url('../images/spritepng.png') -.8rem -5.4rem; */
+}
+.btmTxt>p > img {
+	height: 100%;
 }
 .btmTxt>div {
 	margin: 4px;
+	font-size: .5rem;
 }
 /*====================净水机底部开始====================*/
 .chongFoot{
@@ -502,7 +506,7 @@ body{
         top:0;
         padding-left:4px;
         padding-top:4vh;
-		font-size: 0.6rem;
+		font-size: 0.5rem;
 		z-index: 99;
       }
       .wendu>p{
@@ -743,7 +747,7 @@ body{
 	width: 100%;
 	display: inline-flex;
 	justify-content: center;
-	padding: 1vh 0;
+	padding: 1.2vh 0;
 	font-size: 0.7rem;
 	white-space: nowrap;
   }

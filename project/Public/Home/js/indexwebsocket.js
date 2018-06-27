@@ -9,25 +9,33 @@ window.onload = function(){
         $(".xuanhuan").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'}); 
         $(".btmTxt>div").html("冲洗");
-        $(".btmTxt>p").css({backgroundPosition: '-7.94rem -4px',animation: 'aImg3 3s linear infinite'});
+        // $(".btmTxt>p").css({backgroundPosition: '-7.94rem -4px',animation: 'aImg3 3s linear infinite'});
+        console.log($(".btmTxt>p>img").attr("src"))
+        $(".btmTxt>p").css("animation", 'aImg3 3s linear infinite');
+        $(".btmTxt>p>img").attr("src", "/Public/Home/images/wash.png");
     }
     function lesswater(){// 缺水状态
         $(".queshui").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
         $(".btmTxt>div").html("缺水");
-        $(".btmTxt>p").css({backgroundPosition: '-8.1rem -5.4rem',animation: 'aImg3 3s linear infinite'});
+        // $(".btmTxt>p").css({backgroundPosition: '-8.1rem -5.4rem',animation: 'aImg3 3s linear infinite'});
+        $(".btmTxt>p").css("animation", 'aImg3 3s linear infinite');
+        $(".btmTxt>p>img").attr("src", "/Public/Home/images/queshui.png");
     }
     function fullwater(){// 水满状态2
         $(".shuiman").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
         $(".btmTxt>div").html("水满");
-        $(".btmTxt>p").css({backgroundPosition: '-9.26rem -5.4rem'});
+        // $(".btmTxt>p").css({backgroundPosition: '-9.26rem -5.4rem'});
+        $(".btmTxt>p>img").attr("src", "/Public/Home/images/shuiman.png");
     }
     function service (){// 修检状态 5
         $(".service").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
         $(".btmTxt>div").html("检修");
-        $(".btmTxt>p").css({backgroundPosition: '-6.76rem -5.4rem',animation: 'aImg3 3s linear infinite'});
+        // $(".btmTxt>p").css({backgroundPosition: '-6.76rem -5.4rem',animation: 'aImg3 3s linear infinite'});
+        $(".btmTxt>p").css(animation, 'aImg3 3s linear infinite');
+        $(".btmTxt>p>img").attr("src", "/Public/Home/images/shebeibaoxiu.png");
     }
     function shutdown(){//关机状态 7
         $(".shutdown").show().siblings().hide();
