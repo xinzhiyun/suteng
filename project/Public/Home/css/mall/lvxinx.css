@@ -1,0 +1,81 @@
+body {
+    /* font-size: .7rem; */
+    background: #EDF2F2;
+    height: 100vh;
+}
+.PPmain {
+    background: white;
+    text-align: center;
+    padding: .6rem 0 1rem 0;
+    margin-bottom: .5rem;
+}
+.PPmain > h1 {
+    font-weight: bold;
+    font-size: .8rem;
+    margin-bottom: .6rem;
+}
+.PPmain > p:nth-child(2) {
+    font-size: .5rem;
+    color: #999999;
+}
+.PPmain > p:nth-child(3) {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: .8rem 0 .4rem 0;
+}
+.PPmain > p:nth-child(3) > span:nth-child(1) {
+    color: #C6C6C6;
+} 
+.PPmain > p:nth-child(3) > span:nth-child(2) {
+    color: #FF6363;
+}
+.PPmain > p:nth-child(3) > span:nth-child(2) > i {
+    font-style: normal;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-right: .1rem;
+}
+.PPmain > p:nth-child(4) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.PPmain > p:nth-child(4) > span:nth-child(1) {
+    height: 1.3rem;
+    display: block;
+}
+.PPmain > p:nth-child(4) > span:nth-child(1) > img {
+    height: 100%;
+}
+.PPmain > p:nth-child(4) > span:nth-child(2) {
+    width: 50%;
+    display: block;
+    height: .4rem;
+    background: #C8D6E7;
+    border-radius: 2rem;
+    margin: 0 .5rem 0 .1rem;
+}
+.PPmain > p:nth-child(4) > span:nth-child(2) > i {
+    font-style: normal;
+    background: #FF6363;
+    width: 95%;
+    border-radius: 2rem;
+    height: inherit;
+    display: block;
+    
+}
+.PPmain > p:nth-child(4) > span:nth-child(3) {
+    color: #FF6363;
+    font-size: .8rem;
+}
+.PPmain > p:nth-child(5) {
+    width: 35%;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    border-radius: 2rem;
+    background: #4C88F6;
+    color: white;
+    text-align: center;
+    margin: .7rem auto 0;
+}
