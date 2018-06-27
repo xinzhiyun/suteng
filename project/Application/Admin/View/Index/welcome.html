@@ -1,19 +1,19 @@
  <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><block name="title">页面</block></title>
-    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
-    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
-
-    <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
-    <link href="__PUBLIC__/Admin/css/index/welcome.css" rel="stylesheet">
-    <link href="__PUBLIC__/Admin/css/plugins/iCheck/custom.css" rel="stylesheet">
-    <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
-    <link href="__PUBLIC__/Admin/css/style.css?v=4.1.0" rel="stylesheet">
-    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+ <html>
+ <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title><block name="title">页面</block></title>
+	<meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+	<meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+	
+	<link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+	<link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+	<link href="__PUBLIC__/Admin/css/index/welcome.css" rel="stylesheet">
+	<link href="__PUBLIC__/Admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+	<link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
+	<link href="__PUBLIC__/Admin/css/style.css?v=4.1.0" rel="stylesheet">
+	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
 	<div class="content">
@@ -32,144 +32,229 @@
 			</div>
 			<div>
 				<span class="h1" id="repaire">0</span>条
-				<p>客户报修</p>
+				<p>售后服务</p>
 				<a href="{{:U('Admin//Feeds/repairlist')}}">更多</a>
 			</div>
 			<div>
-				<span class="h1" id="feeds">0</span>条
-				<p>客户建议</p>
+				<span class="h1" id="feeds">0</span>个
+				<p>总用户</p>
 				<a href="{{:U('Admin/Feeds/feedslist')}}">更多</a>
 			</div>
 		</div>
 		<div id="hBottom">
 			<!-- 折线图 -->
 			<div id="bottomLeft">
-				<!-- 收入 -->
-				<div id="income"></div>
 				<!-- 新增设备 -->
 				<div id="newMoreDevice"></div>
+				<!-- 收入 -->
+				<div id="income"></div>
+				<!-- 充值套餐 -->
+				<div id="recharge"></div>
 			</div>
 			<!-- 地图 -->
 			<div id="map">
-				<h5>
-					<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-					水机分布图
-				</h5>
-				<div id="allmap"></div>
+				<ul class='ctitle'>
+					<h3>水机分布</h3>
+				</ul>
+				<div id="allmap" class="f1"></div>
+				<!-- <div class='desc fr'>
+					<h4>水机分布省份( Top5 )</h4>
+					<ul>
+						<li>广东&emsp;<span class='top1'>115</span></li>
+						<li>浙江&emsp;<span class='top2'>89</span></li>
+						<li>四川&emsp;<span class='top3'>54</span></li>
+						<li>青海&emsp;<span class='top4'>45</span></li>
+						<li>宁夏&emsp;<span class='top5'>30</span></li>
+					</ul>
+				</div> -->
 			</div>
 		</div>
+		<div class='dnum'></div>
 	</div>
-  	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+	
+	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 	<script src="__PUBLIC__/Admin/js/echarts.min.js"></script>
-	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=wtDIIDonPda8nBPCAPtSqMZj3QBGVuzP"></script>
+	<!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=wtDIIDonPda8nBPCAPtSqMZj3QBGVuzP"></script> -->
 	<script>
-	window.onload = function(){
-		// 收入
-        var income = echarts.init(document.getElementById('income'));
-        // 新增设备
-        var newMoreDevice = echarts.init(document.getElementById('newMoreDevice'));
-
-        var getOption = function(_subtext,legend_data, yAxis_data, series_data, markName){
+		var chinajsonurl = '__PUBLIC__/Admin/map/china.json';
+		// 省份模拟数据
+		var provinceDevice = [
+		{
+			name: '广东',
+			num: '115'
+		},{
+			name: '浙江',
+			num: '89'
+		},{
+			name: '四川',
+			num: '54'
+		},{
+			name: '青海',
+			num: '45'
+		},{
+			name: '宁夏',
+			num: '30'
+		},{
+			name: '台湾',
+			num: '0'
+		},{
+			name: '河北',
+			num: '0'
+		},{
+			name: '山西',
+			num: '0'
+		},{
+			name: '辽宁',
+			num: '0'
+		},{
+			name: '吉林',
+			num: '0'
+		},{
+			name: '黑龙江',
+			num: '0'
+		},{
+			name: '江苏',
+			num: '0'
+		},{
+			name: '福建',
+			num: '0'
+		},{
+			name: '安徽',
+			num: '0'
+		},{
+			name: '江西',
+			num: '0'
+		},{
+			name: '山东',
+			num: '0'
+		},{
+			name: '河南',
+			num: '0'
+		},{
+			name: '湖北',
+			num: '0'
+		},{
+			name: '湖南',
+			num: '0'
+		},{
+			name: '海南',
+			num: '0'
+		},{
+			name: '贵州',
+			num: '0'
+		},{
+			name: '云南',
+			num: '0'
+		},{
+			name: '陕西',
+			num: '0'
+		},{
+			name: '甘肃',
+			num: '0'
+		},{
+			name: '新疆',
+			num: '0'
+		},{
+			name: '广西',
+			num: '0'
+		},{
+			name: '内蒙古',
+			num: '0'
+		},{
+			name: '西藏',
+			num: '0'
+		},{
+			name: '北京',
+			num: '0'
+		},{
+			name: '天津',
+			num: '0'
+		},{
+			name: '上海',
+			num: '0'
+		},{
+			name: '重庆',
+			num: '0'
+		},{
+			name: '香港',
+			num: '0'
+		},{
+			name: '澳门',
+			num: '0'
+		}
+		]
+		// 新增会员
+		var income = echarts.init(document.getElementById('income'));
+		// 新增设备
+		var newMoreDevice = echarts.init(document.getElementById('newMoreDevice'));
+		// 充值套餐
+		var recharge = echarts.init(document.getElementById('recharge'));
+		var getOption = function(_subtext,legend_data, yAxis_data, series_data, markName, xDis, xdata){
 			return option = {
-			    title: {
-			        text: '',
-			        subtext: _subtext
-			    },
-			    color: '#00c0ef',
-			    legend: {
-			        data: [legend_data]
-			    },
-			    grid: {
-			    	containLabel: true
-			    },
-			    tooltip: {
-			        trigger: 'axis',
-			        axisPointer: {
-			            type: 'cross'
-			        }
-			    },
-			    toolbox: {
-			        show: true,
-			        right: '5%',
-			        feature: {
-			            dataView: {readOnly: false},
-			            magicType: {type: ['line', 'bar']},
-			            restore: {},
-			            saveAsImage: {}
-			        }
-			    },
-			    xAxis:  {
-			        type: 'category',
-			        boundaryGap: false,
-			        interval: 1,
-			        axisLabel: {
-			        	align: 'left',
-			        	interval: 0
-			        },
-			        data: ['01','','','','05','','','','','10','', '','','','15','', '','', '','20','','','','','25','','','','','30','']	//x轴坐标数据
-			    },
-			    yAxis: {
-			        type: 'value',
-			        offset: 1,
-			        boundaryGap: false,
-			        data: yAxis_data,	//y轴坐标数据
-			        axisPointer: {
-			            snap: true
-			        }
-			    },
-			    visualMap: {
-			        show: false,
-			        dimension: 0,
-			        pieces: [{
-			            lte: 6,
-			            color: '#00c0ef'
-			        }, {
-			            gt: 6,
-			            lte: 8,
-			            color: '#00c0ef'
-			        }, {
-			            gt: 8,
-			            lte: 14,
-			            color: '#00c0ef'
-			        }, {
-			            gt: 14,
-			            lte: 17,
-			            color: '#00c0ef'
-			        }, {
-			            gt: 17,
-			            color: '#00c0ef'
-			        }]
-			    },
-			    series: [
-			        {
-			            name: markName,
-			            type:'line',
-			            data: series_data,
-			            markArea: {
-			                data: [ [{
-			                    name: '早高峰',
-			                    xAxis: '2017-12-11'
-			                }, {
-			                    xAxis: '2017-12-11'
-			                }] ]
-			            }
-			        }
-			    ]
+				title: {
+					text: markName,
+				},
+				//图例
+				legend: {
+					data: legend_data
+				},
+				grid: {
+					bottom: '5%',
+					containLabel: true
+				},
+				//提示框组件
+				tooltip: {
+					trigger: 'axis',
+					axisPointer: {
+						type: 'cross'
+					}
+				},
+				toolbox: {
+					show: true,
+					feature: {
+						saveAsImage: {}
+					}
+				},
+				xAxis:  {
+					type: 'category',
+					boundaryGap: false,
+					name: xDis,
+					data: xdata, 	//x轴坐标数据
+					axisLine: {	// 坐标轴箭头
+						symbol:['none','arrow'],
+						symbolSize: [6,9],
+						symbolOffset: [1300, 0]
+					},
+				},
+				yAxis: {
+					type: 'value',
+					name: _subtext,
+					data: yAxis_data,	//y轴坐标数据
+					axisPointer: {
+						snap: true
+					},
+					axisLine: {	// 坐标轴箭头
+						symbol:['none','arrow'],
+						symbolSize: [6,9],
+						symbolOffset: [1300, 0]
+					},
+				},
+				
+				series: series_data
 			};
 		}
-		var legend_data = ['收入','新增设备'];
+		var legend_data = [['新增会员'],['新增设备'], ['A套餐','B套餐','C套餐']];
+		var _subtext = [['新增会员'],['新增设备'], ['会员套餐']]
 		// y轴坐标数据
-		var yAxis_data = [['','',''],[ '0台', '1台', '2台']];
+		var yAxis_data = [['','',''],[ '0台', '1台', '2台'],['','','']];
 		// 要显示的数据
-		var series_data = [[],[]];
+		var series_data = [[],[],[]];
 		$.ajax({
 			url: "{{:U('Admin/Index/welcome')}}", 
 			type: 'post',
 			success: function(res){
-				console.log(res);
 				// 存放收入
 				var allincome = 0;
-
 				// 当月收入
 				for(var i in res.flows){
 					if(res.flows[i]){
@@ -180,12 +265,13 @@
 				$("#allincome").text(allincome);
 				// 订单数量
 				$("#orderNum").text(res.orders.total);
-				// 报修数量
+				// 售后服务
 				$("#repaire").text(res.repairs.total);
-				// 建议数量
+				// 总用户
 				$("#feeds").text(res.feeds.total);
 			}
 		})
+		
 		// 请求后台数据
 		$.ajax({
 			url: "{{:U('Admin/Index/welcome')}}",
@@ -193,7 +279,7 @@
 			async: false,
 			dataType: 'json',
 			success: function(res){
-				console.log(res)
+				// console.log("返回数据",res)
 				// 当月收入
 				for(var i in res.flows){
 					if(res.flows[i]){
@@ -201,7 +287,6 @@
 					}else {
 						series_data[0].push(0);
 					}
-					
 				}
 				for(var i in res.devices){
 					// 遍历新增设备数量
@@ -211,57 +296,167 @@
 						series_data[1].push(0);
 					}
 				}
-
-
+				// 充值套餐
+				for(var i in res.flows){
+					if(res.flows[i]){
+						series_data[2].push(+res.flows[i].money);
+					}else {
+						series_data[2].push(0);
+					}
+					
+				}
 				if(series_data[0].length){
-
+					// y轴数据
+					var aa = ['01','','','','05','','','','','10','', '','','','15','', '','', '','20','','','','','25','','','','','30',''];
+					series_data0 = [
+					{
+						name: "新增会员",
+						stack: "数量",
+						type:'line',
+						data: series_data[0], //aa 要和 series_data[0] 想对应
+						// 线状颜色
+						itemStyle: {
+							normal: {
+								color: "#00c0ef",
+								lineStyle: {
+									color: "#00c0ef"
+								}
+							}
+						}
+					}
+					]
 					//收入 折线图显示
-			        income.setOption(getOption('金额','收入',yAxis_data[0],series_data[0], legend_data[0]));
+					income.setOption(getOption('人数',legend_data[0],yAxis_data[0],series_data0, _subtext[0], "时间", aa));
 					
 				}else{
 					
 					//这里是没数据时显示0
 					yAxis_data[0] = [0];
-					series_data[0] = [0];
-
+					series_data0 = [
+					{
+						name: "新增会员",
+						stack: "数量",
+						type:'line',
+						data: [0]
+					}
+					]
 					//收入 折线图显示
-			        income.setOption(getOption('金额','收入',yAxis_data[0],series_data[0], legend_data[0]));
+					income.setOption(getOption('人数',legend_data[0],yAxis_data[0],series_data[0], _subtext[0]));
 					
 				}
+				
 				if(series_data[1].length){
+					// y轴数据
+					var bb = ['01','','','','05','','','','','10','', '','','','15','', '','', '','20','','','','','25','','','','','30',''];
+					series_data1 = [
+					{
+						name: "新增设备",
+						stack: "数量",
+						type:'line',
+						data: series_data[1],
+						// 线状颜色
+						itemStyle: {
+							normal: {
+								color: "#00c0ef",
+								lineStyle: {
+									color: "#00c0ef"
+								}
+							}
+						}
+					}
+					]
 					//新增设备 折线图显示
-			        newMoreDevice.setOption(getOption('设备数量','新增设备',yAxis_data[1],series_data[1], legend_data[1]));
+					newMoreDevice.setOption(getOption('设备数量',legend_data[1],yAxis_data[1],series_data1, _subtext[1], "", bb));
 				}else{
-
 					//这里是没数据时显示0
 					yAxis_data[1] = [0];
-					series_data[1] = [0];
-
+					series_data0 = [
+					{
+						name: "新增会员",
+						stack: "数量",
+						type:'line',
+						data: [0],
+					}
+					]
 					//新增设备 折线图显示
-			        newMoreDevice.setOption(getOption('设备数量','新增设备',yAxis_data[1],series_data[1], legend_data[1]));
+					newMoreDevice.setOption(getOption('设备数量',legend_data[1],yAxis_data[1],series_data[1], _subtext[1]));
 				}
-
+				// 充值套餐
+				if(series_data[0].length){
+					// y轴数据
+					var cc = ['01','','','','05','','','','','10','', '','','','15','', '','', '','20','','','','','25','','','','','30',''];
+					series_datas = [
+					{
+						name: "A套餐",
+						stack: "数量",
+						type:'line',
+						data: [150, 232, 201, 154, 190, 330, 410,150, 232, 201, 154, 190, 330, 410,150, 232, 201, 154, 190, 330, 410,150, 201, 154, 190, 330, 410, 269,5],
+						// 线状颜色
+						itemStyle: {
+							normal: {
+								color: "#FFCC00",
+								lineStyle: {
+									color: "#FFCC00"
+								}
+							}
+						}
+					},
+					{
+						name: "B套餐",
+						stack: "数量",
+						type:'line',
+						data: [820, 932, 901, 934, 1290, 1330, 1320,820, 932, 901, 934, 1290, 1330, 1320,820, 932, 901, 934, 1290, 1330, 1320,820, 932, 901, 934, 1290, 1330, 1320, 9,55],
+						itemStyle: {
+							normal: {
+								color: "#66FFCC",
+								lineStyle: {
+									color: "#66FFCC"
+								}
+							}
+						}
+					}
+					]
+					//收入 折线图显示
+					recharge.setOption(getOption('用户数(单位:个)',legend_data[2],yAxis_data[2],series_datas, _subtext[2], "时段", cc));
+					
+				}else{
+					
+					//这里是没数据时显示0
+					yAxis_data[2] = [0];
+					series_data0 = [
+					{
+						name: "新增会员",
+						stack: "数量",
+						type:'line',
+						data: [0]
+					}
+					]
+					
+					//收入 折线图显示
+					recharge.setOption(getOption('用户数',legend_data[2],yAxis_data[2],series_data[2], _subtext[2]));
+					
+				}
+				
 			},
 			error: function(res){
 				console.log('错误 ',res);
 			}
 		})
-
+		
 		/*************************  地图  **************************/
-        // 百度地图API功能
-		var map = new BMap.Map("allmap");    // 创建Map实例
-		map.centerAndZoom(new BMap.Point(113.404, 23.115), 9);  // 初始化地图,设置中心点坐标和地图级别
-		//添加地图类型控件
-		map.addControl(new BMap.MapTypeControl({
-			mapTypes:[
-	            BMAP_NORMAL_MAP,
-	            BMAP_HYBRID_MAP
-	        ]}));	  
-		map.setCurrentCity("广州");          // 设置地图显示的城市 此项是必须设置的
-		map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
-
-		var marker = new BMap.Marker(new BMap.Point(116.404, 39.915)); // 创建点
-	}
+		$('#allmap').on('mousemove', function(e){
+			$('.dnum').show();
+			// console.log('e: ',e);
+			$('.dnum').css({
+				left: e.pageX+20,
+				top: e.pageY-20
+			})
+		})
+		$('#allmap').on('mouseout', function(e){
+			// console.log('e: ',e);
+			$('.dnum').hide();
+		})
 	</script>
+	<script src="__PUBLIC__/Admin/js/index/index.js"></script>
 </body>
 </html>
