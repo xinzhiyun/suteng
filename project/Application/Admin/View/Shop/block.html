@@ -17,15 +17,15 @@
         <div class="row-fluid fl" id="main">
             <div class="tableBox">
                 <div class="ibox-title">
-                    <h5>商城管理 <small>快递公司管理</small></h5>
+                    <h5>商城管理 <small>主题活动管理</small></h5>
                     <div class="ibox-tools">
                         <i class="fa fa-user-plus"></i>
-                        <a href="{{:U('courierAddList')}}">添加快递公司</a>
+                        <a href="{{:U('blockAddList')}}">添加主题活动</a>
                     </div>
                 </div>
                 <form method="get" action="">
                     <div class="input-group col-md-4" id='searchdiv'>
-                        <input type="text" name="keywords" placeholder="请输入快递公司名" class="input form-control"   style="width:95%">
+                        <input type="text" name="keywords" placeholder="请输入主题活动名" class="input form-control"   style="width:95%">
                         <span class="input-group-btn" style="display: inline-block;">
                                 <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
                         </span>
@@ -36,10 +36,13 @@
                         <thead>
                             <tr>
                                 <th>
-                                    快递公司编号
+                                    活动编号
                                 </th>
                                 <th>
-                                    快递公司名
+                                    主题活动名
+                                </th>
+                                <th>
+                                    主题活动图片
                                 </th>
                                 <th>
                                     状态
@@ -50,31 +53,34 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <empty name="clist">
-                                <tr><td colspan="12">暂无快递公司数据</td></tr>
+                            <empty name="blist">
+                                <tr><td colspan="12">暂无主题活动数据</td></tr>
                             <else />
-                                <volist name="clist" id="v">
+                                <volist name="blist" id="v">
                                     <tr>
                                         <td>
                                             <input type="hidden" class="fd" name="{{$v['gid']}}">
                                             {{$i}}
                                         </td>
                                         <td>
-                                            {{$v['name']}}
+                                            {{$v['bname']}}
+                                        </td>
+                                        <td>
+                                            <img src="/Uploads/{{$v['pic']}}">
                                         </td>
                                         <td>
                                             <switch name="v.status">
-                                                    <case value="2">未合作</case>
-                                                    <case value="1">已合作</case>
+                                                    <case value="0">不显示</case>
+                                                    <case value="1">显示</case>
                                             </switch>
                                         </td>
                                         
                                         <td>
                                             <div class="btn-group">
-                                                <a href="courierEditList?id={{$v['id']}}" class="btn btn-outline btn-success">
+                                                <a href="blockEditList?id={{$v['id']}}" class="btn btn-outline btn-success">
                                                     编辑
                                                 </a>
-                                                <a class="btn btn-outline btn-success addbtn">
+                                                 <a class="btn btn-outline btn-success addbtn" attrid="{{$v['id']}}" >
                                                     删除
                                                 </a>
                                             </div>
@@ -105,13 +111,13 @@
     <script src="__PUBLIC__/Admin/layui/layui.js"></script>
     <script>
         /**
-     * 编辑快递公司
+     * 删除专题
      */
     $('.addbtn').click(function(){
-        var id = ('#del').value;
-        alert(id);
+        var id = $(this).attr('attrid');
+        // alert(id);
         $.ajax({
-                url:"courierDel",
+                url:"blockDel",
                 data:{"id":id},
                 dataType:"json",
                 type: 'get',
