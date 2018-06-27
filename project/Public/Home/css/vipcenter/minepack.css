@@ -59,14 +59,16 @@ body::after {
 }
 /* 功能列表 */
 .lists {
-  padding: 0 .8rem;
   background: white;
   margin-top: .7rem;
 }
 .lists > li {
+  position: relative;
   border-bottom: #F5F8F8;
-  
-  padding: .5rem 0;
+  padding: .5rem .8rem;
+}
+.lists > li:active {
+  background: rgba(0,0,0,.03);
 }
 .lists > li > a {
   display: flex;

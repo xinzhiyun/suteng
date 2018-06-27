@@ -1,100 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
-  <meta charset="UTF-8">
-  <title>我的钱包</title>
-  <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
-  <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
-  <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
-  <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_2pexqgs1lqyta9k9.css">
-  <link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/minepack.css">
-
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+    <meta charset="UTF-8">
+    <title>我的钱包</title>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+    <!-- <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css"> -->
+    <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
+    <!-- <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_2pexqgs1lqyta9k9.css"> -->
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/minepack.css">
+    
 </head>
 <body ontouchstart='console.log()'>
-  <div class="_Mine">
-    <div class="MineContainer">
-        <div class="MineTop"> 
-            <div class="mineLeft">
-              <span><img src="{{$user['head']}}" alt=""></span>
-            </div>                   
-            <div class="mineRight">
-               <ul>
-                 <li><p>{{$user['nickname']}}</p></li>
-                 <li><b>我的钱包:</b><i class="iconfont icon-tubiao207 m-left"></i><span>金币<em>{{$user['gold_num']}}</em>个</span></li>
-                  <li class="yingIcon"><i class="iconfont icon-tubiao207-copy m-left"></i><span>银币<em>{{$user['silver']}}</em>个</span></li>
-               </ul>
-            </div>                                
+    <div class="_Mine">
+        <div class="userInfos">
+            <div>
+                <span>
+                    <img src="{{$user['head']}}" alt="">
+                </span>
+                <span>{{$user['nickname']}}</span>
+                <a href="{{:U('Home/Index/index')}}">点我回到首页>></a>
+            </div>
+            <div class="jinyin">
+                <p><span>{{$user['gold_num']}}</span><span>金币</span></p>
+                <p><span>{{$user['silver']}}</span><span>银币</span></p>
+            </div>
         </div>
-        <div class="MineFoot">
-          <ul>
+        <!-- 功能列表 -->
+        <ul class="lists">
             <li>
-              <a href="{{:U('Home/Pay/deviceIndex')}}"><i class="iconfont icon-shebeiguanli Mf-left"></i>
-              <span>设备管理</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i><b id="device_now">当前设备：{{$device['device_code']}}</b></a>
+                <a href="{{:U('Home/Pay/deviceIndex')}}">
+                    <span>
+                        <i>
+                            <img src="__PUBLIC__/Home/images/shebeiguanli.png" alt="">
+                        </i>
+                        <i>设备管理</i>
+                    </span>
+                    <span class="iconfont icon-right"></span>
+                </a>
             </li>
             <li>
-              <a href="{{:U('Home/Switch/index')}}"><i class="iconfont icon-renwu Mf-left"></i>
-              <span>定时管理</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a>
+                <a href="{{:U('Home/Switch/index')}}">
+                    <span>
+                        <i>
+                            <img src="__PUBLIC__/Home/images/dingshiguanli.png" alt="">
+                        </i>
+                        <i>定时管理</i>
+                    </span>
+                    <span class="iconfont icon-right"></span>
+                </a>
             </li>
             <li>
-              <a href="{{:U('Home/Switch/setTime')}}"><i class="iconfont icon-naozhong Mf-left"></i>
-              <span>定时设置</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a>
+                <a href="{{:U('Home/Switch/setTime')}}">
+                    <span>
+                        <i>
+                            <img src="__PUBLIC__/Home/images/dingshishezhi.png" alt="">
+                        </i>
+                        <i>定时设置</i>
+                    </span>
+                    <span class="iconfont icon-right"></span>
+                </a>
             </li>
-            <!-- <li><a href="{{:U('Home/VipCenter/usedNotes')}}"><i class="iconfont icon-yongshuijilu Mf-left"></i><span>用水记录</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a></li> -->
+        </ul>
+        <!-- 功能列表 -->
+        <ul class="lists">
             <li>
-              <a href="{{:U('Home/VipCenter/purificationNotes')}}"><i class="iconfont icon-jilu1 Mf-left"></i>
-              <span>净水记录</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a>
-            </li>
-
-            <li>
-              <a href="{{:U('Home/vipCenter/service_record')}}">
-                <i class="iconfont icon-pinglun Mf-left" style='color: #00BCD4;'></i>
-                <span>我的工单</span>
-                <i class="iconfont icon-dayuhao-copy-copy Mf-right"></i>
-              </a>
-            </li>
-            <!-- <li class="Mf-infor">
-              <a href="{{:U('Home/VipCenter/personalInformation')}}"><i class="iconfont icon-gerenxinxi Mf-left"></i><span>个人信息</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a>
-            </li> -->
-            <li>
-              <a href="{{:U('Home/Repair/index')}}"><i class="iconfont icon-wuyebaoxiu Mf-left"></i>
-              <span>报 修</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a>
+                <a href="{{:U('Home/vipCenter/service_record')}}">
+                    <span>
+                        <i>
+                            <img src="__PUBLIC__/Home/images/jingshuijilu.png" alt="">
+                        </i>
+                        <i>我的工单</i>
+                    </span>
+                    <span class="iconfont icon-right"></span>
+                </a>
             </li>
             <li>
-              <a href="{{:U('Home/Suggest/index')}}"><i class="iconfont icon-dengpao1 Mf-left"></i>
-              <span>建 议</span><i class="iconfont icon-dayuhao-copy-copy Mf-right"></i></a>
+                <a href="{{:U('Home/VipCenter/purificationNotes')}}">
+                    <span>
+                        <i>
+                            <img src="__PUBLIC__/Home/images/jingshuijilu.png" alt="">
+                        </i>
+                        <i>净水记录</i>
+                    </span>
+                    <span class="iconfont icon-right"></span>
+                </a>
             </li>
-          </ul>
-        </div>
+            <li>
+                <a href="{{:U('Home/Repair/index')}}">
+                    <span>
+                        <i>
+                            <img src="__PUBLIC__/Home/images/shebeibaoxiu.png" alt="">
+                        </i>
+                        <i>设备报修</i>
+                    </span>
+                    <span class="iconfont icon-right"></span>
+                </a>
+            </li>
+            <li>
+                <a href="{{:U('Home/Suggest/index')}}">
+                    <span>
+                        <i>
+                            <img src="__PUBLIC__/Home/images/tousujianyi.png" alt="">
+                        </i>
+                        <i>投诉建议</i>
+                    </span>
+                    <span class="iconfont icon-right"></span>
+                </a>
+            </li>
+        </ul>
     </div>
-  </div>
-  <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
-  <script src="__PUBLIC__/Home/js/public.js"></script>
-  <script> 
-    $(function(){
-      
-      // 首页按钮
-      !function(){
-        // 创建 a 标签
-        var home = document.createElement('a');
-        home.innerText = '首\n页';
-        
-        home.href = '{{:U("Home/Index/index")}}';
-        home.setAttribute("id", 'back2Home');
-
-        // 添加到页面
-        document.body.appendChild(home);
-        home.onclick = function(){
-          home.style.background = '#aaa';
-        }
-        return
-        // console.log(home)
-      }()
-
-      //传设备编码到报修界面
-      // console.log($("#device_now").text().slice(5));
-      sessionStorage.setItem("device_now",$("#device_now").text().slice(5));
-    })
-  </script>
 </body>
+<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+<script src="__PUBLIC__/Home/js/public.js"></script>
+<script> 
+    $(function(){
+        
+        // 首页按钮
+        !function(){
+            // 创建 a 标签
+            var home = document.createElement('a');
+            home.innerText = '首\n页';
+            
+            home.href = '{{:U("Home/Index/index")}}';
+            home.setAttribute("id", 'back2Home');
+            
+            // 添加到页面
+            document.body.appendChild(home);
+            home.onclick = function(){
+                home.style.background = '#aaa';
+            }
+            return
+            // console.log(home)
+        }()
+        
+        //传设备编码到报修界面
+        // console.log($("#device_now").text().slice(5));
+        sessionStorage.setItem("device_now",$("#device_now").text().slice(5));
+    })
+</script>
 </html>                                                                                                                                                                                                                                                                      
