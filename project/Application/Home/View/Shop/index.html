@@ -18,7 +18,7 @@
 </head>
 <body>
 	<div class='shopindex'>
-		<header id="header" :class='{chghide: tabclk == 3 || tabclk == 4}'>
+		<header id="header" :style='{display: tabclk == 3 || tabclk == 4 ? "none" : "flex"}'>
 			<div class='search'>
 				<img src="__PUBLIC__/Home/images/shop/search.png" alt="">
 				<input type="text" placeholder="请输入商品名称或者关键字">
@@ -75,7 +75,28 @@
 			</li>
 		</ul>
 		<!-- 购物车内容 -->
-		<div class='cart' :style='{display: tabclk == 3 ? "block" : "none"}'></div>
+		<div class='cart' :style='{display: tabclk == 3 ? "block" : "none"}'>
+			<ul class='cBlock cfix' v-for='(cart, index) in cartList'>
+				<li class='fl'>
+					<img src="__PUBLIC__/Home/images/shop/cart_none.png" alt="">
+				</li>
+				<li class='fr'>
+					<span @click='todetail(cart.gid)'>
+						<img :data-src="cart.src" src='' alt="加载中">
+					</span>
+					<div>
+						<h3 v-text='cart.name'>商品名称</h3>
+						<p v-text='cart.attr'>商品规格</p>
+						<b v-text='"￥"+cart.price'>商品价格</b>
+					</div>
+					<p class='numbtn cfix'>
+						<span class='fl'>-</span>
+						<input class='fl' type="text" :value='cart.num'>
+						<span class='fl'>+</span>
+					</p>
+				</li>
+			</ul>
+		</div>
 		<footer id='footer'>
 			<div @click='tabClick(1, "_home")'>
 				<img :src="tabsrc[0]+'.png'" alt="">

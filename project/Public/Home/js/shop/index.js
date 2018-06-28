@@ -4,8 +4,9 @@ var shopindex = new Vue({
 		return {
 			menuList: [],				// 分类按钮
 			blockList: [],				// 商品块集合
-			classifyList: [],			// 分类类目
-			classifyContentList: [],	// 分类
+			classifyList: [],			// 一级分类类目
+			classifyContentList: [],	// 二级分类
+			cartList: [],				// 购物车商品集合
 			cateSelect: '',
 			tabclk: 1, 					// 底部按钮
 			tabText: 'home',
@@ -44,8 +45,10 @@ var shopindex = new Vue({
 			// 首页
 			vm.tabsrc[0] = vm.tabsrc[0] + '_light';
 		}
+		// 清除大分类点击记录
+		window.clickCid = '';
 		/**
-		 * 一下是模拟数据
+		 * 以下是模拟数据
 		 */
 		// 分类按钮
 		vm.menuList = [
@@ -86,6 +89,7 @@ var shopindex = new Vue({
 			}
 		];
 
+		// 一级分类
 		vm.classifyList = [
 			{name: '热水器', cid: '12'},
 			{name: '净水器', cid: '13'},
@@ -94,6 +98,15 @@ var shopindex = new Vue({
 			{name: '生活用品', cid: '112'},
 			{name: '数码家电', cid: '242'}
 		]
+
+		// 购物车数据
+		vm.cartList = [
+			{src: '',gid:'1',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'1'},
+			{src: '',gid:'2',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'16'},
+			{src: '',gid:'3',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'3'},
+			{src: '',gid:'4',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'11'},
+			{src: '',gid:'5',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'6'},
+		];
 	},
 	methods: {
 		// 点击商品图片
@@ -104,7 +117,7 @@ var shopindex = new Vue({
 		tabClick(tabclk, text){
 			// tabclk: 1首页，2分类，3购物车，4我的
 			this.tabclk = tabclk;
-			console.log('tabclk: ',tabclk);
+			// console.log('tabclk: ',tabclk);
 			// 切换title
 			document.title = this.titleList[+tabclk-1];
 			// 切换图标
@@ -136,6 +149,16 @@ var shopindex = new Vue({
 			this.classifyContentList = [
 				{
 					title: '净水器',
+					subType: [
+						{src: '',name:'lopo玩具',scid: '12'},
+						{src: '',name:'毛衣刷',scid: '13'},
+						{src: '',name:'宝宝杯',scid: '14'},
+						{src: '',name:'小小苏',scid: '15'},
+						{src: '',name:'规划局规划国际化',scid: '25'},
+					]
+				},
+				{
+					title: '净化器',
 					subType: [
 						{src: '',name:'lopo玩具',scid: '12'},
 						{src: '',name:'毛衣刷',scid: '13'},
