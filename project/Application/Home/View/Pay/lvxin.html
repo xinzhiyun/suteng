@@ -27,15 +27,15 @@
                 <b>剩余寿命</b>
                 <!-- 按时长 -->
                 <!-- <span v-text='(d.reday/(Number(d.reday)+Number(d.sumday)))*100'></span> -->
-                <span :class='{fwarn: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .95}' 
+                <span :class='{fwarn: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .85}' 
                     v-if='filtermode == 0'><i v-text='d.reday'>05</i>天</span>
                 <!-- 按流量 -->
-                <span :class='{fwarn: (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .95}' 
+                <span :class='{fwarn: (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .85}' 
                     v-else-if='filtermode == 1'><i v-text='d.reflow'>05</i>L</span>
                 <!-- 按时长、流量 -->
                 <span v-else 
-                    :class='{fwarn: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .95
-                    || (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .95}'>
+                    :class='{fwarn: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .85
+                    || (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .85}'>
                     <i v-if='d.reflow > d.reday' v-text='d.reday'>05</i>天
                     <i v-else v-text='d.reflow'>05</i>L
                 </span>
@@ -43,47 +43,47 @@
             <p class='process'>
                 <!-- 警告图标 -->
                 <span v-if='filtermode == 0' class='little'
-                    :style='{opacity: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .95 ? "1" : "0"}'>
+                    :style='{opacity: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .85 ? "1" : "0"}'>
                     <img src="__PUBLIC__/Home/images/baojing.png" alt="">
                 </span>
                 <span v-else-if='filtermode == 1' class='little'
-                    :style='{opacity: (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .95 ? "1" : "0"}'>
+                    :style='{opacity: (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .85 ? "1" : "0"}'>
                     <img src="__PUBLIC__/Home/images/baojing.png" alt="">
                 </span>
                 <span v-else class='little'
-                    :style='{opacity: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .95
-                    || (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .95 ? "1" : "0"}'>
+                    :style='{opacity: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .85
+                    || (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .85 ? "1" : "0"}'>
                     <img src="__PUBLIC__/Home/images/baojing.png" alt="">
                 </span>
                 <!-- 进度条 -->
                 <span v-if='filtermode == 0'>
                     <!-- 按时长 -->
-                    <i :class='{bgwarn: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .95}'
+                    <i :class='{bgwarn: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .85}'
                     :style='{width: (d.sumday/(Number(d.reday)+Number(d.sumday))).toFixed(4)*100+"%"}'></i>
                 </span>
                 <span v-else-if='filtermode == 1'>
                     <!-- 按流量 -->
-                    <i :class='{bgwarn: (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .95}'
+                    <i :class='{bgwarn: (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .85}'
                     :style='{width: (d.sumflow/(Number(d.reflow)+Number(d.sumflow))*100).toFixed(2)+"%"}'></i>
                 </span>
                 <span v-else>
                     <!-- 按时长、流量 -->
                     <i v-if='(d.reday/(Number(d.reday)+Number(d.sumday))) >= (d.reflow/(Number(d.reflow)+Number(d.sumflow)))' 
                         :style='{width: (d.sumflow/(Number(d.reflow)+Number(d.sumflow)))*100+"%"}'
-                        :class='{bgwarn: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .95
-                            || (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .95}'></i>
-                    <i v-else :class='{bgwarn: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .95
-                        || (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .95}'
+                        :class='{bgwarn: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .85
+                            || (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .85}'></i>
+                    <i v-else :class='{bgwarn: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .85
+                        || (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .85}'
                         :style='{width: (d.sumday/(Number(d.reday)+Number(d.sumday))).toFixed(4)*100+"%"}'></i>
                 </span>
                 <!-- 百分比 -->
                 <span v-if='filtermode == 0' 
-                    :class='{fwarn: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .95}'
+                    :class='{fwarn: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .85}'
                     v-text='(d.sumday/(Number(d.reday)+Number(d.sumday))*100).toFixed(2)+"%"'>95%</span>
-                <span :class='{fwarn: (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .95}'
+                <span :class='{fwarn: (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .85}'
                     v-else-if='filtermode == 1' v-text='(d.sumflow/(Number(d.reflow)+Number(d.sumflow))*100).toFixed(2)+"%"'>95%</span>
-                <span :class='{fwarn: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .95
-                    || (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .95}'
+                <span :class='{fwarn: (d.sumday/(Number(d.reday)+Number(d.sumday))) >= .85
+                    || (d.sumflow/(Number(d.reflow)+Number(d.sumflow))) >= .85}'
                     v-else v-text='(d.sumflow/(Number(d.reflow)+Number(d.sumflow))*100).toFixed(2)+"%"'>95%</span>
             </p>
             <p class='reset' @click='reset(index, d.name)'>立即复位</p>
