@@ -26,7 +26,8 @@
         <div>
             <p>
                 <span>{{$_SESSION['adminInfo']['user']}}</span>
-                <span>最近登录时间：<i>2018-06-12 13:21:00</i></span>
+                
+                <span>最近登录时间：<i>{{:date('Y-m-d H:i:s',$_SESSION['adminInfo']['logintime'])}}</i></span>
             </p>
             <p>
                 <a href="{{:U('Login/logout')}}" class="J_tabExit" aria-expanded="false">
@@ -60,8 +61,8 @@
                                 </div>
                             </a>
                         </div> -->
-                        <div class="logo-element">速腾
-                        </div>
+                        <!-- <div class="logo-element">速腾
+                        </div> -->
                     </li>
                     <!-- 权限管理分配菜单 -->
                     <li>

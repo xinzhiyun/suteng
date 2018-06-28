@@ -54,10 +54,10 @@
                                             {{$v['id']}}
                                         </td>
                                         <td>
-                                            {{$v['_name']}}
+                                            {{$v['attr']}}
                                         </td>
                                         <td>
-                                            {{$v['pid']}}
+                                            {{$v['cid']}}
                                         </td>
                                         <td>
                                             {{$v['leavel']}}
@@ -107,7 +107,6 @@
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="pid" value="0">
                     <table class="table table-striped table-bordered table-hover table-condensed">
                         <tr>
                             <th width=15%>
@@ -115,7 +114,7 @@
                             </th>
                             <td>
                                 <div class="form-group">
-                                    <input class="input-medium form-control" type="text" name="name">
+                                    <input class="input-medium form-control" type="text" name="attr">
                                 </div>
                             </td>
                         </tr>
@@ -125,10 +124,11 @@
                             </th>
                             <td>
                                 <div class="form-group">
-                                    <select name="cid">
-                                        <option value="">11</option>
-                                        <option value="">22</option>
-                                        <option value="">33</option>
+                                    <!-- {{:dump($category)}} -->
+                                    <select name="cid" class="input-medium form-control" id="attr">
+                                        <volist name="category" id="vo">
+                                            <option value="{{$vo['id']}}">{{$vo['_name']}}</option>
+                                        </volist>
                                     </select>
                                 </div>
                             </td>
@@ -261,11 +261,11 @@
         // 添加功能
         $('.add-cate').click(function(){
             $('#st-add').modal('hide');
-            var pid = $("input[name='pid']").val();
-            var name = $("input[name='name']").val();
+            var cid = $("#attr option:selected").val();
+            var name = $("input[name='attr']").val();
             $.ajax({
-                url:"cateGoryAdd",
-                data:{"pid":pid,"name":name},
+                url:"attrAdd",
+                data:{"cid":cid,"attr":name},
                 dataType:"json",
                 type: 'post',
                 success:function(res){

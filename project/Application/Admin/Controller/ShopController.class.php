@@ -827,30 +827,7 @@ class ShopController extends CommonController
         $this->display();
     }
 
-    // 添加属性
-    public function attrAdd()
-    {
-        try {
-            $attr = D('Attr');
-            $data = I('post.');
-            if(!$attr->create()) {
-                E($attr->getError(),204);
-            }
-            $res = $attr->add();
-            if($res){
-                E('添加完成',$res);
-            } else {
-                E('添加失败',203);
-            }
-        } catch (\Exception $e) {
-            $err = [
-                'code' => $e->getCode(),
-                'msg' => $e->getMessage(),
-            ];
-            $this->ajaxReturn($err);
-        }
-
-    }
+    
 
     // 删除产品属性
     public function attrDel()
@@ -1728,15 +1705,54 @@ class ShopController extends CommonController
      */
     public function attr()
     {
+        // dump($_SESSION);
         $map = [];
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
             $map[I('get.key')] = array('like',"%".trim(I('get.keywords'))."%");
         }
-        $data = D('attr')->select();
+        $data = D('attr')->order('cid')->select();
+
+        // dump($data);
+        $category = D('Category')->getTreeData('tree','id, name',$name='name',$child='id',$parent='pid');
         $assign = [
-            'data' => $data['data']
+            'data' => $data
         ];
+
+        // dump($category);
+        $this->assign('category', $category['data']);
         $this->assign($assign);
         $this->display();
+    }
+
+
+    /**
+     * [attrAdd 添加属性名]
+     * @return [type] [description]
+     */
+    public function attrAdd()
+    {
+        try {
+            $attr = D('Attr');
+            $_POST['addtime'] = time();
+            $_POST['updatetime'] = time();
+            $data = I('post.');
+
+            if(!$attr->create()) {
+                E($attr->getError(),204);
+            }
+            $res = $attr->add();
+            if($res){
+                E('添加完成',$res);
+            } else {
+                E('添加失败',203);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+
     }
 }

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+ 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+ 	<!-- <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_v25vpfqtkjegsyvi.css"> -->
+  	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/font-awesome.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/style.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/shop/index.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/swiper-3.4.2.min.css">
+	<title>商城首页</title>
+</head>
+<body>
+ 
+	<header id="header">
+		<!-- <span class="tab" index='0'>净水器</span>
+		<span class="tab" index='1'>净化器</span>
+		<span class="tab" index='2'>热水器</span>
+		<span class="tab" index='3'>生活用品</span>
+		<span class="tab" index='4'>瓦胆</span>
+		<div id="line"></div> -->
+	</header>
+	<div id="container">
+		<div class="shopTop clearfix">
+			<div class="search clearfix">
+				<label for="search-all">
+					<input type="text" placeholder="请输入您想买的东西" ><i class="searchBtn iconfont icon-msnui-find-bold"></i>
+				</label><i class="iconfont  icon-gouwuche"></i><span class="cartnum"><span></span></span>
+				<div id="searchPanel">
+					<!-- <p>见识到了官方十多个</p>
+					<p>见识到了官方十多个</p>
+					<p>见识到了官方十多个</p> -->
+				</div>
+			</div>
+
+			<!-- 轮播图 -->
+			<div id="wrapper" class='swiper-container'>
+				<div class='swiper-wrapper'>
+					<!-- <a class="pic swiper-slide" goods_gid="{{$goodsList[0]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[0]['path']}}" /></a>
+					<a class="pic swiper-slide" goods_gid="{{$goodsList[1]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[1]['path']}}" /></a>
+					<a class="pic swiper-slide" goods_gid="{{$goodsList[2]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[2]['path']}}" /></a>
+					<a class="pic swiper-slide" goods_gid="{{$goodsList[3]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[3]['path']}}" /></a>
+					<a class="pic swiper-slide" goods_gid="{{$goodsList[4]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[4]['path']}}" /></a> -->
+				</div>
+				<div class="swiper-pagination"></div>
+			</div>		
+		</div>
+		<div id="content">
+			
+			<!-- 净水器 -->
+			<!-- <div id="waterPurifier">
+				 <div class="goods" > -->
+					<!-- /*所有商品*/ -->
+					<!-- <div class="goodstitle">
+						<h3><span>——</span> 特惠专区 <span>——</span></h3>
+					</div>
+					<div class="allgoods">
+						<ul>
+							<li>
+								<a href="#">
+									<img src="__PUBLIC__/Home/images/goods1.png" alt="">
+									<p>Jagabee 麦片套装</p>
+									<b>¥ 89.00</b><i class="iconfont icon-jiarugouwuche "></i><span class="iconfont "></span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div> -->
+		</div>
+	</div>
+  	<div id="loading">
+  		<img src="__PUBLIC__/Home/images/loading.gif" alt="加载中...">
+  	</div>
+	<script>
+	  var ThinkPHP = {
+		  shopIndexUrl : "{{:U('home/shop/index')}}"
+	  }
+	</script>
+	<script type="text/javascript" src="__PUBLIC__/Home/js/swiper-3.4.2.min.js"></script>
+	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+  	<script src="__PUBLIC__/Home/js/public.js"></script>
+  	<script src="__PUBLIC__/Home/js/shop/index.js"></script>
+	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
+	<script>
+		$(function(){
+			// 首页按钮
+			!function(){
+				// 创建 a 标签
+				var home = document.createElement('a');
+				home.innerText = '首\n页';
+				
+				home.href = '{{:U("Home/Index/index")}}';
+				home.setAttribute("id", 'back2Home');
+
+				// 添加到页面
+				document.body.appendChild(home);
+				home.onclick = function(){
+					home.style.background = '#aaa';
+				}
+				return
+				// console.log(home)
+			}()
+		/***************** 页面跳转 -- 开始 ************************/
+			/*
+				点击的时候记录当前点击的商品gid，传给商品详情页面
+			 */
+			$(".goodsBlock").on('click','.pic',function(){
+				// 将当前商品id拼接到地址URL
+				$(this).attr("href", "{{:U('Shop/shoppingdetail')}}?gid=" + $(this).attr("goods_gid"));
+				// console.log($(this).attr('href'));
+				// 跳转到商品详情页面
+				location.href = $(this).attr('href');
+
+				// 记录当前分类位置
+				sessionStorage.setItem('shopCid', $(this).attr('cid'));
+			})
+			//点击轮播图片
+			$("#wrapper").on('click','.pic',function(){
+				
+				// 跳转到商品详情页面
+				location.href = "{{:U('Home/Shop/shoppingdetail')}}?gid=" + $(this).attr("goods_gid");
+			})
+			/*
+				点击商品旁边的购物车图标
+			 */
+			$(".allgoods").on("click",".icon-jiarugouwuche",function(){
+				var _this = $(this);
+				// 获取商品id
+				var gid = $(this).siblings(".pic").attr("goods_gid");
+				console.log(gid);
+				//添加点击效果
+				$(this).addClass("numShow");
+				$(".cartnum>span").addClass("numShow");
+				setTimeout(function(){
+					//移除点击效果
+					_this.removeClass("numShow");
+					$(".cartnum>span").removeClass("numShow");
+				},500)
+				//告诉后台添加到数据库
+				$.ajax({
+					url: '{{:U("ShoppingCart/shopAdd")}}',
+					type: 'post',
+					data: {'gid': gid,'num': 1},
+					success: function(res){
+						console.log('成功！ ',res);
+						//更新购物车商品数量
+							$(".cartnum>span").text(res);
+							parent.layer.msg('已加入购物车！');
+					},
+					error: function(res){
+						console.log('失败！ ',res);
+							parent.layer.msg('加入购物车失败，请稍后再试！');
+					}
+				})
+			})
+			//点击搜索框旁的购物车图标跳转到购物车
+			$('.cartnum').click(function(){
+				location.href = '{{:U("ShoppingCart/index")}}';
+			})
+
+		/***************** 页面跳转 -- 结束 ************************/
+		
+		/**************************** 搜索 -- 开始 ******************************/
+			/*
+				监听input内容实时搜索
+			 */
+			$(".search input").on('keyup', function(){
+				_search($(this).val());
+			})
+			/*
+				点击搜索
+			 */
+			$(".searchBtn").click(function(){
+				_search($(this).siblings('input').val());
+				
+			})
+			// 点击搜索内容存储 商品id 到地址栏URL 给 商品详情页面用
+			$("#searchPanel").on('click', 'a', function(){
+
+				// 将当前商品id拼接到地址URL
+				$(this).attr("href", "{{:U('Shop/shoppingdetail')}}?gid=" + $(this).attr("goods_gid"));
+				// 跳转到商品详情页面
+				location.href = $(this).attr("href");
+			})
+			//搜索函数
+			function _search(word){
+				//searchArr: 所有商品的数据, 遍历商品的时候存进去的
+				// console.log(word);
+				if(word){
+					// console.log(searchArr);
+					$("#searchPanel").html('');	//每次输入都重新搜索
+					//遍历适配的数据
+					for(var i=0; i<searchArr.length; i++){
+						if(searchArr[i].indexOf(word) > -1){
+							$("#searchPanel").html(searchArr[i]);
+						}
+					}
+					$("#searchPanel").fadeIn('fast');
+					// console.log($("#searchPanel>a").length)
+					// 没有匹配到商品
+					if($("#searchPanel>a").length < 1){
+
+						$("#searchPanel").html('没有找到你搜索的商品！');
+					}
+				}else{
+					$("#searchPanel").html('^^换个姿势搜索看看^^');
+					console.log('没有输入内容!')
+				}
+			}
+		/******************************* 搜索 -- 结束 ************************************/
+		})
+	</script>
+</body>
+</html>

@@ -20,6 +20,9 @@ class LoginController extends Controller
                 if ($info['password'] == $password) {
                     // 万事大吉
                     $_SESSION['adminInfo'] = $info;
+
+                    $data['logintime'] = time();
+                    M('adminUser')->where("user='{$_POST['name']}'")->save($data);
                     $this->ajaxReturn(array('msg'=>'登录成功','code'=>'200'));
                     // $this->redirect('Index/index');
                 }else{
