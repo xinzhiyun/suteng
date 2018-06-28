@@ -1,8 +1,8 @@
 /*
-*
-*   H+ - 后台主题UI框架
-*   version 4.0
-*
+ *
+ *   H+ - 后台主题UI框架
+ *   version 4.0
+ *
 */
 
 h1,
@@ -17,7 +17,7 @@ h6 {
 h1 {
     font-size: 30px;
 }
-
+ 
 h2 {
     font-size: 24px;
 }
@@ -125,7 +125,7 @@ body.body-small .navbar-top-links li:last-child {
     z-index: 1000;
     border-radius: 0;
     -webkit-box-shadow: 0 0 3px rgba(86, 96, 117, 0.3);
-    box-shadow: 0 0 3px rgba(86, 96, 117, 0.3);
+            box-shadow: 0 0 3px rgba(86, 96, 117, 0.3);
 }
 
 .dropdown-menu > li > a {
@@ -210,7 +210,7 @@ body.body-small .navbar-top-links li:last-child {
     -webkit-transition: all 0.5s;
     transition: all 0.5s;
 }
-
+ 
 .nav > li.active {
     border-left: 4px solid #19aa8d;
     background: #293846;
@@ -406,7 +406,7 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
 .fixed-nav #wrapper {
     padding-top: 60px;
     -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+            box-sizing: border-box;
 }
 
 .fixed-nav .minimalize-styl-2 {
@@ -595,7 +595,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 
 .top-navigation .navbar-nav .dropdown-menu {
     -webkit-box-shadow: none;
-    box-shadow: none;
+            box-shadow: none;
     border: 1px solid #e7eaec;
 }
 
@@ -1038,7 +1038,7 @@ fieldset[disabled] .btn-link.active {
 .btn-white:active,
 .btn-white.active {
     -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) inset;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) inset;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) inset;
 }
 
 .btn-white:active,
@@ -1080,7 +1080,7 @@ fieldset[disabled] .btn-white.active {
 .progress,
 .progress-bar {
     -webkit-box-shadow: none;
-    box-shadow: none;
+            box-shadow: none;
 }
 
 .btn-outline {
@@ -1121,62 +1121,62 @@ button.dim:active {
 
 button.btn-primary.dim {
     -webkit-box-shadow: inset 0px 0px 0px #16987e, 0px 5px 0px 0px #16987e, 0px 10px 5px #999999;
-    box-shadow: inset 0px 0px 0px #16987e, 0px 5px 0px 0px #16987e, 0px 10px 5px #999999;
+            box-shadow: inset 0px 0px 0px #16987e, 0px 5px 0px 0px #16987e, 0px 10px 5px #999999;
 }
 
 button.btn-primary.dim:active {
     -webkit-box-shadow: inset 0px 0px 0px #16987e, 0px 2px 0px 0px #16987e, 0px 5px 3px #999999;
-    box-shadow: inset 0px 0px 0px #16987e, 0px 2px 0px 0px #16987e, 0px 5px 3px #999999;
+            box-shadow: inset 0px 0px 0px #16987e, 0px 2px 0px 0px #16987e, 0px 5px 3px #999999;
 }
 
 button.btn-default.dim {
     -webkit-box-shadow: inset 0px 0px 0px #b3b3b3, 0px 5px 0px 0px #b3b3b3, 0px 10px 5px #999999;
-    box-shadow: inset 0px 0px 0px #b3b3b3, 0px 5px 0px 0px #b3b3b3, 0px 10px 5px #999999;
+            box-shadow: inset 0px 0px 0px #b3b3b3, 0px 5px 0px 0px #b3b3b3, 0px 10px 5px #999999;
 }
 
 button.btn-default.dim:active {
     -webkit-box-shadow: inset 0px 0px 0px #b3b3b3, 0px 2px 0px 0px #b3b3b3, 0px 5px 3px #999999;
-    box-shadow: inset 0px 0px 0px #b3b3b3, 0px 2px 0px 0px #b3b3b3, 0px 5px 3px #999999;
+            box-shadow: inset 0px 0px 0px #b3b3b3, 0px 2px 0px 0px #b3b3b3, 0px 5px 3px #999999;
 }
 
 button.btn-warning.dim {
     -webkit-box-shadow: inset 0px 0px 0px #f79d3c, 0px 5px 0px 0px #f79d3c, 0px 10px 5px #999999;
-    box-shadow: inset 0px 0px 0px #f79d3c, 0px 5px 0px 0px #f79d3c, 0px 10px 5px #999999;
+            box-shadow: inset 0px 0px 0px #f79d3c, 0px 5px 0px 0px #f79d3c, 0px 10px 5px #999999;
 }
 
 button.btn-warning.dim:active {
     -webkit-box-shadow: inset 0px 0px 0px #f79d3c, 0px 2px 0px 0px #f79d3c, 0px 5px 3px #999999;
-    box-shadow: inset 0px 0px 0px #f79d3c, 0px 2px 0px 0px #f79d3c, 0px 5px 3px #999999;
+            box-shadow: inset 0px 0px 0px #f79d3c, 0px 2px 0px 0px #f79d3c, 0px 5px 3px #999999;
 }
 
 button.btn-info.dim {
     -webkit-box-shadow: inset 0px 0px 0px #1eacae, 0px 5px 0px 0px #1eacae, 0px 10px 5px #999999;
-    box-shadow: inset 0px 0px 0px #1eacae, 0px 5px 0px 0px #1eacae, 0px 10px 5px #999999;
+            box-shadow: inset 0px 0px 0px #1eacae, 0px 5px 0px 0px #1eacae, 0px 10px 5px #999999;
 }
 
 button.btn-info.dim:active {
     -webkit-box-shadow: inset 0px 0px 0px #1eacae, 0px 2px 0px 0px #1eacae, 0px 5px 3px #999999;
-    box-shadow: inset 0px 0px 0px #1eacae, 0px 2px 0px 0px #1eacae, 0px 5px 3px #999999;
+            box-shadow: inset 0px 0px 0px #1eacae, 0px 2px 0px 0px #1eacae, 0px 5px 3px #999999;
 }
 
 button.btn-success.dim {
     -webkit-box-shadow: inset 0px 0px 0px #1872ab, 0px 5px 0px 0px #1872ab, 0px 10px 5px #999999;
-    box-shadow: inset 0px 0px 0px #1872ab, 0px 5px 0px 0px #1872ab, 0px 10px 5px #999999;
+            box-shadow: inset 0px 0px 0px #1872ab, 0px 5px 0px 0px #1872ab, 0px 10px 5px #999999;
 }
 
 button.btn-success.dim:active {
     -webkit-box-shadow: inset 0px 0px 0px #1872ab, 0px 2px 0px 0px #1872ab, 0px 5px 3px #999999;
-    box-shadow: inset 0px 0px 0px #1872ab, 0px 2px 0px 0px #1872ab, 0px 5px 3px #999999;
+            box-shadow: inset 0px 0px 0px #1872ab, 0px 2px 0px 0px #1872ab, 0px 5px 3px #999999;
 }
 
 button.btn-danger.dim {
     -webkit-box-shadow: inset 0px 0px 0px #ea394c, 0px 5px 0px 0px #ea394c, 0px 10px 5px #999999;
-    box-shadow: inset 0px 0px 0px #ea394c, 0px 5px 0px 0px #ea394c, 0px 10px 5px #999999;
+            box-shadow: inset 0px 0px 0px #ea394c, 0px 5px 0px 0px #ea394c, 0px 10px 5px #999999;
 }
 
 button.btn-danger.dim:active {
     -webkit-box-shadow: inset 0px 0px 0px #ea394c, 0px 2px 0px 0px #ea394c, 0px 5px 3px #999999;
-    box-shadow: inset 0px 0px 0px #ea394c, 0px 2px 0px 0px #ea394c, 0px 5px 3px #999999;
+            box-shadow: inset 0px 0px 0px #ea394c, 0px 2px 0px 0px #ea394c, 0px 5px 3px #999999;
 }
 
 button.dim:before {
@@ -1309,7 +1309,7 @@ button.dim:active:before {
     font-family: Trebuchet, Arial, sans-serif;
     font-weight: bold;
     -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+            box-sizing: border-box;
 }
 
 .onoffswitch-inner:before {
@@ -1355,7 +1355,7 @@ button.dim:active:before {
 .chosen-container-single .chosen-single {
     background: #ffffff;
     -webkit-box-shadow: none;
-    box-shadow: none;
+            box-shadow: none;
     -moz-box-sizing: border-box;
     background-color: #FFFFFF;
     border: 1px solid #CBD5DD;
@@ -1375,7 +1375,7 @@ button.dim:active:before {
     border: 1px solid #ededed;
     border-radius: 2px;
     -webkit-box-shadow: none;
-    box-shadow: none;
+            box-shadow: none;
     color: #333333;
     cursor: default;
     line-height: 13px;
@@ -1469,7 +1469,7 @@ button.dim:active:before {
 
 .jqstooltip {
     -webkit-box-sizing: content-box;
-    box-sizing: content-box;
+            box-sizing: content-box;
 }
 
 
@@ -1480,7 +1480,7 @@ button.dim:active:before {
     background-image: none;
     background-repeat: repeat-x;
     -webkit-box-shadow: none;
-    box-shadow: none;
+            box-shadow: none;
     color: #333333;
     text-shadow: none;
 }
@@ -1604,7 +1604,7 @@ button.dim:active:before {
 .chat-element .well {
     border: 1px solid #e7eaec;
     -webkit-box-shadow: none;
-    box-shadow: none;
+            box-shadow: none;
     margin-top: 10px;
     margin-bottom: 5px;
     padding: 10px 20px;
@@ -2198,13 +2198,13 @@ table.dataTable thead .sorting:after {
 .noUi-connect {
     background: none repeat scroll 0 0 #1ab394;
     -webkit-box-shadow: none;
-    box-shadow: none;
+            box-shadow: none;
 }
 
 .slider_red .noUi-connect {
     background: none repeat scroll 0 0 #ed5565;
     -webkit-box-shadow: none;
-    box-shadow: none;
+            box-shadow: none;
 }
 
 
@@ -2422,7 +2422,7 @@ table.dataTable thead .sorting:after {
     font-family: Trebuchet, Arial, sans-serif;
     font-weight: bold;
     -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+            box-sizing: border-box;
 }
 
 .onoffswitch-inner:before {
@@ -2514,7 +2514,7 @@ table.dataTable thead .sorting:after {
     background: #f5f5f5;
     border-radius: 3px;
     -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+            box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
 
@@ -2584,7 +2584,7 @@ table.dataTable thead .sorting:after {
     background: #f2fbff;
     border: 1px dashed #b6bcbf;
     -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+            box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
 
@@ -2609,7 +2609,7 @@ table.dataTable thead .sorting:after {
 
 .dd-dragel .dd-handle {
     -webkit-box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, 0.1);
-    box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, 0.1);
+            box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, 0.1);
 }
 
 
@@ -2640,7 +2640,7 @@ table.dataTable thead .sorting:after {
     font-family: lucida grande, lucida sans unicode, helvetica, arial, sans-serif;
     padding: 5px;
     -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+            box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
 
@@ -2664,7 +2664,7 @@ table.dataTable thead .sorting:after {
     font-size: 12px;
     padding: 25px;
     -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+            box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
 
@@ -2769,7 +2769,7 @@ label.error {
 
 #toast-container > div {
     -webkit-box-shadow: 0 0 3px #999;
-    box-shadow: 0 0 3px #999;
+            box-shadow: 0 0 3px #999;
     opacity: .9;
     -ms-filter: alpha(opacity=90);
     filter: alpha(opacity=90);
@@ -2777,7 +2777,7 @@ label.error {
 
 #toast-container >:hover {
     -webkit-box-shadow: 0 0 4px #999;
-    box-shadow: 0 0 4px #999;
+            box-shadow: 0 0 4px #999;
     opacity: 1;
     -ms-filter: alpha(opacity=100);
     filter: alpha(opacity=100);
@@ -3515,7 +3515,7 @@ video {
     border: 1px solid rgba(0, 0, 0, 0);
     border-radius: 4px;
     -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     outline: 0 none;
 }
 
@@ -4368,7 +4368,7 @@ table.table-mail tr td {
 
 .img-shadow {
     -webkit-box-shadow: 0px 0px 3px 0px #919191;
-    box-shadow: 0px 0px 3px 0px #919191;
+            box-shadow: 0px 0px 3px 0px #919191;
 }
 
 
@@ -4831,17 +4831,114 @@ body.modal-open {
     width: 15%;
 }
 
+
+/* ERROR & LOGIN & LOCKSCREEN*/
+
+.middle-box {
+    max-width: 400px;
+    z-index: 100;
+    margin: 0 auto;
+    padding-top: 40px;
+}
+
+.lockscreen.middle-box {
+    width: 200px;
+    padding-top: 110px;
+}
+
+.loginscreen.middle-box {
+    width: 40%;
+    max-width: 460px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column;
+            flex-flow: column;
+    position: relative;
+    top: 20%;
+    padding: 3% 5%;
+    background: rgba(256,256,256,.6);
+    -webkit-box-shadow: 0 0 10px rgba(0,0,0,.1);
+            box-shadow: 0 0 10px rgba(0,0,0,.1);
+}
+
 .loginColumns {
     max-width: 800px;
     margin: 0 auto;
     padding: 100px 20px 20px 20px;
 }
-
+.loginbtn {
+    margin-top: 12%;
+    padding: 4%;
+    border: none;
+    border-radius: 6px;
+    background: -ms-linear-gradient(top, #7ABCDF -2%, #00359C 59%);
+    background: -webkit-linear-gradient(top, #7ABCDF -2%, #00359C 59%);
+    background: -moz-linear-gradient(top, #7ABCDF -2%, #00359C 59%);
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#7ABCDF, endColorstr=#00359C);/*IE<9>*/
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient (GradientType=0, startColorstr=#7ABCDF, endColorstr=#00359C)";/*IE8+*/ 
+}
 .passwordBox {
     max-width: 460px;
     margin: 0 auto;
     padding: 100px 20px 20px 20px;
 }
+.loginDiv {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding: 2%;
+    border: 2px solid #8BAFD0;
+    border-radius: 9px;
+    background: #DFF3FE;
+}
+.loginDiv>input {
+    -webkit-box-flex: 8;
+        -ms-flex: 8;
+            flex: 8;
+    border: none;
+    border-left: 1px solid #aaaaaa;
+    background: none;
+}
+.loginDiv:nth-of-type(1)>span {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    height: 26px;
+    display: inline-block;
+    margin: 0 4%;
+    background: url('../img/username.png') no-repeat;
+    background-size: contain;
+}
+.loginDiv:nth-of-type(2)>span {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1 0;
+    height: 26px;
+    display: inline-block;
+    margin: 0 4%;
+    background: url('../img/passw.png') no-repeat;
+    background-size: contain;
+}
+.loginDiv:nth-of-type(3)>span {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1 0;
+    height: 26px;
+    display: inline-block;
+    margin: 0 4%;
+    background: url('../img/passw.png') no-repeat;
+    background-size: contain;
+}
+
 
 .logo-name {
     width: 100%;
@@ -4856,7 +4953,7 @@ body.modal-open {
 }
 .checkCode {
     width: 100%;
-    
+
 }
 .middle-box h1 {
     font-size: 170px;
@@ -5015,7 +5112,7 @@ ul.notes li div {
     /* Safari+Chrome */
     /* Opera */
     -webkit-box-shadow: 5px 5px 2px rgba(33, 33, 33, 0.7);
-    box-shadow: 5px 5px 2px rgba(33, 33, 33, 0.7);
+            box-shadow: 5px 5px 2px rgba(33, 33, 33, 0.7);
 }
 
 ul.notes li div {
@@ -5066,7 +5163,7 @@ ul.notes li div {
     width: 210px;
     padding: 1em;
     -webkit-box-shadow: 5px 5px 7px rgba(33, 33, 33, 0.7);
-    box-shadow: 5px 5px 7px rgba(33, 33, 33, 0.7);
+            box-shadow: 5px 5px 7px rgba(33, 33, 33, 0.7);
     -webkit-transition: -webkit-transform 0.15s linear;
 }
 
@@ -5271,7 +5368,7 @@ a.compose-mail {
 .feed-element .well {
     border: 1px solid #e7eaec;
     -webkit-box-shadow: none;
-    box-shadow: none;
+            box-shadow: none;
     margin-top: 10px;
     margin-bottom: 5px;
     padding: 10px 20px;
@@ -5893,11 +5990,11 @@ del {
 
 
 /*
-*  Usage:
-*
-*    <div class="sk-spinner sk-spinner-rotating-plane"></div>
-*
-*/
+ *  Usage:
+ *
+ *    <div class="sk-spinner sk-spinner-rotating-plane"></div>
+ *
+ */
 
 .sk-spinner-rotating-plane.sk-spinner {
     width: 30px;
@@ -5940,14 +6037,14 @@ del {
 
 
 /*
-*  Usage:
-*
-*    <div class="sk-spinner sk-spinner-double-bounce">
-*      <div class="sk-double-bounce1"></div>
-*      <div class="sk-double-bounce2"></div>
-*    </div>
-*
-*/
+ *  Usage:
+ *
+ *    <div class="sk-spinner sk-spinner-double-bounce">
+ *      <div class="sk-double-bounce1"></div>
+ *      <div class="sk-double-bounce2"></div>
+ *    </div>
+ *
+ */
 
 .sk-spinner-double-bounce.sk-spinner {
     width: 40px;
@@ -6001,17 +6098,17 @@ del {
 
 
 /*
-*  Usage:
-*
-*    <div class="sk-spinner sk-spinner-wave">
-*      <div class="sk-rect1"></div>
-*      <div class="sk-rect2"></div>
-*      <div class="sk-rect3"></div>
-*      <div class="sk-rect4"></div>
-*      <div class="sk-rect5"></div>
-*    </div>
-*
-*/
+ *  Usage:
+ *
+ *    <div class="sk-spinner sk-spinner-wave">
+ *      <div class="sk-rect1"></div>
+ *      <div class="sk-rect2"></div>
+ *      <div class="sk-rect3"></div>
+ *      <div class="sk-rect4"></div>
+ *      <div class="sk-rect5"></div>
+ *    </div>
+ *
+ */
 
 .sk-spinner-wave.sk-spinner {
     margin: 0 auto;
@@ -6078,14 +6175,14 @@ del {
 
 
 /*
-*  Usage:
-*
-*    <div class="sk-spinner sk-spinner-wandering-cubes">
-*      <div class="sk-cube1"></div>
-*      <div class="sk-cube2"></div>
-*    </div>
-*
-*/
+ *  Usage:
+ *
+ *    <div class="sk-spinner sk-spinner-wandering-cubes">
+ *      <div class="sk-cube1"></div>
+ *      <div class="sk-cube2"></div>
+ *    </div>
+ *
+ */
 
 .sk-spinner-wandering-cubes.sk-spinner {
     margin: 0 auto;
@@ -6161,11 +6258,11 @@ del {
 
 
 /*
-*  Usage:
-*
-*    <div class="sk-spinner sk-spinner-pulse"></div>
-*
-*/
+ *  Usage:
+ *
+ *    <div class="sk-spinner sk-spinner-pulse"></div>
+ *
+ */
 
 .sk-spinner-pulse.sk-spinner {
     width: 40px;
@@ -6203,14 +6300,14 @@ del {
 
 
 /*
-*  Usage:
-*
-*    <div class="sk-spinner sk-spinner-chasing-dots">
-*      <div class="sk-dot1"></div>
-*      <div class="sk-dot2"></div>
-*    </div>
-*
-*/
+ *  Usage:
+ *
+ *    <div class="sk-spinner sk-spinner-chasing-dots">
+ *      <div class="sk-dot1"></div>
+ *      <div class="sk-dot2"></div>
+ *    </div>
+ *
+ */
 
 .sk-spinner-chasing-dots.sk-spinner {
     margin: 0 auto;
@@ -6282,15 +6379,15 @@ del {
 
 
 /*
-*  Usage:
-*
-*    <div class="sk-spinner sk-spinner-three-bounce">
-*      <div class="sk-bounce1"></div>
-*      <div class="sk-bounce2"></div>
-*      <div class="sk-bounce3"></div>
-*    </div>
-*
-*/
+ *  Usage:
+ *
+ *    <div class="sk-spinner sk-spinner-three-bounce">
+ *      <div class="sk-bounce1"></div>
+ *      <div class="sk-bounce2"></div>
+ *      <div class="sk-bounce3"></div>
+ *    </div>
+ *
+ */
 
 .sk-spinner-three-bounce.sk-spinner {
     margin: 0 auto;
@@ -6349,24 +6446,24 @@ del {
 
 
 /*
-*  Usage:
-*
-*    <div class="sk-spinner sk-spinner-circle">
-*      <div class="sk-circle1 sk-circle"></div>
-*      <div class="sk-circle2 sk-circle"></div>
-*      <div class="sk-circle3 sk-circle"></div>
-*      <div class="sk-circle4 sk-circle"></div>
-*      <div class="sk-circle5 sk-circle"></div>
-*      <div class="sk-circle6 sk-circle"></div>
-*      <div class="sk-circle7 sk-circle"></div>
-*      <div class="sk-circle8 sk-circle"></div>
-*      <div class="sk-circle9 sk-circle"></div>
-*      <div class="sk-circle10 sk-circle"></div>
-*      <div class="sk-circle11 sk-circle"></div>
-*      <div class="sk-circle12 sk-circle"></div>
-*    </div>
-*
-*/
+ *  Usage:
+ *
+ *    <div class="sk-spinner sk-spinner-circle">
+ *      <div class="sk-circle1 sk-circle"></div>
+ *      <div class="sk-circle2 sk-circle"></div>
+ *      <div class="sk-circle3 sk-circle"></div>
+ *      <div class="sk-circle4 sk-circle"></div>
+ *      <div class="sk-circle5 sk-circle"></div>
+ *      <div class="sk-circle6 sk-circle"></div>
+ *      <div class="sk-circle7 sk-circle"></div>
+ *      <div class="sk-circle8 sk-circle"></div>
+ *      <div class="sk-circle9 sk-circle"></div>
+ *      <div class="sk-circle10 sk-circle"></div>
+ *      <div class="sk-circle11 sk-circle"></div>
+ *      <div class="sk-circle12 sk-circle"></div>
+ *    </div>
+ *
+ */
 
 .sk-spinner-circle.sk-spinner {
     margin: 0 auto;
@@ -6536,29 +6633,29 @@ del {
 
 
 /*
-*  Usage:
-*
-*    <div class="sk-spinner sk-spinner-cube-grid">
-*      <div class="sk-cube"></div>
-*      <div class="sk-cube"></div>
-*      <div class="sk-cube"></div>
-*      <div class="sk-cube"></div>
-*      <div class="sk-cube"></div>
-*      <div class="sk-cube"></div>
-*      <div class="sk-cube"></div>
-*      <div class="sk-cube"></div>
-*      <div class="sk-cube"></div>
-*    </div>
-*
-*/
+ *  Usage:
+ *
+ *    <div class="sk-spinner sk-spinner-cube-grid">
+ *      <div class="sk-cube"></div>
+ *      <div class="sk-cube"></div>
+ *      <div class="sk-cube"></div>
+ *      <div class="sk-cube"></div>
+ *      <div class="sk-cube"></div>
+ *      <div class="sk-cube"></div>
+ *      <div class="sk-cube"></div>
+ *      <div class="sk-cube"></div>
+ *      <div class="sk-cube"></div>
+ *    </div>
+ *
+ */
 
 .sk-spinner-cube-grid {
     /*
-    * Spinner positions
-    * 1 2 3
-    * 4 5 6
-    * 7 8 9
-    */
+   * Spinner positions
+   * 1 2 3
+   * 4 5 6
+   * 7 8 9
+   */
 }
 
 .sk-spinner-cube-grid.sk-spinner {
@@ -6649,13 +6746,13 @@ del {
 
 
 /*
-*  Usage:
-*
-*    <div class="sk-spinner sk-spinner-wordpress">
-*      <span class="sk-inner-circle"></span>
-*    </div>
-*
-*/
+ *  Usage:
+ *
+ *    <div class="sk-spinner sk-spinner-wordpress">
+ *      <span class="sk-inner-circle"></span>
+ *    </div>
+ *
+ */
 
 .sk-spinner-wordpress.sk-spinner {
     background-color: #1ab394;
@@ -6703,24 +6800,24 @@ del {
 
 
 /*
-*  Usage:
-*
-*    <div class="sk-spinner sk-spinner-fading-circle">
-*      <div class="sk-circle1 sk-circle"></div>
-*      <div class="sk-circle2 sk-circle"></div>
-*      <div class="sk-circle3 sk-circle"></div>
-*      <div class="sk-circle4 sk-circle"></div>
-*      <div class="sk-circle5 sk-circle"></div>
-*      <div class="sk-circle6 sk-circle"></div>
-*      <div class="sk-circle7 sk-circle"></div>
-*      <div class="sk-circle8 sk-circle"></div>
-*      <div class="sk-circle9 sk-circle"></div>
-*      <div class="sk-circle10 sk-circle"></div>
-*      <div class="sk-circle11 sk-circle"></div>
-*      <div class="sk-circle12 sk-circle"></div>
-*    </div>
-*
-*/
+ *  Usage:
+ *
+ *    <div class="sk-spinner sk-spinner-fading-circle">
+ *      <div class="sk-circle1 sk-circle"></div>
+ *      <div class="sk-circle2 sk-circle"></div>
+ *      <div class="sk-circle3 sk-circle"></div>
+ *      <div class="sk-circle4 sk-circle"></div>
+ *      <div class="sk-circle5 sk-circle"></div>
+ *      <div class="sk-circle6 sk-circle"></div>
+ *      <div class="sk-circle7 sk-circle"></div>
+ *      <div class="sk-circle8 sk-circle"></div>
+ *      <div class="sk-circle9 sk-circle"></div>
+ *      <div class="sk-circle10 sk-circle"></div>
+ *      <div class="sk-circle11 sk-circle"></div>
+ *      <div class="sk-circle12 sk-circle"></div>
+ *    </div>
+ *
+ */
 
 .sk-spinner-fading-circle.sk-spinner {
     margin: 0 auto;
@@ -7124,10 +7221,10 @@ body.rtls.top-navigation .footer.fixed {
 
 
 /*
-*
-*   This is style for skin config
-*   Use only in demo theme
-*
+ *
+ *   This is style for skin config
+ *   Use only in demo theme
+ *
 */
 
 .skin-setttings .title {
@@ -7223,10 +7320,10 @@ body.rtls.top-navigation .footer.fixed {
 
 
 /*
-*
-*   SKIN 1 - H+ - 后台主题UI框架
-*   NAME - Blue light
-*
+ *
+ *   SKIN 1 - H+ - 后台主题UI框架
+ *   NAME - Blue light
+ *
 */
 
 .skin-1 .minimalize-styl-2 {
@@ -7372,10 +7469,10 @@ body.skin-1 {
 
 
 /*
-*
-*   SKIN 3 - H+ - 后台主题UI框架
-*   NAME - Yellow/purple
-*
+ *
+ *   SKIN 3 - H+ - 后台主题UI框架
+ *   NAME - Yellow/purple
+ *
 */
 
 .skin-3 .minimalize-styl-2 {

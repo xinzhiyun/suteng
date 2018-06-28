@@ -124,75 +124,108 @@ class WechatController extends Controller
         $wxJSSDK = new \Org\Util\WeixinJssdk;
         // 调用获取公众号的全局唯一接口调用凭据
         $access_token = $wxJSSDK->getAccessToken();
-       
+
+        $menu =[
+            "button"=>[// 按钮数组
+                [
+                    "name"=>'自助服务',
+                    "sub_button"=>[
+                        ['type'=>"view",'name'=>"服务站管理",'url'=>"http://test.dianqiukj.com/index.php/Home/Service/index"],
+                        ['type'=>"view",'name'=>"安装人员登录",'url'=>"http://test.dianqiukj.com/index.php/Home/ServicePeople/index"],
+                        ['type'=>"view",'name'=>"经销商登录",'url'=>"http://test.dianqiukj.com/index.php/Home/Vendors/index"],
+                        ['type'=>"view",'name'=>"会员中心",'url'=>"http://test.dianqiukj.com/index.php/Home/VipCenter/index"],
+                        ['type'=>"view",'name'=>"我的水机",'url'=>"http://test.dianqiukj.com/index.php"],
+                    ]
+                ],
+                [
+                    "name"=> '商城',
+                    "type"=>"view",
+                    "url" => "http://test.dianqiukj.com/index.php/Home/Shop/index"
+                ],
+                [
+                    "name"=>'企惠壹号',
+                    "sub_button"=>[
+                        ['type'=>"view",'name'=>"企惠首页",'url'=>"http://test.dianqiukj.com/index.php/Home/Shop/index"],
+                        ['type'=>"view",'name'=>"关于我们",'url'=>"http://test.dianqiukj.com/index.php/Home/Shop/index"],
+                        ['type'=>"view",'name'=>"新闻中心",'url'=>"http://test.dianqiukj.com/index.php/Home/Shop/index"],
+                        ['type'=>"view",'name'=>"视频中心",'url'=>"http://test.dianqiukj.com/index.php/Home/Shop/index"],
+                        ['type'=>"view",'name'=>"APP下载", 'url'=>"http://test.dianqiukj.com/index.php/Home/Shop/index"],
+                    ]
+                ],
+            ],
+
+        ];
+        $jsonmenu = json_encode($menu,JSON_UNESCAPED_UNICODE);
 
 
-        $jsonmenu = '{
-            "button":[{
-               "name":"自助服务",
-                       "sub_button":[
-                        {
-                           "type":"view",
-                            "name":"服务站管理",
-                            "url":"http://test.dianqiukj.com/index.php/Home/Service/index"
-                        },
-                        {
-                           "type":"view",
-                            "name":"安装人员登录",
-                            "url":"http://test.dianqiukj.com/index.php/Home/ServicePeople/index"
-                        },
-                        {
-                           "type":"view",
-                            "name":"经销商登录",
-                            "url":"http://test.dianqiukj.com/index.php/Home/Vendors/index"
-                        },
-                        {
-                           "type":"view",
-                            "name":"会员中心",
-                            "url":"http://test.dianqiukj.com/index.php/Home/VipCenter/index"
-                        },
-                        {
-                           "type":"view",
-                            "name":"我的水机",
-                            "url":"http://test.dianqiukj.com/index.php"
-                        }]
-            },
-            {
-                "name":"商城",
-                "type":"view",
-                
-                "url":"http://test.dianqiukj.com/index.php/Home/Shop/index"
-            },
-            {
-               "name":"企惠壹号",
-                       "sub_button":[
-                        {
-                           "type":"view",
-                            "name":"企惠首页",
-                            "url":"#"
-                        },
-                        {
-                           "type":"view",
-                            "name":"关于我们",
-                            "url":"#"
-                        },
-                        {
-                           "type":"view",
-                            "name":"新闻中心",
-                            "url":"#"
-                        },
-                        {
-                           "type":"view",
-                            "name":"视频中心",
-                            "url":"#"
-                        },
-                        {
-                           "type":"view",
-                            "name":"APP下载",
-                            "url":"#"
-                        }]
-            }]
-        }';
+//
+//
+//        $jsonmenu = '{
+//            "button":[{
+//               "name":"自助服务",
+//                       "sub_button":[
+//                        {
+//                           "type":"view",
+//                            "name":"服务站管理",
+//                            "url":"http://test.dianqiukj.com/index.php/Home/Service/index"
+//                        },
+//                        {
+//                           "type":"view",
+//                            "name":"安装人员登录",
+//                            "url":"http://test.dianqiukj.com/index.php/Home/ServicePeople/index"
+//                        },
+//                        {
+//                           "type":"view",
+//                            "name":"经销商登录",
+//                            "url":"http://test.dianqiukj.com/index.php/Home/Vendors/index"
+//                        },
+//                        {
+//                           "type":"view",
+//                            "name":"会员中心",
+//                            "url":"http://test.dianqiukj.com/index.php/Home/VipCenter/index"
+//                        },
+//                        {
+//                           "type":"view",
+//                            "name":"我的水机",
+//                            "url":"http://test.dianqiukj.com/index.php"
+//                        }]
+//            },
+//            {
+//                "name":"商城",
+//                "type":"view",
+//
+//                "url":"http://test.dianqiukj.com/index.php/Home/Shop/index"
+//            },
+//            {
+//               "name":"企惠壹号",
+//                       "sub_button":[
+//                        {
+//                           "type":"view",
+//                            "name":"企惠首页",
+//                            "url":"#"
+//                        },
+//                        {
+//                           "type":"view",
+//                            "name":"关于我们",
+//                            "url":"#"
+//                        },
+//                        {
+//                           "type":"view",
+//                            "name":"新闻中心",
+//                            "url":"#"
+//                        },
+//                        {
+//                           "type":"view",
+//                            "name":"视频中心",
+//                            "url":"#"
+//                        },
+//                        {
+//                           "type":"view",
+//                            "name":"APP下载",
+//                            "url":"#"
+//                        }]
+//            }]
+//        }';
 
         // dump(json_decode($jsonmenu));die;
 
