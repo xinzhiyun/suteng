@@ -1,6 +1,6 @@
 //地图容器
 var chart = echarts.init(document.getElementById('allmap'));
-console.log(provinceDevice)
+// console.log(provinceDevice)
 //34个省、市、自治区的名字拼音映射数组
 var provinces = {
     //23个省
@@ -60,11 +60,10 @@ $.getJSON(chinajsonurl, function(data){
     //绘制地图
     renderMap('china',d);
 });
-console.log(123)
 //地图点击事件
 chart.on('click', function (params) {
     console.log( params );
-    if( params.name in provinces ){
+    if( parasms.name in provinces ){
         //如果点击的是34个省、市、自治区，绘制选中地区的二级地图
         $.getJSON('static/map/province/'+ provinces[params.name] +'.json', function(data){
             echarts.registerMap( params.name, data);
