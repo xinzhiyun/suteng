@@ -4,18 +4,44 @@ var shopindex = new Vue({
 		return {
 			menuList: [],	// 分类按钮
 			blockList: [],	// 商品块集合
+			classifyList: [],	// 分类类目
+			cateSelect: '',
 			tabclk: 1, 		// 底部按钮
+			tabText: 'home',
 			tabsrc: [],
 			srcArr: [
 				public + '/Home/images/shop/home',
 				public + '/Home/images/shop/classify',
 				public + '/Home/images/shop/addcart',
 				public + '/Home/images/shop/mine'
-			]
+			],
 		}
 	},
 	created() {
 		var vm = this;
+		var href = location.href;
+		// 刷新保持状态
+		// 首页_home, 分类classify, 购物车cart, 我的mine
+		for(var i=0; i<vm.srcArr.length; i++){
+			vm.tabsrc.push(vm.srcArr[i])
+		}
+
+		if(href.indexOf('_home') > 0){
+			vm.tabClick(1, '_home');
+
+		}else if(href.indexOf('classify') > 0){
+			vm.tabClick(2, 'classify');
+
+		}else if(href.indexOf('cart') > 0){
+			vm.tabClick(3, 'cart');
+
+		}else if(href.indexOf('mine') > 0){
+			vm.tabClick(4, 'mine');
+
+		}else{
+			// 首页
+			vm.tabsrc[0] = vm.tabsrc[0] + '_light';
+		}
 		// 分类按钮
 		vm.menuList = [
 			{src: public+'/Home/images/shop/waterpurifier.png',name: '净水器',type: '1'},
@@ -54,25 +80,51 @@ var shopindex = new Vue({
 				]
 			}
 		];
-		for(var i=0; i<vm.srcArr.length; i++){
-			vm.tabsrc.push(vm.srcArr[i])
-		}
-		// 首页
-		vm.tabsrc[0] = vm.tabsrc[0] + '_light';
-		
+
+		vm.classifyList = [
+			{name: '热水器', cid: '12'},
+			{name: '净水器', cid: '13'},
+			{name: '瓦胆系列', cid: '142'},
+			{name: '空气净化', cid: '14'},
+			{name: '生活用品', cid: '112'},
+			{name: '数码家电', cid: '242'}
+		]
 	},
 	methods: {
 		// 点击商品图片
 		todetail(gid) {
 			console.log('gid: ', gid);
 		},
-		tabClick(tabclk){
+		// 点击底部导航按钮
+		tabClick(tabclk, text){
 			// tabclk: 1首页，2分类，3购物车，4我的
 			this.tabclk = tabclk;
 			console.log('tabclk: ',tabclk);
 			// 切换图标
 			this.tabsrc = [].concat(this.srcArr);
 			this.tabsrc[tabclk-1] = this.srcArr[tabclk-1] + '_light';
+			location.href = shopurl + '#' + text;
+			this.tabText = text;
+		},
+		// 点击分类类目
+		getCate(cate, cid) {
+			// 点击同一个分类类目
+			if(window.clickCid == cid) return;
+			window.clickCid = cid;
+			this.cateSelect = cate;
+			console.log('cid: ',cid);
+			// 获取对应类目下的商品详细分类
+			$.ajax({
+				url: '',
+				type: 'get',
+				data: {cid: cid},
+				success: function(res){
+					console.log('res: ',res);
+				},
+				error: function(err){
+					console.log('err: ',err);
+				}
+			})
 		}
 	}
 })

@@ -13,11 +13,12 @@
 	<title>商城首页</title>
 	<script>
 		var public = '__PUBLIC__';
+		var shopurl = '{{:U("Home/Shop/index")}}';
 	</script>
 </head>
 <body>
 	<div class='shopindex'>
-		<header id="header">
+		<header id="header" :class='{chghide: tabclk == 3 || tabclk == 4}'>
 			<div class='search'>
 				<img src="__PUBLIC__/Home/images/shop/search.png" alt="">
 				<input type="text" placeholder="请输入商品名称或者关键字">
@@ -54,25 +55,33 @@
 			</ul>
 		</main>
 		<!-- 分类内容 -->
-		<div class='classify' :style='{display: tabclk == 2 ? "block" : "none"}'></div>
+		<ul class='classify cfix' :style='{display: tabclk == 2 ? "block" : "none"}'>
+			<li class='cleft fl'>
+				<p v-for='cate in classifyList' 
+				v-text='cate.name' 
+				@click='getCate(cate, cate.cid)'
+				:class='{cateSelect: cateSelect == cate}'></p>
+			</li>
+			<li class='cright fr'></li>
+		</ul>
 		<!-- 购物车内容 -->
 		<div class='cart' :style='{display: tabclk == 3 ? "block" : "none"}'></div>
 		<footer id='footer'>
-			<div @click='tabClick(1)'>
+			<div @click='tabClick(1, "_home")'>
 				<img :src="tabsrc[0]+'.png'" alt="">
-				<p>首页</p>
+				<p :style='{color: tabclk == 1 ? "#4D70FF" : "#333"}'>首页</p>
 			</div>
-			<div @click='tabClick(2)'>
+			<div @click='tabClick(2, "classify")'>
 				<img :src="tabsrc[1]+'.png'" alt="">
-				<p>分类</p>
+				<p :style='{color: tabclk == 2 ? "#4D70FF" : "#333"}'>分类</p>
 			</div>
-			<div @click='tabClick(3)'>
+			<div @click='tabClick(3, "cart")'>
 				<img :src="tabsrc[2]+'.png'" alt="">
-				<p>购物车</p>
+				<p :style='{color: tabclk == 3 ? "#4D70FF" : "#333"}'>购物车</p>
 			</div>
-			<div @click='tabClick(4)'>
+			<div @click='tabClick(4, "mine")'>
 				<img :src="tabsrc[3]+'.png'" alt="">
-				<p>我的</p>
+				<p :style='{color: tabclk == 4 ? "#4D70FF" : "#333"}'>我的</p>
 			</div>
 		</footer>
 	</div>
