@@ -124,14 +124,38 @@ class WechatController extends Controller
         $wxJSSDK = new \Org\Util\WeixinJssdk;
         // 调用获取公众号的全局唯一接口调用凭据
         $access_token = $wxJSSDK->getAccessToken();
-    
+       
+
 
         $jsonmenu = '{
             "button":[{
-                "name":"我的水机",
-                "type":"view",
-                
-                "url":"http://test.dianqiukj.com/index.php"
+               "name":"自助服务",
+                       "sub_button":[
+                        {
+                           "type":"view",
+                            "name":"服务站管理",
+                            "url":"http://test.dianqiukj.com/index.php/Home/Service/index"
+                        },
+                        {
+                           "type":"view",
+                            "name":"安装人员登录",
+                            "url":"http://test.dianqiukj.com/index.php/Home/ServicePeople/index"
+                        },
+                        {
+                           "type":"view",
+                            "name":"经销商登录",
+                            "url":"http://test.dianqiukj.com/index.php/Home/Vendors/index"
+                        },
+                        {
+                           "type":"view",
+                            "name":"会员中心",
+                            "url":"http://test.dianqiukj.com/index.php/Home/VipCenter/index"
+                        },
+                        {
+                           "type":"view",
+                            "name":"我的水机",
+                            "url":"http://test.dianqiukj.com/index.php"
+                        }]
             },
             {
                 "name":"商城",
@@ -140,35 +164,37 @@ class WechatController extends Controller
                 "url":"http://test.dianqiukj.com/index.php/Home/Shop/index"
             },
             {
-			   "name":"用户入口",
-			           "sub_button":[
-			            {
-			                "type":"view",
-			                "name":"新用户报装",
-			                "url":"http://test.dianqiukj.com/index.php/Home/Repair/install"
-			            },
-			            {
-			               "type":"view",
-			                "name":"服务站",
-			                "url":"http://test.dianqiukj.com/index.php/Home/Service/index"
-			            },
-			            {
-			               "type":"view",
-			                "name":"服务人员",
-			                "url":"http://test.dianqiukj.com/index.php/Home/ServicePeople/index"
-			            },
-			            {
-			               "type":"view",
-			                "name":"分销中心",
-			                "url":"http://test.dianqiukj.com/index.php/Home/Vendors/index"
-			            },
-			            {
-			               "type":"view",
-			                "name":"会员中心",
-			                "url":"http://test.dianqiukj.com/index.php/Home/VipCenter/index"
-			    		}]
+               "name":"企惠壹号",
+                       "sub_button":[
+                        {
+                           "type":"view",
+                            "name":"企惠首页",
+                            "url":"#"
+                        },
+                        {
+                           "type":"view",
+                            "name":"关于我们",
+                            "url":"#"
+                        },
+                        {
+                           "type":"view",
+                            "name":"新闻中心",
+                            "url":"#"
+                        },
+                        {
+                           "type":"view",
+                            "name":"视频中心",
+                            "url":"#"
+                        },
+                        {
+                           "type":"view",
+                            "name":"APP下载",
+                            "url":"#"
+                        }]
             }]
         }';
+
+        // dump(json_decode($jsonmenu));die;
 
         $url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
         $result = $this->https_request($url, $jsonmenu);
