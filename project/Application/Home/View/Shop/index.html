@@ -62,7 +62,17 @@
 				@click='getCate(cate, cate.cid)'
 				:class='{cateSelect: cateSelect == cate}'></p>
 			</li>
-			<li class='cright fr'></li>
+			<li class='cright fr'>
+				<div class='subBlock' v-for='c in classifyContentList'>
+					<p v-text='c.title'></p>
+					<ul>
+						<li class='subtype' v-for='sub in c.subType' @click='subClick(sub.scid)'>
+							<img :src="sub.src" alt="加载中">
+							<p v-text='sub.name'></p>
+						</li>
+					</ul>
+				</div>
+			</li>
 		</ul>
 		<!-- 购物车内容 -->
 		<div class='cart' :style='{display: tabclk == 3 ? "block" : "none"}'></div>

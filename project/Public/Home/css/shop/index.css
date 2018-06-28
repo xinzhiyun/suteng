@@ -71,7 +71,7 @@ body {
 	background-color: #fff;
 }
 .menuBtn img {
-	height: 50%;
+	height: 60%;
 	width: auto;
 }
 .menuBtn>a {
@@ -101,7 +101,8 @@ body {
 	flex-wrap: wrap;
 	justify-content: space-between;
 }
-.goods {
+.goods,
+.subtype {
 	width: 30%;
 	flex: 0 0 30%;
 	display: inline-flex;
@@ -119,6 +120,23 @@ body {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+}
+.subBlock:not(:last-child) {
+	border-bottom: 6px solid #f1f1f1;
+}
+.subBlock>p {
+	padding: 10px 6px;
+}
+.subtype {
+	width: 33%;
+}
+.subtype>img {
+	width: 16vw;
+	height: 16vw;
+	background: #f1f1f1;
+}
+.subtype>p {
+	font-size: .5rem;
 }
 .price {
 	color: #AF0815;

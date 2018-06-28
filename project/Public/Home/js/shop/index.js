@@ -2,11 +2,12 @@ var shopindex = new Vue({
 	el: '.shopindex',
 	data() {
 		return {
-			menuList: [],	// 分类按钮
-			blockList: [],	// 商品块集合
-			classifyList: [],	// 分类类目
+			menuList: [],				// 分类按钮
+			blockList: [],				// 商品块集合
+			classifyList: [],			// 分类类目
+			classifyContentList: [],	// 分类
 			cateSelect: '',
-			tabclk: 1, 		// 底部按钮
+			tabclk: 1, 					// 底部按钮
 			tabText: 'home',
 			tabsrc: [],
 			srcArr: [
@@ -15,6 +16,7 @@ var shopindex = new Vue({
 				public + '/Home/images/shop/addcart',
 				public + '/Home/images/shop/mine'
 			],
+			titleList: ['商城首页','分类','购物车','我的'],
 		}
 	},
 	created() {
@@ -42,6 +44,9 @@ var shopindex = new Vue({
 			// 首页
 			vm.tabsrc[0] = vm.tabsrc[0] + '_light';
 		}
+		/**
+		 * 一下是模拟数据
+		 */
 		// 分类按钮
 		vm.menuList = [
 			{src: public+'/Home/images/shop/waterpurifier.png',name: '净水器',type: '1'},
@@ -100,6 +105,8 @@ var shopindex = new Vue({
 			// tabclk: 1首页，2分类，3购物车，4我的
 			this.tabclk = tabclk;
 			console.log('tabclk: ',tabclk);
+			// 切换title
+			document.title = this.titleList[+tabclk-1];
 			// 切换图标
 			this.tabsrc = [].concat(this.srcArr);
 			this.tabsrc[tabclk-1] = this.srcArr[tabclk-1] + '_light';
@@ -114,17 +121,34 @@ var shopindex = new Vue({
 			this.cateSelect = cate;
 			console.log('cid: ',cid);
 			// 获取对应类目下的商品详细分类
-			$.ajax({
-				url: '',
-				type: 'get',
-				data: {cid: cid},
-				success: function(res){
-					console.log('res: ',res);
-				},
-				error: function(err){
-					console.log('err: ',err);
+			// $.ajax({
+			// 	url: '',
+			// 	type: 'get',
+			// 	data: {cid: cid},
+			// 	success: function(res){
+			// 		console.log('res: ',res);
+			// 	},
+			// 	error: function(err){
+			// 		console.log('err: ',err);
+			// 	}
+			// })
+
+			this.classifyContentList = [
+				{
+					title: '净水器',
+					subType: [
+						{src: '',name:'lopo玩具',scid: '12'},
+						{src: '',name:'毛衣刷',scid: '13'},
+						{src: '',name:'宝宝杯',scid: '14'},
+						{src: '',name:'小小苏',scid: '15'},
+						{src: '',name:'规划局规划国际化',scid: '25'},
+					]
 				}
-			})
+			];
+		},
+		// 点击大分类下的小分类商品图片
+		subClick(scid) {
+			console.log('scid: ',scid);
 		}
 	}
 })
