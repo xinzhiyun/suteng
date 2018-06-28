@@ -123,7 +123,7 @@ body{
 	line-height: 10vw;
 	font-size: 7vw;
 }
-.xuanhuan {
+.statusList>div:not(:first-child) {
 	color: #44406F;
 	position: relative;
 	width: 52vw;
@@ -131,7 +131,7 @@ body{
 	margin: 0 auto;
 	overflow: hidden;
 }
-.xuanhuan>div {
+.statusList>div>div {
 	width: 51vw;
     height: 51vw;
 	position: absolute;
@@ -398,9 +398,6 @@ body{
     width: 52vw;
     height: 52vw;
     margin: 0 auto;
-    border: 1px solid #e6e6e6;
-    border-bottom: 1px solid transparent;
-    border-radius: 50%;
     color: #44406F;
 }
 /*修检*/
@@ -409,9 +406,6 @@ body{
     width: 52vw;
     height: 52vw;
     margin: 0 auto;
-    border: 1px solid #e6e6e6;
-    border-bottom: 1px solid transparent;
-    border-radius: 50%;
     color: #44406F;
         /*-webkit-animation:aImg5 4s linear  infinite;
         animation:aImg5 4s linear  infinite;*/
@@ -446,9 +440,6 @@ body{
 		width: 52vw;
 		height: 52vw;
 		margin: 0 auto;
-		border: 1px solid #e6e6e6;
-		border-bottom: 1px solid transparent;
-		border-radius: 50%;
 		color: #44406F;
 		z-index: 0;
 		display: none;
@@ -488,9 +479,6 @@ body{
 		width: 52vw;
 		height: 52vw;
 		margin: 0 auto;
-		border: 1px solid #e6e6e6;
-		border-bottom: 1px solid transparent;
-		border-radius: 50%;
 		color: #44406F;
 	}
 

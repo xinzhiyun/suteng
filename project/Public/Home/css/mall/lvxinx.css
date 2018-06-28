@@ -75,7 +75,7 @@ body {
     display: block;
     color: #79A4FF;
     background: #79A4FF;
-    transition: .3s ease;
+    transition: 1s ease;
 }
 .PPmain > .process > span:nth-child(3) {
     color: #547AAF;
