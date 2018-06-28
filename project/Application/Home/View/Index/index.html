@@ -159,7 +159,7 @@
             //ctx.moveTo(cx + r, cy);
             ctx.lineWidth = lineWidth;
             ctx.strokeStyle = '#CBDCFD';
-            ctx.arc(cx, cy, r, Math.PI*7/9, Math.PI*1/4);
+            ctx.arc(cx, cy, r, Math.PI*7/8, Math.PI*.9/7);
             ctx.stroke();
         }
 
@@ -184,8 +184,8 @@
             // 圆弧
             ctx.arc(
                 cx, cy, r,
-                (Math.PI*7/9),
-                (Math.PI*7.2/9) + endAngle/100 * (Math.PI*7/5),
+                (Math.PI*7/8),
+                (Math.PI*7.6/8) + endAngle/100 * (Math.PI*6/5.12),
                 false
             );
             ctx.stroke();
@@ -232,7 +232,7 @@
     }
     $(function(){
       var canvas = document.querySelector('#canvas');
-      toCanvas(canvas, 98);
+      toCanvas(canvas, 100);
     })
   </script>
 </body>
