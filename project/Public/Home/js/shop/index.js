@@ -4,6 +4,7 @@ var shopindex = new Vue({
 		return {
 			menuList: [],	// 分类按钮
 			blockList: [],	// 商品块集合
+			tabclk: 1, 		// 底部按钮
 		}
 	},
 	created() {
@@ -52,5 +53,10 @@ var shopindex = new Vue({
 		todetail(gid) {
 			console.log('gid: ', gid);
 		},
+		tabClick(tabclk){
+			// tabclk: 1首页，2分类，3购物车，4我的
+			this.tabclk = tabclk;
+			console.log('tabclk: ',tabclk);
+		}
 	}
 })

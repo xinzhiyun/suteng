@@ -23,7 +23,8 @@
 				<input type="text" placeholder="请输入商品名称或者关键字">
 			</div>
 		</header>
-		<main id="container">
+		<!-- 首页内容 -->
+		<main id="container" :style='{display: tabclk == 1 ? "block" : "none"}'>
 			<!-- 轮播图 -->
 			<div class="swiper-container">
 				<div class="swiper-wrapper">
@@ -52,7 +53,28 @@
 				</div>
 			</ul>
 		</main>
-		<footer></footer>
+		<!-- 分类内容 -->
+		<div class='classify' :style='{display: tabclk == 2 ? "block" : "none"}'></div>
+		<!-- 购物车内容 -->
+		<div class='cart' :style='{display: tabclk == 3 ? "block" : "none"}'></div>
+		<footer id='footer'>
+			<div @click='tabClick(1)'>
+				<img src="__PUBLIC__/Home/images/shop/home_light.png" alt="">
+				<p>首页</p>
+			</div>
+			<div @click='tabClick(2)'>
+				<img src="__PUBLIC__/Home/images/shop/classify.png" alt="">
+				<p>分类</p>
+			</div>
+			<div @click='tabClick(3)'>
+				<img src="__PUBLIC__/Home/images/shop/addcart.png" alt="">
+				<p>购物车</p>
+			</div>
+			<div @click='tabClick(4)'>
+				<img src="__PUBLIC__/Home/images/shop/mine.png" alt="">
+				<p>我的</p>
+			</div>
+		</footer>
 	</div>
 	<script type="text/javascript" src="__PUBLIC__/Home/js/swiper-3.4.2.min.js"></script>
 	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
