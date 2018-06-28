@@ -5,6 +5,13 @@ var shopindex = new Vue({
 			menuList: [],	// 分类按钮
 			blockList: [],	// 商品块集合
 			tabclk: 1, 		// 底部按钮
+			tabsrc: [],
+			srcArr: [
+				public + '/Home/images/shop/home',
+				public + '/Home/images/shop/classify',
+				public + '/Home/images/shop/addcart',
+				public + '/Home/images/shop/mine'
+			]
 		}
 	},
 	created() {
@@ -47,6 +54,12 @@ var shopindex = new Vue({
 				]
 			}
 		];
+		for(var i=0; i<vm.srcArr.length; i++){
+			vm.tabsrc.push(vm.srcArr[i])
+		}
+		// 首页
+		vm.tabsrc[0] = vm.tabsrc[0] + '_light';
+		
 	},
 	methods: {
 		// 点击商品图片
@@ -57,6 +70,9 @@ var shopindex = new Vue({
 			// tabclk: 1首页，2分类，3购物车，4我的
 			this.tabclk = tabclk;
 			console.log('tabclk: ',tabclk);
+			// 切换图标
+			this.tabsrc = [].concat(this.srcArr);
+			this.tabsrc[tabclk-1] = this.srcArr[tabclk-1] + '_light';
 		}
 	}
 })

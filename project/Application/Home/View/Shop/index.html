@@ -59,19 +59,19 @@
 		<div class='cart' :style='{display: tabclk == 3 ? "block" : "none"}'></div>
 		<footer id='footer'>
 			<div @click='tabClick(1)'>
-				<img src="__PUBLIC__/Home/images/shop/home_light.png" alt="">
+				<img :src="tabsrc[0]+'.png'" alt="">
 				<p>首页</p>
 			</div>
 			<div @click='tabClick(2)'>
-				<img src="__PUBLIC__/Home/images/shop/classify.png" alt="">
+				<img :src="tabsrc[1]+'.png'" alt="">
 				<p>分类</p>
 			</div>
 			<div @click='tabClick(3)'>
-				<img src="__PUBLIC__/Home/images/shop/addcart.png" alt="">
+				<img :src="tabsrc[2]+'.png'" alt="">
 				<p>购物车</p>
 			</div>
 			<div @click='tabClick(4)'>
-				<img src="__PUBLIC__/Home/images/shop/mine.png" alt="">
+				<img :src="tabsrc[3]+'.png'" alt="">
 				<p>我的</p>
 			</div>
 		</footer>
