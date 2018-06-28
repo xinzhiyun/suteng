@@ -31,6 +31,7 @@ var filter = new Vue({
         reset(index, filterName, e) {   // 复位
             var vm = this;
             console.log('index: ',index);
+            console.log('vm.restoreData: ',vm.restoreData);
             console.log('vm.restoreData[index]: ',vm.restoreData[index]);
             var ajson;//数据对象
             var tipsText = "确定要复位<a>滤芯" + filterName +"</a>吗";

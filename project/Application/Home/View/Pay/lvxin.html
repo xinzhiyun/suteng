@@ -104,6 +104,7 @@
     for(var i=0; i<filterInfo.length; i++){
         filterData.sumflow = filterData.sumflow ? filterData.sumflow : 1;
         filterData.sumday = filterData.sumday ? filterData.sumday : 1;
+        filterData["redayfilter"+(i+1)] = filterData["redayfilter"+(i+1)] ? filterData["redayfilter"+(i+1)] : 0;
         filterData["reflowfilter"+(i+1)] = filterData["reflowfilter"+(i+1)] ? filterData["reflowfilter"+(i+1)] : 0;
         // 复位用的数据
         filter.restoreData.push({
