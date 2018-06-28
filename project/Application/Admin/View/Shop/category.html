@@ -40,6 +40,9 @@
                                     分类级别
                                 </th>
                                 <th>
+                                    展示图片
+                                </th>
+                                <th>
                                     操作
                                 </th>
                             </tr>
@@ -61,6 +64,9 @@
                                         </td>
                                         <td>
                                             {{$v['leavel']}}
+                                        </td>
+                                        <td>
+                                            <?php if(!empty($v['pic']))echo '<img src="'.$v['pic'].'" width="40px" height="40px">'; ?>
                                         </td>
                                         <td>
                                             <div class="btn-group">
@@ -193,6 +199,16 @@
                             </td>
                         </tr>
                         <tr>
+                            <th width=15%>
+                                分类图片
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <input class="input-medium form-control" id="child_pic" type="file" name="pic">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
                             <th>
                             </th>
                             <td>
@@ -227,11 +243,21 @@
             $('#st-add-child').modal('hide');
             var pid = $("input[name='pid']").val();
             var name = $("#child_name").val();
+
+            var file_obj = document.getElementById('child_pic').files[0];
+
+            var fd = new FormData();
+            fd.append('pid', pid);
+            fd.append('catename', name);
+            fd.append('pic', file_obj);
+
             $.ajax({
                 url:"appendChildCategory",
-                data:{"pid":pid,"catename":name},
+                data:fd,
                 dataType:"json",
                 type: 'post',
+                processData:false,
+                contentType: false,
                 success:function(res){
                     if(res.code == 200){
                         location.reload();
