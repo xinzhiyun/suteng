@@ -14,9 +14,10 @@
 	<script>
 		var public = '__PUBLIC__';
 		var shopurl = '{{:U("Home/Shop/index")}}';
+		var category = '{{$category|json_encode}}';
 	</script>
 </head>
-<body>
+<body ontouchstart='console.log()'>
 	<div class='shopindex'>
 		<header id="header" :style='{display: tabclk == 3 || tabclk == 4 ? "none" : "flex"}'>
 			<div class='search'>
@@ -55,29 +56,33 @@
 			</ul>
 		</main>
 		<!-- 分类内容 -->
-		<ul class='classify cfix' :style='{display: tabclk == 2 ? "block" : "none"}'>
+		<ul class='category cfix' :style='{display: tabclk == 2 ? "block" : "none"}'>
 			<li class='cleft fl'>
-				<p v-for='cate in classifyList' 
+				<p v-for='cate in categoryList' 
 				v-text='cate.name' 
-				@click='getCate(cate, cate.cid)'
+				@click='getCate(cate, cate.id)'
 				:class='{cateSelect: cateSelect == cate}'></p>
 			</li>
 			<li class='cright fr'>
-				<div class='subBlock' v-for='c in classifyContentList'>
-					<p v-text='c.title'></p>
+				<div class='subBlock'>
+					<p v-text='categoryTitle'></p>
 					<ul>
-						<li class='subtype' v-for='sub in c.subType' @click='subClick(sub.scid)'>
-							<img :src="sub.src" alt="加载中">
-							<p v-text='sub.name'></p>
+						<li class='subtype' v-for='category in categoryContentList' @click='subClick(category.id)'>
+							<img :src="category.pic" alt="加载中">
+							<p v-text='category.name'></p>
 						</li>
 					</ul>
 				</div>
+				<div class='noCateContent' :style='{display: noCateContent ? "block" : "none"}'>此分类下暂无数据</div>
 			</li>
 		</ul>
 		<!-- 购物车内容 -->
 		<div class='cart' :style='{display: tabclk == 3 ? "block" : "none"}'>
-			<ul class='cBlock cfix' v-for='(cart, index) in cartList'>
-				<li class='fl'>
+			<ul class='cBlock cfix' v-for='(cart, index) in cartList' 
+			@touchmove='slideDelete($event, cart.gid)'
+			@touchend='slideEnd()'
+			:gid='cart.gid'>
+				<li class='fl' @click='cartSelect(cart.gid, cart.price, index, $event)'>
 					<img src="__PUBLIC__/Home/images/shop/cart_none.png" alt="">
 				</li>
 				<li class='fr'>
@@ -91,10 +96,11 @@
 					</div>
 					<p class='numbtn cfix'>
 						<span class='fl'>-</span>
-						<input class='fl' type="text" :value='cart.num'>
+						<input class='fl' type="text" :value='cart.num' v-model='cartList[index].num'>
 						<span class='fl'>+</span>
 					</p>
 				</li>
+				<div class='deleteCart' @touchend='deleteCart(cart.gid)'><span>删除</span></div>
 			</ul>
 		</div>
 		<footer id='footer'>
@@ -102,7 +108,7 @@
 				<img :src="tabsrc[0]+'.png'" alt="">
 				<p :style='{color: tabclk == 1 ? "#4D70FF" : "#333"}'>首页</p>
 			</div>
-			<div @click='tabClick(2, "classify")'>
+			<div @click='tabClick(2, "category")'>
 				<img :src="tabsrc[1]+'.png'" alt="">
 				<p :style='{color: tabclk == 2 ? "#4D70FF" : "#333"}'>分类</p>
 			</div>
