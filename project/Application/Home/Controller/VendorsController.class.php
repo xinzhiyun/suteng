@@ -1053,18 +1053,25 @@ class VendorsController extends Controller
         }
 
         // 昨日订单时间区间
-        $showYesterdayUserOrder['o.addtime'] = $time;
-        $showYesterdayUserOrder['u.'.$vendor] = $code;
+//        $showYesterdayUserOrder['o.addtime'] = $time;
+//        $showYesterdayUserOrder['u.'.$vendor] = $code;
 
         // 昨日会员订单
-        $YesterdayUserOrderData = M('shop_order')
-            ->alias('o')
-            ->where($showYesterdayUserOrder)
-            ->join('__USERS__ u ON o.uid = u.id','LEFT')
-            ->field('o.id,o.g_price')
-            ->select();
+//        $YesterdayUserOrderData = M('shop_order')
+//            ->alias('o')
+//            ->where($showYesterdayUserOrder)
+//            ->join('__USERS__ u ON o.uid = u.id','LEFT')
+//            ->field('o.id,o.g_price')
+//            ->select();
+        // 改版
+        $year  = date('Y',time());
+        $month = date('m',time());
+        $showYesterdayUserOrder[] = "Year(create_time) = ".$year." and Month(create_time) = ".$month;
 
         // 2.昨日会员订单数量
+        $YesterdayUserOrderData = M('earnings')->where($showYesterdayUserOrder)->select();
+
+
         $YesterdayUserOrderNum = 0;
 
         // 3.昨日会员订单总金额
