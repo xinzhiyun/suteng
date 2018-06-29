@@ -426,42 +426,29 @@
 					//新增设备 折线图显示
 					newMoreDevice.setOption(getOption('设备数量',legend_data[1],yAxis_data[1],series_data[1], _subtext[1]));
 				}
-				// console.log("series_data", series_data[2])
+				// console.log("series_data", series_data[2]);
+				var dataArr = [];
+				var datas = [];
+				for(var i = 0; i < res.flowUsers.length; i++) {
+					// var flowData = {};
+					// datas.push(res.flowUsers[i].list[k]);
+					flowData = {
+						name: res.flowUsers[i].name,
+						stack: "数量",
+						type:'line',
+						data: [],
+					}
+					for(var k in res.flowUsers[i].list) {
+						flowData.data.push(res.flowUsers[i].list[k]);
+					}
+					dataArr.push(flowData);
+				}
+				console.log(dataArr)
 				// 会员套餐
-				if(series_data[2].length){
+				if(res.flowUsers.length){
 					// y轴数据
 					var cc = ["08:00-12:00", "12:00-16:00", "16:00-20:00","20:00-24:00"];
-					series_datas = [
-					{
-						name: "A套餐",
-						stack: "数量",
-						type:'line',
-						data: [150, 232, 201, 154],
-						// 线状颜色
-						itemStyle: {
-							normal: {
-								color: "#FFCC00",
-								lineStyle: {
-									color: "#FFCC00"
-								}
-							}
-						}
-					},
-					{
-						name: "B套餐",
-						stack: "数量",
-						type:'line',
-						data: [820, 932, 901, 934],
-						itemStyle: {
-							normal: {
-								color: "#66FFCC",
-								lineStyle: {
-									color: "#66FFCC"
-								}
-							}
-						}
-					}
-					]
+					series_datas = dataArr;
 					//收入 折线图显示
 					recharge.setOption(getOption('用户数(单位:个)',legend_data[2],yAxis_data[2],series_datas, _subtext[2], "时段", cc));
 					
