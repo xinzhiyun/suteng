@@ -8039,8 +8039,8 @@ body.skin-3 {
 /* 顶部导航 */
 .topcontent {
     /* height: 100px; */
-    background:#ccc;
-    padding:0 20px;
+    background:#ECF0F5;
+    padding:0 20px; 
 }
 
 .topcontent  > div:nth-child(1) {
