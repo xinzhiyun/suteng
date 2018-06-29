@@ -65,8 +65,8 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label _attr">商品属性：</label>
-                            <div class="col-sm-10">
-                                <div class="checkbox i-checks goodsattr">
+                            <div class="col-sm-10 goodsattr">
+                                <div class="checkbox i-checks">
                                     <volist name="attrInfo" id="vo">
                                         <label class="attr">
                                             <input type="checkbox"  data-name={{$vo.attr}} data-id="{{$vo.id}}"> <i></i> {{$vo.attr}}
@@ -79,7 +79,30 @@
                                         <button type="button" class="btn btn-outline btn-primary" onclick="del()">删除属性</button>
                                     </label>
                                 </div>
+                                <!-- <div class="checkbox i-checks">
+                                    <p>标题</p>
+                                    <label class="attr">
+                                        <input type="checkbox"  data-name={{$vo.attr}} data-id="{{$vo.id}}"> <i></i> {{$vo.attr}}
+                                    </label>
+                                </div> -->
                             </div>
+                        </div>
+                        <div class="form-group allAttr table-responsive" style='display:none;'>
+                            <label class="col-sm-2 control-label">已选规格：</label>
+                            <table class='table table-bordered' style='width: 80%;'>
+                                <thead>
+                                    <tr>
+                                        <th>颜色</th>
+                                        <th>尺寸</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>红色</td>
+                                        <td>蓝色</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">属性值：</label>
@@ -353,78 +376,118 @@
             }
         })
         var attrArr = [
-            {attr: 'aa', id: '11'},
-            {attr: 'bb', id: '22'}
+            {
+                attr: '颜色分类', id: '00',
+                data: [
+                    {id: '001', val: '军绿色'},
+                    {id: '002', val: '红色'},
+                    {id: '003', val: '灰色'},
+                ]
+            },
+            {
+                attr: '尺寸', id: '11', 
+                data: [
+                    {id: '110', val: '41'},
+                    {id: '111', val: '42'},
+                    {id: '112', val: '43'},
+                ]
+            },
         ];
-        // 属性选中
-        $('.goodsattr').on('click', '.attr', function(){
-            $(this).addClass('hover');
-            var className = $(this).children('div').attr('class');
-            console.log('className: ',className);
-            if(className.indexOf('checked') < 0){
-                $(this).children('div').addClass('checked');
-            }else{
-                $(this).children('div').removeClass('checked');
-            }
-        })
         // 二级分类
         $("select[name='seccate']").change(function(){
             var seccateId = $(this).children('option:selected').val();
             var html = "";
             $("select[name='thirdcate']").html('<option value="--">--请选择--</option>');
             $("select[name='thirdcate']").parent().css('display','none');
-            if(/^[0-9]*$/.test(seccateId)){
-                $.ajax({
-                    url:'getAttr',
-                    data:{'pid':seccateId},
-                    type:'post',
-                    dataType:'json',
-                    success:function(res){
-                        console.log('res: ',res);
-                        var html = '';
-                        if(res.length){
-                            for(var i=0; i<res; i++){
-                                html += '<label class="attr">'+
-                                    '<div class="icheckbox_square-green" style="position: relative;">'+
-                                       '<input type="checkbox" data-name="'+ res[i].attr +'" data-id="'+ res[i].id +'" style="position: absolute; opacity: 0;">'+
-                                        '<ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>'+
-                                        '</div>'+
-                                        '<i></i>'+ res[i].attr +
-                                    '</label>';
-                            }
-                            html += '<label class="attrList">'+
-                                        '<button type="button" class="btn btn-outline btn-primary" onclick="add()">添加属性</button>'+
-                                    '</label>'+
-                                    '<label class="attrDel">'+
-                                        '<button type="button" class="btn btn-outline btn-primary" onclick="del()">删除属性</button>'+
-                                    '</label>';
-                            $('.goodsattr').html(html);
-                        }
-                    },
-                    error: function(err){
-                        console.log('err: ',err);
-                    }
-                })
-            }
+            // if(/^[0-9]*$/.test(seccateId)){
+            //     $.ajax({
+            //         url:'getAttr',
+            //         data:{'pid':seccateId},
+            //         type:'post',
+            //         dataType:'json',
+            //         success:function(res){
+            //             console.log('res: ',res);
+            //             if(res.length){}
+            //         },
+            //         error: function(err){
+            //             console.log('err: ',err);
+            //         }
+            //     })
+            // }
             var html = '';
+            var headhtml = '';
+            var subArr = [];
+            // 商品属性分类
             for(var i=0; i<attrArr.length; i++){
-                html += '<label class="attr">'+
-                    '<div class="icheckbox_square-green" style="position: relative;">'+
-                        '<input type="checkbox" data-name="'+ attrArr[i].attr +'" data-id="'+ attrArr[i].id +'" style="position: absolute; opacity: 0;">'+
-                        '<ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>'+
-                        '</div>'+
-                        '<i></i>'+ attrArr[i].attr +
-                    '</label>';
+                html += '<div class="checkbox i-checks">'+
+                            '<p>'+ attrArr[i].attr +'</p>'+
+                        '</div>';
+                //表格头
+                headhtml += '<th data-id="'+ attrArr[i].id +'">'+ attrArr[i].attr +'</th>';
+
+                subArr.push([]);
+                // 商品属性分类详情选项
+                for(var j=0; j<attrArr[i].data.length; j++){
+                    subArr[i].push('<label class="seccheck'+ i +'" onclick="secCateClk('+ i +','+ j +')"><div class="icheckbox_square-green" style="position: relative;">'+
+                                '<input type="checkbox" data-pid="'+ attrArr[i].id +'" data-pattr="'+ attrArr[i].attr +
+                                '" data-name="'+ attrArr[i].data[j].val +'" data-id="'+ attrArr[i].data[j].id +'" style="position: absolute; opacity: 0;">'+
+                                '<ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>'+
+                            '</div>'+
+                            '<i></i>'+ attrArr[i].data[j].val +
+                        '</label>');
+                    
+                }
             }
-            html += '<label class="attrList">'+
-                        '<button type="button" class="btn btn-outline btn-primary" onclick="add()">添加属性</button>'+
-                    '</label>'+
-                    '<label class="attrDel">'+
-                        '<button type="button" class="btn btn-outline btn-primary" onclick="del()">删除属性</button>'+
-                    '</label>';
             $('.goodsattr').html(html);
-            recheck();
+            // 表格头
+            $('.allAttr thead>tr').html(headhtml);
+            setTimeout(function(){
+                // 商品属性分类详情选项
+                console.log('subArr: ',subArr);
+                for(var j=0; j<subArr.length; j++){
+                    $('.goodsattr>div').eq(j).append(subArr[j]);
+                }
+                recheck();
+            },100)
         })
+        
+        // 点击二级分类，商品属性分类详情选项
+        function secCateClk(pind, ind){
+            // pind父级序号，ind自己序号
+            var arr = [];
+            var bodyhtml = '';
+            var seccheckArr = [];
+            setTimeout(function(){
+                // 遍历选中的商品属性分类详情选项
+                for(var k=0; k<attrArr.length; k++){
+                    seccheckArr.push($('.seccheck'+k).find('.checked'));
+                    console.log('seccheckArr: ',seccheckArr);
+                    console.log('pind: %s, ind: %s', pind, ind);
+                   
+                } 
+                for(var i=0;i<seccheckArr.length; i++){
+                    var attr = seccheckArr[i].eq(i).find('input').data('name');
+                    var id = seccheckArr[i].eq(i).find('input').data('id');
+                    var pattr = seccheckArr[k].eq(i).find('input').data('pattr');
+                    var pid = seccheckArr[k].eq(i).find('input').data('pid');
+                    
+                    for(var m=0; m<attrArr.length*seccheckArr[k].length; m++){
+                        arr.push({
+                            pid: pid,
+                            pattr: pattr,
+                            attr: attr,
+                            id: id
+                        })
+                        console.log('attr: %s, id: %s', attr, id);
+                    }
+                    bodyhtml += '<tr><th data-id="'+ id +'">'+ attr +'</th></tr>';
+                }
+                // 描述
+                $('.allAttr tbody').html(bodyhtml);
+                $('.allAttr').show();
+                console.log('arr: ',arr);
+            },0)
+        }
         var arr = [];
         // 添加属性
         function add() {
