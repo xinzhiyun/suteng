@@ -1,5 +1,6 @@
 <?php
 namespace Admin\Controller;
+use Common\Tool\File;
 use Think\Controller;
 use Think\Exception;
 use Think\Log;
@@ -38,7 +39,8 @@ class ShopController extends CommonController
         try {
             $cate = D('Category');
             $data = I('post.');
-            if(!$cate->create($post)) E($cate->getError(),203);
+
+            if(!$cate->create($data)) E($cate->getError(),203);
             $res = $cate->add($data);
             if(!$res) E('添加失败了', 202);
             E('添加成功', 200);
@@ -54,11 +56,22 @@ class ShopController extends CommonController
 
     public function appendChildCategory(){
         $pid = I('post.pid');
+
+        $pic = '';
+        if(!empty($_FILES)){
+            $pic = File::upload('Category');
+            if($pic){
+                $pic = '/Public/upload'.$pic[0];
+            }
+        }
+
+        $leavel = D('Category')->where('id='.$pid)->getField('leavel')+1;
+
         $cateName = I('post.catename');
         if(!$pid || strlen($cateName) < 1){
             $this->ajaxReturn(['code'=>'-1','msg'=>'参数错误']);
         }
-        $res = D('Category')->data(['name'=>trim($cateName),'pid'=>$pid])->add();
+        $res = D('Category')->data(['name'=>trim($cateName), 'pid'=>$pid, 'leavel'=>$leavel, 'pic'=>$pic])->add();
         if($res) {
             $this->ajaxReturn(['code'=>'200','msg'=>'添加成功','data'=>I('')]);
         } else {
@@ -72,7 +85,16 @@ class ShopController extends CommonController
         try {
             $cate = D('Category');
             $post = I('post.');
+
+            if(!empty($_FILES)){
+                $pic = File::upload('Category');
+                if($pic){
+                    $post['pic'] = '/Public/upload'.$pic[0];
+                }
+            }
+
             $where['id'] = $post['id'];
+            unset($post['id']);
             if(!$cate->create($post)) E($cate->getError(),203);
             $res = $cate->where($where)->save($post);
             if(!$res) E('修改失败了', 202);

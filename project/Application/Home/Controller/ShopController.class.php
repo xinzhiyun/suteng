@@ -41,9 +41,35 @@ class ShopController extends CommonController
             ];
             return $this->ajaxReturn($assign);
         } else {
+            $category = M('category')->where('pid=0')->select();
+
+            $this->assign('category', $category );
             $this->display();
         }
     }
+
+    public function getCategory()
+    {
+        try {
+            $post = I('post.');
+            if (empty($post['id'])) {
+                E('数据不完整', 201);
+            } else {
+                $map['pid'] = $post['id'];
+            }
+
+            $category = M('category')->where($map)->order('sort')->field('id,name,pic')->select();
+
+            $this->ajaxReturn(array(
+                'status'=>200,
+                'data'=>$category,
+                'msg'=>'获取成功',
+            ),'JSON');
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+    
 
     /**
      * 订单管理

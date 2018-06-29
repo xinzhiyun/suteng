@@ -40,6 +40,10 @@
                                     分类级别
                                 </th>
                                 <th>
+                                    展示图片
+                                </th>
+                                <th>排序</th>
+                                <th>
                                     操作
                                 </th>
                             </tr>
@@ -63,6 +67,12 @@
                                             {{$v['leavel']}}
                                         </td>
                                         <td>
+                                            <?php if(!empty($v['pic']))echo '<img src="'.$v['pic'].'" width="40px" height="40px">'; ?>
+                                        </td>
+                                        <td>
+                                            {{$v['sort']}}
+                                        </td>
+                                        <td>
                                             <div class="btn-group">
                                                 <!-- <a class="btn btn-outline btn-success" href="javascript:;" ruleId="{{$v['id']}}" onclick="add_child(this)">
                                                     添加子分类
@@ -71,7 +81,8 @@
                                                 onclick="add_child({{$v['id']}})">
                                                     添加子分类
                                                 </a>
-                                                <a class="btn btn-outline btn-success" href="javascript:;" ruleId="{{$v['id']}}" ruleName="{{$v['name']}}" ruleTitle="{{$v['pid']}}"
+                                                <a class="btn btn-outline btn-success" href="javascript:;" ruleId="{{$v['id']}}" ruleName="{{$v['name']}}"
+                                                   ruleTitle="{{$v['pid']}}"  sort="{{$v['sort']}}"
                                                 onclick="edit(this)">
                                                     修改
                                                 </a>
@@ -157,6 +168,28 @@
                             </td>
                         </tr>
                         <tr>
+                            <th width="20%">
+                                分类图片：
+                            </th>
+                            <td class="form-inline">
+                                <div class="form-group" style="width: 60px;height: 60px;display: none"></div>
+                                <div class="form-group ">
+                                    <input class="input-medium form-control st-edit" type="file" name="pic" id="child_edit_pic" style="width: 250px">
+                                    <p class="help-block">如不修改图片请留空.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">
+                                排序：
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <input class="input-medium form-control st-edit" type="text" name="sort">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
                             <th>
                             </th>
                             <td>
@@ -189,6 +222,16 @@
                             <td>
                                 <div class="form-group">
                                     <input class="input-medium form-control" id="child_name" type="text" name="name">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width=15%>
+                                分类图片
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <input class="input-medium form-control" id="child_pic" type="file" name="pic">
                                 </div>
                             </td>
                         </tr>
@@ -227,11 +270,21 @@
             $('#st-add-child').modal('hide');
             var pid = $("input[name='pid']").val();
             var name = $("#child_name").val();
+
+            var file_obj = document.getElementById('child_pic').files[0];
+
+            var fd = new FormData();
+            fd.append('pid', pid);
+            fd.append('catename', name);
+            fd.append('pic', file_obj);
+
             $.ajax({
                 url:"appendChildCategory",
-                data:{"pid":pid,"catename":name},
+                data:fd,
                 dataType:"json",
                 type: 'post',
+                processData:false,
+                contentType: false,
                 success:function(res){
                     if(res.code == 200){
                         location.reload();
@@ -269,8 +322,9 @@
             var ruleId = $(obj).attr('ruleId');
             var pid = $(obj).attr('ruletitle');
             var ruleName = $(obj).attr('ruleName');
+            var sort = $(obj).attr('sort');
             $("input[name='id']").val(ruleId);
-            $("input[name='pid']").val(pid);
+            $("input[name='sort']").val(sort);
             $("input[name='name']").val(ruleName);
             $('#st-edit').modal('show');
         }
@@ -278,14 +332,27 @@
         // 修改功能
         $('.edit-cate').click(function(){
             $('#st-edit').modal('hide');
-            var pid = $("input[name='pid']").val();
+            var sort = $("input[name='sort']").val();
             var name = $(".st-edit").val();
             var id = $("input[name='id']").val();
+
+
+            var file_obj = document.getElementById('child_edit_pic').files[0];
+
+            var fd = new FormData();
+            fd.append('id',id);
+            fd.append('name', name);
+            fd.append('sort', sort);
+            if(file_obj){
+                fd.append('pic', file_obj);
+            }
             $.ajax({
                 url:"cateGoryEdit",
-                data:{"id":id,"pid":pid,"name":name},
+                data:fd,
                 dataType:"json",
                 type: 'post',
+                processData:false,
+                contentType: false,
                 success:function(res){
                     if(res.code == 200){
                         location.reload();
