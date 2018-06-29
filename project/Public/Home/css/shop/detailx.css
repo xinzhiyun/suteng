@@ -8,6 +8,7 @@ img {
 /* 图片轮播 */
 .picLun {
     background: #CDCDCD;
+    height: 15rem;
 }
 /* 商品描述 */
 .goodsInfo {
@@ -132,14 +133,17 @@ img {
 .footer > p:nth-child(1) {
     position: relative;
 }
-.footer > p:nth-child(1) > span {
+.footer > p:nth-child(1) > a {
+    display: block;
+}
+.footer > p:nth-child(1) > a > span {
     font-size: 1.7rem;
     font-weight: bold;
 }
-.footer > p:nth-child(1) > i {
+.footer > p:nth-child(1) > a > i {
     position: absolute;
     top: .2rem;
-    left: 3.8rem;
+    left: 4.8rem;
     width: 1.2rem;
     height: 1rem;
     color: white;
@@ -248,4 +252,10 @@ img {
     text-align: center;
     padding: .6rem 0;
     width: 5.5rem;
+}
+/* 选项卡 */
+.selecteds {
+    color: #518CF8;
+    padding-bottom: .5rem;
+    border-bottom: 3px solid #518CF8;
 }
