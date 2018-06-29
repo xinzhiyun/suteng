@@ -151,7 +151,7 @@ body {
 /* 分类 */
 .category>li {
 	min-height: 80vh;
-	padding: 10px;
+	padding: 10px 4px;
 	background: #fff;
 }
 .category>.cleft {
@@ -176,8 +176,9 @@ body {
 	background: #4C88F6;
 }
 .noCateContent {
-	display: none;
 	text-align: center;
+	font-size: .5rem;
+    color: #999;
 }
 /* 购物车 */
 .cBlock {

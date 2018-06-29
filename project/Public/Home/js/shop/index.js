@@ -19,7 +19,7 @@ var shopindex = new Vue({
 			],
 			titleList: ['商城首页','分类','购物车','我的'],
 			categoryTitle: '',  //二级分类标题
-			noCateContent: false,
+			noCateContent: '加载中...',
 			cart_none: '',
 			moneyCalc: [],	// 购物车选中的商品
 			checkNum: 0,	// 结算的商品数量
@@ -160,11 +160,11 @@ var shopindex = new Vue({
 						vm.categoryContentList = res.data;
 						vm.noCateContent = false;
 						if(!res.data.length){
-							vm.noCateContent = true;
+							vm.noCateContent = '此分类下暂无数据';
 						}
 					}else{
 						layuiHint(res.msg);
-						vm.noCateContent = true;
+						vm.noCateContent = '此分类下暂无数据';
 					}
 				},
 				error: function(err){
