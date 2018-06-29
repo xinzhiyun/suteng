@@ -79,109 +79,109 @@
 		var chinajsonurl = '__PUBLIC__/Admin/map/china.json';
 		// 省份模拟数据
 		var provinceDevice= [
-		{
-			name: '广东',
-			num: '0'
-		},{
-			name: '浙江',
-			num: '0'
-		},{
-			name: '四川',
-			num: '0'
-		},{
-			name: '青海',
-			num: '0'
-		},{
-			name: '宁夏',
-			num: '0'
-		},{
-			name: '台湾',
-			num: '0'
-		},{
-			name: '河北',
-			num: '0'
-		},{
-			name: '山西',
-			num: '0'
-		},{
-			name: '辽宁',
-			num: '0'
-		},{
-			name: '吉林',
-			num: '0'
-		},{
-			name: '黑龙江',
-			num: '0'
-		},{
-			name: '江苏',
-			num: '0'
-		},{
-			name: '福建',
-			num: '0'
-		},{
-			name: '安徽',
-			num: '0'
-		},{
-			name: '江西',
-			num: '0'
-		},{
-			name: '山东',
-			num: '0'
-		},{
-			name: '河南',
-			num: '0'
-		},{
-			name: '湖北',
-			num: '0'
-		},{
-			name: '湖南',
-			num: '0'
-		},{
-			name: '海南',
-			num: '0'
-		},{
-			name: '贵州',
-			num: '0'
-		},{
-			name: '云南',
-			num: '0'
-		},{
-			name: '陕西',
-			num: '0'
-		},{
-			name: '甘肃',
-			num: '0'
-		},{
-			name: '新疆',
-			num: '0'
-		},{
-			name: '广西',
-			num: '0'
-		},{
-			name: '内蒙古',
-			num: '0'
-		},{
-			name: '西藏',
-			num: '0'
-		},{
-			name: '北京',
-			num: '0'
-		},{
-			name: '天津',
-			num: '0'
-		},{
-			name: '上海',
-			num: '0'
-		},{
-			name: '重庆',
-			num: '0'
-		},{
-			name: '香港',
-			num: '0'
-		},{
-			name: '澳门',
-			num: '0'
-		}
+			{
+				name: '广东',
+				num: '0'
+			},{
+				name: '浙江',
+				num: '0'
+			},{
+				name: '四川',
+				num: '0'
+			},{
+				name: '青海',
+				num: '0'
+			},{
+				name: '宁夏',
+				num: '0'
+			},{
+				name: '台湾',
+				num: '0'
+			},{
+				name: '河北',
+				num: '0'
+			},{
+				name: '山西',
+				num: '0'
+			},{
+				name: '辽宁',
+				num: '0'
+			},{
+				name: '吉林',
+				num: '0'
+			},{
+				name: '黑龙江',
+				num: '0'
+			},{
+				name: '江苏',
+				num: '0'
+			},{
+				name: '福建',
+				num: '0'
+			},{
+				name: '安徽',
+				num: '0'
+			},{
+				name: '江西',
+				num: '0'
+			},{
+				name: '山东',
+				num: '0'
+			},{
+				name: '河南',
+				num: '0'
+			},{
+				name: '湖北',
+				num: '0'
+			},{
+				name: '湖南',
+				num: '0'
+			},{
+				name: '海南',
+				num: '0'
+			},{
+				name: '贵州',
+				num: '0'
+			},{
+				name: '云南',
+				num: '0'
+			},{
+				name: '陕西',
+				num: '0'
+			},{
+				name: '甘肃',
+				num: '0'
+			},{
+				name: '新疆',
+				num: '0'
+			},{
+				name: '广西',
+				num: '0'
+			},{
+				name: '内蒙古',
+				num: '0'
+			},{
+				name: '西藏',
+				num: '0'
+			},{
+				name: '北京',
+				num: '0'
+			},{
+				name: '天津',
+				num: '0'
+			},{
+				name: '上海',
+				num: '0'
+			},{
+				name: '重庆',
+				num: '0'
+			},{
+				name: '香港',
+				num: '0'
+			},{
+				name: '澳门',
+				num: '0'
+			}
 		]
 		// 新增会员
 		var income = echarts.init(document.getElementById('income'));
@@ -310,6 +310,23 @@
 					}
 					xSeries[1].push(i);
 				}
+				var flowUsers = res.flowUsers;
+				// 套餐 遍历套餐种类数量
+				var mealArr = [];
+				var tempArr = [];
+				for(var meal in flowUsers){
+					for(var i=0; i<flowUsers[meal].length; i++){
+						tempArr.push(flowUsers[meal][i].describe);
+						// console.log('meal: ',flowUsers[meal][i].describe);
+					}
+				}
+				for(var i=0; i<tempArr.length-1; i++){
+					if(mealArr.indexOf(tempArr[i]) < 0){
+						mealArr.push(tempArr[i]);
+					}
+				}
+				console.log('mealArr: ',mealArr);
+				
 				// 会员套餐
 				taoArr = {};
 				for(var i = 0; i < res.flowUsers[1].length; i++) {
