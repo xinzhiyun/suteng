@@ -96,11 +96,11 @@
 					</div>
 					<p class='numbtn cfix'>
 						<span class='fl' @click='numChange(-1,index,$event)'>-</span>
-						<input class='fl' type="text" :value='cart.num' v-model='cart.num'>
+						<input class='fl' type="text" :value='cart.num' @keyup='numChange(11, index, $event)'>
 						<span class='fl' @click='numChange(1,index,$event)'>+</span>
 					</p>
 				</li>
-				<div class='deleteCart' @touchend='deleteCart(cart.gid)'><span>删除</span></div>
+				<div class='deleteCart' @touchend='deleteCart(cart.gid, $event)'><span>删除</span></div>
 			</ul>
 		</div>
 		<footer id='footer' :style='{display: tabclk == 3 ? "none" : "flex"}'>
@@ -123,7 +123,7 @@
 		</footer>
 		<!-- 购物车结算 -->
 		<div class='cartCalc cfix' :style='{display: tabclk == 3 ? "block" : "none"}'>
-			<div class='fl'>
+			<div class='fl' @click='checkAll($event)'>
 				<img src="__PUBLIC__/Home/images/shop/cart_none.png" alt="">
 				<span>&emsp;全选</span>
 			</div>
