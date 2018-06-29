@@ -66,7 +66,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label _attr">商品属性：</label>
                             <div class="col-sm-10">
-                                <div class="checkbox i-checks">
+                                <div class="checkbox i-checks goodsattr">
                                     <volist name="attrInfo" id="vo">
                                         <label class="attr">
                                             <input type="checkbox"  data-name={{$vo.attr}} data-id="{{$vo.id}}"> <i></i> {{$vo.attr}}
@@ -325,6 +325,7 @@
     <script>
         //实例化编辑器
         var um = UM.getEditor('myEditor');
+        // 一级分类
         $("select[name='firscate']").change(function(){
             var firscateId = $(this).children('option:selected').val();
             var html = "";
@@ -351,6 +352,22 @@
                 })
             }
         })
+        var attrArr = [
+            {attr: 'aa', id: '11'},
+            {attr: 'bb', id: '22'}
+        ];
+        // 属性选中
+        $('.goodsattr').on('click', '.attr', function(){
+            $(this).addClass('hover');
+            var className = $(this).children('div').attr('class');
+            console.log('className: ',className);
+            if(className.indexOf('checked') < 0){
+                $(this).children('div').addClass('checked');
+            }else{
+                $(this).children('div').removeClass('checked');
+            }
+        })
+        // 二级分类
         $("select[name='seccate']").change(function(){
             var seccateId = $(this).children('option:selected').val();
             var html = "";
@@ -358,22 +375,55 @@
             $("select[name='thirdcate']").parent().css('display','none');
             if(/^[0-9]*$/.test(seccateId)){
                 $.ajax({
-                    url:'getCate',
+                    url:'getAttr',
                     data:{'pid':seccateId},
                     type:'post',
                     dataType:'json',
                     success:function(res){
-                        if(res.length!=0){
-                            $("select[name='thirdcate']").parent().css('display','inline');
-                            for(var i=0;i<res.length;i++){
-                                html += '<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
+                        console.log('res: ',res);
+                        var html = '';
+                        if(res.length){
+                            for(var i=0; i<res; i++){
+                                html += '<label class="attr">'+
+                                    '<div class="icheckbox_square-green" style="position: relative;">'+
+                                       '<input type="checkbox" data-name="'+ res[i].attr +'" data-id="'+ res[i].id +'" style="position: absolute; opacity: 0;">'+
+                                        '<ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>'+
+                                        '</div>'+
+                                        '<i></i>'+ res[i].attr +
+                                    '</label>';
                             }
-                            $("select[name='thirdcate']").html('<option value="--">--请选择--</option>');
-                            $("select[name='thirdcate']").append(html);
+                            html += '<label class="attrList">'+
+                                        '<button type="button" class="btn btn-outline btn-primary" onclick="add()">添加属性</button>'+
+                                    '</label>'+
+                                    '<label class="attrDel">'+
+                                        '<button type="button" class="btn btn-outline btn-primary" onclick="del()">删除属性</button>'+
+                                    '</label>';
+                            $('.goodsattr').html(html);
                         }
+                    },
+                    error: function(err){
+                        console.log('err: ',err);
                     }
                 })
             }
+            var html = '';
+            for(var i=0; i<attrArr.length; i++){
+                html += '<label class="attr">'+
+                    '<div class="icheckbox_square-green" style="position: relative;">'+
+                        '<input type="checkbox" data-name="'+ attrArr[i].attr +'" data-id="'+ attrArr[i].id +'" style="position: absolute; opacity: 0;">'+
+                        '<ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>'+
+                        '</div>'+
+                        '<i></i>'+ attrArr[i].attr +
+                    '</label>';
+            }
+            html += '<label class="attrList">'+
+                        '<button type="button" class="btn btn-outline btn-primary" onclick="add()">添加属性</button>'+
+                    '</label>'+
+                    '<label class="attrDel">'+
+                        '<button type="button" class="btn btn-outline btn-primary" onclick="del()">删除属性</button>'+
+                    '</label>';
+            $('.goodsattr').html(html);
+            recheck();
         })
         var arr = [];
         // 添加属性
@@ -512,7 +562,7 @@
             $('.summernote').summernote({
                 lang: 'zh-CN'
             });
-            $("#form .attr").on("click", function(e){
+            $("#form").on("click", '.attr', function(e){
                 bindClick();
             });
             $(".attr .iCheck-helper").on("click", function(e){
@@ -686,5 +736,6 @@
                 }
             });
         });
+
     </script>
 </block>
