@@ -310,66 +310,39 @@
 					}
 					xSeries[1].push(i);
 				}
-				// 会员套餐
-				for(var i in res.flowUsers){
-					console.log("sizhong", res.flowUsers[i]);
-					// 第一段
-					if(res.flowUsers[i].length) {
+				var flowUsers = res.flowUsers;
+				// 套餐 遍历套餐种类数量
+				var mealArr = [];
+				var tempArr = [];
+				for(var meal in flowUsers){
+					for(var i=0; i<flowUsers[meal].length; i++){
+						tempArr.push(flowUsers[meal][i].describe);
+						// console.log('meal: ',flowUsers[meal][i].describe);
+					}
+				}
+				for(var i=0; i<tempArr.length-1; i++){
+					if(mealArr.indexOf(tempArr[i]) < 0){
+						mealArr.push(tempArr[i]);
+					}
+				}
+				// console.log('mealArr: ',mealArr);
+				var taoArr = {};
+				for(var k = 0; k < mealArr.length; k++) {
+					for(var i in res.flowUsers) {
 						for(var j = 0; j < res.flowUsers[i].length; j++) {
-							series_data[2].push(res.flowUsers[i][j]);
-							// res.flowUsers[i][j]
-						}
-					}else {
-						series_data[2].push(0);
-					}
-				}
-				// var one = res.flowUsers[1];
-				// var two = res.flowUsers[2];
-				// var three = res.flowUsers[3];
-				// var four = res.flowUsers[4];
-				
-				// 套餐 
-				var taoArr = [];
-				if(res.flowUsers[1].length) {
-					for(var i = 0; i < res.flowUsers[1].length; i++) {
-						var one = [];
-						one["count"] = res.flowUsers[1][i].count;
-						one["describe"] = res.flowUsers[1][i].describe;
-						taoArr.push([one]);
-					}
-				}
-				if(res.flowUsers[2].length) {
-					for(var i = 0; i < taoArr.length; i++) {
-						for(var k = 0; k < taoArr[i].length; k++) {
-							for(var j = 0; j < res.flowUsers[2].length; j ++) { 
-								// 判断是否同一套餐类型
-								// if(taoArr[i][k]["describe"] == res.flowUsers[2][j].describe) {
-								// 	console.log(taoArr[i][k]["describe"], res.flowUsers[2][j].describe);
-								// 	var two = [];
-								// 	two["count"] = res.flowUsers[2][j].count;
-								// 	two["describe"] = res.flowUsers[2][j].describe;
-								// }else {
-								// 	var three = [];
-								// 	three["count"] = res.flowUsers[2][j].count;
-								// 	three["describe"] = res.flowUsers[2][j].describe;
-								// }
-
+							taoArr[k] = [];
+							if(mealArr[k] == res.flowUsers[i][j]["describe"]) {
+								console.log(res.flowUsers[i][j]["count"]);
+								taoArr[k].push(res.flowUsers[i][j]["count"]);
 							}
 						}
 					}
 				}
-				if(res.flowUsers[3].length) {
-
-				}
-				if(res.flowUsers[4].length) {
-
-				}
-
-
-
-				
 				console.log(taoArr)
 				
+				
+				
+				console.log(taoArr);
 				// 新增会员
 				if(series_data[0].length){
 					// y轴数据

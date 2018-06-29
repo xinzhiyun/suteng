@@ -19,8 +19,13 @@ var shopindex = new Vue({
 			],
 			titleList: ['商城首页','分类','购物车','我的'],
 			categoryTitle: '',  //二级分类标题
-			noCateContent: false,
+			noCateContent: '加载中...',
 			cart_none: '',
+			moneyCalc: [],	// 购物车选中的商品
+			checkNum: 0,	// 结算的商品数量
+			checkMoney: 0,	// 结算金额
+			selectedSrc: '',
+			emptySrc: '',
 		}
 	},
 	created() {
@@ -112,6 +117,11 @@ var shopindex = new Vue({
 			{src: '',gid:'5',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'6'},
 		];
 	},
+	mounted() {
+		var cBlock = document.querySelectorAll('.cBlock');	// 购物车商品
+		this.selectedSrc = public+'/Home/images/shop/cart_select.png';
+		this.emptySrc = public+'/Home/images/shop/cart_none.png';
+	},
 	methods: {
 		// 点击商品图片
 		todetail(gid) {
@@ -150,11 +160,11 @@ var shopindex = new Vue({
 						vm.categoryContentList = res.data;
 						vm.noCateContent = false;
 						if(!res.data.length){
-							vm.noCateContent = true;
+							vm.noCateContent = '此分类下暂无数据';
 						}
 					}else{
 						layuiHint(res.msg);
-						vm.noCateContent = true;
+						vm.noCateContent = '此分类下暂无数据';
 					}
 				},
 				error: function(err){
@@ -189,56 +199,168 @@ var shopindex = new Vue({
 		subClick(scid) {
 			console.log('scid: ',scid);
 		},
-		// 购物车商品左滑
+		// 购物车商品左滑、右滑
 		slideDelete(e, gid) {
 			var el = e.currentTarget;
 			// console.log('gid: ',gid);
 			// console.log('e: ',e);
-			console.group();
+			// console.group();
 			if(!window.touchX){
 				window.touchX = e.changedTouches[0].pageX;
-				console.log('touchX: ',window.touchX);
+				// console.log('touchX: ',window.touchX);
 			}else{
 				if(window.touchX - e.changedTouches[0].pageX < 0 && window.touchX - e.changedTouches[0].pageX <= -30){
-					console.clear();
-					console.log('右滑');
+					// console.clear();
+					// console.log('右滑');
 					el.setAttribute('style','transform:translateX(0);');
 					window.isDeleteShow = true;
 					window.touchX = '';
 					
 				}else if(window.touchX - e.changedTouches[0].pageX > 0 && window.touchX - e.changedTouches[0].pageX >= 30){
-					console.clear();
-					console.log('左滑');
+					// console.clear();
+					// console.log('左滑');
 					el.setAttribute('style','transform:translateX(-40px);');
 					window.isDeleteShow = false;
 					window.touchX = '';
 				}
 			}
-			console.log('window.touchX - e.changedTouches[0].pageX: ',window.touchX - e.changedTouches[0].pageX);
-			console.groupEnd();
+			// console.log('window.touchX - e.changedTouches[0].pageX: ',window.touchX - e.changedTouches[0].pageX);
+			// console.groupEnd();
 		},
 		slideEnd() {
 			window.touchX = '';
 		},
 		// 删除购物车商品
-		deleteCart(gid) {
+		deleteCart(gid, e) {
+			var el = e.currentTarget.parentNode;
 			console.log('gid: ',gid);
+			
 		},
 		// 购物车勾选
-		cartSelect(gid, price, index, e) {
+		cartSelect(gid, price, index, num, e) {
 			var vm = this;
 			var el = e.currentTarget;
 			var src = el.querySelector('img').getAttribute('src');
 			//gid商品id, price单价, index序号
 			console.log('gid: %s, price: %s, index: %s',gid, price, index);
 			if(src.indexOf('select') < 0){	// 选中
-				var _src = public+'/Home/images/shop/cart_select.png';
-				el.querySelector('img').setAttribute('src', _src)
-
+				el.querySelector('img').setAttribute('src', vm.selectedSrc);
+				vm.moneyCalc[index] = {gid: gid,price: price,num: num};
 			}else{	// 取消选中
-				var _src = public+'/Home/images/shop/cart_none.png';
-				el.querySelector('img').setAttribute('src', _src)
+				el.querySelector('img').setAttribute('src', vm.emptySrc);
+				vm.moneyCalc[index] = '';
 			}
-		}	
+			
+			// 同步结算勾选数量、金额
+			vm.calculator();
+		},
+		// 计算金额
+		calculator() {
+			var vm = this;
+			vm.checkNum = 0;
+			vm.checkMoney = 0;
+			for(var i=0; i<vm.moneyCalc.length; i++){
+				if(vm.moneyCalc[i]){
+					vm.checkNum++;
+					vm.checkMoney += Number(vm.moneyCalc[i].price)*Number(vm.moneyCalc[i].num);
+				}
+			}
+			cBlock = document.querySelectorAll('.cBlock');	// 购物车商品
+			// 全选
+			// 购物车商品打钩位置
+			var cartSelectAll = document.querySelector('.cartCalc').querySelector('img');
+			if(vm.checkNum == cBlock.length){
+				cartSelectAll.setAttribute('src', vm.selectedSrc);
+			}else{
+				cartSelectAll.setAttribute('src', vm.emptySrc);
+			}
+		},
+		// 修改数量
+		numChange(bool, index, e) {
+			var el = e.currentTarget;
+			var span = el.parentNode.querySelectorAll('span')[0];
+			var input = el.parentNode.querySelector('input');
+			var vm = this;
+			console.log('bool: ',bool);
+			console.log('vm.moneyCalc[index]: ',vm.moneyCalc);
+			console.log('vm.moneyCalc[index]: ',vm.moneyCalc[+index]);
+			if(bool === 1){
+				// 加
+				if(vm.moneyCalc[+index]){
+					++vm.moneyCalc[+index].num;
+				}
+				// 数量变化
+				vm.cartList[index].num++;
+				span.style.background = '#fff';
+			}else if(bool === -1){
+				// 减
+				if(vm.moneyCalc[+index] && vm.moneyCalc[+index].num >= 2){
+					--vm.moneyCalc[+index].num;
+				}else if(vm.moneyCalc[+index] && vm.moneyCalc[+index].num == 1){
+					span.style.background = '#f1f1f1';
+				}
+				// 数量变化
+				if(vm.cartList[index].num >= 2){
+					vm.cartList[index].num--;
+				}
+			}else if(bool === 11){
+				console.log('val: ',el.value-0,typeof (el.value-0) );
+				// 手动修改
+				if(+el.value >= 1 && typeof(el.value-0) === 'number'){
+					vm.cartList[index].num = el.value-0;
+				}else{
+					el.value = 1;
+				}
+				if(vm.moneyCalc[+index]){
+					vm.moneyCalc[+index].num = el.value;
+				}
+			}
+			vm.calculator();
+		},
+		// 全选、全不选
+		checkAll(e) {
+			var img = e.currentTarget.querySelector('img');
+			cBlock = document.querySelectorAll('.cBlock');
+			var cartCheckAll = document.querySelectorAll('.cBlock>.fl>img');
+			var vm = this;
+			if(vm.checkNum != vm.cartList.length){
+				// 全选操作
+				console.log('all');
+				vm.moneyCalc.length = 0;	// 清空
+				for(var i=0; i<vm.cartList.length; i++){
+					vm.moneyCalc.push({
+						gid: vm.cartList[i].gid,
+						price: vm.cartList[i].price,
+						num: vm.cartList[i].num
+					})
+					
+					//打钩
+					cartCheckAll[i].setAttribute('src', vm.selectedSrc);
+				}
+				img.setAttribute('src', vm.selectedSrc);
+			}else{
+				// 取消全选操作
+				console.log('none');
+				// 清空
+				vm.moneyCalc.length = 0;
+				img.setAttribute('src', vm.emptySrc);
+				for(var i=0; i<vm.cartList.length; i++){
+					//打钩清空
+					cartCheckAll[i].setAttribute('src', vm.emptySrc);
+				}
+			}
+			console.log('vm.moneyCalc: ',vm.moneyCalc);
+			// 同步结算勾选数量、金额
+			vm.calculator();
+		},
+		// 点击结算
+		goPay() {
+			var vm = this;
+			console.log('vm.moneyCalc: ',vm.moneyCalc);
+			if(!vm.moneyCalc.length){
+				// 未选中
+				return
+			}
+		}
 	}
 })

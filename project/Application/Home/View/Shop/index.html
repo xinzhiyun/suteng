@@ -73,7 +73,7 @@
 						</li>
 					</ul>
 				</div>
-				<div class='noCateContent' :style='{display: noCateContent ? "block" : "none"}'>此分类下暂无数据</div>
+				<div class='noCateContent' :style='{display: noCateContent ? "block" : "none"}' v-text='noCateContent'>加载中</div>
 			</li>
 		</ul>
 		<!-- 购物车内容 -->
@@ -82,7 +82,7 @@
 			@touchmove='slideDelete($event, cart.gid)'
 			@touchend='slideEnd()'
 			:gid='cart.gid'>
-				<li class='fl' @click='cartSelect(cart.gid, cart.price, index, $event)'>
+				<li class='fl' @click='cartSelect(cart.gid, cart.price, index, cart.num, $event)'>
 					<img src="__PUBLIC__/Home/images/shop/cart_none.png" alt="">
 				</li>
 				<li class='fr'>
@@ -95,12 +95,12 @@
 						<b v-text='"￥"+cart.price'>商品价格</b>
 					</div>
 					<p class='numbtn cfix'>
-						<span class='fl'>-</span>
-						<input class='fl' type="text" :value='cart.num' v-model='cartList[index].num'>
-						<span class='fl'>+</span>
+						<span class='fl' @click='numChange(-1,index,$event)'>-</span>
+						<input class='fl' type="text" :value='cart.num' @keyup='numChange(11, index, $event)'>
+						<span class='fl' @click='numChange(1,index,$event)'>+</span>
 					</p>
 				</li>
-				<div class='deleteCart' @touchend='deleteCart(cart.gid)'><span>删除</span></div>
+				<div class='deleteCart' @touchend='deleteCart(cart.gid, $event)'><span>删除</span></div>
 			</ul>
 		</div>
 		<footer id='footer' :style='{display: tabclk == 3 ? "none" : "flex"}'>
@@ -122,13 +122,17 @@
 			</div>
 		</footer>
 		<!-- 购物车结算 -->
-		<div class='cartCalc' :style='{display: tabclk == 3 ? "flex" : "none"}'>
-			<div>
+		<div class='cartCalc cfix' :style='{display: tabclk == 3 ? "block" : "none"}'>
+			<div class='fl' @click='checkAll($event)'>
 				<img src="__PUBLIC__/Home/images/shop/cart_none.png" alt="">
 				<span>&emsp;全选</span>
-				<span>金额总计</span>
 			</div>
-			<span>去结算<span v-text=''>数量</span></span>
+			<div class='fr'>
+				<p v-text='"￥"+checkMoney'>金额总计</p>
+				<div @click='goPay()'>
+					去结算(<span v-text='checkNum'>数量</span>)
+				</div>
+			</div>
 		</div>
 	</div>
 	<script type="text/javascript" src="__PUBLIC__/Home/js/swiper-3.4.2.min.js"></script>
@@ -138,6 +142,7 @@
   	<script src="__PUBLIC__/Home/js/shop/index.js"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script>
+		// 轮播图
 		var mySwiper = new Swiper ('.swiper-container', {
 			autoplay: 3000,
 			loop: true,
@@ -146,6 +151,42 @@
 				el: '.swiper-pagination',
 			}
 		}) 
+
+		// 刷新/后退,保持状态
+		hashchangeFn(function(hash){
+			var vm = shopindex;	// vue的实例
+			// 首页_home, 分类category, 购物车cart, 我的mine
+			for(var i=0; i<vm.srcArr.length; i++){
+				vm.tabsrc.push(vm.srcArr[i])
+			}
+			if(hash.indexOf('_home') > 0){
+				vm.tabClick(1, '_home');
+			}else if(hash.indexOf('category') > 0){
+				vm.tabClick(2, 'category');
+			}else if(hash.indexOf('cart') > 0){
+				vm.tabClick(3, 'cart');
+			}else if(hash.indexOf('mine') > 0){
+				vm.tabClick(4, 'mine');
+			}else{
+				// 首页
+				vm.tabsrc[0] = vm.tabsrc[0];
+			}
+		})
+
+		// 监听hashchange事件
+		function hashchangeFn(callback) {
+			var haschangeflag = false;
+			window.addEventListener('hashchange', function(){
+			haschangeflag = true;
+			callback(location.hash);
+			}, false);
+			// console.log('haschangeflag: ',haschangeflag);
+			// console.log('hash: ',location.hash);
+			// 刷新保持
+			if(!haschangeflag){
+			callback(location.hash);
+			}
+		}
 	</script>
 </body>
 </html>

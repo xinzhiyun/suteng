@@ -4,183 +4,175 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
-	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/PaymentSystem/payConfirm.css">
-	<title>订单确认</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/PaymentSystem/payConfirmx.css">
+	<title>订单填写</title>
 	<!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
 	<script>
 		// var vConsole = new VConsole();
 	</script>
 </head>
 <body>
-	<input type="hidden" value='{{$data}}' id="addressInfo">
-	<input type="hidden" value='{{$goodsCourier}}' id="goodsCourier">
-	<input type="hidden" value='{{$user}}' id="jinyinbi">
-	<input type="hidden" value='{{$rate}}' id="rate">
-	<div id="content">
-		<header id="header">
-			<div id="hLeft">
-				<!-- <p>
-					<span>收货人：Yoo</span>
-					<span>13612345678</span>
-				</p>
-				<p>
-					<span>收货地址：广州市番禺区大石街道五巷子7号</span>
-				</p> -->
-			</div>
-			<a class="iconfont icon-dayuhao-copy-copy" id="hRight" href="{{:U('Address/index')}}"></a>
-		</header>
-		<div id="main">
-			<!-- <div class="goods">
-				<div class="img"><img src="1.jpg" alt="正在加载..."></div>
-				<div class="dec">
-					<h5>RO膜</h5>
-					<p>RO膜能够有效地去除水中钙、镁、 细菌、有机物、无机物、金属离子和 放射性物质等</p>
-					<div>
-						<span class="price">￥120.00</span>
-						<span class="num">X&nbsp;<b>2</b></span>
-					</div>
-					
-				</div>
-			</div> -->
-			
-		</div>
-		
-		<div id="calc">
-			<p>共 <b class="numAll">0</b> 件商品&emsp;合计：<b class="priceAll">0</b></p>
-		</div>
-		<div class="ynticket">
-			<b>开具发票</b>
-			<a href="{{:U('Invoice/index')}}" class="kaifapiao">
-				<span>不开发票</span>
-				<i class="iconfont icon-dayuhao-copy-copy"></i>
-			</a>
-		</div>
-		<!-- <div id="payWay">
-			<div id="payMask">
-			</div>
-			<div id="choosePay">
-				<div id="payTitle">
-					<p id="closePay">X</p>
-					<p>
-						<span>付款</span>
-						<span>￥200.00</span>
-					</p>
-				</div>
-				<div>选择付款方式</div>
-				<div id="localPay">
-					<p>
-						<label for="gold"><i></i>金币</label>
-						<input id="gold" type="checkbox" checked>
-					</p>
-					<p>
-						<label for="silver"><i></i>银币</label>
-						<input id="silver" type="checkbox">
-					</p>
-				</div>
-				<div id="othersPay">
-					<p>
-						<label for="weixin"><i></i>微信支付</label>
-						<input id="weixin" type="checkbox">
-					</p>
-					<p>
-						<label for="zhifubao"><i></i>支付宝支付</label>
-						<input id="zhifubao" type="checkbox">
-					</p>
-					<p>
-						<label for="yinlian"><i></i>银联</label>
-						<input id="yinlian" type="checkbox">
-					</p>
-				</div>
-			</div>
-			<div id="payNow">
-				<div>立即付款</div>
-			</div>
-		</div> -->
-		<footer id="footerContain">
-			<div>实付金额：<span>240.00</span></div>
-			<span id="_pay">付款</span>
-		</footer>
-		<div class="paystyle">
-			<div class="paystyleTop"></div>
-			<div class="payContain">
-				<div class="paytop clearfix">
-					<div class="paytopLeft"><i class="iconfont icon-cuohao"></i></div>
-					<div class="paytopRight">
-						<h3>付款</h3>
-						<p>￥3620.00</p>
-					</div>
-				</div>
-				<div class="paymidd">
-					<h3>选择支付方式</h3>
-					<ul class="clearfix">
-						<li index="1"><i class="iconfont icon-tubiao207"></i>金币<span class="iconfont icon-xuanze"></span></li>
-						<li index="2"><i class="iconfont icon-tubiao207-copy"></i>银币<span class="iconfont icon-kuang1"></span></li>
-						<li index="3"><i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-kuang1"></span></li>
-						<!-- <li index="4"><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
-						<li index="5"><i class="iconfont icon-yinlian"></i>银联<span class="iconfont icon-kuang1"></span></li> -->
-					</ul>
-				</div>
-				<div class="payBott">
-					<input class=" start" type="button" value="立即支付">
-				</div>
-			</div>
-		</div>
-		
-		<!-- 模态框的内容 -->
-		<div class="modelAll">
-			<!-- <a class="start" href="javascript:;">点击</a> -->
-			<div class="modal fade">
-				<div class="modal-body">
-					<div class="modal-content">
-						<p>您没有绑定银行卡</p>
-						<p><a href="#">去绑定</a></p>
-						<p><a href="#">其他支付方式</a></p>
-						<p><input class="close" type="submit" value="取消"></p>
-					</div>
-				</div>
-			</div>
-			<div class="modal-backup"></div>
-		</div>
-	</div>
-	<script src="__PUBLIC__/Home/js/public.js"></script>
-	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
-	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
-	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
-	<script>
-		
-		$(function(){
-			// 首页按钮
-			!function(){
-				// 创建 a 标签
-				var home = document.createElement('a');
-				home.innerText = '首\n页';
-				
-				home.href = '{{:U("Home/Shop/index")}}';
-				home.setAttribute("id", 'back2Home');
-				
-				// 添加到页面
-				document.body.appendChild(home);
-				home.onclick = function(){
-					home.style.background = '#aaa';
-				}
-				return
-			}()
-		})
-		//微信接口
-		wx.config({
-			debug: false,
-			appId: '{{$wxinfo["appId"]}}',
-			timestamp: '{{$wxinfo["timestamp"]}}',
-			nonceStr: '{{$wxinfo["nonceStr"]}}',
-			signature: '{{$wxinfo["signature"]}}',
-			jsApiList: [
-			// 所有要调用的 API 都要加到这个列表中
-			'chooseWXPay'
-			]
-		});
-
-	</script>
-	<script src='__PUBLIC__/Home/js/pay/payconfirm.js'></script>
+	<div class="main">
+        <!-- 地址 -->
+        <div class="orderAddress">
+            <p>小鸡壳</p>
+            <p>
+                <span>1385642454</span>
+                <span>广州市番禺区大夫山北段362号钟村镇点球电子科技集团</span>
+            </p>
+            <p><span class="iconfont icon-right"></span></p>
+        </div>
+        <!-- 订单详情 -->
+        <div class="orderDetail">
+            <ul>
+                <li>
+                    <span>商品合计</span>
+                    <span><i class="iconfont icon-552cd51ece753"></i><i>119.00</i></span>
+                </li>
+                <li>
+                    <span>运费</span>
+                    <span><i class="iconfont icon-552cd51ece753"></i><i>0.00</i></span>
+                </li>
+                <li>
+                    <span>配送</span>
+                    <span>韵达快递</span>
+                </li>
+                <li>
+                    <span>发货地</span>
+                    <span>广州中山</span>
+                </li>
+                <li>
+                    <p>
+                        <span class="iconfont icon-weixuanzhong"></span>
+                        <span>积分抵扣<i>-1500</i></span>
+                    </p>
+                    <span class="iconfont icon-right"></span>
+                </li>
+            </ul>
+        </div>
+        <!-- 发票 -->
+        <div class="invoice">
+            <p>
+                <span class="iconfont icon-weixuanzhong"></span>
+                <span>我要开发票</span>
+            </p>
+            <span class="iconfont icon-right"></span>
+        </div>
+        <!-- 商品 -->
+        <div class="goods">
+            <ul>
+                <li>
+                    <a href="####">
+                        <p>
+                            <span>
+                                <img src="__PUBLIC__/Home/images/1b.png" alt="">
+                            </span>
+                            <span>
+                                <i>滤芯外部活性炭</i>
+                                <i>蒂芬妮蓝</i>
+                                <i>全款购买</i>
+                                <i><b class="iconfont icon-552cd51ece753"></b><b>119.00</b></i>
+                            </span>
+                        </p>
+                        <span>x1</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="####">
+                        <p>
+                            <span>
+                                <img src="__PUBLIC__/Home/images/1b.png" alt="">
+                            </span>
+                            <span>
+                                <i>滤芯外部活性炭</i>
+                                <i>蒂芬妮蓝</i>
+                                <i>全款购买</i>
+                                <i><b class="iconfont icon-552cd51ece753"></b><b>119.00</b></i>
+                            </span>
+                        </p>
+                        <span>x1</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="####">
+                        <p>
+                            <span>
+                                <img src="__PUBLIC__/Home/images/1b.png" alt="">
+                            </span>
+                            <span>
+                                <i>滤芯外部活性炭</i>
+                                <i>蒂芬妮蓝</i>
+                                <i>全款购买</i>
+                                <i><b class="iconfont icon-552cd51ece753"></b><b>119.00</b></i>
+                            </span>
+                        </p>
+                        <span>x1</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="####">
+                        <p>
+                            <span>
+                                <img src="__PUBLIC__/Home/images/1b.png" alt="">
+                            </span>
+                            <span>
+                                <i>滤芯外部活性炭</i>
+                                <i>蒂芬妮蓝</i>
+                                <i>全款购买</i>
+                                <i><b class="iconfont icon-552cd51ece753"></b><b>119.00</b></i>
+                            </span>
+                        </p>
+                        <span>x1</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- 立即付款 -->
+        <div class="footFix">
+            <p>应付：<span><i class="iconfont icon-552cd51ece753"></i><i>1398.00</i></span></p>
+            <p>立即付款</p>
+        </div>
+    </div>
 </body>
-</html>
+<script src="__PUBLIC__/Home/js/public.js"></script>
+<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
+<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
+<script>
+    
+    // $(function(){
+        //     // 首页按钮
+        //     !function(){
+            //         // 创建 a 标签
+            //         var home = document.createElement('a');
+            //         home.innerText = '首\n页';
+            
+            //         home.href = '{{:U("Home/Shop/index")}}';
+            //         home.setAttribute("id", 'back2Home');
+            
+            //         // 添加到页面
+            //         document.body.appendChild(home);
+            //         home.onclick = function(){
+                //             home.style.background = '#aaa';
+                //         }
+                //         return
+                //     }()
+                // })
+                //微信接口
+                wx.config({
+                    debug: false,
+                    appId: '{{$wxinfo["appId"]}}',
+                    timestamp: '{{$wxinfo["timestamp"]}}',
+                    nonceStr: '{{$wxinfo["nonceStr"]}}',
+                    signature: '{{$wxinfo["signature"]}}',
+                    jsApiList: [
+                    // 所有要调用的 API 都要加到这个列表中
+                    'chooseWXPay'
+                    ]
+                });
+                
+            </script>
+            <!-- <script src='__PUBLIC__/Home/js/pay/payconfirm.js'></script> -->
+            </html>
+            
