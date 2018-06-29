@@ -12,7 +12,6 @@ body {
 .logo {
     height:80px;
     width: 300px;
-    /* background: lightskyblue; */
     background: url("../img/htlogo.png") no-repeat;
     background-size: auto 100%;
     position: absolute;
@@ -46,14 +45,12 @@ body {
     position: relative;
     top: 20%;
     padding: 3% 5%;
-    /* background: rgba(256,256,256,.6); */
-    /* -webkit-box-shadow: 0 0 10px rgba(0,0,0,.1); */
-    /* box-shadow: 0 0 10px rgba(0,0,0,.1); */
 }
 .middle-box > div > h3 {
-    font-size: 28px;
+    font-size: 35px;
     color: #518CF8;
     font-weight: normal;
+    white-space: nowrap;
 }
 
 .loginDivt {
@@ -70,26 +67,19 @@ body {
     border: 1px solid #E0DFE2;
     border-radius: 30px;
     position: relative;
-    /* background: #DFF3FE; */
 }
 .loginDivt>input {
     -webkit-box-flex: 8;
     -ms-flex: 8;
     flex: 8;
     border: none;
-    /* border-left: 1px solid #aaaaaa; */
     background: none;
     font-size: 16px;
 }
 .loginDivt>span {
-    /* -webkit-box-flex: 1; */
-    /* -ms-flex: 1; */
-    /* flex: 1; */
-    /* height: 26px; */
     display: inline-block;
     margin-left: 4%;
-    /* background: url('../img/username.png') no-repeat; */
-    /* background-size: contain; */
+    white-space: nowrap;
 }
 input[name="code"] {
     padding: 7%;
@@ -98,6 +88,7 @@ input[name="code"] {
     border: 1px solid #E0DFE2;
     border-radius: 30px;
     background: white;
+    width: 50%;
 }
 input[name="code"]:focus {
     border: 1px solid #E0DFE2 !important;
@@ -121,7 +112,7 @@ input:-webkit-autofill {
     position: relative;
 }
 .loginDivs > img {
-    width: 150px;
+    width: 55%;
 }
 .loginbtn {
     margin-top: 12%;
@@ -129,11 +120,6 @@ input:-webkit-autofill {
     border: none;
     border-radius: 6px;
     background: #518CF8 !important;
-    /* background: -ms-linear-gradient(top, #7ABCDF -2%, #00359C 59%); */
-    /* background: -webkit-linear-gradient(top, #7ABCDF -2%, #00359C 59%); */
-    /* background: -moz-linear-gradient(top, #7ABCDF -2%, #00359C 59%); */
-    /* filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#7ABCDF, endColorstr=#00359C);IE<9> */
-    /* -ms-filter: "progid:DXImageTransform.Microsoft.gradient (GradientType=0, startColorstr=#7ABCDF, endColorstr=#00359C)";IE8+  */
 }
 
 /* 提示 */
@@ -145,7 +131,6 @@ input:-webkit-autofill {
     color: red;
     position: absolute;
     right: -85px;
-    
 }
 .tipm {
     color: red;
@@ -156,6 +141,12 @@ input:-webkit-autofill {
     color: red;
     position: absolute;
     right: -92px;
+}
+.loginscreen.middle-box {
+    padding: 3% 3% !important;
+}
+.form-group {
+    margin: 25px 0 0 0;
 }
 /* 旧 */
 .signinpanel {
@@ -207,7 +198,24 @@ input:-webkit-autofill {
 
 .signup-footer{border-top: solid 1px rgba(255,255,255,.3);margin:20px 0;padding-top: 15px;}
 
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 600px) {
+    #form1 input[name="code"] {
+        width: 80px;
+        display: block;
+    }
+    #form1 .loginDivs > img {
+        width: 90px;
+    }
+    .loginDivt, #form1 .loginbtn{
+        width: 180px !important;
+    }
+} */
+@media screen and (max-width: 800px) {
+    input[name="code"] {
+        /* width: 30%; */
+        display: block;
+        margin-right: 10px;
+    }
     .signinpanel,
     .signuppanel {
         margin: 0 auto;

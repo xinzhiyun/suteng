@@ -8039,8 +8039,12 @@ body.skin-3 {
 /* 顶部导航 */
 .topcontent {
     /* height: 100px; */
-    background:#ECF0F5;
+    background:#2F4050;
     padding:0 20px; 
+    color: #a7b1c2;
+}
+.J_tabExit {
+    color: #a7b1c2 !important;
 }
 
 .topcontent  > div:nth-child(1) {
@@ -8081,15 +8085,21 @@ body.skin-3 {
 
 .logoInfo > p {
     float:left;
+    padding: 10px 0 0 0;
 }
 .zhankai {
     float:right;
     margin-top: 40px;
 }
-.logoInfo > p > img {
+.logoInfo > p > a {
+    display: block;
+    color: #a7b1c2;
+}
+
+.logoInfo > p > a > img {
     height: 80px;
 }
-.logoInfo > p > span{
+.logoInfo > p > a > span{
     display: block;
     font-size: 18px;
     font-weight: bold;
