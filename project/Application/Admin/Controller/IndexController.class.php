@@ -142,6 +142,40 @@ class IndexController extends CommonController
     	$map['addtime'] = array('between',array($starttime4,$endtime4));
 	    $flowUsers[4] = M("flow")->where($map)->field("count(*) as count,describe")->group("`describe`")->select();
 
-	    return $flowUsers;
+        $tmpArr = [];
+        $tmpNumCount = 0;
+        foreach ($flowUsers as $key => $value) {            
+            foreach ($value  as $k => $v) {
+                $tmpRes=[];
+                if(!in_array($v['describe'],$tmpArr)){
+                    $tmpArr[] = $v['describe'];
+                    $resKey = count($tmpArr)-1;
+                    $resAttr[$resKey]['name'] = $v['describe'];
+                }else{
+                    $resKey = array_search($v['describe'],$tmpArr);
+                }
+            
+                $resAttr[$resKey]['list'][$key]=(int)$v['count'];
+
+                $count = count($resAttr[$resKey]['list']);
+                if( $count > $tmpNumCount){
+                    $tmpNumCount = $count;
+                }
+            }
+        }
+
+        foreach ($resAttr as $key => &$value) {
+            $count = count($value['list']);
+            if($count<$tmpNumCount){
+                for ($i=1; $i <= $tmpNumCount; $i++) { 
+                    if(!isset($value['list'][$i])){
+                        $value['list'][$i]=0;
+                    }
+                }
+            }
+        }
+        array_multisort($resAttr);
+ 
+	    return $resAttr;
     }
 }

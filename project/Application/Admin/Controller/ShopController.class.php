@@ -1719,7 +1719,7 @@ class ShopController extends CommonController
         if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
             $map[I('get.key')] = array('like',"%".trim(I('get.keywords'))."%");
         }
-        $data = D('attr')->order('cid')->select();
+        $data = D('attr')->order('cid desc')->select();
 
         // dump($data);
         $category = D('Category')->getTreeData('tree','id, name',$name='name',$child='id',$parent='pid');
@@ -1751,7 +1751,7 @@ class ShopController extends CommonController
             }
             $res = $attr->add();
             if($res){
-                E('添加完成',$res);
+                E('添加成功', 200);
             } else {
                 E('添加失败',203);
             }
@@ -1763,5 +1763,61 @@ class ShopController extends CommonController
             $this->ajaxReturn($err);
         }
 
+    }
+
+    /**
+     * [attrEdit 属性修改]
+     * @return [type] [description]
+     */
+    public function attrEdit()
+    {
+        try {
+            $attr = D('attr');
+            $post = I('post.');
+
+            $where['id'] = $post['id'];
+            unset($post['id']);
+            if(!$attr->create($post)) E($cate->getError(),203);
+            $res = $attr->where($where)->save($post);
+            if(!$res) E('修改失败了', 202);
+            E('修改成功', 200);
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            return $this->ajaxReturn($err);
+        }
+
+    }
+
+    /**
+     * [attrValAdd 属性值添加]
+     * @return [type] [description]
+     */
+    public function attrValAdd()
+    {
+        try {
+            $attrval = D('attrVal');
+            $_POST['addtime'] = time();
+            $_POST['updatetime'] = time();
+            $data = I('post.');
+
+            if(!$attrval->create()) {
+                E($attrval->getError(),204);
+            }
+            $res = $attrval->add();
+            if($res){
+                E('添加属性值成功', 200);
+            } else {
+                E('添加属性值失败',203);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
     }
 }
