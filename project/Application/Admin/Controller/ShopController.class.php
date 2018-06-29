@@ -85,7 +85,16 @@ class ShopController extends CommonController
         try {
             $cate = D('Category');
             $post = I('post.');
+
+            if(!empty($_FILES)){
+                $pic = File::upload('Category');
+                if($pic){
+                    $post['pic'] = '/Public/upload'.$pic[0];
+                }
+            }
+
             $where['id'] = $post['id'];
+            unset($post['id']);
             if(!$cate->create($post)) E($cate->getError(),203);
             $res = $cate->where($where)->save($post);
             if(!$res) E('修改失败了', 202);
