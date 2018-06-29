@@ -251,8 +251,7 @@ body {
 	text-align: center;
 }
 /* 我的 */
-#footer,
-.cartCalc {
+#footer {
 	width: 100%;
 	position: fixed;
 	padding: 4px 0;
@@ -273,4 +272,53 @@ body {
 	height: 1rem;
 	width: auto;
 	margin-bottom: -.22rem;
+}
+.cartCalc {
+	width: 100%;
+	height: 50px;
+	position: fixed;
+	display: block;
+	bottom: 0;
+	border-top: 1px solid #f1f1f1;
+	background: #fff;
+	z-index: 999;
+}
+.cartCalc>div {
+	height: 100%;
+	display: flex;
+	align-items: center;
+}
+
+.cartCalc img {
+	height: 60%;
+	width: auto;
+}
+.cartCalc>.fl {
+	width: 30%;
+	padding: 0 2vw;
+}
+.cartCalc>.fr {
+	width: 70%;
+	display: inline-flex;
+	justify-content: space-between;
+}
+.cartCalc>.fr>p,
+.cartCalc>.fr>div {
+	height: 100%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 4px;
+}
+
+.cartCalc>.fr>p {
+	width: 40%;
+}
+.cartCalc>.fr>div {
+	width: 40vw;
+	color: #fff;
+	background: #CA0010;
+}
+.cartCalc>.fr>div:active {
+	background: #90010d;
 }

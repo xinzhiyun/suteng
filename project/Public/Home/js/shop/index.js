@@ -21,6 +21,9 @@ var shopindex = new Vue({
 			categoryTitle: '',  //二级分类标题
 			noCateContent: false,
 			cart_none: '',
+			moneyCalc: [],	// 购物车选中的商品
+			checkNum: 0,	// 结算的商品数量
+			checkMoney: '',	// 结算金额
 		}
 	},
 	created() {
@@ -189,33 +192,33 @@ var shopindex = new Vue({
 		subClick(scid) {
 			console.log('scid: ',scid);
 		},
-		// 购物车商品左滑
+		// 购物车商品左滑、右滑
 		slideDelete(e, gid) {
 			var el = e.currentTarget;
 			// console.log('gid: ',gid);
 			// console.log('e: ',e);
-			console.group();
+			// console.group();
 			if(!window.touchX){
 				window.touchX = e.changedTouches[0].pageX;
-				console.log('touchX: ',window.touchX);
+				// console.log('touchX: ',window.touchX);
 			}else{
 				if(window.touchX - e.changedTouches[0].pageX < 0 && window.touchX - e.changedTouches[0].pageX <= -30){
-					console.clear();
-					console.log('右滑');
+					// console.clear();
+					// console.log('右滑');
 					el.setAttribute('style','transform:translateX(0);');
 					window.isDeleteShow = true;
 					window.touchX = '';
 					
 				}else if(window.touchX - e.changedTouches[0].pageX > 0 && window.touchX - e.changedTouches[0].pageX >= 30){
-					console.clear();
-					console.log('左滑');
+					// console.clear();
+					// console.log('左滑');
 					el.setAttribute('style','transform:translateX(-40px);');
 					window.isDeleteShow = false;
 					window.touchX = '';
 				}
 			}
-			console.log('window.touchX - e.changedTouches[0].pageX: ',window.touchX - e.changedTouches[0].pageX);
-			console.groupEnd();
+			// console.log('window.touchX - e.changedTouches[0].pageX: ',window.touchX - e.changedTouches[0].pageX);
+			// console.groupEnd();
 		},
 		slideEnd() {
 			window.touchX = '';
@@ -225,7 +228,7 @@ var shopindex = new Vue({
 			console.log('gid: ',gid);
 		},
 		// 购物车勾选
-		cartSelect(gid, price, index, e) {
+		cartSelect(gid, price, index, num, e) {
 			var vm = this;
 			var el = e.currentTarget;
 			var src = el.querySelector('img').getAttribute('src');
@@ -233,12 +236,31 @@ var shopindex = new Vue({
 			console.log('gid: %s, price: %s, index: %s',gid, price, index);
 			if(src.indexOf('select') < 0){	// 选中
 				var _src = public+'/Home/images/shop/cart_select.png';
-				el.querySelector('img').setAttribute('src', _src)
-
+				el.querySelector('img').setAttribute('src', _src);
+				vm.moneyCalc[index] = {gid: gid,price: price,num: num};
 			}else{	// 取消选中
 				var _src = public+'/Home/images/shop/cart_none.png';
-				el.querySelector('img').setAttribute('src', _src)
+				el.querySelector('img').setAttribute('src', _src);
+				vm.moneyCalc[index] = '';
 			}
-		}	
+			// 同步结算勾选数量
+			vm.checkNum = 0;
+			vm.checkMoney = 0;
+			for(var i=0; i<vm.moneyCalc.length; i++){
+				if(vm.moneyCalc[i]){
+					vm.checkNum++;
+					vm.checkMoney += Number(vm.moneyCalc[i].price)*Number(vm.moneyCalc[i].num);
+				}
+			}
+		},
+		// 点击结算
+		goPay() {
+			var vm = this;
+			console.log('vm.moneyCalc: ',vm.moneyCalc);
+			if(!vm.moneyCalc.length){
+				// 未选中
+				return
+			}
+		}
 	}
 })
