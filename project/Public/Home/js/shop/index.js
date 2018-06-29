@@ -4,8 +4,8 @@ var shopindex = new Vue({
 		return {
 			menuList: [],				// 分类按钮
 			blockList: [],				// 商品块集合
-			classifyList: [],			// 一级分类类目
-			classifyContentList: [],	// 二级分类
+			categoryList: [],			// 一级分类类目
+			categoryContentList: [],	// 二级分类
 			cartList: [],				// 购物车商品集合
 			cateSelect: '',
 			tabclk: 1, 					// 底部按钮
@@ -13,18 +13,26 @@ var shopindex = new Vue({
 			tabsrc: [],
 			srcArr: [
 				public + '/Home/images/shop/home',
-				public + '/Home/images/shop/classify',
+				public + '/Home/images/shop/category',
 				public + '/Home/images/shop/addcart',
 				public + '/Home/images/shop/mine'
 			],
 			titleList: ['商城首页','分类','购物车','我的'],
+			categoryTitle: '',  //二级分类标题
+			noCateContent: '加载中...',
+			cart_none: '',
+			moneyCalc: [],	// 购物车选中的商品
+			checkNum: 0,	// 结算的商品数量
+			checkMoney: 0,	// 结算金额
+			selectedSrc: '',
+			emptySrc: '',
 		}
 	},
 	created() {
 		var vm = this;
 		var href = location.href;
 		// 刷新保持状态
-		// 首页_home, 分类classify, 购物车cart, 我的mine
+		// 首页_home, 分类category, 购物车cart, 我的mine
 		for(var i=0; i<vm.srcArr.length; i++){
 			vm.tabsrc.push(vm.srcArr[i])
 		}
@@ -32,8 +40,8 @@ var shopindex = new Vue({
 		if(href.indexOf('_home') > 0){
 			vm.tabClick(1, '_home');
 
-		}else if(href.indexOf('classify') > 0){
-			vm.tabClick(2, 'classify');
+		}else if(href.indexOf('category') > 0){
+			vm.tabClick(2, 'category');
 
 		}else if(href.indexOf('cart') > 0){
 			vm.tabClick(3, 'cart');
@@ -90,14 +98,15 @@ var shopindex = new Vue({
 		];
 
 		// 一级分类
-		vm.classifyList = [
-			{name: '热水器', cid: '12'},
-			{name: '净水器', cid: '13'},
-			{name: '瓦胆系列', cid: '142'},
-			{name: '空气净化', cid: '14'},
-			{name: '生活用品', cid: '112'},
-			{name: '数码家电', cid: '242'}
-		]
+		vm.categoryList = JSON.parse(category);
+		// vm.categoryList = [
+		// 	{name: '热水器', cid: '12'},
+		// 	{name: '净水器', cid: '13'},
+		// 	{name: '瓦胆系列', cid: '142'},
+		// 	{name: '空气净化', cid: '14'},
+		// 	{name: '生活用品', cid: '112'},
+		// 	{name: '数码家电', cid: '242'}
+		// ]
 
 		// 购物车数据
 		vm.cartList = [
@@ -107,6 +116,11 @@ var shopindex = new Vue({
 			{src: '',gid:'4',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'11'},
 			{src: '',gid:'5',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'6'},
 		];
+	},
+	mounted() {
+		var cBlock = document.querySelectorAll('.cBlock');	// 购物车商品
+		this.selectedSrc = public+'/Home/images/shop/cart_select.png';
+		this.emptySrc = public+'/Home/images/shop/cart_none.png';
 	},
 	methods: {
 		// 点击商品图片
@@ -128,50 +142,225 @@ var shopindex = new Vue({
 		},
 		// 点击分类类目
 		getCate(cate, cid) {
+			var vm = this;
+			vm.categoryTitle = cate.name;
 			// 点击同一个分类类目
 			if(window.clickCid == cid) return;
 			window.clickCid = cid;
-			this.cateSelect = cate;
+			vm.cateSelect = cate;
 			console.log('cid: ',cid);
 			// 获取对应类目下的商品详细分类
-			// $.ajax({
-			// 	url: '',
-			// 	type: 'get',
-			// 	data: {cid: cid},
-			// 	success: function(res){
-			// 		console.log('res: ',res);
-			// 	},
-			// 	error: function(err){
-			// 		console.log('err: ',err);
-			// 	}
-			// })
-
-			this.classifyContentList = [
-				{
-					title: '净水器',
-					subType: [
-						{src: '',name:'lopo玩具',scid: '12'},
-						{src: '',name:'毛衣刷',scid: '13'},
-						{src: '',name:'宝宝杯',scid: '14'},
-						{src: '',name:'小小苏',scid: '15'},
-						{src: '',name:'规划局规划国际化',scid: '25'},
-					]
+			$.ajax({
+				url: getURL('Home','Shop/getCategory'),
+				type: 'post',
+				data: {id: cid},
+				success: function(res){
+					console.log('res: ',res);
+					if(res.status == 200){
+						vm.categoryContentList = res.data;
+						vm.noCateContent = false;
+						if(!res.data.length){
+							vm.noCateContent = '此分类下暂无数据';
+						}
+					}else{
+						layuiHint(res.msg);
+						vm.noCateContent = '此分类下暂无数据';
+					}
 				},
-				{
-					title: '净化器',
-					subType: [
-						{src: '',name:'lopo玩具',scid: '12'},
-						{src: '',name:'毛衣刷',scid: '13'},
-						{src: '',name:'宝宝杯',scid: '14'},
-						{src: '',name:'小小苏',scid: '15'},
-						{src: '',name:'规划局规划国际化',scid: '25'},
-					]
+				error: function(err){
+					console.log('err: ',err);
 				}
-			];
+			})
+
+			// this.categoryContentList = [
+			// 	{
+			// 		title: '净水器',
+			// 		subType: [
+			// 			{src: '',name:'lopo玩具',scid: '12'},
+			// 			{src: '',name:'毛衣刷',scid: '13'},
+			// 			{src: '',name:'宝宝杯',scid: '14'},
+			// 			{src: '',name:'小小苏',scid: '15'},
+			// 			{src: '',name:'规划局规划国际化',scid: '25'},
+			// 		]
+			// 	},
+			// 	{
+			// 		title: '净化器',
+			// 		subType: [
+			// 			{src: '',name:'lopo玩具',scid: '12'},
+			// 			{src: '',name:'毛衣刷',scid: '13'},
+			// 			{src: '',name:'宝宝杯',scid: '14'},
+			// 			{src: '',name:'小小苏',scid: '15'},
+			// 			{src: '',name:'规划局规划国际化',scid: '25'},
+			// 		]
+			// 	}
+			// ];
 		},
 		// 点击大分类下的小分类商品图片
 		subClick(scid) {
 			console.log('scid: ',scid);
+		},
+		// 购物车商品左滑、右滑
+		slideDelete(e, gid) {
+			var el = e.currentTarget;
+			// console.log('gid: ',gid);
+			// console.log('e: ',e);
+			// console.group();
+			if(!window.touchX){
+				window.touchX = e.changedTouches[0].pageX;
+				// console.log('touchX: ',window.touchX);
+			}else{
+				if(window.touchX - e.changedTouches[0].pageX < 0 && window.touchX - e.changedTouches[0].pageX <= -30){
+					// console.clear();
+					// console.log('右滑');
+					el.setAttribute('style','transform:translateX(0);');
+					window.isDeleteShow = true;
+					window.touchX = '';
+					
+				}else if(window.touchX - e.changedTouches[0].pageX > 0 && window.touchX - e.changedTouches[0].pageX >= 30){
+					// console.clear();
+					// console.log('左滑');
+					el.setAttribute('style','transform:translateX(-40px);');
+					window.isDeleteShow = false;
+					window.touchX = '';
+				}
+			}
+			// console.log('window.touchX - e.changedTouches[0].pageX: ',window.touchX - e.changedTouches[0].pageX);
+			// console.groupEnd();
+		},
+		slideEnd() {
+			window.touchX = '';
+		},
+		// 删除购物车商品
+		deleteCart(gid, e) {
+			var el = e.currentTarget.parentNode;
+			console.log('gid: ',gid);
+			
+		},
+		// 购物车勾选
+		cartSelect(gid, price, index, num, e) {
+			var vm = this;
+			var el = e.currentTarget;
+			var src = el.querySelector('img').getAttribute('src');
+			//gid商品id, price单价, index序号
+			console.log('gid: %s, price: %s, index: %s',gid, price, index);
+			if(src.indexOf('select') < 0){	// 选中
+				el.querySelector('img').setAttribute('src', vm.selectedSrc);
+				vm.moneyCalc[index] = {gid: gid,price: price,num: num};
+			}else{	// 取消选中
+				el.querySelector('img').setAttribute('src', vm.emptySrc);
+				vm.moneyCalc[index] = '';
+			}
+			
+			// 同步结算勾选数量、金额
+			vm.calculator();
+		},
+		// 计算金额
+		calculator() {
+			var vm = this;
+			vm.checkNum = 0;
+			vm.checkMoney = 0;
+			for(var i=0; i<vm.moneyCalc.length; i++){
+				if(vm.moneyCalc[i]){
+					vm.checkNum++;
+					vm.checkMoney += Number(vm.moneyCalc[i].price)*Number(vm.moneyCalc[i].num);
+				}
+			}
+			cBlock = document.querySelectorAll('.cBlock');	// 购物车商品
+			// 全选
+			// 购物车商品打钩位置
+			var cartSelectAll = document.querySelector('.cartCalc').querySelector('img');
+			if(vm.checkNum == cBlock.length){
+				cartSelectAll.setAttribute('src', vm.selectedSrc);
+			}else{
+				cartSelectAll.setAttribute('src', vm.emptySrc);
+			}
+		},
+		// 修改数量
+		numChange(bool, index, e) {
+			var el = e.currentTarget;
+			var span = el.parentNode.querySelectorAll('span')[0];
+			var input = el.parentNode.querySelector('input');
+			var vm = this;
+			console.log('bool: ',bool);
+			console.log('vm.moneyCalc[index]: ',vm.moneyCalc);
+			console.log('vm.moneyCalc[index]: ',vm.moneyCalc[+index]);
+			if(bool === 1){
+				// 加
+				if(vm.moneyCalc[+index]){
+					++vm.moneyCalc[+index].num;
+				}
+				// 数量变化
+				vm.cartList[index].num++;
+				span.style.background = '#fff';
+			}else if(bool === -1){
+				// 减
+				if(vm.moneyCalc[+index] && vm.moneyCalc[+index].num >= 2){
+					--vm.moneyCalc[+index].num;
+				}else if(vm.moneyCalc[+index] && vm.moneyCalc[+index].num == 1){
+					span.style.background = '#f1f1f1';
+				}
+				// 数量变化
+				if(vm.cartList[index].num >= 2){
+					vm.cartList[index].num--;
+				}
+			}else if(bool === 11){
+				console.log('val: ',el.value-0,typeof (el.value-0) );
+				// 手动修改
+				if(+el.value >= 1 && typeof(el.value-0) === 'number'){
+					vm.cartList[index].num = el.value-0;
+				}else{
+					el.value = 1;
+				}
+				if(vm.moneyCalc[+index]){
+					vm.moneyCalc[+index].num = el.value;
+				}
+			}
+			vm.calculator();
+		},
+		// 全选、全不选
+		checkAll(e) {
+			var img = e.currentTarget.querySelector('img');
+			cBlock = document.querySelectorAll('.cBlock');
+			var cartCheckAll = document.querySelectorAll('.cBlock>.fl>img');
+			var vm = this;
+			if(vm.checkNum != vm.cartList.length){
+				// 全选操作
+				console.log('all');
+				vm.moneyCalc.length = 0;	// 清空
+				for(var i=0; i<vm.cartList.length; i++){
+					vm.moneyCalc.push({
+						gid: vm.cartList[i].gid,
+						price: vm.cartList[i].price,
+						num: vm.cartList[i].num
+					})
+					
+					//打钩
+					cartCheckAll[i].setAttribute('src', vm.selectedSrc);
+				}
+				img.setAttribute('src', vm.selectedSrc);
+			}else{
+				// 取消全选操作
+				console.log('none');
+				// 清空
+				vm.moneyCalc.length = 0;
+				img.setAttribute('src', vm.emptySrc);
+				for(var i=0; i<vm.cartList.length; i++){
+					//打钩清空
+					cartCheckAll[i].setAttribute('src', vm.emptySrc);
+				}
+			}
+			console.log('vm.moneyCalc: ',vm.moneyCalc);
+			// 同步结算勾选数量、金额
+			vm.calculator();
+		},
+		// 点击结算
+		goPay() {
+			var vm = this;
+			console.log('vm.moneyCalc: ',vm.moneyCalc);
+			if(!vm.moneyCalc.length){
+				// 未选中
+				return
+			}
 		}
 	}
 })

@@ -14,9 +14,10 @@
 	<script>
 		var public = '__PUBLIC__';
 		var shopurl = '{{:U("Home/Shop/index")}}';
+		var category = '{{$category|json_encode}}';
 	</script>
 </head>
-<body>
+<body ontouchstart='console.log()'>
 	<div class='shopindex'>
 		<header id="header" :style='{display: tabclk == 3 || tabclk == 4 ? "none" : "flex"}'>
 			<div class='search'>
@@ -55,29 +56,33 @@
 			</ul>
 		</main>
 		<!-- 分类内容 -->
-		<ul class='classify cfix' :style='{display: tabclk == 2 ? "block" : "none"}'>
+		<ul class='category cfix' :style='{display: tabclk == 2 ? "block" : "none"}'>
 			<li class='cleft fl'>
-				<p v-for='cate in classifyList' 
+				<p v-for='cate in categoryList' 
 				v-text='cate.name' 
-				@click='getCate(cate, cate.cid)'
+				@click='getCate(cate, cate.id)'
 				:class='{cateSelect: cateSelect == cate}'></p>
 			</li>
 			<li class='cright fr'>
-				<div class='subBlock' v-for='c in classifyContentList'>
-					<p v-text='c.title'></p>
+				<div class='subBlock'>
+					<p v-text='categoryTitle'></p>
 					<ul>
-						<li class='subtype' v-for='sub in c.subType' @click='subClick(sub.scid)'>
-							<img :src="sub.src" alt="加载中">
-							<p v-text='sub.name'></p>
+						<li class='subtype' v-for='category in categoryContentList' @click='subClick(category.id)'>
+							<img :src="category.pic" alt="加载中">
+							<p v-text='category.name'></p>
 						</li>
 					</ul>
 				</div>
+				<div class='noCateContent' :style='{display: noCateContent ? "block" : "none"}' v-text='noCateContent'>加载中</div>
 			</li>
 		</ul>
 		<!-- 购物车内容 -->
 		<div class='cart' :style='{display: tabclk == 3 ? "block" : "none"}'>
-			<ul class='cBlock cfix' v-for='(cart, index) in cartList'>
-				<li class='fl'>
+			<ul class='cBlock cfix' v-for='(cart, index) in cartList' 
+			@touchmove='slideDelete($event, cart.gid)'
+			@touchend='slideEnd()'
+			:gid='cart.gid'>
+				<li class='fl' @click='cartSelect(cart.gid, cart.price, index, cart.num, $event)'>
 					<img src="__PUBLIC__/Home/images/shop/cart_none.png" alt="">
 				</li>
 				<li class='fr'>
@@ -90,19 +95,20 @@
 						<b v-text='"￥"+cart.price'>商品价格</b>
 					</div>
 					<p class='numbtn cfix'>
-						<span class='fl'>-</span>
-						<input class='fl' type="text" :value='cart.num'>
-						<span class='fl'>+</span>
+						<span class='fl' @click='numChange(-1,index,$event)'>-</span>
+						<input class='fl' type="text" :value='cart.num' @keyup='numChange(11, index, $event)'>
+						<span class='fl' @click='numChange(1,index,$event)'>+</span>
 					</p>
 				</li>
+				<div class='deleteCart' @touchend='deleteCart(cart.gid, $event)'><span>删除</span></div>
 			</ul>
 		</div>
-		<footer id='footer'>
+		<footer id='footer' :style='{display: tabclk == 3 ? "none" : "flex"}'>
 			<div @click='tabClick(1, "_home")'>
 				<img :src="tabsrc[0]+'.png'" alt="">
 				<p :style='{color: tabclk == 1 ? "#4D70FF" : "#333"}'>首页</p>
 			</div>
-			<div @click='tabClick(2, "classify")'>
+			<div @click='tabClick(2, "category")'>
 				<img :src="tabsrc[1]+'.png'" alt="">
 				<p :style='{color: tabclk == 2 ? "#4D70FF" : "#333"}'>分类</p>
 			</div>
@@ -115,6 +121,19 @@
 				<p :style='{color: tabclk == 4 ? "#4D70FF" : "#333"}'>我的</p>
 			</div>
 		</footer>
+		<!-- 购物车结算 -->
+		<div class='cartCalc cfix' :style='{display: tabclk == 3 ? "block" : "none"}'>
+			<div class='fl' @click='checkAll($event)'>
+				<img src="__PUBLIC__/Home/images/shop/cart_none.png" alt="">
+				<span>&emsp;全选</span>
+			</div>
+			<div class='fr'>
+				<p v-text='"￥"+checkMoney'>金额总计</p>
+				<div @click='goPay()'>
+					去结算(<span v-text='checkNum'>数量</span>)
+				</div>
+			</div>
+		</div>
 	</div>
 	<script type="text/javascript" src="__PUBLIC__/Home/js/swiper-3.4.2.min.js"></script>
 	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
@@ -123,6 +142,7 @@
   	<script src="__PUBLIC__/Home/js/shop/index.js"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script>
+		// 轮播图
 		var mySwiper = new Swiper ('.swiper-container', {
 			autoplay: 3000,
 			loop: true,
@@ -131,6 +151,42 @@
 				el: '.swiper-pagination',
 			}
 		}) 
+
+		// 刷新/后退,保持状态
+		hashchangeFn(function(hash){
+			var vm = shopindex;	// vue的实例
+			// 首页_home, 分类category, 购物车cart, 我的mine
+			for(var i=0; i<vm.srcArr.length; i++){
+				vm.tabsrc.push(vm.srcArr[i])
+			}
+			if(hash.indexOf('_home') > 0){
+				vm.tabClick(1, '_home');
+			}else if(hash.indexOf('category') > 0){
+				vm.tabClick(2, 'category');
+			}else if(hash.indexOf('cart') > 0){
+				vm.tabClick(3, 'cart');
+			}else if(hash.indexOf('mine') > 0){
+				vm.tabClick(4, 'mine');
+			}else{
+				// 首页
+				vm.tabsrc[0] = vm.tabsrc[0];
+			}
+		})
+
+		// 监听hashchange事件
+		function hashchangeFn(callback) {
+			var haschangeflag = false;
+			window.addEventListener('hashchange', function(){
+			haschangeflag = true;
+			callback(location.hash);
+			}, false);
+			// console.log('haschangeflag: ',haschangeflag);
+			// console.log('hash: ',location.hash);
+			// 刷新保持
+			if(!haschangeflag){
+			callback(location.hash);
+			}
+		}
 	</script>
 </body>
 </html>

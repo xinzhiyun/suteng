@@ -311,65 +311,24 @@
 					xSeries[1].push(i);
 				}
 				// 会员套餐
-				for(var i in res.flowUsers){
-					console.log("sizhong", res.flowUsers[i]);
-					// 第一段
-					if(res.flowUsers[i].length) {
-						for(var j = 0; j < res.flowUsers[i].length; j++) {
-							series_data[2].push(res.flowUsers[i][j]);
-							// res.flowUsers[i][j]
-						}
-					}else {
-						series_data[2].push(0);
-					}
+				taoArr = {};
+				for(var i = 0; i < res.flowUsers[1].length; i++) {
+					taoArr["meala"+i] = new Array(res.flowUsers[1][i]);
 				}
-				// var one = res.flowUsers[1];
-				// var two = res.flowUsers[2];
-				// var three = res.flowUsers[3];
-				// var four = res.flowUsers[4];
 				
-				// 套餐 
-				var taoArr = [];
-				if(res.flowUsers[1].length) {
-					for(var i = 0; i < res.flowUsers[1].length; i++) {
-						var one = [];
-						one["count"] = res.flowUsers[1][i].count;
-						one["describe"] = res.flowUsers[1][i].describe;
-						taoArr.push([one]);
-					}
-				}
-				if(res.flowUsers[2].length) {
-					for(var i = 0; i < taoArr.length; i++) {
-						for(var k = 0; k < taoArr[i].length; k++) {
-							for(var j = 0; j < res.flowUsers[2].length; j ++) { 
-								// 判断是否同一套餐类型
-								// if(taoArr[i][k]["describe"] == res.flowUsers[2][j].describe) {
-								// 	console.log(taoArr[i][k]["describe"], res.flowUsers[2][j].describe);
-								// 	var two = [];
-								// 	two["count"] = res.flowUsers[2][j].count;
-								// 	two["describe"] = res.flowUsers[2][j].describe;
-								// }else {
-								// 	var three = [];
-								// 	three["count"] = res.flowUsers[2][j].count;
-								// 	three["describe"] = res.flowUsers[2][j].describe;
-								// }
-
-							}
+				
+				for(var i = 0; i < res.flowUsers[1].length; i++) {
+					for(var j = 0; j < res.flowUsers[2].length; j++) {
+						console.log(res.flowUsers[1][i].describe == res.flowUsers[2][j].describe);
+						// 第一段时间和第二段时间套餐有无一样
+						if(res.flowUsers[1][i].describe == res.flowUsers[2][j].describe) {
+							
+						}else {
+							taoArr["mealb"+i] = new Array(res.flowUsers[2][j]);
 						}
 					}
 				}
-				if(res.flowUsers[3].length) {
-
-				}
-				if(res.flowUsers[4].length) {
-
-				}
-
-
-
-				
 				console.log(taoArr)
-				
 				// 新增会员
 				if(series_data[0].length){
 					// y轴数据

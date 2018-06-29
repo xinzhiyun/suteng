@@ -37,9 +37,6 @@
                                     所属分类
                                 </th>
                                 <th>
-                                    属性级别
-                                </th>
-                                <th>
                                     操作
                                 </th>
                             </tr>
@@ -57,10 +54,7 @@
                                             {{$v['attr']}}
                                         </td>
                                         <td>
-                                            {{$v['cid']}}
-                                        </td>
-                                        <td>
-                                            {{$v['leavel']}}
+                                            {{$v['cname']}}
                                         </td>
                                         <td>
                                             <div class="btn-group">
@@ -127,7 +121,7 @@
                                     <!-- {{:dump($category)}} -->
                                     <select name="cid" class="input-medium form-control" id="attr">
                                         <volist name="category" id="vo">
-                                            <option value="{{$vo['id']}}">{{$vo['_name']}}</option>
+                                            <option value="{{$vo['id']}}" {{$vo['leavel']=='1' ? disabled:'' }}>{{$vo['_name']}}</option>
                                         </volist>
                                     </select>
                                 </div>
@@ -262,10 +256,11 @@
         $('.add-cate').click(function(){
             $('#st-add').modal('hide');
             var cid = $("#attr option:selected").val();
+            var cname = $("#attr option:selected").text();
             var name = $("input[name='attr']").val();
             $.ajax({
                 url:"attrAdd",
-                data:{"cid":cid,"attr":name},
+                data:{"cid":cid,"cname":cname,"attr":name},
                 dataType:"json",
                 type: 'post',
                 success:function(res){
@@ -278,7 +273,7 @@
                 }
             })
         });
-        // 修改分类
+        // 修改属性
         function edit(obj) {
             var ruleId = $(obj).attr('ruleId');
             var pid = $(obj).attr('ruletitle');
