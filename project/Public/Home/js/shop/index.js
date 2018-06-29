@@ -23,7 +23,7 @@ var shopindex = new Vue({
 			cart_none: '',
 			moneyCalc: [],	// 购物车选中的商品
 			checkNum: 0,	// 结算的商品数量
-			checkMoney: '',	// 结算金额
+			checkMoney: 0,	// 结算金额
 		}
 	},
 	created() {
@@ -243,7 +243,13 @@ var shopindex = new Vue({
 				el.querySelector('img').setAttribute('src', _src);
 				vm.moneyCalc[index] = '';
 			}
-			// 同步结算勾选数量
+			
+			// 同步结算勾选数量、金额
+			vm.calculator();
+		},
+		// 计算金额
+		calculator() {
+			var vm = this;
 			vm.checkNum = 0;
 			vm.checkMoney = 0;
 			for(var i=0; i<vm.moneyCalc.length; i++){
@@ -252,6 +258,37 @@ var shopindex = new Vue({
 					vm.checkMoney += Number(vm.moneyCalc[i].price)*Number(vm.moneyCalc[i].num);
 				}
 			}
+		},
+		// 修改数量
+		numChange(bool, index, e) {
+			var el = e.currentTarget;
+			var span = el.parentNode.querySelectorAll('span')[0];
+			var input = el.parentNode.querySelector('input');
+			var vm = this;
+			console.log('bool: ',bool);
+			console.log('vm.moneyCalc[index]: ',vm.moneyCalc);
+			console.log('vm.moneyCalc[index]: ',vm.moneyCalc[+index]);
+			if(bool > 0){
+				// 加
+				if(vm.moneyCalc[+index]){
+					++vm.moneyCalc[+index].num;
+				}
+				// 数量变化
+				vm.cartList[index].num++;
+				span.style.background = '#fff';
+			}else{
+				// 减
+				if(vm.moneyCalc[+index] && vm.moneyCalc[+index].num >= 2){
+					--vm.moneyCalc[+index].num;
+				}else if(vm.moneyCalc[+index] && vm.moneyCalc[+index].num == 1){
+					span.style.background = '#f1f1f1';
+				}
+				// 数量变化
+				if(vm.cartList[index].num >= 2){
+					vm.cartList[index].num--;
+				}
+			}
+			vm.calculator();
 		},
 		// 点击结算
 		goPay() {

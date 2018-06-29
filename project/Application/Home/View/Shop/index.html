@@ -95,9 +95,9 @@
 						<b v-text='"￥"+cart.price'>商品价格</b>
 					</div>
 					<p class='numbtn cfix'>
-						<span class='fl'>-</span>
-						<input class='fl' type="text" :value='cart.num' v-model='cartList[index].num'>
-						<span class='fl'>+</span>
+						<span class='fl' @click='numChange(-1,index,$event)'>-</span>
+						<input class='fl' type="text" :value='cart.num' v-model='cart.num'>
+						<span class='fl' @click='numChange(1,index,$event)'>+</span>
 					</p>
 				</li>
 				<div class='deleteCart' @touchend='deleteCart(cart.gid)'><span>删除</span></div>
@@ -154,7 +154,7 @@
 
 		// 刷新/后退,保持状态
 		hashchangeFn(function(hash){
-			var vm = shopindex;
+			var vm = shopindex;	// vue的实例
 			// 首页_home, 分类category, 购物车cart, 我的mine
 			for(var i=0; i<vm.srcArr.length; i++){
 				vm.tabsrc.push(vm.srcArr[i])
