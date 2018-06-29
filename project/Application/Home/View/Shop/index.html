@@ -103,7 +103,7 @@
 				<div class='deleteCart' @touchend='deleteCart(cart.gid)'><span>删除</span></div>
 			</ul>
 		</div>
-		<footer id='footer'>
+		<footer id='footer' :style='{display: tabclk == 3 ? "none" : "flex"}'>
 			<div @click='tabClick(1, "_home")'>
 				<img :src="tabsrc[0]+'.png'" alt="">
 				<p :style='{color: tabclk == 1 ? "#4D70FF" : "#333"}'>首页</p>
@@ -121,6 +121,15 @@
 				<p :style='{color: tabclk == 4 ? "#4D70FF" : "#333"}'>我的</p>
 			</div>
 		</footer>
+		<!-- 购物车结算 -->
+		<div class='cartCalc' :style='{display: tabclk == 3 ? "flex" : "none"}'>
+			<div>
+				<img src="__PUBLIC__/Home/images/shop/cart_none.png" alt="">
+				<span>&emsp;全选</span>
+				<span>金额总计</span>
+			</div>
+			<span>去结算<span v-text=''>数量</span></span>
+		</div>
 	</div>
 	<script type="text/javascript" src="__PUBLIC__/Home/js/swiper-3.4.2.min.js"></script>
 	<script src="__PUBLIC__/Home/js/vue.min.js"></script>

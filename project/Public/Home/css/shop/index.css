@@ -251,7 +251,8 @@ body {
 	text-align: center;
 }
 /* 我的 */
-#footer {
+#footer,
+.cartCalc {
 	width: 100%;
 	position: fixed;
 	padding: 4px 0;
