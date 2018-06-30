@@ -355,6 +355,7 @@
         var um = UM.getEditor('myEditor');
         // 一级分类
         $("select[name='firscate']").change(function(){
+            $('.goodsattr').html('');
             var firscateId = $(this).children('option:selected').val();
             var html = "";
             $("select[name='seccate']").html('<option value="--">--请选择--</option>');
@@ -417,6 +418,7 @@
         ];
         // 二级分类
         $("select[name='seccate']").change(function(){
+            $('.goodsattr').html('');
             var seccateId = $(this).children('option:selected').val();
             var html = "";
             $("select[name='thirdcate']").html('<option value="--">--请选择--</option>');
@@ -446,7 +448,7 @@
                                 subArr.push([]);
                                 // 商品属性分类详情选项
                                 for(var j=0; j<attrArr[i].data.length; j++){
-                                    subArr[i].push('<label class="seccheck'+ i +'" onclick="secCateClk('+ i +','+ j +')">'+
+                                    subArr[i].push('<label class="seccheck seccheck'+ i +'" onclick="secCateClk('+ i +','+ j +')">'+
                                             '<div class="icheckbox_square-green" style="position: relative;" data-pid="'+ attrArr[i].id +'" data-pattr="'+ attrArr[i].attr +
                                             '" data-name="'+ attrArr[i].data[j].val +'" data-id="'+ attrArr[i].data[j].id +'">'+
                                                 '<input type="checkbox" style="position: absolute; opacity: 0;">'+
@@ -490,13 +492,13 @@
                for(var k=0; k<attrArr.length; k++){
                     arr.push([]);
                     var par = $('.seccheck'+k).find('.checked').parent();
-                    console.log('par: ',par);
+                    // console.log('par: ',par);
                     for(var i=0; i<par.length; i++){
                         var attr = par[i].getAttribute('data-name');
                         var id = par[i].getAttribute('data-id');
                         var pattr = par[i].getAttribute('data-pattr');
                         var pid = par[i].getAttribute('data-pid');
-                        console.log('pid: %s, pattr: %s, id: %s, attr: %s', pid, pattr, id, attr);
+                        // console.log('pid: %s, pattr: %s, id: %s, attr: %s', pid, pattr, id, attr);
                         arr[k].push(attr);
                     }
                 }
@@ -917,7 +919,8 @@
             $('.allAttr').show();
             return result;
         }
-
+        
+        // 数量库存同步
         $('body').on('keyup', '.num', function(){
             var num = 0;
             var numel = $('.num');
