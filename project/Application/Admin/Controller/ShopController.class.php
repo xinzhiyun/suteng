@@ -220,6 +220,9 @@ class ShopController extends CommonController
         $cate = D('Category');
         $cateInfo = $cate->where('pid=0')->select();
 
+        $blockInfo = M('goods_block')->field('id,bname')->select();
+
+
         /* 添加快递公司选择 */
         $courier = M('courier');
         $courierList = $courier->where('status=1')->field('id,name')->select();
@@ -229,6 +232,7 @@ class ShopController extends CommonController
             'cateInfo' => $cateInfo,
             'attrInfo' => $attrInfo,
             'courierList' => $courierList,
+            'blockInfo' => $blockInfo,
         ];
         $this->assign($assign);
         $this->display();
@@ -329,8 +333,8 @@ class ShopController extends CommonController
     // 商品添加处理
     public function goodsAction()
     {
-        // dump($_POST);
-        // dump($_FILES);die;
+        dump($_POST);
+        dump($_FILES);die;
         try{
             $goods_add = D('Goods');
             $attr_val = D('AttrVal');

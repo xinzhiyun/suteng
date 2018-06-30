@@ -44,7 +44,10 @@ h5 {
     margin-top: 5px;
     font-weight: 600;
 }
-
+.seccheck,
+.courier {
+    user-select: none;
+}
 a:focus {
     outline: none;
 }
