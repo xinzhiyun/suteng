@@ -333,16 +333,49 @@ class ShopController extends CommonController
     // 商品添加处理
     public function goodsAction()
     {
-        dump($_POST);
-        dump($_FILES);die;
+    
         try{
+            //商品表
             $goods_add = D('Goods');
-            $attr_val = D('AttrVal');
-            $attr = D('Attr');
+            //商品详情
             $goods_detail = D('GoodsDetail');
-            $cate = D('Category');
-            $data = I('post.');
-            $price = $data['price'];
+            //商品sku库存
+            $sku = D('inventory');
+            //商品与主题的关系
+            $GoodsRelationBlock = D('GoodsRelationBlock');
+        
+
+
+            //商品分类id
+            $goods['cid'] = $_POST['seccate'];
+            //添加该商品的商户
+            $goods['vid'] = $_SESSION['adminInfo']['id'];
+            //商品名
+            $goods['name'] = $_POST['name'];
+            //商品状态，默认是下线
+            $goods['status'] = 0;
+            //个人会员价格
+            $goods['price'] = $_POST['price'][1];
+            //成本价
+            $goods['cost'] = $_POST['cost'];
+            //商品总库存
+            $goods['stock'] = $_POST['allnum'];
+            //是否安装
+            if($_POST['is_install'] == 'on'){
+                $goods['is_install'] = 1;
+            } else {
+                $goods['is_install'] = 0;
+            }
+            //是否租赁
+            if($_POST['is_hire'] == 'on'){
+                $goods['is_hire'] = 1;
+            } else {
+                $goods['is_hire'] = 0;
+            }
+            //添加时间
+            $goods['addtime'] = time();
+            //更新时间
+            $goods['updatetime'] = time();
 
             //图片上传         
             // 二进制文件上传简单处理
@@ -363,80 +396,72 @@ class ShopController extends CommonController
                 E('只能添加五张张图片',604);
             }
 
-
             foreach ($info as $k => $val) {
                 $path .= $val.'|';
+                $goods['gpic'] = $val;
             }
-            $goods['pic'] = $path;
 
-
-            
-            $goods['cid'] = $cate->sureCate();
-            if(!$goods['cid']) E('请选择分类', 605);
-            $goods['name'] = $data['name'];
-            dump($goods);die;
-            
             // 事务开启
             $goods_add->startTrans();
+            $goods_detail->startTrans();
+            $sku->startTrans();
+            $GoodsRelationBlock->startTrans();
+
             if(!$goods_add->create($goods)) {
                 E($goods_add->getError(),406);
             }
             // 商品添加
-            $goods_status = $goods_add->add();
-            $goods_add->where(['id'=>$goods_status])->save(['vid'=>$_SESSION['adminInfo']['id']]);
-            $goodsDetail['gid'] = $goods_status;
-            $goodsDetail['cost'] = $data['cost'];
-            // $goodsDetail['stock'] = $data['stock'];
-            if($data['is_install'] == 'on'){
-                $goodsDetail['is_install'] = 1;
-            } else {
-                $goodsDetail['is_install'] = 0;
-            }
-            if($data['is_hire'] == 'on'){
-                $goodsDetail['is_hire'] = 1;
-            } else {
-                $goodsDetail['is_hire'] = 0;
-            }
+            $goodsid = $goods_add->add();
+
+            //商品详情id
+            $goodsDetail['gid'] = $goodsid;
+            //商品详情多图
+            $goodsDetail['pic'] = $path;
+            //商品详情描述
+            $goodsDetail['desc'] = $_POST['desc'];
+            //商品详情规格
+            $goodsDetail['specs'] = $_POST['specs'];
+            //商品详情售后服务
+            $goodsDetail['saleservice'] = $_POST['saleservice'];
+            //商品详情添加时间
+            $goodsDetail['addtime'] = time();
+            //商品详情更新时间
+            $goodsDetail['updatetime'] = time();    
+            
             if(!$goods_detail->create($goodsDetail)) E($goods_detail->getError(),408);
             // 商品详情添加
             $goodsDetail_status = $goods_detail->add($goodsDetail);
-            // $attrVal['val'] = $data['attr_val'];
-
-            /*********************   写入一条商品默认库存   
-             * 默认都为 0
-            */
-            $gid = $goods_status;
-            D('inventory')->add(['allnum'=>0,'abnormalnum'=>0,'gid'=>$gid]);
-
             
-            //商品属性添加
-            $attrVal['gid'] = $goods_status;
-            foreach ($data['attr'] as $key => $val) {
-                if($attr->where('id='.$key)->field('id')){
+            
+            //sku库存数据写入
+            $skuattrs = json_decode($_POST['skuattr'],true);
+            foreach ($skuattrs as $key => $value) {
+                //sku商品id
+                $sku['gid'] = $goodsid;
+                //属性值id组合
+                $sku['skuattr'] = explode(',',$value[0])[1].','.explode(',',$value[1])[1];
+                //属性组合库存
+                $sku['stock'] = $value[2];
 
-                    $attrVal['aid'] = $key;
-                    $attrVal['val'] = $val;
-                    if(!$attr_val->create($attrVal)) E($attr_val->getError(),407);
-                    // 属性值添加
-                    $attr_val_status = $attr_val->add($attrVal);
-                } else {
-                    E('属性缺失，请刷新页面', 506);
-                }
+                if(!$sku->create($sku)) E($sku->getError(),408);
+                // 商品sku添加
+                $skustatus = $sku->add($sku);
+                
             }
 
+            //商品与活动主题的关系
+            $goodsBlock['gid'] = $goodsid;
+            $goodsBlock['bid'] = $_POST['bid'];
+            $goodsBlock['addtime'] = time();
+            $goodsBlock['updatetime'] = time();
+            if(!$GoodsRelationBlock->create($goodsBlock)) E($GoodsRelationBlock->getError(),408);
+            // 商品与主题活动的关系写入
+            $GoodsRelationBlockstatus = $GoodsRelationBlock->add($goodsBlock);
 
-            //属性值添加完成后，将属性名字也写入库
-            foreach ($data['attrName'] as $key => $value) {
-                $gid = $goods_status;
-                $aid = $key;
-                $ainfo['aname'] = $value;
-                //进行添加
-                M('AttrVal')->where('gid='.$gid .' AND aid='.$aid)->save($ainfo);   
-            }
-
+           
             /* 商品快递费添加 */
-            foreach ($data['courier'] as $key => $value) {
-                $data['gid'] = $goods_status;
+            foreach ($_POST['courier'] as $key => $value) {
+                $data['gid'] = $goodsid;
                 $data['cid'] = $key;
                 $data['cprice'] = $value;
 
@@ -456,8 +481,8 @@ class ShopController extends CommonController
             }
 
             //商品快递费添加完成后，将快递公司名字也写入库
-            foreach ($data['courierName'] as $key => $value) {
-                $gid = $goods_status;
+            foreach ($_POST['courierName'] as $key => $value) {
+                $gid = $goodsid;
                 $cid = $key;
                 $info['cname'] = $value;
                 //进行添加
@@ -466,73 +491,29 @@ class ShopController extends CommonController
 
 
             /* 商品快递费添加 */
-            
-
 
             // 商品单价添加
-            foreach ($price as $key => $value) {
+            foreach ($_POST['price'] as $key => $value) {
                 $p['price'] = $value;
                 $p['grade'] = $key;
                 $p['gid'] = $goods_status;
                 $price_status = M('Price')->add($p);
             }
-            if($goods_status && $attr_val_status && $goodsDetail_status && price_status){
+            if($goodsid && $goodsDetail_status && $skustatus && $GoodsRelationBlockstatus){
                 $goods_add->commit();
+                $goods_detail->commit();
+                $sku->commit();
+                $GoodsRelationBlock->commit();
                 E('商品添加成功，可继续添加',200);
             } else {
                 $goods_add->rollback();
+                $goods_detail->rollback();
+                $sku->rollback();
+                $GoodsRelationBlock->rollback();
                 E('商品添加失败，请重新添加',407);
             }
 
 
-        } catch (\Exception $e) {
-            $err = [
-                'code' => $e->getCode(),
-                'msg' => $e->getMessage(),
-            ];
-            $this->ajaxReturn($err);
-        }
-    }
-
-    // 添加商品图片
-    public function goodsAddPic()
-    {
-        try {
-            $pic = D('Pic');
-            
-            $gid = I('post.gid');
-            $upload = new \Think\Upload();// 实例化上传类
-            $upload->maxSize   =     3145728 ;// 设置附件上传大小
-            $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
-            $upload->rootPath  =     './Uploads/'; // 设置附件上传根目录
-            $upload->savePath  =     ''; // 设置附件上传（子）目录
-            // 上传文件 
-            $info   =   $upload->upload($_FILES);
-            if(!$info) E($upload->getError(),603);
-            foreach ($info as $key => $value) {
-                $data[$key] = [
-                    'gid' => $gid,
-                    'picname' => $value['name'],
-                    'path' => $value['savepath'].$value['savename']
-                ];
-            }
-            $res = $pic->where('gid='.$gid)->find();
-            if($res){
-                $status_res = $pic->where('gid='.$gid)->addAll($data);
-                if($status_res){
-                    E('更新成功',200);
-                } else {
-                    E('更新失败',604);
-                }
-            } else {
-                $status_res = $pic->addAll($data);
-                if($status_res){
-                    E('添加成功',200);
-                } else {
-                    E('添加失败',604);
-                }
-            }
-            
         } catch (\Exception $e) {
             $err = [
                 'code' => $e->getCode(),

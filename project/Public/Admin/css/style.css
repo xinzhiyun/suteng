@@ -3562,10 +3562,11 @@ video {
 
 #wrapper {
     width: 100%;
+    position: relative;
+    top: 100px;
     overflow-x: hidden;
     background-color: #2f4050;
 }
-
 .wrapper {
     padding: 0 20px;
 }
@@ -3576,7 +3577,7 @@ video {
 
 #page-wrapper {
     padding: 0 15px;
-    position: inherit;
+    position: relative;
     margin: 0 0 0 220px;
 }
 
@@ -3613,12 +3614,15 @@ ol.unstyled {
 /* FOOTER */
 
 .footer {
+    position: fixed;
     background: none repeat scroll 0 0 white;
     border-top: 1px solid #e7eaec;
     overflow: hidden;
     padding: 10px 20px;
     margin: 0 -15px;
     height: 36px;
+    width: 85%;
+    bottom: 0;
 }
 
 .footer.fixed_full {
@@ -8041,10 +8045,14 @@ body.skin-3 {
 }
 /* 顶部导航 */
 .topcontent {
-    /* height: 100px; */
-    background:#2F4050;
+    width: 100%;
+    height: 100px;
+    position: fixed;
+    top: 0;
     padding:0 20px; 
     color: #a7b1c2;
+    background:#2F4050;
+    z-index: 10;
 }
 .J_tabExit {
     color: #a7b1c2 !important;
