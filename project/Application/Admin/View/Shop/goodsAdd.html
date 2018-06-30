@@ -112,7 +112,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label ">快递公司：</label>
                             <div class="col-sm-10">
-                                <div class="checkbox i-checks">
+                                <div class="checkbox i-checks express">
                                     <volist name="courierList" id="vo">
                                         <label class="courier">
                                             <input type="checkbox" class="courierCheck" data-name={{$vo.name}} data-id="{{$vo.id}}"> <i></i> {{$vo.name}}
@@ -373,40 +373,40 @@
                 })
             }
         })
-        // 商品属性
+        // 商品属性(模拟)
         var attrArr = [
-            {
-                attr: '颜色分类', id: '00',
-                data: [
-                    {id: '001', val: '军绿色'},
-                    {id: '002', val: '红色'},
-                    {id: '003', val: '灰色'},
-                ]
-            },
-            {
-                attr: '尺寸', id: '11', 
-                data: [
-                    {id: '110', val: '41'},
-                    {id: '111', val: '42'},
-                    {id: '112', val: '43'},
-                ]
-            },
-            {
-                attr: '型号', id: '22', 
-                data: [
-                    {id: '220', val: 'A型'},
-                    {id: '221', val: 'C型'},
-                    {id: '222', val: 'D型'},
-                ]
-            },
-            {
-                attr: '配置', id: '33', 
-                data: [
-                    {id: '330', val: '高级'},
-                    {id: '331', val: '中级'},
-                    {id: '332', val: '入门'},
-                ]
-            },
+            // {
+            //     attr: '颜色分类', id: '00',
+            //     data: [
+            //         {id: '001', val: '军绿色'},
+            //         {id: '002', val: '红色'},
+            //         {id: '003', val: '灰色'},
+            //     ]
+            // },
+            // {
+            //     attr: '尺寸', id: '11', 
+            //     data: [
+            //         {id: '110', val: '41'},
+            //         {id: '111', val: '42'},
+            //         {id: '112', val: '43'},
+            //     ]
+            // },
+            // {
+            //     attr: '型号', id: '22', 
+            //     data: [
+            //         {id: '220', val: 'A型'},
+            //         {id: '221', val: 'C型'},
+            //         {id: '222', val: 'D型'},
+            //     ]
+            // },
+            // {
+            //     attr: '配置', id: '33', 
+            //     data: [
+            //         {id: '330', val: '高级'},
+            //         {id: '331', val: '中级'},
+            //         {id: '332', val: '入门'},
+            //     ]
+            // },
         ];
         // 二级分类
         $("select[name='seccate']").change(function(){
@@ -414,57 +414,63 @@
             var html = "";
             $("select[name='thirdcate']").html('<option value="--">--请选择--</option>');
             $("select[name='thirdcate']").parent().css('display','none');
-            // if(/^[0-9]*$/.test(seccateId)){
-            //     $.ajax({
-            //         url:'getAttr',
-            //         data:{'pid':seccateId},
-            //         type:'post',
-            //         dataType:'json',
-            //         success:function(res){
-            //             console.log('res: ',res);
-            //             if(res.length){}
-            //         },
-            //         error: function(err){
-            //             console.log('err: ',err);
-            //         }
-            //     })
-            // }
-            var html = '';
-            var headhtml = '';
-            var subArr = [];
-            // 商品属性分类
-            for(var i=0; i<attrArr.length; i++){
-                html += '<div class="checkbox i-checks">'+
-                            '<p>'+ attrArr[i].attr +'</p>'+
-                        '</div>';
-                //表格头
-                headhtml += '<th data-id="'+ attrArr[i].id +'">'+ attrArr[i].attr +'</th>';
+            if(/^[0-9]*$/.test(seccateId)){
+                $.ajax({
+                    url:'getAttr',
+                    data:{'cid':seccateId},
+                    type:'post',
+                    dataType:'json',
+                    success:function(res){
+                        console.log('res: ',res);
+                        attrArr = JSON.parse(res);
+                        if(attrArr.length){
+                            console.log('attrArr: ',attrArr);
+                            var html = '';
+                            var headhtml = '';
+                            var subArr = [];
+                            // 商品属性分类
+                            for(var i=0; i<attrArr.length; i++){
+                                html += '<div class="checkbox checkattr">'+
+                                            '<span>'+ attrArr[i].attr +'</span>'+
+                                        '</div>';
+                                //表格头
+                                headhtml += '<th data-id="'+ attrArr[i].id +'">'+ attrArr[i].attr +'</th>';
 
-                subArr.push([]);
-                // 商品属性分类详情选项
-                for(var j=0; j<attrArr[i].data.length; j++){
-                    subArr[i].push('<label class="seccheck'+ i +'" onclick="secCateClk('+ i +','+ j +')">'+
-                            '<div class="icheckbox_square-green" style="position: relative;" data-pid="'+ attrArr[i].id +'" data-pattr="'+ attrArr[i].attr +
-                            '" data-name="'+ attrArr[i].data[j].val +'" data-id="'+ attrArr[i].data[j].id +'">'+
-                                '<input type="checkbox" style="position: absolute; opacity: 0;">'+
-                                '<ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>'+
-                            '</div>'+
-                            '<i></i>'+ attrArr[i].data[j].val +
-                        '</label>');
-                }
+                                subArr.push([]);
+                                // 商品属性分类详情选项
+                                for(var j=0; j<attrArr[i].data.length; j++){
+                                    subArr[i].push('<label class="seccheck'+ i +'" onclick="secCateClk('+ i +','+ j +')">'+
+                                            '<div class="icheckbox_square-green" style="position: relative;" data-pid="'+ attrArr[i].id +'" data-pattr="'+ attrArr[i].attr +
+                                            '" data-name="'+ attrArr[i].data[j].val +'" data-id="'+ attrArr[i].data[j].id +'">'+
+                                                '<input type="checkbox" style="position: absolute; opacity: 0;">'+
+                                            '</div>'+
+                                            '<i></i>'+ attrArr[i].data[j].val +
+                                        '</label>');
+                                }
+                            }
+                            $('.goodsattr').html(html);
+                            headhtml += '<th>库存</th>';
+                            // 表格头
+                            $('.allAttr thead>tr').html(headhtml);
+                            setTimeout(function(){
+                                // 商品属性分类详情选项
+                                // console.log('subArr: ',subArr);
+                                for(var j=0; j<subArr.length; j++){
+                                    $('.goodsattr>div').eq(j).append(subArr[j]);
+                                }
+                                $('.checkattr').iCheck({
+                                    checkboxClass: 'icheckbox_square-green',
+                                    radioClass: 'iradio_square-green',
+                                });
+                            },100)
+                        }
+                    },
+                    error: function(err){
+                        console.log('err: ',err);
+                    }
+                })
             }
-            $('.goodsattr').html(html);
-            headhtml += '<th>价格</th><th>库存</th>';
-            // 表格头
-            $('.allAttr thead>tr').html(headhtml);
-            setTimeout(function(){
-                // 商品属性分类详情选项
-                // console.log('subArr: ',subArr);
-                for(var j=0; j<subArr.length; j++){
-                    $('.goodsattr>div').eq(j).append(subArr[j]);
-                }
-                recheck();
-            },100)
+            
         })
         
         // 点击二级分类，商品属性分类详情选项
@@ -477,13 +483,13 @@
                for(var k=0; k<attrArr.length; k++){
                     arr.push([]);
                     var par = $('.seccheck'+k).find('.checked').parent();
-                    // console.log('par: ',par);
+                    console.log('par: ',par);
                     for(var i=0; i<par.length; i++){
                         var attr = par[i].getAttribute('data-name');
                         var id = par[i].getAttribute('data-id');
                         var pattr = par[i].getAttribute('data-pattr');
                         var pid = par[i].getAttribute('data-pid');
-                        // console.log('pid: %s, pattr: %s, id: %s, attr: %s', pid, pattr, id, attr);
+                        console.log('pid: %s, pattr: %s, id: %s, attr: %s', pid, pattr, id, attr);
                         arr[k].push(attr);
                     }
                 }
@@ -645,6 +651,7 @@
                 checkboxClass: 'icheckbox_square-green',
                 radioClass: 'iradio_square-green',
             });
+            
         }
         // 富文本
         $(document).ready(function () {
@@ -810,10 +817,12 @@
             for(var i=0; i<attrtrLen; i++){
                 var attrth = $(".attrtr"+i).find('th');
                 // console.log(attrth.eq(i).text())
-                attrArr.push([]);
+                if(attrth.eq(i).length){
+                    attrArr.push([]);
+                }
                 // 遍历已选规格内容
                 for(var j=0; j<attrth.length; j++){
-                    if(attrth.eq(j).find('input').length){
+                    if(attrth.eq(j).find('input').length){  // 价格、库存
                         attrArr[i].push(attrth.eq(j).find('input').val());
                     }else{
                         attrArr[i].push(attrth.eq(j).text());
@@ -893,7 +902,7 @@
                 for(var j=0; j<_newArr[i].length; j++){
                     temphtml += '<th>'+ _newArr[i][j] +'</th>';
                 }
-                bodyhtml += temphtml + '<th><input class="price" type="text"></th><th><input class="num" type="text"></th></tr>';
+                bodyhtml += temphtml + '<th><input class="num" type="text"></th></tr>';
             }
             // console.log('bodyhtml: ',bodyhtml);
             // 显示详细规格组合

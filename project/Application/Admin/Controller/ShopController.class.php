@@ -235,15 +235,20 @@ class ShopController extends CommonController
     public function getAttr()
     {
         $attr = D('attr');
-        $map['cid'] = 20;
+        $map['cid'] = $_POST['cid'];
 
         $attr = M('attr')->field('id,attr')->where($map)->select();
 
         foreach ($attr as $key => &$value) {
+
             $value['data'] = M('attr_val')->field('id,val')->where('aid='.$value['id'])->select();
+
+            if (empty($value['data'])) unset($attr[$key]);
+
         }
 
-        $a = json_encode($attr);
+        // dump($attr);die;
+        $a = json_encode(array_values($attr));
         
         $this->ajaxReturn($a);
     }
