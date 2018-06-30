@@ -115,19 +115,6 @@ class ShopController extends CommonController
         try {
             $cate = D('Category');
             $post = I('post.');
-            if(!empty($_FILES)){
-                $pic = File::upload('Category');
-                if($pic){
-                    $post['advpic'] = '/Public/upload'.$pic[0];
-                }
-            }
-            $arr=[
-                ['link'=>"http://www.baidu.com",'pic'=>'/Public/upload/Category/20180630/5b36f2ee1b0c7.png','sort'=>0],
-                ['link'=>'http://www.baidu.com','pic'=>'/Public/upload/Category/20180630/5b36f2ee1b0c7.png','sort'=>0],
-                ['link'=>'http://www.baidu.com','pic'=>'/Public/upload/Category/20180630/5b36f2ee1b0c7.png','sort'=>0],
-                ['link'=>'http://www.baidu.com','pic'=>'/Public/upload/Category/20180630/5b36f2ee1b0c7.png','sort'=>0]
-            ];
-            $post['adv'] = json_encode($arr,JSON_UNESCAPED_UNICODE);
             $where['id'] = $post['id'];
             unset($post['id']);
             if(!$cate->create($post)) E($cate->getError(),203);
@@ -141,7 +128,21 @@ class ShopController extends CommonController
             ];
         return $this->ajaxReturn($err);
         }
-}
+    }
+
+    // 广告图片
+    public function cateGoryAdvPic()
+    {
+
+        if(!empty($_FILES)){
+            $picInfo = File::upload('CategoryAdv');
+            if($picInfo){
+                $pic = '/Public/upload'.$picInfo[0];
+            }
+        }
+        $this->ajaxReturn(['code'=>200,'pic'=>$pic]);
+    }
+
     // 删除分类
     public function cateGoryDel()
     {

@@ -472,10 +472,10 @@
             var _advHtml ='';
             for (let i = 0; i < adv.length; i++) {
                 _advHtml += '<tr> <td class="pic" style="padding: 3px;"> <label>';
-                _advHtml += '<img src="'+adv[i].pic+'" class="img-responsive">';
-                _advHtml += '<input class="input-medium form-control" type="file" name="pic" style="display: none;">';
+                _advHtml += '<img src="'+adv[i].pic+'" class="img-responsive imgBox">';
+                _advHtml += '<input class="input-medium form-control advfile" type="file" name="pic" style="display: none;">';
 
-                _advHtml += '</label> </td><td class="link"><input class="text_ellipsis" style="width: 100%" type="text" value="'+adv[i].link+'">';
+                _advHtml += '</label> </td><td class="link"><input class="text_ellipsis" style="width: 100%" name="link" type="text" value="'+adv[i].link+'">';
                 _advHtml += '</td> <td class="sort" >';
                 _advHtml += '<input type="text" name="sort" value="'+adv[i].sort+'" style="width: 100%;">';
                 _advHtml += '</td><td><button type="button" class="btn btn-danger _advdel">删除</button></td></tr>';
@@ -493,17 +493,40 @@
         $('.advlist').on('click','._advdel',function () {
             $(this).parents('tr').remove();
         });
-        $('.advlist').on('chenge','input[type="file"]',function () {
-            console.log(1);
+        // 图片修改
+        $('.advlist').on('change','.advfile',function () {
+            var file_obj = this.files[0];
+
+            if(file_obj){
+                var  _this = $(this).prev('.imgBox');
+                var fd = new FormData();
+                fd.append('pic', file_obj);
+                $.ajax({
+                    url:"cateGoryAdvPic",
+                    data:fd,
+                    dataType:"json",
+                    type: 'post',
+                    processData:false,
+                    contentType: false,
+                    success:function(res){
+                        if(res.code == 200){
+                            _this.replaceWith('<img src="'+res.pic+'" class="img-responsive imgBox">');
+                        } else {
+                            parent.layer.msg(res.msg);
+                        }
+                    }
+                })
+            }
+
         })
 
         $('.st-setAdvBnt-add').click(function () {
             var _addTr = ''
             _addTr += '<tr> <td class="pic" style="padding: 3px;"> <label>';
-            _addTr += '点击上传';
-            _addTr += '<input class="input-medium form-control" type="file" name="pic" style="display: none;">';
+            _addTr += '<span class="imgBox">点击上传</span>';
+            _addTr += '<input class="input-medium form-control advfile" type="file" name="pic" style="display: none;">';
 
-            _addTr += '</label> </td><td class="link"><input class="text_ellipsis" style="width: 100%" type="text" value="">';
+            _addTr += '</label> </td><td class="link"><input class="text_ellipsis" style="width: 100%" type="text" name="link" value="">';
             _addTr += '</td> <td class="sort" >';
             _addTr += '<input type="text" name="sort" value="0" style="width: 100%;">';
             _addTr += '</td><td><button type="button" class="btn btn-danger _advdel">删除</button></td></tr>';
@@ -514,27 +537,35 @@
         
         // 修改分类广告功能
         $('.st-setAdvBnt-sub').click(function(){
-            $('#st-setAdvBnt').modal('hide');
+            // $('#st-setAdvBnt').modal('hide');
 
-            var link = $("#st-setAdvBnt input[name='link']").val();
             var id   = $("#st-setAdvBnt input[name='id']").val();
 
+            var advObj = [];
+            var flag = false;
+            $('.advlist tr').each(function (i,item) {
+                var tmp={};
+                tmp.pic  = $(item).find('.imgBox').attr('src');
+                tmp.link = $(item).find('input[name="link"]').val();
+                tmp.sort = $(item).find('input[name="sort"]').val();
+                if(!tmp.pic || !tmp.link){
+                    flag = true;
+                }
+                advObj.push(tmp);
+            });
+            if(flag){
+                parent.layer.msg('信息不完整,请补全信息!');return false;
+            }
 
-            // var file_obj = document.getElementById('advpic_edit_pic').files[0];
+            var data = {};
+            data.id=id;
+            data.adv = JSON.stringify(advObj);
 
-            var fd = new FormData();
-            fd.append('id',id);
-            // fd.append('link', link);
-            // if(file_obj){
-            //     fd.append('pic', file_obj);
-            // }
             $.ajax({
                 url:"cateGoryAdvEdit",
-                data:fd,
+                data:data,
                 dataType:"json",
                 type: 'post',
-                processData:false,
-                contentType: false,
                 success:function(res){
                     if(res.code == 200){
                         location.reload();
