@@ -60,7 +60,9 @@ class ShopController extends CommonController
 
             $category = M('category')->where($map)->order('sort')->field('id,name,pic')->select();
             $adv = M('category')->where('id='.$post['id'])->getField('adv');
-            if(empty($adv) || empty(json_decode($adv))){
+            $adv = json_decode(htmlspecialchars_decode($adv));
+
+            if(empty($adv)){
                 $adv=[];
             }
             $this->ajaxReturn(array(

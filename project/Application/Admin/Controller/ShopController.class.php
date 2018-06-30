@@ -117,6 +117,11 @@ class ShopController extends CommonController
             $post = I('post.');
             $where['id'] = $post['id'];
             unset($post['id']);
+            $adv = json_decode(htmlspecialchars_decode($post['adv']),true);
+            $data = array_column($adv, 'sort');
+            array_multisort($data,SORT_ASC,$adv);
+            $post['adv'] = json_encode($adv,JSON_UNESCAPED_UNICODE);
+
             if(!$cate->create($post)) E($cate->getError(),203);
             $res = $cate->where($where)->save($post);
             if(!$res) E('修改失败了', 202);
