@@ -308,7 +308,8 @@ class CommonController extends Controller
                             $_SESSION['user'] = M('users')->where($userWhere)->find();
 
                             if(empty(session('device.did'))){
-                                $this->redirect("Device/index");
+                                //$this->redirect("Device/index");
+                                $this->redirect("pay/deviceIndex");
                             }
                         }
 

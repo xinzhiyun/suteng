@@ -108,6 +108,40 @@ class ShopController extends CommonController
         }
 
     }
+
+    // 广告编辑
+    public function cateGoryAdvEdit()
+    {
+        try {
+            $cate = D('Category');
+            $post = I('post.');
+            if(!empty($_FILES)){
+                $pic = File::upload('Category');
+                if($pic){
+                    $post['advpic'] = '/Public/upload'.$pic[0];
+                }
+            }
+            $arr=[
+                ['link'=>"http://www.baidu.com",'pic'=>'/Public/upload/Category/20180630/5b36f2ee1b0c7.png','sort'=>0],
+                ['link'=>'http://www.baidu.com','pic'=>'/Public/upload/Category/20180630/5b36f2ee1b0c7.png','sort'=>0],
+                ['link'=>'http://www.baidu.com','pic'=>'/Public/upload/Category/20180630/5b36f2ee1b0c7.png','sort'=>0],
+                ['link'=>'http://www.baidu.com','pic'=>'/Public/upload/Category/20180630/5b36f2ee1b0c7.png','sort'=>0]
+            ];
+            $post['adv'] = json_encode($arr,JSON_UNESCAPED_UNICODE);
+            $where['id'] = $post['id'];
+            unset($post['id']);
+            if(!$cate->create($post)) E($cate->getError(),203);
+            $res = $cate->where($where)->save($post);
+            if(!$res) E('修改失败了', 202);
+            E('修改成功', 200);
+        } catch (\Exception $e) {
+            $err = [
+            'code' => $e->getCode(),
+            'msg' => $e->getMessage(),
+            ];
+        return $this->ajaxReturn($err);
+        }
+}
     // 删除分类
     public function cateGoryDel()
     {
