@@ -205,7 +205,11 @@ class ShopController extends CommonController
         $attr = M('attr')->field('id,attr')->where($map)->select();
 
         foreach ($attr as $key => &$value) {
+
             $value['data'] = M('attr_val')->field('id,val')->where('aid='.$value['id'])->select();
+
+            if (empty($value['data'])) unset($attr[$key]);
+
         }
 
         $a = json_encode($attr);
