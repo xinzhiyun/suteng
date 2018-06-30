@@ -246,7 +246,8 @@ class ShopController extends CommonController
 
         }
 
-        $a = json_encode($attr);
+        // dump($attr);die;
+        $a = json_encode(array_values($attr));
         
         $this->ajaxReturn($a);
     }
