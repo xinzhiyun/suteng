@@ -1838,24 +1838,65 @@ class ShopController extends CommonController
 
     }
 
-    /**
-     * [attrValAdd 属性值添加]
-     * @return [type] [description]
-     */
+
+    // 加载属性值
+    public function getAttrVal()
+    {
+        try {
+
+            $post = I('post.');
+
+            if(empty($post['pid'])) {
+                E('数据错误',204);
+            }
+            $attrval = D('attrVal');
+
+            $res = $attrval->where('aid='.$post['pid'])->select();
+
+            $this->ajaxReturn([
+                'code'=>200,
+                'data'=>$res,
+                'msg'=>'获取成功',
+            ]);
+
+
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+    // 属性值添加
     public function attrValAdd()
     {
         try {
+            $post = I('post.');
             $attrval = D('attrVal');
-            $_POST['addtime'] = time();
-            $_POST['updatetime'] = time();
-            $data = I('post.');
 
-            if(!$attrval->create()) {
-                E($attrval->getError(),204);
+            //$aids = $attrval->where('aid='.$post['aid'])->field('id,val')->select();
+
+            $vals = json_decode(htmlspecialchars_decode($post['vals']),true);
+
+            $time = time();
+            $add = [];
+            foreach ($vals as $val){
+                if(empty($val['id'])){
+                    $val['aid'] = $post['aid'];
+                    $val['addtime'] = $time;
+                    $val['updatetime'] = $time;
+                    unset($val['id']);
+                    $add[] = $val;
+                }else{
+                    $attrval->where('id='.$val['id'])->save(['val'=>$val['val']]);
+                }
             }
-            $res = $attrval->add();
+
+            $res = $attrval->addAll($add);
+
             if($res){
-                E('添加属性值成功', 200);
+                E('修改成功', 200);
             } else {
                 E('添加属性值失败',203);
             }
@@ -1866,5 +1907,36 @@ class ShopController extends CommonController
             ];
             $this->ajaxReturn($err);
         }
+
     }
+
+//    /**
+//     * [attrValAdd 属性值添加]
+//     * @return [type] [description]
+//     */
+//    public function attrValAdd()
+//    {
+//        try {
+//            $attrval = D('attrVal');
+//            $_POST['addtime'] = time();
+//            $_POST['updatetime'] = time();
+//            $data = I('post.');
+//
+//            if(!$attrval->create()) {
+//                E($attrval->getError(),204);
+//            }
+//            $res = $attrval->add();
+//            if($res){
+//                E('添加属性值成功', 200);
+//            } else {
+//                E('添加属性值失败',203);
+//            }
+//        } catch (\Exception $e) {
+//            $err = [
+//                'code' => $e->getCode(),
+//                'msg' => $e->getMessage(),
+//            ];
+//            $this->ajaxReturn($err);
+//        }
+//    }
 }

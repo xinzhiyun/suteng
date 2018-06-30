@@ -207,7 +207,7 @@
                             <th width="20%" style="text-align: center">属性ID</th>
                             <th style="width: 40%;text-align: center;">属性名称</th>
                             <!--<th width="10%" style="text-align: center">排序</th>-->
-                            <th width="20%" style="text-align: center">操作</th>
+                            <!--<th width="20%" style="text-align: center">操作</th>-->
                         </tr>
                             <!--<th width=15%>-->
                                 <!--属性值名称-->
@@ -223,7 +223,7 @@
 
                         </tbody>
                         <tr>
-                            <td colspan="3" style="text-align: center">
+                            <td colspan="2" style="text-align: center">
                                 <input class="btn btn-success _add_child_btn" type="submit" value="新增">
                                 <input class="btn btn-success _sub_child_btn" type="submit" value="提交">
                             </td>
@@ -249,7 +249,7 @@
         function add_child(pid) {
             $("input[name='aid']").val(pid);
             $.ajax({
-                url:"{{:('/admin/index/getAttrVal')}}",
+                url:"getAttrVal",
                 data:{"pid":pid},
                 dataType:"json",
                 type: 'post',
@@ -259,7 +259,8 @@
                         for (let i = 0; i < res.data.length; i++) {
                             _advHtml += '<tr style="text-align: center"> <td class="id" style="">'+res.data[i].id+'</td>';
                             _advHtml += '<td> <input class="text_ellipsis" style="width: 100%" name="val" type="text" value="'+res.data[i].val+'">';
-                            _advHtml += '</td><td><button type="button" class="btn btn-danger _attr_val_del">删除</button></td></tr>';
+                            _advHtml += '</td></tr>';
+                            //_advHtml += '</td><td><button type="button" class="btn btn-danger _attr_val_del">删除</button></td></tr>';
                         }
 
                         $('.arrt_val_list').html(_advHtml);
@@ -275,7 +276,8 @@
             var _advHtml = ''
             _advHtml += '<tr style="text-align: center"> <td class="id" style=""></td>';
             _advHtml += '<td> <input class="text_ellipsis" style="width: 100%" name="val" type="text" value="">';
-            _advHtml += '</td><td><button type="button" class="btn btn-danger _attr_val_del">删除</button></td></tr>';
+            _advHtml += '</td></tr>';
+            //_advHtml += '</td><td><button type="button" class="btn btn-danger _attr_val_del">删除</button></td></tr>';
 
             $('.arrt_val_list').append(_advHtml);
         })
@@ -306,7 +308,7 @@
             data.vals = JSON.stringify(advObj);
 
             $.ajax({
-                url:"{{:('/admin/index/attrValAdd')}}",
+                url:"attrValAdd",
                 data:data,
                 dataType:"json",
                 type: 'post',
