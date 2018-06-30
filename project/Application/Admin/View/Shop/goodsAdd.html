@@ -785,7 +785,7 @@
                     if(attrth.eq(j).find('input').length){  // 价格、库存
                         attrArr[i].push(attrth.eq(j).find('input').val());
                     }else{
-                        attrArr[i].push(attrth.eq(j).attr('data-id'));
+                        attrArr[i].push(attrth.eq(j).text() + ',' +attrth.eq(j).attr('data-id'));
                     }
                 }
             }
