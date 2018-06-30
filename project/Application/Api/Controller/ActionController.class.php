@@ -479,7 +479,7 @@ class ActionController extends Controller
         //$this->sysnc('868575025659808');
 //
 
-        $this->devices_init('868575025659808');
+        $this->check_info(73);
 
 //        $message['DeviceID'] = '868575025672249';
 //        $message['PackType'] = "SetData";

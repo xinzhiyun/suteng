@@ -63,7 +63,7 @@
                                                 </a> -->
                                                 <a class="btn btn-outline btn-success" href="javascript:;" ruleId="{{$v['id']}}" ruleName="{{$v['name']}}" ruleTitle="{{$v['cid']}}"
                                                 onclick="add_child({{$v['id']}})">
-                                                    添加属性值
+                                                     管理属性值
                                                 </a>
                                                 <a class="btn btn-outline btn-success" href="javascript:;" ruleId="{{$v['id']}}" ruleTitle="{{$v['cid']}}" ruleName="{{$v['attr']}}" onclick="edit(this)">
                                                     修改
@@ -179,9 +179,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>
-                            </th>
-                            <td>
+                            <td colspan="2" style="text-align: center">
                                 <input class="btn btn-success edit-cate" type="submit" value="修改">
                             </td>
                         </tr>
@@ -198,27 +196,36 @@
                         &times;
                     </button>
                     <h4 class="modal-title" id="myModalLabel">
-                        添加属性值
+                        管理属性值
                     </h4>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="aid" value="0">
                     <table class="table table-striped table-bordered table-hover table-condensed">
                         <tr>
-                            <th width=15%>
-                                属性值名称
-                            </th>
-                            <td>
-                                <div class="form-group">
-                                    <input class="input-medium form-control" id="child_name" type="text" name="val">
-                                </div>
-                            </td>
+                        <tr class="success">
+                            <th width="20%" style="text-align: center">属性ID</th>
+                            <th style="width: 40%;text-align: center;">属性名称</th>
+                            <!--<th width="10%" style="text-align: center">排序</th>-->
+                            <th width="20%" style="text-align: center">操作</th>
                         </tr>
+                            <!--<th width=15%>-->
+                                <!--属性值名称-->
+                            <!--</th>-->
+                            <!--<td>-->
+                                <!--<div class="form-group">-->
+                                    <!--<input class="input-medium form-control" id="child_name" type="text" name="val">-->
+                                <!--</div>-->
+                            <!--</td>-->
+
+                        <!--</tr>-->
+                        <tbody class="arrt_val_list">
+
+                        </tbody>
                         <tr>
-                            <th>
-                            </th>
-                            <td>
-                                <input class="btn btn-success add_child_btn" type="submit" value="添加">
+                            <td colspan="3" style="text-align: center">
+                                <input class="btn btn-success _add_child_btn" type="submit" value="新增">
+                                <input class="btn btn-success _sub_child_btn" type="submit" value="提交">
                             </td>
                         </tr>
                     </table>
@@ -238,22 +245,69 @@
         }
 
        
-        // 添加属性值
+        // 管理属性值
         function add_child(pid) {
-            // var ruleId = $(obj).attr('ruleId');
             $("input[name='aid']").val(pid);
-            $("input[name='val']").val('');
+            $.ajax({
+                url:"{{:('/admin/index/getAttrVal')}}",
+                data:{"pid":pid},
+                dataType:"json",
+                type: 'post',
+                success:function(res){
+                    if(res.code == 200){
+                        var _advHtml = '';
+                        for (let i = 0; i < res.data.length; i++) {
+                            _advHtml += '<tr style="text-align: center"> <td class="id" style="">'+res.data[i].id+'</td>';
+                            _advHtml += '<td> <input class="text_ellipsis" style="width: 100%" name="val" type="text" value="'+res.data[i].val+'">';
+                            _advHtml += '</td><td><button type="button" class="btn btn-danger _attr_val_del">删除</button></td></tr>';
+                        }
+
+                        $('.arrt_val_list').html(_advHtml);
+                    } else {
+                        parent.layer.msg(res.msg);
+                    }
+                }
+            })
             $('#st-add-child').modal('show');
         }
+        // 属性值 页面操作
+        $('._add_child_btn').click(function () {
+            var _advHtml = ''
+            _advHtml += '<tr style="text-align: center"> <td class="id" style=""></td>';
+            _advHtml += '<td> <input class="text_ellipsis" style="width: 100%" name="val" type="text" value="">';
+            _advHtml += '</td><td><button type="button" class="btn btn-danger _attr_val_del">删除</button></td></tr>';
+
+            $('.arrt_val_list').append(_advHtml);
+        })
 
         //执行添加属性值
-        $('.add_child_btn').click(function(){
-            $('#st-add-child').modal('hide');
+        $('._sub_child_btn').click(function(){
+            // $('#st-add-child').modal('hide');
+
             var aid = $("input[name='aid']").val();
-            var val = $("#child_name").val();
+
+            var advObj = [];
+            var flag = false;
+            $('.arrt_val_list tr').each(function (i,item) {
+                var tmp={};
+                tmp.id = $(item).find('.id').text();
+                tmp.val = $(item).find('input[name="val"]').val();
+                if(!tmp.val){
+                    flag = true;
+                }
+                advObj.push(tmp);
+            });
+            if(flag){
+                parent.layer.msg('信息不完整,请补全信息!');return false;
+            }
+
+            var data = {};
+            data.aid = aid;
+            data.vals = JSON.stringify(advObj);
+
             $.ajax({
-                url:"attrValAdd",
-                data:{"aid":aid,"val":val},
+                url:"{{:('/admin/index/attrValAdd')}}",
+                data:data,
                 dataType:"json",
                 type: 'post',
                 success:function(res){
