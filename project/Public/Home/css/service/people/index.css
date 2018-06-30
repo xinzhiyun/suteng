@@ -127,6 +127,7 @@ img {
 }
 .funC > li:nth-child(2) > a > span:nth-child(1) {
     color: #42D5B8;
+    background: transparent;
 }
 .funC > li:nth-child(3) > a > span:nth-child(1) {
     color: #55ABFF;
