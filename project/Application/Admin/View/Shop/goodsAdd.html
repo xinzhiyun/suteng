@@ -450,7 +450,7 @@
                         var pattr = par[i].getAttribute('data-pattr');
                         var pid = par[i].getAttribute('data-pid');
                         // console.log('pid: %s, pattr: %s, id: %s, attr: %s', pid, pattr, id, attr);
-                        arr[k].push(attr);
+                        arr[k].push(attr+'|'+id);
                     }
                 }
                 console.log('arr: ',arr);
@@ -785,7 +785,7 @@
                     if(attrth.eq(j).find('input').length){  // 价格、库存
                         attrArr[i].push(attrth.eq(j).find('input').val());
                     }else{
-                        attrArr[i].push(attrth.eq(j).text());
+                        attrArr[i].push(attrth.eq(j).attr('data-id'));
                     }
                 }
             }
@@ -860,7 +860,7 @@
                 thlen = _newArr[i].length;
                 var temphtml = '';  // 每一栏中的每一项
                 for(var j=0; j<_newArr[i].length; j++){
-                    temphtml += '<th>'+ _newArr[i][j] +'</th>';
+                    temphtml += '<th data-id="'+ _newArr[i][j].split('|')[1] +'">'+ _newArr[i][j].split('|')[0] +'</th>';
                 }
                 bodyhtml += temphtml + '<th><input class="num" type="text"></th></tr>';
             }
