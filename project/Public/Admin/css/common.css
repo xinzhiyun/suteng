@@ -33,3 +33,8 @@
 #searchdiv .btn {
     margin-bottom: 0;
 }
+
+/*文本超出隐藏*/
+.text_ellipsis{overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;}

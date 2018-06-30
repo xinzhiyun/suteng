@@ -59,10 +59,14 @@ class ShopController extends CommonController
             }
 
             $category = M('category')->where($map)->order('sort')->field('id,name,pic')->select();
-
+            $adv = M('category')->where('id='.$post['id'])->field('link,advpic')->find();
+            if(empty($adv['link']) || empty($adv['link'])){
+                $adv=[];
+            }
             $this->ajaxReturn(array(
                 'status'=>200,
                 'data'=>$category,
+                'adv'=>$adv,
                 'msg'=>'获取成功',
             ),'JSON');
         } catch (\Exception $e) {

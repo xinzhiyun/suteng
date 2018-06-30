@@ -53,7 +53,7 @@
                                 <tr><td colspan="12">暂无商品数据</td></tr>
                             <else />
                                 <foreach name="data" item="v">
-                                    <tr>
+                                    <tr data-name="{{$v['_name']}}" data-id="{{$v['id']}}" data-pic="{{$v['pic']}}" data-adv='{{$v.adv}}' >
                                         <td>
                                             {{$v['id']}}
                                         </td>
@@ -86,10 +86,10 @@
                                                 onclick="edit(this)">
                                                     修改
                                                 </a>
-                                                <a class="btn btn-outline btn-success deletBnt" ruleId="{{$v['id']}}">
-                                                    删除
-
-                                                </a>
+                                                <a class="btn btn-outline btn-success deletBnt" ruleId="{{$v['id']}}">删除</a>
+                                                <if condition="$v['leavel'] eq 1 ">
+                                                    <a class="btn btn-outline btn-success setAdvBnt">设置广告</a>
+                                                </if>
                                             </div>
                                         </td>
                                     </tr>
@@ -247,6 +247,78 @@
             </div>
         </div>
     </div>
+    <div class="modal inmodal" id="st-setAdvBnt" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">
+                        设置广告
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id">
+                    <table class="table table-striped table-bordered table-hover table-condensedx">
+                        <!--<tr>-->
+                            <!--<th width="20%">分类名称：</th>-->
+                            <!--<td class="name"></td>-->
+                        <!--</tr>-->
+                        <tr class="success">
+                            <th width="20%" style="text-align: center">图片</th>
+                            <th style="width: 60%;text-align: center;">链接</th>
+                            <th width="10%" style="text-align: center">排序</th>
+                            <th width="10%" style="text-align: center">操作</th>
+                        </tr>
+                        <tbody class="advlist">
+                            <tr>
+                                <td class="pic">
+                                    <label>
+                                    <img src="/Public/upload/Category/20180630/5b36f2ee1b0c7.png" class="img-responsive">
+                                    <input class="input-medium form-control" type="file" name="pic" style="width: 0px;height: 0px;display: none;">
+                                    </label>
+                                </td>
+                                <td class="link">
+                                    <input class="text_ellipsis" style="width: 100%" type="text" value="如不修改图片请留空.如不修改图片请留空.如不修改图片请留空.如不修改图片请留空.">
+                                </td>
+                                <td class="sort">
+                                    <input type="text" name="sort" value="">
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <!--<tr>-->
+                            <!--<td class="form-inline">-->
+                                <!--<div class="form-group advPic" style="width: 60px;height: 60px;"></div>-->
+                                <!--<div class="form-group ">-->
+                                    <!--<input class="input-medium form-control st-edit" type="file" name="pic" id="advpic_edit_pic" style="width: 250px">-->
+                                    <!--<p class="help-block">如不修改图片请留空.</p>-->
+                                <!--</div>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<th width="20%">-->
+                                <!--链接：-->
+                            <!--</th>-->
+                            <!--<td>-->
+                                <!--<div class="form-group">-->
+                                    <!--<input class="input-medium form-control " type="text" name="adv['link']">-->
+                                <!--</div>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+
+                        <tr>
+                            <td colspan="4" style="text-align: center">
+                                <input class="btn btn-success st-setAdvBnt-add" type="submit" value="增加">
+                                <input class="btn btn-success st-setAdvBnt-sub" type="submit" value="修改">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </block>
 <block name="myjs">
     <script src="__PUBLIC__/Admin/layui/layui.js"></script>
@@ -389,6 +461,91 @@
                 });
             });
         });
+
+        // 修改分类广告
+        $(".setAdvBnt").click(function() {
+            var trObj = $(this).parents('tr');
+            var ruleId = trObj.data('id');
+            var ruleName = trObj.data('name');
+            var adv = trObj.data('adv');
+            console.dir(adv)
+            var _advHtml ='';
+            for (let i = 0; i < adv.length; i++) {
+                _advHtml += '<tr> <td class="pic" style="padding: 3px;"> <label>';
+                _advHtml += '<img src="'+adv[i].pic+'" class="img-responsive">';
+                _advHtml += '<input class="input-medium form-control" type="file" name="pic" style="display: none;">';
+
+                _advHtml += '</label> </td><td class="link"><input class="text_ellipsis" style="width: 100%" type="text" value="'+adv[i].link+'">';
+                _advHtml += '</td> <td class="sort" >';
+                _advHtml += '<input type="text" name="sort" value="'+adv[i].sort+'" style="width: 100%;">';
+                _advHtml += '</td><td><button type="button" class="btn btn-danger _advdel">删除</button></td></tr>';
+            }
+
+            $('.advlist').html(_advHtml);
+
+
+            $("#st-setAdvBnt input[name='id']").val(ruleId);
+            $("#st-setAdvBnt .name").html(ruleName);
+
+            $('#st-setAdvBnt').modal('show');
+        });
+        // 广告控制
+        $('.advlist').on('click','._advdel',function () {
+            $(this).parents('tr').remove();
+        });
+        $('.advlist').on('chenge','input[type="file"]',function () {
+            console.log(1);
+        })
+
+        $('.st-setAdvBnt-add').click(function () {
+            var _addTr = ''
+            _addTr += '<tr> <td class="pic" style="padding: 3px;"> <label>';
+            _addTr += '点击上传';
+            _addTr += '<input class="input-medium form-control" type="file" name="pic" style="display: none;">';
+
+            _addTr += '</label> </td><td class="link"><input class="text_ellipsis" style="width: 100%" type="text" value="">';
+            _addTr += '</td> <td class="sort" >';
+            _addTr += '<input type="text" name="sort" value="0" style="width: 100%;">';
+            _addTr += '</td><td><button type="button" class="btn btn-danger _advdel">删除</button></td></tr>';
+
+            $('.advlist').append(_addTr);
+        })
+        
+        
+        // 修改分类广告功能
+        $('.st-setAdvBnt-sub').click(function(){
+            $('#st-setAdvBnt').modal('hide');
+
+            var link = $("#st-setAdvBnt input[name='link']").val();
+            var id   = $("#st-setAdvBnt input[name='id']").val();
+
+
+            // var file_obj = document.getElementById('advpic_edit_pic').files[0];
+
+            var fd = new FormData();
+            fd.append('id',id);
+            // fd.append('link', link);
+            // if(file_obj){
+            //     fd.append('pic', file_obj);
+            // }
+            $.ajax({
+                url:"cateGoryAdvEdit",
+                data:fd,
+                dataType:"json",
+                type: 'post',
+                processData:false,
+                contentType: false,
+                success:function(res){
+                    if(res.code == 200){
+                        location.reload();
+                        parent.layer.msg(res.msg);
+                    } else {
+                        parent.layer.msg(res.msg);
+                    }
+                }
+            })
+        });
+
         $('.pagination ul a').unwrap('div').wrap('<li></li>');
         $('.pagination ul span').wrap('<li class="active"></li>')
     </script>
