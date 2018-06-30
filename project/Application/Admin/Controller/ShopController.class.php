@@ -118,8 +118,9 @@ class ShopController extends CommonController
             $where['id'] = $post['id'];
             unset($post['id']);
             $adv = json_decode(htmlspecialchars_decode($post['adv']),true);
-            $data = array_column($adv, 'sort');
-            array_multisort($data,SORT_ASC,$adv);
+
+            $adv = array_sort($adv,'sort');
+
             $post['adv'] = json_encode($adv,JSON_UNESCAPED_UNICODE);
 
             if(!$cate->create($post)) E($cate->getError(),203);
