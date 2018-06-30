@@ -234,7 +234,7 @@ class ShopController extends CommonController
     public function getAttr()
     {
         $attr = D('attr');
-        $map['cid'] = 20;
+        $map['cid'] = $_POST['cid'];
 
         $attr = M('attr')->field('id,attr')->where($map)->select();
 
