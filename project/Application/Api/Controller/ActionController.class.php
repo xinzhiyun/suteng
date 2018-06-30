@@ -82,6 +82,7 @@ class ActionController extends Controller
         }
         Gateway::sendToClient($client_id, $message);
 
+        var_export($message);
 
         $message['sid'] = Device::get_devices_info($message['DeviceID'],'sid');
         Log::write(json_encode($message), '设备信息包分发');
@@ -131,7 +132,6 @@ class ActionController extends Controller
             'Loaction'    => $message['Loaction'],
             'NetStause'   =>1,
         ];
-        var_export($message['sid']);
 
         if( empty($message['sid']) ){
             $data['DeviceID']=$message['DeviceID'];
@@ -343,7 +343,7 @@ class ActionController extends Controller
     public function sendMsg($message)
     {
         Log::write(json_encode($message), 'sendMsg 发送信息包');
-
+        var_export($message);
         if(isset($message['DeviceID'])){
             Gateway::sendToUid($message['DeviceID'], $message);
         }

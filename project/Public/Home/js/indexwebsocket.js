@@ -10,7 +10,7 @@ window.onload = function(){
         $("body").css({height:'100vh',filter:'grayscale(0%)'}); 
         $(".btmTxt>div").html("冲洗");
         // $(".btmTxt>p").css({backgroundPosition: '-7.94rem -4px',animation: 'aImg3 3s linear infinite'});
-        console.log($(".btmTxt>p>img").attr("src"))
+        // console.log($(".btmTxt>p>img").attr("src"))
         $(".btmTxt>p").css("animation", 'aImg3 3s linear infinite');
         $(".btmTxt>p>img").attr("src", "/Public/Home/images/wash.png");
     }
@@ -155,10 +155,10 @@ window.onload = function(){
     websoket.onmessage=function(data)
     {
         var dataList=JSON.parse(data.data);//读取websoket数据，转换为json对象
-        //console.log(dataList.LeasingMode);
+        console.log(dataList);
         _status=dataList.DeviceStause;
         machineStatus();//执行水机状态方法
-        console.log('message: ',dataList);
+        // console.log('message: ',dataList);
         
         if(dataList.PackType=="Select")//返回查询数据类型数据
          {	//console.log(dataList);
@@ -248,7 +248,7 @@ window.onload = function(){
 
     //冲洗按钮操作
     $('.washBtn').click(function(){
-        var statusTxt=$(".btmTxt").html();
+        var statusTxt=$(".btmTxt>div").html();
         if(statusTxt=="设备已关机"||statusTxt=="设备已离线"||statusTxt=="欠费"||statusTxt=="检修"){
             layui.use('layer', function(){
                 var layer = layui.layer;
@@ -287,13 +287,14 @@ window.onload = function(){
     });
     //开机/关机按钮操作
     $('.clickBtn').click(function(){
-        var statusTxt=$(".btmTxt").html();
+        var statusTxt=$(".btmTxt>div").html();
         var _this='';
         if(statusTxt=="设备已离线"||statusTxt=="设备已关机"){
             _this='开机';
         }else{
             _this='关机';
         }
+        console.log(_this);
         var ajson;//数据对象
         //判断操作类型
         var tipsText = "确定要"+ _this + deviceId +"吗？";

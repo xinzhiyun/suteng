@@ -118,9 +118,11 @@
 <block name="myjs">
     <script src="__PUBLIC__/Admin/layui/layui.js"></script>
     <script>
-
+        var wrap = window.parent.document.querySelector('#page-wrapper');
         // 解绑设备
+        console.log('wrap: ',wrap);
         $('td').on('click', '.delBind', function(e){
+            wrap.style.paddingTop = '100px';
             var code = $(this).attr('device');
             var uid = $(this).attr('u');
             parent.layer.confirm('确认解除'+code+'设备绑定吗？', {
