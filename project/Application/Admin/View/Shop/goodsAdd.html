@@ -92,23 +92,21 @@
                             <table class='table table-bordered' style='width: 80%;'>
                                 <thead>
                                     <tr>
-                                        <th>颜色</th>
-                                        <th>尺寸</th>
+                                        <!-- <th>颜色</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>红色</td>
-                                        <td>蓝色</td>
+                                        <!-- <td>红色</td> -->
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label class="col-sm-2 control-label">属性值：</label>
                             <div class="col-sm-6 attr_val">
                             </div>
-                        </div>
+                        </div> -->
                         
                         <!-- 快递运费新添加开始 -->
                         <div class="form-group">
@@ -375,6 +373,7 @@
                 })
             }
         })
+        // 商品属性
         var attrArr = [
             {
                 attr: '颜色分类', id: '00',
@@ -390,6 +389,22 @@
                     {id: '110', val: '41'},
                     {id: '111', val: '42'},
                     {id: '112', val: '43'},
+                ]
+            },
+            {
+                attr: '型号', id: '22', 
+                data: [
+                    {id: '220', val: 'A型'},
+                    {id: '221', val: 'C型'},
+                    {id: '222', val: 'D型'},
+                ]
+            },
+            {
+                attr: '配置', id: '33', 
+                data: [
+                    {id: '330', val: '高级'},
+                    {id: '331', val: '中级'},
+                    {id: '332', val: '入门'},
                 ]
             },
         ];
@@ -428,22 +443,23 @@
                 subArr.push([]);
                 // 商品属性分类详情选项
                 for(var j=0; j<attrArr[i].data.length; j++){
-                    subArr[i].push('<label class="seccheck'+ i +'" onclick="secCateClk('+ i +','+ j +')"><div class="icheckbox_square-green" style="position: relative;">'+
-                                '<input type="checkbox" data-pid="'+ attrArr[i].id +'" data-pattr="'+ attrArr[i].attr +
-                                '" data-name="'+ attrArr[i].data[j].val +'" data-id="'+ attrArr[i].data[j].id +'" style="position: absolute; opacity: 0;">'+
+                    subArr[i].push('<label class="seccheck'+ i +'" onclick="secCateClk('+ i +','+ j +')">'+
+                            '<div class="icheckbox_square-green" style="position: relative;" data-pid="'+ attrArr[i].id +'" data-pattr="'+ attrArr[i].attr +
+                            '" data-name="'+ attrArr[i].data[j].val +'" data-id="'+ attrArr[i].data[j].id +'">'+
+                                '<input type="checkbox" style="position: absolute; opacity: 0;">'+
                                 '<ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>'+
                             '</div>'+
                             '<i></i>'+ attrArr[i].data[j].val +
                         '</label>');
-                    
                 }
             }
             $('.goodsattr').html(html);
+            headhtml += '<th>价格</th><th>库存</th>';
             // 表格头
             $('.allAttr thead>tr').html(headhtml);
             setTimeout(function(){
                 // 商品属性分类详情选项
-                console.log('subArr: ',subArr);
+                // console.log('subArr: ',subArr);
                 for(var j=0; j<subArr.length; j++){
                     $('.goodsattr>div').eq(j).append(subArr[j]);
                 }
@@ -454,40 +470,51 @@
         // 点击二级分类，商品属性分类详情选项
         function secCateClk(pind, ind){
             // pind父级序号，ind自己序号
-            var arr = [];
+            var arr = [];   // 转化前的数据
             var bodyhtml = '';
-            var seccheckArr = [];
             setTimeout(function(){
-                // 遍历选中的商品属性分类详情选项
-                for(var k=0; k<attrArr.length; k++){
-                    seccheckArr.push($('.seccheck'+k).find('.checked'));
-                    console.log('seccheckArr: ',seccheckArr);
-                    console.log('pind: %s, ind: %s', pind, ind);
-                   
-                } 
-                for(var i=0;i<seccheckArr.length; i++){
-                    var attr = seccheckArr[i].eq(i).find('input').data('name');
-                    var id = seccheckArr[i].eq(i).find('input').data('id');
-                    var pattr = seccheckArr[k].eq(i).find('input').data('pattr');
-                    var pid = seccheckArr[k].eq(i).find('input').data('pid');
-                    
-                    for(var m=0; m<attrArr.length*seccheckArr[k].length; m++){
-                        arr.push({
-                            pid: pid,
-                            pattr: pattr,
-                            attr: attr,
-                            id: id
-                        })
-                        console.log('attr: %s, id: %s', attr, id);
+               // 遍历选中的商品属性分类详情选项
+               for(var k=0; k<attrArr.length; k++){
+                    arr.push([]);
+                    var par = $('.seccheck'+k).find('.checked').parent();
+                    // console.log('par: ',par);
+                    for(var i=0; i<par.length; i++){
+                        var attr = par[i].getAttribute('data-name');
+                        var id = par[i].getAttribute('data-id');
+                        var pattr = par[i].getAttribute('data-pattr');
+                        var pid = par[i].getAttribute('data-pid');
+                        // console.log('pid: %s, pattr: %s, id: %s, attr: %s', pid, pattr, id, attr);
+                        arr[k].push(attr);
                     }
-                    bodyhtml += '<tr><th data-id="'+ id +'">'+ attr +'</th></tr>';
                 }
-                // 描述
-                $('.allAttr tbody').html(bodyhtml);
-                $('.allAttr').show();
                 console.log('arr: ',arr);
+                // 数据交叉组合
+                if(arr.length == 1){
+                    var res = printResult(Zuhe(arr[0]));
+                }else if(arr.length == 2){
+                    var res = printResult(Zuhe(arr[0],arr[1]));
+                }else if(arr.length == 3){
+                    var res = printResult(Zuhe(arr[0],arr[1],arr[2]));
+                }else if(arr.length == 4){
+                    var res = printResult(Zuhe(arr[0],arr[1],arr[2],arr[3]));
+                }else if(arr.length == 5){
+                    var res = printResult(Zuhe(arr[0],arr[1],arr[2],arr[3],arr[4]));
+                }else if(arr.length == 6){
+                    var res = printResult(Zuhe(arr[0],arr[1],arr[2],arr[3],arr[4],arr[5]));
+                }else if(arr.length == 7){
+                    var res = printResult(Zuhe(arr[0],arr[1],arr[2],arr[3],arr[4],arr[5],arr[6]));
+                }else if(arr.length == 8){
+                    var res = printResult(Zuhe(arr[0],arr[1],arr[2],arr[3],arr[4],arr[5],arr[6],arr[7]));
+                }else if(arr.length == 9){
+                    var res = printResult(Zuhe(arr[0],arr[1],arr[2],arr[3],arr[4],arr[5],arr[6],arr[7],arr[8]));
+                }else if(arr.length == 10){
+                    var res = printResult(Zuhe(arr[0],arr[1],arr[2],arr[3],arr[4],arr[5],arr[6],arr[7],arr[8],arr[9]));
+                }
+                // 转化的结果
+                console.log('res: ',res);
             },0)
         }
+
         var arr = [];
         // 添加属性
         function add() {
@@ -777,12 +804,33 @@
             
         });
         $(".goodsAdd").click(function(){
+            var attrArr = [];
+            var str = '';
+            var attrtrLen = $('.allAttr tbody>tr').eq(0).find('th').length;
+            for(var i=0; i<attrtrLen; i++){
+                var attrth = $(".attrtr"+i).find('th');
+                // console.log(attrth.eq(i).text())
+                attrArr.push([]);
+                // 遍历已选规格内容
+                for(var j=0; j<attrth.length; j++){
+                    if(attrth.eq(j).find('input').length){
+                        attrArr[i].push(attrth.eq(j).find('input').val());
+                    }else{
+                        attrArr[i].push(attrth.eq(j).text());
+                    }
+                }
+            }
+            console.log('attrArr: ',attrArr);
             // var data = $("#form").serializeArray();
             console.log(picArr);
             var data = new FormData($("#form")[0]);
             for(var i = 0; i < picArr.length; i++) {
                 data.append("UploadForm[]", picArr[i]);
             }
+            if(!attrArr.length){
+                return
+            }
+            data.append('skuattr', JSON.stringify(attrArr));
             $.ajax({
                 url:'goodsAction',
                 type:'post',
@@ -800,5 +848,58 @@
             });
         });
 
+    </script>
+    <script>
+        // 获取（次方）交叉组合数
+       //接受可变长数组参数
+        function Zuhe(){
+            var heads=arguments[0];  
+            for(var i=1,len=arguments.length;i<len;i++){  
+                if(arguments[i].length){
+                    heads=addNewType(heads,arguments[i]);
+                }
+            }
+            return heads;  
+        };   
+
+        function addNewType(heads,choices){  
+            var result=[];  
+            for(var i=0,len=heads.length;i<len;i++){  
+                for(var j=0,lenj=choices.length;j<lenj;j++){  
+                    result.push(heads[i]+'_'+choices[j]);  
+                }  
+            }
+            return result;  
+        };  
+
+        //打印结果的函数
+        function printResult(result){  
+            var bodyhtml = '';  // 每一栏
+            var _newArr = [];
+            var thlen = 0;
+            for(var i=0,len=result.length;i<len;i++){  
+                // console.log(result[i]);
+            }
+            // console.log('result: ',result);
+            for(var i=0; i<result.length; i++){
+                _newArr.push(result[i].split('_'));
+                // console.log('result[i]:', result[i].split('_'));
+            }
+            // console.log('_newArr: ',_newArr);
+            for(var i=0; i<_newArr.length; i++){
+                bodyhtml += '<tr class="attrtr'+ i +'">';
+                thlen = _newArr[i].length;
+                var temphtml = '';  // 每一栏中的每一项
+                for(var j=0; j<_newArr[i].length; j++){
+                    temphtml += '<th>'+ _newArr[i][j] +'</th>';
+                }
+                bodyhtml += temphtml + '<th><input class="price" type="text"></th><th><input class="num" type="text"></th></tr>';
+            }
+            // console.log('bodyhtml: ',bodyhtml);
+            // 显示详细规格组合
+            $('.allAttr tbody').html(bodyhtml);
+            $('.allAttr').show();
+            return result;
+        }
     </script>
 </block>
