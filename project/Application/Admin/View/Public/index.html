@@ -17,7 +17,7 @@
         <div>
             <div class="logoInfo">
                 <p>
-                    <a href="{{:U('admin/index/index')}}">
+                    <a class='home'>
                         <img src="__PUBLIC__/Admin/img/htlogo.png" alt="">
                         <span>净水物联网云平台</span> 
                     </a>
@@ -592,6 +592,7 @@
         // 清空数据
         sessionStorage.setItem('ind', '');
         sessionStorage.setItem('iframe_src', '');
+        location.href = '{{:U("Admin/Index/index")}}';
     })
     
     // 记录导航位置(刷新后恢复)
