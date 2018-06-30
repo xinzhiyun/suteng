@@ -10,12 +10,17 @@
     <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
     <link rel="stylesheet" href="__PUBLIC__/Home/css/shop/detailx.css">
     
-	<title>商品详情</title>
+    <title>商品详情</title>
+    <script>
+        var public = "__PUBLIC__";
+    </script>
 </head>
 <body>
 	<div class="main">
         <!-- 图片轮播 -->
-        <div class="picLun"></div>
+        <div class="picLun">
+            
+        </div>
         <!-- 商品描述 -->
         <div class="goodsInfo">
             <div>
@@ -50,38 +55,32 @@
         </div>
         <!-- 商品选项卡 -->
         <div class="switch">
-            <ul class="titleKa">
-                <li>商品详情</li>
-                <li>产品规格</li>
-                <li>售后服务</li>
-                <li>用户评价</li>
+            <ul class="titleKa" @click="chooice($event)">
+                <li><span index="0">商品详情</span></li>
+                <li><span index="1">产品规格</span></li>
+                <li><span index="2">售后服务</span></li>
+                <li><span index="3">用户评价</span></li>
+                <!-- <span class="line"></span> -->
             </ul>
             <ul class="contentKa">
-                <li>
-                    <img src="__PUBLIC__/Home/images/1a.jpg" alt="">
-                    <img src="__PUBLIC__/Home/images/1a.jpg" alt="">
-                    <img src="__PUBLIC__/Home/images/1a.jpg" alt="">
-                    <img src="__PUBLIC__/Home/images/1a.jpg" alt="">
-                    <img src="__PUBLIC__/Home/images/1a.jpg" alt="">
-                    <img src="__PUBLIC__/Home/images/1a.jpg" alt="">
-                    <img src="__PUBLIC__/Home/images/1a.jpg" alt="">
-                    <img src="__PUBLIC__/Home/images/1a.jpg" alt="">
-                    <img src="__PUBLIC__/Home/images/1a.jpg" alt="">
-                    <img src="__PUBLIC__/Home/images/1a.jpg" alt="">
+                <li v-if="DisFlag == 0">
+                    <img v-for="goodetails in goodDetail" :src="goodetails.src" alt="">
                 </li>
-                <li></li>
-                <li></li>
-                <li></li>
+                <li v-if="DisFlag == 1">
+                    <img v-for="product in products" :src="product.src" alt="">
+                </li>
+                <li v-if="DisFlag == 2"></li>
+                <li v-if="DisFlag == 3"></li>
             </ul>
         </div>
         <!-- 底部固定 -->
         <div class="footer">
-            <p><span class="iconfont icon-gouwuche"></span><i>16</i></p>
-            <p>立即购买</p>
-            <p>加入购物车</p>
+            <p><a href="####"><span class="iconfont icon-gouwuche"></span><i>16</i></a></p>
+            <p @click="menban(true)">立即购买</p>
+            <p @click="menban(true)">加入购物车</p>
         </div>
         <!-- 加入购物车 -->
-        <div class="goCart">
+        <div class="goCart" v-if="gocart">
             <div>
                 <div class="goodsOne">
                     <p>
@@ -95,28 +94,20 @@
                         </p>
                         <p>已选：<span>智能净水器A套餐</span></p>
                     </div>
-                    <span class="iconfont icon-chacha"></span>
+                    <span class="iconfont icon-chacha" @click="menban(false)"></span>
                 </div>
                 <!-- 规格 -->
                 <div class="property">
                     <h3>规格</h3>
                     <ul class="am-avg-sm-3 am-thumbnails">
-                        <li class="am-thumbnail"><span>集水器A</span></li>
-                        <li class="am-thumbnail"><span>集水器A</span></li>
-                        <li class="am-thumbnail"><span>集水器A</span></li>
-                        <li class="am-thumbnail"><span>集水器A</span></li> 
-                        <li class="am-thumbnail"><span>集水器A</span></li>
+                        <li class="am-thumbnail" v-for="guiges in guige" ><span v-text="guiges.title" @click="choice()"></span></li>
                     </ul>
                 </div>
                 <!-- 颜色 -->
                 <div class="property">
                     <h3>颜色</h3>
                     <ul class="am-avg-sm-3 am-thumbnails">
-                        <li class="am-thumbnail"><span>高雅白色</span></li>
-                        <li class="am-thumbnail"><span>高雅白色</span></li>
-                        <li class="am-thumbnail"><span>高雅白色</span></li>
-                        <li class="am-thumbnail"><span>高雅白色</span></li> 
-                        <li class="am-thumbnail"><span>高雅白色</span></li>
+                        <li class="am-thumbnail" v-for="colors in color"><span v-text="colors.title" @click="choice()"></span></li>
                     </ul>
                 </div>
                 <!-- 数量 -->
@@ -133,17 +124,6 @@
     </div>
 </body>
 <script src='__PUBLIC__/Home/js/vue.min.js'></script>
-<script>
-    var vm = new Vue({
-        el: ".main",
-        data() {
-            return {
-                
-            }
-        },
-        methods: {
-
-        },
-    })
-</script>
+<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+<script src="__PUBLIC__/Home/js/shop/shopdetailx.js"></script>
 </html>
