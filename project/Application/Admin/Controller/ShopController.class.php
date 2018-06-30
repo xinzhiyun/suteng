@@ -178,10 +178,6 @@ class ShopController extends CommonController
     {
         $cate = D('Category');
         $cateInfo = $cate->where('pid=0')->select();
-        $goods = D('Goods');
-        $attr = D('Attr'); 
-        $attrInfo = $attr->select();
-        $goodsList = $goods->select();  //暂时无用
 
         /* 添加快递公司选择 */
         $courier = M('courier');
@@ -195,6 +191,26 @@ class ShopController extends CommonController
         ];
         $this->assign($assign);
         $this->display();
+    }
+
+    /**
+     * [getAttr 通过分类id获取该分类下的所有属性]
+     * @return [type] [description]
+     */
+    public function getAttr()
+    {
+        $attr = D('attr');
+        $map['cid'] = 20;
+
+        $attr = M('attr')->field('id,attr')->where($map)->select();
+
+        foreach ($attr as $key => &$value) {
+            $value['data'] = M('attr_val')->field('id,val')->where('aid='.$value['id'])->select();
+        }
+
+        $a = json_encode($attr);
+        
+        $this->ajaxReturn($a);
     }
 
     // 商品管理首页删除商品
