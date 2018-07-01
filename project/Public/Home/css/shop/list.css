@@ -1,3 +1,6 @@
+* {
+	box-sizing: border-box;
+}
 .cfix::after {
 	content: '';
 	clear: both;
@@ -43,7 +46,7 @@
 	height: 40px;
 	display: flex;
 	align-items: center;
-	padding: 0 5vw;
+	padding: 0 4vw;
 	border-bottom: 4px solid #f1f1f1;
 }
 .filterBtnMenu>li {
@@ -91,4 +94,64 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	font-size: .6rem;
+}
+/* 筛选 */
+.filterMode {
+	width: 100vw;
+	height: 100vh;
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: rgba(0,0,0,.2);
+	overflow-x: hidden;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	z-index: 999;
+}
+.filterMode>ul {
+	width: 90%;
+	height: 100%;
+	left: 0;
+	margin-left: 10%;
+	padding: 10px 2vw;
+	background: #fff;
+	transition: .3s ease-out;
+	animation: slide2left .3s ease-out;
+}
+@keyframes slide2left {
+	from {
+		transform: translateX(50%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+.filterLi:nth-of-type(1)>ul>input {
+	width: 46%;
+}
+.filterLi:nth-of-type(1)>ul>span {
+	width: 8%;
+}
+.filterLi {
+	margin-bottom: 16px;
+}
+.filterLi>p {
+	margin-bottom: 6px;
+}
+.filterLi>ul {
+	font-size: .6rem;
+}
+.filterLi>ul>input {
+	border: none;
+	padding: 4px 6px;
+	background: #f1f1f1;
+}
+.filterItem>li {
+	display: inline-block;
+	padding: 4px 18px;
+	margin: 4px 6px;
+	text-align: center;
+	border-radius: 4px;
+	background: #f1f1f1;
 }

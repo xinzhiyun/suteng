@@ -1,9 +1,11 @@
 //分类详情、搜索结果页
-var categoryDetail = new Vue({
+var goodsList = new Vue({
     el: '.categoryDetail',
     data() {
         return {
-            searchList: [],
+            searchList: [],     // 查询列表数据
+            filterList: [],     // 筛选选项数据
+            showFilter: false,     // 是否显示筛选层
             sortmode: '0',      // 排序模式0:降序,1升序
             listid: '',         // 一级id
             listcid: '',        // 二级id
@@ -15,6 +17,8 @@ var categoryDetail = new Vue({
             arrow_down: '',     // 下箭头（降序）
             arrow_empty: '',    // 空
             sou: 1,             // 分页
+            priceLow: '',       // 最低价
+            priceHigh: ''       // 最高价
         }
     },
     created() {
@@ -38,6 +42,7 @@ var categoryDetail = new Vue({
         vm.listid = GetQueryString('id');
         vm.listcid = GetQueryString('cid');
         if(GetQueryString('search')){
+            vm.search = GetQueryString('search')
             // 搜索
             vm.searchFn(GetQueryString('search'));
         }else{
@@ -51,9 +56,32 @@ var categoryDetail = new Vue({
             }
             console.log('option: ',option);
             // 获取查询列表
-            vm.getCategoryList(option);
+            vm.getGoodsList(option);
             vm.lastsort = 0;    // 时间
         }
+        
+    },
+    mounted() {
+        var vm = this;
+        // 获取筛选数据
+        vm.filterList = [
+            {   title: '品牌',
+                data: [
+                    {name: '美的', id: '1'},
+                    {name: '格力', id: '2'},
+                    {name: '维嘉', id: '3'},
+                    {name: '创维', id: '4'}
+                ]
+            },
+            {   title: '品牌',
+                data: [
+                    {name: '美的', id: '1'},
+                    {name: '格力', id: '2'},
+                    {name: '维嘉', id: '3'},
+                    {name: '创维', id: '4'}
+                ]
+            }
+        ];
         
     },
     methods: {
@@ -158,7 +186,13 @@ var categoryDetail = new Vue({
             }
             console.log('option: ',option);
             // 获取搜索详情
-            vm.getCategoryList(option);
+            vm.getGoodsList(option);
+        },
+        // 点击筛选
+        filterMode() {
+            // this.showFilter = true;
+            var href = location.href;
+            location.href = href.substr(0,href.indexOf('#')) + '#filterMode';
         }
     }
 })
