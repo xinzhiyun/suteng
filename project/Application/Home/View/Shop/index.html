@@ -14,7 +14,8 @@
 	<script>
 		var public = '__PUBLIC__';
 		var shopurl = '{{:U("Home/Shop/index")}}';
-		var category = '{{$category|json_encode}}';
+		var shoplist = '{{:U("Home/Shop/list")}}';
+		var category = '{{$category}}';	// 一级分类
 	</script>
 </head>
 <body ontouchstart='console.log()'>
@@ -48,7 +49,7 @@
 				<h3 v-text='b.title'>块标题</h3>
 				<div>
 					<a class='goods' v-for='m in b.goods' :gid='m.gid' @click='todetail(m.gid)'>
-						<img :data-src="m.src" src='' alt="加载中">
+						<img :data-src="m.src" alt="加载中...">
 						<span v-text='m.desc'>商品描述</span>
 						<b class='price'>￥<span v-text='m.price'>价格</span></b>
 					</a>
@@ -64,11 +65,16 @@
 				:class='{cateSelect: cateSelect == cate}'></p>
 			</li>
 			<li class='cright fr'>
+				<div class='adv'>
+					<a v-for='a in categoryAdv' :href='a.link'>
+						<img :data-src='a.pic' alt="加载中...">
+					</a>
+				</div>
 				<div class='subBlock'>
 					<p v-text='categoryTitle'></p>
 					<ul>
 						<li class='subtype' v-for='category in categoryContentList' @click='subClick(category.id)'>
-							<img :src="category.pic" alt="加载中">
+							<img :data-src="category.pic" alt="加载中">
 							<p v-text='category.name'></p>
 						</li>
 					</ul>
@@ -161,10 +167,13 @@
 			}
 			if(hash.indexOf('_home') > 0){
 				vm.tabClick(1, '_home');
+				lazyLoad('#container');	// 图片懒加载
 			}else if(hash.indexOf('category') > 0){
 				vm.tabClick(2, 'category');
+				lazyLoad('.category>.cright');	// 图片懒加载
 			}else if(hash.indexOf('cart') > 0){
 				vm.tabClick(3, 'cart');
+				lazyLoad('.cart');	// 图片懒加载
 			}else if(hash.indexOf('mine') > 0){
 				vm.tabClick(4, 'mine');
 			}else{
@@ -177,14 +186,31 @@
 		function hashchangeFn(callback) {
 			var haschangeflag = false;
 			window.addEventListener('hashchange', function(){
-			haschangeflag = true;
-			callback(location.hash);
+				haschangeflag = true;
+				callback(location.hash);
 			}, false);
 			// console.log('haschangeflag: ',haschangeflag);
 			// console.log('hash: ',location.hash);
 			// 刷新保持
 			if(!haschangeflag){
-			callback(location.hash);
+				callback(location.hash);
+			}
+		}
+		
+		// 图片懒加载
+		function lazyLoad(block){
+			var block = document.querySelector(block);	// 图片所在区域
+			var img = block.querySelectorAll('img[data-src]');
+			// console.log('block: %s, img: %s', block, img);
+			if(!img.length)	return;
+			for(var i=0; i<img.length; i++){
+				(function(img){
+					setTimeout(function(){
+						// console.log('img: ',img);
+						var datasrc = img.getAttribute('data-src');
+						img.setAttribute('src', datasrc);
+					},100);
+				})(img[i])
 			}
 		}
 	</script>

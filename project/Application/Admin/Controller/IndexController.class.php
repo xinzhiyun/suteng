@@ -178,4 +178,5 @@ class IndexController extends CommonController
  
 	    return $resAttr;
     }
+
 }

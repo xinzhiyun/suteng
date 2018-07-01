@@ -41,9 +41,9 @@ class ShopController extends CommonController
             ];
             return $this->ajaxReturn($assign);
         } else {
-            $category = M('category')->where('pid=0')->select();
+            $category = M('category')->where('pid=0')->field('id,name')->select();
 
-            $this->assign('category', $category );
+            $this->assign('category',json_encode($category,JSON_UNESCAPED_UNICODE)  );
             $this->display();
         }
     }
@@ -70,12 +70,84 @@ class ShopController extends CommonController
                 'data'=>$category,
                 'adv'=>$adv,
                 'msg'=>'获取成功',
-            ),'JSON');
+            ),'JSON',JSON_UNESCAPED_UNICODE);
         } catch (\Exception $e) {
             $this->toJson($e);
         }
     }
-    
+
+    public function getCategoryGoodsList()
+    {
+        try {
+            $post = I('post.');
+            if (empty($post['cid'])) {
+                E('数据不完整', 201);
+            } else {
+                $map['cid'] = $post['cid'];
+            }
+
+            if(!empty($post['search'])){
+                $map['g.name'] = ['like',"%".$post['search']."%"];
+            }
+
+
+
+            $GoodsMap = M('goods')->alias('g')->where($map);
+
+            // 会员价格模式
+            // 会员等级 价格
+            if(empty(0)){
+                $GoodsMap = $GoodsMap->field('g.id,g.name,g.gpic,g.price');
+            }else{
+                $grade = " and gp.grade=".'1';
+                $GoodsMap = $GoodsMap->join('__GOODS_PRICE__ gp ON g.id=gp.gid '.$grade, 'LEFT');
+                $GoodsMap = $GoodsMap->field('g.id,g.name,g.gpic,gp.price');
+            }
+
+
+            $mode = (string)$post['sort'];
+            $order_modes = [' desc',' asc'];//0 降序 1升序 默认降序
+            $order_modes = $order_modes[$post['sortmode']]?:'';
+
+            //排序模式
+            switch ($mode){
+                case '1':// 时间
+                    $GoodsMap = $GoodsMap->order('g.updatetime'.$order_modes);
+                    break;
+                case '2':// 人气
+                    $GoodsMap = $GoodsMap->order('g.hits'.$order_modes);
+                    break;
+                case '3':// 价格
+                    $orderPrciefield = empty(0)?'g.price':'gp.price'; // 会员价格模式
+                    $GoodsMap = $GoodsMap->order($orderPrciefield.$order_modes);
+                    break;
+                case '4':// 销量
+                    $GoodsMap = $GoodsMap->order('g.sales'.$order_modes);
+                    break;
+            }
+            /*
+            // 分页 兼容
+            $_GET['p'] = $post['p'];
+            if(!empty($post['sou'])){
+                $_GET['p'] = 1;
+            }
+            $tmp = $GoodsMap;
+            $count = $tmp->count();
+            $Page       = new \Think\Page($count,10);
+            $GoodsMap = $GoodsMap->limit($Page->firstRow.','.$Page->listRows)
+            **/
+
+            $goodsList = $GoodsMap->select();
+
+            $this->ajaxReturn(array(
+                'status'=>200,
+                'data'=>$goodsList,
+                'msg'=>'获取成功',
+            ),'JSON',JSON_UNESCAPED_UNICODE);
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
 
     /**
      * 订单管理

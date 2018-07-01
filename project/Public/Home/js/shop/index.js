@@ -6,6 +6,7 @@ var shopindex = new Vue({
 			blockList: [],				// 商品块集合
 			categoryList: [],			// 一级分类类目
 			categoryContentList: [],	// 二级分类
+			categoryAdv: [],
 			cartList: [],				// 购物车商品集合
 			cateSelect: '',
 			tabclk: 1, 					// 底部按钮
@@ -19,7 +20,7 @@ var shopindex = new Vue({
 			],
 			titleList: ['商城首页','分类','购物车','我的'],
 			categoryTitle: '',  //二级分类标题
-			noCateContent: '加载中...',
+			noCateContent: '选择左边分类',
 			cart_none: '',
 			moneyCalc: [],	// 购物车选中的商品
 			checkNum: 0,	// 结算的商品数量
@@ -96,16 +97,21 @@ var shopindex = new Vue({
 				]
 			}
 		];
-
 		// 一级分类
 		vm.categoryList = JSON.parse(category);
+		// console.log('category: ',category);
+		// 加载第一条
+		vm.$nextTick(function(){
+			vm.getCate(vm.categoryList[0], vm.categoryList[0].id)
+		})
 		// vm.categoryList = [
-		// 	{name: '热水器', cid: '12'},
-		// 	{name: '净水器', cid: '13'},
-		// 	{name: '瓦胆系列', cid: '142'},
-		// 	{name: '空气净化', cid: '14'},
-		// 	{name: '生活用品', cid: '112'},
-		// 	{name: '数码家电', cid: '242'}
+		// 	{name: '豪大大大鸡排', id: '1'},
+		// 	{name: '养生瓦胆煲', id: '2'},
+		// 	{name: '光能路灯', id: '3'},
+		// 	{name: '净化器', id: '4'},
+		// 	{name: '电热水器', id: '5'},
+		// 	{name: 'cece2', id: '9'},
+		// 	{name: '', id: '25'}
 		// ]
 
 		// 购物车数据
@@ -157,13 +163,20 @@ var shopindex = new Vue({
 				success: function(res){
 					console.log('res: ',res);
 					if(res.status == 200){
-						vm.categoryContentList = res.data;
-						vm.noCateContent = false;
 						if(!res.data.length){
 							vm.noCateContent = '此分类下暂无数据';
+							vm.categoryContentList.length = 0; // 清空详细分类内容
+							vm.categoryAdv.length = 0; // 清空广告
+							return;
 						}
+						vm.categoryAdv = res.adv;	// 广告
+						vm.categoryContentList = res.data;	// 详细分类
+						vm.noCateContent = false;
+						vm.$nextTick(function(){
+							lazyLoad('.category>.cright');	// 图片懒加载
+						})
 					}else{
-						layuiHint(res.msg);
+						vm.categoryContentList.length = 0; // 清空
 						vm.noCateContent = '此分类下暂无数据';
 					}
 				},
@@ -176,21 +189,21 @@ var shopindex = new Vue({
 			// 	{
 			// 		title: '净水器',
 			// 		subType: [
-			// 			{src: '',name:'lopo玩具',scid: '12'},
-			// 			{src: '',name:'毛衣刷',scid: '13'},
-			// 			{src: '',name:'宝宝杯',scid: '14'},
-			// 			{src: '',name:'小小苏',scid: '15'},
-			// 			{src: '',name:'规划局规划国际化',scid: '25'},
+			// 			{pic: '',name:'lopo玩具',scid: '12'},
+			// 			{pic: '',name:'毛衣刷',scid: '13'},
+			// 			{pic: '',name:'宝宝杯',scid: '14'},
+			// 			{pic: '',name:'小小苏',scid: '15'},
+			// 			{pic: '',name:'规划局规划国际化',scid: '25'},
 			// 		]
 			// 	},
 			// 	{
 			// 		title: '净化器',
 			// 		subType: [
-			// 			{src: '',name:'lopo玩具',scid: '12'},
-			// 			{src: '',name:'毛衣刷',scid: '13'},
-			// 			{src: '',name:'宝宝杯',scid: '14'},
-			// 			{src: '',name:'小小苏',scid: '15'},
-			// 			{src: '',name:'规划局规划国际化',scid: '25'},
+			// 			{pic: '',name:'lopo玩具',scid: '12'},
+			// 			{pic: '',name:'毛衣刷',scid: '13'},
+			// 			{pic: '',name:'宝宝杯',scid: '14'},
+			// 			{pic: '',name:'小小苏',scid: '15'},
+			// 			{pic: '',name:'规划局规划国际化',scid: '25'},
 			// 		]
 			// 	}
 			// ];
@@ -198,6 +211,7 @@ var shopindex = new Vue({
 		// 点击大分类下的小分类商品图片
 		subClick(scid) {
 			console.log('scid: ',scid);
+			location.href = shoplist + '?scid=' + scid;
 		},
 		// 购物车商品左滑、右滑
 		slideDelete(e, gid) {

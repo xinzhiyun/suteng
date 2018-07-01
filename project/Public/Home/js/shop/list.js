@@ -1,8 +1,17 @@
+//分类详情、搜索结果页
 var categoryDetail = new Vue({
     el: '.categoryDetail',
     data() {
-        return {}
+        return {
+            searchList: [],
+        }
     },
-    created() {},
+    created() {
+        var vm  = this;
+        vm.searchList = [];
+        // $.ajax({
+
+        // })
+    },
     methods: {}
 })
