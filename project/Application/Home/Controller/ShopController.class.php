@@ -76,13 +76,11 @@ class ShopController extends CommonController
         }
     }
 
-    public function getCategoryGoodsList()
+    public function getGoodsList()
     {
         try {
             $post = I('post.');
-            if (empty($post['cid'])) {
-                E('数据不完整', 201);
-            } else {
+            if (!empty($post['cid'])) {
                 $map['cid'] = $post['cid'];
             }
 
@@ -125,7 +123,6 @@ class ShopController extends CommonController
                     $GoodsMap = $GoodsMap->order('g.sales'.$order_modes);
                     break;
             }
-            /*
             // 分页 兼容
             $_GET['p'] = $post['p'];
             if(!empty($post['sou'])){
@@ -133,9 +130,8 @@ class ShopController extends CommonController
             }
             $tmp = $GoodsMap;
             $count = $tmp->count();
-            $Page       = new \Think\Page($count,10);
+            $Page       = new \Think\Page($count,5);
             $GoodsMap = $GoodsMap->limit($Page->firstRow.','.$Page->listRows)
-            **/
 
             $goodsList = $GoodsMap->select();
 
