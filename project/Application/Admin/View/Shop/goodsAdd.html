@@ -739,29 +739,32 @@
             var attrtrLen = $('.allAttr tbody>tr').length;
             for(var i=0; i<attrtrLen; i++){
                 var attrth = $(".attrtr"+i).find('th');
-                console.log(attrth.eq(i).text())
+                // console.log(attrth.eq(i).text())
                 // if(attrth.eq(i).length){
                     attrArr.push([]);
                 // }
                 // 遍历已选规格内容
                 for(var j=0; j<attrth.length; j++){
-                    console.log('attrth.eq(j): ',attrth.eq(j));
+                    // console.log('attrth.eq(j): ',attrth.eq(j));
                     var text = attrth.eq(j);
-                    text = text.text() +','+ text.attr('data-id')
+                    // text = text.text() +','+ text.attr('data-id')
+                    var name = text.text();
+                    var id = text.attr('data-id');
                     var val = attrth.eq(j).find('input').val();
                     // console.log('text: %s, val: %s', text, val);
                     if(attrth.eq(j)[0].childNodes[0].nodeName === 'INPUT'){  // 价格、库存
-                        console.log('val: ',val);
-                        attrArr[i].push(val);
+                        // console.log('val: ',val);
+                        attrArr[i]['stock']= val;
                     }else{
-                        console.log('text: ',text);
-                        attrArr[i].push(text);
+                        // console.log('text: ',text);
+                        if(!attrArr[i]['list'])attrArr[i]['list'] = [];
+                        attrArr[i]['list'].push({'name':name, 'id':id});
                     }
                 }
             }
             console.log('attrArr: ',attrArr);
             // var data = $("#form").serializeArray();
-            console.log(picArr);
+            // console.log(picArr);
             var data = new FormData($("#form")[0]);
             for(var i = 0; i < picArr.length; i++) {
                 data.append("UploadForm[]", picArr[i]);
