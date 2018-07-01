@@ -43,7 +43,7 @@ class ShopController extends CommonController
                         ->where($map)
                         ->join('__GOODS_PRICE__ pr ON g.id=pr.gid', 'LEFT')
                         // ->join('__GOODS_RELATION_BLOCK__ grb ON g.id=grb.gid', 'LEFT')
-                        ->field('g.name,g.gpic,g.price prices,pr.price')
+                        ->field('g.id,g.name,g.gpic,g.price prices,pr.price')
                         ->select();
                 }
 
