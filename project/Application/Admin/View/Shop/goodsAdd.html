@@ -417,6 +417,11 @@
                     }
                 }
                 console.log('arr: ',arr);
+                for(var i=0; i<arr.length; i++){
+                    if(!arr[i].length){
+                        arr.splice(i, 1);
+                    }
+                }
                 // 数据交叉组合
                 if(arr.length == 1){
                     var res = printResult(Zuhe(arr[0]));
