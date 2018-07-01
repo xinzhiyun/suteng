@@ -6,6 +6,7 @@ var shopindex = new Vue({
 			blockList: [],				// 商品块集合
 			categoryList: [],			// 一级分类类目
 			categoryContentList: [],	// 二级分类
+			categoryID: '',				// 一级分类id
 			categoryAdv: [],
 			cartList: [],				// 购物车商品集合
 			cateSelect: '',
@@ -149,6 +150,7 @@ var shopindex = new Vue({
 		// 点击分类类目
 		getCate(cate, cid) {
 			var vm = this;
+			vm.categoryID = cate.id;
 			vm.categoryTitle = cate.name;
 			// 点击同一个分类类目
 			if(window.clickCid == cid) return;
@@ -209,9 +211,10 @@ var shopindex = new Vue({
 			// ];
 		},
 		// 点击大分类下的小分类商品图片
-		subClick(scid) {
-			console.log('scid: ',scid);
-			location.href = shoplist + '?scid=' + scid;
+		subClick(cid) {
+			// id:一级分类is, cid:二级分类id
+			console.log('cid: ',cid);
+			location.href = shoplist + '?id=' + this.categoryID + '&cid=' + cid;
 		},
 		// 购物车商品左滑、右滑
 		slideDelete(e, gid) {
