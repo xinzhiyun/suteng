@@ -88,12 +88,9 @@ class ShopController extends CommonController
                 $map['g.name'] = ['like',"%".$post['search']."%"];
             }
 
-
-
             $GoodsMap = M('goods')->alias('g')->where($map);
 
             // 会员价格模式
-            // 会员等级 价格
             if(empty(0)){
                 $GoodsMap = $GoodsMap->field('g.id,g.name,g.gpic,g.price');
             }else{
@@ -102,10 +99,20 @@ class ShopController extends CommonController
                 $GoodsMap = $GoodsMap->field('g.id,g.name,g.gpic,gp.price');
             }
 
-
             $mode = (string)$post['sort'];
             $order_modes = [' desc',' asc'];//0 降序 1升序 默认降序
             $order_modes = $order_modes[$post['sortmode']]?:'';
+
+
+            // 分页 兼容
+            $_GET['p'] = $post['p'];
+            if(!empty($post['sou'])){
+                $_GET['p'] = 1;
+            }
+            $tmp = $GoodsMap;
+            $count = $tmp->count();
+            $Page       = new \Think\Page($count,5);
+            $GoodsMap = $GoodsMap->limit($Page->firstRow.','.$Page->listRows);
 
             //排序模式
             switch ($mode){
@@ -123,15 +130,6 @@ class ShopController extends CommonController
                     $GoodsMap = $GoodsMap->order('g.sales'.$order_modes);
                     break;
             }
-            // 分页 兼容
-            $_GET['p'] = $post['p'];
-            if(!empty($post['sou'])){
-                $_GET['p'] = 1;
-            }
-            $tmp = $GoodsMap;
-            $count = $tmp->count();
-            $Page       = new \Think\Page($count,5);
-            $GoodsMap = $GoodsMap->limit($Page->firstRow.','.$Page->listRows)
 
             $goodsList = $GoodsMap->select();
 
