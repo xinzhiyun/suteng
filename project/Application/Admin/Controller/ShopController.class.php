@@ -377,7 +377,38 @@ class ShopController extends CommonController
     // 商品添加处理
     public function goodsAction()
     {   
-        // dump($_POST);die;
+        //sku库存数据写入
+            $skuattrs = json_decode($_POST['skuattr'],true);
+
+            dump($skuattrs);
+            foreach ($skuattrs as $key => $value) {
+                // echo count($value);
+                // $sku = array();
+                //sku商品id
+                $sku['gid'][] = $goodsid;
+
+                $str = '';
+                for ($i=0; $i < count($value)-1; $i++) { 
+                    $str .= explode(',',$value[$i])[1]."_";
+                }
+
+                rtrim($str,'_');
+                $sku['skuattr'][] = $str;
+                //属性值id组合
+                // $sku['skuattr'][] = explode(',',$value[0])[1].'_'.explode(',',$value[1])[1];
+                //属性组合库存
+                $sku['skustock'][] = $value[count($value)-1];
+                // $sku['addtime'][] = time();
+                // $sku['updatetime'][] = time();
+
+                // if(!$GoodsSku->create($sku)) E($GoodsSku->getError(),408);
+                // 商品sku添加
+                // $skustatus = $GoodsSku->add($sku);
+                
+            }
+
+            dump($sku);
+        die;
         try{
             //商品表
             $goods_add = D('Goods');
