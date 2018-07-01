@@ -98,18 +98,24 @@ var categoryDetail = new Vue({
             }
             // 判断是否点击的是同一个
             if(vm.lastsort == sorttype){
-                if(vm.sortmode === '0'){   // 降序
-                    sortitem.eq(+sorttype).attr('src',vm.arrow_down);
+                if(vm.sortmode == 0){   // 其他默认降序
+                    sortitem.eq(+sorttype).attr('src',vm.arrow_up);
                     vm.sortmode = 1;
 
-                }else if(vm.sortmode === '1'){
-                    sortitem.eq(+sorttype).attr('src',vm.arrow_up);
+                }else if(vm.sortmode == 1){
+                    sortitem.eq(+sorttype).attr('src',vm.arrow_down);
                     vm.sortmode = 0;
                 }
-            }else{
-                // 默认降序（第一次点击）
-                sortitem.eq(+sorttype).attr('src',vm.arrow_down);
-                vm.sortmode = 0;
+            }else{  //  第一次点击
+                if(sorttype == 2){
+                    // 价格(默认升序)
+                    sortitem.eq(+sorttype).attr('src',vm.arrow_up);
+                    vm.sortmode = 1;
+
+                }else{  // 其他默认降序
+                    sortitem.eq(+sorttype).attr('src',vm.arrow_down);
+                    vm.sortmode = 0;
+                }
             }
             // 请求参数
             var option = {
