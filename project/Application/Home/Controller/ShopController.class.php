@@ -152,6 +152,78 @@ class ShopController extends CommonController
         $this->display();
     }
 
+    public function goodsDetail()
+    {
+        try {
+            $post = I('post.');
+            if (empty($post['id'])) {
+                E('数据错误!', 201);
+            } else {
+                $map['id'] = $post['id'];
+            }
+
+            $goodsInfo = M('goods')->where($map)->field('id,name')->find();
+
+            $goodsDetail = M('goodsDetail')->where('gid='.$post['id'])->field('pic,desc,specs,saleservice')->find();
+            $goodsDetail['pic'] = explode('|', $goodsDetail['pic']);
+
+
+            $goodsInfo = array_merge($goodsInfo, $goodsDetail);
+
+            $goodsAttr = M('goodsSku')->where('gid='.$post['id'])->select();
+
+            $attrValArr = [];//值
+            $attrArr = [];  //属性
+            $attrValRel = [];  //属性和值的关系
+
+            foreach ($goodsAttr as $item){
+                $attrs =  explode('_',$item['skuattr']);
+                foreach ($attrs as $attrid){
+                    if(empty($attrValArr[$attrid])){
+                        $tmpAttr = M('attrVal')->find($attrid);
+                        $attrValArr[$attrid] = $tmpAttr['val'];
+                        $attrValRel[$tmpAttr['aid']][] = $attrid;
+                        if(empty($attrArr[$tmpAttr['aid']])){
+                            $tmpAttrs = M('attr')->find($tmpAttr['aid']);
+                            $attrArr[$tmpAttr['aid']] = $tmpAttrs['attr'];
+                        }
+                    }
+                }
+            }
+            $attrRes = [];
+            foreach ($attrArr as $atrrid =>$attrVal){
+                $tmpRes = [];
+                $tmpRes['name']=$attrVal;
+                $tmpAttr = [];
+                foreach ($attrValRel[$atrrid] as $attrItem){
+                    $tmpAttr['pname'] = $attrArr[$atrrid];
+                    $tmpAttr['name']  = $attrValArr[$attrItem];
+                    $tmpAttr['id']    = $attrItem ;
+                    $tmpRes['list'][]=$tmpAttr;
+                }
+                $attrRes[] = $tmpRes;
+            }
+            $goodsInfo['attr'] = $attrRes;
+
+
+            echo json_encode($goodsInfo);die;
+
+
+            if(empty($adv)){
+                $adv=[];
+            }
+            $this->ajaxReturn(array(
+                'status'=>200,
+                'data'=>$category,
+                'adv'=>$adv,
+                'msg'=>'获取成功',
+            ),'JSON',JSON_UNESCAPED_UNICODE);
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+    
+
     // 商品详情页面
     public function goods_detail()
     {
