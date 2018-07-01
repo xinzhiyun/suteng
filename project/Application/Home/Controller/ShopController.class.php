@@ -203,19 +203,16 @@ class ShopController extends CommonController
                 }
                 $attrRes[] = $tmpRes;
             }
+
+
+            // 其他附加数据
+
+
             $goodsInfo['attr'] = $attrRes;
 
-
-            echo json_encode($goodsInfo);die;
-
-
-            if(empty($adv)){
-                $adv=[];
-            }
             $this->ajaxReturn(array(
                 'status'=>200,
-                'data'=>$category,
-                'adv'=>$adv,
+                'data'=>$goodsInfo,
                 'msg'=>'获取成功',
             ),'JSON',JSON_UNESCAPED_UNICODE);
         } catch (\Exception $e) {
