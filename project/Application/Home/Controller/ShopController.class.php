@@ -26,39 +26,46 @@ class ShopController extends CommonController
             foreach ($GoodsBlock as $key => $value) {
                 $blist[] = M('goods_relation_block')->where('bid='.$value['id'])->select();
                 
-            }
-            dump($blist);
-            foreach ($blist as $key => $value) {
-                $glist[] = $value;
                 
-                    
             }
 
-            foreach ($glist as $k => $v) {
-                    $GoodsBlock[$k][] = M('goods')
+            foreach ($blist as $k => $v) {
+               
+                for ($i=0; $i < count($v); $i++) { 
+                    $str .= $v[$i]['gid'].',';
+                }
+                $arr[] = $str; 
+                $str = '';
+            }
+            
+            // dump($arr);
+            foreach ($arr as $keys => $values) {
+                    $map['g.id'] = array('in',$values);
+                    $GoodsBlock[$keys][] = M('goods')
                         ->alias('g')
                         ->where($map)
                         ->join('__GOODS_PRICE__ pr ON g.id=pr.gid', 'LEFT')
-                        ->field('g.name,g.gpic,pr.price')
+                        // ->join('__GOODS_RELATION_BLOCK__ grb ON g.id=grb.gid', 'LEFT')
+                        ->field('g.name,g.gpic,g.price prices,pr.price')
                         ->select();
                 }
 
-            dump($GoodsBlock);
+            // dump($GoodsBlock);
 
-            die;
+            // die;
             // p($map);die;
-            $goodsList = $goods->getGoodsList($map);
+            // $goodsList = $goods->getGoodsList($map);
             // echo M()->getLastSql();
-            dump($goodsList);
+            // dump($goodsList);
             $assign = [
                 'cate' => $cate,
                 'cartInfo' => $cartInfo,
-                'goods' => $goodsList,
+                'goods' => $GoodsBlock,
             ];
 
             // dump($assign);die;
-            // return $this->ajaxReturn($assign);
-            $this->display();
+            return $this->ajaxReturn($assign);
+            // $this->display();
         
     }
 
