@@ -95,6 +95,7 @@ img {
 .mBlock {
 	padding: 0 8px 8px;
 	background: #fff;
+	transition: .3s ease;
 }
 .mBlock:not(:last-child) {
 	border-bottom: 8px solid #f1f1f1;

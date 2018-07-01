@@ -160,14 +160,21 @@ var shopindex = new Vue({
 		// 点击首页分类按钮
 		menuBtnClk(index, name, id) {
 			var vm = this;
-			console.log('id: ',id);
+			// console.log('id: ',id);
+			if(name == '更多...'){
+				location.href = shopurl + '#category';
+				return
+			}
 			location.href = shopurl + '#category';
 			vm.getCate({id: id, name:name}, id);
 			$('.category>.fl>p').eq(index).addClass('cateSelect');
 		},
 		// 点击商品图片
 		todetail(gid) {
-			console.log('gid: ', gid);
+			// console.log('gid: ', gid);
+			if(gid){
+				location.href = shopdetail + '?gid=' + gid;
+			}
 		},
 		// 点击底部导航按钮
 		tabClick(tabclk, text){
@@ -185,17 +192,17 @@ var shopindex = new Vue({
 		// 点击分类类目
 		getCate(cate, cid) {
 			var vm = this;
-			for(var i=0;i<$('.category>.fl>p').length; i++){
-				$('.category>.fl>p').eq(i).removeClass('cateSelect');
-			}
 			vm.categoryID = cate.id;
 			vm.categoryTitle = cate.name;
 			// 点击同一个分类类目
 			if(window.clickCid == cid) return;
+			for(var i=0;i<$('.category>.fl>p').length; i++){
+				$('.category>.fl>p').eq(i).removeClass('cateSelect');
+			}
 			window.clickCid = cid;
 			vm.cateSelect = cate;
-			console.log('cate: ',cate);
-			console.log('cid: ',cid);
+			// console.log('cate: ',cate);
+			// console.log('cid: ',cid);
 			// 获取对应类目下的商品详细分类
 			$.ajax({
 				url: getURL('Home','Shop/getCategory'),

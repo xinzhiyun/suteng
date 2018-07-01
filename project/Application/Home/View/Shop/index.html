@@ -15,6 +15,7 @@
 		var public = '__PUBLIC__';
 		var shopurl = '{{:U("Home/Shop/index")}}';
 		var shoplist = '{{:U("Home/Shop/list")}}';
+		var shopdetail = '{{:U("Home/Shop/shoppingdetail")}}';
 		var category = '{{$category}}';	// 一级分类
 	</script>
 </head>
@@ -49,7 +50,7 @@
 			<ul class='mBlock' v-for='(b, index) in blockList'>
 				<h3 v-text='b.bname'>块标题</h3>
 				<div>
-					<a class='goods' v-for='m in b["0"]' :gid='m.gid' @click='todetail(m.gid)'>
+					<a class='goods' v-for='m in b["0"]' :gid='m.id' @click='todetail(m.id)'>
 						<img :data-src="m.gpic" alt="加载中...">
 						<span v-text='m.name'>商品描述</span>
 						<p><s v-text='m.prices'>划掉的价格</s></p>
