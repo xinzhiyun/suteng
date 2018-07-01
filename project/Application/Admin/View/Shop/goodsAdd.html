@@ -413,10 +413,17 @@
                         var pattr = par[i].getAttribute('data-pattr');
                         var pid = par[i].getAttribute('data-pid');
                         // console.log('pid: %s, pattr: %s, id: %s, attr: %s', pid, pattr, id, attr);
-                        arr[k].push(attr+'|'+id);
+                        arr[k].push(attr+'|'+id+'|'+pattr);
                     }
                 }
                 console.log('arr: ',arr);
+                // 清空空的数组
+                for(var i=0; i<arr.length; i++){
+                    if(!arr[i].length){
+                        arr.splice(i, 1);
+                    }
+                }
+                window.headarr = [].concat(arr);
                 // 数据交叉组合
                 if(arr.length == 1){
                     var res = printResult(Zuhe(arr[0]));
@@ -739,29 +746,32 @@
             var attrtrLen = $('.allAttr tbody>tr').length;
             for(var i=0; i<attrtrLen; i++){
                 var attrth = $(".attrtr"+i).find('th');
-                console.log(attrth.eq(i).text())
+                // console.log(attrth.eq(i).text())
                 // if(attrth.eq(i).length){
-                    attrArr.push([]);
+                    attrArr.push({});
                 // }
                 // 遍历已选规格内容
                 for(var j=0; j<attrth.length; j++){
-                    console.log('attrth.eq(j): ',attrth.eq(j));
+                    // console.log('attrth.eq(j): ',attrth.eq(j));
                     var text = attrth.eq(j);
-                    text = text.text() +','+ text.attr('data-id')
+                    // text = text.text() +','+ text.attr('data-id')
+                    var name = text.text();
+                    var id = text.attr('data-id');
                     var val = attrth.eq(j).find('input').val();
                     // console.log('text: %s, val: %s', text, val);
                     if(attrth.eq(j)[0].childNodes[0].nodeName === 'INPUT'){  // 价格、库存
-                        console.log('val: ',val);
-                        attrArr[i].push(val);
+                        // console.log('val: ',val);
+                        attrArr[i]['stock']= val;
                     }else{
-                        console.log('text: ',text);
-                        attrArr[i].push(text);
+                        // console.log('text: ',text);
+                        if(!attrArr[i]['list']) attrArr[i]['list'] = [];
+                        attrArr[i].list.push({'name':name, 'id':id});
                     }
                 }
             }
             console.log('attrArr: ',attrArr);
             // var data = $("#form").serializeArray();
-            console.log(picArr);
+            // console.log(picArr);
             var data = new FormData($("#form")[0]);
             for(var i = 0; i < picArr.length; i++) {
                 data.append("UploadForm[]", picArr[i]);
@@ -835,14 +845,17 @@
                 }
                 bodyhtml += temphtml + '<th><input class="num" type="text" value=""></th></tr>';
             }
-            for(var i=0; i<thlen;i++){
-                //表格头
-                headhtml += '<th data-id="'+ attrArr[i].id +'">'+ attrArr[i].attr +'</th>';
+            console.log('_newArr[0]: ',_newArr[0]);
+            if(_newArr[0]){
+                for(var i=0; i<_newArr[0].length;i++){
+                    //表格头
+                    headhtml += '<th data-id="'+ _newArr[0][i].split('|')[1] +'">'+ _newArr[0][i].split('|')[2] +'</th>';
+                }
+                headhtml += '<th>库存</th>';    
+                // console.log('bodyhtml: ',bodyhtml);
+                // 表格头
+                $('.allAttr thead>tr').html(headhtml);
             }
-            headhtml += '<th>库存</th>';    
-            // console.log('bodyhtml: ',bodyhtml);
-            // 表格头
-            $('.allAttr thead>tr').html(headhtml);
             // 显示详细规格组合
             $('.allAttr tbody').html(bodyhtml);
             $('.allAttr').show();

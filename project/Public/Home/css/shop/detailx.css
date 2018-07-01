@@ -28,7 +28,7 @@ img {
 }
 .goodsInfo > div:nth-child(1) > p:nth-child(1) > span:nth-child(1) {
     font-weight: bold;
-    font-size: .8rem;
+    font-size: .7rem;
     margin-bottom: .2rem;
 }
 .goodsInfo > div:nth-child(1) > p:nth-child(1) > span:nth-child(2) {
@@ -72,7 +72,7 @@ img {
     font-size: .5rem;
 }
 .goodsInfo > div:nth-child(2) > p:nth-child(1) > span > i:nth-child(1) {
-    font-size: 1rem;
+    font-size: .7rem;
 }
 .goodsInfo > div:nth-child(2) > p:nth-child(1) > span {
     font-weight: bold;
@@ -115,14 +115,14 @@ img {
 /* 底部固定 */
 .footer {
     display: flex;
-    height: 3rem;
-    line-height: 3rem;
+    height: 2rem;
+    line-height: 2rem;
     position: fixed;
     bottom: 0;
     z-index: 100;
     width: 100vw;
     background: white;
-    font-size: .8rem;
+    font-size: .7rem;
 }
 .footer > p {
     display: flex;
@@ -135,23 +135,24 @@ img {
 }
 .footer > p:nth-child(1) > a {
     display: block;
+    position: relative;
 }
 .footer > p:nth-child(1) > a > span {
-    font-size: 1.7rem;
+    font-size: 1rem;
     font-weight: bold;
 }
 .footer > p:nth-child(1) > a > i {
     position: absolute;
     top: .2rem;
-    left: 4.8rem;
-    width: 1.2rem;
-    height: 1rem;
+    left: 100%;
+    height: 20px;
     color: white;
+    padding: 0 6px;
     font-size: .4rem;
     text-align: center;
     font-style: normal;
-    line-height: 1rem;
-    border-radius: 2rem;
+    line-height: 20px;
+    border-radius: 30px;
     background: #CA0010;
 }
 .footer > p:nth-child(2) {
@@ -232,7 +233,7 @@ img {
 }
 .am-thumbnails > li > span {
     border: 1px solid #747474;
-    padding: .5rem .5rem;
+    padding: .1rem .1rem;
     display: block;
 }
 /* 数量 */
@@ -241,7 +242,7 @@ img {
     padding-bottom: 1rem;
 }
 .numberDo > div > span:nth-child(1), .numberDo > div > span:nth-child(3) {
-    padding: .4rem 1.2rem;
+    padding: .1rem .6rem;
     border: 1px solid #D4D4D4;
 }
 .numberDo > div > span:nth-child(1) {
@@ -250,8 +251,8 @@ img {
 .numberDo > div > span:nth-child(2) > input {
     border: 1px solid #D4D4D4;
     text-align: center;
-    padding: .6rem 0;
-    width: 5.5rem;
+    padding: .2rem 0;
+    width: 3.5rem;
 }
 /* 选项卡 */
 .selecteds {
