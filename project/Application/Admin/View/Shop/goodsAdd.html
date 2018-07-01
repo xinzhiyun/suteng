@@ -413,15 +413,17 @@
                         var pattr = par[i].getAttribute('data-pattr');
                         var pid = par[i].getAttribute('data-pid');
                         // console.log('pid: %s, pattr: %s, id: %s, attr: %s', pid, pattr, id, attr);
-                        arr[k].push(attr+'|'+id);
+                        arr[k].push(attr+'|'+id+'|'+pattr);
                     }
                 }
                 console.log('arr: ',arr);
+                // 清空空的数组
                 for(var i=0; i<arr.length; i++){
                     if(!arr[i].length){
                         arr.splice(i, 1);
                     }
                 }
+                window.headarr = [].concat(arr);
                 // 数据交叉组合
                 if(arr.length == 1){
                     var res = printResult(Zuhe(arr[0]));
@@ -843,9 +845,10 @@
                 }
                 bodyhtml += temphtml + '<th><input class="num" type="text" value=""></th></tr>';
             }
-            for(var i=0; i<thlen;i++){
+            console.log('_newArr[0]: ',_newArr[0]);
+            for(var i=0; i<_newArr[0].length;i++){
                 //表格头
-                headhtml += '<th data-id="'+ attrArr[i].id +'">'+ attrArr[i].attr +'</th>';
+                headhtml += '<th data-id="'+ _newArr[0][i].split('|')[1] +'">'+ _newArr[0][i].split('|')[2] +'</th>';
             }
             headhtml += '<th>库存</th>';    
             // console.log('bodyhtml: ',bodyhtml);
