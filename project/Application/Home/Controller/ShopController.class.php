@@ -12,40 +12,54 @@ class ShopController extends CommonController
      */
     public function index()
     {
-        if(IS_AJAX){
+
+        
             $goods = D('Goods');
             $cartInfo = M('Cart')->where('uid='.session('user.id'))->count();
-            $cate = M('Category')->where('pid=0')->select();
+            $cate = M('Category')->where('pid=0')->limit(7)->select();
+
             $map['pr.grade'] = session('user.grade');
-            $map['gd.status'] = 0;
-            $map['g.status'] = array('neq', 2);
+            $map['g.status'] = array('eq', 1);
+
+            $GoodsBlock = M('GoodsBlock')->field('id,bname')->where('status=1')->select();
+
+            foreach ($GoodsBlock as $key => $value) {
+                $blist[] = M('goods_relation_block')->where('bid='.$value['id'])->select();
+                
+            }
+            dump($blist);
+            foreach ($blist as $key => $value) {
+                $glist[] = $value;
+                
+                    
+            }
+
+            foreach ($glist as $k => $v) {
+                    $GoodsBlock[$k][] = M('goods')
+                        ->alias('g')
+                        ->where($map)
+                        ->join('__GOODS_PRICE__ pr ON g.id=pr.gid', 'LEFT')
+                        ->field('g.name,g.gpic,pr.price')
+                        ->select();
+                }
+
+            dump($GoodsBlock);
+
+            die;
             // p($map);die;
             $goodsList = $goods->getGoodsList($map);
-            foreach($goodsList as $val){
-                $key = $val['gid'];
-                if(isset($arr[$key])) {
-                    $arr[$key]['attr'] .= $val['attr'].':'.$val['val'].'|';
-                } else {
-                    $arr[$key] = $val;
-                    $arr[$key]['attr'] = $val['attr'].':'.$val['val'].'|';
-                }
-            }
-            // $banner = D('pic')->page(1,5)->order('id desc')->field('gid as id,path as pic')->select();
-            // dump($banner);
-            $goodsList = array_values($arr);
+            // echo M()->getLastSql();
+            dump($goodsList);
             $assign = [
                 'cate' => $cate,
                 'cartInfo' => $cartInfo,
                 'goods' => $goodsList,
-                'banner' => $banner,
             ];
-            return $this->ajaxReturn($assign);
-        } else {
-            $category = M('category')->where('pid=0')->field('id,name')->select();
 
-            $this->assign('category',json_encode($category,JSON_UNESCAPED_UNICODE)  );
+            // dump($assign);die;
+            // return $this->ajaxReturn($assign);
             $this->display();
-        }
+        
     }
 
     public function getCategory()

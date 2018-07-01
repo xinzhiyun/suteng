@@ -47,6 +47,9 @@
                                     分类
                                 </th>
                                 <th>
+                                    所属活动
+                                </th>
+                                <th>
                                     名称
                                 </th>
                                 <th>
@@ -95,6 +98,9 @@
                                             {{$v['cname']}}
                                         </td>
                                         <td>
+                                            {{$v['bname']}}
+                                        </td>
+                                        <td>
                                             {{$v['name']}}
                                         </td>
                                         <td>
@@ -125,10 +131,10 @@
                                         <td>
                                             <switch name="v.status">
                                                 <case value="0">
-                                                    <a st="0" class="btn btn-sm btn-default disable-button" aid="{{$v['id']}}">下架</a>
+                                                    <a st="1" sts="0" class="btn btn-sm btn-default disable-button" aid="{{$v['id']}}">下架</a>
                                                 </case>
                                                 <case value="1">
-                                                    <a st="1" class="btn btn-sm btn-success disable-button" aid="{{$v['id']}}">上架</a>
+                                                    <a st="0" sts="1" class="btn btn-sm btn-success disable-button" aid="{{$v['id']}}">上架</a>
                                                 </case> 
                                             </switch>
                                         </td>
@@ -275,9 +281,10 @@
         // 上架、下架 状态status: 1-下架 0-上架
         $("td").on('click','.disable-button',function(e){
             var status = $(this).attr('st');
+            var statu = $(this).attr('sts');
             var id = $(this).attr('aid');
             // console.log(status);
-            status == 0 ? msg = '上架' : msg = '下架';
+            statu == 0 ? msg = '上架' : msg = '下架';
                 parent.layer.confirm("确定"+ msg +"吗？", {
                     btn: ['确认', '取消'], //按钮
                     shade: true //不显示遮罩
