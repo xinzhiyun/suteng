@@ -43,7 +43,7 @@ class ShopController extends CommonController
         } else {
             $category = M('category')->where('pid=0')->select();
 
-            $this->assign('category', $category );
+            $this->assign('category',json_encode($category,JSON_UNESCAPED_UNICODE)  );
             $this->display();
         }
     }
@@ -70,7 +70,7 @@ class ShopController extends CommonController
                 'data'=>$category,
                 'adv'=>$adv,
                 'msg'=>'获取成功',
-            ),'JSON');
+            ),'JSON',JSON_UNESCAPED_UNICODE);
         } catch (\Exception $e) {
             $this->toJson($e);
         }
