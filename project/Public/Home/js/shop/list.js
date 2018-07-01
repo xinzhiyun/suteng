@@ -165,7 +165,7 @@ var goodsList = new Vue({
                 option['cid'] = vm.listcid;
             }
             // 获取排序排序详情
-            vm.getCategoryList(option);
+            vm.getGoodsList(option);
             // 记录当前点击的排序项目(0：时间，1人气，2价格，3销量）
             vm.lastsort = sorttype;
         },

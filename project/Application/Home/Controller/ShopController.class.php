@@ -13,7 +13,7 @@ class ShopController extends CommonController
     public function index()
     {
 
-        
+        if (IS_POST) {
             $goods = D('Goods');
             $cartInfo = M('Cart')->where('uid='.session('user.id'))->count();
             $cate = M('Category')->where('pid=0')->limit(7)->select();
@@ -25,10 +25,8 @@ class ShopController extends CommonController
 
             foreach ($GoodsBlock as $key => $value) {
                 $blist[] = M('goods_relation_block')->where('bid='.$value['id'])->select();
-                
-                
+            
             }
-
             foreach ($blist as $k => $v) {
                
                 for ($i=0; $i < count($v); $i++) { 
@@ -38,7 +36,6 @@ class ShopController extends CommonController
                 $str = '';
             }
             
-            // dump($arr);
             foreach ($arr as $keys => $values) {
                     $map['g.id'] = array('in',$values);
                     $GoodsBlock[$keys][] = M('goods')
@@ -46,17 +43,10 @@ class ShopController extends CommonController
                         ->where($map)
                         ->join('__GOODS_PRICE__ pr ON g.id=pr.gid', 'LEFT')
                         // ->join('__GOODS_RELATION_BLOCK__ grb ON g.id=grb.gid', 'LEFT')
-                        ->field('g.name,g.gpic,g.price prices,pr.price')
+                        ->field('g.id,g.name,g.gpic,g.price prices,pr.price')
                         ->select();
                 }
 
-            // dump($GoodsBlock);
-
-            // die;
-            // p($map);die;
-            // $goodsList = $goods->getGoodsList($map);
-            // echo M()->getLastSql();
-            // dump($goodsList);
             $assign = [
                 'cate' => $cate,
                 'cartInfo' => $cartInfo,
@@ -65,7 +55,13 @@ class ShopController extends CommonController
 
             // dump($assign);die;
             return $this->ajaxReturn($assign);
-            // $this->display();
+        } else {
+            $category = M('category')->where('pid=0')->field('id,name')->select();
+
+            $this->assign('category',json_encode($category,JSON_UNESCAPED_UNICODE)  );
+            $this->display();
+        }
+            
         
     }
 

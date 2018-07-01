@@ -73,32 +73,34 @@ var shopindex = new Vue({
 			{src: public+'/Home/images/shop/house.png',name: '家居',type: '8'}
 		];
 		// 商品块集合
-		vm.blockList = [
-			{
-				title: '新品推介',
-				goods: [
-					{gid: '12',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1020'},
-					{gid: '13',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '520'},
-					{gid: '14',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
-					{gid: '15',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
-					{gid: '16',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
-					{gid: '17',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
-					{gid: '18',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'}
-				]
-			},
-			{
-				title: '限时促销',
-				goods: [
-					{gid: '12',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1020'},
-					{gid: '13',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '520'},
-					{gid: '14',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
-					{gid: '15',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
-					{gid: '16',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
-					{gid: '17',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
-					{gid: '18',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'}
-				]
-			}
-		];
+		// vm.blockList = [
+		// 	{
+		// 		title: '新品推介',
+		// 		goods: [
+		// 			{gid: '12',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1020'},
+		// 			{gid: '13',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '520'},
+		// 			{gid: '14',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
+		// 			{gid: '15',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
+		// 			{gid: '16',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
+		// 			{gid: '17',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
+		// 			{gid: '18',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'}
+		// 		]
+		// 	},
+		// 	{
+		// 		title: '限时促销',
+		// 		goods: [
+		// 			{gid: '12',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1020'},
+		// 			{gid: '13',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '520'},
+		// 			{gid: '14',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
+		// 			{gid: '15',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
+		// 			{gid: '16',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
+		// 			{gid: '17',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
+		// 			{gid: '18',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'}
+		// 		]
+		// 	}
+		// ];
+		// 获取主题商品数据
+		vm.getGoodsList();
 		// 一级分类
 		vm.categoryList = JSON.parse(category);
 		// console.log('category: ',category);
@@ -131,9 +133,48 @@ var shopindex = new Vue({
 		this.emptySrc = public+'/Home/images/shop/cart_none.png';
 	},
 	methods: {
+		// 请求主题商品数据
+		getGoodsList() {
+			var vm = this;
+			$.ajax({
+				url: shopurl,
+				type: 'post',
+				success: function(res){
+					console.log('res: ',res);
+					vm.blockList = res.goods;
+					vm.menuList = res.cate;
+					vm.menuList.push({
+						pic: public+'/Home/images/shop/house.png',
+						name: '更多...',
+						id: '8'
+					})
+					vm.$nextTick(function(){
+						lazyLoad('#container');	// 图片懒加载
+					})
+				},
+				error: function(err){
+					console.log('err: ',err);
+				}
+			})
+		},
+		// 点击首页分类按钮
+		menuBtnClk(index, name, id) {
+			var vm = this;
+			// console.log('id: ',id);
+			if(name == '更多...'){
+				location.href = shopurl + '#category';
+				return
+			}
+			location.href = shopurl + '#category';
+			vm.getCate({id: id, name:name}, id);
+			$('.category>.fl>p').eq(index).addClass('cateSelect');
+		},
 		// 点击商品图片
 		todetail(gid) {
-			console.log('gid: ', gid);
+			// console.log('gid: ', gid);
+			if(gid){
+				location.href = shopdetail + '?gid=' + gid;
+			}
 		},
 		// 点击底部导航按钮
 		tabClick(tabclk, text){
@@ -155,9 +196,13 @@ var shopindex = new Vue({
 			vm.categoryTitle = cate.name;
 			// 点击同一个分类类目
 			if(window.clickCid == cid) return;
+			for(var i=0;i<$('.category>.fl>p').length; i++){
+				$('.category>.fl>p').eq(i).removeClass('cateSelect');
+			}
 			window.clickCid = cid;
 			vm.cateSelect = cate;
-			console.log('cid: ',cid);
+			// console.log('cate: ',cate);
+			// console.log('cid: ',cid);
 			// 获取对应类目下的商品详细分类
 			$.ajax({
 				url: getURL('Home','Shop/getCategory'),

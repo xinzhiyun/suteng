@@ -95,6 +95,7 @@ img {
 .mBlock {
 	padding: 0 8px 8px;
 	background: #fff;
+	transition: .3s ease;
 }
 .mBlock:not(:last-child) {
 	border-bottom: 8px solid #f1f1f1;
@@ -106,7 +107,6 @@ img {
 .mBlock>div {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
 }
 .goods,
 .subtype {
@@ -115,6 +115,7 @@ img {
 	display: inline-flex;
     flex-flow: column;
 	padding: 6px;
+	margin: 0 1.4vw;
 }
 .goods>img {
 	width: 26vw;
