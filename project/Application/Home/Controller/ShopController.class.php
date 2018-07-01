@@ -93,6 +93,10 @@ class ShopController extends CommonController
         }
     }
 
+    /**
+     * [getGoodsList 商品列表页接口]
+     * @return [type] [description]
+     */
     public function getGoodsList()
     {
         try {
@@ -169,6 +173,10 @@ class ShopController extends CommonController
         $this->display();
     }
 
+    /**
+     * [goodsDetail 商品详情]
+     * @return [type] [description]
+     */
     public function goodsDetail()
     {
         try {
@@ -179,7 +187,7 @@ class ShopController extends CommonController
                 $map['id'] = $post['id'];
             }
 
-            $goodsInfo = M('goods')->where($map)->field('id,name')->find();
+            $goodsInfo = M('goods')->where($map)->field('id,name,price as prices')->find();
 
             $goodsDetail = M('goodsDetail')->where('gid='.$post['id'])->field('pic,desc,specs,saleservice')->find();
             $goodsDetail['pic'] = explode('|', $goodsDetail['pic']);
@@ -223,7 +231,14 @@ class ShopController extends CommonController
 
 
             // 其他附加数据
+            $where['grade'] = session('user.grade');
+            $where['gid'] = $post['id'];
 
+            //商品会员价格
+            $goodsInfo['price'] = M('goodsPrice')->field('price')->where($where)->find()['price'];
+
+            //商品对应的快递
+            $goodsInfo['goodsCourier'] = M('goods_courier')->where('gid='.$post['id'])->field('cid,cname,cprice')->select();;
 
             $goodsInfo['attr'] = $attrRes;
 
