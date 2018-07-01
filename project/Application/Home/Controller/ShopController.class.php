@@ -90,13 +90,11 @@ class ShopController extends CommonController
         }
     }
 
-    public function getCategoryGoodsList()
+    public function getGoodsList()
     {
         try {
             $post = I('post.');
-            if (empty($post['cid'])) {
-                E('数据不完整', 201);
-            } else {
+            if (!empty($post['cid'])) {
                 $map['cid'] = $post['cid'];
             }
 
@@ -104,12 +102,9 @@ class ShopController extends CommonController
                 $map['g.name'] = ['like',"%".$post['search']."%"];
             }
 
-
-
             $GoodsMap = M('goods')->alias('g')->where($map);
 
             // 会员价格模式
-            // 会员等级 价格
             if(empty(0)){
                 $GoodsMap = $GoodsMap->field('g.id,g.name,g.gpic,g.price');
             }else{
@@ -118,10 +113,20 @@ class ShopController extends CommonController
                 $GoodsMap = $GoodsMap->field('g.id,g.name,g.gpic,gp.price');
             }
 
-
             $mode = (string)$post['sort'];
             $order_modes = [' desc',' asc'];//0 降序 1升序 默认降序
             $order_modes = $order_modes[$post['sortmode']]?:'';
+
+
+            // 分页 兼容
+            $_GET['p'] = $post['p'];
+            if(!empty($post['sou'])){
+                $_GET['p'] = 1;
+            }
+            $tmp = $GoodsMap;
+            $count = $tmp->count();
+            $Page       = new \Think\Page($count,5);
+            $GoodsMap = $GoodsMap->limit($Page->firstRow.','.$Page->listRows);
 
             //排序模式
             switch ($mode){
@@ -139,17 +144,6 @@ class ShopController extends CommonController
                     $GoodsMap = $GoodsMap->order('g.sales'.$order_modes);
                     break;
             }
-            /*
-            // 分页 兼容
-            $_GET['p'] = $post['p'];
-            if(!empty($post['sou'])){
-                $_GET['p'] = 1;
-            }
-            $tmp = $GoodsMap;
-            $count = $tmp->count();
-            $Page       = new \Think\Page($count,10);
-            $GoodsMap = $GoodsMap->limit($Page->firstRow.','.$Page->listRows)
-            **/
 
             $goodsList = $GoodsMap->select();
 
@@ -171,6 +165,75 @@ class ShopController extends CommonController
     {
         $this->display();
     }
+
+    public function goodsDetail()
+    {
+        try {
+            $post = I('post.');
+            if (empty($post['id'])) {
+                E('数据错误!', 201);
+            } else {
+                $map['id'] = $post['id'];
+            }
+
+            $goodsInfo = M('goods')->where($map)->field('id,name')->find();
+
+            $goodsDetail = M('goodsDetail')->where('gid='.$post['id'])->field('pic,desc,specs,saleservice')->find();
+            $goodsDetail['pic'] = explode('|', $goodsDetail['pic']);
+
+
+            $goodsInfo = array_merge($goodsInfo, $goodsDetail);
+
+            $goodsAttr = M('goodsSku')->where('gid='.$post['id'])->select();
+
+            $attrValArr = [];//值
+            $attrArr = [];  //属性
+            $attrValRel = [];  //属性和值的关系
+
+            foreach ($goodsAttr as $item){
+                $attrs =  explode('_',$item['skuattr']);
+                foreach ($attrs as $attrid){
+                    if(empty($attrValArr[$attrid])){
+                        $tmpAttr = M('attrVal')->find($attrid);
+                        $attrValArr[$attrid] = $tmpAttr['val'];
+                        $attrValRel[$tmpAttr['aid']][] = $attrid;
+                        if(empty($attrArr[$tmpAttr['aid']])){
+                            $tmpAttrs = M('attr')->find($tmpAttr['aid']);
+                            $attrArr[$tmpAttr['aid']] = $tmpAttrs['attr'];
+                        }
+                    }
+                }
+            }
+            $attrRes = [];
+            foreach ($attrArr as $atrrid =>$attrVal){
+                $tmpRes = [];
+                $tmpRes['name']=$attrVal;
+                $tmpAttr = [];
+                foreach ($attrValRel[$atrrid] as $attrItem){
+                    $tmpAttr['pname'] = $attrArr[$atrrid];
+                    $tmpAttr['name']  = $attrValArr[$attrItem];
+                    $tmpAttr['id']    = $attrItem ;
+                    $tmpRes['list'][]=$tmpAttr;
+                }
+                $attrRes[] = $tmpRes;
+            }
+
+
+            // 其他附加数据
+
+
+            $goodsInfo['attr'] = $attrRes;
+
+            $this->ajaxReturn(array(
+                'status'=>200,
+                'data'=>$goodsInfo,
+                'msg'=>'获取成功',
+            ),'JSON',JSON_UNESCAPED_UNICODE);
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+    
 
     // 商品详情页面
     public function goods_detail()

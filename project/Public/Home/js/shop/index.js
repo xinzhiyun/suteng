@@ -13,6 +13,7 @@ var shopindex = new Vue({
 			tabclk: 1, 					// 底部按钮
 			tabText: 'home',
 			tabsrc: [],
+			search: '',					// 搜索关键字
 			srcArr: [
 				public + '/Home/images/shop/home',
 				public + '/Home/images/shop/category',
@@ -216,6 +217,14 @@ var shopindex = new Vue({
 			console.log('cid: ',cid);
 			location.href = shoplist + '?id=' + this.categoryID + '&cid=' + cid;
 		},
+        // 搜索
+        searchFn(search) {
+			console.log('search: ',search);
+			if(search){
+				// 跳到搜索列表页
+				location.href = shoplist + '?search=' + search;
+			}
+        },
 		// 购物车商品左滑、右滑
 		slideDelete(e, gid) {
 			var el = e.currentTarget;

@@ -306,7 +306,7 @@
         var um = UM.getEditor('myEditor3');
         // 一级分类
         $("select[name='firscate']").change(function(){
-            $('.goodsattr').html('');
+            
             var firscateId = $(this).children('option:selected').val();
             var html = "";
             $("select[name='seccate']").html('<option value="--">--请选择--</option>');
@@ -327,46 +327,15 @@
                             }
                             $("select[name='seccate']").html('<option value="--">--请选择--</option>');
                             $("select[name='seccate']").append(html);
+                        }else{
+                            $('.goodsattr').html('');
                         }
                     }
                 })
             }
         })
-        // 商品属性(模拟)
-        var attrArr = [
-            // {
-            //     attr: '颜色分类', id: '00',
-            //     data: [
-            //         {id: '001', val: '军绿色'},
-            //         {id: '002', val: '红色'},
-            //         {id: '003', val: '灰色'},
-            //     ]
-            // },
-            // {
-            //     attr: '尺寸', id: '11', 
-            //     data: [
-            //         {id: '110', val: '41'},
-            //         {id: '111', val: '42'},
-            //         {id: '112', val: '43'},
-            //     ]
-            // },
-            // {
-            //     attr: '型号', id: '22', 
-            //     data: [
-            //         {id: '220', val: 'A型'},
-            //         {id: '221', val: 'C型'},
-            //         {id: '222', val: 'D型'},
-            //     ]
-            // },
-            // {
-            //     attr: '配置', id: '33', 
-            //     data: [
-            //         {id: '330', val: '高级'},
-            //         {id: '331', val: '中级'},
-            //         {id: '332', val: '入门'},
-            //     ]
-            // },
-        ];
+        // 商品属性(模拟) 变量不能删
+        var attrArr = [];
         // 二级分类
         $("select[name='seccate']").change(function(){
             $('.goodsattr').html('');
@@ -386,15 +355,12 @@
                         if(attrArr.length){
                             console.log('attrArr: ',attrArr);
                             var html = '';
-                            var headhtml = '';
                             var subArr = [];
                             // 商品属性分类
                             for(var i=0; i<attrArr.length; i++){
                                 html += '<div class="checkbox checkattr">'+
                                             '<span>'+ attrArr[i].attr +'</span>'+
                                         '</div>';
-                                //表格头
-                                headhtml += '<th data-id="'+ attrArr[i].id +'">'+ attrArr[i].attr +'</th>';
 
                                 subArr.push([]);
                                 // 商品属性分类详情选项
@@ -409,9 +375,6 @@
                                 }
                             }
                             $('.goodsattr').html(html);
-                            headhtml += '<th>库存</th>';
-                            // 表格头
-                            $('.allAttr thead>tr').html(headhtml);
                             setTimeout(function(){
                                 // 商品属性分类详情选项
                                 // console.log('subArr: ',subArr);
@@ -773,19 +736,26 @@
         $(".goodsAdd").click(function(){
             var attrArr = [];
             var str = '';
-            var attrtrLen = $('.allAttr tbody>tr').eq(0).find('th').length;
+            var attrtrLen = $('.allAttr tbody>tr').length;
             for(var i=0; i<attrtrLen; i++){
                 var attrth = $(".attrtr"+i).find('th');
-                // console.log(attrth.eq(i).text())
-                if(attrth.eq(i).length){
+                console.log(attrth.eq(i).text())
+                // if(attrth.eq(i).length){
                     attrArr.push([]);
-                }
+                // }
                 // 遍历已选规格内容
                 for(var j=0; j<attrth.length; j++){
-                    if(attrth.eq(j).find('input').length){  // 价格、库存
-                        attrArr[i].push(attrth.eq(j).find('input').val());
+                    console.log('attrth.eq(j): ',attrth.eq(j));
+                    var text = attrth.eq(j);
+                    text = text.text() +','+ text.attr('data-id')
+                    var val = attrth.eq(j).find('input').val();
+                    // console.log('text: %s, val: %s', text, val);
+                    if(attrth.eq(j)[0].childNodes[0].nodeName === 'INPUT'){  // 价格、库存
+                        console.log('val: ',val);
+                        attrArr[i].push(val);
                     }else{
-                        attrArr[i].push(attrth.eq(j).text() + ',' +attrth.eq(j).attr('data-id'));
+                        console.log('text: ',text);
+                        attrArr[i].push(text);
                     }
                 }
             }
@@ -843,18 +813,19 @@
 
         //打印结果的函数
         function printResult(result){  
+            var headhtml = '';
             var bodyhtml = '';  // 每一栏
             var _newArr = [];
             var thlen = 0;
             for(var i=0,len=result.length;i<len;i++){  
                 // console.log(result[i]);
             }
-            // console.log('result: ',result);
+            console.log('result: ',result);
             for(var i=0; i<result.length; i++){
                 _newArr.push(result[i].split('_'));
                 // console.log('result[i]:', result[i].split('_'));
             }
-            // console.log('_newArr: ',_newArr);
+            console.log('_newArr: ',_newArr);
             for(var i=0; i<_newArr.length; i++){
                 bodyhtml += '<tr class="attrtr'+ i +'">';
                 thlen = _newArr[i].length;
@@ -862,9 +833,16 @@
                 for(var j=0; j<_newArr[i].length; j++){
                     temphtml += '<th data-id="'+ _newArr[i][j].split('|')[1] +'">'+ _newArr[i][j].split('|')[0] +'</th>';
                 }
-                bodyhtml += temphtml + '<th><input class="num" type="text"></th></tr>';
+                bodyhtml += temphtml + '<th><input class="num" type="text" value=""></th></tr>';
             }
+            for(var i=0; i<thlen;i++){
+                //表格头
+                headhtml += '<th data-id="'+ attrArr[i].id +'">'+ attrArr[i].attr +'</th>';
+            }
+            headhtml += '<th>库存</th>';    
             // console.log('bodyhtml: ',bodyhtml);
+            // 表格头
+            $('.allAttr thead>tr').html(headhtml);
             // 显示详细规格组合
             $('.allAttr tbody').html(bodyhtml);
             $('.allAttr').show();

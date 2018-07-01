@@ -12,7 +12,8 @@
 		var public = '__PUBLIC__';
 		var imgsrc = public + '/Home/images/shop/';
 		var shopurl = '{{:U("Home/Shop/index")}}';
-		var getCategoryList = '{{:U("Home/shop/getCategoryGoodsList")}}';
+		var getGoodsList = '{{:U("Home/shop/getGoodsList")}}';
+		var shoplist = '{{:U("Home/Shop/list")}}';
 		var shopdetail = '{{:U("Home/Shop/shoppingdetail")}}';
 		
 		// 图片懒加载
@@ -34,6 +35,7 @@
 				})(img[i])
 			}
 		}
+		
 	</script>
 </head>
 <body ontouchstart='console.log()'>
@@ -41,13 +43,14 @@
 		<header id="header">
 			<div class='search'>
 				<img src="__PUBLIC__/Home/images/shop/search.png" alt="">
-				<input type="text" placeholder="请输入商品名称或者关键字">
+				<input type="text" placeholder="请输入商品名称或者关键字"
+				v-model='search' @keyup.enter='searchFn(search)'>
 			</div>
 		</header>
 		<ul class='filterBtnMenu cfix'>
 			<li class='fl' @click='getSort(0)'>
 				<span>时间</span>
-				<img class='fimg' src="__PUBLIC__/Home/images/shop/arrow_up.png" alt="">
+				<img class='fimg' src="__PUBLIC__/Home/images/shop/arrow_down.png" alt="">
 			</li>
 			<li class='fl' @click='getSort(1)'>
 				<span>人气</span>
@@ -61,9 +64,9 @@
 				<span>销量</span>
 				<img class='fimg' src="__PUBLIC__/Home/images/shop/arrow_empty.png" alt="">
 			</li>
-			<li class='fl'>
+			<li class='fl' @click='filterMode'>
 				<span>筛选</span>
-				<img src="__PUBLIC__/Home/images/shop/arrow_empty.png" alt="">
+				<img src="__PUBLIC__/Home/images/shop/filterbtn.png" alt="">
 			</li>
 		</ul>
 		<div class='list'>
@@ -76,11 +79,61 @@
 			</a>
 			<p class='loadText' v-text='loadText' :style='loadStyle'></p>
 		</div>
+		<!-- 筛选 -->
+		<div class='filterMode' :style='{display: showFilter ? "block" : "none"}'>
+			<ul>
+				<li class='filterLi'>
+					<p>价格区间</p>
+					<ul>
+						<input type="text" placeholder="最低价" v-model='priceLow'>
+						<span>&nbsp;-&nbsp;</span>
+						<input type="text" placeholder="最高价" v-model='priceHigh'>
+					</ul>
+				</li>
+				<li class='filterLi' v-for='f in filterList'>
+					<p v-text='f.title'>标题</p>
+					<ul class='filterItem'>
+						<li v-for='fd in f.data' 
+						v-text='fd.name' :itemid='fd.id'>选项</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
 	</div>
 	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
 	<script src="__PUBLIC__/Home/js/jquery.min.js"></script>
   	<script src="__PUBLIC__/Home/js/public.js"></script>
   	<script src="__PUBLIC__/Home/js/shop/list.js"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
+	<script>
+		
+		hashchangeFn(function(hash){
+			console.log('hash: ',hash);
+			if(hash.indexOf('#filterMode') != -1){
+				// 筛选页面
+				goodsList.showFilter = true;
+				$('.filterMode>ul').css({transform: "translateX(0)"});
+			}else{
+				$('.filterMode>ul').css({transform: "translateX(100%)"});
+				setTimeout(function(){
+					goodsList.showFilter = false;
+				},300)
+			}
+		})
+		// 监听hashchange事件
+		function hashchangeFn(callback) {
+			var haschangeflag = false;
+			window.addEventListener('hashchange', function(){
+				haschangeflag = true;
+				callback(location.hash);
+			}, false);
+			// console.log('haschangeflag: ',haschangeflag);
+			// console.log('hash: ',location.hash);
+			// 刷新保持
+			if(!haschangeflag){
+				callback(location.hash);
+			}
+		}
+	</script>
 </body>
 </html>
