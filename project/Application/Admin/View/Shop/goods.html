@@ -20,6 +20,8 @@
                     <div class="ibox-tools">
                         <i class="fa fa-user-plus"></i>
                         <a href="{{:U('goodsAdd')}}">添加商品</a>
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                        <a href="{{:U('goodsHuishou')}}">回收站商品</a>
                     </div>
                 </div>
                 <form method="get" action="">
@@ -49,9 +51,6 @@
                                 </th>
                                 <th>
                                     图片
-                                </th>
-                                <th>
-                                    规格
                                 </th>
                                 <th>
                                     单价
@@ -99,27 +98,17 @@
                                             {{$v['name']}}
                                         </td>
                                         <td>
-                                            <!-- <empty name="v.pics">
-                                                <a class="btn btn-white" href="javascript:;" goodsId="{{$v['gid']}}" onclick="addpic(this)">添加图片</a>
-                                            <else />
-                                                <a class="" href="javascript:;" goodsId="{{$v['gid']}}" onclick="addpic(this)"><img src="/Uploads/{{$v['pics'][0].path}}"></a>
-                                            </empty> -->
-                                            <a class="" href="javascript:;" goodsId="{{$v['gid']}}"><img src="/Uploads/{{$v['pics'][0].path}}"></a>
+                                            <img src="{{$v['gpic']}}">
                                         </td>
                                         <td>
-                                            <foreach name="v.attr_val" item="vo" >
-                                                {{$vo['aname']}}:{{$vo['val']}}|
-                                            </foreach>
-                                        </td>
-                                        <td>
-                                            <span goods="{{$v.gid}}" class="btn btn-success select">查看单价</span>
+                                            <span goods="{{$v.id}}" class="btn btn-success select">查看单价</span>
                                         </td>
                                         <td> 
-                                            <span cgoods="{{$v.gid}}" class="btn btn-success cselect">查看运费</span>
+                                            <span cgoods="{{$v.id}}" class="btn btn-success cselect">查看运费</span>
 
                                         </td>
                                         <td>
-                                            {{$v['allnum']-$v['abnormalnum']}}
+                                            {{$v['stock']}}
                                         </td>
                                         <td>
                                             <switch name="v.is_install">
@@ -134,12 +123,12 @@
                                             </switch>
                                         </td>
                                         <td>
-                                            <switch name="v.gdstatus">
+                                            <switch name="v.status">
                                                 <case value="0">
-                                                    <a st="1" class="btn btn-sm btn-default disable-button">上架</a>
+                                                    <a st="0" class="btn btn-sm btn-default disable-button" aid="{{$v['id']}}">下架</a>
                                                 </case>
                                                 <case value="1">
-                                                    <a st="0" class="btn btn-sm btn-success disable-button">下架</a>
+                                                    <a st="1" class="btn btn-sm btn-success disable-button" aid="{{$v['id']}}">上架</a>
                                                 </case> 
                                             </switch>
                                         </td>
@@ -151,13 +140,13 @@
                                         </td>
                                         <td>
                                             <div class="btn-group">
-                                                <a id="del" class="btn btn-outline btn-success deletBnt" goodsName="{{$v['name']}}" goodsId="{{$v['gid']}}">
-                                                    删除
+                                                <a id="del" class="btn btn-outline btn-success deletBnt" goodsName="{{$v['name']}}" goodsId="{{$v['id']}}">
+                                                    放到回收站
                                                 </a>
-                                                <a href="javascript:;" onclick="edit({{$v['gid']}})" class="btn btn-outline btn-success">
-                                                    商品描述
+                                                <a href="{{:U('goodsDetail')}}?id={{$v['id']}}"  class="btn btn-outline btn-success">
+                                                    商品详情
                                                 </a>
-                                                <a href="{{:U('goodEdit')}}?gid={{$v['gid']}}" class="btn btn-outline btn-success">
+                                                <a href="{{:U('goodEdit')}}?id={{$v['id']}}" disabled class="btn btn-outline btn-success">
                                                     修改
                                                 </a>
                                             </div>
@@ -215,24 +204,7 @@
         </div>
 
     </div>
-    <div class="modal inmodal bs-example-modal-lg" id="st-edit" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content animated bounceInRight clearfix">
-                    <div class="modal-header" style='padding:10px;'>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                            &times;
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">
-                            添加商品描述
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        <textarea name="content" id="description" cols="63" rows="10" style='width:100%;'></textarea>
-                    </div>
-                    <button id='edit_submit' class="btn btn-primary" style='float:right;margin:0 20px 20px;'>提交</button>
-                </div>
-            </div>
-    </div>
+    
 
     <!-- 显示详情价格页面 -->
     <div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -256,30 +228,6 @@
 </block>
 <block name="myjs">
     <script>
-        // 图片添加
-        function addpic(obj)
-        {
-            var gid = $(obj).attr('goodsId');
-            $("input[name='gid']").val(gid);
-            $('#st-pic-add').modal('show');
-        }
-
-
-        function edit(id)
-        {   
-            gid = id;
-            $.ajax({
-                url:'{{:U("admin/shop/good_detail")}}',
-                type:'post',
-                data:{'id':id},
-                success:function(res){
-                    if(res!=null){
-                        $('#description').val(res);
-                    }
-                }
-            });
-            $('#st-edit').modal('show');         
-        }
         $('#edit_submit').click(function(){
             var aHTML = $('#description').val();
             $.ajax({
@@ -299,38 +247,13 @@
                 }
             });
         })
-        // 添加图片
-        // $(".add-pic").click(function(){
-        //     $("#st-pic-add").modal('hide');
-        //     var formData = new FormData(document.getElementById("pic"));
-        //     var id = $("input[name='gid']").val();
-        //     $.ajax({
-        //         url: 'goodsAddPic?id='+id ,
-        //         type: 'post',
-        //         data: formData,
-        //         async: false,
-        //         cache: false,
-        //         contentType: false,
-        //         processData: false,
-        //         success: function (res) {
-        //             if(res.code == 200){
-        //                 location.reload();
-        //                 parent.layer.msg(res.msg);
-        //             } else {
-        //                 parent.layer.msg(res.msg);
-        //             }
-        //         },
-        //         error: function (res) {
-        //             parent.layer.msg(res.msg);
-        //         }
-        //     });
-        // })
+       
         
 
         $('.btn-group').on('click','.deletBnt',function(e){
             var goodsId = $(this).attr('goodsId');
             var goodsName = $(this).attr('goodsName');
-            parent.layer.confirm('确认删除'+goodsName+'这款商品吗？', {
+            parent.layer.confirm('确认将'+goodsName+'这款商品放到回收站？', {
                 btn: ['确认','取消'], //按钮
                 shade: true //不显示遮罩
             }, function(){
@@ -352,7 +275,7 @@
         // 上架、下架 状态status: 1-下架 0-上架
         $("td").on('click','.disable-button',function(e){
             var status = $(this).attr('st');
-            var id = $(this).parent().siblings().eq(0).find('input[type="hidden"]').attr('name');
+            var id = $(this).attr('aid');
             // console.log(status);
             status == 0 ? msg = '上架' : msg = '下架';
                 parent.layer.confirm("确定"+ msg +"吗？", {

@@ -12,6 +12,28 @@
 		var public = '__PUBLIC__';
 		var imgsrc = public + '/Home/images/shop/';
 		var shopurl = '{{:U("Home/Shop/index")}}';
+		var getCategoryList = '{{:U("Home/shop/getCategoryGoodsList")}}';
+		var shopdetail = '{{:U("Home/Shop/shoppingdetail")}}';
+		
+		// 图片懒加载
+		function lazyLoad(block){
+			var block = document.querySelector(block);	// 图片所在区域
+			var img = block.querySelectorAll('img[data-src]');
+			// console.log('block: %s, img: %s', block, img);
+			if(!img.length)	return;
+			for(var i=0; i<img.length; i++){
+				(function(img){
+					setTimeout(function(){
+						// console.log('img: ',img);
+						var datasrc = img.getAttribute('data-src');
+						var src = img.getAttribute('src');
+						if(datasrc != src){
+							img.setAttribute('src', datasrc);
+						}
+					},100);
+				})(img[i])
+			}
+		}
 	</script>
 </head>
 <body ontouchstart='console.log()'>
@@ -23,27 +45,37 @@
 			</div>
 		</header>
 		<ul class='filterBtnMenu cfix'>
-			<li class='fl'>
+			<li class='fl' @click='getSort(0)'>
 				<span>时间</span>
-				<img src="__PUBLIC__/Home/images/shop/arrow_up.png" alt="">
+				<img class='fimg' src="__PUBLIC__/Home/images/shop/arrow_down.png" alt="">
 			</li>
-			<li class='fl'>
+			<li class='fl' @click='getSort(1)'>
 				<span>人气</span>
-				<img src="__PUBLIC__/Home/images/shop/arrow_empty.png" alt="">
+				<img class='fimg' src="__PUBLIC__/Home/images/shop/arrow_empty.png" alt="">
 			</li>
-			<li class='fl'>
+			<li class='fl' @click='getSort(2)'>
 				<span>价格</span>
-				<img src="__PUBLIC__/Home/images/shop/arrow_empty.png" alt="">
+				<img class='fimg' src="__PUBLIC__/Home/images/shop/arrow_empty.png" alt="">
 			</li>
-			<li class='fl'>
+			<li class='fl' @click='getSort(3)'>
 				<span>销量</span>
-				<img src="__PUBLIC__/Home/images/shop/arrow_empty.png" alt="">
+				<img class='fimg' src="__PUBLIC__/Home/images/shop/arrow_empty.png" alt="">
 			</li>
 			<li class='fl'>
 				<span>筛选</span>
 				<img src="__PUBLIC__/Home/images/shop/arrow_empty.png" alt="">
 			</li>
 		</ul>
+		<div class='list'>
+			<a link='{{:U("Home/Shop/shoppingdetail")}}' 
+			:gid='s.id' v-for='s in searchList'
+			@click='getDeatil(s.id)'>
+				<img :data-src="s.gpic" alt="加载中...">
+				<p v-text='s.name'></p>
+				<span v-text='"￥"+s.price'></span>
+			</a>
+			<p class='loadText' v-text='loadText' :style='loadStyle'></p>
+		</div>
 	</div>
 	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
 	<script src="__PUBLIC__/Home/js/jquery.min.js"></script>

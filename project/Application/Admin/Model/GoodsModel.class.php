@@ -101,34 +101,25 @@ class GoodsModel extends RelationModel
         $count = $this
             ->where($where)
             ->alias('g')
-            // ->join('__ATTR_VAL__ av ON g.id=av.gid', 'LEFT')
-            // ->join('__ATTR__ a ON av.aid=a.id', 'LEFT')
             ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
-            // ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
             ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
             ->join('__INVENTORY__ i on i.gid=g.id' , 'LEFT')
-            ->field('c.name cname,av.val,a.attr,gd.*,g.*')
+            ->field('c.name cname,g.*')
             // ->order(' addtime desc')
-            // ->limit($Page->firstRow.','.$Page->listRows)
-            // ->relation('pics')
+            ->limit($Page->firstRow.','.$Page->listRows)
             ->count();
-            $Page  = new \Think\Page($count,8   );
+            $Page  = new \Think\Page($count,10);
             $pageButton =$Page->show();
         $goodsData = $this
             ->where($where)
             ->alias('g')
-            // ->join('__ATTR_VAL__ av ON g.id=av.gid', 'LEFT')
-            // ->join('__ATTR__ a ON av.aid=a.id', 'LEFT')
             ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
-            // ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
             ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
             ->join('__INVENTORY__ i on i.gid=g.id' , 'LEFT')
-            ->field('c.name cname,gd.*,g.*')
-            // ->order(' addtime desc')
+            ->field('c.name cname,g.*')
+            ->order(' addtime desc')
             ->limit($Page->firstRow.','.$Page->listRows)
-            // ->relation(['attr_val'])
             ->select();
-            // p($goodsData);
         $goodsData = [
             'goodsData' => $goodsData,
             'show' => bootstrap_page_style($pageButton),
@@ -143,6 +134,7 @@ class GoodsModel extends RelationModel
         //     }
         // }
         // $goodsData['goodsData'] = array_values($arr);
+        // dump($goodsData);
         return $goodsData;
     }
 

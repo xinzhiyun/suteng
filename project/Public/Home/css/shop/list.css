@@ -20,7 +20,7 @@
 	background: #fff;
 }
 .search {
-	width: 80%;
+	width: 70%;
 	height: 60%;
 	position: relative;
     display: flex;
@@ -43,7 +43,7 @@
 	height: 40px;
 	display: flex;
 	align-items: center;
-	padding: 0 4px;
+	padding: 0 5vw;
 	border-bottom: 4px solid #f1f1f1;
 }
 .filterBtnMenu>li {
@@ -58,4 +58,37 @@
 .filterBtnMenu>li>img {
 	width: 30%;
 	height: auto;
+}
+.loadText {
+	width: 100%;
+	padding-top: 10vh;
+	text-align: center;
+}
+/* 搜索结果 */
+.list {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	padding: 10px 2vw;
+	box-sizing: border-box;
+}
+.list>a {
+	flex: 0 0 30%;
+	display: inline-flex;
+	flex-flow: column;
+	padding: 3vw;
+	margin-bottom: 10px;
+	box-sizing: border-box;
+}
+.list>a>img {
+	width: 26vw;
+	height: 26vw;
+	background: #f1f1f1;
+	font-size: .5rem;
+}
+.list>a>p {
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: .6rem;
 }

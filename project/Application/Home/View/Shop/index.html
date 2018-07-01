@@ -73,13 +73,15 @@
 				<div class='subBlock'>
 					<p v-text='categoryTitle'></p>
 					<ul>
-						<li class='subtype' v-for='category in categoryContentList' @click='subClick(category.id)'>
-							<img :data-src="category.pic" alt="加载中">
+						<li class='subtype' v-for='category in categoryContentList' 
+						@click='subClick(category.id)'>
+							<img :data-src="category.pic" alt="加载中...">
 							<p v-text='category.name'></p>
 						</li>
 					</ul>
 				</div>
-				<div class='noCateContent' :style='{display: noCateContent ? "block" : "none"}' v-text='noCateContent'>加载中</div>
+				<div class='noCateContent' :style='{display: noCateContent ? "block" : "none"}' 
+				v-text='noCateContent'>加载中...</div>
 			</li>
 		</ul>
 		<!-- 购物车内容 -->
