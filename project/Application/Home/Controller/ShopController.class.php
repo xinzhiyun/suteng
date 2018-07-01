@@ -41,7 +41,7 @@ class ShopController extends CommonController
             ];
             return $this->ajaxReturn($assign);
         } else {
-            $category = M('category')->where('pid=0')->select();
+            $category = M('category')->where('pid=0')->field('id,name')->select();
 
             $this->assign('category',json_encode($category,JSON_UNESCAPED_UNICODE)  );
             $this->display();
