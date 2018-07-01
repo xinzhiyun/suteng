@@ -1969,36 +1969,13 @@ class ShopController extends CommonController
             ];
             $this->ajaxReturn($err);
         }
-
     }
 
-//    /**
-//     * [attrValAdd 属性值添加]
-//     * @return [type] [description]
-//     */
-//    public function attrValAdd()
-//    {
-//        try {
-//            $attrval = D('attrVal');
-//            $_POST['addtime'] = time();
-//            $_POST['updatetime'] = time();
-//            $data = I('post.');
-//
-//            if(!$attrval->create()) {
-//                E($attrval->getError(),204);
-//            }
-//            $res = $attrval->add();
-//            if($res){
-//                E('添加属性值成功', 200);
-//            } else {
-//                E('添加属性值失败',203);
-//            }
-//        } catch (\Exception $e) {
-//            $err = [
-//                'code' => $e->getCode(),
-//                'msg' => $e->getMessage(),
-//            ];
-//            $this->ajaxReturn($err);
-//        }
-//    }
+    // 首页控制
+    public function indexPage()
+    {
+        $this->display();
+    }
+    
+    
 }
