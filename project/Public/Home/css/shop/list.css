@@ -1,3 +1,15 @@
+.cfix::after {
+	content: '';
+	clear: both;
+	visibility: hidden;
+	zoom: 1;
+}
+.fl {
+	float: left;
+}
+.fr {
+	float: right;
+}
 #header {
 	height: 10vh;
 	min-height: 50px;
@@ -26,4 +38,24 @@
 	border: none;
 	background: transparent;
 	font-size: 14px;
+}
+.filterBtnMenu {
+	height: 40px;
+	display: flex;
+	align-items: center;
+	padding: 0 4px;
+	border-bottom: 4px solid #f1f1f1;
+}
+.filterBtnMenu>li {
+	width: 20%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.filterBtnMenu>li>span {
+	width: 50%;
+}
+.filterBtnMenu>li>img {
+	width: 30%;
+	height: auto;
 }

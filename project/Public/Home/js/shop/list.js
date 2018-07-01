@@ -2,8 +2,16 @@
 var categoryDetail = new Vue({
     el: '.categoryDetail',
     data() {
-        return {}
+        return {
+            searchList: [],
+        }
     },
-    created() {},
+    created() {
+        var vm  = this;
+        vm.searchList = [];
+        // $.ajax({
+
+        // })
+    },
     methods: {}
 })
