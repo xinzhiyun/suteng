@@ -12,7 +12,7 @@
 		var public = '__PUBLIC__';
 		var imgsrc = public + '/Home/images/shop/';
 		var shopurl = '{{:U("Home/Shop/index")}}';
-		var getCategoryList = '{{:U("Home/shop/getCategoryGoodsList")}}';
+		var getGoodsList = '{{:U("Home/shop/getGoodsList")}}';
 		var shopdetail = '{{:U("Home/Shop/shoppingdetail")}}';
 		
 		// 图片懒加载
@@ -41,7 +41,8 @@
 		<header id="header">
 			<div class='search'>
 				<img src="__PUBLIC__/Home/images/shop/search.png" alt="">
-				<input type="text" placeholder="请输入商品名称或者关键字">
+				<input type="text" placeholder="请输入商品名称或者关键字"
+				v-model='search' @keyup.enter='searchFn(search)'>
 			</div>
 		</header>
 		<ul class='filterBtnMenu cfix'>
@@ -63,7 +64,7 @@
 			</li>
 			<li class='fl'>
 				<span>筛选</span>
-				<img src="__PUBLIC__/Home/images/shop/arrow_empty.png" alt="">
+				<img src="__PUBLIC__/Home/images/shop/filterbtn.png" alt="">
 			</li>
 		</ul>
 		<div class='list'>

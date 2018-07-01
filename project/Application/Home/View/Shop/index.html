@@ -23,7 +23,8 @@
 		<header id="header" :style='{display: tabclk == 3 || tabclk == 4 ? "none" : "flex"}'>
 			<div class='search'>
 				<img src="__PUBLIC__/Home/images/shop/search.png" alt="">
-				<input type="text" placeholder="请输入商品名称或者关键字">
+				<input type="text" placeholder="请输入商品名称或者关键字"
+				@keyup.enter='searchFn(search)' v-model='search'>
 			</div>
 		</header>
 		<!-- 首页内容 -->

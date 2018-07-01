@@ -4,15 +4,17 @@ var categoryDetail = new Vue({
     data() {
         return {
             searchList: [],
-            sortmode: '0',  // 排序模式0:降序,1升序
-            listid: '',     // 一级id
-            listcid: '',    // 二级id
-            lastsort: '',   // 上次点击的排序项目
+            sortmode: '0',      // 排序模式0:降序,1升序
+            listid: '',         // 一级id
+            listcid: '',        // 二级id
+            lastsort: '',       // 上次点击的排序项目
+            search: '',         // 搜索关键字
             loadText: '加载中...',
             loadStyle: '',
-            arrow_up: '',   // 上箭头（升序）
-            arrow_down: '', // 下箭头（降序）
+            arrow_up: '',       // 上箭头（升序）
+            arrow_down: '',     // 下箭头（降序）
             arrow_empty: '',    // 空
+            sou: 1,             // 分页
         }
     },
     created() {
@@ -35,16 +37,24 @@ var categoryDetail = new Vue({
         vm.arrow_empty = public+'/Home/images/shop/arrow_empty.png';
         vm.listid = GetQueryString('id');
         vm.listcid = GetQueryString('cid');
-        var option = {
-            id: vm.listid,
-            cid: vm.listcid,
-            sort: 0,
-            sortmode: vm.sortmode
+        if(GetQueryString('search')){
+            // 搜索
+            vm.searchFn(GetQueryString('search'));
+        }else{
+            var option = {
+                id: vm.listid,
+                sort: 0,
+                sortmode: vm.sortmode
+            }
+            if(vm.listcid){
+                option['cid'] = vm.listcid;
+            }
+            console.log('option: ',option);
+            // 获取查询列表
+            vm.getCategoryList(option);
+            vm.lastsort = 0;    // 时间
         }
-        console.log('option: ',option);
-        // 获取查询列表
-        vm.getCategoryList(option);
-        vm.lastsort = 0;    // 时间
+        
     },
     methods: {
         // 跳到商品详情界面
@@ -53,7 +63,7 @@ var categoryDetail = new Vue({
             location.href = shopdetail + '?gid=' + gid;
         },
         // 获取查询列表
-        getCategoryList(option) {
+        getGoodsList(option) {
             // option.id: 一级分类id
             // option.cid： 当前(二级)分类id
             // option.sort：排序模式（0：时间，1人气，2价格，3销量）
@@ -62,7 +72,7 @@ var categoryDetail = new Vue({
             vm.loadStyle = 'display:block;';
             vm.loadText = '加载中...';
             $.ajax({
-                url: getCategoryList,
+                url: getGoodsList,
                 type: 'post',
                 data: option,
                 success: function(res){
@@ -120,14 +130,35 @@ var categoryDetail = new Vue({
             // 请求参数
             var option = {
                 id: vm.listid,
-                cid: vm.listcid,
                 sort: sorttype,
                 sortmode: vm.sortmode
+            }
+            if(vm.listcid){
+                option['cid'] = vm.listcid;
             }
             // 获取排序排序详情
             vm.getCategoryList(option);
             // 记录当前点击的排序项目(0：时间，1人气，2价格，3销量）
             vm.lastsort = sorttype;
+        },
+        // 搜索
+        searchFn(search) {
+            console.log('search: ',search);
+            var vm = this;
+            vm.sortmode = 0;
+            // 请求参数
+            var option = {
+                sort: 0,                // 时间
+                search: search,         // 搜索关键字
+                sortmode: vm.sortmode,  // 排序模式
+                sou: vm.sou             // 分页
+            }
+            if(vm.listcid){
+                option['cid'] = vm.listcid;
+            }
+            console.log('option: ',option);
+            // 获取搜索详情
+            vm.getCategoryList(option);
         }
     }
 })
