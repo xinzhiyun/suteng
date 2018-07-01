@@ -1971,11 +1971,194 @@ class ShopController extends CommonController
         }
     }
 
-    // 首页控制
+    /**
+     * [indexPage banner轮播]
+     * @return [type] [description]
+     */
     public function indexPage()
     {
+        //接受处理搜索条件
+        if (!empty(I('get.keywords'))) {
+            $map['name'] = array('like',"%".I('get.keywords')."%");
+        }
+
+        $goodsblock = D('banner');
+        $bannerlist = $goodsblock->where($map)->select();
+
+        $this->assign('blist', $bannerlist);
         $this->display();
     }
     
+    
+
+    /**
+     * [blockAddList 加载banner编辑页面]
+     * @return [type] [description]
+     */
+    public function bannerAddList()
+    {
+        $this->display('banner_add');
+    }
+
+    
+     /**
+     * [courierAdd 执行banner添加]
+     * @return [type] [description]
+     */
+    public function bannerAdd()
+    {
+        try {      
+            //接受POST数据
+            $data['name'] = $_POST['name'];
+            $data['status'] = $_POST['status'];
+            $data['url'] = $_POST['url'];
+            $data['addtime'] = time();
+            $data['updatetime'] = time();
+
+            //图片上传
+            $info = $this->uploads();
+            if ($info == 0) E('图片上传失败',203);
+
+            $data['pic'] = $info['pic']['savepath'].$info['pic']['savename'];
+            $path = './Uploads/'.$info['pic']['savepath'].$info['pic']['savename'];
+            
+            $banner = M('banner');
+
+            //添加先判断banner活动是否已经存在于表中
+            if ($banner->where("name = '{$data['name']}'")->find()) {
+                unlink($path);
+                E('该banner名已存在，如需改名请前往更改页面更改','203');
+
+            } else {
+                //添加主题活动
+                $infos = $banner->add($data);
+
+                if ($infos) {
+                        E('添加成功',200);
+                    }else{
+                        //
+                        unlink($path);
+                        E('添加失败',203);
+                }      
+            }
+                    
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [courierEditList banner编辑页面加载]
+     * @return [type] [description]
+     */
+    public function bannerEditList($id)
+    {
+        if (empty($bid)) {
+            $bid = $id;
+        }
+
+        // dump($bid);
+        $bnnerInfo = M('banner')->find($bid);
+
+        $this->assign('binfo', $bnnerInfo);
+        $this->display('banner_edit');
+    }
+
+    /**
+     * [courierEdit 执行修改banner]
+     * @return [type] [description]
+     */
+    public function bannerEdit()
+    {
+        try {
+                
+            //接受POST数据
+            $data['name'] = $_POST['name'];
+            $id = $_POST['id'];
+            $data['status'] = $_POST['status'];
+            $data['url'] = $_POST['url'];
+            $data['updatetime'] = time();
+
+            // dump($_POST);die;
+            //如果有文件上传的话，取新文件
+            if ($_FILES['pic']['error'] == 0) {
+                //图片上传
+                $info = $this->uploads();
+                if ($info == 0) E('图片上传失败',203);
+                $data['pic'] = $info['pic']['savepath'].$info['pic']['savename'];
+                $path = './Uploads/'.$info['pic']['savepath'].$info['pic']['savename'];
+
+                //原图
+                $path1 = './Uploads/'.M('banner')->field('pic')->find($id)['pic'];
+            } 
+            
+            $banner = M('banner');
+            //修改库存数据
+            $info = $banner->where('id='.$id)->save($data);
+
+            if ($info) {
+
+                    //修改成功就删除原图
+                    unlink($path1);
+                    E('修改成功',$info);
+                }else{
+
+                    //失败删除新图
+                    unlink($path);
+                    E('修改失败',203);
+            }         
+            
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [courierDel banner删除]
+     * @return [type] [description]
+     */
+    public function bannerDel()
+    {
+        try {
+                
+            //接收要删除数据的id
+            $id = $_GET['id'];
+
+            //图片路径
+            $path = './Uploads/'.M('banner')->field('pic')->find($id)['pic'];
+
+            $banner = M('banner');
+            //删除主题活动之前先判断该活动下是否有商品存在，存在则先要清空商品
+            $glList = M('goods_relation_block')->where('bid='.$id)->select();
+
+            if (!empty($glList)) E('改专题下还有商品，请先清除商品再删除',203);
+
+            
+            $info = $banner->where('id='.$id)->delete();
+            
+            
+            if ($info) {
+                unlink($path);
+                E('删除成功',$info);
+            } else {
+                    E('删除失败',203);
+            }         
+            
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
     
 }
