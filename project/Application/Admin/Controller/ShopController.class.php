@@ -204,14 +204,58 @@ class ShopController extends CommonController
     }
 
     //加载商品详情
-    public function good_detail()
+    public function goodsDetail($id)
     {
-        if(IS_AJAX){
-            $id = I('post.id');
-            $res = M('goods_detail')->where('gid='.$id)->getField('desc');
-            return $this->ajaxReturn($res);
-        }
+        // dump($id);
+        $map['g.id'] = $id;
+        $goodsInfo = D('Goods')
+                ->alias('g')
+                ->where($map)
+                ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
+                ->field('gd.desc,gd.specs,gd.saleservice,g.name')
+                ->find();
 
+        // dump($goodsInfo);
+        $this->assign('goodsInfo', $goodsInfo);
+        $this->display();
+
+    }
+
+    /**
+     * [goodsHuishou 回收站商品信息]
+     * @return [type] [description]
+     */
+    public function goodsHuishou()
+    {
+        $map['g.status'] = array('eq',2);
+        $count = D('Goods')
+            ->where($map)
+            ->alias('g')
+            ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
+            ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
+            ->join('__INVENTORY__ i on i.gid=g.id' , 'LEFT')
+            ->field('c.name cname,g.*')
+            ->limit($Page->firstRow.','.$Page->listRows)
+            ->count();
+            $Page  = new \Think\Page($count,10);
+            $pageButton =$Page->show();
+        $goodsData = D('Goods')
+            ->where($map)
+            ->alias('g')
+            ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
+            ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
+            ->join('__INVENTORY__ i on i.gid=g.id' , 'LEFT')
+            ->field('c.name cname,g.*')
+            ->order(' addtime desc')
+            ->limit($Page->firstRow.','.$Page->listRows)
+            ->select();
+        $assign = [
+            'data' => $goodsData,
+            'show' => $pageButton,
+        ];
+
+        $this->assign($assign);
+        $this->display();
     }
 
     // 添加商品
@@ -273,9 +317,9 @@ class ShopController extends CommonController
             $data = ['status'=>2];
             $del = $goods->where($where)->save($data);
             if($del){
-                E('删除成功', 200);
+                E('已放到回收站', 200);
             } else {
-                E('删除失败', 606);
+                E('放到回收站失败', 606);
             }
         } catch (\Exception $e) {
             $err = [
@@ -332,17 +376,21 @@ class ShopController extends CommonController
 
     // 商品添加处理
     public function goodsAction()
-    {
-    
+    {   
+        // dump($_POST);die;
         try{
             //商品表
             $goods_add = D('Goods');
             //商品详情
             $goods_detail = D('GoodsDetail');
             //商品sku库存
-            $sku = D('inventory');
+            $GoodsSku = D('GoodsSku');
             //商品与主题的关系
             $GoodsRelationBlock = D('GoodsRelationBlock');
+            //商品快递
+            $GoodsCourier = D('GoodsCourier');
+            //商品价格
+            $GoodsPrice = D('GoodsPrice');
         
 
 
@@ -397,15 +445,17 @@ class ShopController extends CommonController
             }
 
             foreach ($info as $k => $val) {
-                $path .= $val.'|';
-                $goods['gpic'] = $val;
+                $path .= ltrim($val,'.').'|';
+                $goods['gpic'] = ltrim($val,'.');
             }
 
             // 事务开启
             $goods_add->startTrans();
             $goods_detail->startTrans();
-            $sku->startTrans();
+            $GoodsSku->startTrans();
             $GoodsRelationBlock->startTrans();
+            $GoodsCourier->startTrans();
+            $GoodsPrice->startTrans();
 
             if(!$goods_add->create($goods)) {
                 E($goods_add->getError(),406);
@@ -435,17 +485,22 @@ class ShopController extends CommonController
             
             //sku库存数据写入
             $skuattrs = json_decode($_POST['skuattr'],true);
+
+            
             foreach ($skuattrs as $key => $value) {
+                $sku = array();
                 //sku商品id
                 $sku['gid'] = $goodsid;
                 //属性值id组合
                 $sku['skuattr'] = explode(',',$value[0])[1].','.explode(',',$value[1])[1];
                 //属性组合库存
-                $sku['stock'] = $value[2];
+                $sku['skustock'] = $value[2];
+                $sku['addtime'] = time();
+                $sku['updatetime'] = time();
 
-                if(!$sku->create($sku)) E($sku->getError(),408);
+                if(!$GoodsSku->create($sku)) E($GoodsSku->getError(),408);
                 // 商品sku添加
-                $skustatus = $sku->add($sku);
+                $skustatus = $GoodsSku->add($sku);
                 
             }
 
@@ -464,29 +519,23 @@ class ShopController extends CommonController
                 $data['gid'] = $goodsid;
                 $data['cid'] = $key;
                 $data['cprice'] = $value;
+                $data['addtime'] = time();
+                $data['updatetime'] = time();
 
-                //插入数据前先查询同一个商品是否有同一个快递
-                $info = M('GoodsCourier')->where('gid='.$data['gid'].' AND cid='.$data['cid'])->select();
 
-                if ($info) {
-                    E('此商品已经有设置了这个快递的价格，请前往更改',203);
-                } else {
-                    //进行添加
-                    $list = M('GoodsCourier')->add($data);
-
-                    if (!$list) {
-                        E('快递价格设置失败，请刷新页面', 506);
-                    } 
-                }
+                //进行添加
+                $GoodsCourierStatus = $GoodsCourier->add($data);
+    
             }
 
             //商品快递费添加完成后，将快递公司名字也写入库
             foreach ($_POST['courierName'] as $key => $value) {
                 $gid = $goodsid;
                 $cid = $key;
-                $info['cname'] = $value;
+                $infos['cname'] = $value;
+                $infos['updatetime'] = time();
                 //进行添加
-                M('GoodsCourier')->where('gid='.$gid .' AND cid='.$cid)->save($info);   
+                M('GoodsCourier')->where('gid='.$gid .' AND cid='.$cid)->save($infos);   
             }
 
 
@@ -496,20 +545,30 @@ class ShopController extends CommonController
             foreach ($_POST['price'] as $key => $value) {
                 $p['price'] = $value;
                 $p['grade'] = $key;
-                $p['gid'] = $goods_status;
-                $price_status = M('Price')->add($p);
+                $p['gid'] = $goodsid;
+                $p['addtime'] = time();
+                $p['updatetime'] = time();
+                $price_status = $GoodsPrice->add($p);
             }
-            if($goodsid && $goodsDetail_status && $skustatus && $GoodsRelationBlockstatus){
+            if($goodsid && $goodsDetail_status && $skustatus && $GoodsRelationBlockstatus && $GoodsCourierStatus && $price_status){
                 $goods_add->commit();
                 $goods_detail->commit();
-                $sku->commit();
+                $GoodsSku->commit();
                 $GoodsRelationBlock->commit();
+                $GoodsCourier->commit();
+                $GoodsPrice->commit();
+                // dump(1);
+                // die;
                 E('商品添加成功，可继续添加',200);
             } else {
                 $goods_add->rollback();
                 $goods_detail->rollback();
                 $sku->rollback();
                 $GoodsRelationBlock->rollback();
+                $GoodsCourier->rollback();
+                $GoodsPrice->rollback();
+                //失败删除图片
+                $this->rmfiles($info);
                 E('商品添加失败，请重新添加',407);
             }
 
@@ -526,8 +585,9 @@ class ShopController extends CommonController
     // 商品上下架状态修改
     public function edidStatus(){
         try {
-            $goods = D('GoodsDetail');
-            $where['gid'] = I('post.id');
+            // dump($_POST);die;
+            $goods = D('Goods');
+            $where['id'] = I('post.id');
             $data['status'] = I('post.status');
             $res = $goods->where($where)->save($data);
             // echo $goods->_sql();
@@ -1078,7 +1138,7 @@ class ShopController extends CommonController
     {
         try {
             $gid = I('post.gid');
-            $data = M('Price')->where('gid='.$gid)->select();
+            $data = M('GoodsPrice')->where('gid='.$gid)->select();
             $this->ajaxReturn($data);
         } catch (\Exception $e) {
             $err = [
