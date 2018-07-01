@@ -846,14 +846,16 @@
                 bodyhtml += temphtml + '<th><input class="num" type="text" value=""></th></tr>';
             }
             console.log('_newArr[0]: ',_newArr[0]);
-            for(var i=0; i<_newArr[0].length;i++){
-                //表格头
-                headhtml += '<th data-id="'+ _newArr[0][i].split('|')[1] +'">'+ _newArr[0][i].split('|')[2] +'</th>';
+            if(_newArr[0]){
+                for(var i=0; i<_newArr[0].length;i++){
+                    //表格头
+                    headhtml += '<th data-id="'+ _newArr[0][i].split('|')[1] +'">'+ _newArr[0][i].split('|')[2] +'</th>';
+                }
+                headhtml += '<th>库存</th>';    
+                // console.log('bodyhtml: ',bodyhtml);
+                // 表格头
+                $('.allAttr thead>tr').html(headhtml);
             }
-            headhtml += '<th>库存</th>';    
-            // console.log('bodyhtml: ',bodyhtml);
-            // 表格头
-            $('.allAttr thead>tr').html(headhtml);
             // 显示详细规格组合
             $('.allAttr tbody').html(bodyhtml);
             $('.allAttr').show();
