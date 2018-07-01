@@ -94,6 +94,7 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	font-size: .6rem;
+	text-indent: .3em;
 }
 /* 筛选 */
 .filterMode {
