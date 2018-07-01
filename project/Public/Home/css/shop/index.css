@@ -11,6 +11,9 @@ body {
 	-webkit-box-sizing: border-box;
 	        box-sizing: border-box;
 }
+img {
+	font-size: .5rem;
+}
 .cfix::after {
 	content: '';
 	clear: both;
@@ -82,9 +85,12 @@ body {
 	flex-flow: column;
 	align-items: center;
 	justify-content: center;
+	font-size: .6rem;
 }
-.menuBtn>a:active {
-	background: rgba(0,0,0,.03);
+.menuBtn>a:active>img {
+	border-radius: 50%;
+	background: rgba(0,0,0,.01);
+    box-shadow: 0 0 10px rgba(60,60,60,.06);
 }
 .mBlock {
 	padding: 0 8px 8px;
@@ -127,18 +133,18 @@ body {
 }
 .subBlock>p {
 	padding: 10px 6px;
+	font-size: .6rem;
 }
 .subBlock>ul {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
 }
 .subtype {
 	flex: 0 0 33.33%;
 }
 .subtype>img {
-	width: 16vw;
-	height: 16vw;
+	width: auto;
+    height: 18vw;
 	background: #f1f1f1;
 }
 .subtype>p {
@@ -166,6 +172,7 @@ body {
 	padding: 4px 0;
     margin: 10px 0;
 	text-align: center;
+	font-size: .6rem;
 }
 .category>.cright {
 	width: 70vw;
@@ -179,6 +186,17 @@ body {
 	text-align: center;
 	font-size: .5rem;
     color: #999;
+}
+.adv {
+	margin-bottom: 20px;
+}
+.adv>a {
+	display: block;
+	margin-bottom: 6px;
+}
+.adv>a>img {
+	width: 100%;
+	height: auto;
 }
 /* 购物车 */
 .cBlock {

@@ -10,6 +10,7 @@
 	<title>分类详情</title>
 	<script>
 		var public = '__PUBLIC__';
+		var imgsrc = public + '/Home/images/shop/';
 		var shopurl = '{{:U("Home/Shop/index")}}';
 	</script>
 </head>
@@ -21,14 +22,33 @@
 				<input type="text" placeholder="请输入商品名称或者关键字">
 			</div>
 		</header>
+		<ul class='filterBtnMenu cfix'>
+			<li class='fl'>
+				<span>时间</span>
+				<img src="__PUBLIC__/Home/images/shop/arrow_up.png" alt="">
+			</li>
+			<li class='fl'>
+				<span>人气</span>
+				<img src="__PUBLIC__/Home/images/shop/arrow_empty.png" alt="">
+			</li>
+			<li class='fl'>
+				<span>价格</span>
+				<img src="__PUBLIC__/Home/images/shop/arrow_empty.png" alt="">
+			</li>
+			<li class='fl'>
+				<span>销量</span>
+				<img src="__PUBLIC__/Home/images/shop/arrow_empty.png" alt="">
+			</li>
+			<li class='fl'>
+				<span>筛选</span>
+				<img src="__PUBLIC__/Home/images/shop/arrow_empty.png" alt="">
+			</li>
+		</ul>
 	</div>
 	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
 	<script src="__PUBLIC__/Home/js/jquery.min.js"></script>
   	<script src="__PUBLIC__/Home/js/public.js"></script>
   	<script src="__PUBLIC__/Home/js/shop/list.js"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
-	<script>
-
-	</script>
 </body>
 </html>
