@@ -746,7 +746,7 @@
                 var attrth = $(".attrtr"+i).find('th');
                 // console.log(attrth.eq(i).text())
                 // if(attrth.eq(i).length){
-                    attrArr.push([]);
+                    attrArr.push({});
                 // }
                 // 遍历已选规格内容
                 for(var j=0; j<attrth.length; j++){
@@ -762,8 +762,8 @@
                         attrArr[i]['stock']= val;
                     }else{
                         // console.log('text: ',text);
-                        if(!attrArr[i]['list'])attrArr[i]['list'] = [];
-                        attrArr[i]['list'].push({'name':name, 'id':id});
+                        if(!attrArr[i]['list']) attrArr[i]['list'] = [];
+                        attrArr[i].list.push({'name':name, 'id':id});
                     }
                 }
             }
