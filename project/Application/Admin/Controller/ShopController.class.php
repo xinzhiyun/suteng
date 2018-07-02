@@ -623,6 +623,7 @@ class ShopController extends CommonController
         $goods_mode = D('goods');
         $goodsInfo = $goods_mode->find($gid);
 
+        // 分类
         $catepath = explode(',',$goodsInfo['catepath']);
         $categoryList[0] = M('category')->where('pid=0')->field('id, name')->select();
 
@@ -631,6 +632,14 @@ class ShopController extends CommonController
             if(!empty($cate)){
                 $categoryList[] = $cate;
             }
+        }
+
+        // 主题
+        $blockList = M('goodsBlock')->where('status=1')->select();
+        $block = M('goodsRelationBlock')->where('gid='.$gid)->getField('bid');
+        $goodsInfo['bid'] = '';
+        if(!empty($block)){
+            $goodsInfo['bid'] = $block;
         }
 
         $goodsDetail = M('goodsDetail')->where('gid='.$gid)->field('pic,desc,specs,saleservice')->find();
@@ -677,6 +686,7 @@ class ShopController extends CommonController
         $goodsInfo['price'] = M('goodsPrice')->field('price')->where($where)->find();
         $goodsInfo['goodsCourier'] = M('goods_courier')->where('gid='.$gid)->field('cid,cname,cprice')->select();;
 
+        $this->assign('blockList',$blockList);
         $this->assign('categoryList',$categoryList);
         $this->assign('goodsDetail', $goodsInfo);
         $this->display();
