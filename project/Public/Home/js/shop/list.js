@@ -172,6 +172,10 @@ var goodsList = new Vue({
         // 搜索
         searchFn(search) {
             console.log('search: ',search);
+            if(!search){
+                layuiHint('请输入需要搜索的内容');
+                return;
+            }
             var vm = this;
             vm.sortmode = 0;
             // 请求参数

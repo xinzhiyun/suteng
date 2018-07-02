@@ -32,10 +32,16 @@
 	border-radius: 30px;
 	background: #f1f1f1;
 }
+.search >span {
+	height: 100%
+}
 .search img {
 	height: 50%;
 	width: auto;
 	margin-right: 10px;
+	position: relative;
+    top: 50%;
+    transform: translateY(-50%);
 }
 .search>input {
 	border: none;

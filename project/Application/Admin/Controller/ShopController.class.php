@@ -690,8 +690,26 @@ class ShopController extends CommonController
 
         $courierList = M('courier')->where('status = 1')->select();
 
+        $attr = D('attr');
+        $map['cid'] = $goodsInfo['cid'];
+
+        $attr = M('attr')->field('id,attr')->where($map)->select();
+
+        foreach ($attr as $key => &$value) {
+
+            $value['data'] = M('attr_val')->field('id,val')->where('aid='.$value['id'])->select();
+
+            if (empty($value['data'])) unset($attr[$key]);
+
+        }
+
+
+        $attrResList = array_values($attr);
+        
+        $this->assign('skuList',$goodsAttr);//sku库存列表
         $this->assign('courierList',$courierList);//快递公司列表
         $this->assign('attr',$attrRes);//属性列表
+        $this->assign('attrList',$attrResList);//属性列表(全部)
         $this->assign('blockList',$blockList);//主题列表
         $this->assign('categoryList',$categoryList);//分类列表
         $this->assign('goodsDetail', $goodsInfo);//商品信息

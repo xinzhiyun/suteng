@@ -84,7 +84,7 @@ var vm = new Vue({
         addCart(val) {
             // 显示选项面板
             this.gocart = val;
-            this.isBuy = true;
+            this.isBuy = false;
         },
         // 关闭面板
         closePanel(val) {
@@ -194,7 +194,7 @@ var vm = new Vue({
                 $.ajax({
                     url: getOrder,
                     type: 'post',
-                    data: JSON.stringify(arr),
+                    data: {info: JSON.stringify(arr)},
                     success: function(res){
                         if(res.code == 200){
                             // 跳转到订单确认页面
@@ -212,7 +212,7 @@ var vm = new Vue({
                 };
             }
 
-            console.log('checkList: ',vm.isBuy);
+            console.log('vm.isBuy: ',vm.isBuy);
             console.log('vm.upInfo: ',vm.upInfo);
         },
         // 加减
