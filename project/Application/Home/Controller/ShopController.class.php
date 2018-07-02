@@ -17,6 +17,7 @@ class ShopController extends CommonController
             $goods = D('Goods');
             $cartInfo = M('Cart')->where('uid='.session('user.id'))->count();
             $cate = M('Category')->where('pid=0')->limit(7)->select();
+            $banner = M('banner')->field('url,pic')->where('status=1')->select();
 
             $map['pr.grade'] = session('user.grade');
             $map['g.status'] = array('eq', 1);
@@ -51,6 +52,7 @@ class ShopController extends CommonController
                 'cate' => $cate,
                 'cartInfo' => $cartInfo,
                 'goods' => $GoodsBlock,
+                'banner'=> $banner
             ];
 
             // dump($assign);die;
