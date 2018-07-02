@@ -120,7 +120,9 @@
                                 <i v-text='goodsInfo.prices'></i>
                             </del>
                         </p>
-                        <p>已选：<span v-for='c in checkList'><span v-text='c.name+","'>智能净水器A套餐</span></span></p>
+                        <p>已选：<span v-for='c in checkList'>
+                            <span v-if='c' v-text='c.pname+"|"+c.name+","'>智能净水器A套餐</span></span>
+                        </p>
                     </div>
                     <span class="iconfont icon-chacha" @click="closePanel(false)"></span>
                 </div>

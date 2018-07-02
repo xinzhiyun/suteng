@@ -99,7 +99,16 @@ img {
 .mBlock {
 	padding: 0 8px 8px;
 	background: #fff;
-	transition: .3s ease;
+	/* transition: .3s ease; */
+	animation: slideup 1s ease;
+}
+@keyframes slideup {
+	from {
+		transform: translateY(60%);
+	}
+	to {
+		transform: translateY(0%);
+	}
 }
 .mBlock:not(:last-child) {
 	border-bottom: 8px solid #f1f1f1;
