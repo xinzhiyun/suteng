@@ -207,7 +207,7 @@ class PayController extends Controller
                         ->where('order_id='.$orderid)
                         ->join('st_goods g ON od.gid = g.id','LEFT')
                         ->join('st_goods_detail gd ON od.gid = gd.gid','LEFT')
-                        ->field('g.*,gd.*')
+                        ->field('g.*,gd.*,od.gsku')
                         ->select();
         // $order = D('shop_order')->where(['order_id'=>$orderid])->find();
 
