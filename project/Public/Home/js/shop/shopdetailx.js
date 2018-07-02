@@ -5,8 +5,9 @@ var vm = new Vue({
             goodsInfo: {},
             gocart: false,      //立即购买/加入购物车/
             DisFlag : 0,        //选项卡
-            checkList: [],      // 选择的套餐规格
-            lastCheckIndex: '',    // 上次选择的规格
+            checkList: '',      // 选择的套餐规格
+            lastCheckPname: '',    // 上次选择的规格
+            numVal: 1, //默认数量
             goodDetail: [
                 {src :public + "/Home/images/1a.jpg"},
                 {src :public + "/Home/images/1a.jpg"},
@@ -32,6 +33,9 @@ var vm = new Vue({
         }
     },
     created() {
+        // layui.use("layer", function() {
+        //     layer = layui.layer;
+        // })
         // 默认选中第一个
         $(".titleKa>li>span").eq(0).addClass("selecteds");
         // 模拟
@@ -161,6 +165,24 @@ var vm = new Vue({
         // 去购物车
         cart() {
             location.href = shopindex + '#_cart';
+        },
+        // 确认选择
+        conPay() {
+
+        },
+        // 加减
+        numjisuan(val) {
+            var vm = this;
+            // 加
+            if(val == "add") {
+                vm.numVal >= 10 ? "库存不够" : vm.numVal++;
+                console.log(vm.numVal)
+            }
+
+            // 减
+            if(val == "reduce") {
+                vm.numVal < 1 ? vm.numVal=1 : vm.numVal--;
+            }
         }
     },
 })
