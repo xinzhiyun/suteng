@@ -8,7 +8,7 @@ var payConfirm = new Vue({
 			allMoney: 0,	// 总价格
 			express: [],
 			einfo: [],		// 选择的快递信息
-			invoice: '', 	//发票信息
+			invoice: '我要开发票', 	//发票信息
 			voiceArr: '',
 			payway: '',		// 1:金币，2：银币，3：微信支付
 		}

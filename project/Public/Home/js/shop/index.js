@@ -206,6 +206,9 @@ var shopindex = new Vue({
 			this.tabsrc[tabclk-1] = this.srcArr[tabclk-1] + '_light';
 			location.href = shopurl + '#' + text;
 			this.tabText = text;
+			if(tabclk == 4){
+				location.href = getURL('Home', 'vipCenter/index');
+			}
 		},
 		// 点击分类类目
 		getCate(cate, cid) {

@@ -72,6 +72,10 @@ var vm = new Vue({
             // 获取商品数据
             this.getDetail(gid);
         }
+        // 清空发票信息
+        if(sessionStorage.getItem("voiceArr")){
+            sessionStorage.setItem("voiceArr", '');
+        }
     },
     methods: {
         // 立即购买
