@@ -23,7 +23,9 @@
 	<div class='shopindex'>
 		<header id="header" :style='{display: tabclk == 3 || tabclk == 4 ? "none" : "flex"}'>
 			<div class='search'>
-				<img src="__PUBLIC__/Home/images/shop/search.png" alt="">
+				<span @click='searchFn(search)'>
+					<img src="__PUBLIC__/Home/images/shop/search.png" alt="">
+				</span>
 				<input type="text" placeholder="请输入商品名称或者关键字"
 				@keyup.enter='searchFn(search)' v-model='search'>
 			</div>
@@ -47,7 +49,7 @@
 					<p v-text='m.name'></p>
 				</a>
 			</div>
-			<ul class='mBlock' v-for='(b, index) in blockList'>
+			<ul class='mBlock' v-for='(b, index) in blockList' v-if='b["0"].length'>
 				<h3 v-text='b.bname'>块标题</h3>
 				<div>
 					<a class='goods' v-for='m in b["0"]' :gid='m.id' @click='todetail(m.id)'>

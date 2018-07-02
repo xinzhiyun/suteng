@@ -84,7 +84,7 @@ var vm = new Vue({
         addCart(val) {
             // 显示选项面板
             this.gocart = val;
-            this.isBuy = true;
+            this.isBuy = false;
         },
         // 关闭面板
         closePanel(val) {
@@ -133,31 +133,17 @@ var vm = new Vue({
             console.log('vm.checkList: ',vm.checkList);
             // 记录本地点击的id
             vm.lastCheckIndex = index;
-            
-            var len = 0;
-            // 计算是否选择完全部的项目
-            for(var i=0; i<vm.checkList.length; i++){
-                if(vm.checkList[i]){
-                    len++;
-                }
-            }
-            // 未选择所有项
-            if(len != vm.goodsInfo.attr.length){
-                vm.canBuy = false;
-                $('.confirmBtn p').css({background: '#999'});
-            }else{
-                // 在这里查询库存
-                $('.confirmBtn p').css({background: '#CA0010'});
-                // 查询库存
-                vm.getStock({
-                    gid: vm.goodsInfo.id,
-                    price: vm.goodsInfo.price,
-                    skuattr: vm.checkList
-                },function(res){
-                    vm.canBuy = true;
-                    maxNum = res.maxNum;
-                })
-            }
+            // 待删（把下面库存查询加入后）
+            $('.confirmBtn p').css({background: '#CA0010'});
+            // 查询库存
+            // vm.getStock({
+            //     gid: vm.goodsInfo.id,
+            //     price: vm.goodsInfo.price,
+            //     skuattr: vm.checkList
+            // },function(res){
+            //     vm.canBuy = true;
+            //     // res.maxNum;
+            // })
         },
         // 获取商品详情数据
         getDetail(gid) {
@@ -190,74 +176,105 @@ var vm = new Vue({
         conPay() {
             var vm = this;
             // 未选择所有项\或无库存
-            if(!vm.canBuy){
-                layuiHint('选择的商品已无库存，请选择其他搭配');
-                return;
-            }
+            // if(!vm.canBuy){
+            //     layuiHint('选择的商品已无库存，请选择其他搭配');
+            //     return;
+            // }
             if(vm.isBuy){
+                var arr = [];
                 // 点击的购买
                 vm.upInfo = {
                     gid: vm.goodsInfo.id,
-                    price: vm.goodsInfo.price,
+                    money: (+vm.goodsInfo.price)*(+vm.numVal),  // 总价
                     skuattr: vm.checkList,
-                    num: vm.goodsnum
+                    num: vm.numVal
                 };
+                arr.push(vm.upInfo);
+                // 生成订单号
+                $.ajax({
+                    url: getOrder,
+                    type: 'post',
+                    data: {info: JSON.stringify(arr)},
+                    success: function(res){
+                        if(res.code == 200){
+                            // 跳转到订单确认页面
+					        location.href = payComfirm+'?order_id='+res.order_id;
+                        }
+                    },
+                    error: function(err){}
+                })
             }else{
                 // 加入购物车
                 vm.upInfo = {
                     gid: vm.goodsInfo.id,
-                    price: vm.goodsInfo.price,
                     skuattr: vm.checkList,
-                    num: vm.goodsnum
+                    num: vm.numVal
                 };
             }
 
-            console.log('checkList: ',vm.isBuy);
-            console.log('info: ',info);
+            console.log('vm.isBuy: ',vm.isBuy);
+            console.log('vm.upInfo: ',vm.upInfo);
         },
         // 加减
         numjisuan(val) {
             var vm = this;
             var maxNum = 1;
-            if(vm.upInfo){
-                // 查询库存
-                vm.getStock(function(res){
-                    maxNum = res.maxNum;
-                })
-            }
+            // 查询库存
+            // vm.getStock({
+            //     gid: vm.goodsInfo.id,
+            //     price: vm.goodsInfo.price,
+            //     skuattr: vm.checkList
+            // },function(res){
+            //     vm.canBuy = true;
+            //     maxNum = res.maxNum;
+            // })
             // 加
             if(val == "add") {
-                // vm.numVal >= 10 ? "库存不够" : vm.numVal++;
-                vm.numVal = Number(vm.numVal) >= Number(maxNum) ? Number(maxNum) : vm.numVal++;
+                vm.numVal >= 10 ? "库存不够" : vm.numVal++;
+                // vm.numVal = Number(vm.numVal) >= Number(maxNum) ? Number(maxNum) : vm.numVal++;
             }
             console.log(vm.numVal)
 
             // 减
             if(val == "reduce") {
-                // vm.numVal < 1 ? vm.numVal=1 : vm.numVal--;
-                vm.numVal = vm.numVal < 1 ? 1 : vm.numVal--;
+                vm.numVal < 1 ? vm.numVal=1 : vm.numVal--;
+                // vm.numVal = vm.numVal < 1 ? 1 : vm.numVal--;
             }
         },
         // 查询库存
         getStock(data, callback) {
             var vm = this;
-            // 查询库存
-            $.ajax({
-                url: getStock,
-                type: 'post',
-                data: data,
-                success: function(res){
-                    console.log('res: ',res);
-                    if(res.code == 200){
-                        callback({maxNum: res.data});
-                        $('.confirmBtn p').css({background: '#CA0010'});
-                    }else{
-                        layuiHint(res.msg);
-                        $('.confirmBtn p').css({background: '#999'});
-                    }
-                },
-                error: function(err){}
-            })
+            var len = 0;
+            // 计算是否选择完全部的项目
+            for(var i=0; i<vm.checkList.length; i++){
+                if(vm.checkList[i]){
+                    len++;
+                }
+            }
+            // 未选择所有项
+            if(len != vm.goodsInfo.attr.length){
+                vm.canBuy = false;
+                $('.confirmBtn p').css({background: '#999'});
+            }else{
+                // 查询库存
+                $.ajax({
+                    url: getStock,
+                    type: 'post',
+                    data: data,
+                    success: function(res){
+                        console.log('res: ',res);
+                        if(res.code == 200){
+                            callback({maxNum: res.data});
+                            $('.confirmBtn p').css({background: '#CA0010'});
+                        }else{
+                            layuiHint(res.msg);
+                            $('.confirmBtn p').css({background: '#999'});
+                        }
+                    },
+                    error: function(err){}
+                })
+            }
+            
         }
     },
 })

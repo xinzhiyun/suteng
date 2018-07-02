@@ -42,7 +42,9 @@
 	<div class='categoryDetail'>
 		<header id="header">
 			<div class='search'>
-				<img src="__PUBLIC__/Home/images/shop/search.png" alt="">
+				<span @click='searchFn(search)'>
+					<img src="__PUBLIC__/Home/images/shop/search.png" alt="">
+				</span>
 				<input type="text" placeholder="请输入商品名称或者关键字"
 				v-model='search' @keyup.enter='searchFn(search)'>
 			</div>
@@ -105,6 +107,7 @@
   	<script src="__PUBLIC__/Home/js/public.js"></script>
   	<script src="__PUBLIC__/Home/js/shop/list.js"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script>
 		
 		hashchangeFn(function(hash){

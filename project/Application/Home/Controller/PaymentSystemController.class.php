@@ -103,27 +103,33 @@ class PaymentSystemController extends CommonController
     // 信息确认并生成订单
     public function information()
     {   
-        // echo json_decode($_POST['data']);
-        $sku = json_decode(xx,true);
-        $skuattr = array_column($sku,'id');
-        sort($skuattr);
-        $sku['skuattr'] = implode('_', $skuattrArr);//属性值id组合
-
-        die;
-        foreach ($data as $val) {
-            $result = D('inventory')->where(['gid'=>$val['gid']])->getField('allnum');
-            if ($result < $val['num']) {
-                $count[]['gid'] = $val['gid'];
+        try {
+            
+            dump($_POST);
+            die;
+            //检查库存
+            if(empty($post['skuattr']) || empty($post['gid'])){
+                E('数据错误',40001);
             }
 
+            $sku = $post['skuattr'];
+            // dump($sku);die;
+            $skuattr = array_column($sku,'id');
+            sort($skuattr);
+            $map['skuattr'] = implode('_', $skuattr);//属性值id组合
 
-        }
-          if ($count) {
-              $this->ajaxReturn(['code'=>604,'msg'=>'商品库存不足','data'=>$count]);
-          }
-      
+            // dump($map);
+            $goodsSku = M('goodsSku');
 
-        try {
+            $map['gid'] = $post['gid'];
+            $res = $goodsSku->where($map)->getField('skustock');
+
+            if(!$res){
+                E('该商品类型无库存!',603);
+            }
+        
+            
+
             $goods = D('Goods');
             $orders = D('ShopOrder');
             $order_detail = D('ShopOrderDetail');
@@ -145,7 +151,7 @@ class PaymentSystemController extends CommonController
                     ->alias('g')
                     ->where($where)
                     ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
-                    ->join('__PRICE__ pr ON g.id=pr.gid','LEFT')
+                    ->join('__GOODS_PRICE__ pr ON g.id=pr.gid','LEFT')
                     ->join('__PIC__ p ON g.id=p.gid','LEFT')
                     ->field('pr.price,gd.cost,g.name,gd.desc,p.path,gd.is_install')
                     ->find();
