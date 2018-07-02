@@ -130,7 +130,7 @@ class PaymentSystemController extends CommonController
                 }
             }
 
-            dump($post);
+            // dump($post);
             // die;
             $goods = D('Goods');
             $orders = D('ShopOrder');
@@ -188,7 +188,7 @@ class PaymentSystemController extends CommonController
                     M('Cart')->where(['uid'=>session('user.id'),'gid'=>array('in',$ids)])->delete();
                 }
                 $orders->commit();
-                $this->ajaxReturn(array('cdoe'=>200,'msg'=>$order['order_id']));
+                $this->ajaxReturn(array('code'=>200,'msg'=>$order['order_id']));
             } else {
                 $orders->rollback();
                 E('请重新购买',603);
