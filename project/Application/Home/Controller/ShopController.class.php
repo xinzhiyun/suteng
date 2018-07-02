@@ -238,8 +238,8 @@ class ShopController extends CommonController
             //商品会员价格
             $goodsInfo['price'] = M('goodsPrice')->field('price')->where($where)->find()['price'];
 
-            //商品对应的快递
-            $goodsInfo['goodsCourier'] = M('goods_courier')->where('gid='.$post['id'])->field('cid,cname,cprice')->select();;
+            // //商品对应的快递
+            // $goodsInfo['goodsCourier'] = M('goods_courier')->where('gid='.$post['id'])->field('cid,cname,cprice')->select();;
 
             $goodsInfo['attr'] = $attrRes;
 
