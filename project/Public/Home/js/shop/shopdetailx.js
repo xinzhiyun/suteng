@@ -1,6 +1,6 @@
 var vm = new Vue({
     el: ".main",
-    data() {
+    data() { 
         return {
             goodsInfo: {},
             gocart: false,      //立即购买/加入购物车/
