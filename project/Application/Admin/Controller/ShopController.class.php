@@ -610,16 +610,76 @@ class ShopController extends CommonController
 
     // 修改商品
     public function goodEdit()
-    {   
+    {
+        $gid = $_GET['gid'];
+        $goods_mode = D('goods');
+        $goodsInfo = $goods_mode->find($gid);
+
+        $goodsDetail = M('goodsDetail')->where('gid='.$gid)->field('pic,desc,specs,saleservice')->find();
+        $goodsDetail['pic'] = explode('|', $goodsDetail['pic']);
+        $goodsInfo = array_merge($goodsInfo, $goodsDetail);
+
+        $goodsAttr = M('goodsSku')->where('gid='.$gid)->select();
+
+        $attrValArr = [];//值
+        $attrArr = [];  //属性
+        $attrValRel = [];  //属性和值的关系
+
+        foreach ($goodsAttr as $item){
+            $attrs =  explode('_',$item['skuattr']);
+            foreach ($attrs as $attrid){
+                if(empty($attrValArr[$attrid])){
+                    $tmpAttr = M('attrVal')->find($attrid);
+                    $attrValArr[$attrid] = $tmpAttr['val'];
+                    $attrValRel[$tmpAttr['aid']][] = $attrid;
+                    if(empty($attrArr[$tmpAttr['aid']])){
+                        $tmpAttrs = M('attr')->find($tmpAttr['aid']);
+                        $attrArr[$tmpAttr['aid']] = $tmpAttrs['attr'];
+                    }
+                }
+            }
+        }
+        $attrRes = [];
+        foreach ($attrArr as $atrrid =>$attrVal){
+            $tmpRes = [];
+            $tmpRes['name']=$attrVal;
+            $tmpAttr = [];
+            foreach ($attrValRel[$atrrid] as $attrItem){
+                $tmpAttr['pname'] = $attrArr[$atrrid];
+                $tmpAttr['name']  = $attrValArr[$attrItem];
+                $tmpAttr['id']    = $attrItem ;
+                $tmpRes['list'][]=$tmpAttr;
+            }
+            $attrRes[] = $tmpRes;
+        }
+
+        $where['gid'] = $gid;
+
+        //商品会员价格
+        $goodsInfo['price'] = M('goodsPrice')->field('price')->where($where)->find();
+        $goodsInfo['goodsCourier'] = M('goods_courier')->where('gid='.$gid)->field('cid,cname,cprice')->select();;
+
+        $this->assign('goodsDetail', $goodsInfo);
+        $this->display();
+    }
+
+    /*
+    // 修改商品
+    public function goodEdit()
+    {
+
+
+
+
 
         // //修改商品之前先查询出所有的快递公司
         // $courierList = M('courier')->where('status = 1')->select();
 
         // //查询出所有分类
-        // $categoryList = M('category')->field('id, name')->select();
+         $categoryList = M('category')->field('id, name')->select();
 
         // //查询出所有属性
-        // $arrtList = M('attr')->select();
+//         $arrtList = M('attr')->select();
         
         // //获取商品id
         // $id = $_GET['gid'];
@@ -693,6 +753,7 @@ class ShopController extends CommonController
         // $this->assign('goodsDetail', $goodsDetail);
         $this->display(); 
     }
+    */
 
     // 商品编辑处理
     public function goodsEditAction()
