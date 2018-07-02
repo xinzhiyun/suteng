@@ -321,15 +321,18 @@ class ShopController extends CommonController
     {
         try {
             $post= I('post.');
+            // dump($post);
             if(empty($post['skuattr']) || empty($post['gid'])){
                 E('数据错误',40001);
             }
 
-            $sku = json_decode($post['skuattr'],true);
+            $sku = $post['skuattr'];
+            // dump($sku);die;
             $skuattr = array_column($sku,'id');
             sort($skuattr);
             $map['skuattr'] = implode('_', $skuattr);//属性值id组合
 
+            // dump($map);
             $goodsSku = M('goodsSku');
 
             $map['gid'] = $post['gid'];
