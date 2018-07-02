@@ -187,6 +187,7 @@ var vm = new Vue({
                     gid: vm.goodsInfo.id,
                     money: (+vm.goodsInfo.price)*(+vm.numVal),  // 总价
                     skuattr: vm.checkList,
+                    price: vm.goodsInfo.price,
                     num: vm.numVal
                 };
                 arr.push(vm.upInfo);
@@ -198,7 +199,7 @@ var vm = new Vue({
                     success: function(res){
                         if(res.code == 200){
                             // 跳转到订单确认页面
-					        location.href = payComfirm+'?order_id='+res.order_id;
+					        location.href = payConfirm+'?order_id='+res.msg;
                         }
                     },
                     error: function(err){}
@@ -208,8 +209,22 @@ var vm = new Vue({
                 vm.upInfo = {
                     gid: vm.goodsInfo.id,
                     skuattr: vm.checkList,
-                    num: vm.numVal
+                    price: vm.goodsInfo.price,
+                    num: vm.numVal,
+                    name: vm.goodsInfo.name,
+                    desc: vm.goodsInfo.desc
                 };
+                // 存到本地
+                if(localStorage.getItem('cartData')){
+                    var data = JSON.parse(localStorage.getItem('cartData'));
+                    data.push(vm.upInfo);
+                    localStorage.setItem('cartData', JSON.stringify(data));
+                }else{
+                    var arr = [];
+                    arr.push(vm.upInfo);
+                    localStorage.setItem('cartData', JSON.stringify(arr));
+                }
+                console.log('arr:', localStorage.getItem('cartData'))
             }
 
             console.log('vm.isBuy: ',vm.isBuy);

@@ -253,6 +253,14 @@ img {
     transform: translate(-50%,-50%);
 }
 
+.cBlock>.fr>div>p {
+	font-size: .6rem;
+	color: #999;
+}
+.cprice {
+	position: absolute;
+	bottom: 10px;
+}
 .cBlock>li:nth-of-type(2) {
 	width: 90%;
 	padding: 10px 2% 10px 0;

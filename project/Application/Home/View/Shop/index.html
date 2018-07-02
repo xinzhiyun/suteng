@@ -104,8 +104,8 @@
 					</span>
 					<div>
 						<h3 v-text='cart.name'>商品名称</h3>
-						<p v-text='cart.attr'>商品规格</p>
-						<b v-text='"￥"+cart.price'>商品价格</b>
+						<p><span v-for='c in cart.skuattr' v-text='c.pname+"|"+c.name'>商品规格</span></p>
+						<b class='cprice' v-text='"￥"+cart.price'>商品价格</b>
 					</div>
 					<p class='numbtn cfix'>
 						<span class='fl' @click='numChange(-1,index,$event)'>-</span>
@@ -113,7 +113,7 @@
 						<span class='fl' @click='numChange(1,index,$event)'>+</span>
 					</p>
 				</li>
-				<div class='deleteCart' @touchend='deleteCart(cart.gid, $event)'><span>删除</span></div>
+				<div class='deleteCart' @touchend='deleteCart(index, cart.gid, $event)'><span>删除</span></div>
 			</ul>
 		</div>
 		<footer id='footer' :style='{display: tabclk == 3 ? "none" : "flex"}'>
@@ -154,6 +154,7 @@
   	<script src="__PUBLIC__/Home/js/public.js"></script>
   	<script src="__PUBLIC__/Home/js/shop/index.js"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script>
 		// 刷新/后退,保持状态
 		hashchangeFn(function(hash){

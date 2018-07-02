@@ -118,15 +118,19 @@ var shopindex = new Vue({
 		// 	{name: 'cece2', id: '9'},
 		// 	{name: '', id: '25'}
 		// ]
-
+		if(localStorage.getItem('cartData')){
+			var data = JSON.parse(localStorage.getItem('cartData'));
+			console.log('data: ',data);
+			vm.cartList = data;
+		}
 		// 购物车数据
-		vm.cartList = [
-			{src: '',gid:'1',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'1'},
-			{src: '',gid:'2',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'16'},
-			{src: '',gid:'3',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'3'},
-			{src: '',gid:'4',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'11'},
-			{src: '',gid:'5',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'6'},
-		];
+		// vm.cartList = [
+		// 	{src: '',gid:'1',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'1'},
+		// 	{src: '',gid:'2',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'16'},
+		// 	{src: '',gid:'3',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'3'},
+		// 	{src: '',gid:'4',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'11'},
+		// 	{src: '',gid:'5',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'6'},
+		// ];
 	},
 	mounted() {
 		var cBlock = document.querySelectorAll('.cBlock');	// 购物车商品
@@ -316,9 +320,48 @@ var shopindex = new Vue({
 			window.touchX = '';
 		},
 		// 删除购物车商品
-		deleteCart(gid, e) {
+		deleteCart(index, gid, e) {
+			var vm = this;
 			var el = e.currentTarget.parentNode;
 			console.log('gid: ',gid);
+			console.log('index: ',index);
+			layer.confirm('确认删除？删除后无法恢复！', 
+	            {
+	              btn: ['确定','取消'] //按钮
+	            }, 
+	            function(){
+		            // 发送ajax让后台删除这条地址在数据库的数据
+		            // $.ajax({
+		            // 	url: '{{:U("Address/del_address")}}',
+		            // 	type: 'post',
+		            // 	data: {'id': address_id},
+		            // 	success: function(res){
+		            // 		console.log('成功！', res)
+		            // 		//后台返回参数确认删除成功
+		            // 		if(res.code == 200){
+		            // 			_this.parents(".address").remove();
+		            // 			layHint('删除成功！');
+		            // 		}else{
+		            // 			layHint('删除失败！');
+		            // 		}
+		            // 	},
+		            // 	error: function(res){
+		            // 		console.log('失败！', res)
+		            // 		layHint('删除失败！');
+		            // 	}
+					// })
+					var cartData = JSON.parse(localStorage.getItem('cartData'));
+					cartData.splice(index, 1);
+					vm.cartList = cartData;
+					localStorage.setItem('cartData', JSON.stringify(cartData));
+					layuiHint('删除成功！');
+		            return true;
+	            },
+	            function(){
+	                layer.msg('已取消！', {icon: 1});
+	                return false;
+	            }
+	        );
 			
 		},
 		// 购物车勾选

@@ -9,7 +9,15 @@
 	<title>订单填写</title>
 	<!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
 	<script>
-		// var vConsole = new VConsole();
+        // var vConsole = new VConsole();
+        var info = {
+            data: JSON.parse('{{$data}}'),
+            gtype: JSON.parse('{{$gtype}}'),
+            rate: JSON.parse('{{$rate}}'),
+            user: JSON.parse('{{$user}}'),
+            goodsCourier: JSON.parse('{{$goodsCourier}}'),
+        }
+        console.log('info: ',info);
 	</script>
 </head>
 <body>
@@ -17,10 +25,10 @@
         <!-- 地址 -->
         <div class="orderAddress">
             <a href="####" v-if="address">
-                <p v-text='info.address.name'>小鸡壳</p>
+                <p v-text='info.user.nickname'>小鸡壳</p>
                 <p>
-                    <span v-text='info.address.phone'>1385642454</span>
-                    <span v-text='info.address.addr'>广州市番禺区大夫山北段362号钟村镇点球电子科技集团</span>
+                    <span v-text='info.user.phone'>1385642454</span>
+                    <span v-text='info.user.address'>广州市番禺区大夫山北段362号钟村镇点球电子科技集团</span>
                 </p>
                 <p><span class="iconfont icon-right"></span></p>
             </a>
@@ -39,7 +47,7 @@
                         <i v-text='info.order.money'>119.00</i>
                     </span>
                 </li>
-                <li>
+                <!-- <li>
                     <span>运费</span>
                     <span>
                         <i class="iconfont icon-552cd51ece753"></i>
@@ -49,7 +57,7 @@
                 <li>
                     <span>配送</span>
                     <span v-text='info.order.express'>韵达快递</span>
-                </li>
+                </li> -->
                 <li>
                     <span>发货地</span>
                     <span v-text='info.order.sendAddr'>广州中山</span>
@@ -95,12 +103,18 @@
                         </p>
                         <span v-text='goods.num'>x1</span>
                     </a>
+                    <!-- 快递 -->
+                    <p>
+                        <select name="" id="" class='express' @change='expressChange()'>
+                            <option :eid='e.cid' :value="e.cname" :money='e.cprice' v-for='e in express' v-text='e.cname'></option>
+                        </select>
+                    </p>
                 </li>
             </ul>
         </div>
         <!-- 立即付款 -->
         <div class="footFix">
-            <p>应付：<span><i class="iconfont icon-552cd51ece753"></i><i>1398.00</i></span></p>
+            <p>应付：<span><i class="iconfont icon-552cd51ece753"></i><i v-text='allMoney'>1398.00</i></span></p>
             <p>立即付款</p>
         </div>
     </div>
