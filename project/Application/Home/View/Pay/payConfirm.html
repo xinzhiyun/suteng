@@ -13,14 +13,14 @@
 	</script>
 </head>
 <body>
-	<div class="main">
+	<div class="main payConfirm">
         <!-- 地址 -->
         <div class="orderAddress">
             <a href="####" v-if="address">
-                <p>小鸡壳</p>
+                <p v-text='info.address.name'>小鸡壳</p>
                 <p>
-                    <span>1385642454</span>
-                    <span>广州市番禺区大夫山北段362号钟村镇点球电子科技集团</span>
+                    <span v-text='info.address.phone'>1385642454</span>
+                    <span v-text='info.address.addr'>广州市番禺区大夫山北段362号钟村镇点球电子科技集团</span>
                 </p>
                 <p><span class="iconfont icon-right"></span></p>
             </a>
@@ -34,24 +34,30 @@
             <ul>
                 <li>
                     <span>商品合计</span>
-                    <span><i class="iconfont icon-552cd51ece753"></i><i>119.00</i></span>
+                    <span>
+                        <i class="iconfont icon-552cd51ece753"></i>
+                        <i v-text='info.order.money'>119.00</i>
+                    </span>
                 </li>
                 <li>
                     <span>运费</span>
-                    <span><i class="iconfont icon-552cd51ece753"></i><i>0.00</i></span>
+                    <span>
+                        <i class="iconfont icon-552cd51ece753"></i>
+                        <i v-text='info.order.postage'>0.00</i>
+                    </span>
                 </li>
                 <li>
                     <span>配送</span>
-                    <span>韵达快递</span>
+                    <span v-text='info.order.express'>韵达快递</span>
                 </li>
                 <li>
                     <span>发货地</span>
-                    <span>广州中山</span>
+                    <span v-text='info.order.sendAddr'>广州中山</span>
                 </li>
                 <li>
                     <p>
                         <span class="iconfont icon-weixuanzhong"></span>
-                        <span>积分抵扣<i>-1500</i></span>
+                        <span>积分抵扣<i v-text='"-"+info.order.integral'>-1500</i></span>
                     </p>
                     <span class="iconfont icon-right"></span>
                 </li>
@@ -71,68 +77,23 @@
         <!-- 商品 -->
         <div class="goods">
             <ul>
-                <li>
+                <li v-for='goods in info.order.goods'>
                     <a href="####">
                         <p>
                             <span>
-                                <img src="__PUBLIC__/Home/images/1b.png" alt="">
+                                <img :src="goods.pic" alt="">
                             </span>
                             <span>
-                                <i>滤芯外部活性炭</i>
-                                <i>蒂芬妮蓝</i>
+                                <i v-text='goods.name'>滤芯外部活性炭</i>
+                                <i v-text='goods.skuattr'>蒂芬妮蓝</i>
                                 <i>全款购买</i>
-                                <i><b class="iconfont icon-552cd51ece753"></b><b>119.00</b></i>
+                                <i>
+                                    <b class="iconfont icon-552cd51ece753"></b>
+                                    <b v-text='goods.price'>119.00</b>
+                                </i>
                             </span>
                         </p>
-                        <span>x1</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="####">
-                        <p>
-                            <span>
-                                <img src="__PUBLIC__/Home/images/1b.png" alt="">
-                            </span>
-                            <span>
-                                <i>滤芯外部活性炭</i>
-                                <i>蒂芬妮蓝</i>
-                                <i>全款购买</i>
-                                <i><b class="iconfont icon-552cd51ece753"></b><b>119.00</b></i>
-                            </span>
-                        </p>
-                        <span>x1</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="####">
-                        <p>
-                            <span>
-                                <img src="__PUBLIC__/Home/images/1b.png" alt="">
-                            </span>
-                            <span>
-                                <i>滤芯外部活性炭</i>
-                                <i>蒂芬妮蓝</i>
-                                <i>全款购买</i>
-                                <i><b class="iconfont icon-552cd51ece753"></b><b>119.00</b></i>
-                            </span>
-                        </p>
-                        <span>x1</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="####">
-                        <p>
-                            <span>
-                                <img src="__PUBLIC__/Home/images/1b.png" alt="">
-                            </span>
-                            <span>
-                                <i>滤芯外部活性炭</i>
-                                <i>蒂芬妮蓝</i>
-                                <i>全款购买</i>
-                                <i><b class="iconfont icon-552cd51ece753"></b><b>119.00</b></i>
-                            </span>
-                        </p>
-                        <span>x1</span>
+                        <span v-text='goods.num'>x1</span>
                     </a>
                 </li>
             </ul>
@@ -166,5 +127,5 @@
 </script>
 <script src='__PUBLIC__/Home/js/vue.min.js'></script>
 <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
-<script src='__PUBLIC__/Home/js/pay/payconfirmx.js'></script>
+<script src='__PUBLIC__/Home/js/pay/payconfirm.js'></script>
 </html>
