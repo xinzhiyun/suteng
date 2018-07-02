@@ -179,7 +179,7 @@ class PayController extends Controller
             'rate' => json_encode($rate)
         ];
 
-        dump($assign);
+        // dump($assign);
         $this->wx_info();
         $this->assign($assign);
         $this->display();
@@ -214,7 +214,7 @@ class PayController extends Controller
         //查询商品对应的快递运费信息
         foreach ($OrderDetail as $key => $value) {
             // echo $value."<br>";
-            $OrderDetail[$key]['path'] = D('pic')->where(['gid'=>$value['gid']])->find()['path'];
+            // $OrderDetail[$key]['path'] = D('pic')->where(['gid'=>$value['gid']])->find()['path'];
             $OrderDetail[$key]['Courier'] = M('goods_courier')->where('gid='.$value['gid'])->field('gid,cid,cname,cprice')->select();
         }
         // p($OrderDetail);
