@@ -623,6 +623,16 @@ class ShopController extends CommonController
         $goods_mode = D('goods');
         $goodsInfo = $goods_mode->find($gid);
 
+        $catepath = explode(',',$goodsInfo['catepath']);
+        $categoryList[0] = M('category')->where('pid=0')->field('id, name')->select();
+
+        foreach ($catepath as $k=>$cate){
+            $cate=M('category')->where('pid='.$cate)->field('id, name')->select();
+            if(!empty($cate)){
+                $categoryList[] = $cate;
+            }
+        }
+
         $goodsDetail = M('goodsDetail')->where('gid='.$gid)->field('pic,desc,specs,saleservice')->find();
         $goodsDetail['pic'] = explode('|', $goodsDetail['pic']);
         $goodsInfo = array_merge($goodsInfo, $goodsDetail);
