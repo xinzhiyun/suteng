@@ -89,9 +89,10 @@
                 console.dir(res);
                 if(res.code == 200){
                     // 添加成功
-                    location.reload();
                     swal(res.msg,res.msg, "success");
-                    // window.location.reload();
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
                 }else{
                     // 添加失败
                     swal(res.msg, "请重新提交！", "success");

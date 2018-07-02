@@ -91,8 +91,9 @@
                 if(res.code == 200){
                     // 添加成功
                     swal(res.msg,res.msg, "success");
-                    location.reload();
-                    // window.location.reload();
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
                 }else{
                     // 添加失败
                     swal(res.msg, "请重新提交！", "success");
