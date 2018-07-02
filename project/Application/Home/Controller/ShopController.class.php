@@ -312,6 +312,44 @@ class ShopController extends CommonController
         $this->assign('list',json_encode($meal));
         $this->display();
     }
+    
+    // 购物前 库存检查
+    public function checkGoodsStock()
+    {
+        try {
+            $post= I('post.');
+            if(empty($post['skuattr']) || empty($post['gid'])){
+                E('数据错误',40001);
+            }
+
+            $sku = json_decode($post['skuattr'],true);
+            $skuattr = array_column($sku,'id');
+            sort($skuattr);
+            $map['skuattr'] = implode('_', $skuattr);//属性值id组合
+
+            $goodsSku = M('goodsSku');
+
+            $map['gid'] = $post['gid'];
+            $res = $goodsSku->where($map)->getField('skustock');
+
+            if($res){
+                $err = [
+                    'code'=> 200,
+                    'data'=>$res,
+                    'msg' => '获取成功',
+                ];
+                $this->ajaxReturn($err);
+            } else {
+                E('该商品类型无库存!',603);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
 
     // 信息确认并生成订单
     public function information()
