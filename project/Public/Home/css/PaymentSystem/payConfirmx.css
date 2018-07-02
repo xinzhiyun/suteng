@@ -171,3 +171,92 @@ body {
 .icon-xuanzhongduigou {
     color: #56aaf1;
 }
+/*付款页面*/
+.paystyle{
+	position:absolute;
+	top:0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+    display: none;
+    z-index: 9999;
+}
+.paystyleTop{
+	width: 100vw;
+	height: 10vh;
+	background: #000;
+	opacity: 0.3;
+}
+.payContain{
+	position: absolute;
+	bottom: 0;
+	height: 90vh;
+	width: 100vw;
+	/*opacity: 0.5;*/
+	z-index: 999;
+	background: #FFF;
+}
+.payContain>.paytop{
+	padding:0.5rem;
+	border-bottom: 1px solid #E5E5E5;
+}
+.paytop>.paytopLeft>i{
+	float: left;
+	padding: 0.6rem 0;
+	margin-right: 4rem;
+	font-size: 1.5rem;
+}
+.paytop>.paytopRight{
+	float: left;
+	text-align: center;
+}
+.icon-kuang1{
+	color:#ccc;
+}
+.paytop>.paytopRight>h3{
+	font-size: 0.9rem;
+	font-weight: 600;
+	padding: 0 0 0.5rem;
+}
+.paytop>.paytopRight>p{
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: #F75D50;
+}
+.paymidd>h3{
+	padding:0.8rem;
+}
+.paymidd>ul>li{
+	padding:0.5rem 0.5rem;
+	border-bottom: 1px  solid #E5E5E5;
+}
+.paymidd>ul>li:nth-child(2){
+	border-bottom: 6px  solid #E5E5E5;
+	
+}
+.paymidd>ul>li>i{
+	padding-right:0.4rem; 
+	font-size: 1.2rem;
+}
+.paymidd>ul>li>span{
+	float: right;
+	font-size: 1rem;
+}
+.paymidd>ul>li>span.icon-xuanze{
+	color: #4280EC;
+
+}
+/*底部按钮*/
+.payBott{
+	width: 86vw;
+	margin: 2.5vh 7vw 0;
+}
+.payBott>input{
+	border:none;
+	padding:1vh 0;
+	width: 86vw;
+	background: #2EB6AA;
+	border-radius:0.2rem;
+	color: #FFF;
+	letter-spacing: 0.1rem;
+}

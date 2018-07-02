@@ -9,6 +9,8 @@ var payConfirm = new Vue({
 			express: [],
 			einfo: [],		// 选择的快递信息
 			invoice: '', 	//发票信息
+			voiceArr: '',
+			payway: '',		// 1:金币，2：银币，3：微信支付
 		}
 	},
 	created() {
@@ -22,9 +24,9 @@ var payConfirm = new Vue({
 		vm.getOrderInfo();
 		// 发票
 		if(sessionStorage.getItem("voiceArr")){
-			voiceArr = JSON.parse(sessionStorage.getItem("voiceArr"));
-			if(voiceArr.type){
-				vm.invoice = voiceArr.type;
+			vm.voiceArr = JSON.parse(sessionStorage.getItem("voiceArr"));
+			if(vm.voiceArr.type){
+				vm.invoice = vm.voiceArr.type;
 			}
 			$('.invoice .icon-weixuanzhong').attr('class','iconfont icon-xuanzhongduigou');
 		}else{
@@ -120,6 +122,64 @@ var payConfirm = new Vue({
 				},
 				error: function(err){}
 			})
+		},
+		// 选择支付方式
+		choosePay(index) {
+			var vm = this;
+			vm.payway = index;
+			console.log('index: ',index);
+			for(var i=0; i<$('.paymidd .iconfont').length;i++){
+				$('.paymidd span.iconfont').eq(i).attr('class','iconfont icon-weixuanzhong');
+			}
+			$('.paymidd span.iconfont').eq(+index-1).attr('class','iconfont icon-xuanzhongduigou');
+		},
+		// 获取支付用的数据
+		prePay() {
+			$('.paystyle').show();
+		},
+		// 立即支付
+		payNow() {
+			var vm = this;
+			console.log('payway: ',vm.payway);
+			if(!vm.payway){
+				layuiHint('请选择支付方式');
+				return;
+			}
+			var way;
+			if(vm.payway == 1){
+				// 金币支付
+				way = orderPayByGold;
+			}else if(vm.payway == 2){
+				// 银币支付
+				way = orderPayBySilver;
+			}else if(vm.payway == 3){
+				// 微信支付
+				way = orderPay;
+			}
+			console.log('way: ',way);
+			$.ajax({
+				url: way,
+				type: 'post',
+				data: {order: vm.order_id},
+				success: function(res){
+					if(res.code == 200){
+						// 调用微信支付方法
+						weixinPay(res.msg,function(res){
+							if(res.result == 'ok'){
+								layuiHint('支付成功');
+							}else if(res.result == 'other'){
+								layuiHint('支付失败');
+							}else{
+								layuiHint('遇到未知问题，请稍后再试');
+							}
+						});
+					}else{
+						layuiHint(res.msg);
+					}
+				}
+			})
+			
 		}
+
 	}
 })

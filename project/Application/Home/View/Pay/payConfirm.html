@@ -20,13 +20,16 @@
         console.log('info: ',info);
         var getGoodsByOrder = '{{:U("Pay/getGoodsByOrder")}}';
         var updateOrder = '{{:U("Pay/updateOrder")}}';
+        var orderPayByGold = '{{:U("PaymentSystem/orderPayByGold")}}';  // 金币支付
+        var orderPayBySilver = '{{:U("PaymentSystem/orderPayBySilver")}}';  // 银币支付
+        var orderPay = '{{:U("PaymentSystem/orderPay")}}';  // 微信支付
 	</script>
 </head>
 <body>
 	<div class="main payConfirm">
         <!-- 地址 -->
-        <div class="orderAddress">
-            <a href="{{:U('Address/newAddress')}}" v-if="info.data">
+        <div class="orderAddress" v-if="info.data">
+            <a href="{{:U('Address/newAddress')}}">
                 <p v-text='info.data.name'>小鸡壳</p>
                 <p>
                     <span v-text='info.data.phone'>1385642454</span>
@@ -34,7 +37,9 @@
                 </p>
                 <p><span class="iconfont icon-right"></span></p>
             </a>
-            <a href="{{:U('Address/newAddress')}}" if="!info.data">
+        </div>
+        <div class="orderAddress" v-else>
+            <a href="{{:U('Address/newAddress')}}">
                 <p>添加地址</p>
                 <p><span class="iconfont icon-right"></span></p>
             </a>
@@ -119,14 +124,46 @@
         <!-- 立即付款 -->
         <div class="footFix">
             <p>应付：<span><i class="iconfont icon-552cd51ece753"></i><i v-text='allMoney'>1398.00</i></span></p>
-            <p @click=''>立即付款</p>
+            <p @click='prePay'>立即付款</p>
         </div>
+		<div class="paystyle">
+			<div class="paystyleTop"></div>
+			<div class="payContain">
+				<div class="paytop clearfix">
+					<div class="paytopLeft"><i class="iconfont icon-cuohao"></i></div>
+					<div class="paytopRight">
+						<h3>付款</h3>
+						<p v-text='"￥"+allMoney'>￥3620.00</p>
+					</div>
+				</div>
+				<div class="paymidd">
+					<h3>选择支付方式</h3>
+					<ul class="clearfix">
+						<li index="1" @click='choosePay(1)'>
+                            <i class="iconfont icon-tubiao207"></i>金币<span class="iconfont icon-weixuanzhong"></span>
+                        </li>
+						<li index="2" @click='choosePay(2)'>
+                            <i class="iconfont icon-tubiao207-copy"></i>银币<span class="iconfont icon-weixuanzhong"></span>
+                        </li>
+						<li index="3" @click='choosePay(3)'>
+                            <i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-weixuanzhong"></span>
+                        </li>
+						<!-- <li index="4"><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
+						<li index="5"><i class="iconfont icon-yinlian"></i>银联<span class="iconfont icon-kuang1"></span></li> -->
+					</ul>
+				</div>
+				<div class="payBott">
+					<input class="start" type="button" value="立即支付" @click='payNow'>
+				</div>
+			</div>
+		</div>
     </div>
 </body>
 <script src="__PUBLIC__/Home/js/public.js"></script>
 <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
 <script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
 <script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
+<script src="__PUBLIC__/Admin/layui/layui.js"></script>
 <script>
     
     //微信接口
@@ -141,7 +178,29 @@
         'chooseWXPay'
         ]
     });
-    
+    // 微信支付方法
+function weixinPay(res, callback){
+	var type = Object.prototype.toString.call(res);
+	if(type === '[object Object]'){
+		res = JSON.stringify(res);
+	}
+	WeixinJSBridge.invoke(
+		'getBrandWCPayRequest',
+		JSON.parse(res),
+		function(res){
+			if (res.err_msg.substr(-2) == 'ok') {
+                // 付款成功
+                callback({result: 'ok'});
+            } else if (res.err_msg.substr(-6) == 'cancel') {
+                // 取消付款
+                callback({result: 'cancel'});
+            }else{
+                // 付款失败
+                callback({result: 'other'});
+            }
+        }
+    );
+};
 </script>
 <script src='__PUBLIC__/Home/js/vue.min.js'></script>
 <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
