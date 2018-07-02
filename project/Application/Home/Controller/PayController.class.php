@@ -269,9 +269,9 @@ class PayController extends Controller
 
         //接收前端传过来的订单号进行修改订单信息
 
-        $orderId = $_GET['postage']['order_id'];
+        $orderId = $_POST['postage']['order_id'];
 
-        echo $orderId;die;
+        // echo $orderId;die;
         $gid = $_POST['postage']['gid'];
         $data['cid'] = $_POST['postage']['cid'];
         $data['cprice'] = $_POST['postage']['cprice'];
