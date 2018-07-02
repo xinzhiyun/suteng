@@ -104,8 +104,8 @@ class PaymentSystemController extends CommonController
     public function information()
     {   
         try {
-            $post= json_decode(I('post.'),true);
-            dump($post);
+            
+            dump($_POST);
             die;
             //检查库存
             if(empty($post['skuattr']) || empty($post['gid'])){
