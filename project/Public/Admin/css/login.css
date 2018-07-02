@@ -82,13 +82,15 @@ body {
     white-space: nowrap;
 }
 input[name="code"] {
-    padding: 7%;
+    /* padding: 7%; */
     display: block;
     margin-right: 30px;
     border: 1px solid #E0DFE2;
     border-radius: 30px;
     background: white;
     width: 50%;
+    height: 50px;
+    /* line-height: 50px; */
 }
 input[name="code"]:focus {
     border: 1px solid #E0DFE2 !important;

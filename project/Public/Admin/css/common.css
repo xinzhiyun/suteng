@@ -36,8 +36,8 @@
 }
 #searchdiv .btn {
     margin-bottom: 0;
-    position: absolute;
-    right: -60px;
+    /* position: absolute; */
+    right: -20px;
 }
 
 /*文本超出隐藏*/
