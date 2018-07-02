@@ -218,7 +218,7 @@ class PayController extends Controller
             $OrderDetail[$key]['Courier'] = M('goods_courier')->where('gid='.$value['gid'])->field('gid,cid,cname,cprice')->select();
         }
         // p($OrderDetail);
-         return $this->ajaxReturn($OrderDetail);
+         return $this->ajaxReturn(array('code'=>200,'msg'=>$OrderDetail));
     }
 
         /**
