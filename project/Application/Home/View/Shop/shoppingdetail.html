@@ -110,16 +110,16 @@
                             <span>价格<i class="iconfont icon-552cd51ece753"></i v-text='newPrice'>1398.00</span>
                             <del><i class="iconfont icon-552cd51ece753"></i v-text='price'>1398.00</del>
                         </p>
-                        <p>已选：<span v-text='checkList'>智能净水器A套餐</span></p>
+                        <p>已选：<span v-for='c in checkList'><span v-text='c.name+","'>智能净水器A套餐</span></span></p>
                     </div>
                     <span class="iconfont icon-chacha" @click="menban(false)"></span>
                 </div>
                 <!-- 规格 -->
-                <div class="property" v-for='g in goodsInfo.attr'>
+                <div class="property" v-for='(g, index) in goodsInfo.attr'>
                     <h3 v-text='g.name'>规格</h3>
                     <ul class="am-avg-sm-3 am-thumbnails">
                         <li class="am-thumbnail" v-for="gl in g.list" >
-                            <span :glid='gl.id' :pname='gl.pname' v-text="gl.name" @click="choice(gl.id,gl.pname,gl.name,$event)"></span>
+                            <span :glid='gl.id' :pname='gl.pname' v-text="gl.name" @click="choice(index, gl.id,gl.pname,gl.name,$event)"></span>
                         </li>
                     </ul>
                 </div>
