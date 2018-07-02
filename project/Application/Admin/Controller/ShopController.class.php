@@ -395,6 +395,14 @@ class ShopController extends CommonController
 
             //商品分类id
             $goods['cid'] = $_POST['seccate'];
+            // 分类路径
+            $catepath = [];
+            if($_POST['firscate'] && $_POST['firscate'] !='--')$catepath[]   = $_POST['firscate'];
+            if($_POST['seccate'] && $_POST['seccate'] !='--')$catepath[]    = $_POST['seccate'];
+            if($_POST['thirdcate'] && $_POST['thirdcate'] !='--')$catepath[]  = $_POST['thirdcate'];
+
+            $goods['catepath'] = implode(',', $catepath);
+
             //添加该商品的商户
             $goods['vid'] = $_SESSION['adminInfo']['id'];
             //商品名
