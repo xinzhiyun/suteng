@@ -34,7 +34,7 @@
 			<div class="swiper-container">
 				<div class="swiper-wrapper">
 					<a class="swiper-slide" v-for='b in banner' :href='b.url'>
-						<img :data-src="b.pic" alt="">
+						<img :data-src="'/Uploads/'+b.pic" alt="">
 					</a>
 				</div>
 				<!-- 如果需要分页器 -->
