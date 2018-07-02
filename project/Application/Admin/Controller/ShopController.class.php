@@ -611,7 +611,7 @@ class ShopController extends CommonController
     // 修改商品
     public function goodEdit()
     {
-        $gid = $_GET['gid'];
+        $gid = $_GET['id'];
         $goods_mode = D('goods');
         $goodsInfo = $goods_mode->find($gid);
 
