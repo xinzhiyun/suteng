@@ -7,7 +7,8 @@ var payConfirm = new Vue({
 			order_id: '',	// 订单id
 			allMoney: 0,	// 总价格
 			express: [],
-			einfo: [],	// 选择的快递信息
+			einfo: [],		// 选择的快递信息
+			invoice: '', 	//发票信息
 		}
 	},
 	created() {
@@ -23,11 +24,11 @@ var payConfirm = new Vue({
 		if(sessionStorage.getItem("voiceArr")){
 			voiceArr = JSON.parse(sessionStorage.getItem("voiceArr"));
 			if(voiceArr.type){
-				$(".ynticket>a>span").text(voiceArr.type)
+				vm.invoice = voiceArr.type;
 			}
-			$('.invoice .icon-weixuanzhong').attr('iconfont icon-xuanze');
+			$('.invoice .icon-weixuanzhong').attr('class','iconfont icon-xuanzhongduigou');
 		}else{
-			$('.invoice .icon-xuanze').attr('iconfont icon-weixuanzhong');
+			$('.invoice .icon-xuanze').attr('class','iconfont icon-weixuanzhong');
 		}
 	},
 	methods: {
