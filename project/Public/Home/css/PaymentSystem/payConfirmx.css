@@ -88,12 +88,24 @@ body {
     background: white;
     padding: 0 .5rem;
 }
+.express {
+    position: absolute;
+    right: 0;
+    bottom: .5rem;
+}
+.express>select {
+    padding: 2px 10px;
+    background: #f1f1f1;
+}
+.goods > ul > li {
+    position: relative;
+    border-bottom: 1px solid #DEDEDE;
+}
 .goods > ul > li > a {
     display: block;
     display: flex;
     padding: .5rem 0;
     justify-content: space-between;
-    border-bottom: 1px solid #DEDEDE;
 }
 .goods > ul > li > a > p {
     display: flex;

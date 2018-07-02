@@ -18,21 +18,23 @@
             goodsCourier: JSON.parse('{{$goodsCourier}}'),
         }
         console.log('info: ',info);
+        var getGoodsByOrder = '{{:U("Pay/getGoodsByOrder")}}';
+        var updateOrder = '{{:U("Pay/updateOrder")}}';
 	</script>
 </head>
 <body>
 	<div class="main payConfirm">
         <!-- 地址 -->
         <div class="orderAddress">
-            <a href="####" v-if="address">
-                <p v-text='info.user.nickname'>小鸡壳</p>
+            <a href="{{:U('Address/newAddress')}}" v-if="info.data">
+                <p v-text='info.data.name'>小鸡壳</p>
                 <p>
-                    <span v-text='info.user.phone'>1385642454</span>
-                    <span v-text='info.user.address'>广州市番禺区大夫山北段362号钟村镇点球电子科技集团</span>
+                    <span v-text='info.data.phone'>1385642454</span>
+                    <span v-text='info.data.address'>广州市番禺区大夫山北段362号钟村镇点球电子科技集团</span>
                 </p>
                 <p><span class="iconfont icon-right"></span></p>
             </a>
-            <a href="####" else-if="address">
+            <a href="{{:U('Address/newAddress')}}" if="!info.data">
                 <p>添加地址</p>
                 <p><span class="iconfont icon-right"></span></p>
             </a>
@@ -44,7 +46,7 @@
                     <span>商品合计</span>
                     <span>
                         <i class="iconfont icon-552cd51ece753"></i>
-                        <i v-text='info.order.money'>119.00</i>
+                        <i v-text='allMoney'>119.00</i>
                     </span>
                 </li>
                 <!-- <li>
@@ -58,22 +60,22 @@
                     <span>配送</span>
                     <span v-text='info.order.express'>韵达快递</span>
                 </li> -->
-                <li>
+                <!-- <li>
                     <span>发货地</span>
-                    <span v-text='info.order.sendAddr'>广州中山</span>
-                </li>
+                    <span v-text='info.sendAddr'>广州中山</span>
+                </li> -->
                 <li>
-                    <p>
+                    <!-- <p>
                         <span class="iconfont icon-weixuanzhong"></span>
                         <span>积分抵扣<i v-text='"-"+info.order.integral'>-1500</i></span>
                     </p>
-                    <span class="iconfont icon-right"></span>
+                    <span class="iconfont icon-right"></span> -->
                 </li>
             </ul>
         </div>
         <!-- 发票 -->
         <div class="invoice">
-            <a href="####">
+            <a href="{{:U('Invoice/index')}}">
                 <p>
                     <span class="iconfont icon-weixuanzhong"></span>
                     <span>我要开发票</span>
@@ -85,28 +87,30 @@
         <!-- 商品 -->
         <div class="goods">
             <ul>
-                <li v-for='goods in info.order.goods'>
+                <li v-for='(good, index) in goods'>
                     <a href="####">
                         <p>
                             <span>
-                                <img :src="goods.pic" alt="">
+                                <img :src="good.gpic" alt="">
                             </span>
                             <span>
-                                <i v-text='goods.name'>滤芯外部活性炭</i>
-                                <i v-text='goods.skuattr'>蒂芬妮蓝</i>
+                                <i v-text='good.name'>滤芯外部活性炭</i>
+                                <i>
+                                    <span v-for='g in JSON.parse(good.gsku)' v-text='g.pname+"|"+g.name+"，"'>蒂芬妮蓝</span>
+                                </i>
                                 <i>全款购买</i>
                                 <i>
                                     <b class="iconfont icon-552cd51ece753"></b>
-                                    <b v-text='goods.price'>119.00</b>
+                                    <b v-text='good.price'>119.00</b>
                                 </i>
                             </span>
                         </p>
-                        <span v-text='goods.num'>x1</span>
+                        <span v-text='good.num'>x1</span>
                     </a>
                     <!-- 快递 -->
-                    <p>
-                        <select name="" id="" class='express' @change='expressChange()'>
-                            <option :eid='e.cid' :value="e.cname" :money='e.cprice' v-for='e in express' v-text='e.cname'></option>
+                    <p class='express'>
+                        <select name="" id="" @change='expressChange(index)'>
+                            <option :eid='e.cid' :value='e.cname+"："+e.cprice' :price='e.cprice' v-for='e in good.Courier' v-text='e.cname+"："+e.cprice'></option>
                         </select>
                     </p>
                 </li>
@@ -115,7 +119,7 @@
         <!-- 立即付款 -->
         <div class="footFix">
             <p>应付：<span><i class="iconfont icon-552cd51ece753"></i><i v-text='allMoney'>1398.00</i></span></p>
-            <p>立即付款</p>
+            <p @click=''>立即付款</p>
         </div>
     </div>
 </body>
