@@ -106,13 +106,19 @@
             <div>
                 <div class="goodsOne">
                     <p>
-                        <img src="__PUBLIC__/Home/images/1a.jpg" alt="">
+                        <img :src="goodsInfo.pic[0]" alt="">
                     </p>
                     <div>
                         <p v-if="false"><span>商品编号：</span><span>123655487851245</span></p>
                         <p class="goodD">
-                            <span>价格<i class="iconfont icon-552cd51ece753"></i v-text='newPrice'>1398.00</span>
-                            <del><i class="iconfont icon-552cd51ece753"></i v-text='price'>1398.00</del>
+                            <span>价格
+                                <i class="iconfont icon-552cd51ece753"></i>
+                                <i v-text="goodsInfo.price"></i>
+                            </span>
+                            <del>
+                                <i class="iconfont icon-552cd51ece753"></i>
+                                <i v-text='goodsInfo.prices'></i>
+                            </del>
                         </p>
                         <p>已选：<span v-for='c in checkList'><span v-text='c.name+","'>智能净水器A套餐</span></span></p>
                     </div>
@@ -131,10 +137,14 @@
                 <div class="numberDo">
                     <h3>数量</h3>
                     <div>
-                        <span>-</span>
+                        <span @click="numjisuan('reduce')">-</span>
                         <span><input type="text" value="1"></span>
-                        <span>+</span>
+                        <span @click="numjisuan('add')">+</span>
                     </div>
+                </div>
+                <!-- 确认 -->
+                <div class="confirmBtn">
+                    <p @click="conPay">确认</p>
                 </div>
             </div>
         </div>
@@ -144,6 +154,7 @@
     <script src='__PUBLIC__/Home/js/public.js'></script>
     <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
     <script src="__PUBLIC__/Home/js/shop/shopdetailx.js"></script>
+    <script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
     <script>
         // 图片懒加载
         function lazyLoad(block){
