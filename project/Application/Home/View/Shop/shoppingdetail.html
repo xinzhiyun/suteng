@@ -46,20 +46,20 @@
             </div>
             <div>
                 <p>
-                    <span><i class="iconfont icon-552cd51ece753"></i><i v-text='goodsInfo.newprice'>1398</i></span>
-                    <del><i class="iconfont icon-552cd51ece753"></i><i v-text='goodsInfo.price'>1398.00</i></del>
+                    <span><i class="iconfont icon-552cd51ece753"></i><i v-text='goodsInfo.price'>1398</i></span>
+                    <del><i class="iconfont icon-552cd51ece753"></i><i v-text='goodsInfo.prices'>1398.00</i></del>
                 </p>
                 <p v-text='goodsInfo.subjoin'>购买送1000银币</p>
             </div>
             <div>
                 <p>
-                    租赁价：<span><i class="iconfont icon-552cd51ece753"></i><i v-text='goodsInfo.leasePrice'>300.00</i></span>/月
+                    <!-- 租赁价：<span><i class="iconfont icon-552cd51ece753"></i><i v-text='goodsInfo.leasePrice'>300.00</i></span>/月 -->
                 </p> 
             </div>
-            <div>
+            <!-- <div>
                 <p>运费：<span v-text='goodsInfo.postage'>0.00</span></p>
                 <p v-text='goodsInfo.address'>广东 中山</p>
-            </div>
+            </div> -->
         </div>
         <!-- 商品选项卡 -->
         <div class="switch">
@@ -82,7 +82,9 @@
                     <!-- <img v-for="product in products" :src="product.src" alt=""> -->
                 </li>
                 <!-- 售后服务 -->
-                <li v-if="DisFlag == 2"></li>
+                <li v-if="DisFlag == 2">
+                    <div v-html='goodsInfo.saleservice'></div>
+                </li>
                 <!-- 用户评价 -->
                 <li v-if="DisFlag == 3"></li>
             </ul>
