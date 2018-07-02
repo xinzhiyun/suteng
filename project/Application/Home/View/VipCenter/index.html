@@ -17,7 +17,19 @@
                 <span>
                     <img src="{{$user['head']}}" alt="">
                 </span>
-                <span>{{$user['nickname']}} <img src="__PUBLIC__/Home/images/gr.png" alt=""></span>
+                <switch name="user.grade">
+                    <case value="4">
+                        <span>{{$user['nickname']}} <img src="__PUBLIC__/Home/images/zs.png" alt=""></span>
+                    </case>
+                    <case value="3">
+                        <span>{{$user['nickname']}} <img src="__PUBLIC__/Home/images/hj.png" alt=""></span>
+                    </case>
+                    <case value="2">
+                        <span>{{$user['nickname']}} <img src="__PUBLIC__/Home/images/pt.png" alt=""></span>
+                    </case>
+                    <default />
+                    <span>{{$user['nickname']}} <img src="__PUBLIC__/Home/images/gr.png" alt=""></span>
+                </switch>
                 <a href="{{:U('Home/Index/index')}}">点我回到首页>></a>
                 <!-- <span><img src="__PUBLIC__/Home/images/gr.png" alt=""></span> -->
             </div>
@@ -28,116 +40,102 @@
         </div>
         <!-- 广告 -->
         <div id="msg">
-			<span><img src="__PUBLIC__/Home/images/lb.png" alt=""></span>
-			<div>
-				<ul id="msgDiv">
-					<li></li>
-					<!-- <li>哈哈哈有系统消息</li> -->
-				</ul>
-			</div>
+            <span><img src="__PUBLIC__/Home/images/lb.png" alt=""></span>
+            <div>
+                <ul id="msgDiv">
+                    <li></li>
+                    <!-- <li>哈哈哈有系统消息</li> -->
+                </ul>
+            </div>
         </div>
         <div id="indent">
-			<!-- <p>
-				<span>我的订单</span>
-			</p> -->
-			<div>
-				<a href="{{:U('Home/Order/lease')}}">
-					<i class="iconfont icon-zulin-"></i>
-					<p>租赁订单</p>
-				</a>
-				<a href="{{:U('Home/Order/index')}}">
-					<i class="iconfont icon-shangpin-"></i>
-					<p>商品订单</p>
-				</a>
+            <!-- <p>
+                <span>我的订单</span>
+            </p> -->
+            <div>
+                <a href="{{:U('Home/Order/lease')}}">
+                    <i class="iconfont icon-zulin-"></i>
+                    <p>租赁订单</p>
+                </a>
+                <a href="{{:U('Home/Order/index')}}">
+                    <i class="iconfont icon-shangpin-"></i>
+                    <p>商品订单</p>
+                </a>
                 
-				<a href="{{:U('Home/Order/consumable')}}">
-					<i class="iconfont icon-haocai-"></i>
-					<p>耗材订单</p>
-				</a>
-				<a href="{{:U('Home/Order/exchangeNotes')}}">
-					<i class="iconfont icon-duihuan-"></i>
-					<p>兑换记录</p>
-				</a>
-			</div>
-		</div>
-		<div id="income">
-			<p>
-				<a href="{{:U('Home/VipCenter/reward')}}">
-					<span>收益明细</span>
-					<i class="iconfont icon-right"></i>
-				</a>
+                <a href="{{:U('Home/Order/consumable')}}">
+                    <i class="iconfont icon-haocai-"></i>
+                    <p>耗材订单</p>
+                </a>
+                <a href="{{:U('Home/Order/exchangeNotes')}}">
+                    <i class="iconfont icon-duihuan-"></i>
+                    <p>兑换记录</p>
+                </a>
+            </div>
+        </div>
+        <div id="income">
+            <p>
+                <a href="{{:U('Home/VipCenter/reward')}}">
+                    <span>收益明细</span>
+                    <i class="iconfont icon-right"></i>
+                </a>
                 
-			</p>
-			<div>
-				<a href="{{:U('Home/VipCenter/reward')}}">
-					<span>金币{{$comData['gold_num']}}</span>
-					<span>银币{{$comData['silver']}}</span>
-					<p>我的奖励金</p>
-				</a>
-				<a href="{{:U('Home/Order/memberOrder')}}">
-					<span>{{$orderNum}}</span>
-					<p>会员订单</p>
-				</a>
-			</div>
+            </p>
+            <div>
+                <a href="{{:U('Home/VipCenter/reward')}}">
+                    <span>金币{{$comData['gold_num']}}</span>
+                    <span>银币{{$comData['silver']}}</span>
+                    <p>我的奖励金</p>
+                </a>
+                <a href="{{:U('Home/Order/memberOrder')}}">
+                    <span>{{$orderNum}}</span>
+                    <p>会员订单</p>
+                </a>
+            </div>
         </div>
         <div id="more">
-			<div id="pay">
-				<a  href="{{:U('Home/Pay/chongzhi')}}">
-					<i class="iconfont icon-duihuan"></i><!-- icon-duihuan- -->
-					<p>兑换金银币</p>
-					<i class="iconfont icon-right"></i>
-				</a>
-			</div>
-			<div id="addressManage">
-				<a href="{{:U('Home/Address/index')}}">
-					<i class="iconfont icon-dizhi"></i>
-					<p>收货地址管理</p>
-					<i class="iconfont icon-right"></i>
-				</a>
-			</div>
-			<!-- <div id="yinhanka">
-				<a href="{{:U('Home/BankCard/index')}}">
-					<i class="iconfont icon-yinhangqia"></i>
-					<p>银行卡</p>
-					<i class="iconfont icon-right"></i>
-				</a>
-			</div> -->
-			<div id="comment">
-				<a href="{{:U('Home/VipCenter/mycomment')}}">
-					<i class="iconfont icon-pinglun"></i>
-					<p>我的评论</p>
-					<i class="iconfont icon-right"></i>
-				</a>
-			</div>
-			<div id="msgcenter">
-				<a href="{{:U('Home/Mail/msgcenter')}}">
-					<i class="iconfont icon-msgcenter"></i>
-					<p>站内信</p>
-					<i class="iconfont icon-right"></i>
-				</a>
-			</div>
-			<div id="member">
-				<a href="{{:U('Home/Pay/gradeSelect')}}">
-					<i class="iconfont icon-huiyuan"></i>
-					<p>会员升级</p>
-					<i class="iconfont icon-right"></i>
-				</a>
-			</div>
-			<div id="member">
-				<a href="{{:U('Home/vipCenter/service_record')}}">
-					<i class="iconfont icon-pinglun" style='color: #00BCD4;'></i>
-					<p>我的工单</p>
-					<i class="iconfont icon-right"></i>
-				</a>
-			</div>
-			<!-- <div id="member">
-				<a href="javascript:;">
-					<i class="" style='color: #00BCD4;'></i>
-					<p></p>
-					<i class=""></i>
-				</a>
-			</div> -->
-		</div>
+            <div id="pay">
+                <a  href="{{:U('Home/Pay/chongzhi')}}">
+                    <i class="iconfont icon-duihuan"></i><!-- icon-duihuan- -->
+                    <p>兑换金银币</p>
+                    <i class="iconfont icon-right"></i>
+                </a>
+            </div>
+            <div id="addressManage">
+                <a href="{{:U('Home/Address/index')}}">
+                    <i class="iconfont icon-dizhi"></i>
+                    <p>收货地址管理</p>
+                    <i class="iconfont icon-right"></i>
+                </a>
+            </div>
+            <div id="comment">
+                <a href="{{:U('Home/VipCenter/mycomment')}}">
+                    <i class="iconfont icon-pinglun"></i>
+                    <p>我的评论</p>
+                    <i class="iconfont icon-right"></i>
+                </a>
+            </div>
+            <div id="msgcenter">
+                <a href="{{:U('Home/Mail/msgcenter')}}">
+                    <i class="iconfont icon-msgcenter"></i>
+                    <p>站内信</p>
+                    <i class="iconfont icon-right"></i>
+                </a>
+            </div>
+            <div id="member">
+                <a href="{{:U('Home/Pay/gradeSelect')}}">
+                    <i class="iconfont icon-huiyuan"></i>
+                    <p>会员升级</p>
+                    <i class="iconfont icon-right"></i>
+                </a>
+            </div>
+            <div id="member">
+                <a href="{{:U('Home/vipCenter/service_record')}}">
+                    <i class="iconfont icon-pinglun" style='color: #00BCD4;'></i>
+                    <p>我的工单</p>
+                    <i class="iconfont icon-right"></i>
+                </a>
+            </div>
+        </div>
     </div>
 </body>
 <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
@@ -166,6 +164,44 @@
         //传设备编码到报修界面
         // console.log($("#device_now").text().slice(5));
         sessionStorage.setItem("device_now",$("#device_now").text().slice(5));
+        
+        /*
+        公告信息
+        */
+        var msgHTML = '';	//公告信息
+        $.ajax({
+            url: '{{:U("Mail/get_announcement")}}',
+            type: 'post',
+            success: function(res){
+                console.log('请求成功! ',res)
+                
+                for(var i=0; i<res.data.length; i++){
+                    msgHTML += i+1 + '、' + res.data[i].content + '<i>&emsp;</i>';
+                }
+                $('#msgDiv>li').html(msgHTML);
+                if($('#msgDiv').find('li')){
+                    var oldtext = $('#msgDiv>li').text();
+                    // 公告信息滚动
+                    var textint = setInterval(function(){
+                        var newtext = $('#msgDiv>li').text();
+                        var wlen = $('#msgDiv>li').text().length;
+                        if(wlen >= 8){
+                            // console.log(newtext.substr(1));
+                            $('#msgDiv>li').text(newtext.substr(1));
+                            
+                            if(wlen <= 8){
+                                $('#msgDiv>li').text('\t\t\t\t' + oldtext);
+                                
+                            }
+                        }
+                    },300)
+                    
+                }
+            },
+            error: function(res){
+                console.log('请求失败! ',res)
+            }
+        })
     })
 </script>
 </html>                                                                                                                                                  
