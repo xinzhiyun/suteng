@@ -37,6 +37,10 @@ img {
 .swiper-container {
 	height: 30vh;
 }
+.swiper-slide img {
+	height: 100%;
+	width: auto;
+}
 #header {
 	height: 10vh;
 	min-height: 50px;

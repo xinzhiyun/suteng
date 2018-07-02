@@ -33,9 +33,9 @@
 			<!-- 轮播图 -->
 			<div class="swiper-container">
 				<div class="swiper-wrapper">
-					<a class="swiper-slide" v-for='b in banner' :href='b.url'>
+					<div class="swiper-slide" v-for='b in banner' :href='b.url' @click='bannerClk(b.url)'>
 						<img :data-src="'/Uploads/'+b.pic" alt="">
-					</a>
+					</div>
 				</div>
 				<!-- 如果需要分页器 -->
 				<div class="swiper-pagination"></div>
@@ -153,16 +153,6 @@
   	<script src="__PUBLIC__/Home/js/shop/index.js"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
 	<script>
-		// 轮播图
-		var mySwiper = new Swiper ('.swiper-container', {
-			autoplay: 3000,
-			loop: true,
-			// 如果需要分页器
-			pagination: {
-				el: '.swiper-pagination',
-			}
-		}) 
-
 		// 刷新/后退,保持状态
 		hashchangeFn(function(hash){
 			var vm = shopindex;	// vue的实例

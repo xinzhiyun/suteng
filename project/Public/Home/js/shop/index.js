@@ -134,6 +134,10 @@ var shopindex = new Vue({
 		this.emptySrc = public+'/Home/images/shop/cart_none.png';
 	},
 	methods: {
+		// 点击轮播图
+		bannerClk(link) {
+			location.href = link;
+		},
 		// 请求主题商品数据
 		getGoodsList() {
 			var vm = this;
@@ -150,7 +154,15 @@ var shopindex = new Vue({
 						name: '更多...',
 						id: '8'
 					})
-					vm.$nextTick(function(){
+					vm.$nextTick(function(){// 轮播图
+						var mySwiper = new Swiper ('.swiper-container', {
+							autoplay: 3000,
+							loop: true,
+							// 如果需要分页器
+							pagination: {
+								el: '.swiper-pagination',
+							}
+						})
 						lazyLoad('#container');	// 图片懒加载
 					})
 				},
