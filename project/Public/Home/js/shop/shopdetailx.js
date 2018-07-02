@@ -5,8 +5,8 @@ var vm = new Vue({
             goodsInfo: {},
             gocart: false,      //立即购买/加入购物车/
             DisFlag : 0,        //选项卡
-            checkList: '',      // 选择的套餐规格
-            lastCheckPname: '',    // 上次选择的规格
+            checkList: [],      // 选择的套餐规格
+            lastCheckIndex: '',    // 上次选择的规格
             goodDetail: [
                 {src :public + "/Home/images/1a.jpg"},
                 {src :public + "/Home/images/1a.jpg"},
@@ -92,7 +92,7 @@ var vm = new Vue({
             }
         },
         // 选中规格
-        choice(id, pname, name, e) {
+        choice(index, id, pname, name, e) {
             // id:属性id, pname:父级, name:属性名
             var vm = this;
             var ev = e || window.event;
@@ -100,14 +100,42 @@ var vm = new Vue({
             console.log(target);
             $(target).css("border", "1px solid #518CF8").parent().siblings().children().css("border", "1px solid #747474");
             // 已选规格
-            if(vm.lastCheckPname == pname){
-                vm.checkList = name;
+            if(vm.lastCheckIndex == index && vm.checkList[+index]){
+                // 选择同一项目的不同规格
+                vm.checkList[+index] = {};
+                vm.$set(vm.checkList, index, {
+                    name: name,
+                    pname: pname,
+                    id: +id
+                })
             }else{
-                vm.checkList = name;
+                if(vm.checkList[+index]){
+                    // 修改同一项目的不同规格（已存在的时候）
+                    vm.checkList[+index] = {};
+                    vm.$set(vm.checkList, index, {
+                        name: name,
+                        pname: pname,
+                        id: +id
+                    })
+                }else{
+                    // 点击位选择的项目
+                    vm.checkList.push({
+                        name: name,
+                        pname: pname,
+                        id: +id
+                    })
+                }
+            }
+            console.log('vm.lastCheckIndex: ',vm.lastCheckIndex);
+            console.log('vm.checkList: ',vm.checkList);
+            // 选择了所有项
+            if(vm.checkList.length == vm.goodsInfo.attr.length){
+                // 查询库存
             }
             // 记录本地点击的id
-            vm.lastCheckPname = pname;
+            vm.lastCheckIndex = index;
         },
+        // 获取商品详情数据
         getDetail(gid) {
             var vm = this;
             console.log('gid: ',gid);
