@@ -181,6 +181,7 @@ var vm = new Vue({
             //     return;
             // }
             if(vm.isBuy){
+                var arr = [];
                 // 点击的购买
                 vm.upInfo = {
                     gid: vm.goodsInfo.id,
@@ -188,14 +189,16 @@ var vm = new Vue({
                     skuattr: vm.checkList,
                     num: vm.numVal
                 };
+                arr.push(vm.upInfo);
                 // 生成订单号
                 $.ajax({
                     url: getOrder,
                     type: 'post',
-                    data: vm.upInfo,
+                    data: arr,
                     success: function(res){
                         if(res.code == 200){
-					        location.href = payComfirm+'?order_id='+res;
+                            // 跳转到订单确认页面
+					        location.href = payComfirm+'?order_id='+res.order_id;
                         }
                     },
                     error: function(err){}
