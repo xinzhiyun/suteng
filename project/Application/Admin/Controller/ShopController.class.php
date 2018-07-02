@@ -688,8 +688,9 @@ class ShopController extends CommonController
         $goodsInfo['price'] = M('goodsPrice')->field('price')->where($where)->find();
         $goodsInfo['goodsCourier'] = M('goods_courier')->where('gid='.$gid)->field('cid,cname,cprice')->select();;
 
+        $courierList = M('courier')->where('status = 1')->select();
 
-
+        $this->assign('courierList',$courierList);//快递公司列表
         $this->assign('attr',$attrRes);//属性列表
         $this->assign('blockList',$blockList);//主题列表
         $this->assign('categoryList',$categoryList);//分类列表
