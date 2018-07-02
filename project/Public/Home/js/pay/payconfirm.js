@@ -14,7 +14,8 @@ var payConfirm = new Vue({
 		var vm = this;
 		var href = location.href;
 		vm.order_id = href.substr(href.indexOf('?order_id=')+10);
-		console.log('order_id: ',vm.order_id)
+		console.log('order_id: ',vm.order_id);
+		sessionStorage.setItem("order_id", vm.order_id);
 		vm.info = info;
 		// 请求订单数据
 		vm.getOrderInfo();
