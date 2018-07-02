@@ -677,6 +677,7 @@ class ShopController extends CommonController
         $goodsInfo['price'] = M('goodsPrice')->field('price')->where($where)->find();
         $goodsInfo['goodsCourier'] = M('goods_courier')->where('gid='.$gid)->field('cid,cname,cprice')->select();;
 
+        $this->assign('categoryList',$categoryList);
         $this->assign('goodsDetail', $goodsInfo);
         $this->display();
     }
