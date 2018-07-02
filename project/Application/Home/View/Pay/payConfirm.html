@@ -105,12 +105,12 @@
                                 </i>
                             </span>
                         </p>
-                        <span v-text='good.num'>x1</span>
+                        <span v-text='"x"+good.num'>x1</span>
                     </a>
                     <!-- 快递 -->
                     <p class='express'>
                         <select name="" id="" @change='expressChange(index)'>
-                            <option :eid='e.cid' :value='e.cname+"："+e.cprice' :price='e.cprice' v-for='e in good.Courier' v-text='e.cname+"："+e.cprice'></option>
+                            <option :eid='e.cid' :cname='e.cname' :value='e.cname+"："+e.cprice' :price='e.cprice' v-for='e in good.Courier' v-text='e.cname+"："+e.cprice'></option>
                         </select>
                     </p>
                 </li>
