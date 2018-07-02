@@ -2,6 +2,7 @@ var shopindex = new Vue({
 	el: '.shopindex',
 	data() {
 		return {
+			banner: [],					// 轮播图
 			menuList: [],				// 分类按钮
 			blockList: [],				// 商品块集合
 			categoryList: [],			// 一级分类类目
@@ -62,16 +63,16 @@ var shopindex = new Vue({
 		 * 以下是模拟数据
 		 */
 		// 分类按钮
-		vm.menuList = [
-			{src: public+'/Home/images/shop/waterpurifier.png',name: '净水器',type: '1'},
-			{src: public+'/Home/images/shop/waterheater.png',name: '热水器',type: '2'},
-			{src: public+'/Home/images/shop/treater.png',name: '净化器',type: '3'},
-			{src: public+'/Home/images/shop/smallma.png',name: '小家电',type: '4'},
-			{src: public+'/Home/images/shop/digital.png',name: '数码',type: '5'},
-			{src: public+'/Home/images/shop/computer.png',name: '电脑',type: '6'},
-			{src: public+'/Home/images/shop/phone.png',name: '手机',type: '7'},
-			{src: public+'/Home/images/shop/house.png',name: '家居',type: '8'}
-		];
+		// vm.menuList = [
+		// 	{src: public+'/Home/images/shop/waterpurifier.png',name: '净水器',type: '1'},
+		// 	{src: public+'/Home/images/shop/waterheater.png',name: '热水器',type: '2'},
+		// 	{src: public+'/Home/images/shop/treater.png',name: '净化器',type: '3'},
+		// 	{src: public+'/Home/images/shop/smallma.png',name: '小家电',type: '4'},
+		// 	{src: public+'/Home/images/shop/digital.png',name: '数码',type: '5'},
+		// 	{src: public+'/Home/images/shop/computer.png',name: '电脑',type: '6'},
+		// 	{src: public+'/Home/images/shop/phone.png',name: '手机',type: '7'},
+		// 	{src: public+'/Home/images/shop/house.png',name: '家居',type: '8'}
+		// ];
 		// 商品块集合
 		// vm.blockList = [
 		// 	{
@@ -143,6 +144,7 @@ var shopindex = new Vue({
 					console.log('res: ',res);
 					vm.blockList = res.goods;
 					vm.menuList = res.cate;
+					vm.banner = res.banner;
 					vm.menuList.push({
 						pic: public+'/Home/images/shop/house.png',
 						name: '更多...',

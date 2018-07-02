@@ -33,9 +33,9 @@
 			<!-- 轮播图 -->
 			<div class="swiper-container">
 				<div class="swiper-wrapper">
-					<div class="swiper-slide">Slide 1</div>
-					<div class="swiper-slide">Slide 2</div>
-					<div class="swiper-slide">Slide 3</div>
+					<a class="swiper-slide" v-for='b in banner' :href='b.url'>
+						<img :data-src="b.pic" alt="">
+					</a>
 				</div>
 				<!-- 如果需要分页器 -->
 				<div class="swiper-pagination"></div>
@@ -209,13 +209,13 @@
 			// console.log('block: %s, img: %s', block, img);
 			if(!img.length)	return;
 			for(var i=0; i<img.length; i++){
-				(function(img){
+				(function(img, i){
 					setTimeout(function(){
 						// console.log('img: ',img);
 						var datasrc = img.getAttribute('data-src');
 						img.setAttribute('src', datasrc);
-					},100);
-				})(img[i])
+					},200*i);
+				})(img[i], i)
 			}
 		}
 	</script>
