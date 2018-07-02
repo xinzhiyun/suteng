@@ -119,7 +119,7 @@ img {
     line-height: 2rem;
     position: fixed;
     bottom: 0;
-    z-index: 100;
+    z-index: 10;
     width: 100vw;
     background: white;
     font-size: .7rem;
@@ -169,7 +169,7 @@ img {
     top: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 10;
+    z-index: 100;
     background: rgba(30,30,30,.5);
     color: #333333;
 }
@@ -177,7 +177,7 @@ img {
     height: 50vh;
     width: 100vw;
     position: absolute;
-    bottom: 3rem;
+    bottom: 0;
     left: 0;
     background: white;
     overflow-y: scroll;
@@ -190,7 +190,7 @@ img {
 }
 .goodsOne > p {
     width: 6rem;
-    height: 6rem;
+    height: 5rem;
     margin-right: .8rem;
 }
 .goodsOne > p > img {
@@ -199,22 +199,29 @@ img {
 }
 .goodsOne > span {
     position: absolute;
-    top: 1rem;
+    top: 0rem;
     right: .5rem;
     font-size: 1rem;
 }
-.goodsOne > div > p:nth-child(2) {
-    margin: .6rem 0 .3rem 0;
+.goodsOne > div > p:nth-child(1) {
+    display: flex;
+    margin-bottom: .3rem;
 }
-.goodsOne > div > p:nth-child(2) > span {
+.goodsOne > div > p:nth-child(1) > span:nth-child(1) {
+    white-space: nowrap;
+}
+.goodD {
+    margin-bottom: .1rem;
+}
+.goodD > span {
     color: #CA0010;
     font-weight: bold;
     margin-right: .2rem;
 }
-.goodsOne > div > p:nth-child(2) > del {
+.goodD > del {
     color: #888888;
 }
-.goodsOne > div > p:nth-child(2) > span > i, .goodsOne > div > p:nth-child(2) > del > i {
+.goodD > span > i, .goodD > del > i {
     font-style: normal;
     font-size: .6rem;
 }

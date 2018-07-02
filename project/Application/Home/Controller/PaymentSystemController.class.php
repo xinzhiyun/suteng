@@ -104,7 +104,12 @@ class PaymentSystemController extends CommonController
     public function information()
     {   
         // echo json_decode($_POST['data']);
-        $data = json_decode($_POST['data'],'true');
+        $sku = json_decode(xx,true);
+        $skuattr = array_column($sku,'id');
+        sort($skuattr);
+        $sku['skuattr'] = implode('_', $skuattrArr);//属性值id组合
+
+        die;
         foreach ($data as $val) {
             $result = D('inventory')->where(['gid'=>$val['gid']])->getField('allnum');
             if ($result < $val['num']) {
@@ -116,20 +121,7 @@ class PaymentSystemController extends CommonController
           if ($count) {
               $this->ajaxReturn(['code'=>604,'msg'=>'商品库存不足','data'=>$count]);
           }
-        
-        // 库存检测
-
-//        foreach($data as $val){
-//            $a = M('inventory')->where(['gid'=>$val['gid'],'allnum'=>['LT',(int)$val['num']]])->count();
-//          echo M('inventory')->getLastSql();exit;
-////                    'status'=> D('inventory')->where(['gid'=>$val['gid'],'(CAST(allnum AS SIGNED) - CAST(abnormalnum AS SIGNED))'=>['LT',(int)$val['num']]])->count()?'fail':'pass',
-////                    'gid'=>$val['gid']
-////            ];
-//        }
-//
-//        if(in_array('fail',\array_column($result,'status'))){
-//            $this->ajaxReturn(['code'=>604,'msg'=>'商品库存不足','data'=>$result]);
-//        }
+      
 
         try {
             $goods = D('Goods');

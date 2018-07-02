@@ -86,7 +86,9 @@
                     <div v-html='goodsInfo.saleservice'></div>
                 </li>
                 <!-- 用户评价 -->
-                <li v-if="DisFlag == 3"></li>
+                <li v-if="DisFlag == 3">
+
+                </li>
             </ul>
         </div>
         <!-- 底部固定 -->
@@ -96,15 +98,15 @@
             <p @click="menban(true)">加入购物车</p>
         </div>
         <!-- 加入购物车 -->
-        <div class="goCart" v-if="gocart">
+        <div class="goCart" v-if="true">
             <div>
                 <div class="goodsOne">
                     <p>
                         <img src="__PUBLIC__/Home/images/1a.jpg" alt="">
                     </p>
                     <div>
-                        <p>商品编号：<span>123655487851245</span></p>
-                        <p>
+                        <p v-if="false"><span>商品编号：</span><span>123655487851245</span></p>
+                        <p class="goodD">
                             <span>价格<i class="iconfont icon-552cd51ece753"></i v-text='newPrice'>1398.00</span>
                             <del><i class="iconfont icon-552cd51ece753"></i v-text='price'>1398.00</del>
                         </p>

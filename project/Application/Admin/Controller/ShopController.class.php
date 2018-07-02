@@ -612,85 +612,85 @@ class ShopController extends CommonController
     public function goodEdit()
     {   
 
-        //修改商品之前先查询出所有的快递公司
-        $courierList = M('courier')->where('status = 1')->select();
+        // //修改商品之前先查询出所有的快递公司
+        // $courierList = M('courier')->where('status = 1')->select();
 
-        //查询出所有分类
-        $categoryList = M('category')->field('id, name')->select();
+        // //查询出所有分类
+        // $categoryList = M('category')->field('id, name')->select();
 
-        //查询出所有属性
-        $arrtList = M('attr')->select();
+        // //查询出所有属性
+        // $arrtList = M('attr')->select();
         
-        //获取商品id
-        $id = $_GET['gid'];
-        //实例化商品对象
-        $goods = M('goods');
+        // //获取商品id
+        // $id = $_GET['gid'];
+        // //实例化商品对象
+        // $goods = M('goods');
 
-        $goodsInfo=D('goods')->getGoodInfo($id);
+        // $goodsInfo=D('goods')->getGoodInfo($id);
 
-        // dump($goodsInfo);
-        $price = $goodsInfo['price'];
-        $attrVal = $goodsInfo['attr_val'];
-        $goodsCourier = $goodsInfo['goods_courier'];
-        $goodsDetail = $goodsInfo['goods_detail'];
+        // // dump($goodsInfo);
+        // $price = $goodsInfo['price'];
+        // $attrVal = $goodsInfo['attr_val'];
+        // $goodsCourier = $goodsInfo['goods_courier'];
+        // $goodsDetail = $goodsInfo['goods_detail'];
 
-        $goodsPics = D('pic')->where(['gid'=>$id])->select();
+        // $goodsPics = D('pic')->where(['gid'=>$id])->select();
      
-        //处理属性所属
-        foreach ($attrVal as $value) {
-            $attrValArr[]=$value['aid'];
-        }
+        // //处理属性所属
+        // foreach ($attrVal as $value) {
+        //     $attrValArr[]=$value['aid'];
+        // }
 
-        foreach ($arrtList as &$value) {
-            if(in_array($value['id'], $attrValArr)){
-                $value['check']='checked';
-            }else{
-                $value['check']='';
-            }
-        }
+        // foreach ($arrtList as &$value) {
+        //     if(in_array($value['id'], $attrValArr)){
+        //         $value['check']='checked';
+        //     }else{
+        //         $value['check']='';
+        //     }
+        // }
 
-        // dump($attrVal);
-        //处理商品对应属性的属性值
-        if (!empty($attrVal)) {
-            foreach ($attrVal as $key => $val) {
-                $newattrVal[$val['aid']] = $val['val'];
-            }
-        } else {
-            $newattrVal = '';
-        }
+        // // dump($attrVal);
+        // //处理商品对应属性的属性值
+        // if (!empty($attrVal)) {
+        //     foreach ($attrVal as $key => $val) {
+        //         $newattrVal[$val['aid']] = $val['val'];
+        //     }
+        // } else {
+        //     $newattrVal = '';
+        // }
         
 
-        //处理快递所属
-        foreach ($goodsCourier as $v) {
-            $goodsDetailArr[]=$v['cid'];
-        }
+        // //处理快递所属
+        // foreach ($goodsCourier as $v) {
+        //     $goodsDetailArr[]=$v['cid'];
+        // }
 
-        foreach ($courierList as &$v) {
-            if(in_array($v['id'], $goodsDetailArr)){
-                $v['check']='checked';
-            }else{
-                $v['check']='';
-            }
-        }
+        // foreach ($courierList as &$v) {
+        //     if(in_array($v['id'], $goodsDetailArr)){
+        //         $v['check']='checked';
+        //     }else{
+        //         $v['check']='';
+        //     }
+        // }
 
-        //处理商品对应的快递费
-        if (!empty($goodsCourier)) {
-            foreach ($goodsCourier as $key => $cval) {
-                $gcVal[$cval['cid']] = $cval['cprice'];
-            }
-        } else {
-            $gcVal = '';
-        }
+        // //处理商品对应的快递费
+        // if (!empty($goodsCourier)) {
+        //     foreach ($goodsCourier as $key => $cval) {
+        //         $gcVal[$cval['cid']] = $cval['cprice'];
+        //     }
+        // } else {
+        //     $gcVal = '';
+        // }
         
 
-        $this->assign('courierList', $courierList);
-        $this->assign('categoryList', $categoryList);
-        $this->assign('arrtList', $arrtList);
-        $this->assign('goodsInfo', $goodsInfo);
-        $this->assign('price', $price);
-        $this->assign('newattrVal', $newattrVal);
-        $this->assign('gcVal', $gcVal);
-        $this->assign('goodsDetail', $goodsDetail);
+        // $this->assign('courierList', $courierList);
+        // $this->assign('categoryList', $categoryList);
+        // $this->assign('arrtList', $arrtList);
+        // $this->assign('goodsInfo', $goodsInfo);
+        // $this->assign('price', $price);
+        // $this->assign('newattrVal', $newattrVal);
+        // $this->assign('gcVal', $gcVal);
+        // $this->assign('goodsDetail', $goodsDetail);
         $this->display(); 
     }
 
