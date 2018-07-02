@@ -194,7 +194,7 @@ var vm = new Vue({
                 $.ajax({
                     url: getOrder,
                     type: 'post',
-                    data: arr,
+                    data: JSON.stringify(arr),
                     success: function(res){
                         if(res.code == 200){
                             // 跳转到订单确认页面

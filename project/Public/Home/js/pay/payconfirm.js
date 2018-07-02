@@ -2,11 +2,13 @@ var payConfirm = new Vue({
 	el: '.payConfirm',
 	data() {
 		return {
-			info: {},	// 所有数据
+			info: {},		// 所有数据
+			allMoney: 0,	// 总价格
 		}
 	},
 	created() {
 		var vm = this;
+		// 模拟
 		vm.info = {
 			address: {
 				name: '小即可',
@@ -39,6 +41,10 @@ var payConfirm = new Vue({
 				]
 			}
 		};
+		// 计算总价格
+		for(var i=0; i<vm.info.goods.length; i++){
+			vm.allMoney += (+vm.info.goods[i].price)*(+vm.info.goods[i].num);
+		}
 	},
 	methods: {}
 })
