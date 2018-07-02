@@ -104,7 +104,7 @@ class PaymentSystemController extends CommonController
     public function information()
     {   
         try {
-            $post= I('post.');
+            $post= json_decode(I('post.'),true);
             dump($post);
             die;
             //检查库存
