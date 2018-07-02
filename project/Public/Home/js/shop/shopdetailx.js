@@ -3,12 +3,14 @@ var vm = new Vue({
     data() { 
         return {
             goodsInfo: {},
-            gocart: false,      //立即购买/加入购物车/
-            DisFlag : 0,        //选项卡
-            checkList: [],      // 选择的套餐规格
-            lastCheckPname: '',    // 上次选择的规格
-            isBuy: '',
-            numVal: 1, //默认数量
+            upInfo: {},             // 待提交的数据
+            gocart: false,          //立即购买/加入购物车/
+            DisFlag : 0,            //选项卡
+            checkList: [],          // 选择的套餐规格
+            lastCheckPname: '',     // 上次选择的规格
+            isBuy: '',              // 点击的是购买、加入购物车
+            canBuy: '',             // 是否可以购买
+            numVal: 1,              //默认数量
             goodDetail: [
                 {src :public + "/Home/images/1a.jpg"},
                 {src :public + "/Home/images/1a.jpg"},
@@ -76,12 +78,13 @@ var vm = new Vue({
         buyNow(val) {
             // 显示选项面板
             this.gocart = val;
-
+            this.isBuy = true;
         },
         // 加入购物车
         addCart(val) {
             // 显示选项面板
             this.gocart = val;
+            this.isBuy = true;
         },
         // 关闭面板
         closePanel(val) {
@@ -127,13 +130,34 @@ var vm = new Vue({
                 })
             }
             // console.log('index: %s, vm.lastCheckIndex: %s',index, vm.lastCheckIndex);
-            // console.log('vm.checkList: ',vm.checkList);
-            // 选择了所有项
-            if(vm.checkList.length == vm.goodsInfo.attr.length){
-                // 查询库存
-            }
+            console.log('vm.checkList: ',vm.checkList);
             // 记录本地点击的id
             vm.lastCheckIndex = index;
+            
+            var len = 0;
+            // 计算是否选择完全部的项目
+            for(var i=0; i<vm.checkList.length; i++){
+                if(vm.checkList[i]){
+                    len++;
+                }
+            }
+            // 未选择所有项
+            if(len != vm.goodsInfo.attr.length){
+                vm.canBuy = false;
+                $('.confirmBtn p').css({background: '#999'});
+            }else{
+                // 在这里查询库存
+                $('.confirmBtn p').css({background: '#CA0010'});
+                // 查询库存
+                vm.getStock({
+                    gid: vm.goodsInfo.id,
+                    price: vm.goodsInfo.price,
+                    skuattr: vm.checkList
+                },function(res){
+                    vm.canBuy = true;
+                    maxNum = res.maxNum;
+                })
+            }
         },
         // 获取商品详情数据
         getDetail(gid) {
@@ -164,21 +188,76 @@ var vm = new Vue({
         },
         // 确认选择
         conPay() {
-            
+            var vm = this;
+            // 未选择所有项\或无库存
+            if(!vm.canBuy){
+                layuiHint('选择的商品已无库存，请选择其他搭配');
+                return;
+            }
+            if(vm.isBuy){
+                // 点击的购买
+                vm.upInfo = {
+                    gid: vm.goodsInfo.id,
+                    price: vm.goodsInfo.price,
+                    skuattr: vm.checkList,
+                    num: vm.goodsnum
+                };
+            }else{
+                // 加入购物车
+                vm.upInfo = {
+                    gid: vm.goodsInfo.id,
+                    price: vm.goodsInfo.price,
+                    skuattr: vm.checkList,
+                    num: vm.goodsnum
+                };
+            }
+
+            console.log('checkList: ',vm.isBuy);
+            console.log('info: ',info);
         },
         // 加减
         numjisuan(val) {
             var vm = this;
+            var maxNum = 1;
+            if(vm.upInfo){
+                // 查询库存
+                vm.getStock(function(res){
+                    maxNum = res.maxNum;
+                })
+            }
             // 加
             if(val == "add") {
-                vm.numVal >= 10 ? "库存不够" : vm.numVal++;
-                console.log(vm.numVal)
+                // vm.numVal >= 10 ? "库存不够" : vm.numVal++;
+                vm.numVal = Number(vm.numVal) >= Number(maxNum) ? Number(maxNum) : vm.numVal++;
             }
+            console.log(vm.numVal)
 
             // 减
             if(val == "reduce") {
-                vm.numVal < 1 ? vm.numVal=1 : vm.numVal--;
+                // vm.numVal < 1 ? vm.numVal=1 : vm.numVal--;
+                vm.numVal = vm.numVal < 1 ? 1 : vm.numVal--;
             }
+        },
+        // 查询库存
+        getStock(data, callback) {
+            var vm = this;
+            // 查询库存
+            $.ajax({
+                url: getStock,
+                type: 'post',
+                data: data,
+                success: function(res){
+                    console.log('res: ',res);
+                    if(res.code == 200){
+                        callback({maxNum: res.data});
+                        $('.confirmBtn p').css({background: '#CA0010'});
+                    }else{
+                        layuiHint(res.msg);
+                        $('.confirmBtn p').css({background: '#999'});
+                    }
+                },
+                error: function(err){}
+            })
         }
     },
 })
