@@ -76,6 +76,9 @@ img {
 	background: transparent;
 	font-size: 14px;
 }
+.swiper-slide {
+	text-align: center;
+}
 /* 首页 */
 .menuBtn {
 	display: flex;

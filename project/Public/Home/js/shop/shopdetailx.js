@@ -204,9 +204,13 @@ var vm = new Vue({
                         if(res.code == 200){
                             // 跳转到订单确认页面
 					        location.href = payConfirm+'?order_id='+res.msg;
+                        }else{
+                            layuiHint(res.msg);
                         }
                     },
-                    error: function(err){}
+                    error: function(err){
+                        layuiHint('系统遇到问题，请稍后再试');
+                    }
                 })
             }else{
                 // 加入购物车
