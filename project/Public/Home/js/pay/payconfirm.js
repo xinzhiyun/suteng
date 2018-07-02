@@ -141,6 +141,13 @@ var payConfirm = new Vue({
 		payNow() {
 			var vm = this;
 			console.log('payway: ',vm.payway);
+			if(!info.data){
+				layuiHint('请先添加个地址');
+				setTimeout(function(){
+					location.href = getURL('Home', 'address/newAddress');
+				},1000)
+				return
+			}
 			if(!vm.payway){
 				layuiHint('请选择支付方式');
 				return;
