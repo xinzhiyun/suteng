@@ -178,11 +178,17 @@ class PayController extends Controller
             'user' => json_encode($user),
             'rate' => json_encode($rate)
         ];
+
+        dump($assign);
         $this->wx_info();
         $this->assign($assign);
         $this->display();
     }
 
+    /**
+     * [getGoodsByOrder 订单详情信息]
+     * @return [type] [description]
+     */
     public function getGoodsByOrder(){
 
         $where['uid'] = session('user.id');
@@ -201,7 +207,7 @@ class PayController extends Controller
                         ->where('order_id='.$orderid)
                         ->join('st_goods g ON od.gid = g.id','LEFT')
                         ->join('st_goods_detail gd ON od.gid = gd.gid','LEFT')
-                        ->field('od.*,g.name,gd.desc')
+                        ->field('g.*,gd.*')
                         ->select();
         // $order = D('shop_order')->where(['order_id'=>$orderid])->find();
 
