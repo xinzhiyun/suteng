@@ -49,7 +49,7 @@ var payConfirm = new Vue({
 						}
 						var postage = {
 							gid: vm.goods[0].gid,
-							ordre_id: vm.order_id,
+							order_id: vm.order_id,
 							cid: res.msg[0].Courier[0].cid,
 							cname: res.msg[0].Courier[0].cname,
 							cprice: res.msg[0].Courier[0].cprice,
@@ -73,14 +73,14 @@ var payConfirm = new Vue({
 				var temp = $(express[i]).find('option:selected');
 				vm.einfo.push({
 					gid: vm.goods[index].gid,
-					ordre_id: vm.order_id,
+					order_id: vm.order_id,
 					cid: temp[0].getAttribute('eid'),
 					cname: temp[0].getAttribute('value'),
 					cprice: temp[0].getAttribute('price')
 				})
 				postage = {
 					gid: vm.goods[index].gid,
-					ordre_id: vm.order_id,
+					order_id: vm.order_id,
 					cid: temp[0].getAttribute('eid'),
 					cname: temp[0].getAttribute('cname'),
 					cprice: temp[0].getAttribute('price')
