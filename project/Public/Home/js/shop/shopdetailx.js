@@ -19,16 +19,6 @@ var vm = new Vue({
                 {src :public + "/Home/images/goods1.png"},
                 {src :public + "/Home/images/goods1.png"},
                 {src :public + "/Home/images/goods1.png"},
-            ],
-            guige: [
-                {title: "集水器A"},
-                {title: "集水器B"},
-                {title: "集水器C"},
-            ],
-            color: [
-                {title: "高雅白色"},
-                {title: "高雅白色"},
-                {title: "高雅白色"},
             ]
         }
     },
@@ -81,8 +71,19 @@ var vm = new Vue({
         }
     },
     methods: {
-        // 加入购物车/立即购买
-        menban(val) {
+        // 立即购买
+        buyNow(val) {
+            // 显示选项面板
+            this.gocart = val;
+        },
+        // 加入购物车
+        addCart(val) {
+            // 显示选项面板
+            this.gocart = val;
+        },
+        // 关闭面板
+        closePanel(val) {
+            // 关闭选项面板
             this.gocart = val;
         },
         // 选项卡
