@@ -312,37 +312,19 @@
 				}
 				var flowUsers = res.flowUsers;
 				// 套餐 遍历套餐种类数量
-				var mealArr = [];
-				var tempArr = [];
-				for(var meal in flowUsers){
-					for(var i=0; i<flowUsers[meal].length; i++){
-						tempArr.push(flowUsers[meal][i].describe);
-						// console.log('meal: ',flowUsers[meal][i].describe);
-					}
-				}
-				for(var i=0; i<tempArr.length-1; i++){
-					if(mealArr.indexOf(tempArr[i]) < 0){
-						mealArr.push(tempArr[i]);
-					}
-				}
-				// console.log('mealArr: ',mealArr);
-				var taoArr = {};
-				for(var k = 0; k < mealArr.length; k++) {
-					for(var i in res.flowUsers) {
-						for(var j = 0; j < res.flowUsers[i].length; j++) {
-							taoArr[k] = [];
-							if(mealArr[k] == res.flowUsers[i][j]["describe"]) {
-								console.log(res.flowUsers[i][j]["count"]);
-								taoArr[k].push(res.flowUsers[i][j]["count"]);
-							}
-						}
-					}
-				}
-				console.log(taoArr)
-				
-				
-				
-				console.log(taoArr);
+				// var mealArr = [];
+				// var tempArr = [];
+				// for(var meal in flowUsers){
+				// 	for(var i=0; i<flowUsers[meal].length; i++){
+				// 		tempArr.push(flowUsers[meal][i].describe);
+				// 		// console.log('meal: ',flowUsers[meal][i].describe);
+				// 	}
+				// }
+				// for(var i=0; i<tempArr.length-1; i++){
+				// 	if(mealArr.indexOf(tempArr[i]) < 0){
+				// 		mealArr.push(tempArr[i]);
+				// 	}
+				// }
 				// 新增会员
 				if(series_data[0].length){
 					// y轴数据
@@ -426,26 +408,23 @@
 					//新增设备 折线图显示
 					newMoreDevice.setOption(getOption('设备数量',legend_data[1],yAxis_data[1],series_data[1], _subtext[1]));
 				}
-				// console.log("series_data", series_data[2]);
 				var dataArr = [];
 				var datas = [];
-				for(var i = 0; i < res.flowUsers.length; i++) {
-					// var flowData = {};
-					// datas.push(res.flowUsers[i].list[k]);
+				for(var i in flowUsers) {
 					flowData = {
-						name: res.flowUsers[i].name,
+						name: flowUsers[i].name,
 						stack: "数量",
 						type:'line',
 						data: [],
 					}
-					for(var k in res.flowUsers[i].list) {
-						flowData.data.push(res.flowUsers[i].list[k]);
+					for(var k in flowUsers[i].list) {
+						flowData.data.push(flowUsers[i].list[k]);
 					}
 					dataArr.push(flowData);
 				}
 				console.log(dataArr)
 				// 会员套餐
-				if(res.flowUsers.length){
+				if(flowUsers){
 					// y轴数据
 					var cc = ["08:00-12:00", "12:00-16:00", "16:00-20:00","20:00-24:00"];
 					series_datas = dataArr;
