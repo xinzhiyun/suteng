@@ -154,7 +154,7 @@ class ShopController extends CommonController
             $GoodsMap = $GoodsMap->limit($Page->firstRow.','.$Page->listRows);
 
             $goodsList = $GoodsMap->select();
-            
+
             $this->ajaxReturn(array(
                 'status'=>200,
                 'data'=>$goodsList,
@@ -237,6 +237,9 @@ class ShopController extends CommonController
 
             //商品会员价格
             $goodsInfo['price'] = M('goodsPrice')->field('price')->where($where)->find()['price'];
+
+            $goodsInfo['cartNum'] = M('Cart')->where('uid='.session('user.id'))->count();
+
 
             // //商品对应的快递
             // $goodsInfo['goodsCourier'] = M('goods_courier')->where('gid='.$post['id'])->field('cid,cname,cprice')->select();;
