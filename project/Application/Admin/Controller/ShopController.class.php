@@ -633,6 +633,8 @@ class ShopController extends CommonController
                 $categoryList[] = $cate;
             }
         }
+        $goodsInfo['catepath'] = $catepath;
+
 
         // 主题
         $blockList = M('goodsBlock')->where('status=1')->select();
@@ -686,9 +688,12 @@ class ShopController extends CommonController
         $goodsInfo['price'] = M('goodsPrice')->field('price')->where($where)->find();
         $goodsInfo['goodsCourier'] = M('goods_courier')->where('gid='.$gid)->field('cid,cname,cprice')->select();;
 
-        $this->assign('blockList',$blockList);
-        $this->assign('categoryList',$categoryList);
-        $this->assign('goodsDetail', $goodsInfo);
+
+
+        $this->assign('attr',$attrRes);//属性列表
+        $this->assign('blockList',$blockList);//主题列表
+        $this->assign('categoryList',$categoryList);//分类列表
+        $this->assign('goodsDetail', $goodsInfo);//商品信息
         $this->display();
     }
 
