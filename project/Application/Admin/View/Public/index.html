@@ -13,8 +13,8 @@
 </head>
 
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
-    <div class="topcontent">
-        <div>
+    <div class="topcontent row">
+        <div class="col-md-4">
             <div class="logoInfo">
                 <p>
                     <a class='home'>
@@ -24,18 +24,20 @@
                 <a class="navbar-minimalize minimalize-styl-2 btn btn-primary zhankai" href="#"><i class="fa fa-bars"></i> </a>
             </div>
         </div>
-        <div>
-            <p>
-                <span>{{$_SESSION['adminInfo']['user']}}</span>
-                
-                <span>最近登录时间：<i>{{:date('Y-m-d H:i:s',$_SESSION['adminInfo']['logintime'])}}</i></span>
-            </p>
+        <div class="col-md-4">净水物联网云平台</div>
+        <div class="col-md-4">
             <p>
                 <a href="{{:U('Login/logout')}}" class="J_tabExit" aria-expanded="false">
                     <span class="iconfont icon-tuichu"></span>
                     <span>退出</span>
                 </a>
             </p>
+            <p>
+                <span>{{$_SESSION['adminInfo']['user']}}</span>
+                
+                <span><i style="color:#a7b1c2">{{:date('Y-m-d H:i:s',$_SESSION['adminInfo']['logintime'])}}</i></span>
+            </p>
+            
         </div>
     </div>
     <div id="wrapper">
@@ -64,7 +66,7 @@
                         </div> -->
                         <!-- <div class="logo-element">速腾
                         </div> -->
-                        <h3 style='text-align: center;color: #a7b1c2;'>净水物联网云平台</h3> 
+                        <!-- <h3 style='text-align: center;color: #a7b1c2;'>净水物联网云平台</h3>  -->
                     </li>
                     <!-- 权限管理分配菜单 -->
                     <li>
