@@ -5,8 +5,9 @@ var vm = new Vue({
             goodsInfo: {},
             gocart: false,      //立即购买/加入购物车/
             DisFlag : 0,        //选项卡
-            checkList: '',      // 选择的套餐规格
+            checkList: [],      // 选择的套餐规格
             lastCheckPname: '',    // 上次选择的规格
+            isBuy: '',
             numVal: 1, //默认数量
             goodDetail: [
                 {src :public + "/Home/images/1a.jpg"},
@@ -75,6 +76,7 @@ var vm = new Vue({
         buyNow(val) {
             // 显示选项面板
             this.gocart = val;
+
         },
         // 加入购物车
         addCart(val) {
@@ -85,6 +87,8 @@ var vm = new Vue({
         closePanel(val) {
             // 关闭选项面板
             this.gocart = val;
+            // 清空已选规格
+            this.checkList.length = 0;
         },
         // 选项卡
         chooice(e) {
@@ -102,10 +106,10 @@ var vm = new Vue({
             var vm = this;
             var ev = e || window.event;
             var target = ev.target || ev.srcElement;
-            console.log(target);
+            // console.log(target);
             $(target).css("border", "1px solid #518CF8").parent().siblings().children().css("border", "1px solid #747474");
             // 已选规格
-            if(vm.lastCheckIndex == index && vm.checkList[+index]){
+            if(vm.lastCheckIndex === index){
                 // 选择同一项目的不同规格
                 vm.checkList[+index] = {};
                 vm.$set(vm.checkList, index, {
@@ -114,25 +118,16 @@ var vm = new Vue({
                     id: +id
                 })
             }else{
-                if(vm.checkList[+index]){
-                    // 修改同一项目的不同规格（已存在的时候）
-                    vm.checkList[+index] = {};
-                    vm.$set(vm.checkList, index, {
-                        name: name,
-                        pname: pname,
-                        id: +id
-                    })
-                }else{
-                    // 点击位选择的项目
-                    vm.checkList.push({
-                        name: name,
-                        pname: pname,
-                        id: +id
-                    })
-                }
+                // 修改同一项目的不同规格（已存在的时候）
+                vm.checkList[+index] = {};
+                vm.$set(vm.checkList, index, {
+                    name: name,
+                    pname: pname,
+                    id: +id
+                })
             }
-            console.log('vm.lastCheckIndex: ',vm.lastCheckIndex);
-            console.log('vm.checkList: ',vm.checkList);
+            // console.log('index: %s, vm.lastCheckIndex: %s',index, vm.lastCheckIndex);
+            // console.log('vm.checkList: ',vm.checkList);
             // 选择了所有项
             if(vm.checkList.length == vm.goodsInfo.attr.length){
                 // 查询库存
@@ -169,7 +164,7 @@ var vm = new Vue({
         },
         // 确认选择
         conPay() {
-
+            
         },
         // 加减
         numjisuan(val) {
