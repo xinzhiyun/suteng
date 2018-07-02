@@ -1,12 +1,13 @@
 var vm = new Vue({
     el: ".main",
-    data() {
+    data() { 
         return {
             goodsInfo: {},
             gocart: false,      //立即购买/加入购物车/
             DisFlag : 0,        //选项卡
-            checkList: [],      // 选择的套餐规格
-            lastCheckIndex: '',    // 上次选择的规格
+            checkList: '',      // 选择的套餐规格
+            lastCheckPname: '',    // 上次选择的规格
+            numVal: 1, //默认数量
             goodDetail: [
                 {src :public + "/Home/images/1a.jpg"},
                 {src :public + "/Home/images/1a.jpg"},
@@ -18,20 +19,13 @@ var vm = new Vue({
                 {src :public + "/Home/images/goods1.png"},
                 {src :public + "/Home/images/goods1.png"},
                 {src :public + "/Home/images/goods1.png"},
-            ],
-            guige: [
-                {title: "集水器A"},
-                {title: "集水器B"},
-                {title: "集水器C"},
-            ],
-            color: [
-                {title: "高雅白色"},
-                {title: "高雅白色"},
-                {title: "高雅白色"},
             ]
         }
     },
     created() {
+        // layui.use("layer", function() {
+        //     layer = layui.layer;
+        // })
         // 默认选中第一个
         $(".titleKa>li>span").eq(0).addClass("selecteds");
         // 模拟
@@ -77,8 +71,19 @@ var vm = new Vue({
         }
     },
     methods: {
-        // 加入购物车/立即购买
-        menban(val) {
+        // 立即购买
+        buyNow(val) {
+            // 显示选项面板
+            this.gocart = val;
+        },
+        // 加入购物车
+        addCart(val) {
+            // 显示选项面板
+            this.gocart = val;
+        },
+        // 关闭面板
+        closePanel(val) {
+            // 关闭选项面板
             this.gocart = val;
         },
         // 选项卡
@@ -161,6 +166,24 @@ var vm = new Vue({
         // 去购物车
         cart() {
             location.href = shopindex + '#_cart';
+        },
+        // 确认选择
+        conPay() {
+
+        },
+        // 加减
+        numjisuan(val) {
+            var vm = this;
+            // 加
+            if(val == "add") {
+                vm.numVal >= 10 ? "库存不够" : vm.numVal++;
+                console.log(vm.numVal)
+            }
+
+            // 减
+            if(val == "reduce") {
+                vm.numVal < 1 ? vm.numVal=1 : vm.numVal--;
+            }
         }
     },
 })
