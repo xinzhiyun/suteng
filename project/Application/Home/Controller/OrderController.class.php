@@ -614,6 +614,8 @@ class OrderController extends CommonController
     {
        if (IS_AJAX) {
             $orderid = I('orderid');
+
+            // dump($orderid);die;
             // $refund = D('refund_goods')->field('oid,gid')->select(false);
             // echo $refund;die;
             // $data = M('shop_order')->alias('so')->where('order_id='.$orderid)->select();
@@ -635,7 +637,7 @@ class OrderController extends CommonController
                         // ->join('__PIC__ p ON g.id = p.gid','LEFT')
                         // ->relation(['pics'])
                         // // ->table($refund.' a')
-                        ->field(array('g.name'=>'productname','g_d.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire','d.gpic'=>'gpic'))
+                        ->field(array('g.name'=>'productname','g_d.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g.gpic'=>'gpic'))
                         ->select();
                     break;
 
