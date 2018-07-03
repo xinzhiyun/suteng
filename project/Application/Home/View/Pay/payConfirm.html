@@ -128,29 +128,31 @@
             <p>应付：<span><i class="iconfont icon-552cd51ece753"></i><i v-text='allMoney'>1398.00</i></span></p>
             <p @click='prePay'>立即付款</p>
         </div>
-		<div class="paystyle">
-			<div class="paystyleTop"></div>
-			<div class="payContain">
-				<div class="paytop clearfix">
-					<div class="paytopLeft"><span @click='closepp' class="iconfont icon-chacha"></span></div>
-					<div class="paytopRight">
-						<h3>付款</h3>
-						<p v-text='"￥"+allMoney'>￥3620.00</p>
-					</div>
-				</div>
-				<div class="paymidd">
-					<h3>选择支付方式</h3>
-					<ul class="clearfix">
-						<li index="1" @click='choosePay(1)'>
-                            <i class="iconfont icon-tubiao207"></i>金币<span class="iconfont icon-weixuanzhong"></span>
-                        </li>
-						<li index="2" @click='choosePay(2)'>
-                            <i class="iconfont icon-tubiao207-copy"></i>银币<span class="iconfont icon-weixuanzhong"></span>
-                        </li>
-						<li index="3" @click='choosePay(3)'>
-                            <i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-weixuanzhong"></span>
-                        </li>
-						<!-- <li index="4"><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
+		
+    </div>
+    <div class="paystyle">
+        <div class="paystyleTop"></div>
+        <div class="payContain">
+            <div class="paytop clearfix">
+                <div class="paytopLeft"><span @click='closepp' class="iconfont icon-chacha"></span></div>
+                <div class="paytopRight">
+                    <h3>付款</h3>
+                    <p v-text='"￥"+allMoney'>￥3620.00</p>
+                </div>
+            </div>
+            <div class="paymidd">
+                <h3>选择支付方式</h3>
+                <ul class="clearfix">
+                    <li index="1" @click='choosePay(1)'>
+                        <i class="iconfont icon-tubiao207"></i>金币<span class="iconfont icon-weixuanzhong"></span>
+                    </li>
+                    <li index="2" @click='choosePay(2)'>
+                        <i class="iconfont icon-tubiao207-copy"></i>银币<span class="iconfont icon-weixuanzhong"></span>
+                    </li>
+                    <li index="3" @click='choosePay(3)'>
+                        <i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-weixuanzhong"></span>
+                    </li>
+                    <!-- <li index="4"><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
 						<li index="5"><i class="iconfont icon-yinlian"></i>银联<span class="iconfont icon-kuang1"></span></li> -->
 					</ul>
 				</div>
@@ -159,34 +161,33 @@
 				</div>
 			</div>
 		</div>
-    </div>
-</body>
-<script src="__PUBLIC__/Home/js/public.js?v={{:time()}}"></script>
-<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
-<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
-<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
-<script src="__PUBLIC__/Admin/layui/layui.js"></script>
-<script>
-    
-    //微信接口
-    wx.config({
-        debug: false,
-        appId: '{{$wxinfo["appId"]}}',
-        timestamp: '{{$wxinfo["timestamp"]}}',
-        nonceStr: '{{$wxinfo["nonceStr"]}}',
-        signature: '{{$wxinfo["signature"]}}',
-        jsApiList: [
-        // 所有要调用的 API 都要加到这个列表中
-        'chooseWXPay'
-        ]
-    });
-    // 微信支付方法
-    function weixinPay(res, callback){
-        var type = Object.prototype.toString.call(res);
-        if(type === '[object Object]'){
-            res = JSON.stringify(res);
-        }
-        WeixinJSBridge.invoke(
+    </body>
+    <script src="__PUBLIC__/Home/js/public.js?v={{:time()}}"></script>
+    <script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
+    <script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
+    <script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script>
+        
+        //微信接口
+        wx.config({
+            debug: false,
+            appId: '{{$wxinfo["appId"]}}',
+            timestamp: '{{$wxinfo["timestamp"]}}',
+            nonceStr: '{{$wxinfo["nonceStr"]}}',
+            signature: '{{$wxinfo["signature"]}}',
+            jsApiList: [
+            // 所有要调用的 API 都要加到这个列表中
+            'chooseWXPay'
+            ]
+        });
+        // 微信支付方法
+        function weixinPay(res, callback){
+            var type = Object.prototype.toString.call(res);
+            if(type === '[object Object]'){
+                res = JSON.stringify(res);
+            }
+            WeixinJSBridge.invoke(
             'getBrandWCPayRequest',
             JSON.parse(res),
             function(res){
@@ -201,10 +202,11 @@
                     callback({result: 'other'});
                 }
             }
-        );
-    };
-</script>
-<script src='__PUBLIC__/Home/js/vue.min.js'></script>
-<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
-<script src='__PUBLIC__/Home/js/pay/payconfirm.js?v={{:time()}}'></script>
-</html>
+            );
+        };
+    </script>
+    <script src='__PUBLIC__/Home/js/vue.min.js'></script>
+    <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+    <script src='__PUBLIC__/Home/js/pay/payconfirm.js?v={{:time()}}'></script>
+    </html>
+    
