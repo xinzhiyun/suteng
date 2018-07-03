@@ -373,33 +373,28 @@ class WeiXinPayController extends Controller
                   // 发票金额录入
                   D('invoice')->where(['oid'=>$order_id])->save(['oprice'=>$orderData['g_price']]);
                   Log::write($order_goods,'微信支付的解析');
-                  // $goods = \array_column($order_goods,'gid');
-                  foreach($order_goods as $good){
-                    //   $inventory->where(['gid'=>$good['gid']])->setDec('allnum',$good['num']);
-                      $display_order[$good['gid']] = $good['num'];
-                  }
+                  // 4. 库存检测，减库存 sku库存
+                foreach($order_goods as $good){
 
-                  // $display_order = array(
-                  //     1 => 4,
-                  //     2 => 1,
-                  //     3 => 2,
-                  //     4 => 3,
-                  //     5 => 9,
-                  //     6 => 5,
-                  //     7 => 8,
-                  //     8 => 9
-                  // );
-                  $ids = implode(',', array_keys($display_order));
+                    $map['gid'] = $good['gid'];
+                    $skuattr = array_column(json_decode($good['gsku'],true),'id');
+                    sort($skuattr);
+                    $sku = implode('_', $skuattr);//属性值id组合
+                    $map['skuattr'] = $sku;
 
-                  $sql = "UPDATE st_inventory SET allnum = CASE gid ";
-                  foreach ($display_order as $id => $ordinal) {
-                      $sql .= sprintf("WHEN %d THEN allnum - %d ", $id, $ordinal);
-                  }
-                  $sql .= "END WHERE gid IN ($ids)";
-                  file_put_contents('./wxcallback.txt',$sql."\r\n\r\n", FILE_APPEND);
-                  // echo $sql;
-                  $Model = new \Think\Model(); // 实例化一个model对象 没有对应任何数据表
-                  $res = $Model->execute($sql);
+                    $skustock = M('GoodsSku')->where($map)->find()['skustock'];
+                    $stock = M('Goods')->where('id='.$good['gid'])->find()['stock'];
+                    //商品主表减库存
+                    $good['stock'] = $stock - $good['num'];
+                    M('goods')->where('id='.$good['gid'])->save($good);
+                    
+                    //sku表减库存
+                    $data['skustock'] = $skustock-$good['num'];
+                    M('GoodsSku')->where($map)->save($data);
+                    //sku属性
+                    
+                    // dump($data);die;
+                }
 
             }
         }
