@@ -5,21 +5,22 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/PaymentSystem/payConfirmx.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/PaymentSystem/payConfirmx.css?v={{:time()}}">
 	<title>订单填写</title>
 	<!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
 	<script>
         // var vConsole = new VConsole();
+        // 接收数据
         var info = {
-            data: JSON.parse('{{$data}}'),
-            gtype: JSON.parse('{{$gtype}}'),
+            data: JSON.parse('{{$data}}'),  // 地址信息
+            gtype: JSON.parse('{{$gtype}}'),    
             rate: JSON.parse('{{$rate}}'),
             user: JSON.parse('{{$user}}'),
-            goodsCourier: JSON.parse('{{$goodsCourier}}'),
+            goodsCourier: JSON.parse('{{$goodsCourier}}'),  // 快递信息
         }
         console.log('info: ',info);
         var getGoodsByOrder = '{{:U("Pay/getGoodsByOrder")}}';
-        var updateOrder = '{{:U("Pay/updateOrder")}}';
+        var updateOrder = '{{:U("Pay/updateOrder")}}';      // 修改快递
         var orderPayByGold = '{{:U("PaymentSystem/orderPayByGold")}}';  // 金币支付
         var orderPayBySilver = '{{:U("PaymentSystem/orderPayBySilver")}}';  // 银币支付
         var orderPay = '{{:U("PaymentSystem/orderPay")}}';  // 微信支付
@@ -130,7 +131,7 @@
 			<div class="paystyleTop"></div>
 			<div class="payContain">
 				<div class="paytop clearfix">
-					<div class="paytopLeft"><i class="iconfont icon-cuohao"></i></div>
+					<div class="paytopLeft"><span @click='closepp' class="iconfont icon-chacha"></span></div>
 					<div class="paytopRight">
 						<h3>付款</h3>
 						<p v-text='"￥"+allMoney'>￥3620.00</p>
@@ -179,30 +180,30 @@
         ]
     });
     // 微信支付方法
-function weixinPay(res, callback){
-	var type = Object.prototype.toString.call(res);
-	if(type === '[object Object]'){
-		res = JSON.stringify(res);
-	}
-	WeixinJSBridge.invoke(
-		'getBrandWCPayRequest',
-		JSON.parse(res),
-		function(res){
-			if (res.err_msg.substr(-2) == 'ok') {
-                // 付款成功
-                callback({result: 'ok'});
-            } else if (res.err_msg.substr(-6) == 'cancel') {
-                // 取消付款
-                callback({result: 'cancel'});
-            }else{
-                // 付款失败
-                callback({result: 'other'});
-            }
+    function weixinPay(res, callback){
+        var type = Object.prototype.toString.call(res);
+        if(type === '[object Object]'){
+            res = JSON.stringify(res);
         }
-    );
-};
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest',
+            JSON.parse(res),
+            function(res){
+                if (res.err_msg.substr(-2) == 'ok') {
+                    // 付款成功
+                    callback({result: 'ok'});
+                } else if (res.err_msg.substr(-6) == 'cancel') {
+                    // 取消付款
+                    callback({result: 'cancel'});
+                }else{
+                    // 付款失败
+                    callback({result: 'other'});
+                }
+            }
+        );
+    };
 </script>
 <script src='__PUBLIC__/Home/js/vue.min.js'></script>
 <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
-<script src='__PUBLIC__/Home/js/pay/payconfirm.js'></script>
+<script src='__PUBLIC__/Home/js/pay/payconfirm.js?v={{:time()}}'></script>
 </html>
