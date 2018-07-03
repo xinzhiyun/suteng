@@ -4,27 +4,36 @@
  * 
  *  使用：
  *    // 浏览上传图片
-      wxuploadimg(function(res){
+      $(".file_upload").on('touchend', function(){
+      var len = $("#picShow>span").length;
+      if(len == 3){
+          layuiHint("暂时只支持三张图片！");
+          return
+      }
+      pic = [];   // 初始化
+      var nums = 3 - len;  // 最多三张图片
+      if(window.__wxjs_is_wkwebview){
+          nums = 1
+      }
+      // 浏览上传图片 
+      wxuploadimg(nums, function(res){
           console.log('res: ',res);
+          for(var i=0; i<res.length; i++){
+              // console.log('res: ',res[i]);
+              if(res[i].media_Id){
+                  (function locfn(media_Id, src, i){
+                      // console.log("传给后台的id",media_Id);
+                      pic.push(media_Id);
+                  })(res[i].media_Id, res[i].src, i)
+              }
+          }
+          console.log('1111');
+          setTimeout(function(){
+              picUpload();
+          },0)
 
-          var $span = $("<span></span>");
-          var $span1 = $("<span>X</span>");
-          var $img = $('<img src="" alt="" />');
-
-          $img[0].width = "100%";
-          $img[0].height = "90%";
-          $img[0].src = res['src'];
-          
-          $span1.addClass("delPic");
-          $span1.css({zIndex: '999'});
-          $span.append($span1);
-          $span.append($img[0]);
-
-          // 显示图片
-          $('#picShow').append($span);
-          // 待发送给后台的图片id
-          $('input[name="pic"]').val(res.media_Id);
-      });
+      })
+  })
  */
 var backdata = [];    // 需要上传给后台的图片id
 var localIdArr = [];

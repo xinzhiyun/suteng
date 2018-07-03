@@ -1,353 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
-	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
-	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
-	<link rel="stylesheet" href="//at.alicdn.com/t/font_574708_lrbbkvcwhcjo47vi.css">
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/index.css">
-	<title>会员中心</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+    <meta charset="UTF-8">
+    <title>我的钱包</title>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
+    <!-- <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_2pexqgs1lqyta9k9.css"> -->
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/index.css">
 </head>
 <body ontouchstart='console.log()'>
-	<header id="header">
-		<div id="hLeft">
-			<img src="{{$user['head']}}" alt="">
-		</div>
-		<div id="hRight">
-			<div id="qrCode_share">
-				<i class="iconfont icon-erweima"></i>
-				<!-- <i class="iconfont icon-iconfontfenxiang2"></i> -->
-			</div>
-			<p class="member">
-				<span>{{$user['nickname']}}	{{$user.user.grade}}</span>&nbsp;&nbsp;
-
-				<!-- <i class="iconfont icon-wodehuiyuan0101"></i> -->
-				<switch name="user.grade">
-					<case value="4">
-						<span><img src="__PUBLIC__/Home/images/hyzs.png" alt=""></span>
-						<span>钻石会员</span>
-					</case>
-					<case value="3">
-						<span><img src="__PUBLIC__/Home/images/hyhj.png" alt=""></span>
-						<span>金牌会员</span>
-					</case>
-					<case value="2">
-						<span><img src="__PUBLIC__/Home/images/hypt.png" alt=""></span>
-						<span>普通会员</span>
-					</case>
-					<default />
-					<span>
-					<img src="__PUBLIC__/Home/images/hygr.png" alt=""></span>
-					<span>个人会员</span>
-				</switch>
-
-			</p>
-			<div id="package">
-				<span>我的钱包：</span>
-				<div>
-					<p><i class="iconfont icon-tubiao207"></i>金币{{$user['gold_num']}}个</p>
-					<p><i class="iconfont icon-tubiao207-copy"></i>银币{{$user['silver']}}个</p>
-				</div>
-			</div>
-		</div>
-		<div id="msg">
-			<i class="iconfont icon-laba"></i>
-			<div>
-				<ul id="msgDiv">
-					<li></li>
-					<!-- <li>哈哈哈有系统消息</li> -->
-				</ul>
-			</div>
-		</div>
-	</header>
-	<div id="content">
-		<div id="indent">
-			<p>
-				<span>我的订单</span>
-			</p>
-			<div>
-				<a href="{{:U('Home/Order/lease')}}">
-					<i class="iconfont icon-zulin-"></i>
-					<p>租赁订单</p>
-				</a>
-				<a href="{{:U('Home/Order/index')}}">
-					<i class="iconfont icon-shangpin-"></i>
-					<p>商品订单</p>
-				</a>
-
-				<a href="{{:U('Home/Order/consumable')}}">
-					<i class="iconfont icon-haocai-"></i>
-					<p>耗材订单</p>
-				</a>
-				<a href="{{:U('Home/Order/exchangeNotes')}}">
-					<i class="iconfont icon-duihuan-"></i>
-					<p>兑换记录</p>
-				</a>
-			</div>
-		</div>
-		<div id="income">
-			<p>
-				<a href="{{:U('Home/VipCenter/reward')}}">
-					<span>收益明细</span>
-					<i class="iconfont icon-right"></i>
-				</a>
-
-			</p>
-			<div>
-				<a href="{{:U('Home/VipCenter/reward')}}">
-					<span>金币{{$comData['gold_num']}}</span>
-					<span>银币{{$comData['silver']}}</span>
-					<p>我的奖励金</p>
-				</a>
-				<a href="{{:U('Home/Order/memberOrder')}}">
-					<span>{{$orderNum}}</span>
-					<p>会员订单</p>
-				</a>
-			</div>
-		</div>
-		<div id="more">
-			<div id="pay">
-				<a  href="{{:U('Home/Pay/chongzhi')}}">
-					<i class="iconfont icon-duihuan"></i><!-- icon-duihuan- -->
-					<p>兑换金银币</p>
-					<i class="iconfont icon-right"></i>
-				</a>
-			</div>
-			<div id="addressManage">
-				<a href="{{:U('Home/Address/index')}}">
-					<i class="iconfont icon-dizhi"></i>
-					<p>收货地址管理</p>
-					<i class="iconfont icon-right"></i>
-				</a>
-			</div>
-			<!-- <div id="yinhanka">
-				<a href="{{:U('Home/BankCard/index')}}">
-					<i class="iconfont icon-yinhangqia"></i>
-					<p>银行卡</p>
-					<i class="iconfont icon-right"></i>
-				</a>
-			</div> -->
-			<div id="comment">
-				<a href="{{:U('Home/VipCenter/mycomment')}}">
-					<i class="iconfont icon-pinglun"></i>
-					<p>我的评论</p>
-					<i class="iconfont icon-right"></i>
-				</a>
-			</div>
-			<div id="msgcenter">
-				<a href="{{:U('Home/Mail/msgcenter')}}">
-					<i class="iconfont icon-msgcenter"></i>
-					<p>站内信</p>
-					<i class="iconfont icon-right"></i>
-				</a>
-			</div>
-			<div id="member">
-				<a href="{{:U('Home/Pay/gradeSelect')}}">
-					<i class="iconfont icon-huiyuan"></i>
-					<p>会员升级</p>
-					<i class="iconfont icon-right"></i>
-				</a>
-			</div>
-			<div id="member">
-				<a href="{{:U('Home/vipCenter/service_record')}}">
-					<i class="iconfont icon-pinglun" style='color: #00BCD4;'></i>
-					<p>我的工单</p>
-					<i class="iconfont icon-right"></i>
-				</a>
-			</div>
-			<div id="member">
-				<a href="javascript:;">
-					<i class="" style='color: #00BCD4;'></i>
-					<p></p>
-					<i class=""></i>
-				</a>
-			</div>
-		</div>
-	</div>
-	<div id="myCode">
-		<img id="qrcode" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$user['ticket']}}"></img>
-		<p class="closeQR">X</p>
-		<a id="saveCode" href="javascript:;" >长按二维码保存到相册</a>
-	</div>
-	<canvas id="canvas" style="display: none"></canvas>
-	<script src="__PUBLIC__/Home/js/jquery-1.8.3.min.js"></script>
-    <script src="__PUBLIC__/Home/js/public.js"></script>
-	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
-	<script>
-		$(function(){
-
-			// 首页按钮
-			!function(){
-				// 创建 a 标签
-				var home = document.createElement('a');
-				home.innerText = '首\n页';
-
-				home.href = '{{:U("Home/Index/index")}}';
-				home.setAttribute("id", 'back2Home');
-
-				// 添加到页面
-				document.body.appendChild(home);
-				home.onclick = function(){
-					home.style.background = '#aaa';
-				}
-				return
-				// console.log(home)
-			}()
-		})
-		var ulogo = "{{$user['head']}}";
-		var nickname = "{{$user['nickname']}}";
-		sessionStorage.setItem('ulogo',ulogo);
-		sessionStorage.setItem('nickname',nickname);
-		/*
-			公告信息
-		 */
-		var msgHTML = '';	//公告信息
-		$.ajax({
-			url: '{{:U("Mail/get_announcement")}}',
-			type: 'post',
-			success: function(res){
-				console.log('请求成功! ',res)
-
-				for(var i=0; i<res.data.length; i++){
-					msgHTML += i+1 + '、' + res.data[i].content + '<i>&emsp;</i>';
-				}
-				$('#msgDiv>li').html(msgHTML);
-				if($('#msgDiv').find('li')){
-					var oldtext = $('#msgDiv>li').text();
-					// 公告信息滚动
-					var textint = setInterval(function(){
-						var newtext = $('#msgDiv>li').text();
-						var wlen = $('#msgDiv>li').text().length;
-						// console.log('wlen: ',wlen);
-						if(wlen >= 8){
-							// console.log(newtext.substr(1));
-							$('#msgDiv>li').text(newtext.substr(1));
-
-							if(wlen <= 8){
-								$('#msgDiv>li').text('\t\t\t\t' + oldtext);
-
-							}
-						}
-					},300)
-
-				}
-			},
-			error: function(res){
-				console.log('请求失败! ',res)
-			}
-		})
-
-	</script>
-	<script>
-
-		//微信接口
-		wx.config({
-		    debug: false,
-		    appId: '{{$info["appId"]}}',
-		    timestamp: '{{$info["timestamp"]}}',
-		    nonceStr: '{{$info["nonceStr"]}}',
-		    signature: '{{$info["signature"]}}',
-		    jsApiList: [
-		      // 所有要调用的 API 都要加到这个列表中
-		      'chooseWXPay'
-		    ]
-		});
-		/*
-			点击右上角二维码
-		 */
-		$(".icon-erweima").on("click", function(){
-			location.href += '#myCode';
-			
-		})
-
-		hashchangeFn(function(hash){
-			if(hash.indexOf('#myCode') < 0){
-				// 隐藏
-				$("#myCode").css({display: 'none'})
-			}else{
-				// 显示
-				$("#myCode").css({display: 'flex'})
-			}
-		})
-
-		// 监听hashchange事件
-		function hashchangeFn(callback) {
-			var haschangeflag = false;
-			window.addEventListener('hashchange', function(){
-				haschangeflag = true;
-				callback(location.hash);
-			}, false);
-			// console.log('haschangeflag: ',haschangeflag);
-			// console.log('hash: ',location.hash);
-			// 刷新保持
-			if(!haschangeflag){
-				callback(location.hash);
-			}
-		}
-		// 关闭二维码界面
-		$(".closeQR").click(function(){
-			$("#myCode").css({display: 'none'});
-			history.go(-1);
-		})
-		var canvas = document.getElementById("canvas");
-
-		//二维码的保存时消失
-		$('#saveCode').click(function(){
-			// var img;
-			// var reader = new FileReader();
-			// reader.onload = function(e){
-			// 	console.log(e);
-			// 	img = e.result;
-			// }
-			// return ;
-			// //将图片使用canvas绘制
-			// // img2canvas(img);
-			// //将二维码存至手机相册
-			// Download();
-		})
-		//将图片使用canvas绘制
-		// function img2canvas(img){
-		// 	canvas.width = img.width;
-		// 	canvas.height = img.height;
-		// 	var canvas.getContext("2d").drawImage(img,0,0,img.width,img.height);
-		// 	console.log(img)
-		// 	console.log(canvas)
-		// 	return canvas;
-		// }
-		/*
-			将二维码存至手机相册
-		 */
-		// function Download(){
-	 //        //cavas 保存图片到本地  js 实现
-	 //        //------------------------------------------------------------------------
-	 //        //1.确定图片的类型  获取到的图片格式 data:image/Png;base64,......
-	 //        var type ='png';//你想要什么图片格式 就选什么吧
-	 //        var d=document.getElementById("canvas");
-	 //        var imgdata=d.toDataURL(type);
-	 //        //2.0 将mime-type改为image/octet-stream,强制让浏览器下载
-	 //        var fixtype=function(type){
-	 //            type=type.toLocaleLowerCase().replace(/jpg/i,'jpeg');
-	 //            var r=type.match(/png|jpeg|bmp|gif/)[0];
-	 //            return 'image/'+r;
-	 //        };
-	 //        imgdata=imgdata.replace(fixtype(type),'image/octet-stream');
-	 //        //3.0 将图片保存到本地
-	 //        var savaFile=function(data,filename){
-
-	 //            var save_link=document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
-	 //            save_link.href=data;
-	 //            save_link.download=filename;
-	 //            var event=document.createEvent('MouseEvents');
-	 //            event.initMouseEvent('click',true,false,window,0,0,0,0,0,false,false,false,false,0,null);
-	 //            save_link.dispatchEvent(event);
-	 //        };
-	 //        var filename=''+new Date().getSeconds()+'.'+type;
-	 //        //我想用当前秒是可以解决重名的问题了 不行你就换成毫秒
-	 //        savaFile(imgdata,filename);
-  //       };
-
-	</script>
+    <div class="_Mine">
+        <div class="userInfos">
+            <div>
+                <span>
+                    <img src="{{$user['head']}}" alt="">
+                </span>
+                <switch name="user.grade">
+                    <case value="4">
+                        <span>{{$user['nickname']}} <img src="__PUBLIC__/Home/images/zs.png" alt=""></span>
+                    </case>
+                    <case value="3">
+                        <span>{{$user['nickname']}} <img src="__PUBLIC__/Home/images/hjj.png" alt=""></span>
+                    </case>
+                    <case value="2">
+                        <span>{{$user['nickname']}} <img src="__PUBLIC__/Home/images/pt.png" alt=""></span>
+                    </case>
+                    <default />
+                    <span>{{$user['nickname']}} <img src="__PUBLIC__/Home/images/gr.png" alt=""></span>
+                </switch>
+                <a href="{{:U('Home/Index/index')}}">点我回到首页>></a>
+                <!-- <span><img src="__PUBLIC__/Home/images/gr.png" alt=""></span> -->
+            </div>
+            <div class="jinyin">
+                <p><span>{{$user['gold_num']}}</span><span>金币</span></p>
+                <p><span>{{$user['silver']}}</span><span>银币</span></p>
+            </div>
+        </div>
+        <!-- 广告 -->
+        <div id="msg">
+            <span><img src="__PUBLIC__/Home/images/lb.png" alt=""></span>
+            <div>
+                <ul id="msgDiv">
+                    <li></li>
+                    <!-- <li>哈哈哈有系统消息</li> -->
+                </ul>
+            </div>
+        </div>
+        <div id="indent">
+            <!-- <p>
+                <span>我的订单</span>
+            </p> -->
+            <div>
+                <a href="{{:U('Home/Order/lease')}}">
+                    <i class="iconfont icon-zulin-"></i>
+                    <p>租赁订单</p>
+                </a>
+                <a href="{{:U('Home/Order/index')}}">
+                    <i class="iconfont icon-shangpin-"></i>
+                    <p>商品订单</p>
+                </a>
+                
+                <a href="{{:U('Home/Order/consumable')}}">
+                    <i class="iconfont icon-haocai-"></i>
+                    <p>耗材订单</p>
+                </a>
+                <a href="{{:U('Home/Order/exchangeNotes')}}">
+                    <i class="iconfont icon-duihuan-"></i>
+                    <p>兑换记录</p>
+                </a>
+            </div>
+        </div>
+        <div id="income">
+            <p>
+                <a href="{{:U('Home/VipCenter/reward')}}">
+                    <span>收益明细</span>
+                    <i class="iconfont icon-right"></i>
+                </a>
+                
+            </p>
+            <div>
+                <a href="{{:U('Home/VipCenter/reward')}}">
+                    <span>金币{{$comData['gold_num']}}</span>
+                    <span>银币{{$comData['silver']}}</span>
+                    <p>我的奖励金</p>
+                </a>
+                <a href="{{:U('Home/Order/memberOrder')}}">
+                    <span>{{$orderNum}}</span>
+                    <p>会员订单</p>
+                </a>
+            </div>
+        </div>
+        <div id="more">
+            <div id="pay">
+                <a  href="{{:U('Home/Pay/chongzhi')}}">
+                    <i class="iconfont icon-duihuan"></i><!-- icon-duihuan- -->
+                    <p>兑换金银币</p>
+                    <i class="iconfont icon-right"></i>
+                </a>
+            </div>
+            <div id="addressManage">
+                <a href="{{:U('Home/Address/index')}}">
+                    <i class="iconfont icon-dizhi"></i>
+                    <p>收货地址管理</p>
+                    <i class="iconfont icon-right"></i>
+                </a>
+            </div>
+            <div id="comment">
+                <a href="{{:U('Home/VipCenter/mycomment')}}">
+                    <i class="iconfont icon-pinglun"></i>
+                    <p>我的评论</p>
+                    <i class="iconfont icon-right"></i>
+                </a>
+            </div>
+            <div id="msgcenter">
+                <a href="{{:U('Home/Mail/msgcenter')}}">
+                    <i class="iconfont icon-msgcenter"></i>
+                    <p>站内信</p>
+                    <i class="iconfont icon-right"></i>
+                </a>
+            </div>
+            <div id="member">
+                <a href="{{:U('Home/Pay/gradeSelect')}}">
+                    <i class="iconfont icon-huiyuan"></i>
+                    <p>会员升级</p>
+                    <i class="iconfont icon-right"></i>
+                </a>
+            </div>
+            <div id="member">
+                <a href="{{:U('Home/vipCenter/service_record')}}">
+                    <i class="iconfont icon-pinglun" style='color: #00BCD4;'></i>
+                    <p>我的工单</p>
+                    <i class="iconfont icon-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
 </body>
-</html>
+<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+<script src="__PUBLIC__/Home/js/public.js"></script>
+<script> 
+    $(function(){
+        
+        // 首页按钮
+        !function(){
+            // 创建 a 标签
+            var home = document.createElement('a');
+            home.innerText = '首\n页';
+            
+            home.href = '{{:U("Home/Index/index")}}';
+            home.setAttribute("id", 'back2Home');
+            
+            // 添加到页面
+            document.body.appendChild(home);
+            home.onclick = function(){
+                home.style.background = '#aaa';
+            }
+            return
+            // console.log(home)
+        }()
+        
+        //传设备编码到报修界面
+        // console.log($("#device_now").text().slice(5));
+        sessionStorage.setItem("device_now",$("#device_now").text().slice(5));
+        
+        /*
+        公告信息
+        */
+        var msgHTML = '';	//公告信息
+        $.ajax({
+            url: '{{:U("Mail/get_announcement")}}',
+            type: 'post',
+            success: function(res){
+                console.log('请求成功! ',res)
+                
+                for(var i=0; i<res.data.length; i++){
+                    msgHTML += i+1 + '、' + res.data[i].content + '<i>&emsp;</i>';
+                }
+                $('#msgDiv>li').html(msgHTML);
+                if($('#msgDiv').find('li')){
+                    var oldtext = $('#msgDiv>li').text();
+                    // 公告信息滚动
+                    var textint = setInterval(function(){
+                        var newtext = $('#msgDiv>li').text();
+                        var wlen = $('#msgDiv>li').text().length;
+                        if(wlen >= 8){
+                            // console.log(newtext.substr(1));
+                            $('#msgDiv>li').text(newtext.substr(1));
+                            
+                            if(wlen <= 8){
+                                $('#msgDiv>li').text('\t\t\t\t' + oldtext);
+                                
+                            }
+                        }
+                    },300)
+                    
+                }
+            },
+            error: function(res){
+                console.log('请求失败! ',res)
+            }
+        })
+    })
+</script>
+</html>                                                                                                                                                  

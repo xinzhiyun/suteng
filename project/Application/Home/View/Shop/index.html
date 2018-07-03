@@ -5,214 +5,196 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
   	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
- 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
  	<!-- <link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_v25vpfqtkjegsyvi.css"> -->
   	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/font-awesome.css">
     <link rel="stylesheet" href="__PUBLIC__/Home/css/style.css">
-    <link rel="stylesheet" href="__PUBLIC__/Home/css/shop/index.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/shop/index.css?v={{:time()}}">
     <link rel="stylesheet" href="__PUBLIC__/Home/css/swiper-3.4.2.min.css">
 	<title>商城首页</title>
+	<script>
+		var public = '__PUBLIC__';
+		var shopurl = '{{:U("Home/Shop/index")}}';
+		var shoplist = '{{:U("Home/Shop/list")}}';
+		var shopdetail = '{{:U("Home/Shop/shoppingdetail")}}';
+		var category = '{{$category}}';	// 一级分类
+	</script>
 </head>
-<body>
- 
-	<header id="header">
-		<!-- <span class="tab" index='0'>净水器</span>
-		<span class="tab" index='1'>净化器</span>
-		<span class="tab" index='2'>热水器</span>
-		<span class="tab" index='3'>生活用品</span>
-		<span class="tab" index='4'>瓦胆</span>
-		<div id="line"></div> -->
-	</header>
-	<div id="container">
-		<div class="shopTop clearfix">
-			<div class="search clearfix">
-				<label for="search-all">
-					<input type="text" placeholder="请输入您想买的东西" ><i class="searchBtn iconfont icon-msnui-find-bold"></i>
-				</label><i class="iconfont  icon-gouwuche"></i><span class="cartnum"><span></span></span>
-				<div id="searchPanel">
-					<!-- <p>见识到了官方十多个</p>
-					<p>见识到了官方十多个</p>
-					<p>见识到了官方十多个</p> -->
+<body ontouchstart='console.log()'>
+	<div class='shopindex'>
+		<header id="header" :style='{display: tabclk == 3 || tabclk == 4 ? "none" : "flex"}'>
+			<div class='search'>
+				<span @click='searchFn(search)'>
+					<img src="__PUBLIC__/Home/images/shop/search.png" alt="">
+				</span>
+				<input type="text" placeholder="请输入商品名称或者关键字"
+				@keyup.enter='searchFn(search)' v-model='search'>
+			</div>
+		</header>
+		<!-- 首页内容 -->
+		<main id="container" :style='{display: tabclk == 1 ? "block" : "none"}'>
+			<!-- 轮播图 -->
+			<div class="swiper-container">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide" v-for='b in banner' :href='b.url' @click='bannerClk(b.url)'>
+						<img :data-src="'/Uploads/'+b.pic" alt="">
+					</div>
+				</div>
+				<!-- 如果需要分页器 -->
+				<div class="swiper-pagination"></div>
+			</div>
+			<!-- 分类 -->
+			<div class='menuBtn'>
+				<a v-for='(m, index) in menuList' @click='menuBtnClk(index,m.name,m.id)'>
+					<img :src="m.pic" alt="">
+					<p v-text='m.name'></p>
+				</a>
+			</div>
+			<ul class='mBlock' v-for='(b, index) in blockList' v-if='b["0"].length'>
+				<h3 v-text='b.bname'>块标题</h3>
+				<div>
+					<a class='goods' v-for='m in b["0"]' :gid='m.id' @click='todetail(m.id)'>
+						<img :data-src="m.gpic" alt="加载中...">
+						<span v-text='m.name'>商品描述</span>
+						<p><s v-text='m.prices'>划掉的价格</s></p>
+						<b class='price'>￥<span v-text='m.price'>价格</span></b>
+					</a>
+				</div>
+			</ul>
+		</main>
+		<!-- 分类内容 -->
+		<ul class='category cfix' :style='{display: tabclk == 2 ? "block" : "none"}'>
+			<li class='cleft fl'>
+				<p v-for='cate in categoryList' 
+				v-text='cate.name' 
+				@click='getCate(cate, cate.id)'
+				:class='{cateSelect: cateSelect == cate}'></p>
+			</li>
+			<li class='cright fr'>
+				<div class='adv'>
+					<a v-for='a in categoryAdv' :href='a.link'>
+						<img :data-src='a.pic' alt="加载中...">
+					</a>
+				</div>
+				<div class='subBlock'>
+					<p v-text='categoryTitle'></p>
+					<ul>
+						<li class='subtype' v-for='category in categoryContentList' 
+						@click='subClick(category.id)'>
+							<img :data-src="category.pic" alt="加载中...">
+							<p v-text='category.name'></p>
+						</li>
+					</ul>
+				</div>
+				<div class='noCateContent' :style='{display: noCateContent ? "block" : "none"}' 
+				v-text='noCateContent'>加载中...</div>
+			</li>
+		</ul>
+		<!-- 购物车内容 -->
+		<div class='cart' :style='{display: tabclk == 3 ? "block" : "none"}'>
+			<ul class='cBlock cfix' v-for='(cart, index) in cartList' 
+			@touchmove='slideDelete($event, cart.gid)'
+			@touchend='slideEnd()'
+			:gid='cart.gid'>
+				<li class='fl' @click='cartSelect(cart.gid, cart.price, index, cart.num, $event)'>
+					<img src="__PUBLIC__/Home/images/shop/cart_none.png" alt="">
+				</li>
+				<li class='fr'>
+					<span @click='todetail(cart.gid)'>
+						<img :data-src="cart.src" src='' alt="加载中">
+					</span>
+					<div>
+						<h3 v-text='cart.name'>商品名称</h3>
+						<p><span v-for='c in cart.skuattr' v-text='c.pname+"|"+c.name'>商品规格</span></p>
+						<b class='cprice' v-text='"￥"+cart.price'>商品价格</b>
+					</div>
+					<p class='numbtn cfix'>
+						<span class='fl' @click='numChange(-1,index,$event)'>-</span>
+						<input class='fl' type="text" :value='cart.num' @keyup='numChange(11, index, $event)'>
+						<span class='fl' @click='numChange(1,index,$event)'>+</span>
+					</p>
+				</li>
+				<div class='deleteCart' @touchend='deleteCart(index, cart.gid, $event)'><span>删除</span></div>
+			</ul>
+		</div>
+		<footer id='footer' :style='{display: tabclk == 3 ? "none" : "flex"}'>
+			<div @click='tabClick(1, "_home")'>
+				<img :src="tabsrc[0]+'.png'" alt="">
+				<p :style='{color: tabclk == 1 ? "#4D70FF" : "#333"}'>首页</p>
+			</div>
+			<div @click='tabClick(2, "category")'>
+				<img :src="tabsrc[1]+'.png'" alt="">
+				<p :style='{color: tabclk == 2 ? "#4D70FF" : "#333"}'>分类</p>
+			</div>
+			<div @click='tabClick(3, "cart")'>
+				<img :src="tabsrc[2]+'.png'" alt="">
+				<p :style='{color: tabclk == 3 ? "#4D70FF" : "#333"}'>购物车</p>
+			</div>
+			<div @click='tabClick(4, "mine")'>
+				<img :src="tabsrc[3]+'.png'" alt="">
+				<p :style='{color: tabclk == 4 ? "#4D70FF" : "#333"}'>我的</p>
+			</div>
+		</footer>
+		<!-- 购物车结算 -->
+		<div class='cartCalc cfix' :style='{display: tabclk == 3 ? "block" : "none"}'>
+			<div class='fl' @click='checkAll($event)'>
+				<img src="__PUBLIC__/Home/images/shop/cart_none.png" alt="">
+				<span>&emsp;全选</span>
+			</div>
+			<div class='fr'>
+				<p v-text='"￥"+checkMoney'>金额总计</p>
+				<div @click='goPay()'>
+					去结算(<span v-text='checkNum'>数量</span>)
 				</div>
 			</div>
-
-			<!-- 轮播图 -->
-			<div id="wrapper" class='swiper-container'>
-				<div class='swiper-wrapper'>
-					<!-- <a class="pic swiper-slide" goods_gid="{{$goodsList[0]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[0]['path']}}" /></a>
-					<a class="pic swiper-slide" goods_gid="{{$goodsList[1]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[1]['path']}}" /></a>
-					<a class="pic swiper-slide" goods_gid="{{$goodsList[2]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[2]['path']}}" /></a>
-					<a class="pic swiper-slide" goods_gid="{{$goodsList[3]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[3]['path']}}" /></a>
-					<a class="pic swiper-slide" goods_gid="{{$goodsList[4]['gid']}}" href="javascript:;"><img src="/Uploads/{{$goodsList[4]['path']}}" /></a> -->
-				</div>
-				<div class="swiper-pagination"></div>
-			</div>		
-		</div>
-		<div id="content">
-			
-			<!-- 净水器 -->
-			<!-- <div id="waterPurifier">
-				 <div class="goods" > -->
-					<!-- /*所有商品*/ -->
-					<!-- <div class="goodstitle">
-						<h3><span>——</span> 特惠专区 <span>——</span></h3>
-					</div>
-					<div class="allgoods">
-						<ul>
-							<li>
-								<a href="#">
-									<img src="__PUBLIC__/Home/images/goods1.png" alt="">
-									<p>Jagabee 麦片套装</p>
-									<b>¥ 89.00</b><i class="iconfont icon-jiarugouwuche "></i><span class="iconfont "></span>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div> -->
 		</div>
 	</div>
-  	<div id="loading">
-  		<img src="__PUBLIC__/Home/images/loading.gif" alt="加载中...">
-  	</div>
-	<script>
-	  var ThinkPHP = {
-		  shopIndexUrl : "{{:U('home/shop/index')}}"
-	  }
-	</script>
 	<script type="text/javascript" src="__PUBLIC__/Home/js/swiper-3.4.2.min.js"></script>
-	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
-  	<script src="__PUBLIC__/Home/js/public.js"></script>
-  	<script src="__PUBLIC__/Home/js/shop/index.js"></script>
+	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
+	<script src="__PUBLIC__/Home/js/jquery.min.js"></script>
+  	<script src="__PUBLIC__/Home/js/public.js?v={{:time()}}"></script>
+  	<script src="__PUBLIC__/Home/js/shop/index.js?v={{:time()}}"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
 	<script>
-		$(function(){
-			// 首页按钮
-			!function(){
-				// 创建 a 标签
-				var home = document.createElement('a');
-				home.innerText = '首\n页';
-				
-				home.href = '{{:U("Home/Index/index")}}';
-				home.setAttribute("id", 'back2Home');
-
-				// 添加到页面
-				document.body.appendChild(home);
-				home.onclick = function(){
-					home.style.background = '#aaa';
-				}
-				return
-				// console.log(home)
-			}()
-		/***************** 页面跳转 -- 开始 ************************/
-			/*
-				点击的时候记录当前点击的商品gid，传给商品详情页面
-			 */
-			$(".goodsBlock").on('click','.pic',function(){
-				// 将当前商品id拼接到地址URL
-				$(this).attr("href", "{{:U('Shop/shoppingdetail')}}?gid=" + $(this).attr("goods_gid"));
-				// console.log($(this).attr('href'));
-				// 跳转到商品详情页面
-				location.href = $(this).attr('href');
-
-				// 记录当前分类位置
-				sessionStorage.setItem('shopCid', $(this).attr('cid'));
-			})
-			//点击轮播图片
-			$("#wrapper").on('click','.pic',function(){
-				
-				// 跳转到商品详情页面
-				location.href = "{{:U('Home/Shop/shoppingdetail')}}?gid=" + $(this).attr("goods_gid");
-			})
-			/*
-				点击商品旁边的购物车图标
-			 */
-			$(".allgoods").on("click",".icon-jiarugouwuche",function(){
-				var _this = $(this);
-				// 获取商品id
-				var gid = $(this).siblings(".pic").attr("goods_gid");
-				console.log(gid);
-				//添加点击效果
-				$(this).addClass("numShow");
-				$(".cartnum>span").addClass("numShow");
-				setTimeout(function(){
-					//移除点击效果
-					_this.removeClass("numShow");
-					$(".cartnum>span").removeClass("numShow");
-				},500)
-				//告诉后台添加到数据库
-				$.ajax({
-					url: '{{:U("ShoppingCart/shopAdd")}}',
-					type: 'post',
-					data: {'gid': gid,'num': 1},
-					success: function(res){
-						console.log('成功！ ',res);
-						//更新购物车商品数量
-							$(".cartnum>span").text(res);
-							parent.layer.msg('已加入购物车！');
-					},
-					error: function(res){
-						console.log('失败！ ',res);
-							parent.layer.msg('加入购物车失败，请稍后再试！');
-					}
-				})
-			})
-			//点击搜索框旁的购物车图标跳转到购物车
-			$('.cartnum').click(function(){
-				location.href = '{{:U("ShoppingCart/index")}}';
-			})
-
-		/***************** 页面跳转 -- 结束 ************************/
-		
-		/**************************** 搜索 -- 开始 ******************************/
-			/*
-				监听input内容实时搜索
-			 */
-			$(".search input").on('keyup', function(){
-				_search($(this).val());
-			})
-			/*
-				点击搜索
-			 */
-			$(".searchBtn").click(function(){
-				_search($(this).siblings('input').val());
-				
-			})
-			// 点击搜索内容存储 商品id 到地址栏URL 给 商品详情页面用
-			$("#searchPanel").on('click', 'a', function(){
-
-				// 将当前商品id拼接到地址URL
-				$(this).attr("href", "{{:U('Shop/shoppingdetail')}}?gid=" + $(this).attr("goods_gid"));
-				// 跳转到商品详情页面
-				location.href = $(this).attr("href");
-			})
-			//搜索函数
-			function _search(word){
-				//searchArr: 所有商品的数据, 遍历商品的时候存进去的
-				// console.log(word);
-				if(word){
-					// console.log(searchArr);
-					$("#searchPanel").html('');	//每次输入都重新搜索
-					//遍历适配的数据
-					for(var i=0; i<searchArr.length; i++){
-						if(searchArr[i].indexOf(word) > -1){
-							$("#searchPanel").html(searchArr[i]);
-						}
-					}
-					$("#searchPanel").fadeIn('fast');
-					// console.log($("#searchPanel>a").length)
-					// 没有匹配到商品
-					if($("#searchPanel>a").length < 1){
-
-						$("#searchPanel").html('没有找到你搜索的商品！');
-					}
-				}else{
-					$("#searchPanel").html('^^换个姿势搜索看看^^');
-					console.log('没有输入内容!')
-				}
+		// 刷新/后退,保持状态
+		hashchangeFn(function(hash){
+			var vm = shopindex;	// vue的实例
+			// 首页_home, 分类category, 购物车cart, 我的mine
+			for(var i=0; i<vm.srcArr.length; i++){
+				vm.tabsrc.push(vm.srcArr[i])
 			}
-		/******************************* 搜索 -- 结束 ************************************/
+			if(hash.indexOf('_home') > 0){
+				vm.tabClick(1, '_home');
+				lazyLoad('#container');	// 图片懒加载
+			}else if(hash.indexOf('category') > 0){
+				vm.tabClick(2, 'category');
+				lazyLoad('.category>.cright');	// 图片懒加载
+			}else if(hash.indexOf('cart') > 0){
+				vm.tabClick(3, 'cart');
+				lazyLoad('.cart');	// 图片懒加载
+			}else if(hash.indexOf('mine') > 0){
+				vm.tabClick(4, 'mine');
+			}else{
+				// 首页
+				vm.tabsrc[0] = vm.tabsrc[0];
+			}
 		})
+
+		// 监听hashchange事件
+		function hashchangeFn(callback) {
+			var haschangeflag = false;
+			window.addEventListener('hashchange', function(){
+				haschangeflag = true;
+				callback(location.hash);
+			}, false);
+			// console.log('haschangeflag: ',haschangeflag);
+			// console.log('hash: ',location.hash);
+			// 刷新保持
+			if(!haschangeflag){
+				callback(location.hash);
+			}
+		}
+		
 	</script>
 </body>
 </html>

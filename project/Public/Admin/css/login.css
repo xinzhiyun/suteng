@@ -2,14 +2,155 @@ html{height: 100%;}
 body {
     background: #18c8f6;
     height: auto;
-    background:url("../img/adminbg.png") no-repeat center fixed;
+    background:url("../img/htback.png") no-repeat center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
     color: rgba(255,255,255,.95);
 }
+.logo {
+    height:80px;
+    width: 300px;
+    background: url("../img/htlogo.png") no-repeat;
+    background-size: auto 100%;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+/* ERROR & LOGIN & LOCKSCREEN*/
 
+.middle-box {
+    max-width: 400px;
+    z-index: 100;
+    margin: 0 auto;
+    padding-top: 40px;
+}
+
+.lockscreen.middle-box {
+    width: 200px;
+    padding-top: 110px;
+}
+
+.loginscreen.middle-box {
+    width: 40%;
+    max-width: 460px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    position: relative;
+    top: 20%;
+    padding: 3% 5%;
+}
+.middle-box > div > h3 {
+    font-size: 35px;
+    color: #518CF8;
+    font-weight: normal;
+    white-space: nowrap;
+}
+
+.loginDivt {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 2%;
+    border: 1px solid #E0DFE2;
+    border-radius: 30px;
+    position: relative;
+}
+.loginDivt>input {
+    -webkit-box-flex: 8;
+    -ms-flex: 8;
+    flex: 8;
+    border: none;
+    background: none;
+    font-size: 16px;
+}
+.loginDivt>span {
+    display: inline-block;
+    margin-left: 4%;
+    white-space: nowrap;
+}
+input[name="code"] {
+    /* padding: 7%; */
+    display: block;
+    margin-right: 30px;
+    border: 1px solid #E0DFE2;
+    border-radius: 30px;
+    background: white;
+    width: 50%;
+    height: 50px;
+    /* line-height: 50px; */
+}
+input[name="code"]:focus {
+    border: 1px solid #E0DFE2 !important;
+}
+input[name="code"]:blur {
+    background: white !important;
+}
+input:-webkit-autofill {
+    background: white !important; 
+}
+.loginDivs {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: relative;
+}
+.loginDivs > img {
+    width: 55%;
+}
+.loginbtn {
+    margin-top: 12%;
+    padding: 4%;
+    border: none;
+    border-radius: 6px;
+    background: #518CF8 !important;
+}
+
+/* 提示 */
+.tips, .tipm, .tipc {
+    font-style: normal;
+    display: none;
+}
+.tips {
+    color: red;
+    position: absolute;
+    right: -85px;
+}
+.tipm {
+    color: red;
+    position: absolute;
+    right: -145px;
+}
+.tipc {
+    color: red;
+    position: absolute;
+    right: -92px;
+}
+.loginscreen.middle-box {
+    padding: 3% 3% !important;
+}
+.form-group {
+    margin: 25px 0 0 0;
+}
+/* 旧 */
 .signinpanel {
     width: 750px;
     margin: 10% auto 0 auto;
@@ -59,7 +200,24 @@ body {
 
 .signup-footer{border-top: solid 1px rgba(255,255,255,.3);margin:20px 0;padding-top: 15px;}
 
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 600px) {
+    #form1 input[name="code"] {
+        width: 80px;
+        display: block;
+    }
+    #form1 .loginDivs > img {
+        width: 90px;
+    }
+    .loginDivt, #form1 .loginbtn{
+        width: 180px !important;
+    }
+} */
+@media screen and (max-width: 800px) {
+    input[name="code"] {
+        /* width: 30%; */
+        display: block;
+        margin-right: 10px;
+    }
     .signinpanel,
     .signuppanel {
         margin: 0 auto;
@@ -90,4 +248,8 @@ body {
         margin:0 20px;
         width:auto;
     }
+}
+.loginscreen.middle-box {
+    background: rgba(255,255,255,.1) !important;
+    box-shadow: 0px 0px 0px #fff !important;
 }

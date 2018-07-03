@@ -41,6 +41,8 @@ class WeixinEventController extends Controller
 
             // 判断如果是关注事件
             if($data['Event'] == 'subscribe'){
+                    // 关注事件推送消息
+                    $this->Subscribe($toUser,$fromUser);
                     // 查询微信二维码信息表
                     $ticket = $data['Ticket'] ? true : false;
 
@@ -298,6 +300,41 @@ class WeixinEventController extends Controller
                     </xml> ";
         
         echo sprintf($template, $toUser, $fromUser, time(), 'news',$title,$description,$src,$url);
+    }
+
+    // 关注事件推送图文消息
+    public function Subscribe($toUser, $fromUser)
+    {
+        $wx_config = M('system_config');
+        $map['auid'] = 1;
+        $info = $wx_config->where($map)
+                        ->alias('s')
+                        // ->join("__ADMINUSER__ admin ON s.auid=admin.id", 'LEFT')
+                        ->field("s.title,s.description,s.src,s.url")
+                        ->find();
+
+        $title = $info['title'];
+        $description = $info['description'];
+        $src = '';
+        $url = '';
+        $template = "<xml>
+                        <ToUserName><![CDATA[%s]]></ToUserName>
+                        <FromUserName><![CDATA[%s]]></FromUserName>
+                        <CreateTime>%s</CreateTime>
+                        <MsgType><![CDATA[%s]]></MsgType>
+                        <ArticleCount>1</ArticleCount>
+                        <Articles>
+                            <item>
+                                <Title><![CDATA[%s]]></Title> 
+                                <Description><![CDATA[%s]]></Description>
+                                <PicUrl><![CDATA[%s]]></PicUrl>
+                                <Url><![CDATA[%s]]></Url>
+                            </item>
+                        </Articles>
+                    </xml> ";
+
+        echo sprintf($template, $toUser, $fromUser, time(), 'news', $title, $description, $src, $url);
+        
     }
 
 

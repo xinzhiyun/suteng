@@ -1,361 +1,497 @@
+var shopindex = new Vue({
+	el: '.shopindex',
+	data() {
+		return {
+			banner: [],					// 轮播图
+			menuList: [],				// 分类按钮
+			blockList: [],				// 商品块集合
+			categoryList: [],			// 一级分类类目
+			categoryContentList: [],	// 二级分类
+			categoryID: '',				// 一级分类id
+			categoryAdv: [],
+			cartList: [],				// 购物车商品集合
+			cateSelect: '',
+			tabclk: 1, 					// 底部按钮
+			tabText: 'home',
+			tabsrc: [],
+			search: '',					// 搜索关键字
+			srcArr: [
+				public + '/Home/images/shop/home',
+				public + '/Home/images/shop/category',
+				public + '/Home/images/shop/addcart',
+				public + '/Home/images/shop/mine'
+			],
+			titleList: ['商城首页','分类','购物车','我的'],
+			categoryTitle: '',  //二级分类标题
+			noCateContent: '选择左边分类',
+			cart_none: '',
+			moneyCalc: [],	// 购物车选中的商品
+			checkNum: 0,	// 结算的商品数量
+			checkMoney: 0,	// 结算金额
+			selectedSrc: '',
+			emptySrc: '',
+		}
+	},
+	created() {
+		var vm = this;
+		var href = location.href;
+		// 刷新保持状态
+		// 首页_home, 分类category, 购物车cart, 我的mine
+		for(var i=0; i<vm.srcArr.length; i++){
+			vm.tabsrc.push(vm.srcArr[i])
+		}
 
-// ajax 请求全部数据
-var html = $.ajax({
-	url: ThinkPHP.shopIndexUrl,
-	async: false
-   }).responseText;
+		if(href.indexOf('_home') > 0){
+			vm.tabClick(1, '_home');
 
-data = JSON.parse(html);
-var cartCount = data.cartinfo,
-	goods 	  = data.goods,
-	banner 	  = data.banner,
-	cate 	  = data.cate;
-console.log('banner: ',banner);
-window.onload = function(){
-	// 轮播图
-	var bannerHTML = '';
-	if(banner){
-		banner.map(function(img, index){
-			bannerHTML += '<a class="pic swiper-slide" goods_gid="'+ img.id
-			+'" href="javascript:;"><img src="/Uploads/'+ img.pic +'" /></a>'
+		}else if(href.indexOf('category') > 0){
+			vm.tabClick(2, 'category');
+
+		}else if(href.indexOf('cart') > 0){
+			vm.tabClick(3, 'cart');
+
+		}else if(href.indexOf('mine') > 0){
+			vm.tabClick(4, 'mine');
+
+		}else{
+			// 首页
+			vm.tabsrc[0] = vm.tabsrc[0] + '_light';
+		}
+		// 清除大分类点击记录
+		window.clickCid = '';
+		/**
+		 * 以下是模拟数据
+		 */
+		// 分类按钮
+		// vm.menuList = [
+		// 	{src: public+'/Home/images/shop/waterpurifier.png',name: '净水器',type: '1'},
+		// 	{src: public+'/Home/images/shop/waterheater.png',name: '热水器',type: '2'},
+		// 	{src: public+'/Home/images/shop/treater.png',name: '净化器',type: '3'},
+		// 	{src: public+'/Home/images/shop/smallma.png',name: '小家电',type: '4'},
+		// 	{src: public+'/Home/images/shop/digital.png',name: '数码',type: '5'},
+		// 	{src: public+'/Home/images/shop/computer.png',name: '电脑',type: '6'},
+		// 	{src: public+'/Home/images/shop/phone.png',name: '手机',type: '7'},
+		// 	{src: public+'/Home/images/shop/house.png',name: '家居',type: '8'}
+		// ];
+		// 商品块集合
+		// vm.blockList = [
+		// 	{
+		// 		title: '新品推介',
+		// 		goods: [
+		// 			{gid: '12',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1020'},
+		// 			{gid: '13',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '520'},
+		// 			{gid: '14',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
+		// 			{gid: '15',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
+		// 			{gid: '16',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
+		// 			{gid: '17',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
+		// 			{gid: '18',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'}
+		// 		]
+		// 	},
+		// 	{
+		// 		title: '限时促销',
+		// 		goods: [
+		// 			{gid: '12',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1020'},
+		// 			{gid: '13',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '520'},
+		// 			{gid: '14',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
+		// 			{gid: '15',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
+		// 			{gid: '16',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
+		// 			{gid: '17',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'},
+		// 			{gid: '18',src: '/Home/images/shop/waterpurifier.png',desc: '良心净水器，买到就是赚到',price: '1120'}
+		// 		]
+		// 	}
+		// ];
+		// 获取主题商品数据
+		vm.getGoodsList();
+		// 一级分类
+		vm.categoryList = JSON.parse(category);
+		// console.log('category: ',category);
+		// 加载第一条
+		vm.$nextTick(function(){
+			vm.getCate(vm.categoryList[0], vm.categoryList[0].id)
 		})
-		$('.swiper-wrapper').html(bannerHTML);
-	}
-	// 自动轮播 
-	var mySwiper = new Swiper('.swiper-container', {
-		autoplay: 5000,//可选选项，自动滑动
-		pagination : '.swiper-pagination',
-	})
-}
-//首页显示购物车数量
-// console.log($("#cartInfo").val())
-if(cartCount){
-	$(".cartnum>span").text(cartCount);
-}else {
-	// 如果购物车没有商品
-	$(".cartnum>span").text(0);
-}
-
-//存放分栏的商品信息
-var CategoryHTML = '', categoryArr = [];
-var goodblockHTML = '';		//分栏商品模板
-var _htmlArr = [];	//存放对应分类数据的数组
-var searchArr = [];		//存放搜索用数据
-	var tab_now = 0;	// 当前点击的 tab
-	var isLoad = [];	//滚动懒加载的标志
-	// lazyArr: 懒加载的内容, 跟当前分类下一致，
-	// 数组的每个子元素长度为6个商品（数量遍历商品时给出）
-	var lazyArr = [];	
-
-/************ 数据遍历 -- 开始 **************/
-// 获取商品分类
-var _cate;
-if(cate){
-	//有数据
-	_cate = cate;
-	// console.log(_cate);
-	// 遍历分类
-	for(var i=0;i<_cate.length; i++){
-		CategoryHTML += '<span class="tab" cid="'+ i +'" index='+i+'>'+ _cate[i].name +'</span>';
-		categoryArr.push(_cate[i].name);
-	}
-
-	/*
-		遍历模板
-	 */
-	for(var i=0; i<_cate.length; i++){
-		goodblockHTML += 
-			'<div class="goodsBlock" index='+i+'>'+
-			  '<div class="goods" >'+
-				 // 所有商品
-				'<div class="goodstitle">'+
-					'<h3><span>——</span> 特惠专区 <span>——</span></h3>'+
-				'</div>'+
-				'<div class="allgoods">'+
-					'<ul></ul>'+
-					'</div>'+
-				'</div>'+
-			'</div>';
-	}
-
-	// 横线
-	var _lineHTML = '<div id="line"></div>';
-	$("#header").html(CategoryHTML+ _lineHTML);
-	$("#content").append(goodblockHTML);
-
-}else{
-	$("#header").html('暂无分类');
-	// console.log('暂无分类');
-}
-// 顶部滚动过渡效果
-// $("#header").css({width: ($("#header>span").length+2)*20 + 'vw'});
-/*
-	遍历商品
- */
-var _goods;
-var lazyNum = 0;	// '|'的加载次数
-if(goods != 'null'){
-	//有数据
-	_goods = goods;
-	if(_cate){
-		for(var i=0;i<_cate.length; i++){
-			_htmlArr[[i]] = '';		//使用前先初始化
-			searchArr[[i]] = '';		//使用前先初始化
-			for(var j=0; j<_goods.length; j++){
-				if(_goods[j].cid == _cate[i].id && _htmlArr[i].indexOf(_goods[j].gid) < 0){	//对应分类下有商品
-					lazyNum++; 
-					// console.log(_goods[j].cid, _cate[i].id);
-					// 搜索
-					searchArr[i] += '<a href="javascript:;" goods_gid="'+_goods[j].gid+'">'+
-							'<p>'+ _goods[j].name +'</p>'+
-						'</a>';
-
-					_htmlArr[i] += 
-						'<li>'+
-							'<a class="pic" goods_gid="'+ _goods[j].gid +'" href="javasctipt:;" cid="'+ i +'">'+
-								'<span ><img src="/Uploads/'+ _goods[j].path +'" alt="正在加载中..."></span>'+
-								'<p class="name">'+ _goods[j].name +'</p>'+
-								'<b class="price">¥'+ _goods[j].price +'</b>'+
-							'</a>'+
-							'<i class="iconfont icon-jiarugouwuche"></i>'+
-						'</li>';
-					if(lazyNum > 4 && (lazyNum+1)%4 == 0 && i+1 != _goods.length){
-						// console.log('lazyNum: ', lazyNum);
-						// console.log('(lazyNum+1)%6: ',(lazyNum+1)%4);
-						//每隔6个添加 '|' ，后面懒加载用
-						_htmlArr[i] += '|';
-						// lazyNum = 0;
+		// vm.categoryList = [
+		// 	{name: '豪大大大鸡排', id: '1'},
+		// 	{name: '养生瓦胆煲', id: '2'},
+		// 	{name: '光能路灯', id: '3'},
+		// 	{name: '净化器', id: '4'},
+		// 	{name: '电热水器', id: '5'},
+		// 	{name: 'cece2', id: '9'},
+		// 	{name: '', id: '25'}
+		// ]
+		if(localStorage.getItem('cartData')){
+			var data = JSON.parse(localStorage.getItem('cartData'));
+			console.log('data: ',data);
+			vm.cartList = data;
+		}
+		// 购物车数据
+		// vm.cartList = [
+		// 	{src: '',gid:'1',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'1'},
+		// 	{src: '',gid:'2',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'16'},
+		// 	{src: '',gid:'3',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'3'},
+		// 	{src: '',gid:'4',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'11'},
+		// 	{src: '',gid:'5',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'6'},
+		// ];
+	},
+	mounted() {
+		var cBlock = document.querySelectorAll('.cBlock');	// 购物车商品
+		this.selectedSrc = public+'/Home/images/shop/cart_select.png';
+		this.emptySrc = public+'/Home/images/shop/cart_none.png';
+	},
+	methods: {
+		// 点击轮播图
+		bannerClk(link) {
+			location.href = link;
+		},
+		// 请求主题商品数据
+		getGoodsList() {
+			var vm = this;
+			$.ajax({
+				url: shopurl,
+				type: 'post',
+				success: function(res){
+					console.log('res: ',res);
+					vm.blockList = res.goods;
+					vm.menuList = res.cate;
+					vm.banner = res.banner;
+					vm.menuList.push({
+						pic: public+'/Home/images/shop/house.png',
+						name: '更多...',
+						id: '8'
+					})
+					vm.$nextTick(function(){// 轮播图
+						var mySwiper = new Swiper ('.swiper-container', {
+							autoplay: 3000,
+							loop: true,
+							// 如果需要分页器
+							pagination: {
+								el: '.swiper-pagination',
+							}
+						})
+						lazyLoad('#container');	// 图片懒加载
+					})
+				},
+				error: function(err){
+					console.log('err: ',err);
+				}
+			})
+		},
+		// 点击首页分类按钮
+		menuBtnClk(index, name, id) {
+			var vm = this;
+			// console.log('id: ',id);
+			if(name == '更多...'){
+				location.href = shopurl + '#category';
+				return
+			}
+			location.href = shopurl + '#category';
+			vm.getCate({id: id, name:name}, id);
+			$('.category>.fl>p').eq(index).addClass('cateSelect');
+		},
+		// 点击商品图片
+		todetail(gid) {
+			// console.log('gid: ', gid);
+			if(gid){
+				location.href = shopdetail + '?gid=' + gid;
+			}
+		},
+		// 点击底部导航按钮
+		tabClick(tabclk, text){
+			// tabclk: 1首页，2分类，3购物车，4我的
+			this.tabclk = tabclk;
+			// console.log('tabclk: ',tabclk);
+			// 切换title
+			document.title = this.titleList[+tabclk-1];
+			// 切换图标
+			this.tabsrc = [].concat(this.srcArr);
+			this.tabsrc[tabclk-1] = this.srcArr[tabclk-1] + '_light';
+			location.href = shopurl + '#' + text;
+			this.tabText = text;
+			if(tabclk == 4){
+				location.href = getURL('Home', 'vipCenter/index');
+			}
+		},
+		// 点击分类类目
+		getCate(cate, cid) {
+			var vm = this;
+			vm.categoryID = cate.id;
+			vm.categoryTitle = cate.name;
+			// 点击同一个分类类目
+			if(window.clickCid == cid) return;
+			for(var i=0;i<$('.category>.fl>p').length; i++){
+				$('.category>.fl>p').eq(i).removeClass('cateSelect');
+			}
+			window.clickCid = cid;
+			vm.cateSelect = cate;
+			// console.log('cate: ',cate);
+			// console.log('cid: ',cid);
+			// 获取对应类目下的商品详细分类
+			$.ajax({
+				url: getURL('Home','Shop/getCategory'),
+				type: 'post',
+				data: {id: cid},
+				success: function(res){
+					console.log('res: ',res);
+					if(res.status == 200){
+						if(!res.data.length){
+							vm.noCateContent = '此分类下暂无数据';
+							vm.categoryContentList.length = 0; // 清空详细分类内容
+							vm.categoryAdv.length = 0; // 清空广告
+							return;
+						}
+						vm.categoryAdv = res.adv;	// 广告
+						vm.categoryContentList = res.data;	// 详细分类
+						vm.noCateContent = false;
+						vm.$nextTick(function(){
+							lazyLoad('.category>.cright');	// 图片懒加载
+						})
+					}else{
+						vm.categoryContentList.length = 0; // 清空
+						vm.noCateContent = '此分类下暂无数据';
 					}
-				}else{
-					_htmlArr[i] += '';
+				},
+				error: function(err){
+					console.log('err: ',err);
+				}
+			})
+
+			// this.categoryContentList = [
+			// 	{
+			// 		title: '净水器',
+			// 		subType: [
+			// 			{pic: '',name:'lopo玩具',scid: '12'},
+			// 			{pic: '',name:'毛衣刷',scid: '13'},
+			// 			{pic: '',name:'宝宝杯',scid: '14'},
+			// 			{pic: '',name:'小小苏',scid: '15'},
+			// 			{pic: '',name:'规划局规划国际化',scid: '25'},
+			// 		]
+			// 	},
+			// 	{
+			// 		title: '净化器',
+			// 		subType: [
+			// 			{pic: '',name:'lopo玩具',scid: '12'},
+			// 			{pic: '',name:'毛衣刷',scid: '13'},
+			// 			{pic: '',name:'宝宝杯',scid: '14'},
+			// 			{pic: '',name:'小小苏',scid: '15'},
+			// 			{pic: '',name:'规划局规划国际化',scid: '25'},
+			// 		]
+			// 	}
+			// ];
+		},
+		// 点击大分类下的小分类商品图片
+		subClick(cid) {
+			// id:一级分类is, cid:二级分类id
+			console.log('cid: ',cid);
+			location.href = shoplist + '?id=' + this.categoryID + '&cid=' + cid;
+		},
+        // 搜索
+        searchFn(search) {
+			console.log('search: ',search);
+			if(search){
+				// 跳到搜索列表页
+				location.href = shoplist + '?search=' + search;
+			}
+        },
+		// 购物车商品左滑、右滑
+		slideDelete(e, gid) {
+			var el = e.currentTarget;
+			// console.log('gid: ',gid);
+			// console.log('e: ',e);
+			// console.group();
+			if(!window.touchX){
+				window.touchX = e.changedTouches[0].pageX;
+				// console.log('touchX: ',window.touchX);
+			}else{
+				if(window.touchX - e.changedTouches[0].pageX < 0 && window.touchX - e.changedTouches[0].pageX <= -30){
+					// console.clear();
+					// console.log('右滑');
+					el.setAttribute('style','transform:translateX(0);');
+					window.isDeleteShow = true;
+					window.touchX = '';
+					
+				}else if(window.touchX - e.changedTouches[0].pageX > 0 && window.touchX - e.changedTouches[0].pageX >= 30){
+					// console.clear();
+					// console.log('左滑');
+					el.setAttribute('style','transform:translateX(-40px);');
+					window.isDeleteShow = false;
+					window.touchX = '';
 				}
 			}
-		}
-
-	}
-}else{
-	//无数据
-	$(".allgoods>ul").html('<h3 style="text-align:center;padding:5% 0;">暂无内容，敬请期待！<div></div></h3>');
-	// console.log('暂无商品');
-}
-
-// 遍历偏移量
-for(var i=0; i<categoryArr.length; i++){
-	isLoad.push([false]);
-	$("#content").find('.goodsBlock').eq(i).css({left: i*100 +'vw'});
-	// console.log($("#content").find('.goodsBlock').attr("index"))
-}
-// console.log('isLoad: ',isLoad)
-/*
-	如果第一页有内容则加载第一页
- */
-console.log('_htmlArr: ',_htmlArr)
-if(_htmlArr[0]){
-	// $(".allgoods>ul").eq(0).html(_htmlArr[0]);
-	// console.log($("#content>div").eq(0).attr("index"))
-	var html = _htmlArr[tab_now].substr(0,_htmlArr[0].length-1);
-	if(html.split('|').length <= 1){
-		if(_htmlArr[0].lastIndexOf('|') == _htmlArr[0].length-1){
-			_htmlArr[0] = _htmlArr[0].substring(0, _htmlArr[0].length-1);
-		}
-		$(".allgoods>ul").eq(0).html(_htmlArr[0]);
-	}else{
-		if(html.lastIndexOf('|') == html.length-1){
-			html = html.substring(0, html.length-1);
-		}
-		//如果数据多余6条， 则先加载6条，剩下的懒加载
-		$(".allgoods>ul").eq(0).html(html.split('|')[0]);
-	}
-	
-}else{
-	$(".allgoods>ul").eq(0).html('<h3 style="text-align:center;padding:5% 0;">暂无内容，敬请期待！<div></div></h3>');
-	$('#container').off('scroll');
-}
-
-/*********** 数据遍历 -- 结束 **************/
-
-
-/*
-	点击顶部导航栏，切换订单状态
- */ 
-var len = 10;
-var ullen;	//记录当前分类的数据状态，有则不用重新生成
-
-$("#header").on("click",'.tab',function(){
-	// 回到顶部
-	document.body.scrollTop = -10000;
-	$("#container")[0].scrollTop = -10000;
-	// console.log(document.body.scrollTop, $("#container")[0].scrollTop)
-	var _this = $(this);
-	//如果当前分类下有商品, 且允许滚动， 否则禁止
-	if(_htmlArr[_this.attr("index")] && ullen < 1){	
-		
-		$('#container').css({
-			overflowY : 'scroll'
-		})
-	}else if(!_htmlArr[_this.attr("index")]){
-
-		$('#container').css({
-			overflowY : 'hidden'
-		})
-	}
-	// 当前点击的tab
-	tab_now = Number($(this).attr('index'));
-	// 调用content 切换函数
-	tabContent($(this));
-	// loading
-	$("#loading").fadeIn('fast');
-	for(var i=0; i<$('.goodsBlock').length; i++){
-		$('.goodsBlock').eq(i).fadeOut('fast');
-	}
-	$('.goodsBlock').eq(tab_now).fadeIn('fast');
-	setTimeout(function(){
-		$("#loading").fadeOut('fast');
-	},600);
-	
-	sessionStorage.setItem('shopCid', $(this).attr('cid'));
-	var _height = $('.goodsBlock').eq(tab_now)[0].offsetHeight + $(".shopTop")[0].offsetHeight;
-	// 防止多余滚动
-	$('#container').css({
-		height: _height + 'px'
-	})
-	$('#content').css({
-		height: $('.goodsBlock').eq(tab_now)[0].offsetHeight + 'px'
-	})
-	// console.log('tab_now: ',tab_now);
-	lazyArr = _htmlArr[tab_now].split('|');
-	// 监听滚动
-	$('#container').on('scroll', function(){
-		// console.log('++++++++++++++ scroll ++++++++++++++');
-		// console.log('408 ',isLoad[tab_now][0]);
-		if(isLoad[tab_now][0] == false){
-			lazyLoad($(this));
-		}
-	})
-
-	console.log('lazyArr: ',lazyArr)
-});
-// 切换的函数
-function tabContent(_this){
-
-	ullen = $(".allgoods").eq(_this.attr("index")).find("ul")[0].childElementCount;
-	//如果当前分类下有商品, 且页面未生成，则添加数据，否则不改动
-	if(_htmlArr[_this.attr("index")] && ullen < 1){	
-		var nowhtml = _htmlArr[_this.attr("index")];
-		// console.log(nowhtml.lastIndexOf('|')==nowhtml.length-1);
-
-		if(nowhtml.lastIndexOf('|') == nowhtml.length-1){
-			nowhtml = nowhtml.substring(0,nowhtml.length-1);
-
-			$(".allgoods>ul").eq(_this.attr("index")).html(nowhtml);
-		}else{
-
-			$(".allgoods>ul").eq(_this.attr("index")).html(nowhtml);
-		}
-		// console.log(nowhtml);
-		
-		$('#container').css({
-			overflowY : 'scroll'
-		})
-	}else if(!_htmlArr[_this.attr("index")]){
-		$(".allgoods>ul").eq(_this.attr("index")).html('<h3 style="text-align: center;padding:5% 0;">暂无内容，敬请期待！<div></div></h3>');
-
-		$('#container').css({
-			overflowY : 'hidden'
-		})
-	}
-	// console.log('ullen: ',ullen)
-	$('#header>span').removeClass('tabnow');
-	_this.addClass('tabnow');
-
-	/******* 切换联动 *******/
-
-	//切换内容
-	$("#content")
-	.css({transform: 'translateX(-'+ _this.attr("index") +'00vw)'});
-	//横线移动
-	$("#line").css({left: _this[0].offsetLeft+_this[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
-
-	/******* 切换联动 *******/
-	if(!_htmlArr[tab_now]){
-		$('#container').off('scroll');
-	}
-}
-// console.log($('.tab')[0].offsetLeft+$('.tab')[0].clientWidth-$("#line")[0].clientWidth/2)
-// 页面加载时顶部分类横线位置初始化
-
-$("#line").css({left: $('.tab')[0].offsetLeft+$('.tab')[0].clientWidth/2-$("#line")[0].clientWidth/2 + 'px'});
-$('#header>span').eq(0).addClass('tabnow');
-
-
-// 状态恢复(点击过去商品详情后，后退回来商城首页)
-if(sessionStorage.getItem('shopCid')){
-	var cid = Number(sessionStorage.getItem('shopCid'));
-	tabContent($('.tab').eq(cid));
-	tab_now = +cid;
-	$('#header')[0].scrollLeft = $('.tab').eq(tab_now-1)[0].offsetLeft;
-	// console.log($('#header')[0].scrollLeft)
-	// 初始化
-	// sessionStorage.setItem('shopCid', '');
-	// console.log('tab_now: ',tab_now);
-}
-
-/************** 懒加载 -- 开始 ***************/
-/*
-	监听滚动事件
- */ 
-	// loading 动画
-$("#loading").fadeOut('slow');
-// '|' 每6个li 添加一次，所以超过6个商品时，每次拉倒底部，再加载6个
-lazyArr = _htmlArr[tab_now].split('|');
-
-// console.log('lazyArr: ', lazyArr);
-
-var num = 1;	//加载次数， 达到当前分类数组长度时，停止滚动
-var scrollH, offsetH, scrollTop;
-$('#container').on('scroll', function(){
-	// console.log('++++++++++++++ scroll ++++++++++++++');
-	console.log(isLoad[tab_now][0])
-	if(isLoad[tab_now][0] == false) {		//停止懒加载标志: isLoad[tab_now][0] == true
-		lazyLoad($(this));
-	}
-})
-// 懒加载函数
-function lazyLoad(_this){
-
-	/*
-		触底加载，直到没有数据
-		tab_now: 当前点击的tab
-	 */
-		scrollH = _this[0].scrollHeight;
-		offsetH = _this[0].offsetHeight;
-		scrollTop = _this[0].scrollTop;
-
-	// console.log(scrollTop/(scrollH - offsetH));
-	// console.log('scrollHeight - offsetHeight: ', scrollH - offsetH);
-	// console.log('scrollTop: ',scrollTop);
-
-	if(scrollTop/(scrollH - offsetH) >= 0.7){	//触底加载，直到没有数据
-		// console.group()
-		// console.log('scrollAppend: ',lazyArr[num]);
-
-		if(_htmlArr[tab_now]){	//对应分类下有多数据才添加到页面
-			if(lazyArr[num+1] && lazyArr[num+1] != '|'){
-				$(".allgoods>ul").eq(tab_now).append(lazyArr[num+1]);
-				num++;
-			}else{	// 如果没有数据了， 解绑监听scroll
-				$('#container').off('scroll');
-				$(".allgoods>ul").eq(tab_now).append('<li class="nomore"><p>已无更多数据，休息一下吧！</p><span></span><span></span></li>');
-				num = 1;
-				isLoad[tab_now] = true;		//停止懒加载标志
+			// console.log('window.touchX - e.changedTouches[0].pageX: ',window.touchX - e.changedTouches[0].pageX);
+			// console.groupEnd();
+		},
+		slideEnd() {
+			window.touchX = '';
+		},
+		// 删除购物车商品
+		deleteCart(index, gid, e) {
+			var vm = this;
+			var el = e.currentTarget.parentNode;
+			console.log('gid: ',gid);
+			console.log('index: ',index);
+			layer.confirm('确认删除？删除后无法恢复！', 
+	            {
+	              btn: ['确定','取消'] //按钮
+	            }, 
+	            function(){
+		            // 发送ajax让后台删除这条地址在数据库的数据
+		            // $.ajax({
+		            // 	url: '{{:U("Address/del_address")}}',
+		            // 	type: 'post',
+		            // 	data: {'id': address_id},
+		            // 	success: function(res){
+		            // 		console.log('成功！', res)
+		            // 		//后台返回参数确认删除成功
+		            // 		if(res.code == 200){
+		            // 			_this.parents(".address").remove();
+		            // 			layHint('删除成功！');
+		            // 		}else{
+		            // 			layHint('删除失败！');
+		            // 		}
+		            // 	},
+		            // 	error: function(res){
+		            // 		console.log('失败！', res)
+		            // 		layHint('删除失败！');
+		            // 	}
+					// })
+					var cartData = JSON.parse(localStorage.getItem('cartData'));
+					cartData.splice(index, 1);
+					vm.cartList = cartData;
+					localStorage.setItem('cartData', JSON.stringify(cartData));
+					layuiHint('删除成功！');
+		            return true;
+	            },
+	            function(){
+	                layer.msg('已取消！', {icon: 1});
+	                return false;
+	            }
+	        );
+			
+		},
+		// 购物车勾选
+		cartSelect(gid, price, index, num, e) {
+			var vm = this;
+			var el = e.currentTarget;
+			var src = el.querySelector('img').getAttribute('src');
+			//gid商品id, price单价, index序号
+			console.log('gid: %s, price: %s, index: %s',gid, price, index);
+			if(src.indexOf('select') < 0){	// 选中
+				el.querySelector('img').setAttribute('src', vm.selectedSrc);
+				vm.moneyCalc[index] = {gid: gid,price: price,num: num};
+			}else{	// 取消选中
+				el.querySelector('img').setAttribute('src', vm.emptySrc);
+				vm.moneyCalc[index] = '';
+			}
+			
+			// 同步结算勾选数量、金额
+			vm.calculator();
+		},
+		// 计算金额
+		calculator() {
+			var vm = this;
+			vm.checkNum = 0;
+			vm.checkMoney = 0;
+			for(var i=0; i<vm.moneyCalc.length; i++){
+				if(vm.moneyCalc[i]){
+					vm.checkNum++;
+					vm.checkMoney += Number(vm.moneyCalc[i].price)*Number(vm.moneyCalc[i].num);
+				}
+			}
+			cBlock = document.querySelectorAll('.cBlock');	// 购物车商品
+			// 全选
+			// 购物车商品打钩位置
+			var cartSelectAll = document.querySelector('.cartCalc').querySelector('img');
+			if(vm.checkNum == cBlock.length){
+				cartSelectAll.setAttribute('src', vm.selectedSrc);
+			}else{
+				cartSelectAll.setAttribute('src', vm.emptySrc);
+			}
+		},
+		// 修改数量
+		numChange(bool, index, e) {
+			var el = e.currentTarget;
+			var span = el.parentNode.querySelectorAll('span')[0];
+			var input = el.parentNode.querySelector('input');
+			var vm = this;
+			console.log('bool: ',bool);
+			console.log('vm.moneyCalc[index]: ',vm.moneyCalc);
+			console.log('vm.moneyCalc[index]: ',vm.moneyCalc[+index]);
+			if(bool === 1){
+				// 加
+				if(vm.moneyCalc[+index]){
+					++vm.moneyCalc[+index].num;
+				}
+				// 数量变化
+				vm.cartList[index].num++;
+				span.style.background = '#fff';
+			}else if(bool === -1){
+				// 减
+				if(vm.moneyCalc[+index] && vm.moneyCalc[+index].num >= 2){
+					--vm.moneyCalc[+index].num;
+				}else if(vm.moneyCalc[+index] && vm.moneyCalc[+index].num == 1){
+					span.style.background = '#f1f1f1';
+				}
+				// 数量变化
+				if(vm.cartList[index].num >= 2){
+					vm.cartList[index].num--;
+				}
+			}else if(bool === 11){
+				console.log('val: ',el.value-0,typeof (el.value-0) );
+				// 手动修改
+				if(+el.value >= 1 && typeof(el.value-0) === 'number'){
+					vm.cartList[index].num = el.value-0;
+				}else{
+					el.value = 1;
+				}
+				if(vm.moneyCalc[+index]){
+					vm.moneyCalc[+index].num = el.value;
+				}
+			}
+			vm.calculator();
+		},
+		// 全选、全不选
+		checkAll(e) {
+			var img = e.currentTarget.querySelector('img');
+			cBlock = document.querySelectorAll('.cBlock');
+			var cartCheckAll = document.querySelectorAll('.cBlock>.fl>img');
+			var vm = this;
+			if(vm.checkNum != vm.cartList.length){
+				// 全选操作
+				console.log('all');
+				vm.moneyCalc.length = 0;	// 清空
+				for(var i=0; i<vm.cartList.length; i++){
+					vm.moneyCalc.push({
+						gid: vm.cartList[i].gid,
+						price: vm.cartList[i].price,
+						num: vm.cartList[i].num
+					})
+					
+					//打钩
+					cartCheckAll[i].setAttribute('src', vm.selectedSrc);
+				}
+				img.setAttribute('src', vm.selectedSrc);
+			}else{
+				// 取消全选操作
+				console.log('none');
+				// 清空
+				vm.moneyCalc.length = 0;
+				img.setAttribute('src', vm.emptySrc);
+				for(var i=0; i<vm.cartList.length; i++){
+					//打钩清空
+					cartCheckAll[i].setAttribute('src', vm.emptySrc);
+				}
+			}
+			console.log('vm.moneyCalc: ',vm.moneyCalc);
+			// 同步结算勾选数量、金额
+			vm.calculator();
+		},
+		// 点击结算
+		goPay() {
+			var vm = this;
+			console.log('vm.moneyCalc: ',vm.moneyCalc);
+			if(!vm.moneyCalc.length){
+				// 未选中
+				return
 			}
 		}
-		
 	}
-	// console.log('tab_now: ', tab_now);
-	// console.log('num: ', num);
-	// console.log('lazyArr.length: ', lazyArr.length);
-	// console.groupEnd()
-}
-
-/*********** 懒加载 -- 结束 ************/
+})

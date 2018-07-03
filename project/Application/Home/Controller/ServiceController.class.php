@@ -28,7 +28,7 @@ class ServiceController extends ServiceCommonController
         $map['result'] = 1;
         $work[1] = $workModel->where($map)->count();
 
-        $map['result'] = 3;
+        $map['result'] = 2;
         $work[2] = $workModel->where($map)->count();
 
         $map['result']=['egt',3];

@@ -73,6 +73,7 @@ class DeviceController extends CommonController
                 "city_id"       => I('city_id'),
                 "area_id"       => I('area_id'),
             ];
+            $data['province'] = I('province');
             $data['addressinfo'] = json_encode($address);
 
             $user_device->where('uid='.$uid)->save(['status'=>0]);

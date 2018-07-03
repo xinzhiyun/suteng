@@ -22,9 +22,15 @@ class CommonController extends Controller
         $weixin = new WeixinJssdk;
 
         // 前端调试通道
+
         // $_SESSION['open_id'] = C('open_id');
 //        $_SESSION['open_id'] = 'onLe70SfHSwyjUrqtIgt4MGN7mI8';
         // dump($_SESSION);exit;
+
+        $_SESSION['open_id'] = C('open_id');
+       // $_SESSION['open_id'] = 'onLe70bgRT5ayim5QsWjfoAM1ETo';
+
+
         // 获取用户open_id
         if(empty($_SESSION['open_id'])){
 
@@ -345,7 +351,8 @@ class CommonController extends Controller
                             $_SESSION['user'] = M('users')->where($userWhere)->find();
 
                             if(empty(session('device.did'))){
-                                $this->redirect("Device/index");
+                                //$this->redirect("Device/index");
+                                $this->redirect("pay/deviceIndex");
                             }
                         }
 

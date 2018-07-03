@@ -189,7 +189,7 @@
 		</p>
 		<p>
 			<label for="">快递单号：</label>&emsp;
-			<input type="text" class='recexpressnum'placeholder="请输入快递单号" onclick='scrollUp(this)'>
+			<input type="text" class='recexpressnum' placeholder="请输入快递单号" onclick='scrollUp(this)'>
 		</p>
 		<button class='exconfirm' onclick='exconfirm()'>确认</button>
 	</div>
@@ -639,7 +639,10 @@
                     $("#dingdanDaifahuo").html('<h2 style="width: 100%;padding:20vh 0;text-align:center;">'+res.message+'</h2>');
                     $('.waitsend').text(0);
                 }
-            }
+			},
+			error: function(err) {
+				console.log("待发货err", err);
+			}
         });
 
 		$.ajax({//2：待收货
@@ -1271,8 +1274,8 @@
 			toaddr.css({border: '1px solid red'});
 			return
 		}else{
-			if(!nameReg.test(toaddr.val().trim())){
-				layuiHint('地址只能含有中文、英文、数字、下划线');
+			if(!/^(?=.*?[\u4E00-\u9FA5])[\d\u4E00-\u9FA5]+/.test(toaddr.val().trim())){
+				layuiHint('地址只能含有中文、英文、数字');
 				toaddr.css({border: '1px solid red'});
 				return
 			}else{
@@ -1337,6 +1340,7 @@
 			return
 		}else{
 			if(!/[a-zA-Z0-9]/.test(recexpressnum.val().trim())){
+				layuiHint('快递单号只能英文数字组合');
 				recexpressnum.css({border: '1px solid red'});
 				return
 			}else{
@@ -1424,8 +1428,13 @@
 
 	// 点击退货输入框
 	function scrollUp(el){
-		expressoffsetTop = el.parentNode.offsetTop;
-		expressPanel.style.transform = 'translateY(-'+ expressoffsetTop/2 +'px)';
+		if(window.__wxjs_is_wkwebview){ // IOS
+		
+		}else{	// 非IOS（webkit内核）
+			expressoffsetTop = el.parentNode.offsetTop/2.2;
+			console.log('expressoffsetTop: ',expressoffsetTop);
+			expressPanel.style.transform = 'translateY(-'+ expressoffsetTop +'px)';
+		}
 	}
 </script>
 </body>

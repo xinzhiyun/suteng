@@ -117,6 +117,8 @@
                                             <td>{{$val.create_at|date='Y-m-d H:i:s',###}}</td>
 
                                             <td>
+                                                <a class="btn btn-outline btn-success _showTime">工单进度</a>
+
                                                 <if condition="$val['is_examine'] eq 0">
                                                     <a class="btn btn-outline btn-success acction_examine" href="javascript:;">审核</a>
                                                     <elseif condition="$val['is_examine'] eq 2"/>
@@ -458,6 +460,27 @@
                     </div>
                 </div>
             </div>
+    <!-- 查看详情开始 -->
+    <div class="modal inmodal bs-example-modal-lg" id="st-showTime" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" >
+                        工单进度
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-bordered table-hover table-condensed showTimeInfo">
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </block>
 
 <block name="myjs">
@@ -521,7 +544,7 @@
 
     });
 
-    function getInfo(url, data, Callback) {
+    function getInfo(url, data, Callback='') {
         if(url){
             $.ajax({
                 url:url,
@@ -693,6 +716,48 @@
         $('.edit_errmsg').text('');
         $('#st-edit').modal('show');
     });
+    $('._showTime').click(function () {
+        var Url="{{:U('Work/showWorkTimeInfo')}}";
+        var obj = $(this).parents('tr');
+        var id = obj.data('id');
+        var data ={
+            'id':id
+        };
+
+        getInfo(Url, data, function (res) {
+            var _html = '';
+            _html += '<tr><td>时间</td><td>进度</td><td>详情</td></tr>';
+
+            $.each(res.data,function (i,v) {
+                var val = JSON.parse(v.content);
+                console.dir(val);
+                _html += '<tr>';
+                    _html += '<td>';
+                    _html += v.time;
+                    _html += '</td>';
+                    _html += '<td>';
+                    _html += v.title;
+                    _html += '</td>';
+                    _html += '<td>';
+                    for (let j = 0; j < val.length; j++) {
+                        _html += val[j]['title'];
+                        if(val[j]['value']){
+                            _html += val[j]['value'];
+                        }
+                        _html += '<br>';
+                    }
+                    _html += v.time;
+                    _html += '</td>';
+
+                _html += '</tr>';
+
+            })
+            $('.showTimeInfo').html(_html);
+
+
+            $('#st-showTime').modal('show');
+        });
+    });
 
     $('#edit_submit').click(function(){        
         var editdata = {
@@ -739,6 +804,7 @@
         $(this).children('div').addClass("checked").parent().siblings().children('div').removeClass("checked");
         $(this).children('div > input').attr("checked").parent().siblings().children('div > input').removeAttr("checked");
     })
+         
 
     
     function details(id) {  
@@ -749,25 +815,24 @@
            data: "id=" + id,
            success: function(msg){
                 if (msg.code == 10) {
-                    msg.data.name?name=msg.data.name:name="";
-                    msg.data.phone?phone=msg.data.phone:phone="";
-                    msg.data.time?time=msg.data.time:time="";
-                    msg.data.diqu = msg.data.province + ' ' + msg.data.city + ' ' + msg.data.district;
-                    console.log(id)
+                    // msg.data.name?var name=msg.data.name:name="";
+                    // msg.data.phone?var phone=msg.data.phone:phone="";
+                    // msg.data.time?var time=msg.data.time:time="";
+                    var diqu = msg.data.province + ' ' + msg.data.city + ' ' + msg.data.district;
 
                     $('#details_number').text(msg.data.number);
                     $('#details_title').text(msg.data.title);                   
-                    $('#details_name').text(msg.data.Vendors.name);
-                    $('#details_phone').text(msg.data.Vendors.phone);
-                    $('#details_dw_name').text(name);
-                    $('#details_dw_phone').text(phone);
+                    $('#details_name').text(msg.data.kname);
+                    $('#details_phone').text(msg.data.kphone);
+                    $('#details_dw_name').text(msg.data.name);
+                    $('#details_dw_phone').text(msg.data.phone);
                     $('#details_type').text(msg.data.type);
                     $('#details_content').text(msg.data.content);
-                    $('#details_diqu').text(msg.data.diqu);
+                    $('#details_diqu').text(diqu);
                     $('#details_address').text(msg.data.address);
                     $('#details_result').text(msg.data.result);
                     $('#details_create_at').text(msg.data.create_at);
-                    $('#details_time').text(time);                    
+                    $('#details_time').text(msg.data.time);
                 }
            }
         });

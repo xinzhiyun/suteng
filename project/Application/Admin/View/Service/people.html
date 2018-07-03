@@ -20,7 +20,7 @@
                             <!--</a>-->
                         <!--</div>-->
                     </div>
-                <form method="get" action="{{:U('people')}}" class="form-inline" id='searchdiv'>
+                <form method="get" action="{{:U('people')}}" class="form-inline col-md-9" id='searchdiv'>
                     <!--<div class="form-group where_area_box">-->
                         <!--<label for="where_area">地区过滤</label>-->
                         <!--<select name="province_id" class="form-control"  id="where_area">-->
@@ -42,7 +42,7 @@
                             <!--</volist>-->
                         <!--</select>-->
                     <!--</div>-->
-                    <div class="form-group " >
+                    <div class="form-group col-md-9" >
                         <select name="key" class="form-control where_key" >
                             <option class="where_key_company" value="company">服务站名称</option>
                             <!--<option class="where_key_user" value="user">分配用户名</option>-->
@@ -356,7 +356,23 @@
             data.sn =  $("#editformdata input[name='sn']").val();
             data.phone =  $("#editformdata input[name='phone']").val();
             data.password =  $("#editformdata input[name='password']").val();
-
+                
+            if(!data.name){
+                parent.layer.msg('姓名不能为空');
+                return
+            }
+            if(!data.sn){
+                parent.layer.msg('工号不能为空');
+                return
+            }
+            if(!data.phone){
+                parent.layer.msg('手机号不能为空');
+                return
+            }
+            if(!data.password){
+                parent.layer.msg('密码不能为空');
+                return
+            }
             getInfo(url,data)
         }
 

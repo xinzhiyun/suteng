@@ -73,7 +73,7 @@ class VendorsController extends Controller
         // 本月统计
         $monthData = $this->showTimeData($vendor_code,$vendor['code'],$month);
         // 查询下属用户总数量
-        $userNum = $this->showUserData($vendor_code,$vendor['code']);
+        $userNum = $this->showUserData('code',$vendor['code']);
         // 查询下属分销商总数量
         $verdorNum = $this->showVerdorData($vendor['code']);
 
@@ -1053,18 +1053,25 @@ class VendorsController extends Controller
         }
 
         // 昨日订单时间区间
-        $showYesterdayUserOrder['o.addtime'] = $time;
-        $showYesterdayUserOrder['u.'.$vendor] = $code;
+//        $showYesterdayUserOrder['o.addtime'] = $time;
+//        $showYesterdayUserOrder['u.'.$vendor] = $code;
 
         // 昨日会员订单
-        $YesterdayUserOrderData = M('shop_order')
-            ->alias('o')
-            ->where($showYesterdayUserOrder)
-            ->join('__USERS__ u ON o.uid = u.id','LEFT')
-            ->field('o.id,o.g_price')
-            ->select();
+//        $YesterdayUserOrderData = M('shop_order')
+//            ->alias('o')
+//            ->where($showYesterdayUserOrder)
+//            ->join('__USERS__ u ON o.uid = u.id','LEFT')
+//            ->field('o.id,o.g_price')
+//            ->select();
+        // 改版
+        $year  = date('Y',time());
+        $month = date('m',time());
+        $showYesterdayUserOrder[] = "Year(create_time) = ".$year." and Month(create_time) = ".$month;
 
         // 2.昨日会员订单数量
+        $YesterdayUserOrderData = M('earnings')->where($showYesterdayUserOrder)->select();
+
+
         $YesterdayUserOrderNum = 0;
 
         // 3.昨日会员订单总金额
@@ -1103,16 +1110,12 @@ class VendorsController extends Controller
         // A级分销商
         $showYesterdayUser[$vendor] = $code;
 
-        // 昨日新增会员
-        $YesterdayUserData =  M('users')->where($showYesterdayUser)->field('id')->select();
+        $userInfo = M('users')->where($showYesterdayUser)->field('id')->find();
 
-        // 1.统计昨日新增会员数量
-        $YesterdayUserNum = 0;
-        if(!empty($YesterdayUserData)){
-            $YesterdayUserNum = count($YesterdayUserData);
-        }
+        $map['path'] =['like',"%".$userInfo['id']."%"];
+        $YesterdayUserData = M('users')->where($map)->count('id');
 
-        return $YesterdayUserNum;
+        return $YesterdayUserData;
     }
 
     /**

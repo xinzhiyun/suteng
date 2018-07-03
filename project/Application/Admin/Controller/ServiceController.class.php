@@ -190,9 +190,9 @@ class ServiceController extends CommonController
 
             $res = M('service_apply')->where('id='.$post['id'])->save($saveData);
             if ($res) {
-                E('开通成功',200);
+                E('操作成功',200);
             }
-            E('添加失败,请重试!',201);
+            E('操作失败,请重试!',201);
 
         } catch (\Exception $e) {
             $this->toJson($e);
@@ -622,8 +622,7 @@ class ServiceController extends CommonController
             $saveData['sn'] = $data['sn'];
             $saveData['name'] = $data['name'];
             $saveData['phone'] = $data['phone'];
-
-            $res = M('service_users')->where('id='.$data['id'])->save($_POST);
+            $res = M('service_users')->where('id='.$data['id'])->save($saveData);
             if($res){
                 E('修改成功',200);
             }else{

@@ -12,9 +12,13 @@
 
 /*搜索栏*/
 #searchdiv {
-	display: block;
+    display: block;
+    position: relative;
 	float: right;
 	margin-right: 60px;
+}
+#searchdiv>div {
+    float: right;
 }
 
 #searchdiv::after {
@@ -32,4 +36,11 @@
 }
 #searchdiv .btn {
     margin-bottom: 0;
+    /* position: absolute; */
+    right: -20px;
 }
+
+/*文本超出隐藏*/
+.text_ellipsis{overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;}

@@ -1,0 +1,388 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+    <style type="text/css">
+        img{
+            width: 60px;
+            height: 60px;
+        }
+    </style>
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>商城管理 <small>商品回收站</small></h5>
+                    <div class="ibox-tools">            
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                        <a href="{{:U('goodsHuishou')}}">回收站商品</a>
+                    </div>
+                </div>
+                <form method="get" action="">
+                    <div class="input-group col-md-4" id='searchdiv'>
+                        <select name="key" class="form-control" name="account">
+                            <option value="c.name">分类名</option>
+                            <option value="g.name">名称</option>
+                        </select>
+                        <input type="text" name="keywords" placeholder="输入搜索关键字" class="input form-control"   style="width:60%">
+                        <span class="input-group-btn" style="display: inline-block;">
+                                <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
+                        </span>
+                    </div>
+                </form>
+                <div class="ibox-content">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    商品ID
+                                </th>
+                                <th>
+                                    分类
+                                </th>
+                                <th>
+                                    名称
+                                </th>
+                                <th>
+                                    图片
+                                </th>
+                                <th>
+                                    单价
+                                </th>
+                                <th>
+                                    运费
+                                </th>
+                                <th>
+                                    库存
+                                </th>
+                                <th>
+                                    是否安装
+                                </th>
+                                <th>
+                                    是否租赁
+                                </th>
+                                <th>
+                                    状态
+                                </th>
+                                <th>
+                                    添加时间
+                                </th>
+                                <th>
+                                    更新时间
+                                </th>
+                               <!--  <th>
+                                    操作
+                                </th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <empty name="data">
+                                <tr><td colspan="12">暂无商品数据</td></tr>
+                            <else />
+                                <volist name="data" id="v">
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" class="fd" name="{{$v['gid']}}">
+                                            {{$i}}
+                                        </td>
+                                        <td>
+                                            {{$v['cname']}}
+                                        </td>
+                                        <td>
+                                            {{$v['name']}}
+                                        </td>
+                                        <td>
+                                            <img src="{{$v['gpic']}}">
+                                        </td>
+                                        <td>
+                                            <span goods="{{$v.id}}" class="btn btn-success select">查看单价</span>
+                                        </td>
+                                        <td> 
+                                            <span cgoods="{{$v.id}}" class="btn btn-success cselect">查看运费</span>
+
+                                        </td>
+                                        <td>
+                                            {{$v['stock']}}
+                                        </td>
+                                        <td>
+                                            <switch name="v.is_install">
+                                                <case value="0">否</case>
+                                                <case value="1">是</case>
+                                            </switch>
+                                        </td>
+                                        <td>
+                                            <switch name="v.is_hire">
+                                                <case value="0">否</case>
+                                                <case value="1">是</case>
+                                            </switch>
+                                        </td>
+                                        <td>
+                                            <switch name="v.status">
+                                                <case value="0">
+                                                    <a st="0" class="btn btn-sm btn-default disable-button" aid="{{$v['id']}}">下架</a>
+                                                </case>
+                                                <case value="1">
+                                                    <a st="1" class="btn btn-sm btn-success disable-button" aid="{{$v['id']}}">上架</a>
+                                                </case> 
+                                            </switch>
+                                        </td>
+                                        <td>
+                                            {{$v['addtime']|date='Y-m-d H:i:s',###}}
+                                        </td>
+                                        <td>
+                                            {{$v['updatetime']|date='Y-m-d H:i:s',###}}
+                                        </td>
+                                       <!--  <td>
+                                            <div class="btn-group">
+                                                <a id="del" class="btn btn-outline btn-success deletBnt" goodsName="{{$v['name']}}" goodsId="{{$v['id']}}">
+                                                    放到回收站
+                                                </a>
+                                                <a href="{{:U('goodsDetail')}}?id={{$v['id']}}"  class="btn btn-outline btn-success">
+                                                    商品详情
+                                                </a>
+                                                <a href="{{:U('goodEdit')}}?id={{$v['id']}}" disabled class="btn btn-outline btn-success">
+                                                    修改
+                                                </a>
+                                            </div>
+                                        </td> -->
+                                    </tr>
+                                </volist>
+                            </empty>
+                        </tbody>
+                    </table>
+                    <div>
+                        {{$show}}
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <!-- 弹窗 -->
+    <div class="modal inmodal" id="st-pic-add" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        添加图片
+                    </h4>
+                </div>
+                <!-- <div class="modal-body">
+                    <form id="pic" onsubmit="false" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="gid" value="">
+                        <table class="table table-striped table-bordered table-hover table-condensed">
+                            <tr>
+                                <th width=25%>
+                                    请选择图片
+                                </th>
+                                <td>
+                                    <div class="form-group">
+                                        <input class="input-medium form-control" type="file" name="pic[]" multiple accept="image/*">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                </th>
+                                <td>
+                                    <input class="btn btn-success add-pic" type="button" value="添加">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div> -->
+            </div>
+        </div>
+
+    </div>
+    
+
+    <!-- 显示详情价格页面 -->
+    <div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body my_content">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增内容：显示快递运费详情 -->
+    <div class="modal inmodal fade" id="myCourier" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body gContent">
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script>
+        $('#edit_submit').click(function(){
+            var aHTML = $('#description').val();
+            $.ajax({
+                url:'{{:U("admin/shop/addDescAction")}}',
+                type:'post',
+                data:{'desc':aHTML,'gid':gid},
+                success:function(res){
+                    console.log(res);
+                    if(res.code == 200){
+                        $('#st-edit').modal('hide');
+                        location.reload();
+                        parent.layer.msg('修改成功');
+                    } else{
+                        $('#st-edit').modal('hide');
+                        parent.layer.msg(res.msg);
+                    }
+                }
+            });
+        })
+       
+        
+
+        $('.btn-group').on('click','.deletBnt',function(e){
+            var goodsId = $(this).attr('goodsId');
+            var goodsName = $(this).attr('goodsName');
+            parent.layer.confirm('确认将'+goodsName+'这款商品放到回收站？', {
+                btn: ['确认','取消'], //按钮
+                shade: true //不显示遮罩
+            }, function(){
+                $.ajax({
+                    url:'{{:U("goodsDel")}}',
+                    type:'post',
+                    dataType:'json',
+                    data:{'id':goodsId},
+                    success:function(res){
+                        location.reload();
+                        parent.layer.msg(res.msg);
+                    }
+                });
+            }, function(){
+                parent.layer.msg('已取消', {shift: 6});
+            });
+        })
+
+        // 上架、下架 状态status: 1-下架 0-上架
+        $("td").on('click','.disable-button',function(e){
+            var status = $(this).attr('st');
+            var id = $(this).attr('aid');
+            // console.log(status);
+            status == 0 ? msg = '上架' : msg = '下架';
+                parent.layer.confirm("确定"+ msg +"吗？", {
+                    btn: ['确认', '取消'], //按钮
+                    shade: true //不显示遮罩
+                }, function() {
+                    // alert(status);
+                    $.ajax({
+                        url:'{{:U("edidStatus")}}',
+                        data:{'id':id,'status':status},
+                        type:'post',
+                        dataType:'json',
+                        success:function(res){
+                            console.log(res);
+                            if(res.code == 200){
+                                location.reload();
+                                parent.layer.msg(res.msg);
+                            }
+                        }
+                    });
+                }, function() {
+                    parent.layer.msg("已取消", {shift: 6});
+                })
+ 
+            
+        })
+        console.log()
+        //显示单价详细
+        $("td").on('click','.select', function(e){
+            $('#myModal6').modal('show');
+            var gid = $(this).attr('goods');
+            var html = "";
+            $.ajax({
+                url:'{{:U("price")}}',
+                type:'post',
+                data:{'gid':gid},
+                success:function(res){
+                    console.log(res);
+                    console.log(res.length)
+                    for (var i = res.length - 1; i >= 0; i--) {
+                        var g;
+                        // switch(res[i]['grade']){
+                        //     case '0':
+                        //         g = "非企业会员";
+                        //         break;
+                        //     case '1':
+                        //         g = "普通会员";
+                        //         break;
+                        //     case '2':
+                        //         g = "VIP会员";
+                        //         break;
+                        //     case '3':
+                        //         g = "标准会员";
+                        //         break;
+                        //     case '4':
+                        //         g = "钻石会员";
+                        //         break;
+                        // }
+                        
+                        switch(res[i]['grade']){
+                            case '0':
+                                g = "普通会员";
+                                break;
+                            case '1':
+                                g = "个人会员";
+                                break;
+                            case '2':
+                                g = "非会员";
+                                break;
+                            case '3':
+                                g = "黄金会员";
+                                break;
+                            case '4':
+                                g = "钻石会员";
+                                break;
+                        }
+                        html+="<p><span>"+g+"</span>:<span>"+res[i]['price']+"</span></p>"
+                    }
+                    $(".my_content").html(html);
+                }
+            });
+        });
+        // 普通6600  钻石6400  黄金6500   非会员6300  个人6700      
+        // 0 2 3 4 1
+
+        //显示运费详细
+        $("td").on('click','.cselect', function(e){
+            $('#myCourier').modal('show');
+            var gid = $(this).attr('cgoods');
+            var html = "";
+            $.ajax({
+                url:'{{:U("goodsCourierList")}}',
+                type:'post',
+                data:{'gid':gid},
+                success:function(res){
+                    // console.dir(res);
+                    if (res.length == 0) {
+                        html += "还没设置快递运费";
+                    } else {
+                        for (var i = res.length - 1; i >= 0; i--) {
+                            html+="<span>"+res[i]['name']+"</span>:<span>"+res[i]['cprice']+"</span><br><br>"
+                        }
+                    }
+                    
+                    $(".gContent").html(html);
+                }
+            });
+        });
+
+    </script>
+
+</block>

@@ -1,0 +1,143 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+    <style type="text/css">
+        img{
+            width: 60px;
+            height: 60px;
+        }
+    </style>
+</block>
+
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>商城管理 <small>首页设置</small></h5>
+                    <div class="ibox-tools">
+                        <i class="fa fa-user-plus"></i>
+                        <a href="{{:U('bannerAddList')}}">添加banner</a>
+                    </div>
+                </div>
+                <form method="get" action="">
+                    <div class="input-group col-md-4" id='searchdiv'>
+                        <input type="text" name="keywords" placeholder="请输入添加banner名" class="input form-control"   style="width:95%">
+                        <span class="input-group-btn" style="display: inline-block;">
+                                <input type="submit" class="btn btn btn-primary" name=""> <i class="fa fa-search"></i> 搜索</button>
+                        </span>
+                    </div>
+                </form>
+                <div class="ibox-content">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    banner编号
+                                </th>
+                                <th>
+                                    banner名
+                                </th>
+                                <th>
+                                    banner图片
+                                </th>
+                                <th>
+                                    banner链接
+                                </th>
+                                <th>
+                                    状态
+                                </th>
+                                <th>
+                                    操作
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <empty name="blist">
+                                <tr><td colspan="12">暂无banner数据</td></tr>
+                            <else />
+                                <volist name="blist" id="v">
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" class="fd" name="{{$v['gid']}}">
+                                            {{$i}}
+                                        </td>
+                                        <td>
+                                            {{$v['name']}}
+                                        </td>
+                                        <td>
+                                            <img src="/Uploads/{{$v['pic']}}">
+                                        </td>
+                                        <td>
+                                            {{$v['url']}}
+                                        </td>
+                                        <td>
+                                            <switch name="v.status">
+                                                    <case value="0">不显示</case>
+                                                    <case value="1">显示</case>
+                                            </switch>
+                                        </td>
+                                        
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="bannerEditList?id={{$v['id']}}" class="btn btn-outline btn-success">
+                                                    编辑
+                                                </a>
+                                                 <a class="btn btn-outline btn-success addbtn" attrid="{{$v['id']}}" >
+                                                    删除
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </volist>
+                            </empty>
+                        </tbody>
+                    </table>
+                    <div>
+                        {{$show}}
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body my_content">
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script>
+        /**
+     * 删除banner
+     */
+    $('.addbtn').click(function(){
+        var id = $(this).attr('attrid');
+        // alert(id);
+        $.ajax({
+                url:"bannerDel",
+                data:{"id":id},
+                dataType:"json",
+                type: 'get',
+                success:function(res){
+                    if(res.code == 200){
+                        location.reload();
+                        parent.layer.msg(res.msg);
+                    } else {
+                        parent.layer.msg(res.msg);
+                    }
+                }
+            })
+
+    });
+
+    </script>
+</block>

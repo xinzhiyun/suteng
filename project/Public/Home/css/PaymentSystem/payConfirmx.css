@@ -1,0 +1,262 @@
+body {
+	font-size: .7rem;
+	/* overflow-x: hidden; */
+    color:#333333;
+    width: 100vw;
+    background: #EDF2F2;
+}
+.orderAddress {
+    background: #FDFBEF;
+    font-size: .5rem;
+    padding: .5rem;
+}
+.orderAddress > a{
+    display: flex;
+    justify-content: space-between;
+}
+.orderAddress > a > p > span{
+    display: block;
+    font-size: .5rem;
+}
+.orderAddress > a > p:nth-child(1) {
+    width: 20%;
+    margin-right: .4rem;
+}
+.orderAddress > a > p:nth-child(2) > span:nth-child(1){
+    margin-bottom: .1rem;
+}
+.orderAddress > a > p:nth-child(3) {
+    display: flex;
+    align-items: center;
+}
+/* 订单详情 */
+.orderDetail {
+    background: white;
+    padding: .3rem .5rem 0;
+}
+.orderDetail > ul > li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: .1rem;
+}
+.orderDetail > ul > li > span > i {
+    font-style: normal;
+}
+.orderDetail > ul > li > span:nth-child(2) > i:nth-child(1) {
+    font-size: .7rem;
+}
+.orderDetail > ul > li:nth-child(3), .orderDetail > ul > li:nth-child(4) {
+    color: #999999;
+}
+.orderDetail > ul > li:last-child {
+    border-top: 1px solid #F1F5F5;
+    color: #D5D5D5;
+    padding: .7rem 0;
+    margin-top: .3rem;
+}
+.orderDetail > ul > li:last-child > p  > span:nth-child(1) {
+    margin-right: .35rem;
+    font-size: .8rem;
+}
+.orderDetail > ul > li:last-child > p  > span:nth-child(2) > i {
+    font-style: normal;
+    margin-left: .1rem;
+}
+.orderDetail > ul > li:last-child > span {
+    font-size: .8rem;
+}
+/* 发票 */
+.invoice {
+    padding: .7rem .5rem;
+    background: white;
+    margin: .4rem 0;
+}
+.invoice > a {
+    display: block;
+    display: flex;
+    justify-content: space-between;
+}
+.invoice > a > p > span:nth-child(1) {
+    font-size: .8rem;
+    margin-right: .4rem;
+}
+.invoice > a > span {
+    font-size: .8rem;
+}
+/* 商品 */
+.goods {
+    background: white;
+    padding: 0 .5rem;
+}
+.express {
+    position: absolute;
+    right: 0;
+    bottom: .5rem;
+}
+.express>select {
+    padding: 2px 10px;
+    background: #f1f1f1;
+}
+.goods > ul > li {
+    position: relative;
+    border-bottom: 1px solid #DEDEDE;
+}
+.goods > ul > li > a {
+    display: block;
+    display: flex;
+    padding: .5rem 0;
+    justify-content: space-between;
+}
+.goods > ul > li > a > p {
+    display: flex;
+}
+.goods > ul > li > a > p > span:nth-child(1) {
+    display: block;
+    height: 4rem;
+    width: 4rem;
+    margin-right: .4rem;
+}
+.goods > ul > li > a > p > span:nth-child(1) > img {
+    height: 100%;
+    width: 100%;
+}
+.goods > ul > li > a > p > span > i {
+    display: block;
+    font-style: normal;
+}
+.goods > ul > li > a > p > span > i:nth-child(2) {
+    color: #777777;
+    font-size: .6rem;
+    margin: .1rem 0 .2rem 0;
+}
+.goods > ul > li > a > p > span > i:nth-child(3) {
+    color: #C9C9C9;
+    font-size: .5rem;
+    margin-bottom: .3rem;
+}
+.goods > ul > li > a > p > span > i:nth-child(4) > b:nth-child(1) {
+    font-size: .7rem;
+}
+/* 立即付款 */
+.footFix {
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+    width: 100vw;
+    display: flex;
+}
+.footFix > p:nth-child(1) {
+    padding: .6rem 0;
+    color: #AF0815;
+    background: white;
+    width: 65%;
+    padding-left: .5rem;
+    font-weight: 10;
+}
+.footFix > p:nth-child(1) > span > i:nth-child(1) {
+    font-size: .7rem;
+    margin-left: .2rem;
+}
+.footFix > p:nth-child(1) > span > i {
+    font-style: normal;
+}
+.footFix > p:nth-child(2) {
+    width: 35%;
+    padding: .6rem 0;
+    background: #CA0010;
+    text-align: center;
+    color: white;
+}
+
+.icon-xuanzhongduigou {
+    color: #56aaf1;
+}
+/*付款页面*/
+.paystyle{
+	position:absolute;
+	top:0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+    display: none;
+    z-index: 9999;
+}
+.paystyleTop{
+	width: 100vw;
+	height: 10vh;
+	background: #000;
+	opacity: 0.3;
+}
+.payContain{
+	position: absolute;
+	bottom: 0;
+	height: 90vh;
+	width: 100vw;
+	/*opacity: 0.5;*/
+	z-index: 999;
+	background: #FFF;
+}
+.payContain>.paytop{
+	padding:0.5rem;
+	border-bottom: 1px solid #E5E5E5;
+}
+.paytop>.paytopLeft>i{
+	float: left;
+	padding: 0.6rem 0;
+	margin-right: 4rem;
+	font-size: 1.5rem;
+}
+.paytop>.paytopRight{
+	float: left;
+	text-align: center;
+}
+.icon-kuang1{
+	color:#ccc;
+}
+.paytop>.paytopRight>h3{
+	font-size: 0.9rem;
+	font-weight: 600;
+	padding: 0 0 0.5rem;
+}
+.paytop>.paytopRight>p{
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: #F75D50;
+}
+.paymidd>h3{
+	padding:0.8rem;
+}
+.paymidd>ul>li{
+	padding:0.5rem 0.5rem;
+	border-bottom: 1px  solid #E5E5E5;
+}
+.paymidd>ul>li:nth-child(2){
+	border-bottom: 6px  solid #E5E5E5;
+	
+}
+.paymidd>ul>li>i{
+	padding-right:0.4rem; 
+	font-size: 1.2rem;
+}
+.paymidd>ul>li>span{
+	float: right;
+	font-size: 1rem;
+}
+.paymidd>ul>li>span.icon-xuanze{
+	color: #4280EC;
+
+}
+/*底部按钮*/
+.payBott{
+	width: 86vw;
+	margin: 2.5vh 7vw 0;
+}
+.payBott>input{
+	border:none;
+	padding:1vh 0;
+	width: 86vw;
+	background: #2EB6AA;
+	border-radius:0.2rem;
+	color: #FFF;
+	letter-spacing: 0.1rem;
+}

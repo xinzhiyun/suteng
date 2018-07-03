@@ -42,13 +42,13 @@ class GoodsModel extends RelationModel
                 'mapping_fields' => 'id,cid,cprice,cname'
         ),
 
-        'pic'=>array(
-            'mapping_type'  => self::HAS_MANY,
-            'class_name'    => 'pic',
-            'foreign_key'   => 'gid',
-            'mapping_name'  => 'pics',
-            'mapping_fields' => 'path'
-        ),
+        // 'pic'=>array(
+        //     'mapping_type'  => self::HAS_MANY,
+        //     'class_name'    => 'pic',
+        //     'foreign_key'   => 'gid',
+        //     'mapping_name'  => 'pics',
+        //     'mapping_fields' => 'path'
+        // ),
 
         'goods_detail'=>array(
                 'mapping_type'  => self::HAS_MANY,
@@ -101,34 +101,27 @@ class GoodsModel extends RelationModel
         $count = $this
             ->where($where)
             ->alias('g')
-            // ->join('__ATTR_VAL__ av ON g.id=av.gid', 'LEFT')
-            // ->join('__ATTR__ a ON av.aid=a.id', 'LEFT')
             ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
-            // ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
             ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
-            ->join('__INVENTORY__ i on i.gid=g.id' , 'LEFT')
-            ->field('c.name cname,av.val,a.attr,gd.*,i.allnum,i.abnormalnum,g.*,gd.status gdstatus')
-            ->order(' addtime desc')
-            // ->limit($Page->firstRow.','.$Page->listRows)
-            ->relation('pics')
+            ->join('__GOODS_RELATION_BLOCK__ grb ON grb.gid=g.id', 'LEFT')
+            ->join('__GOODS_BLOCK__ gb ON gb.id=grb.bid', 'LEFT')
+            ->field('c.name cname,g.*')
+            // ->order(' addtime desc')
+            ->limit($Page->firstRow.','.$Page->listRows)
             ->count();
-            $Page  = new \Think\Page($count,8   );
+            $Page  = new \Think\Page($count,10);
             $pageButton =$Page->show();
         $goodsData = $this
             ->where($where)
             ->alias('g')
-            // ->join('__ATTR_VAL__ av ON g.id=av.gid', 'LEFT')
-            // ->join('__ATTR__ a ON av.aid=a.id', 'LEFT')
             ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
-            // ->join('__PIC__ p ON g.id=p.gid', 'LEFT')
             ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
-            ->join('__INVENTORY__ i on i.gid=g.id' , 'LEFT')
-            ->field('c.name cname,gd.*,i.allnum,i.abnormalnum,g.*,gd.status gdstatus')
+            ->join('__GOODS_RELATION_BLOCK__ grb ON grb.gid=g.id', 'LEFT')
+            ->join('__GOODS_BLOCK__ gb ON gb.id=grb.bid', 'LEFT')
+            ->field('c.name cname,gb.bname,g.*')
             ->order(' addtime desc')
             ->limit($Page->firstRow.','.$Page->listRows)
-            ->relation(['pics','attr_val'])
             ->select();
-            // p($goodsData);
         $goodsData = [
             'goodsData' => $goodsData,
             'show' => bootstrap_page_style($pageButton),
@@ -143,6 +136,7 @@ class GoodsModel extends RelationModel
         //     }
         // }
         // $goodsData['goodsData'] = array_values($arr);
+        // dump($goodsData);
         return $goodsData;
     }
 

@@ -467,6 +467,7 @@ $(function(){
 		goods_dataArr.push({'num':num,'gid': goodsDetail.gid,'money': money});
 
 		sessionStorage.setItem("goods_dataArr",JSON.stringify(goods_dataArr));
+		console.log(goods_dataArr)
 		// 发送ajax请求让后台生成订单号    
 		$.ajax({ 
 			url: getURL('Home', 'PaymentSystem/information'),
@@ -484,7 +485,7 @@ $(function(){
 					// alert('{{:U("Pay/payConfirm/order_id/'+res+'")}}')
 
 					// 跳转到订单确认页面
-					location.href = getURL('Home', 'Pay/payConfirm')+'?order_id='+res;
+					// location.href = getURL('Home', 'Pay/payConfirm')+'?order_id='+res;
 				}else{
 					//支付发生错误，无法生成订单号
 					parent.layer.msg('系统发生错误，请稍后再试！');

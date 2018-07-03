@@ -1,0 +1,714 @@
+<extend name="Public/base" />
+<block name="mylink">
+    <link href="__PUBLIC__/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="__PUBLIC__/Home/fonts/iconfontHome.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/css/switchery.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/Admin/ueditor/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="__PUBLIC__/Admin/ueditor/third-party/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/Admin/ueditor/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/Admin/ueditor/umeditor.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Admin/ueditor/lang/zh-cn/zh-cn.js"></script>
+</block>
+<block name="content">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row-fluid fl" id="main">
+            <div class="tableBox">
+                <div class="ibox-title">
+                    <h5>商城管理 <small>商品详情</small></h5>
+                </div>
+                <div class="ibox-content no-padding">
+                    <form id="form" onsubmit="false" class="form-horizontal" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品名称：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="name" value="{{$goodsInfo.name}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品描述：</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="myEditor1" style="width:1000px;height:340px;" name="desc" >{{$goodsInfo.desc}}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品规格：</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="myEditor2" style="width:1000px;height:340px;" name="specs" >{{$goodsInfo.specs}}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">售后服务：</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="myEditor3" style="width:1000px;height:340px;" name="saleservice" >{{$goodsInfo.saleservice}}</textarea>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- 弹窗添加快递公司 -->
+    <div class="modal inmodal" id="st_courier_add" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        添加快递公司
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-bordered table-hover table-condensed">
+                        <tr>
+                            <th width=15%>
+                                快递公司名
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <input class="input-medium form-control" type="text" name="couriername" value="">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                            </th>
+                            <td>
+                                <input class="btn btn-success add-courier" type="submit" value="添加">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 删除快递 -->
+    <div class="modal inmodal" id="st-courier_del" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        删除快递公司
+                    </h4>
+                </div>
+                
+                <div class="modal-body">
+                    <table class="table table-striped table-bordered table-hover table-condensed">
+                        <tr>
+                            <th>快递公司名称</th>
+                            <th>操作</th>
+                        </tr>
+                        <volist name="courierList" id="vo">
+                            
+                            <tr>
+                                <label class="courier">
+                                    <td data-name={{$vo.name}} data-id="{{$vo.id}}"> <i></i> {{$vo.name}}</td>
+                                </label>
+                                <td><div class="cdeldiv"><a class="courierdel" cid="{{$vo.id}}">删除快递公司</a></div></td>
+                            </tr>     
+                        </volist>
+                        
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="myjs">
+    <script>
+        //实例化编辑器
+        var um = UM.getEditor('myEditor1');
+        var um = UM.getEditor('myEditor2');
+        var um = UM.getEditor('myEditor3');
+        // 一级分类
+        $("select[name='firscate']").change(function(){
+            $('.goodsattr').html('');
+            var firscateId = $(this).children('option:selected').val();
+            var html = "";
+            $("select[name='seccate']").html('<option value="--">--请选择--</option>');
+            $("select[name='thirdcate']").html('<option value="--">--请选择--</option>');
+            $("select[name='seccate']").parent().css('display','none');
+            $("select[name='thirdcate']").parent().css('display','none');
+            if(/^[0-9]*$/.test(firscateId)){
+                $.ajax({
+                    url:'getCate',
+                    data:{'pid':firscateId},
+                    type:'post',
+                    dataType:'json',
+                    success:function(res){
+                        if(res.length!=0){
+                            $("select[name='seccate']").parent().css('display','inline');
+                            for(var i=0;i<res.length;i++){
+                                html += '<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
+                            }
+                            $("select[name='seccate']").html('<option value="--">--请选择--</option>');
+                            $("select[name='seccate']").append(html);
+                        }
+                    }
+                })
+            }
+        })
+        // 商品属性(模拟)
+        var attrArr = [
+            // {
+            //     attr: '颜色分类', id: '00',
+            //     data: [
+            //         {id: '001', val: '军绿色'},
+            //         {id: '002', val: '红色'},
+            //         {id: '003', val: '灰色'},
+            //     ]
+            // },
+            // {
+            //     attr: '尺寸', id: '11', 
+            //     data: [
+            //         {id: '110', val: '41'},
+            //         {id: '111', val: '42'},
+            //         {id: '112', val: '43'},
+            //     ]
+            // },
+            // {
+            //     attr: '型号', id: '22', 
+            //     data: [
+            //         {id: '220', val: 'A型'},
+            //         {id: '221', val: 'C型'},
+            //         {id: '222', val: 'D型'},
+            //     ]
+            // },
+            // {
+            //     attr: '配置', id: '33', 
+            //     data: [
+            //         {id: '330', val: '高级'},
+            //         {id: '331', val: '中级'},
+            //         {id: '332', val: '入门'},
+            //     ]
+            // },
+        ];
+        // 二级分类
+        $("select[name='seccate']").change(function(){
+            $('.goodsattr').html('');
+            var seccateId = $(this).children('option:selected').val();
+            var html = "";
+            $("select[name='thirdcate']").html('<option value="--">--请选择--</option>');
+            $("select[name='thirdcate']").parent().css('display','none');
+            if(/^[0-9]*$/.test(seccateId)){
+                $.ajax({
+                    url:'getAttr',
+                    data:{'cid':seccateId},
+                    type:'post',
+                    dataType:'json',
+                    success:function(res){
+                        console.log('res: ',res);
+                        attrArr = JSON.parse(res);
+                        if(attrArr.length){
+                            console.log('attrArr: ',attrArr);
+                            var html = '';
+                            var headhtml = '';
+                            var subArr = [];
+                            // 商品属性分类
+                            for(var i=0; i<attrArr.length; i++){
+                                html += '<div class="checkbox checkattr">'+
+                                            '<span>'+ attrArr[i].attr +'</span>'+
+                                        '</div>';
+                                //表格头
+                                headhtml += '<th data-id="'+ attrArr[i].id +'">'+ attrArr[i].attr +'</th>';
+
+                                subArr.push([]);
+                                // 商品属性分类详情选项
+                                for(var j=0; j<attrArr[i].data.length; j++){
+                                    subArr[i].push('<label class="seccheck seccheck'+ i +'" onclick="secCateClk('+ i +','+ j +')">'+
+                                            '<div class="icheckbox_square-green" style="position: relative;" data-pid="'+ attrArr[i].id +'" data-pattr="'+ attrArr[i].attr +
+                                            '" data-name="'+ attrArr[i].data[j].val +'" data-id="'+ attrArr[i].data[j].id +'">'+
+                                                '<input type="checkbox" style="position: absolute; opacity: 0;">'+
+                                            '</div>'+
+                                            '<i></i>'+ attrArr[i].data[j].val +
+                                        '</label>');
+                                }
+                            }
+                            $('.goodsattr').html(html);
+                            headhtml += '<th>库存</th>';
+                            // 表格头
+                            $('.allAttr thead>tr').html(headhtml);
+                            setTimeout(function(){
+                                // 商品属性分类详情选项
+                                // console.log('subArr: ',subArr);
+                                for(var j=0; j<subArr.length; j++){
+                                    $('.goodsattr>div').eq(j).append(subArr[j]);
+                                }
+                                $('.checkattr').iCheck({
+                                    checkboxClass: 'icheckbox_square-green',
+                                    radioClass: 'iradio_square-green',
+                                });
+                            },100)
+                        }
+                    },
+                    error: function(err){
+                        console.log('err: ',err);
+                    }
+                })
+            }
+            
+        })
+        
+        // 点击二级分类，商品属性分类详情选项
+        function secCateClk(pind, ind){
+            // pind父级序号，ind自己序号
+            var arr = [];   // 转化前的数据
+            var bodyhtml = '';
+            setTimeout(function(){
+               // 遍历选中的商品属性分类详情选项
+               for(var k=0; k<attrArr.length; k++){
+                    arr.push([]);
+                    var par = $('.seccheck'+k).find('.checked').parent();
+                    // console.log('par: ',par);
+                    for(var i=0; i<par.length; i++){
+                        var attr = par[i].getAttribute('data-name');
+                        var id = par[i].getAttribute('data-id');
+                        var pattr = par[i].getAttribute('data-pattr');
+                        var pid = par[i].getAttribute('data-pid');
+                        // console.log('pid: %s, pattr: %s, id: %s, attr: %s', pid, pattr, id, attr);
+                        arr[k].push(attr+'|'+id);
+                    }
+                }
+                console.log('arr: ',arr);
+                // 数据交叉组合
+                if(arr.length == 1){
+                    var res = printResult(Zuhe(arr[0]));
+                }else if(arr.length == 2){
+                    var res = printResult(Zuhe(arr[0],arr[1]));
+                }else if(arr.length == 3){
+                    var res = printResult(Zuhe(arr[0],arr[1],arr[2]));
+                }else if(arr.length == 4){
+                    var res = printResult(Zuhe(arr[0],arr[1],arr[2],arr[3]));
+                }else if(arr.length == 5){
+                    var res = printResult(Zuhe(arr[0],arr[1],arr[2],arr[3],arr[4]));
+                }else if(arr.length == 6){
+                    var res = printResult(Zuhe(arr[0],arr[1],arr[2],arr[3],arr[4],arr[5]));
+                }else if(arr.length == 7){
+                    var res = printResult(Zuhe(arr[0],arr[1],arr[2],arr[3],arr[4],arr[5],arr[6]));
+                }else if(arr.length == 8){
+                    var res = printResult(Zuhe(arr[0],arr[1],arr[2],arr[3],arr[4],arr[5],arr[6],arr[7]));
+                }else if(arr.length == 9){
+                    var res = printResult(Zuhe(arr[0],arr[1],arr[2],arr[3],arr[4],arr[5],arr[6],arr[7],arr[8]));
+                }else if(arr.length == 10){
+                    var res = printResult(Zuhe(arr[0],arr[1],arr[2],arr[3],arr[4],arr[5],arr[6],arr[7],arr[8],arr[9]));
+                }
+                // 转化的结果
+                console.log('res: ',res);
+            },0)
+        }
+
+        var arr = [];
+        // 添加属性
+        function add() {
+            $("input[name='attrname']").val('');
+            $('#st-attr_add').modal('show');
+        }
+        // 添加功能
+        $('.add-attr').click(function(){
+            $('#st-attr_add').modal('hide');
+            var name = $("input[name='attrname']").val();
+            $.ajax({
+                url:"attrAdd",
+                data:{"attr":name},
+                dataType:"json",
+                type: 'post',
+                success:function(res){
+                    if(res.code != 203 && res.code != 204){
+                        location.reload();
+                        $(".attrList").before('<label><input type="checkbox" name="attr[]" value="'+res.code+'" class="attr"> <i></i> '+name+'</label>');
+                        recheck();
+                        parent.layer.msg(res.msg);
+                    } else {
+                        parent.layer.msg(res.msg);
+                    }
+                }
+            })
+        });
+        
+        // 删除属性
+        function del() {
+            $("input[name='attrname']").val('');
+            $('#st-attr_del').modal('show');
+        }
+        
+        $('.deldiv').on('click','.attrdel',function(e){
+            
+            var aid = $(this).attr('aid');
+            // console.log(aid);
+            parent.layer.confirm('确认删除这个属性吗？', {
+                btn: ['确认','取消'], //按钮
+                shade: true //不显示遮罩
+            }, function(){
+                $.ajax({
+                    url:'attrDel',
+                    type:'post',
+                    dataType:'json',
+                    data:{'aid':aid},
+                    success:function(res){
+                        // $("input[data-id='"+aid+"']").parent().parent().remove();
+                        location.reload();
+                        parent.layer.msg(res.msg);
+                    }
+                });
+            }, function(){
+                parent.layer.msg('已取消', {shift: 6});
+            });
+        })
+        
+        
+        // 添加快递公司
+        function addcourier() {
+            $("input[name='couriername']").val('');
+            $('#st_courier_add').modal('show');
+        }
+        // 添加功能
+        $('.add-courier').click(function(){
+            $('#st_courier_add').modal('hide');
+            var name = $("input[name='couriername']").val();
+            $.ajax({
+                url:"courierAdd",
+                data:{"name":name},
+                dataType:"json",
+                type: 'post',
+                success:function(res){
+                    if(res.code != 203 && res.code != 204){
+                        location.reload();
+                        $(".courierList").before('<label><input type="checkbox" name="courier[]" value="'+res.code+'" class="courier"> <i></i> '+name+'</label>');
+                        recheck();
+                        parent.layer.msg(res.msg);
+                    } else {
+                        parent.layer.msg(res.msg);
+                    }
+                }
+            })
+        });
+        
+        // 删除快递公司
+        function delcourier() {
+            $("input[name='couriername']").val('');
+            $('#st-courier_del').modal('show');
+        }
+        
+        $('.cdeldiv').on('click','.courierdel',function(e){
+            
+            var cid = $(this).attr('cid');
+            // console.log(aid);
+            parent.layer.confirm('确认删除这个快递公司吗？', {
+                btn: ['确认','取消'], //按钮
+                shade: true //不显示遮罩
+            }, function(){
+                $.ajax({
+                    url:'courierDel',
+                    type:'post',
+                    dataType:'json',
+                    data:{'id':cid},
+                    success:function(res){
+                        location.reload();
+                        parent.layer.msg(res.msg);
+                    }
+                });
+            }, function(){
+                parent.layer.msg('已取消', {shift: 6});
+            });
+        })
+        
+    </script> 
+    <script src="__PUBLIC__/Home/js/upImg.js"></script>
+    <script src="__PUBLIC__/Admin/js/plugins/iCheck/icheck.min.js"></script>
+    <!-- SUMMERNOTE -->
+    <script src="__PUBLIC__/Admin/js/plugins/summernote/summernote.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/plugins/summernote/summernote-zh-CN.js"></script>
+    <script src="__PUBLIC__/Admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/switchery.min.js"></script>
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+    <script>
+        function recheck(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+            
+        }
+        // 富文本
+        $(document).ready(function () {
+            recheck();
+            $('.summernote').summernote({
+                lang: 'zh-CN'
+            });
+            $("#form").on("click", '.attr', function(e){
+                bindClick();
+            });
+            $(".attr .iCheck-helper").on("click", function(e){
+                bindClick();
+            });
+            
+            
+            /* 快递费设置 */
+            $("#form .courier").on("click", function(e){
+                cbindClick();
+            });
+            
+            $(".courier .iCheck-helper").on("click", function(e){
+                cbindClick();
+            });
+            /* 快递费设置 */
+            
+            // 按钮初始化
+            var elem = document.querySelector('.is_install');
+            var init = new Switchery(elem);
+            defaults = {
+                color             : '#64bd63', 
+                secondaryColor    : '#dfdfdf', 
+                jackColor         : '#fff', 
+                jackSecondaryColor: null, 
+                className         : 'switchery', 
+                disabled          : false, 
+                disabledOpacity   : 0.5, 
+                speed             : '0.1s', 
+                size              : 'default'
+            }
+            
+            var elem = document.querySelector('.is_hire');
+            var init = new Switchery(elem);
+            defaults = {
+                color             : '#64bd63', 
+                secondaryColor    : '#dfdfdf', 
+                jackColor         : '#fff', 
+                jackSecondaryColor: null, 
+                className         : 'switchery', 
+                disabled          : false, 
+                disabledOpacity   : 0.5, 
+                speed             : '0.1s', 
+                size              : 'default'
+            }
+            
+        });
+        
+        //属性的
+        function bindClick(){
+            var attrId,attrName;
+            var arr = new Array();
+            
+            $('.attr').each(function(i,item){
+                var aa = $(item).children('div').hasClass('checked');
+                var obj = $(this).find('input');
+                if(aa){
+                    attrName = obj.data('name');
+                    attrId = obj.data('id');
+                    arr.push({
+                        attrId:attrId,
+                        attrName:attrName,
+                    })
+                }
+            })
+            $('.attr_val').empty();
+            for(var i=0;i<arr.length;i++){
+                $('.attr_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].attrName+'</span><input type="text" placeholder="请输入'+arr[i].attrName+'的规格" name="attr['+arr[i].attrId+']" value="" class="form-control"><input type="hidden" name="attrName['+arr[i].attrId+']" value=' + arr[i].attrName + ' class="form-control"></div>');
+            }
+        }
+        
+        /* 快递费设置页面 */
+        function cbindClick(){
+            var courierId,courierName;
+            var arr = new Array();
+            
+            $('.courier').each(function(i,item){
+                var aa = $(item).children('div').hasClass('checked');
+                var obj = $(this).find('input');
+                if(aa){
+                    courierName = obj.data('name');
+                    courierId = obj.data('id');
+                    arr.push({
+                        courierId:courierId,
+                        courierName:courierName,
+                    })
+                }
+            })
+            $('.courier_val').empty();
+            for(var i=0;i<arr.length;i++){
+                $('.courier_val').append('<div class="input-group m-b"><span class="input-group-addon">'+arr[i].courierName+'</span><input type="text" placeholder="请输入'+arr[i].courierName+'的费用" name="courier['+arr[i].courierId+']"  class="form-control"><input type="hidden" name="courierName['+arr[i].courierId+']" value=' + arr[i].courierName + ' class="form-control"></div>');
+            }
+        }
+        /* 快递 */
+        
+        
+        var edit = function () {
+            $("#eg").addClass("no-padding");
+            $('.click2edit').summernote({
+                lang: 'zh-CN',
+                focus: true
+            });
+        };
+        var save = function () {
+            $("#eg").removeClass("no-padding");
+            var aHTML = $('.click2edit').code(); //save HTML If you need(aHTML: array).
+            $('.click2edit').destroy();
+        };
+        var file = document.querySelector('#file');
+        var picShow = document.querySelector('#picShow');
+        var picArr = [];
+        
+        file.onclick = function(){
+            var _this = this;
+            
+            // 读取图片
+            upImg( _this, function(){
+                // 压缩提示(不压缩不进来)
+                notison.innerHTML = '图片加载中...';
+                fadeFn({elem: notidiv});
+                
+            }, function(res){
+                console.log('ress: ',res);
+                picArr.push(res.binsrc)
+                //图片显示
+                var span = document.createElement('span');
+                span.innerHTML = '<span class="delPic" style="z-index:99;">X</span>';
+                var img = new Image();
+                
+                if(res.src){
+                    img.src = res.src;      // 显示图片
+                    span.appendChild(img);
+                    picShow.appendChild(span);
+                    // console.log(formdata.getAll('UploadForm[]'));
+                }
+            });
+        }
+        // 删除图片
+        $("#picShow").on("click", ".delPic", function() {
+            console.log("删除");
+            var _this = this;
+            layui.use("layer", function(){
+                layer = layui.layer;
+            })
+            layer.confirm("确定删除?", function(index) {
+                $(_this).parent().remove();
+                layer.close(index);
+            })
+            
+        });
+        $(".goodsAdd").click(function(){
+            var attrArr = [];
+            var str = '';
+            var attrtrLen = $('.allAttr tbody>tr').eq(0).find('th').length;
+            for(var i=0; i<attrtrLen; i++){
+                var attrth = $(".attrtr"+i).find('th');
+                // console.log(attrth.eq(i).text())
+                if(attrth.eq(i).length){
+                    attrArr.push([]);
+                }
+                // 遍历已选规格内容
+                for(var j=0; j<attrth.length; j++){
+                    if(attrth.eq(j).find('input').length){  // 价格、库存
+                        attrArr[i].push(attrth.eq(j).find('input').val());
+                    }else{
+                        attrArr[i].push(attrth.eq(j).text() + ',' +attrth.eq(j).attr('data-id'));
+                    }
+                }
+            }
+            console.log('attrArr: ',attrArr);
+            // var data = $("#form").serializeArray();
+            console.log(picArr);
+            var data = new FormData($("#form")[0]);
+            for(var i = 0; i < picArr.length; i++) {
+                data.append("UploadForm[]", picArr[i]);
+            }
+            if(!attrArr.length){
+                return
+            }
+            data.append('skuattr', JSON.stringify(attrArr));
+            $.ajax({
+                url:'goodsAction',
+                type:'post',
+                data:data,
+                processData: false,
+                contentType: false,
+                success:function(res){
+                    if(res.code == 200){
+                        location.reload();
+                        parent.layer.msg(res.msg);
+                    } else {
+                        parent.layer.msg(res.msg);
+                    }
+                }
+            });
+        });
+
+    </script>
+    <script>
+        // 获取（次方）交叉组合数
+       //接受可变长数组参数
+        function Zuhe(){
+            var heads=arguments[0];  
+            for(var i=1,len=arguments.length;i<len;i++){  
+                if(arguments[i].length){
+                    heads=addNewType(heads,arguments[i]);
+                }
+            }
+            return heads;  
+        };   
+
+        function addNewType(heads,choices){  
+            var result=[];  
+            for(var i=0,len=heads.length;i<len;i++){  
+                for(var j=0,lenj=choices.length;j<lenj;j++){  
+                    result.push(heads[i]+'_'+choices[j]);  
+                }  
+            }
+            return result;  
+        };  
+
+        //打印结果的函数
+        function printResult(result){  
+            var bodyhtml = '';  // 每一栏
+            var _newArr = [];
+            var thlen = 0;
+            for(var i=0,len=result.length;i<len;i++){  
+                // console.log(result[i]);
+            }
+            // console.log('result: ',result);
+            for(var i=0; i<result.length; i++){
+                _newArr.push(result[i].split('_'));
+                // console.log('result[i]:', result[i].split('_'));
+            }
+            // console.log('_newArr: ',_newArr);
+            for(var i=0; i<_newArr.length; i++){
+                bodyhtml += '<tr class="attrtr'+ i +'">';
+                thlen = _newArr[i].length;
+                var temphtml = '';  // 每一栏中的每一项
+                for(var j=0; j<_newArr[i].length; j++){
+                    temphtml += '<th data-id="'+ _newArr[i][j].split('|')[1] +'">'+ _newArr[i][j].split('|')[0] +'</th>';
+                }
+                bodyhtml += temphtml + '<th><input class="num" type="text"></th></tr>';
+            }
+            // console.log('bodyhtml: ',bodyhtml);
+            // 显示详细规格组合
+            $('.allAttr tbody').html(bodyhtml);
+            $('.allAttr').show();
+            return result;
+        }
+        
+        // 数量库存同步
+        $('body').on('keyup', '.num', function(){
+            var num = 0;
+            var numel = $('.num');
+            for(var i=0; i<numel.length; i++){
+                num += Number(numel.eq(i).val());
+            }
+            $('.allnum>b').text(num);
+            $('input[name="allnum"]').val(num);
+        })
+    </script>
+</block>

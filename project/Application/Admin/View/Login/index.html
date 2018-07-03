@@ -1,12 +1,12 @@
  <!DOCTYPE html>
-<html>
-<head>
+ <html>
+ <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><block name="title">页面</block></title>
+    <title><block name="title">企惠壹号净水物联网云平台</block></title>
     <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
     <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
-
+    
     <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/login.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
@@ -15,110 +15,113 @@
     <link href="__PUBLIC__/Admin/css/style.css?v=4.1.0" rel="stylesheet">
     <block name="mylink"></block> 
     <style>
-        .loginDiv:nth-of-type(3) {
-            padding: 0;
-            -webkit-box-pack: justify;
-                -ms-flex-pack: justify;
-                    justify-content: space-between;
-            -webkit-box-align: stretch;
-                -ms-flex-align: stretch;
-                    align-items: stretch;
-            border: none;
-            border-radius: 9px;
-            background: none;
-        }
-        .loginDiv:nth-of-type(3)>input, 
-        .loginDiv:nth-of-type(3)>img {
-            -webkit-box-flex: 1;
-                -ms-flex: 1 0;
-                    flex: 1 0;
-            width: 50%;
-            height: auto;
-            min-height: 50px;
-            max-height: 50px;
-        }
-        .loginDiv:nth-of-type(3)>input {
-            max-width: 120px;
-            padding: 4%;
-            border: 2px solid #8BAFD0;
-            border-radius: 9px;
-            background: #DFF3FE;
-        }
-        .loginDiv:nth-of-type(3)>img {
-            margin-left: 5%;
-        }
     </style>
 </head>
 
 <body class="gray-bg">
-<block name="content">
-    <div class="middle-box text-center loginscreen  animated fadeInDown">
-        <div>
+    <block name="content">
+        <div class="logo"></div>
+        <div class="middle-box text-center loginscreen  animated fadeInDown">
             <div>
-                <h1 class="logo-name"></h1>
+                <!-- <div>
+                    <h1 class="logo-name"></h1>
+                </div> -->
+                <h3>净水物联网云平台</h3>
+                <form class="m-t" role="form" action="javascript:return false;" method="post" id="form1">
+                    <div class="form-group loginDivt">
+                        <span>请输入账号：</span>
+                        <input name="name" type="text" class="form-control" placeholder="">
+                    </div>
+                    <div class="form-group loginDivt">
+                        <span>请输入密码：</span>
+                        <input name="password" type="password" class="form-control" placeholder="">
+                    </div>
+                    <div class="form-group checkCode loginDivs">
+                        <input name="code" type="text" class="form-control" placeholder="验证码">
+                        <img class="imgs" src="__URL__/yzm?id={{:time()}}"   onclick="this.src='__URL__/yzm?id=' + Math.random()">
+                    </div>
+                    <button type="button" class="btn btn-primary block full-width m-b loginbtn">登 录</button>
+                </form>
             </div>
-            <!-- <h3>欢迎回来</h3> -->
-            <form class="m-t" role="form" action="index" method="post">
-                <div class="form-group loginDiv">
-                    <span></span>
-                    <input name="name" type="text" class="form-control" placeholder="账户" required="">
-                </div>
-                <div class="form-group loginDiv">
-                    <span></span>
-                    <input name="password" type="password" class="form-control" placeholder="密码" required="">
-                </div>
-                <div class="form-group checkCode loginDiv">
-                    <input name="code" type="text" class="form-control" placeholder="验证码" required="">
-                    <img class="" src="__URL__/yzm?id={{:time()}}"   onclick="this.src='__URL__/yzm?id=' + Math.random()">
-                </div>
-                <button type="submit" class="btn btn-primary block full-width m-b loginbtn">登 录</button>
-            </form>
         </div>
-    </div>
-</block>
-<block name="myjs">
-    <!-- 全局js -->
-    <script src="js/jquery.min.js?v=2.1.4"></script>
-    <script src="js/bootstrap.min.js?v=3.3.6"></script>
-
-    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
-    <!--统计代码，可删除-->
-    <script>
-        if(window.parent.location.href!=window.location.href){
-            window.parent.location.href=window.location.href;
-        }
-        function IEVersion() {
-            var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串  
-            var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; //判断是否IE<11浏览器  
-            // var isEdge = userAgent.indexOf("Edge") > -1 && !isIE; //判断是否IE的Edge浏览器  
-            var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
         
-            if(!isIE && isIE11) {
-                // console.log(isIE)
-                // var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
-                // reIE.test(userAgent);
-                // var fIEVersion = parseFloat(RegExp["$1"]);
-                // if(fIEVersion == 7) {
-                //     return 7;
-                // } else if(fIEVersion == 8) {
-                //     return 8;
-                // } else if(fIEVersion == 9) {
-                //     return 9;
-                // } else if(fIEVersion == 10) {
-                //     return 10;
-                // } else {
-                //     return 6;//IE版本<=7
-                // }  
-                alert("您目前的浏览器版本过旧，请更新或更换您的浏览器");
-            } 
-            // else if(isEdge) {
-            //     return 'edge';//edge
-            // } else if(isIE11) {
-            //     return 11; //IE11  
-            // }else{
-            //     return -1;//不是ie浏览器
-            // }
-        }
-        IEVersion();
-    </script>
-</block>
+    </block>
+    <block name="myjs">
+        <!-- 全局js -->
+        <script src="__PUBLIC__/Admin/js/jquery.min.js?v=2.1.4"></script>
+        <script src="__PUBLIC__/Admin/js/bootstrap.min.js?v=3.3.6"></script>
+        <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+        <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+        <!--统计代码，可删除-->
+        <script>
+            if(window.parent.location.href!=window.location.href){
+                window.parent.location.href=window.location.href;
+            }
+            function IEVersion() {
+                var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串  
+                var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; //判断是否IE<11浏览器  
+                // var isEdge = userAgent.indexOf("Edge") > -1 && !isIE; //判断是否IE的Edge浏览器  
+                var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
+                
+                if(!isIE && isIE11) { 
+                    alert("您目前的浏览器版本过旧，请更新或更换您的浏览器");
+                } 
+            }
+            IEVersion();
+            
+            layui.use("layer", function() {
+                layer = layui.layer;
+            })
+            $(".loginbtn").on("click", function() {
+                toAjax();
+                
+            })
+            window.onkeydown = function(e) {
+                if(e.which == "13") {
+                    toAjax();
+                }
+                
+            }
+            function toAjax() {
+                if(!$("input[name='name']").val()) {
+                    layer.msg("请输入账号");
+                    return ;
+                }
+                if(!$("input[name='password']").val()) {
+                    layer.msg("请输入密码");
+                    return ;
+                }
+                if(!$("input[name='code']").val()) {
+                    layer.msg("请输入验证码");
+                    return ;
+                }
+                var formdata = new FormData($("#form1")[0]);
+                // index
+                $.ajax({
+                    url: "{{:U('Admin/Login/index')}}",
+                    type: "post",
+                    data: formdata,
+                    processData : false, 
+                    contentType : false,
+                    success: function(res) {
+                        console.log("成功", res);
+                        if(res.code == 200) {
+                            layer.msg(res.msg);
+                            setTimeout(function() {
+                                location.href="{{:U('Admin/Index/index')}}";
+                            }, 1000);
+                            
+                        }else {
+                            $(".imgs").attr("src", "__URL__/yzm?id=' + Math.random()");
+                            layer.msg(res.msg);
+                        }
+                    },
+                    error: function(res) {
+                        console.log("错误", res);
+                    }
+                });
+            }
+            
+        </script>
+        
+    </block>

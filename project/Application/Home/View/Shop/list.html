@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/shop/list.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/swiper-3.4.2.min.css">
+	<title>分类详情</title>
+	<script>
+		var public = '__PUBLIC__';
+		var imgsrc = public + '/Home/images/shop/';
+		var shopurl = '{{:U("Home/Shop/index")}}';
+		var getGoodsList = '{{:U("Home/shop/getGoodsList")}}';
+		var shoplist = '{{:U("Home/Shop/list")}}';
+		var shopdetail = '{{:U("Home/Shop/shoppingdetail")}}';
+		
+	</script>
+</head>
+<body ontouchstart='console.log()'>
+	<div class='categoryDetail'>
+		<header id="header">
+			<div class='search'>
+				<span @click='searchFn(search)'>
+					<img src="__PUBLIC__/Home/images/shop/search.png" alt="">
+				</span>
+				<input type="text" placeholder="请输入商品名称或者关键字"
+				v-model='search' @keyup.enter='searchFn(search)'>
+			</div>
+		</header>
+		<ul class='filterBtnMenu cfix'>
+			<li class='fl' @click='getSort(0)'>
+				<span>时间</span>
+				<img class='fimg' src="__PUBLIC__/Home/images/shop/arrow_down.png" alt="">
+			</li>
+			<li class='fl' @click='getSort(1)'>
+				<span>人气</span>
+				<img class='fimg' src="__PUBLIC__/Home/images/shop/arrow_empty.png" alt="">
+			</li>
+			<li class='fl' @click='getSort(2)'>
+				<span>价格</span>
+				<img class='fimg' src="__PUBLIC__/Home/images/shop/arrow_empty.png" alt="">
+			</li>
+			<li class='fl' @click='getSort(3)'>
+				<span>销量</span>
+				<img class='fimg' src="__PUBLIC__/Home/images/shop/arrow_empty.png" alt="">
+			</li>
+			<li class='fl' @click='filterMode'>
+				<span>筛选</span>
+				<img src="__PUBLIC__/Home/images/shop/filterbtn.png" alt="">
+			</li>
+		</ul>
+		<div class='list'>
+			<a link='{{:U("Home/Shop/shoppingdetail")}}' 
+			:gid='s.id' v-for='s in searchList'
+			@click='getDeatil(s.id)'>
+				<img :data-src="s.gpic" alt="加载中...">
+				<p v-text='s.name'></p>
+				<span v-text='"￥"+s.price'></span>
+			</a>
+			<p class='loadText' v-text='loadText' :style='loadStyle'></p>
+		</div>
+		<!-- 筛选 -->
+		<div class='filterMode' :style='{display: showFilter ? "block" : "none"}'>
+			<ul>
+				<li class='filterLi'>
+					<p>价格区间</p>
+					<ul>
+						<input type="text" placeholder="最低价" v-model='priceLow'>
+						<span>&nbsp;-&nbsp;</span>
+						<input type="text" placeholder="最高价" v-model='priceHigh'>
+					</ul>
+				</li>
+				<li class='filterLi' v-for='f in filterList'>
+					<p v-text='f.title'>标题</p>
+					<ul class='filterItem'>
+						<li v-for='fd in f.data' 
+						v-text='fd.name' :itemid='fd.id'>选项</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
+	<script src="__PUBLIC__/Home/js/jquery.min.js"></script>
+  	<script src="__PUBLIC__/Home/js/public.js?v={{:time()}}"></script>
+  	<script src="__PUBLIC__/Home/js/shop/list.js"></script>
+	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
+    <script src="__PUBLIC__/Admin/layui/layui.js"></script>
+	<script>
+		
+		hashchangeFn(function(hash){
+			console.log('hash: ',hash);
+			if(hash.indexOf('#filterMode') != -1){
+				// 筛选页面
+				goodsList.showFilter = true;
+				$('.filterMode>ul').css({transform: "translateX(0)"});
+			}else{
+				$('.filterMode>ul').css({transform: "translateX(100%)"});
+				setTimeout(function(){
+					goodsList.showFilter = false;
+				},300)
+			}
+		})
+		// 监听hashchange事件
+		function hashchangeFn(callback) {
+			var haschangeflag = false;
+			window.addEventListener('hashchange', function(){
+				haschangeflag = true;
+				callback(location.hash);
+			}, false);
+			// console.log('haschangeflag: ',haschangeflag);
+			// console.log('hash: ',location.hash);
+			// 刷新保持
+			if(!haschangeflag){
+				callback(location.hash);
+			}
+		}
+	</script>
+</body>
+</html>

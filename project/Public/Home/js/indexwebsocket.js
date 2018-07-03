@@ -2,61 +2,88 @@ window.onload = function(){
     function addwater(){//制水状态
         $(".makewater").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
-        $(".btmTxt").html("制水");
+        $(".btmTxt>div").html("制水");
+        $(".btmTxt>p").css({animation: 'aImg3 3s linear infinite'});
     }
     function wash(){//冲洗状态 1
-        $(".btmTxt").html("冲洗");
         $(".xuanhuan").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'}); 
+        $(".btmTxt>div").html("冲洗");
+        // $(".btmTxt>p").css({backgroundPosition: '-7.94rem -4px',animation: 'aImg3 3s linear infinite'});
+        // console.log($(".btmTxt>p>img").attr("src"))
+        $(".btmTxt>p").css("animation", 'aImg3 3s linear infinite');
+        $(".btmTxt>p>img").attr("src", "/Public/Home/images/wash.png");
     }
     function lesswater(){// 缺水状态
         $(".queshui").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
-        $(".btmTxt").html("缺水");
+        $(".btmTxt>div").html("缺水");
+        // $(".btmTxt>p").css({backgroundPosition: '-8.1rem -5.4rem',animation: 'aImg3 3s linear infinite'});
+        $(".btmTxt>p").css("animation", 'aImg3 3s linear infinite');
+        $(".btmTxt>p>img").attr("src", "/Public/Home/images/queshui.png");
     }
     function fullwater(){// 水满状态2
         $(".shuiman").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
-        $(".btmTxt").html("水满");
+        $(".btmTxt>div").html("水满");
+        // $(".btmTxt>p").css({backgroundPosition: '-9.26rem -5.4rem'});
+        $(".btmTxt>p>img").attr("src", "/Public/Home/images/shuiman.png");
     }
     function service (){// 修检状态 5
         $(".service").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(0%)'});
-        $(".btmTxt").html("检修");
+        $(".btmTxt>div").html("检修");
+        // $(".btmTxt>p").css({backgroundPosition: '-6.76rem -5.4rem',animation: 'aImg3 3s linear infinite'});
+        $(".btmTxt>p").css(animation, 'aImg3 3s linear infinite');
+        $(".btmTxt>p>img").attr("src", "/Public/Home/images/shebeibaoxiu.png");
     }
     function shutdown(){//关机状态 7
         $(".shutdown").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(100%)'});
-        $(".btmTxt").html("设备已关机");
         $(".clickBtn").css({color:'#f00',filter:'grayscale(0%)'});
+        $(".btmTxt>div").html("设备已关机");
     }
     function arrearage(){//欠费 6
         $(".arrearage").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(100%)'});
-        $(".btmTxt").html("欠费");
+        $(".btmTxt>div").html("欠费");
     }
     function outLine(){//离线 7
         $(".outLine").show().siblings().hide();
         $("body").css({height:'100vh',filter:'grayscale(100%)'});
-        $(".btmTxt").html("设备已离线");
+        $(".btmTxt>div").html("设备已离线");
     }
     function machineStatus() {
         if(_status=="0"){// 制水状态
             addwater();
+            $('.icon-guanji').addClass('poweron');
+            $('.icon-guanji').siblings('p').css({color:'#4D70FF'});
         }else if(_status=="2"){// 水满状态
             fullwater();
+            $('.icon-guanji').addClass('poweron');
+            $('.icon-guanji').siblings('p').css({color:'#4D70FF'});
         }else if(_status=="3"){// 缺水状态
             lesswater();
+            $('.icon-guanji').addClass('poweron');
+            $('.icon-guanji').siblings('p').css({color:'#4D70FF'});
         }else if(_status=="4"){// 漏水状态
 
         }else if(_status=="5"){// 检修状态
             service();
+            $('.icon-guanji').addClass('poweron');
+            $('.icon-guanji').siblings('p').css({color:'#4D70FF'});
         }else if(_status=="6"){// 欠费停机状态
             arrearage();
+            $('.icon-guanji').addClass('poweroff');
+            $('.icon-guanji').siblings('p').css({color:'#333'});
         }else if(_status=="7"){// 关机状态
             shutdown();
+            $('.icon-guanji').addClass('poweroff');
+            $('.icon-guanji').siblings('p').css({color:'#333'});
         }else{// 冲洗状态
             wash();
+            $('.icon-guanji').addClass('poweron');
+            $('.icon-guanji').siblings('p').css({color:'#4D70FF'});
         }
     }
     //页面加载时获取数据
@@ -64,7 +91,7 @@ window.onload = function(){
     console.log(getdataList)
     var res = JSON.parse($(".res").val());//滤芯详情数据
     var _status=getdataList.devicestause;//获取设备当前状态-> 0:制水 1:冲洗 2:水满 3:缺水 4漏水 5:检修 6:欠费停机 7:关机 8:开机(仅命令)
-
+    // _status = 1;    // 模拟
     machineStatus();//执行当前设备状态
 
     // $(".rawtdsVal").html(getdataList.rawtds?getdataList.rawtds:'--');//纯水TDS
@@ -78,20 +105,20 @@ window.onload = function(){
     $(".hotwater").html((getdataList.temperature?getdataList.temperature:'--')+"&#8451;");
     $(".coldwater").html(parseInt(Math.random()*10+10)+"&#8451;");
     $(".roomtemperature").html(parseInt(Math.random()*10+20)+"&#8451;");
-    var usedflow = getdataList.sumslow;
+    var usedflow = getdataList.sumflow;
     var usedday = getdataList.sumday;
     var reflow = getdataList.reflow;
     var reday = getdataList.reday;
     if(getdataList.leasingmode=="0"){//按零售
-        $(".surplusVal").html("已用流量："+(usedflow?usedflow:'--')+"L");
-        $(".alreadyUsedVal").html("已用天数："+(usedday?usedday:'--')+"天");
+        $(".surplusVal").html("<b>"+(usedflow?usedflow:'--')+"L</b></br>已用流量");
+        $(".alreadyUsedVal").html("<b>"+(usedday?usedday:'--')+"天</b></br>已用天数");
 
     }else if(getdataList.leasingmode=="1"){//按流量
-        $(".surplusVal").html("剩余流量："+(reflow?reflow:'--')+"L");
-        $(".alreadyUsedVal").html("已用流量："+(usedflow?usedflow:'--')+"L");
+        $(".surplusVal").html("<b>"+(reflow?reflow:'--')+"L</b></br>剩余流量");
+        $(".alreadyUsedVal").html("<b>"+(usedflow?usedflow:'--')+"L</b></br>已用流量");
     }else if(getdataList.leasingmode=="2"){//按天数
-        $(".surplusVal").html("剩余天数："+(reday?reday:'--')+"天");
-        $(".alreadyUsedVal").html("已用天数：" + (usedday?usedday:'--') + "天");
+        $(".surplusVal").html("<b>"+(reday?reday:'--')+"天</b></br>剩余天数");
+        $(".alreadyUsedVal").html("<b>"+(usedday?usedday:'--') + "天</b></br>已用天数");
     }else if(getdataList.leasingmode=="3"){//流量&时间
 
     }
@@ -128,10 +155,10 @@ window.onload = function(){
     websoket.onmessage=function(data)
     {
         var dataList=JSON.parse(data.data);//读取websoket数据，转换为json对象
-        //console.log(dataList.LeasingMode);
+        console.log(dataList);
         _status=dataList.DeviceStause;
         machineStatus();//执行水机状态方法
-        console.log('message: ',dataList);
+        // console.log('message: ',dataList);
         
         if(dataList.PackType=="Select")//返回查询数据类型数据
          {	//console.log(dataList);
@@ -165,12 +192,13 @@ window.onload = function(){
             // $(".roomtemperature").html((roomtemperature?roomtemperature:45)+"&#8451;");//室内温度
 
             if(dataList.LeasingMode=="0"){//按零售
-                $(".surplusVal").html("已用流量："+(usedflow?usedflow:'--')+"L");
-                $(".alreadyUsedVal").html("已用天数："+(usedday?usedday:'--')+"天");
+                $(".surplusVal").html("<b>"+(usedflow?usedflow:'--')+"L</b></br>已用流量");
+                $(".alreadyUsedVal").html("<b>"+(usedday?usedday:'--')+"天</b></br>已用天数");
 
             }else if(dataList.LeasingMode=="1"){//按流量
-                $(".surplusVal").html("剩余流量："+(reflow?reflow:'--')+"L");
-                $(".alreadyUsedVal").html("已用流量："+(usedflow?usedflow:'--')+"L");
+                $(".surplusVal").html("<b>"+(reflow?reflow:'--')+"L</b></br>剩余流量");
+                $(".alreadyUsedVal").html("<b>"+(usedflow?usedflow:'--')+"L</b></br>已用流量");
+
             }else if(dataList.LeasingMode=="2"){//按天数
                 $(".surplusVal").html("剩余天数："+(reday?reday:'--')+"天");
                 $(".alreadyUsedVal").html("已用天数：" + (usedday?usedday:'--') + "天");
@@ -220,7 +248,7 @@ window.onload = function(){
 
     //冲洗按钮操作
     $('.washBtn').click(function(){
-        var statusTxt=$(".btmTxt").html();
+        var statusTxt=$(".btmTxt>div").html();
         if(statusTxt=="设备已关机"||statusTxt=="设备已离线"||statusTxt=="欠费"||statusTxt=="检修"){
             layui.use('layer', function(){
                 var layer = layui.layer;
@@ -259,13 +287,14 @@ window.onload = function(){
     });
     //开机/关机按钮操作
     $('.clickBtn').click(function(){
-        var statusTxt=$(".btmTxt").html();
+        var statusTxt=$(".btmTxt>div").html();
         var _this='';
         if(statusTxt=="设备已离线"||statusTxt=="设备已关机"){
             _this='开机';
         }else{
             _this='关机';
         }
+        console.log(_this);
         var ajson;//数据对象
         //判断操作类型
         var tipsText = "确定要"+ _this + deviceId +"吗？";
@@ -345,5 +374,14 @@ window.onload = function(){
     window.onunload=function(){
         websoket.close();
     };
+
+    // 点击底部按钮
+    $('.chbuBotom li').on('click', function(){
+        var thisicon = $(this).find('i');
+        var text = $(this).find('p');
+        thisicon.css({backgroundPosition: '0 -1.6em'});
+        text.css({color: '#4D70FF'});
+
+    })
 
 }

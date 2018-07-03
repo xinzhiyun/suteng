@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<meta http-equiv='max-age' content='86400'>
+  	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+ 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
+ 	<link rel="stylesheet" href="__PUBLIC__/Home/css/shop/detail.css">
+	<title>商品详情</title>
+    <!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
+    <script>
+        // var vconsole = new VConsole();
+    </script>
+</head>
+<body>
+	<input type="hidden" value='{{$sold_num}}' id="sold_num">
+	<!-- <input type="hidden" value='{{$postage}}' id="postage"> -->
+	<div class="shopdetailContain">
+		<div class="detailTop">
+			<!-- /*商品信息*/ -->
+			<div>
+				<!-- <div class="detailpic">
+					<ul id='wrapul'>
+						<li><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></li>
+					</ul>
+					<span class="picnum"><b>1</b><span></span></span>
+				</div> -->
+				<!-- /*商品说明*/ -->
+				<!-- <div class="detailTxt">
+					<span><b>￥5699.00</b><em>已售： 210</em></span>
+					<p>尼康（Nikon）D3300 单反套机（AF-P DX 18- 55 mm/3.5-5.6G VR 防抖镜头</p>
+					<em>送包、滤镜、存储卡、读卡器、清洁套装</em>
+				</div> -->
+			</div>
+			<!-- /*商品数量，邮费*/ -->
+		</div>
+		<div class="detailContain">
+			<!-- 个人评论标题 -->
+			<div class="detailtitle"><p>——<b>用户评论</b>——</p></div>
+			<!-- <p><i class="iconfont icon-jingdiananli_wujiaoxing_shoucanghou"></i><span>总评：4.9</span></p> -->
+			<!-- 	/*个人评论内容*/ -->
+			<div class="detailItemall my-gallery" data-pswp-uid="1">
+				<!-- <div class="detailItem">
+					<p><em><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></em><b>CICI</b></p>
+					<p>宝贝好喜欢好喜欢</p>
+					<span><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></span>
+					<span><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></span>
+					<span><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></span>
+				</div>
+				<div class="detailItem">
+					<p><em><img src="__PUBLIC__/Home/images/comm_02.png" alt=""></em><b>CICI</b></p>
+					<p>宝贝好喜欢好喜欢</p>
+				</div>  -->
+				<!-- 隐藏的评论 -->
+
+				<!-- 评论内容开始 -->
+					<!-- <div class="itemgoodsBott">
+						<p class="cfix">
+							<span class="fleft">
+								<img src="__PUBLIC__/Home/images/comm_02.png" alt="">
+							</span>
+							<span class="fright">2018/05/31 10:51</span>
+						</p>
+						<p class="cfix xingx">
+							<i index="1" class="iconfont pingfen fleft">
+								<span></span>
+							</i>
+							<span class="fleft">&emsp;中评</span>
+						</p>
+						<p class="ccontent">评论内容</p>
+						<div class="commpic">
+							<ul>
+								<li>
+									<img src="__PUBLIC__/Home/images/comm_02.png" alt="">
+								</li>
+							</ul>
+						</div>	
+					</div> -->
+				<!-- 评论内容结束 -->    
+				
+			</div>
+			<div class="pinglunshow"><p><b>查看更多</b><span class="iconfont icon-shuangxiajiantou"></span></p></div>
+			<div class='slide'><span class='iconfont icon-xiangshangjiantou'></span><br>向上滑动</div>
+		</div>
+		<div class='moredetail'>
+			<p>查看详情介绍</p>
+			<ul>
+				<li></li>
+			</ul>
+			<div>
+				<!-- <div>
+					<img src="" alt="">
+				</div> -->
+			</div>
+		</div>
+		<div class="shopdetailBott">
+			<a href="{{:U('ShoppingCart/index')}}">
+				<i class="iconfont icon-gouwuche"><span>{{$cartInfo}}</span></i>
+			</a>
+			<div>
+				<div id="add2ShopCart">加入购物车</div>
+				<input id="buyNow" type="button" value="立即购买">
+			</div>
+		</div>
+	</div>
+	<!-- Root element of PhotoSwipe. Must have class pswp. -->
+	<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+	    <!-- Background of PhotoSwipe. 
+	         It's a separate element as animating opacity is faster than rgba(). -->
+	    <div class="pswp__bg"></div>
+
+	    <!-- Slides wrapper with overflow:hidden. -->
+	    <div class="pswp__scroll-wrap">
+
+	        <!-- Container that holds slides. 
+	            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+	            Don't modify these 3 pswp__item elements, data is added later on. -->
+	        <div class="pswp__container">
+	            <div class="pswp__item"></div>
+	            <div class="pswp__item"></div>
+	            <div class="pswp__item"></div>
+	        </div>
+
+	        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+	        <div class="pswp__ui pswp__ui--hidden">
+
+	            <div class="pswp__top-bar">
+
+	                <!--  Controls are self-explanatory. Order can be changed. -->
+
+	                <div class="pswp__counter"></div>
+
+	                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+	                <!-- <button class="pswp__button pswp__buttonshare" title="Share"></button> -->
+
+	                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+	                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+	                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+	                <!-- element will get class pswp__preloader-active when preloader is running -->
+	                <div class="pswp__preloader">
+	                    <div class="pswp__preloader__icn">
+	                      <div class="pswp__preloader__cut">
+	                        <div class="pswp__preloader__donut"></div>
+	                      </div>
+	                    </div>
+	                </div>
+	            </div>
+
+	            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+	                <div class="pswp__share-tooltip"></div> 
+	            </div>
+
+	            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+	            </button>
+
+	            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+	            </button>
+
+	            <div class="pswp__caption">
+	                <div class="pswp__caption__center"></div>
+	            </div>
+
+	        </div>
+
+	    </div>
+
+	</div>
+	<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+  	<script src="__PUBLIC__/Home/js/public.js"></script>
+  	<script src="__PUBLIC__/Home/js/shop/tmove.js"></script>
+	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
+	<link rel="stylesheet" href="__PUBLIC__/Home/photoswipe/photoswipe.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/photoswipe/default-skin/default-skin.css"> 
+	<script src="__PUBLIC__/Home/photoswipe/photoswipe.min.js"></script> 
+	<script src="__PUBLIC__/Home/photoswipe/photoswipe-ui-default.min.js"></script> 
+	<script src='__PUBLIC__/Home/js/shop/shopdetail.js?v={{:time()}}'></script>
+	<script>
+	$(function(){
+		// 首页按钮
+		!function(){
+			// 创建 a 标签
+			var home = document.createElement('a');
+			home.innerText = '首\n页';
+
+			home.href = '{{:U("Home/Shop/index")}}';
+			home.setAttribute("id", 'back2Home');
+
+			// 添加到页面
+			document.body.appendChild(home);
+			home.onclick = function(){
+				home.style.background = '#aaa';
+			}
+			return
+			// console.log(home)    
+		}()
+		
+	})
+	</script>
+</body>
+</html>

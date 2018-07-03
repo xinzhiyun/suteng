@@ -52,10 +52,12 @@ class WorkController extends CommonController
                         ];
             $this->ajaxReturn($message);
         }
-        $work = D('work');
-        $data = $work->getWorkInfoByID($id);
-                $data = $work->getAll($data);
-                // dump($workList);die;
+//        $work = D('work');
+//        $data = $work->getWorkInfoByID($id);
+//                $data = $work->getAll($data);
+                // dump($data);die;
+
+        $data = M('work')->where('id='.$id)->find();
         if ($data) {
             $message = ['code' => 10,
                         'data' => $data,
@@ -191,12 +193,11 @@ class WorkController extends CommonController
             $res = $device_type->where(['id'=>$id])->save($data);
 
             if($res){
-                $status = [
-                    '9'=>99,// 关闭
-                    '3'=>8
-                ];
-                if(in_array($data['result'], $status)){
-                    Work::add($post['id'], (string)$status[$data['result']]);
+
+                if($data['result']==9){
+                    Work::add($post['id'], '99');
+                }elseif($data['result']==3){
+                    Work::add($post['id'], '8');
                 }
 
                 E('修改成功',200);
@@ -349,6 +350,36 @@ class WorkController extends CommonController
                 // 写工单记录
                 return  Work::add($wid, '4');
             }
+        }
+    }
+
+    // 工单信息(时间线)
+    public function showWorkTimeInfo()
+    {
+        try {
+            $number = I('id');
+            if( empty($number ) ) {
+                E('数据错误',400022);
+            }
+            $info = M('work')->where('id='.$number)->find();
+            if( empty($info ) ) {
+                E('工单信息不存在',400022);
+            }
+            $list = M('work_note')->where('wid='.$info['id'])->order('id desc')->select();
+            $evaluaction = 0;
+            if($info['result'] >= 2 and $info['result'] <4){
+                $evaluaction = 1;
+            }
+
+            $res = [
+                'data'=>$list,
+                'name'=>$info['name'],
+                'evaluaction'=> $evaluaction
+            ];
+            $this->toJson($res,'获取成功!');
+
+        } catch (\Exception $e) {
+            $this->toJson($e);
         }
     }
 

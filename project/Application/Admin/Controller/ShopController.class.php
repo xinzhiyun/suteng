@@ -1,5 +1,6 @@
 <?php
 namespace Admin\Controller;
+use Common\Tool\File;
 use Think\Controller;
 use Think\Exception;
 use Think\Log;
@@ -38,7 +39,8 @@ class ShopController extends CommonController
         try {
             $cate = D('Category');
             $data = I('post.');
-            if(!$cate->create($post)) E($cate->getError(),203);
+
+            if(!$cate->create($data)) E($cate->getError(),203);
             $res = $cate->add($data);
             if(!$res) E('添加失败了', 202);
             E('添加成功', 200);
@@ -54,11 +56,22 @@ class ShopController extends CommonController
 
     public function appendChildCategory(){
         $pid = I('post.pid');
+
+        $pic = '';
+        if(!empty($_FILES)){
+            $pic = File::upload('Category');
+            if($pic){
+                $pic = '/Public/upload'.$pic[0];
+            }
+        }
+
+        $leavel = D('Category')->where('id='.$pid)->getField('leavel')+1;
+
         $cateName = I('post.catename');
         if(!$pid || strlen($cateName) < 1){
             $this->ajaxReturn(['code'=>'-1','msg'=>'参数错误']);
         }
-        $res = D('Category')->data(['name'=>trim($cateName),'pid'=>$pid])->add();
+        $res = D('Category')->data(['name'=>trim($cateName), 'pid'=>$pid, 'leavel'=>$leavel, 'pic'=>$pic])->add();
         if($res) {
             $this->ajaxReturn(['code'=>'200','msg'=>'添加成功','data'=>I('')]);
         } else {
@@ -72,7 +85,16 @@ class ShopController extends CommonController
         try {
             $cate = D('Category');
             $post = I('post.');
+
+            if(!empty($_FILES)){
+                $pic = File::upload('Category');
+                if($pic){
+                    $post['pic'] = '/Public/upload'.$pic[0];
+                }
+            }
+
             $where['id'] = $post['id'];
+            unset($post['id']);
             if(!$cate->create($post)) E($cate->getError(),203);
             $res = $cate->where($where)->save($post);
             if(!$res) E('修改失败了', 202);
@@ -86,6 +108,47 @@ class ShopController extends CommonController
         }
 
     }
+
+    // 广告编辑
+    public function cateGoryAdvEdit()
+    {
+        try {
+            $cate = D('Category');
+            $post = I('post.');
+            $where['id'] = $post['id'];
+            unset($post['id']);
+            $adv = json_decode(htmlspecialchars_decode($post['adv']),true);
+
+            $adv = array_sort($adv,'sort');
+
+            $post['adv'] = json_encode($adv,JSON_UNESCAPED_UNICODE);
+
+            if(!$cate->create($post)) E($cate->getError(),203);
+            $res = $cate->where($where)->save($post);
+            if(!$res) E('修改失败了', 202);
+            E('修改成功', 200);
+        } catch (\Exception $e) {
+            $err = [
+            'code' => $e->getCode(),
+            'msg' => $e->getMessage(),
+            ];
+        return $this->ajaxReturn($err);
+        }
+    }
+
+    // 广告图片
+    public function cateGoryAdvPic()
+    {
+
+        if(!empty($_FILES)){
+            $picInfo = File::upload('CategoryAdv');
+            if($picInfo){
+                $pic = '/Public/upload'.$picInfo[0];
+            }
+        }
+        $this->ajaxReturn(['code'=>200,'pic'=>$pic]);
+    }
+
     // 删除分类
     public function cateGoryDel()
     {
@@ -141,14 +204,58 @@ class ShopController extends CommonController
     }
 
     //加载商品详情
-    public function good_detail()
+    public function goodsDetail($id)
     {
-        if(IS_AJAX){
-            $id = I('post.id');
-            $res = M('goods_detail')->where('gid='.$id)->getField('desc');
-            return $this->ajaxReturn($res);
-        }
+        // dump($id);
+        $map['g.id'] = $id;
+        $goodsInfo = D('Goods')
+                ->alias('g')
+                ->where($map)
+                ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
+                ->field('gd.desc,gd.specs,gd.saleservice,g.name')
+                ->find();
 
+        // dump($goodsInfo);
+        $this->assign('goodsInfo', $goodsInfo);
+        $this->display();
+
+    }
+
+    /**
+     * [goodsHuishou 回收站商品信息]
+     * @return [type] [description]
+     */
+    public function goodsHuishou()
+    {
+        $map['g.status'] = array('eq',2);
+        $count = D('Goods')
+            ->where($map)
+            ->alias('g')
+            ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
+            ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
+            ->join('__INVENTORY__ i on i.gid=g.id' , 'LEFT')
+            ->field('c.name cname,g.*')
+            ->limit($Page->firstRow.','.$Page->listRows)
+            ->count();
+            $Page  = new \Think\Page($count,10);
+            $pageButton =$Page->show();
+        $goodsData = D('Goods')
+            ->where($map)
+            ->alias('g')
+            ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
+            ->join('__CATEGORY__ c ON g.cid=c.id', 'LEFT')
+            ->join('__INVENTORY__ i on i.gid=g.id' , 'LEFT')
+            ->field('c.name cname,g.*')
+            ->order(' addtime desc')
+            ->limit($Page->firstRow.','.$Page->listRows)
+            ->select();
+        $assign = [
+            'data' => $goodsData,
+            'show' => $pageButton,
+        ];
+
+        $this->assign($assign);
+        $this->display();
     }
 
     // 添加商品
@@ -156,10 +263,9 @@ class ShopController extends CommonController
     {
         $cate = D('Category');
         $cateInfo = $cate->where('pid=0')->select();
-        $goods = D('Goods');
-        $attr = D('Attr'); 
-        $attrInfo = $attr->select();
-        $goodsList = $goods->select();  //暂时无用
+
+        $blockInfo = M('goods_block')->field('id,bname')->select();
+
 
         /* 添加快递公司选择 */
         $courier = M('courier');
@@ -170,9 +276,35 @@ class ShopController extends CommonController
             'cateInfo' => $cateInfo,
             'attrInfo' => $attrInfo,
             'courierList' => $courierList,
+            'blockInfo' => $blockInfo,
         ];
         $this->assign($assign);
         $this->display();
+    }
+
+    /**
+     * [getAttr 通过分类id获取该分类下的所有属性]
+     * @return [type] [description]
+     */
+    public function getAttr()
+    {
+        $attr = D('attr');
+        $map['cid'] = $_POST['cid'];
+
+        $attr = M('attr')->field('id,attr')->where($map)->select();
+
+        foreach ($attr as $key => &$value) {
+
+            $value['data'] = M('attr_val')->field('id,val')->where('aid='.$value['id'])->select();
+
+            if (empty($value['data'])) unset($attr[$key]);
+
+        }
+
+        // dump($attr);die;
+        $a = json_encode(array_values($attr));
+        
+        $this->ajaxReturn($a);
     }
 
     // 商品管理首页删除商品
@@ -185,9 +317,9 @@ class ShopController extends CommonController
             $data = ['status'=>2];
             $del = $goods->where($where)->save($data);
             if($del){
-                E('删除成功', 200);
+                E('已放到回收站', 200);
             } else {
-                E('删除失败', 606);
+                E('放到回收站失败', 606);
             }
         } catch (\Exception $e) {
             $err = [
@@ -198,127 +330,255 @@ class ShopController extends CommonController
         }
     }
 
+
+    /**
+     * 二进制流图片上传
+     * @param  [type] $image     二进制图片
+     * @param  [type] $imageSize 图片大小
+     * @return mix            图片路径，false
+     */
+    public function upload($image,$imageSize)
+    {
+        $key = fopen($image, "r");
+        $file = fread($key, $imageSize); //二进制数据流
+        fclose ( $key );
+
+        do{
+             //设置目录+图片完整路径
+            $save_name = md5 (time().mt_rand(100000,9999999)).'.png';
+            $save_dir = './Uploads/goods';
+            ! is_dir ( $save_dir ) && mkdir ( $save_dir,0777,1 );
+            $save_fullpath = $save_dir . '/' . $save_name;
+        }while (file_exists());
+
+        @$fp = fopen ( $save_fullpath, 'w+' );
+        
+        if (fwrite ( $fp, $file ) != false) {
+            return $save_fullpath;
+        } else {
+            return false;
+        }
+        fclose ( $fp );        
+    }
+
+    /**
+     * [删除文件]
+     * @param  Array $files 文件路径数组
+     * @return Boolean        
+     */
+    public function rmfiles($files)
+    {
+        foreach ($files as $key => $value) {
+            return unlink($value);
+        }
+    }
+
+
     // 商品添加处理
     public function goodsAction()
     {
-        dump($_POST);
-        dump($_FILES);die;
         try{
+            //商品表
             $goods_add = D('Goods');
-            $attr_val = D('AttrVal');
-            $attr = D('Attr');
+            //商品详情
             $goods_detail = D('GoodsDetail');
-            $cate = D('Category');
-            $data = I('post.');
-            $price = $data['price'];
-            $goods['cid'] = $cate->sureCate();
-            if(!$goods['cid']) E('请选择分类', 605);
-            $goods['name'] = $data['name'];
+            //商品sku库存
+            $GoodsSku = D('GoodsSku');
+            //商品与主题的关系
+            $GoodsRelationBlock = D('GoodsRelationBlock');
+            //商品快递
+            $GoodsCourier = D('GoodsCourier');
+            //商品价格
+            $GoodsPrice = D('GoodsPrice');
+        
+
+
+            //商品分类id
+            $goods['cid'] = $_POST['seccate'];
+            // 分类路径
+            $catepath = [];
+            if($_POST['firscate'] && $_POST['firscate'] !='--')$catepath[]   = $_POST['firscate'];
+            if($_POST['seccate'] && $_POST['seccate'] !='--')$catepath[]    = $_POST['seccate'];
+            if($_POST['thirdcate'] && $_POST['thirdcate'] !='--')$catepath[]  = $_POST['thirdcate'];
+
+            $goods['catepath'] = implode(',', $catepath);
+
+            //添加该商品的商户
+            $goods['vid'] = $_SESSION['adminInfo']['id'];
+            //商品名
+            $goods['name'] = $_POST['name'];
+            //商品状态，默认是下线
+            $goods['status'] = 0;
+            //个人会员价格
+            $goods['price'] = $_POST['price'][1];
+            //成本价
+            $goods['cost'] = $_POST['cost'];
+            //商品总库存
+            $goods['stock'] = $_POST['allnum'];
+            //是否安装
+            if($_POST['is_install'] == 'on'){
+                $goods['is_install'] = 1;
+            } else {
+                $goods['is_install'] = 0;
+            }
+            //是否租赁
+            if($_POST['is_hire'] == 'on'){
+                $goods['is_hire'] = 1;
+            } else {
+                $goods['is_hire'] = 0;
+            }
+            //添加时间
+            $goods['addtime'] = time();
+            //更新时间
+            $goods['updatetime'] = time();
+
+            //图片上传         
+            // 二进制文件上传简单处理
+            if (!empty($_FILES["UploadForm"])) {
+                foreach ($_FILES["UploadForm"]["tmp_name"] as $key => $value) {
+                    $image = $_FILES["UploadForm"]["tmp_name"][$key];
+                    $imageSize = $_FILES["UploadForm"]["size"][$key];
+                    $info[] = $this->upload($image,$imageSize);                        
+                }
+            }else{
+                E('没有文件上传', 602);
+            }   
+            
+            if(!$info) {// 上传错误提示错误信息
+                E('上传错误',606);
+            }
+            if(!(count($info) <= 5)){
+                E('只能添加五张张图片',604);
+            }
+
+            foreach ($info as $k => $val) {
+                $path .= ltrim($val,'.').'|';
+                $goods['gpic'] = ltrim($val,'.');
+            }
+
             // 事务开启
             $goods_add->startTrans();
+            $goods_detail->startTrans();
+            $GoodsSku->startTrans();
+            $GoodsRelationBlock->startTrans();
+            $GoodsCourier->startTrans();
+            $GoodsPrice->startTrans();
+
             if(!$goods_add->create($goods)) {
                 E($goods_add->getError(),406);
             }
             // 商品添加
-            $goods_status = $goods_add->add();
-            $goods_add->where(['id'=>$goods_status])->save(['vid'=>$_SESSION['adminInfo']['id']]);
-            $goodsDetail['gid'] = $goods_status;
-            $goodsDetail['cost'] = $data['cost'];
-            // $goodsDetail['stock'] = $data['stock'];
-            if($data['is_install'] == 'on'){
-                $goodsDetail['is_install'] = 1;
-            } else {
-                $goodsDetail['is_install'] = 0;
-            }
-            if($data['is_hire'] == 'on'){
-                $goodsDetail['is_hire'] = 1;
-            } else {
-                $goodsDetail['is_hire'] = 0;
-            }
+            $goodsid = $goods_add->add();
+
+            //商品详情id
+            $goodsDetail['gid'] = $goodsid;
+            //商品详情多图
+            $goodsDetail['pic'] = $path;
+            //商品详情描述
+            $goodsDetail['desc'] = $_POST['desc'];
+            //商品详情规格
+            $goodsDetail['specs'] = $_POST['specs'];
+            //商品详情售后服务
+            $goodsDetail['saleservice'] = $_POST['saleservice'];
+            //商品详情添加时间
+            $goodsDetail['addtime'] = time();
+            //商品详情更新时间
+            $goodsDetail['updatetime'] = time();    
+            
             if(!$goods_detail->create($goodsDetail)) E($goods_detail->getError(),408);
             // 商品详情添加
             $goodsDetail_status = $goods_detail->add($goodsDetail);
-            // $attrVal['val'] = $data['attr_val'];
-
-            /*********************   写入一条商品默认库存   
-             * 默认都为 0
-            */
-            $gid = $goods_status;
-            D('inventory')->add(['allnum'=>0,'abnormalnum'=>0,'gid'=>$gid]);
+            
+            
+            //sku库存数据写入
+            $skuattrs = json_decode($_POST['skuattr'],true);
 
             
-            //商品属性添加
-            $attrVal['gid'] = $goods_status;
-            foreach ($data['attr'] as $key => $val) {
-                if($attr->where('id='.$key)->field('id')){
+            foreach ($skuattrs as $key => $value) {
+                $sku = array();
 
-                    $attrVal['aid'] = $key;
-                    $attrVal['val'] = $val;
-                    if(!$attr_val->create($attrVal)) E($attr_val->getError(),407);
-                    // 属性值添加
-                    $attr_val_status = $attr_val->add($attrVal);
-                } else {
-                    E('属性缺失，请刷新页面', 506);
-                }
+                $sku['gid'] = $goodsid; //sku商品id
+                //属性组合库存
+                $skuattrArr=array_column($value['list'],'id');
+                sort($skuattrArr);
+                $sku['skuattr'] = implode('_', $skuattrArr);//属性值id组合
+
+                $sku['skustock'] = $value['stock'];//属性组合库存
+
+                $sku['addtime'] = time();
+                $sku['updatetime'] = time();
+
+                if(!$GoodsSku->create($sku)) E($GoodsSku->getError(),408);
+                // 商品sku添加
+                $skustatus = $GoodsSku->add($sku);
+                
             }
 
+            //商品与活动主题的关系
+            $goodsBlock['gid'] = $goodsid;
+            $goodsBlock['bid'] = $_POST['bid'];
+            $goodsBlock['addtime'] = time();
+            $goodsBlock['updatetime'] = time();
+            if(!$GoodsRelationBlock->create($goodsBlock)) E($GoodsRelationBlock->getError(),408);
+            // 商品与主题活动的关系写入
+            $GoodsRelationBlockstatus = $GoodsRelationBlock->add($goodsBlock);
 
-            //属性值添加完成后，将属性名字也写入库
-            foreach ($data['attrName'] as $key => $value) {
-                $gid = $goods_status;
-                $aid = $key;
-                $ainfo['aname'] = $value;
-                //进行添加
-                M('AttrVal')->where('gid='.$gid .' AND aid='.$aid)->save($ainfo);   
-            }
-
+           
             /* 商品快递费添加 */
-            foreach ($data['courier'] as $key => $value) {
-                $data['gid'] = $goods_status;
+            foreach ($_POST['courier'] as $key => $value) {
+                $data['gid'] = $goodsid;
                 $data['cid'] = $key;
                 $data['cprice'] = $value;
+                $data['addtime'] = time();
+                $data['updatetime'] = time();
 
-                //插入数据前先查询同一个商品是否有同一个快递
-                $info = M('GoodsCourier')->where('gid='.$data['gid'].' AND cid='.$data['cid'])->select();
 
-                if ($info) {
-                    E('此商品已经有设置了这个快递的价格，请前往更改',203);
-                } else {
-                    //进行添加
-                    $list = M('GoodsCourier')->add($data);
-
-                    if (!$list) {
-                        E('快递价格设置失败，请刷新页面', 506);
-                    } 
-                }
+                //进行添加
+                $GoodsCourierStatus = $GoodsCourier->add($data);
+    
             }
 
             //商品快递费添加完成后，将快递公司名字也写入库
-            foreach ($data['courierName'] as $key => $value) {
-                $gid = $goods_status;
+            foreach ($_POST['courierName'] as $key => $value) {
+                $gid = $goodsid;
                 $cid = $key;
-                $info['cname'] = $value;
+                $infos['cname'] = $value;
+                $infos['updatetime'] = time();
                 //进行添加
-                M('GoodsCourier')->where('gid='.$gid .' AND cid='.$cid)->save($info);   
+                M('GoodsCourier')->where('gid='.$gid .' AND cid='.$cid)->save($infos);   
             }
 
 
             /* 商品快递费添加 */
-            
-
 
             // 商品单价添加
-            foreach ($price as $key => $value) {
+            foreach ($_POST['price'] as $key => $value) {
                 $p['price'] = $value;
                 $p['grade'] = $key;
-                $p['gid'] = $goods_status;
-                $price_status = M('Price')->add($p);
+                $p['gid'] = $goodsid;
+                $p['addtime'] = time();
+                $p['updatetime'] = time();
+                $price_status = $GoodsPrice->add($p);
             }
-            if($goods_status && $attr_val_status && $goodsDetail_status && price_status){
+            if($goodsid && $goodsDetail_status && $skustatus && $GoodsRelationBlockstatus && $GoodsCourierStatus && $price_status){
                 $goods_add->commit();
+                $goods_detail->commit();
+                $GoodsSku->commit();
+                $GoodsRelationBlock->commit();
+                $GoodsCourier->commit();
+                $GoodsPrice->commit();
+                // dump(1);
+                // die;
                 E('商品添加成功，可继续添加',200);
             } else {
                 $goods_add->rollback();
+                $goods_detail->rollback();
+                $sku->rollback();
+                $GoodsRelationBlock->rollback();
+                $GoodsCourier->rollback();
+                $GoodsPrice->rollback();
+                //失败删除图片
+                $this->rmfiles($info);
                 E('商品添加失败，请重新添加',407);
             }
 
@@ -332,59 +592,12 @@ class ShopController extends CommonController
         }
     }
 
-    // 添加商品图片
-    public function goodsAddPic()
-    {
-        try {
-            $pic = D('Pic');
-            
-            $gid = I('post.gid');
-            $upload = new \Think\Upload();// 实例化上传类
-            $upload->maxSize   =     3145728 ;// 设置附件上传大小
-            $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
-            $upload->rootPath  =     './Uploads/'; // 设置附件上传根目录
-            $upload->savePath  =     ''; // 设置附件上传（子）目录
-            // 上传文件 
-            $info   =   $upload->upload($_FILES);
-            if(!$info) E($upload->getError(),603);
-            foreach ($info as $key => $value) {
-                $data[$key] = [
-                    'gid' => $gid,
-                    'picname' => $value['name'],
-                    'path' => $value['savepath'].$value['savename']
-                ];
-            }
-            $res = $pic->where('gid='.$gid)->find();
-            if($res){
-                $status_res = $pic->where('gid='.$gid)->addAll($data);
-                if($status_res){
-                    E('更新成功',200);
-                } else {
-                    E('更新失败',604);
-                }
-            } else {
-                $status_res = $pic->addAll($data);
-                if($status_res){
-                    E('添加成功',200);
-                } else {
-                    E('添加失败',604);
-                }
-            }
-            
-        } catch (\Exception $e) {
-            $err = [
-                'code' => $e->getCode(),
-                'msg' => $e->getMessage(),
-            ];
-            $this->ajaxReturn($err);
-        }
-    }
-
     // 商品上下架状态修改
     public function edidStatus(){
         try {
-            $goods = D('GoodsDetail');
-            $where['gid'] = I('post.id');
+            // dump($_POST);die;
+            $goods = D('Goods');
+            $where['id'] = I('post.id');
             $data['status'] = I('post.status');
             $res = $goods->where($where)->save($data);
             // echo $goods->_sql();
@@ -405,89 +618,195 @@ class ShopController extends CommonController
 
     // 修改商品
     public function goodEdit()
-    {   
+    {
+        $gid = $_GET['id'];
+        $goods_mode = D('goods');
+        $goodsInfo = $goods_mode->find($gid);
 
-        //修改商品之前先查询出所有的快递公司
+        // 分类
+        $catepath = explode(',',$goodsInfo['catepath']);
+        $categoryList[0] = M('category')->where('pid=0')->field('id, name')->select();
+
+        foreach ($catepath as $k=>$cate){
+            $cate=M('category')->where('pid='.$cate)->field('id, name')->select();
+            if(!empty($cate)){
+                $categoryList[] = $cate;
+            }
+        }
+        $goodsInfo['catepath'] = $catepath;
+
+
+        // 主题
+        $blockList = M('goodsBlock')->where('status=1')->select();
+        $block = M('goodsRelationBlock')->where('gid='.$gid)->getField('bid');
+        $goodsInfo['bid'] = '';
+        if(!empty($block)){
+            $goodsInfo['bid'] = $block;
+        }
+
+        $goodsDetail = M('goodsDetail')->where('gid='.$gid)->field('pic,desc,specs,saleservice')->find();
+        $goodsDetail['pic'] = explode('|', $goodsDetail['pic']);
+        $goodsInfo = array_merge($goodsInfo, $goodsDetail);
+
+        $goodsAttr = M('goodsSku')->where('gid='.$gid)->select();
+
+        $attrValArr = [];//值
+        $attrArr = [];  //属性
+        $attrValRel = [];  //属性和值的关系
+
+        foreach ($goodsAttr as $item){
+            $attrs =  explode('_',$item['skuattr']);
+            foreach ($attrs as $attrid){
+                if(empty($attrValArr[$attrid])){
+                    $tmpAttr = M('attrVal')->find($attrid);
+                    $attrValArr[$attrid] = $tmpAttr['val'];
+                    $attrValRel[$tmpAttr['aid']][] = $attrid;
+                    if(empty($attrArr[$tmpAttr['aid']])){
+                        $tmpAttrs = M('attr')->find($tmpAttr['aid']);
+                        $attrArr[$tmpAttr['aid']] = $tmpAttrs['attr'];
+                    }
+                }
+            }
+        }
+        $attrRes = [];
+        foreach ($attrArr as $atrrid =>$attrVal){
+            $tmpRes = [];
+            $tmpRes['name']=$attrVal;
+            $tmpAttr = [];
+            foreach ($attrValRel[$atrrid] as $attrItem){
+                $tmpAttr['pname'] = $attrArr[$atrrid];
+                $tmpAttr['name']  = $attrValArr[$attrItem];
+                $tmpAttr['id']    = $attrItem ;
+                $tmpRes['list'][]=$tmpAttr;
+            }
+            $attrRes[] = $tmpRes;
+        }
+
+        $where['gid'] = $gid;
+
+        //商品会员价格
+        $goodsInfo['price'] = M('goodsPrice')->field('price')->where($where)->find();
+        $goodsInfo['goodsCourier'] = M('goods_courier')->where('gid='.$gid)->field('cid,cname,cprice')->select();;
+
         $courierList = M('courier')->where('status = 1')->select();
 
-        //查询出所有分类
-        $categoryList = M('category')->field('id, name')->select();
+        $attr = D('attr');
+        $map['cid'] = $goodsInfo['cid'];
 
-        //查询出所有属性
-        $arrtList = M('attr')->select();
+        $attr = M('attr')->field('id,attr')->where($map)->select();
+
+        foreach ($attr as $key => &$value) {
+
+            $value['data'] = M('attr_val')->field('id,val')->where('aid='.$value['id'])->select();
+
+            if (empty($value['data'])) unset($attr[$key]);
+
+        }
+
+
+        $attrResList = array_values($attr);
         
-        //获取商品id
-        $id = $_GET['gid'];
-        //实例化商品对象
-        $goods = M('goods');
+        $this->assign('skuList',$goodsAttr);//sku库存列表
+        $this->assign('courierList',$courierList);//快递公司列表
+        $this->assign('attr',$attrRes);//属性列表
+        $this->assign('attrList',$attrResList);//属性列表(全部)
+        $this->assign('blockList',$blockList);//主题列表
+        $this->assign('categoryList',$categoryList);//分类列表
+        $this->assign('goodsDetail', $goodsInfo);//商品信息
+        $this->display();
+    }
 
-        $goodsInfo=D('goods')->getGoodInfo($id);
+    /*
+    // 修改商品
+    public function goodEdit()
+    {
 
-        // dump($goodsInfo);
-        $price = $goodsInfo['price'];
-        $attrVal = $goodsInfo['attr_val'];
-        $goodsCourier = $goodsInfo['goods_courier'];
-        $goodsDetail = $goodsInfo['goods_detail'];
 
-        $goodsPics = D('pic')->where(['gid'=>$id])->select();
+
+
+
+        // //修改商品之前先查询出所有的快递公司
+        // $courierList = M('courier')->where('status = 1')->select();
+
+        // //查询出所有分类
+         $categoryList = M('category')->field('id, name')->select();
+
+        // //查询出所有属性
+//         $arrtList = M('attr')->select();
+        
+        // //获取商品id
+        // $id = $_GET['gid'];
+        // //实例化商品对象
+        // $goods = M('goods');
+
+        // $goodsInfo=D('goods')->getGoodInfo($id);
+
+        // // dump($goodsInfo);
+        // $price = $goodsInfo['price'];
+        // $attrVal = $goodsInfo['attr_val'];
+        // $goodsCourier = $goodsInfo['goods_courier'];
+        // $goodsDetail = $goodsInfo['goods_detail'];
+
+        // $goodsPics = D('pic')->where(['gid'=>$id])->select();
      
-        //处理属性所属
-        foreach ($attrVal as $value) {
-            $attrValArr[]=$value['aid'];
-        }
+        // //处理属性所属
+        // foreach ($attrVal as $value) {
+        //     $attrValArr[]=$value['aid'];
+        // }
 
-        foreach ($arrtList as &$value) {
-            if(in_array($value['id'], $attrValArr)){
-                $value['check']='checked';
-            }else{
-                $value['check']='';
-            }
-        }
+        // foreach ($arrtList as &$value) {
+        //     if(in_array($value['id'], $attrValArr)){
+        //         $value['check']='checked';
+        //     }else{
+        //         $value['check']='';
+        //     }
+        // }
 
-        // dump($attrVal);
-        //处理商品对应属性的属性值
-        if (!empty($attrVal)) {
-            foreach ($attrVal as $key => $val) {
-                $newattrVal[$val['aid']] = $val['val'];
-            }
-        } else {
-            $newattrVal = '';
-        }
+        // // dump($attrVal);
+        // //处理商品对应属性的属性值
+        // if (!empty($attrVal)) {
+        //     foreach ($attrVal as $key => $val) {
+        //         $newattrVal[$val['aid']] = $val['val'];
+        //     }
+        // } else {
+        //     $newattrVal = '';
+        // }
         
 
-        //处理快递所属
-        foreach ($goodsCourier as $v) {
-            $goodsDetailArr[]=$v['cid'];
-        }
+        // //处理快递所属
+        // foreach ($goodsCourier as $v) {
+        //     $goodsDetailArr[]=$v['cid'];
+        // }
 
-        foreach ($courierList as &$v) {
-            if(in_array($v['id'], $goodsDetailArr)){
-                $v['check']='checked';
-            }else{
-                $v['check']='';
-            }
-        }
+        // foreach ($courierList as &$v) {
+        //     if(in_array($v['id'], $goodsDetailArr)){
+        //         $v['check']='checked';
+        //     }else{
+        //         $v['check']='';
+        //     }
+        // }
 
-        //处理商品对应的快递费
-        if (!empty($goodsCourier)) {
-            foreach ($goodsCourier as $key => $cval) {
-                $gcVal[$cval['cid']] = $cval['cprice'];
-            }
-        } else {
-            $gcVal = '';
-        }
+        // //处理商品对应的快递费
+        // if (!empty($goodsCourier)) {
+        //     foreach ($goodsCourier as $key => $cval) {
+        //         $gcVal[$cval['cid']] = $cval['cprice'];
+        //     }
+        // } else {
+        //     $gcVal = '';
+        // }
         
 
-        $this->assign('courierList', $courierList);
-        $this->assign('categoryList', $categoryList);
-        $this->assign('arrtList', $arrtList);
-        $this->assign('goodsInfo', $goodsInfo);
-        $this->assign('price', $price);
-        $this->assign('newattrVal', $newattrVal);
-        $this->assign('gcVal', $gcVal);
-        $this->assign('goodsDetail', $goodsDetail);
+        // $this->assign('courierList', $courierList);
+        // $this->assign('categoryList', $categoryList);
+        // $this->assign('arrtList', $arrtList);
+        // $this->assign('goodsInfo', $goodsInfo);
+        // $this->assign('price', $price);
+        // $this->assign('newattrVal', $newattrVal);
+        // $this->assign('gcVal', $gcVal);
+        // $this->assign('goodsDetail', $goodsDetail);
         $this->display(); 
     }
+    */
 
     // 商品编辑处理
     public function goodsEditAction()
@@ -740,30 +1059,7 @@ class ShopController extends CommonController
         $this->display();
     }
 
-    // 添加属性
-    public function attrAdd()
-    {
-        try {
-            $attr = D('Attr');
-            $data = I('post.');
-            if(!$attr->create()) {
-                E($attr->getError(),204);
-            }
-            $res = $attr->add();
-            if($res){
-                E('添加完成',$res);
-            } else {
-                E('添加失败',203);
-            }
-        } catch (\Exception $e) {
-            $err = [
-                'code' => $e->getCode(),
-                'msg' => $e->getMessage(),
-            ];
-            $this->ajaxReturn($err);
-        }
-
-    }
+    
 
     // 删除产品属性
     public function attrDel()
@@ -958,7 +1254,7 @@ class ShopController extends CommonController
     {
         try {
             $gid = I('post.gid');
-            $data = M('Price')->where('gid='.$gid)->select();
+            $data = M('GoodsPrice')->where('gid='.$gid)->select();
             $this->ajaxReturn($data);
         } catch (\Exception $e) {
             $err = [
@@ -1427,4 +1723,556 @@ class ShopController extends CommonController
             }
         }
     }
+
+    /**
+     * [block 主题活动显示]
+     * @return [type] [description]
+     */
+    public function block()
+    {
+        //接受处理搜索条件
+        if (!empty(I('get.keywords'))) {
+            $map['bname'] = array('like',"%".I('get.keywords')."%");
+        }
+
+        $goodsblock = D('goods_block');
+        $blist = $goodsblock->where($map)->select();
+
+        $this->assign('blist', $blist);
+        $this->display();
+    }
+
+    /**
+     * [blockAddList 加载主题活动编辑页面]
+     * @return [type] [description]
+     */
+    public function blockAddList()
+    {
+        $this->display('block_add');
+    }
+
+    /**
+     * [uploads description]
+     * @return [type] [description]
+     */
+    public function uploads(){
+        $upload = new \Think\Upload();// 实例化上传类
+        $upload->maxSize   =     3145728 ;// 设置附件上传大小
+        $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
+        $upload->rootPath  =     './Uploads/'; // 设置附件上传根目录
+        $upload->savePath  =     ''; // 设置附件上传（子）目录
+        $upload->autoSub = true;
+        // 上传文件 
+        $info   =   $upload->upload();
+
+        if(!$info) {
+            // 上传错误提示错误信息
+            return 0;
+        }else{
+            // 上传成功
+            return $info;
+        }
+    }
+     /**
+     * [courierAdd 执行活动添加]
+     * @return [type] [description]
+     */
+    public function blockAdd()
+    {
+        try {      
+            //接受POST数据
+            $data['bname'] = $_POST['name'];
+            $data['status'] = $_POST['status'];
+            $data['addtime'] = time();
+            $data['updatetime'] = time();
+
+            //图片上传
+            $info = $this->uploads();
+            if ($info == 0) E('图片上传失败',203);
+
+            $data['pic'] = $info['pic']['savepath'].$info['pic']['savename'];
+            $path = './Uploads/'.$info['pic']['savepath'].$info['pic']['savename'];
+            
+            $goodsblock = M('goods_block');
+
+            //添加活动前先判断活动是否已经存在于表中
+            if ($goodsblock->where("bname = '{$data['bname']}'")->find()) {
+                unlink($path);
+                E('该活动名已存在，如需改名请前往更改页面更改','203');
+
+            } else {
+                //添加主题活动
+                $infos = $goodsblock->add($data);
+
+                if ($infos) {
+                        E('添加成功',200);
+                    }else{
+                        //
+                        unlink($path);
+                        E('添加失败',203);
+                }      
+            }
+                    
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [courierEditList 活动编辑页面加载]
+     * @return [type] [description]
+     */
+    public function blockEditList($id)
+    {
+        if (empty($bid)) {
+            $bid = $id;
+        }
+
+        // dump($bid);
+        $binfo = M('goods_block')->find($bid);
+
+        $this->assign('binfo', $binfo);
+        $this->display('block_edit');
+    }
+
+    /**
+     * [courierEdit 执行修改活动]
+     * @return [type] [description]
+     */
+    public function blockEdit()
+    {
+        try {
+                
+            //接受POST数据
+            $data['bname'] = $_POST['name'];
+            $id = $_POST['id'];
+            $data['status'] = $_POST['status'];
+            $data['updatetime'] = time();
+
+            // dump($_POST);die;
+            //如果有文件上传的话，取新文件
+            if ($_FILES['pic']['error'] == 0) {
+                //图片上传
+                $info = $this->uploads();
+                if ($info == 0) E('图片上传失败',203);
+                $data['pic'] = $info['pic']['savepath'].$info['pic']['savename'];
+                $path = './Uploads/'.$info['pic']['savepath'].$info['pic']['savename'];
+
+                //原图
+                $path1 = './Uploads/'.M('goods_block')->field('pic')->find($id)['pic'];
+            } 
+            
+            $goods_block = M('goods_block');
+            //修改库存数据
+            $info = $goods_block->where('id='.$id)->save($data);
+
+            if ($info) {
+
+                    //修改成功就删除原图
+                    unlink($path1);
+                    E('修改成功',$info);
+                }else{
+
+                    //失败删除新图
+                    unlink($path);
+                    E('修改失败',203);
+            }         
+            
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [courierDel 主题活动删除]
+     * @return [type] [description]
+     */
+    public function blockDel()
+    {
+        try {
+                
+            //接收要删除数据的id
+            $id = $_GET['id'];
+
+            //图片路径
+            $path = './Uploads/'.M('goods_block')->field('pic')->find($id)['pic'];
+
+            $goods_block = M('goods_block');
+            //删除主题活动之前先判断该活动下是否有商品存在，存在则先要清空商品
+            $glList = M('goods_relation_block')->where('bid='.$id)->select();
+
+            if (!empty($glList)) E('改专题下还有商品，请先清除商品再删除',203);
+
+            
+            $info = $goods_block->where('id='.$id)->delete();
+            
+            
+            if ($info) {
+                unlink($path);
+                E('删除成功',$info);
+            } else {
+                    E('删除失败',203);
+            }         
+            
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [attr 属性显示]
+     * @return [type] [description]
+     */
+    public function attr()
+    {
+        // dump($_SESSION);
+        $map = [];
+        if (!empty(I('get.key')) && !empty(I('get.keywords'))) {
+            $map[I('get.key')] = array('like',"%".trim(I('get.keywords'))."%");
+        }
+        $data = D('attr')->order('cid desc')->select();
+
+        // dump($data);
+        $category = D('Category')->getTreeData('tree','id, name',$name='name',$child='id',$parent='pid');
+        $assign = [
+            'data' => $data
+        ];
+
+        // dump($category);
+        $this->assign('category', $category['data']);
+        $this->assign($assign);
+        $this->display();
+    }
+
+
+    /**
+     * [attrAdd 添加属性名]
+     * @return [type] [description]
+     */
+    public function attrAdd()
+    {
+        try {
+            $attr = D('Attr');
+            $_POST['addtime'] = time();
+            $_POST['updatetime'] = time();
+            $data = I('post.');
+
+            if(!$attr->create()) {
+                E($attr->getError(),204);
+            }
+            $res = $attr->add();
+            if($res){
+                E('添加成功', 200);
+            } else {
+                E('添加失败',203);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+
+    }
+
+    /**
+     * [attrEdit 属性修改]
+     * @return [type] [description]
+     */
+    public function attrEdit()
+    {
+        try {
+            $attr = D('attr');
+            $post = I('post.');
+
+            $where['id'] = $post['id'];
+            unset($post['id']);
+            if(!$attr->create($post)) E($cate->getError(),203);
+            $res = $attr->where($where)->save($post);
+            if(!$res) E('修改失败了', 202);
+            E('修改成功', 200);
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            return $this->ajaxReturn($err);
+        }
+
+    }
+
+
+    // 加载属性值
+    public function getAttrVal()
+    {
+        try {
+
+            $post = I('post.');
+
+            if(empty($post['pid'])) {
+                E('数据错误',204);
+            }
+            $attrval = D('attrVal');
+
+            $res = $attrval->where('aid='.$post['pid'])->select();
+
+            $this->ajaxReturn([
+                'code'=>200,
+                'data'=>$res,
+                'msg'=>'获取成功',
+            ]);
+
+
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+    // 属性值添加
+    public function attrValAdd()
+    {
+        try {
+            $post = I('post.');
+            $attrval = D('attrVal');
+
+            //$aids = $attrval->where('aid='.$post['aid'])->field('id,val')->select();
+
+            $vals = json_decode(htmlspecialchars_decode($post['vals']),true);
+
+            $time = time();
+            $add = [];
+            foreach ($vals as $val){
+                if(empty($val['id'])){
+                    $val['aid'] = $post['aid'];
+                    $val['addtime'] = $time;
+                    $val['updatetime'] = $time;
+                    unset($val['id']);
+                    $add[] = $val;
+                }else{
+                    $attrval->where('id='.$val['id'])->save(['val'=>$val['val']]);
+                }
+            }
+
+            $res = $attrval->addAll($add);
+
+            if($res){
+                E('修改成功', 200);
+            } else {
+                E('添加属性值失败',203);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [indexPage banner轮播]
+     * @return [type] [description]
+     */
+    public function indexPage()
+    {
+        //接受处理搜索条件
+        if (!empty(I('get.keywords'))) {
+            $map['name'] = array('like',"%".I('get.keywords')."%");
+        }
+
+        $goodsblock = D('banner');
+        $bannerlist = $goodsblock->where($map)->select();
+
+        $this->assign('blist', $bannerlist);
+        $this->display();
+    }
+    
+    
+
+    /**
+     * [blockAddList 加载banner编辑页面]
+     * @return [type] [description]
+     */
+    public function bannerAddList()
+    {
+        $this->display('banner_add');
+    }
+
+    
+     /**
+     * [courierAdd 执行banner添加]
+     * @return [type] [description]
+     */
+    public function bannerAdd()
+    {
+        try {      
+            //接受POST数据
+            $data['name'] = $_POST['name'];
+            $data['status'] = $_POST['status'];
+            $data['url'] = $_POST['url'];
+            $data['addtime'] = time();
+            $data['updatetime'] = time();
+
+            //图片上传
+            $info = $this->uploads();
+            if ($info == 0) E('图片上传失败',203);
+
+            $data['pic'] = $info['pic']['savepath'].$info['pic']['savename'];
+            $path = './Uploads/'.$info['pic']['savepath'].$info['pic']['savename'];
+            
+            $banner = M('banner');
+
+            //添加先判断banner活动是否已经存在于表中
+            if ($banner->where("name = '{$data['name']}'")->find()) {
+                unlink($path);
+                E('该banner名已存在，如需改名请前往更改页面更改','203');
+
+            } else {
+                //添加主题活动
+                $infos = $banner->add($data);
+
+                if ($infos) {
+                        E('添加成功',200);
+                    }else{
+                        //
+                        unlink($path);
+                        E('添加失败',203);
+                }      
+            }
+                    
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [courierEditList banner编辑页面加载]
+     * @return [type] [description]
+     */
+    public function bannerEditList($id)
+    {
+        if (empty($bid)) {
+            $bid = $id;
+        }
+
+        // dump($bid);
+        $bnnerInfo = M('banner')->find($bid);
+
+        $this->assign('binfo', $bnnerInfo);
+        $this->display('banner_edit');
+    }
+
+    /**
+     * [courierEdit 执行修改banner]
+     * @return [type] [description]
+     */
+    public function bannerEdit()
+    {
+        try {
+                
+            //接受POST数据
+            $data['name'] = $_POST['name'];
+            $id = $_POST['id'];
+            $data['status'] = $_POST['status'];
+            $data['url'] = $_POST['url'];
+            $data['updatetime'] = time();
+
+            // dump($_POST);die;
+            //如果有文件上传的话，取新文件
+            if ($_FILES['pic']['error'] == 0) {
+                //图片上传
+                $info = $this->uploads();
+                if ($info == 0) E('图片上传失败',203);
+                $data['pic'] = $info['pic']['savepath'].$info['pic']['savename'];
+                $path = './Uploads/'.$info['pic']['savepath'].$info['pic']['savename'];
+
+                //原图
+                $path1 = './Uploads/'.M('banner')->field('pic')->find($id)['pic'];
+            } 
+            
+            $banner = M('banner');
+            //修改库存数据
+            $info = $banner->where('id='.$id)->save($data);
+
+            if ($info) {
+
+                    //修改成功就删除原图
+                    unlink($path1);
+                    E('修改成功',$info);
+                }else{
+
+                    //失败删除新图
+                    unlink($path);
+                    E('修改失败',203);
+            }         
+            
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+
+    /**
+     * [courierDel banner删除]
+     * @return [type] [description]
+     */
+    public function bannerDel()
+    {
+        try {
+                
+            //接收要删除数据的id
+            $id = $_GET['id'];
+
+            //图片路径
+            $path = './Uploads/'.M('banner')->field('pic')->find($id)['pic'];
+
+            $banner = M('banner');
+            //删除主题活动之前先判断该活动下是否有商品存在，存在则先要清空商品
+            $glList = M('goods_relation_block')->where('bid='.$id)->select();
+
+            if (!empty($glList)) E('改专题下还有商品，请先清除商品再删除',203);
+
+            
+            $info = $banner->where('id='.$id)->delete();
+            
+            
+            if ($info) {
+                unlink($path);
+                E('删除成功',$info);
+            } else {
+                    E('删除失败',203);
+            }         
+            
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
+    }
+    
 }

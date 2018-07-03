@@ -1,0 +1,103 @@
+body {
+    /* font-size: .7rem; */
+    background: #EDF2F2;
+    height: 100vh;
+}
+.PPmain {
+    background: white;
+    text-align: center;
+    padding: .6rem 0 1rem 0;
+    transition: all .6s ease;
+}
+.PPmain:not(:last-child) {
+    border-bottom: 6px solid #EDF2F2;
+ }
+.PPmain > h2 {
+    font-weight: normal;
+    font-size: .8rem;
+    margin-bottom: .6rem;
+}
+.PPmain > .desc {
+    font-size: .5rem;
+    color: #999999;
+}
+.PPmain > .desc {
+    width: 60vw;
+    position: relative;
+    left: 50%;
+    margin-left: -30vw;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: .6rem;
+    margin-bottom: .4rem;
+}
+.PPmain > p:nth-child(3) > b {
+    display: block;
+    line-height: 1.5rem;
+    color: #C6C6C6;
+    font-weight: normal;
+} 
+.PPmain > p:nth-child(3) > span {
+    color: #547AAF;
+}
+.PPmain > p:nth-child(3) > span > i {
+    font-style: normal;
+    font-size: 1.5rem;
+    margin-right: .1rem;
+}
+.PPmain > .process {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.PPmain .little {
+    height: 1.3rem;
+    opacity: 0;
+}
+.PPmain .little > img {
+    height: 100%;
+}
+.PPmain > .process > span:nth-child(2) {
+    width: 50%;
+    display: block;
+    height: .4rem;
+    background: #C8D6E7;
+    border-radius: 2rem;
+    margin: 0 .5rem 0 .1rem;
+    overflow: hidden;
+}
+.PPmain > .process > span:nth-child(2) > i {
+    font-style: normal;
+    width: 0%;
+    border-radius: 2rem;
+    height: inherit;
+    display: block;
+    color: #79A4FF;
+    background: #79A4FF;
+    transition: 1s ease;
+}
+.PPmain > .process > span:nth-child(3) {
+    color: #547AAF;
+    font-size: .8rem;
+}
+
+.fwarn {
+    color: #FF6363 !important;
+}
+.bgwarn {
+    background: #FF6363 !important;
+}
+.PPmain > .reset {
+    width: 35%;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    border-radius: 2rem;
+    background: #4C88F6;
+    color: white;
+    text-align: center;
+    margin: .7rem auto 0;
+}
+.reset:active {
+    background: #0c58e4;
+}

@@ -697,7 +697,7 @@
 	                if(res.code == 200){
 	                	// 查询有数据
 	                	// alert(123);
-	                	console.log(res);
+	                	console.log("退货退款",res, res.data.length);
 	                	for(var i=0;i<res.data.length;i++){
 	                		console.log(res.data[i].status);
 	                		if(res.data[i]['status']=='0'){//商家未同意
@@ -824,7 +824,8 @@
 	                	$(".waitdrawback").html(Rejectednum);//退换货与售后数量显示
 	                }else{
 	                    // 查询无数据提示
-	                    // console.log(res.msg);
+						// console.log(res.msg);
+						$(".waitdrawback").html(Rejectednum);//退换货与售后数量显示
 	                }
 	                // 寄件点击展开效果
 	                var iClass=$('.tuikuangall>p>span>i').attr("class");

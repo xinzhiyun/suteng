@@ -1379,6 +1379,13 @@ function is_json($str){
     return !is_null(json_decode($str));
 }
 
+// 按数组下标排序
+function array_sort($arr,$sort){
+    $data = array_column($arr, $sort);
+    array_multisort($data,SORT_ASC,$arr);
+    return $arr;
+}
+
 
 
 

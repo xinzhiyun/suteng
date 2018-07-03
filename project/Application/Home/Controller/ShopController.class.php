@@ -12,36 +12,156 @@ class ShopController extends CommonController
      */
     public function index()
     {
-        if(IS_AJAX){
+
+        if (IS_POST) {
             $goods = D('Goods');
             $cartInfo = M('Cart')->where('uid='.session('user.id'))->count();
-            $cate = M('Category')->where('pid=0')->select();
+            $cate = M('Category')->where('pid=0')->limit(7)->select();
+            $banner = M('banner')->field('url,pic')->where('status=1')->select();
+
             $map['pr.grade'] = session('user.grade');
-            $map['gd.status'] = 0;
-            $map['g.status'] = array('neq', 2);
-            // p($map);die;
-            $goodsList = $goods->getGoodsList($map);
-            foreach($goodsList as $val){
-                $key = $val['gid'];
-                if(isset($arr[$key])) {
-                    $arr[$key]['attr'] .= $val['attr'].':'.$val['val'].'|';
-                } else {
-                    $arr[$key] = $val;
-                    $arr[$key]['attr'] = $val['attr'].':'.$val['val'].'|';
-                }
+            $map['g.status'] = array('eq', 1);
+
+            $GoodsBlock = M('GoodsBlock')->field('id,bname')->where('status=1')->select();
+
+            foreach ($GoodsBlock as $key => $value) {
+                $blist[] = M('goods_relation_block')->where('bid='.$value['id'])->select();
+            
             }
-            $banner = D('pic')->page(1,5)->order('id desc')->field('gid as id,path as pic')->select();
-            // dump($banner);
-            $goodsList = array_values($arr);
+            foreach ($blist as $k => $v) {
+               
+                for ($i=0; $i < count($v); $i++) { 
+                    $str .= $v[$i]['gid'].',';
+                }
+                $arr[] = $str; 
+                $str = '';
+            }
+            
+            foreach ($arr as $keys => $values) {
+                    $map['g.id'] = array('in',$values);
+                    $GoodsBlock[$keys][] = M('goods')
+                        ->alias('g')
+                        ->where($map)
+                        ->join('__GOODS_PRICE__ pr ON g.id=pr.gid', 'LEFT')
+                        // ->join('__GOODS_RELATION_BLOCK__ grb ON g.id=grb.gid', 'LEFT')
+                        ->field('g.id,g.name,g.gpic,g.price prices,pr.price')
+                        ->select();
+                }
+
             $assign = [
                 'cate' => $cate,
                 'cartInfo' => $cartInfo,
-                'goods' => $goodsList,
-                'banner' => $banner,
+                'goods' => $GoodsBlock,
+                'banner'=> $banner
             ];
+
+            // dump($assign);die;
             return $this->ajaxReturn($assign);
         } else {
+            $category = M('category')->where('pid=0')->field('id,name')->select();
+
+            $this->assign('category',json_encode($category,JSON_UNESCAPED_UNICODE)  );
             $this->display();
+        }
+            
+        
+    }
+
+    public function getCategory()
+    {
+        try {
+            $post = I('post.');
+            if (empty($post['id'])) {
+                E('数据不完整', 201);
+            } else {
+                $map['pid'] = $post['id'];
+            }
+
+            $category = M('category')->where($map)->order('sort')->field('id,name,pic')->select();
+            $adv = M('category')->where('id='.$post['id'])->getField('adv');
+            $adv = json_decode(htmlspecialchars_decode($adv));
+
+            if(empty($adv)){
+                $adv=[];
+            }
+            $this->ajaxReturn(array(
+                'status'=>200,
+                'data'=>$category,
+                'adv'=>$adv,
+                'msg'=>'获取成功',
+            ),'JSON',JSON_UNESCAPED_UNICODE);
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+
+    /**
+     * [getGoodsList 商品列表页接口]
+     * @return [type] [description]
+     */
+    public function getGoodsList()
+    {
+        try {
+            $post = I('post.');
+            if (!empty($post['cid'])) {
+                $map['cid'] = $post['cid'];
+            }
+
+            if(!empty($post['search'])){
+                $map['g.name'] = ['like',"%".$post['search']."%"];
+            }
+            $count = M('goods')->alias('g')->where($map)->count();
+
+            $GoodsMap = M('goods')->alias('g')->where($map);
+            
+            // 会员价格模式
+            if(empty(0)){
+                $GoodsMap = $GoodsMap->field('g.id,g.name,g.gpic,g.price');
+            }else{
+                $grade = " and gp.grade=".'1';
+                $GoodsMap = $GoodsMap->join('__GOODS_PRICE__ gp ON g.id=gp.gid '.$grade, 'LEFT');
+                $GoodsMap = $GoodsMap->field('g.id,g.name,g.gpic,gp.price');
+            }
+
+            $mode = (string)$post['sort'];
+            $order_modes = [' desc',' asc'];//0 降序 1升序 默认降序
+            $order_modes = $order_modes[$post['sortmode']]?:'';
+
+            //排序模式
+            switch ($mode){
+                case '1':// 时间
+                    $GoodsMap = $GoodsMap->order('g.updatetime'.$order_modes);
+                    break;
+                case '2':// 人气
+                    $GoodsMap = $GoodsMap->order('g.hits'.$order_modes);
+                    break;
+                case '3':// 价格
+                    $orderPrciefield = empty(0)?'g.price':'gp.price'; // 会员价格模式
+                    $GoodsMap = $GoodsMap->order($orderPrciefield.$order_modes);
+                    break;
+                case '4':// 销量
+                    $GoodsMap = $GoodsMap->order('g.sales'.$order_modes);
+                    break;
+            }
+
+            // 分页 兼容
+            $_GET['p'] = $post['p'];
+            if(!empty($post['sou'])){
+                $_GET['p'] = 1;
+            }
+
+            $Page       = new \Think\Page($count,5);
+            $GoodsMap = $GoodsMap->limit($Page->firstRow.','.$Page->listRows);
+
+            $goodsList = $GoodsMap->select();
+
+            $this->ajaxReturn(array(
+                'status'=>200,
+                'data'=>$goodsList,
+                'msg'=>'获取成功',
+            ),'JSON',JSON_UNESCAPED_UNICODE);
+        } catch (\Exception $e) {
+            $this->toJson($e);
         }
     }
 
@@ -53,6 +173,89 @@ class ShopController extends CommonController
     {
         $this->display();
     }
+
+    /**
+     * [goodsDetail 商品详情]
+     * @return [type] [description]
+     */
+    public function goodsDetail()
+    {
+        try {
+            $post = I('post.');
+            if (empty($post['id'])) {
+                E('数据错误!', 201);
+            } else {
+                $map['id'] = $post['id'];
+            }
+
+            $goodsInfo = M('goods')->where($map)->field('id,name,price as prices')->find();
+
+            $goodsDetail = M('goodsDetail')->where('gid='.$post['id'])->field('pic,desc,specs,saleservice')->find();
+            $goodsDetail['pic'] = explode('|', $goodsDetail['pic']);
+
+
+            $goodsInfo = array_merge($goodsInfo, $goodsDetail);
+
+            $goodsAttr = M('goodsSku')->where('gid='.$post['id'])->select();
+
+            $attrValArr = [];//值
+            $attrArr = [];  //属性
+            $attrValRel = [];  //属性和值的关系
+
+            foreach ($goodsAttr as $item){
+                $attrs =  explode('_',$item['skuattr']);
+                foreach ($attrs as $attrid){
+                    if(empty($attrValArr[$attrid])){
+                        $tmpAttr = M('attrVal')->find($attrid);
+                        $attrValArr[$attrid] = $tmpAttr['val'];
+                        $attrValRel[$tmpAttr['aid']][] = $attrid;
+                        if(empty($attrArr[$tmpAttr['aid']])){
+                            $tmpAttrs = M('attr')->find($tmpAttr['aid']);
+                            $attrArr[$tmpAttr['aid']] = $tmpAttrs['attr'];
+                        }
+                    }
+                }
+            }
+            $attrRes = [];
+            foreach ($attrArr as $atrrid =>$attrVal){
+                $tmpRes = [];
+                $tmpRes['name']=$attrVal;
+                $tmpAttr = [];
+                foreach ($attrValRel[$atrrid] as $attrItem){
+                    $tmpAttr['pname'] = $attrArr[$atrrid];
+                    $tmpAttr['name']  = $attrValArr[$attrItem];
+                    $tmpAttr['id']    = $attrItem ;
+                    $tmpRes['list'][]=$tmpAttr;
+                }
+                $attrRes[] = $tmpRes;
+            }
+
+
+            // 其他附加数据
+            $where['grade'] = session('user.grade');
+            $where['gid'] = $post['id'];
+
+            //商品会员价格
+            $goodsInfo['price'] = M('goodsPrice')->field('price')->where($where)->find()['price'];
+
+            $goodsInfo['cartNum'] = M('Cart')->where('uid='.session('user.id'))->count();
+
+
+            // //商品对应的快递
+            // $goodsInfo['goodsCourier'] = M('goods_courier')->where('gid='.$post['id'])->field('cid,cname,cprice')->select();;
+
+            $goodsInfo['attr'] = $attrRes;
+
+            $this->ajaxReturn(array(
+                'status'=>200,
+                'data'=>$goodsInfo,
+                'msg'=>'获取成功',
+            ),'JSON',JSON_UNESCAPED_UNICODE);
+        } catch (\Exception $e) {
+            $this->toJson($e);
+        }
+    }
+    
 
     // 商品详情页面
     public function goods_detail()
@@ -66,7 +269,7 @@ class ShopController extends CommonController
         $arr = [];
         $goodsDetail = $goods->getGoodsList($map);
     	foreach($goodsDetail as $key => $val){
-            $goodsDetail[$key]['pics'] = D('Pic')->field('path')->where(['gid'=>$val['gid']])->select();
+            // $goodsDetail[$key]['pics'] = D('Pic')->field('path')->where(['gid'=>$val['gid']])->select();
     		$key = $val['gid'];
     		if(isset($arr[$key])) {
     			$arr[$key]['attr'] .= $val['attr'].':'.$val['val'].'|';
@@ -111,6 +314,47 @@ class ShopController extends CommonController
 
         $this->assign('list',json_encode($meal));
         $this->display();
+    }
+    
+    // 购物前 库存检查
+    public function checkGoodsStock()
+    {
+        try {
+            $post= I('post.');
+            // dump($post);
+            if(empty($post['skuattr']) || empty($post['gid'])){
+                E('数据错误',40001);
+            }
+
+            $sku = $post['skuattr'];
+            // dump($sku);die;
+            $skuattr = array_column($sku,'id');
+            sort($skuattr);
+            $map['skuattr'] = implode('_', $skuattr);//属性值id组合
+
+            // dump($map);
+            $goodsSku = M('goodsSku');
+
+            $map['gid'] = $post['gid'];
+            $res = $goodsSku->where($map)->getField('skustock');
+
+            if($res){
+                $err = [
+                    'code'=> 200,
+                    'data'=>$res,
+                    'msg' => '获取成功',
+                ];
+                $this->ajaxReturn($err);
+            } else {
+                E('该商品类型无库存!',603);
+            }
+        } catch (\Exception $e) {
+            $err = [
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+            ];
+            $this->ajaxReturn($err);
+        }
     }
 
     // 信息确认并生成订单

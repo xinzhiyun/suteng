@@ -178,11 +178,17 @@ class PayController extends Controller
             'user' => json_encode($user),
             'rate' => json_encode($rate)
         ];
+
+        // dump($assign);
         $this->wx_info();
         $this->assign($assign);
         $this->display();
     }
 
+    /**
+     * [getGoodsByOrder 订单详情信息]
+     * @return [type] [description]
+     */
     public function getGoodsByOrder(){
 
         $where['uid'] = session('user.id');
@@ -201,18 +207,18 @@ class PayController extends Controller
                         ->where('order_id='.$orderid)
                         ->join('st_goods g ON od.gid = g.id','LEFT')
                         ->join('st_goods_detail gd ON od.gid = gd.gid','LEFT')
-                        ->field('od.*,g.name,gd.desc')
+                        ->field('g.*,gd.*,od.gsku,od.num')
                         ->select();
         // $order = D('shop_order')->where(['order_id'=>$orderid])->find();
 
         //查询商品对应的快递运费信息
         foreach ($OrderDetail as $key => $value) {
             // echo $value."<br>";
-            $OrderDetail[$key]['path'] = D('pic')->where(['gid'=>$value['gid']])->find()['path'];
+            // $OrderDetail[$key]['path'] = D('pic')->where(['gid'=>$value['gid']])->find()['path'];
             $OrderDetail[$key]['Courier'] = M('goods_courier')->where('gid='.$value['gid'])->field('gid,cid,cname,cprice')->select();
         }
         // p($OrderDetail);
-         return $this->ajaxReturn($OrderDetail);
+         return $this->ajaxReturn(array('code'=>200,'msg'=>$OrderDetail));
     }
 
         /**
@@ -262,14 +268,15 @@ class PayController extends Controller
     {
 
         //接收前端传过来的订单号进行修改订单信息
-        // dump($_POST);die;
-        $orderId = $_POST['orderId'];
-        $gid = $_POST['good_id'];
 
-        $data['cid'] = $_POST['postageData']['cid'];
-        $data['cprice'] = $_POST['postageData']['cprice'];
-        $data['cname'] = $_POST['postageData']['cname'];
+        $orderId = $_POST['postage']['order_id'];
 
+        // echo $orderId;die;
+        $gid = $_POST['postage']['gid'];
+        $data['cid'] = $_POST['postage']['cid'];
+        $data['cprice'] = $_POST['postage']['cprice'];
+        $data['cname'] = $_POST['postage']['cname'];
+        
         //更改订单快递信息
         $so = M('ShopOrderDetail');
 

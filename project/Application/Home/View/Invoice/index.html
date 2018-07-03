@@ -534,7 +534,7 @@
 						
 						// 商城传来
 						}else if(referUrl.indexOf("payConfirm") != -1) {
-							window.location.href = "{{:U('Pay/payConfirm')}}";
+							window.location.href = "{{:U('Pay/payConfirm')}}"+"?order_id="+order_id;
 						}
 					}
 					// else {

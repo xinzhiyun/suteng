@@ -103,36 +103,35 @@ class PaymentSystemController extends CommonController
     // 信息确认并生成订单
     public function information()
     {   
-        // echo json_decode($_POST['data']);
-        $data = json_decode($_POST['data'],'true');
-        foreach ($data as $val) {
-            $result = D('inventory')->field('allnum,abnormalnum')->where(['gid'=>$val['gid']])->find();
-            $num = $result['allnum']-$result['abnormalnum'];
-            if ($num < $val['num']) {
-                $count[]['gid'] = $val['gid'];
+        try {
+            
+            $post = json_decode($_POST['info'],true);
+
+            foreach ($post as $key => $value) {
+                //检查库存
+                if(empty($value['skuattr']) || empty($value['gid'])){
+                    E('数据错误',40001);
+                }
+
+                $sku = $value['skuattr'];
+                // dump($sku);die;
+                $skuattr = array_column($sku,'id');
+                sort($skuattr);
+                $map['skuattr'] = implode('_', $skuattr);//属性值id组合
+
+                // dump($map);
+                $goodsSku = M('goodsSku');
+
+                $map['gid'] = $value['gid'];
+                $res = $goodsSku->where($map)->getField('skustock');
+
+                if(!$res){
+                    E('该商品类型无库存!',603);
+                }
             }
 
-
-        }
-          if ($count) {
-              $this->ajaxReturn(['code'=>604,'msg'=>'商品库存不足','data'=>$count]);
-          }
-        
-        // 库存检测
-
-//        foreach($data as $val){
-//            $a = M('inventory')->where(['gid'=>$val['gid'],'allnum'=>['LT',(int)$val['num']]])->count();
-//          echo M('inventory')->getLastSql();exit;
-////                    'status'=> D('inventory')->where(['gid'=>$val['gid'],'(CAST(allnum AS SIGNED) - CAST(abnormalnum AS SIGNED))'=>['LT',(int)$val['num']]])->count()?'fail':'pass',
-////                    'gid'=>$val['gid']
-////            ];
-//        }
-//
-//        if(in_array('fail',\array_column($result,'status'))){
-//            $this->ajaxReturn(['code'=>604,'msg'=>'商品库存不足','data'=>$result]);
-//        }
-
-        try {
+            // dump($post);
+            // die;
             $goods = D('Goods');
             $orders = D('ShopOrder');
             $order_detail = D('ShopOrderDetail');
@@ -141,22 +140,23 @@ class PaymentSystemController extends CommonController
             $order['uid'] = session('user.id');
             $order['order_id'] = gerOrderId();
             $order['addtime'] = time();
+            $order['updatetime'] = time();
             $order['g_cost'] = "";
             $detail = [];
-            foreach($data as $key => $value){
-                $where['pr.gid'] = $value['gid'];
-                $where['pr.grade'] = session('user.grade');
+            foreach($post as $key => $value){
                 $order['g_price'] += $value['money'];
                 $order['g_num'] += $value['num'];
-                $order['gid']  =  $value['gid'];
+
+                $where['pr.gid'] = $value['gid'];
+                $where['pr.grade'] = session('user.grade');
+                
 
                 $arr = $goods
                     ->alias('g')
                     ->where($where)
                     ->join('__GOODS_DETAIL__ gd ON g.id=gd.gid', 'LEFT')
-                    ->join('__PRICE__ pr ON g.id=pr.gid','LEFT')
-                    ->join('__PIC__ p ON g.id=p.gid','LEFT')
-                    ->field('pr.price,gd.cost,g.name,gd.desc,p.path,gd.is_install')
+                    ->join('__GOODS_PRICE__ pr ON g.id=pr.gid','LEFT')
+                    ->field('pr.price,g.cost,g.name,gd.desc,g.gpic')
                     ->find();
 
                 $order['g_cost'] += $value['num']*$arr['cost'];
@@ -164,12 +164,15 @@ class PaymentSystemController extends CommonController
                 $detail['gid'] = $value['gid'];
                 $detail['num'] = $value['num'];
                 $detail['cost'] = $arr['cost'];
+                $detail['gsku'] = json_encode($value['skuattr']);
                 $detail['price'] = $arr['price'];
                 $detail['gname'] = $arr['name'];
                 $detail['gdes'] = $arr['desc'];
-                $detail['gpic'] = $arr['path'];
+                $detail['gpic'] = $arr['gpic'];
                 $detail['addtime'] = time();
-                $detail['is_install'] = $arr['is_install'];
+
+                // dump($order);
+                // dump($detail);die;
                 $detail_statut = $order_detail->add($detail);
 
                 if(!$detail_statut) E('请重新结算',603);
@@ -185,7 +188,7 @@ class PaymentSystemController extends CommonController
                     M('Cart')->where(['uid'=>session('user.id'),'gid'=>array('in',$ids)])->delete();
                 }
                 $orders->commit();
-                $this->ajaxReturn($order['order_id']);
+                $this->ajaxReturn(array('code'=>200,'msg'=>$order['order_id']));
             } else {
                 $orders->rollback();
                 E('请重新购买',603);
