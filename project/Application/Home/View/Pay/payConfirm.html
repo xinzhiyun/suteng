@@ -24,6 +24,7 @@
         var orderPayByGold = '{{:U("PaymentSystem/orderPayByGold")}}';  // 金币支付
         var orderPayBySilver = '{{:U("PaymentSystem/orderPayBySilver")}}';  // 银币支付
         var orderPay = '{{:U("PaymentSystem/orderPay")}}';  // 微信支付
+        var detail = '{{:U("Shop/shoppingdetail")}}';  // 商品详情
 	</script>
 </head>
 <body>
@@ -95,9 +96,9 @@
         <div class="goods">
             <ul>
                 <li v-for='(good, index) in goods'>
-                    <a href="####">
+                    <a href="javascript:;">
                         <p>
-                            <span>
+                            <span @touchend='todetail(good.gid)'>
                                 <img :src="good.gpic" alt="">
                             </span>
                             <span>
