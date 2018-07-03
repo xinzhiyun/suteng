@@ -58,21 +58,25 @@ body .content .registerInfos {
 }
 .comment {
 	display: flex;
-	justify-content: space-between;
+	/* justify-content: space-between; */
 	padding: 1rem 0 .3rem 0;
+	align-items: baseline;
 	border-bottom: 1px solid #EFEFEF;
 }
+.comment > p:nth-child(1) {
+	width: 27%;
+}
 .comment > p:nth-child(1) > span:nth-child(1) {
-	font-size: .7rem;
-	margin-right: .1rem;
+	font-size: .9rem;
+	margin-right: .2rem;
 }
 .comment > p:nth-child(1) > span:nth-child(2) {
 	white-space: nowrap;
-	font-size: .5rem;
+	font-size: .7rem;
 }
 .comment > p > input {
 	border: none !important;
-	font-size: .4rem;
+	font-size: .7rem;
 	width:58vw;
 }
 .toNext p{
@@ -136,12 +140,12 @@ body .content .registerInfos {
 }
 .yCodeP > p > span {
 	/* margin-right: .5rem; */
-	font-size: .7rem;
+	font-size: 1rem;
 }
 .yCodeP > p > input {
 	width: 80%;
 	border: none;
-	font-size: .5rem;
+	font-size: .7rem;
 }
 .yCodeP > .yCord {
 	width: 6rem;
@@ -153,4 +157,19 @@ body .content .registerInfos {
 img {
 	width: 100%;
 	height: 100%;
+}
+.loginbtn {
+	color: white !important;
+}
+.toNext > input[type="submit"] {
+	border: none;
+	display: block;
+	width: 90%;
+	height: 1.8rem;
+	line-height: 1.8rem;
+	text-align: center;
+	color: white;
+	background: #4C88F6;
+	border-radius: 2rem;
+	margin: 2rem auto 0;
 }

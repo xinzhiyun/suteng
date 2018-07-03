@@ -293,6 +293,12 @@ body {
 	-webkit-line-clamp: 4;
 	-webkit-box-orient: vertical;
 }
+.giDescription>p:nth-of-type(2) {
+	font-size: .6rem;
+}
+.skuattr {
+	font-size: .6rem;
+}
 /*价格*/
 .giDescription>div>b {
 	color:#fc2a2b;

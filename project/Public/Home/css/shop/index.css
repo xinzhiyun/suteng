@@ -41,6 +41,10 @@ img {
 	height: 100%;
 	width: auto;
 }
+.swiper-container1 img {
+	width: 100%;
+    height: auto;
+}
 #header {
 	height: 10vh;
 	min-height: 50px;

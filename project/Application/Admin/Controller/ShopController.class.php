@@ -1227,7 +1227,16 @@ class ShopController extends CommonController
 
         //将订单商品总价加上商品的快递费 及判断该订单是否有退货商品
         foreach ($data as $key => $value) {
-           
+            
+            $sku = json_decode($value['gsku'],true);
+
+            foreach ($sku as $k => $v) {
+                $skus .= $v['pname'].":".$v['name'].'|';
+            }
+
+            $newskus = rtrim($skus, '|');
+
+            $data[$key]['gsku'] = $newskus;
             if (in_array($value['gid'],$rids)) {
                     
                 $data[$key]['tuihuo'] = '退货';     
