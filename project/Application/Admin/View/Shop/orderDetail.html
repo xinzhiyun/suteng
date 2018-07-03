@@ -63,6 +63,9 @@
                                     商品图片
                                 </th>
                                 <th>
+                                    商品属性
+                                </th>
+                                <th>
                                     商品描述
                                 </th>
                                 <th>
@@ -101,11 +104,15 @@
                                             {{$v['gname']}}
                                         </td>
                                         <td>
-                                            <img src="/Uploads/{{$v['gpic']}}">
+                                            <img src="{{$v['gpic']}}">
+                                        </td>
+                                        <td>
+                                            {{$v['gsku']}}
                                         </td>
                                         <td>
                                             {{$v['productbrief']}}
                                         </td>
+                                        
                                         <td>
                                             {{$v['num']}}
                                         </td>
