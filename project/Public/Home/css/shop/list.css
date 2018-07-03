@@ -96,8 +96,9 @@
 	font-size: .5rem;
 }
 .list>a>p {
-	width: 100%;
+	width: 26vw;
 	overflow: hidden;
+	white-space: nowrap;
 	text-overflow: ellipsis;
 	font-size: .6rem;
 	text-indent: .3em;
