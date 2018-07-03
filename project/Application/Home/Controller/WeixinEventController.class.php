@@ -16,16 +16,14 @@ class WeixinEventController extends Controller
     	// 接受微信推送的事件
     	$xml=file_get_contents('php://input', 'r');
         // file_put_contents('./tmp.txt', $xml);die;
-//      	$xml = "<xml>
-//     <ToUserName><![CDATA[gh_0f61dfebc264]]></ToUserName>
-//     <FromUserName><![CDATA[oQktJwL8ioR4DoxSQmikdzekbUyU]]></FromUserName>
-//     <CreateTime>1516105460</CreateTime>
-//     <MsgType><![CDATA[event]]></MsgType>
-//     <Event><![CDATA[subscribe]]></Event>
-//     <EventKey><![CDATA[qrscene_7]]></EventKey>
-//     <Ticket><![CDATA[gQGa8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAya05pU2toMmJkOTAxMDAwMDAwM0IAAgQUVV1aAwQAAAAA]]></Ticket>
-//     <Encrypt><![CDATA[isgkM/NO3wGAYCXJNPEHMGz+ahlFD7jrsutnOgj39Up6AVvPmRA0wMRa/Gf+Bq2uvemnDS334VTsGUmts8ptR3ej3oJyr+sff+6etCXKgAl9Q5a/7XnZUGZmROWFMa/MGXauuDmMPYYUmNjjQ22LILVMQDLbB45aF2LGsH0+dUZNAMyhxdLaL2OP9w9fm3VDmcNonJ4qIN+24PoR81CvBnXZHuVjFH+w3s38GceCseW5yFUfafISRPEmHA6QoqEBBUKdsDByphfrCiuH5OKQ3wBa0XCFWHjInzwzkIWn1/G4WmDZ0WjZPrOd6YmgGn4IECP2irbOQ4VNxntWxwNUPfEs+fHLgVmz1boUG34doaPVWcygitFImMovROYDRCHWHgRTcJR0JD945S6dF6CPewpA8Ch19oMuJgHc7NcUzsNNO0/k5Nc5cUGGbjQs5R3U58EV+P9CUPCUqcz2cU5HD/yhb/4FI0WcrWjaa3yODDIS6B3iKKOBSGda6zoWkj+k4DA6G3yvhZH59cwRahds001RH8zpNFFyMFvgEVUYXLDYOH8t+V57tCGJMIQrl3/431ckJOAxvJJb0gq8RKIGvRquFJZdgfuVa8wx1txZ0ZZc5/DLBEchjIol3aGfdmRi]]></Encrypt>
-// </xml>";
+//      	$xml = "<xml><ToUserName><![CDATA[gh_90934e9fb0c8]]></ToUserName>
+//<FromUserName><![CDATA[onLe70SfHSwyjUrqtIgt4MGN7mI8]]></FromUserName>
+//<CreateTime>1530606207</CreateTime>
+//<MsgType><![CDATA[event]]></MsgType>
+//<Event><![CDATA[subscribe]]></Event>
+//<EventKey><![CDATA[qrscene_1281]]></EventKey>
+//<Ticket><![CDATA[gQFv8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyajVPUkVac1RlWGgxMDAwMHcwM0sAAgQvFDtbAwQAAAAA]]></Ticket>
+//</xml>";
 
 
 		if($xml){
@@ -34,6 +32,7 @@ class WeixinEventController extends Controller
 
 			// 转成php数组
 			$data = $this->toArray($xml);
+
             // 获取公众号微信用户
             $toUser   = $data['FromUserName'];
             // 获取微信号微信用户
@@ -42,13 +41,15 @@ class WeixinEventController extends Controller
             // 判断如果是关注事件
             if($data['Event'] == 'subscribe'){
                     // 关注事件推送消息
-                    $this->Subscribe($toUser,$fromUser);
+//                    $this->Subscribe($toUser,$fromUser);
                     // 查询微信二维码信息表
                     $ticket = $data['Ticket'] ? true : false;
+
 
                     if($ticket){
                         // 查询微信用户类型
                         $wxid = M('wechat')->where("`open_id`='{$data['FromUserName']}'")->find()['type'];
+
 
                         // 匹配微信用户类型 {0：会员 1：分销商}
                         switch ($wxid) {
@@ -57,8 +58,10 @@ class WeixinEventController extends Controller
                                     $this->reactUser($toUser,$fromUser);
                                 break;
                             case '1':
+
                                     // 新增成功，回复分销商注册图文消息
-                                    $this->reactVendor($toUser,$fromUser);
+                                     $this->reactVendor($toUser,$fromUser);
+
                                 break;
                             default:
                                     // 查询微信二维码信息表注册类型{0:会员直接注册 1:会员推荐会员 2：分销商推荐会员 3：分公司推荐会员 4:分公司邀请分销商 5:分销商邀请分销商}
@@ -279,6 +282,7 @@ class WeixinEventController extends Controller
         //回复图文消息
         $toUser   = $toUser;
         $fromUser = $fromUser;
+
         $title = '分销商注册'; 
         $description = '欢迎加入速腾集团，成为速腾集团全球合伙人。'; 
         $src = 'http://test.dianqiukj.com/Public/Vendors/partner.jpg';
@@ -298,7 +302,7 @@ class WeixinEventController extends Controller
                             </item>
                         </Articles>
                     </xml> ";
-        
+
         echo sprintf($template, $toUser, $fromUser, time(), 'news',$title,$description,$src,$url);
     }
 
