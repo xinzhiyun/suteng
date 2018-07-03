@@ -306,7 +306,7 @@
         var um = UM.getEditor('myEditor3');
         // 一级分类
         $("select[name='firscate']").change(function(){
-            
+            $('.goodsattr').html('');
             var firscateId = $(this).children('option:selected').val();
             var html = "";
             $("select[name='seccate']").html('<option value="--">--请选择--</option>');
@@ -385,9 +385,13 @@
                                     checkboxClass: 'icheckbox_square-green',
                                     radioClass: 'iradio_square-green',
                                 });
-                                $('.seccheck').on('click', function(){
-                                    console.log('11111');
-                                })
+                                var seccheck = document.querySelectorAll('.seccheck');
+                                console.log('seccheck: ',seccheck);
+                                for(var i=0; i<seccheck.length; i++){
+                                    document.addEventListener(seccheck[i], function(){
+                                        console.log('aaaaa');
+                                    },false);
+                                }
                                 
                             },100)
                         }
@@ -403,13 +407,12 @@
         // 点击二级分类，商品属性分类详情选项
         function secCateClk(pind, ind){
             // pind父级序号，ind自己序号
-            var arr = [];   // 转化前的数据
-            var bodyhtml = '';
+            var tempArr = [];   // 转化前的数据
             setTimeout(function(){
                // 遍历选中的商品属性分类详情选项
                for(var k=0; k<attrArr.length; k++){
-                    arr.push([]);
                     var par = $('.seccheck'+k).find('.checked').parent();
+                    tempArr.push([]);
                     // console.log('par: ',par);
                     for(var i=0; i<par.length; i++){
                         var attr = par[i].getAttribute('data-name');
@@ -417,17 +420,21 @@
                         var pattr = par[i].getAttribute('data-pattr');
                         var pid = par[i].getAttribute('data-pid');
                         // console.log('pid: %s, pattr: %s, id: %s, attr: %s', pid, pattr, id, attr);
-                        arr[k].push(attr+'|'+id+'|'+pattr);
+                        tempArr[k].push(attr+'|'+id+'|'+pattr);
                     }
                 }
-                console.log('arr: ',arr);
+                // console.log('tempArr: ',tempArr);
+                var arr = [];
                 // 清空空的数组
-                for(var i=0; i<arr.length; i++){
-                    if(!arr[i].length){
-                        arr.splice(i, 1);
+                for(var i=0; i<tempArr.length; i++){
+                    // console.log('tempArr[i].length: $s, tempArr[i][0]: %s',tempArr[i].length, tempArr[i][0]);
+                    if(tempArr[i].length){
+                        arr.push(tempArr[i]);
                     }
                 }
+                // console.log('arr: ',arr);
                 window.headarr = [].concat(arr);
+
                 // 数据交叉组合
                 if(arr.length == 1){
                     var res = printResult(Zuhe(arr[0]));
@@ -452,6 +459,7 @@
                 }
                 // 转化的结果
                 console.log('res: ',res);
+                
             },0)
         }
 
