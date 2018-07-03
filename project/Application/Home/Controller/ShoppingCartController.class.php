@@ -82,7 +82,7 @@ class ShoppingCartController extends CommonController
             }
             $cartInfo = M('Cart')->where('uid='.session('user.id'))->count();
             if($res){
-                E('加入购物车', 200);
+                // E('加入购物车', 200);
             } else {
                 E('无法加入购物车', 603);
             }
@@ -99,8 +99,6 @@ class ShoppingCartController extends CommonController
     // 购物车删除
     public function cartDel()
     {
-        dump($_POST);
-        die;
         try {
             $cart = D('Cart');
             $data['id'] = I('post.id');
