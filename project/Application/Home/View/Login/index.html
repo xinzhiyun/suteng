@@ -1,112 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
-    <title><block name="title">经销商登录</block></title>
-    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
-    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
-
-    <link rel="shortcut icon" href="favicon.ico"/> <link href="__PUBLIC__/Admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet"/>
-    <link href="__PUBLIC__/Admin/css/font-awesome.css?v=4.4.0" rel="stylesheet"/>
-    <link href="__PUBLIC__/Admin/css/loginy.css" rel="stylesheet"/>
-    <link href="__PUBLIC__/Admin/css/plugins/iCheck/custom.css" rel="stylesheet"/>
-    <link href="__PUBLIC__/Admin/css/animate.css" rel="stylesheet"/>
-    <link href="__PUBLIC__/Admin/css/style.css?v=4.1.0" rel="stylesheet"/>
-    <block name="mylink"></block>
-    <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css"/>
-    <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css"/>
-    
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
+	<title>经销商登录</title>
+	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/login.css?v={{:time()}}">
+	<script src='__PUBLIC__/Home/js/vue.min.js'></script>
 </head>
-    <style>
-
-        body{
-            font-size: 0.7rem;
-            color:#737373;
-            background:url("__PUBLIC__/Admin/img/adminbg.png") no-repeat center fixed;
-            -webkit-background-size: cover;
-            background-size: cover;
-        }
-        .signinpanel {
-            width: 80vw;
-            margin: 10% auto 0 auto;
-        }
-        .gray-bg {
-            background-color: #f3f3f4;
-        }
-        content{
-            background: red;
-            opacity: 1;
-            height: 100vh;
-            width: 100vw;
-        }
-        .loginscreen.middle-box {
-        width: 70%;
-         display: flex; 
-        flex-flow: column;
-        position: relative;
-        top: 14%;
-        padding: 3% 5%;
-        background: rgba(256,256,256,.6);
-        box-shadow: 0 0 10px rgba(0,0,0,.1);
-        }
-        .logo-name {
-        width: 100%;
-        height: 13vh;
-        color: #e6e6e6;
-        font-size: 6rem;
-        font-weight: 800;
-        letter-spacing: -10px;
-        margin-bottom: 10%;
-        background: url(__PUBLIC__/Admin/img/htlogo.png);
-        background-size: 100% 100%;
-        }
-
-        .m-t {
-            margin-top: 1rem;
-        }
-        /*a{
-            color:#337ab7;
-        }*/
-
-
-    </style>
-
-<body class="gray-bg">
-<block name="content">
-    <div class="middle-box text-center loginscreen  animated fadeInDown">
-        <div>
-            <div>
-
-                <h1 class="logo-name"></h1>
-
-            </div>
-            <form class="m-t" role="form" action="index" method="post">
-                <div class="form-group loginDiv">
-                    <span></span>
-                    <input name="name" type="text" class="form-control" placeholder="账户" required="">
-                </div>
-                <div class="form-group loginDiv">
-                    <span></span>
-                    <input name="password" type="password" class="form-control" placeholder="密码" required="">
-                </div>
-                <div class="form-group checkCode loginDivs">
-                    <input name="code" type="text"  placeholder="验证码">
-                    <img class="imgs" src="__URL__/yzm?id={{:time()}}"   onclick="this.src='__URL__/yzm?id=' + Math.random()">
-                </div>
-                <!-- <div><a href="{{:U('Home/Vendors/identity_refillings')}}">没经销商账号？去注册</a></div> -->
-                <button type="submit" class="btn btn-primary block full-width m-b loginbtn">登 录</button>
-            </form>
-        </div>
-    </div>
-</block>
-<block name="myjs">
-    <!-- 全局js -->
-    <script src="__PUBLIC__/Admin/js/jquery.min.js?v=2.1.4"></script>
-    <script src="__PUBLIC__/Admin/js/bootstrap.min.js?v=3.3.6"></script>
-
-    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
-    <!--统计代码，可删除-->
-</block>
-<script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
+<body>
+	<div class="main"> 
+		<div class="backImg">
+		</div>
+		<div class="content">
+			<div class="registerInfos">
+				<div class="touxiang">
+					<div>
+						<span>
+							<img src="__PUBLIC__/Home/images/jxs.png" alt="">
+						</span>
+						<span>经销商</span>
+					</div>
+				</div>
+				<div>
+					<h3>经销商登录</h3>
+					<p class="progress"><span></span><span></span></p>
+				</div>
+				<form action="index" method="post" autocomplete="off">
+					<div class="comment">
+						<p>
+							<span class="iconfont icon-user"></span><span>用户名</span>
+						</p>
+						<p>
+							<input type="text" placeholder="请输入用户名" name="name" v-model="userInfos.name" required>
+						</p>
+					</div>
+					<div class="comment">
+						<p><span class="iconfont icon-mima2"></span><span>密码</span></p>
+						<p class="eyesParent">
+							<input :type="passEyes.tY" placeholder="请输入密码" v-model="userInfos.password" name="password" required><span :class="passEyes.eye" @click="canEye" ></span>
+						</p>
+					</div>
+					<div class="yCodeP">
+						<p>
+							<span class="iconfont icon-yanzheng"></span>
+							<input type="text" name="code" placeholder="验证码" v-model="userInfos.code" required>
+						</p>
+						<span class="yCord">
+							<img src="{{:U('ServiceLogin/yzm',['s'=>time()])}}" onclick="this.src +='?s'+Math.random">
+						</span>
+					</div>
+					<div class="toNext"><input type="submit" value="登录"></div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="__PUBLIC__/Home/js/jquery.min.js"></script>
+<script>
+</script>
+<script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
 <script src="__PUBLIC__/Home/js/public.js"></script>
+<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>
+<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+<!-- <script src="__PUBLIC__/Home/js/service/index.js?qwe={{:time()}}"></script> -->
+<script>
+	var vConsole = new VConsole();
+</script>
+</html>
