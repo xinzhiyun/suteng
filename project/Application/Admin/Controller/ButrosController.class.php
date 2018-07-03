@@ -327,7 +327,7 @@ class ButrosController extends CommonController
         $info = M('annual')->find();
 
         if (IS_POST) {
-            header("Content-type: text/html; charset=utf-8");
+
             $data = I('post.');
 
             $data['create_time'] = date('Y-m-d H:i:s');
@@ -344,7 +344,7 @@ class ButrosController extends CommonController
                     $message = ['code' => 403, 'message' =>'设置失败'];
                 }
             }
-            if ($data['id'] == 1) {
+            if ($data['id'] != '') {
                 $info =  M('annual')->where(['id'=>$data['id']])->save($data);//
                 if ($info) {
                     $message = ['code' => 200, 'message' =>'修改成功'];
