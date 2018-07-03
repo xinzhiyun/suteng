@@ -304,7 +304,7 @@ var shopindex = new Vue({
 			window.touchX = '';
 		},
 		// 删除购物车商品
-		deleteCart(index, gid, e) {
+		deleteCart(index, id, e) {
 			var vm = this;
 			var el = e.currentTarget;
 			console.log('gid: ',gid);
@@ -318,9 +318,9 @@ var shopindex = new Vue({
 		            $.ajax({
 		            	url: getURL('Home', 'ShoppingCart/cartDel'),
 		            	type: 'post',
-		            	data: {'id': gid},
+		            	data: {'id': id},
 		            	success: function(res){
-		            		console.log('成功！', res)
+		            		console.log('res: ', res);
 		            		//后台返回参数确认删除成功
 		            		if(res.code == 200){
 								// 删除这条数据
@@ -331,9 +331,9 @@ var shopindex = new Vue({
 		            		}
 							return true;
 		            	},
-		            	error: function(res){
-		            		console.log('失败！', res)
-		            		layuiHint('删除失败！');
+		            	error: function(err){
+		            		console.log('err: ', err);
+		            		layuiHint('系统遇到问题，请稍后再试');
 		            	}
 					})
 	            },
