@@ -101,9 +101,11 @@ class OrderController extends CommonController
                         ->where($dWhere)
                         ->join('__GOODS__ g ON g.id = d.gid','LEFT')
                         ->join('__GOODS_DETAIL__ g_d ON g.id = g_d.gid','LEFT')
+                        // ->join('__SHOP_ORDER__ o ON .order_id = d.order_id','LEFT')
                         // ->join('__PIC__ p ON g.id = p.gid','LEFT')
-                        ->field(array('g.name'=>'productname','g_d.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','d.express_name','d.express','d.status','g_d.is_install'=>'is_install','g_d.is_hire'=>'is_hire','d.cprice','d.gid'=>'id','d.gpic'))
+                        ->field(array('g.name'=>'productname','g_d.desc'=>'productbrief','d.price'=>'price','d.num'=>'productnumber','d.express_name','d.express','g.is_install'=>'is_install','g.is_hire'=>'is_hire','d.cprice','d.gid'=>'id','d.gsku','g.gpic'))
                         // ->relation('pics')
+                        // ->order("d.addtime desc")
                         ->select();
 
 
