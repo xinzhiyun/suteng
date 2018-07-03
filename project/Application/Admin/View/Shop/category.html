@@ -396,11 +396,11 @@
             var ruleName = $(obj).attr('ruleName');
             var sort = $(obj).attr('sort');
             var leavel = $(obj).data('leavel');
-            if(leavel==1){
-                $('#st-edit .st-edit-file-tr').hide();
-            }else{
-                $('#st-edit .st-edit-file-tr').show();
-            }
+            // if(leavel==1){
+            //     $('#st-edit .st-edit-file-tr').hide();
+            // }else{
+            //     $('#st-edit .st-edit-file-tr').show();
+            // }
             $("input[name='id']").val(ruleId);
             $("input[name='sort']").val(sort);
             $("input[name='name']").val(ruleName);
@@ -549,6 +549,8 @@
 
             var advObj = [];
             var flag = false;
+            var linkflag = false;
+            var linkRX = /(http|https):\/\//;
             $('.advlist tr').each(function (i,item) {
                 var tmp={};
                 tmp.pic  = $(item).find('.imgBox').attr('src');
@@ -556,9 +558,18 @@
                 tmp.sort = $(item).find('input[name="sort"]').val();
                 if(!tmp.pic || !tmp.link){
                     flag = true;
+                    return false;
+                }
+                if(linkRX.exec(tmp.link)==null){
+                    linkflag = true;
+                    return false;
                 }
                 advObj.push(tmp);
             });
+
+            if(linkflag){
+                parent.layer.msg('链接地址格式不正确,请检查!');return false;
+            }
             if(flag){
                 parent.layer.msg('信息不完整,请补全信息!');return false;
             }

@@ -189,15 +189,6 @@ var shopindex = new Vue({
 				location.href = getURL('Home', 'vipCenter/index');
 				return;
 			}
-			if(tabclk == 2){
-				var mySwiper = new Swiper ('.swiper-container1', {
-					autoplay: 3000,
-					loop: true,
-					preventClicks : false,//默认true
-					// 如果需要分页器
-					pagination: '.swiper-pagination',
-				})
-			}
 			// tabclk: 1首页，2分类，3购物车，
 			this.tabclk = tabclk;
 			// console.log('tabclk: ',tabclk);
@@ -241,6 +232,13 @@ var shopindex = new Vue({
 						vm.categoryContentList = res.data;	// 详细分类
 						vm.noCateContent = false;
 						vm.$nextTick(function(){
+							var mySwiper1 = new Swiper ('.swiper-container1', {
+								autoplay: 3000,
+								loop: true,
+								preventClicks : false,//默认true
+								// 如果需要分页器
+								pagination: '.swiper-pagination1',
+							})
 							lazyLoad('.category>.cright');	// 图片懒加载
 						})
 					}else{
