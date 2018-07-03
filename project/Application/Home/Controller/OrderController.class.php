@@ -637,7 +637,7 @@ class OrderController extends CommonController
                         // ->join('__PIC__ p ON g.id = p.gid','LEFT')
                         // ->relation(['pics'])
                         // // ->table($refund.' a')
-                        ->field(array('g.name'=>'productname','g_d.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g.gpic'=>'gpic'))
+                        ->field(array('g.name'=>'productname','g_d.desc'=>'productbrief','d.gid','d.price'=>'price','d.num'=>'productnumber','g.gpic'=>'gpic','d.gsku'=>'gsku'))
                         ->select();
                     break;
 
