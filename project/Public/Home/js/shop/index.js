@@ -50,9 +50,6 @@ var shopindex = new Vue({
 		}else if(href.indexOf('cart') > 0){
 			vm.tabClick(3, 'cart');
 
-		}else if(href.indexOf('mine') > 0){
-			vm.tabClick(4, 'mine');
-
 		}else{
 			// 首页
 			vm.tabsrc[0] = vm.tabsrc[0] + '_light';
@@ -163,9 +160,7 @@ var shopindex = new Vue({
 							autoplay: 3000,
 							loop: true,
 							// 如果需要分页器
-							pagination: {
-								el: '.swiper-pagination',
-							}
+							pagination: '.swiper-pagination',
 						})
 						lazyLoad('#container');	// 图片懒加载
 					})
@@ -196,7 +191,11 @@ var shopindex = new Vue({
 		},
 		// 点击底部导航按钮
 		tabClick(tabclk, text){
-			// tabclk: 1首页，2分类，3购物车，4我的
+			if(tabclk == 4){
+				location.href = getURL('Home', 'vipCenter/index');
+				return;
+			}
+			// tabclk: 1首页，2分类，3购物车，
 			this.tabclk = tabclk;
 			// console.log('tabclk: ',tabclk);
 			// 切换title
@@ -206,9 +205,6 @@ var shopindex = new Vue({
 			this.tabsrc[tabclk-1] = this.srcArr[tabclk-1] + '_light';
 			location.href = shopurl + '#' + text;
 			this.tabText = text;
-			if(tabclk == 4){
-				location.href = getURL('Home', 'vipCenter/index');
-			}
 		},
 		// 点击分类类目
 		getCate(cate, cid) {

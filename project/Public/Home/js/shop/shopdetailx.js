@@ -161,9 +161,14 @@ var vm = new Vue({
                     console.log('res: ',res);
                     if(res.status == 200){
                         vm.goodsInfo = res.data;
-                        vm.$nextTick(function(){
-                            // 图片懒加载
-                            lazyLoad('.swiper-wrapper');
+                        vm.$nextTick(function(){// 轮播图
+                            lazyLoad('.main');	// 图片懒加载
+                            var mySwiper = new Swiper ('.swiper-container', {
+                                loop: true,
+                                paginationType: 'fraction',
+                                // 如果需要分页器
+                                pagination: '.swiper-pagination',
+                            })
                         })
                     }
                 },

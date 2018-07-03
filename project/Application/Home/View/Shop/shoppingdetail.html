@@ -25,8 +25,8 @@
         <!-- 图片轮播 -->
         <div class="swiper-container picLun">
             <div class="swiper-wrapper">
-                <div class="swiper-slide" v-for='g in goodsInfo.pic'>
-                    <img :data-src="g" alt="">
+                <div class="swiper-slide" v-for='g in goodsInfo.pic' v-if='g'>
+                    <img :data-src="g" :src='g' alt="">
                 </div>
             </div>
             <!-- 如果需要分页器 -->
@@ -156,7 +156,7 @@
     </div>
 	<script type="text/javascript" src="__PUBLIC__/Home/js/swiper-3.4.2.min.js"></script>
     <script src='__PUBLIC__/Home/js/vue.min.js'></script>
-    <script src='__PUBLIC__/Home/js/public.js'></script>
+    <script src='__PUBLIC__/Home/js/public.js?v={{:time()}}'></script>
     <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
     <script src="__PUBLIC__/Home/js/shop/shopdetailx.js?v={{:time()}}"></script>
     <script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
