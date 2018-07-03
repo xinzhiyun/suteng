@@ -24,6 +24,25 @@ function solveCompatible(obj){
 	});
 }
 
+// 图片懒加载
+function lazyLoad(block){
+	var block = document.querySelector(block);	// 图片所在区域
+	var img = block.querySelectorAll('img[data-src]');
+	// console.log('block: %s, img: %s', block, img);
+	if(!img.length)	return;
+	for(var i=0; i<img.length; i++){
+		(function(img){
+			setTimeout(function(){
+				// console.log('img: ',img);
+				var datasrc = img.getAttribute('data-src');
+				var src = img.getAttribute('src');
+				if(datasrc != src){
+					img.setAttribute('src', datasrc);
+				}
+			},200*i);
+		})(img[i])
+	}
+}
 /**
 * 获取网址（解决在js文件中无法使用thinkPHP的大U方法的问题）
 * @param {string} [_home] [Home 或 Coms]

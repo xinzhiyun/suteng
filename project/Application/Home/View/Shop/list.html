@@ -16,26 +16,6 @@
 		var shoplist = '{{:U("Home/Shop/list")}}';
 		var shopdetail = '{{:U("Home/Shop/shoppingdetail")}}';
 		
-		// 图片懒加载
-		function lazyLoad(block){
-			var block = document.querySelector(block);	// 图片所在区域
-			var img = block.querySelectorAll('img[data-src]');
-			// console.log('block: %s, img: %s', block, img);
-			if(!img.length)	return;
-			for(var i=0; i<img.length; i++){
-				(function(img){
-					setTimeout(function(){
-						// console.log('img: ',img);
-						var datasrc = img.getAttribute('data-src');
-						var src = img.getAttribute('src');
-						if(datasrc != src){
-							img.setAttribute('src', datasrc);
-						}
-					},100);
-				})(img[i])
-			}
-		}
-		
 	</script>
 </head>
 <body ontouchstart='console.log()'>
@@ -104,7 +84,7 @@
 	</div>
 	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
 	<script src="__PUBLIC__/Home/js/jquery.min.js"></script>
-  	<script src="__PUBLIC__/Home/js/public.js"></script>
+  	<script src="__PUBLIC__/Home/js/public.js?v={{:time()}}"></script>
   	<script src="__PUBLIC__/Home/js/shop/list.js"></script>
 	<script src="__PUBLIC__/Admin/js/plugins/layer/layer.min.js"></script>
     <script src="__PUBLIC__/Admin/layui/layui.js"></script>
