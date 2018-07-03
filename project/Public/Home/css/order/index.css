@@ -468,6 +468,10 @@ body {
 	width: 72%;
 		padding: 0.2rem;
 }
+.tuikuangRight>p {
+	color: #999;
+	font-size: .6rem;
+}
 .shangpingnei .tuikuangRight>span{
 	line-height: 1.0rem;
 	display: inline-block;
