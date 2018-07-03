@@ -21,6 +21,20 @@ class ShoppingCartController extends CommonController
             $where['pr.grade'] = session('user.grade');
             $data = $cart->getCart($where);
             
+            foreach ($data as $key => $value) {
+
+                $sku = json_decode($value['csku'],true);
+
+                foreach ($sku as $k => $v) {
+                    $skus .= $v['pname'].":".$v['name'].'|';
+                }
+
+                $newskus = rtrim($skus, '|');
+
+                // dump($newskus);
+                $data[$key]['csku'] = $newskus;
+            }
+            
 
             $this->ajaxReturn(array('code'=>200,'msg'=>$data));
         } catch (\Exception $e) {
