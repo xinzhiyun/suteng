@@ -635,7 +635,6 @@ class ShopController extends CommonController
         }
         $goodsInfo['catepath'] = $catepath;
 
-
         // 主题
         $blockList = M('goodsBlock')->where('status=1')->select();
         $block = M('goodsRelationBlock')->where('gid='.$gid)->getField('bid');
@@ -685,7 +684,9 @@ class ShopController extends CommonController
         $where['gid'] = $gid;
 
         //商品会员价格
-        $goodsInfo['price'] = M('goodsPrice')->field('price')->where($where)->find();
+        $goodsInfo['prices'] = M('goodsPrice')->field('price')->where($where)->select();
+
+
         $goodsInfo['goodsCourier'] = M('goods_courier')->where('gid='.$gid)->field('cid,cname,cprice')->select();;
 
         $courierList = M('courier')->where('status = 1')->select();
@@ -705,6 +706,9 @@ class ShopController extends CommonController
 
 
         $attrResList = array_values($attr);
+
+        dump($goodsInfo['cost']);
+        dump($goodsInfo['prices']);
 
         $this->assign('skuList',$goodsAttr);//sku库存列表
         $this->assign('courierList',$courierList);//快递公司列表
