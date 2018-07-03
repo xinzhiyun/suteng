@@ -105,8 +105,12 @@ class PaymentSystemController extends CommonController
     {   
         try {
             
+            // dump($_POST);
+            // die;
             $post = json_decode($_POST['info'],true);
 
+            dump($post);
+            // die;
             foreach ($post as $key => $value) {
                 //检查库存
                 if(empty($value['skuattr']) || empty($value['gid'])){
@@ -114,8 +118,9 @@ class PaymentSystemController extends CommonController
                 }
 
                 $sku = $value['skuattr'];
-                // dump($sku);die;
+                dump($sku);
                 $skuattr = array_column($sku,'id');
+                dump($skuattr);die;
                 sort($skuattr);
                 $map['skuattr'] = implode('_', $skuattr);//属性值id组合
 
@@ -124,7 +129,8 @@ class PaymentSystemController extends CommonController
 
                 $map['gid'] = $value['gid'];
                 $res = $goodsSku->where($map)->getField('skustock');
-
+                echo M()->getLastSql();
+                die;
                 if(!$res){
                     E('该商品类型无库存!',603);
                 }
