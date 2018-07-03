@@ -147,6 +147,7 @@ var shopindex = new Vue({
 						var mySwiper = new Swiper ('.swiper-container', {
 							autoplay: 3000,
 							loop: true,
+							preventClicks : false,//默认true
 							// 如果需要分页器
 							pagination: '.swiper-pagination',
 						})

@@ -108,6 +108,7 @@ var goodsList = new Vue({
                     if(res.status == 200){
                         if(!res.data.length){
                             console.log('查无结果');
+                            vm.searchList.length = 0;
                             vm.loadText = '查无数据';
                             return
                         }

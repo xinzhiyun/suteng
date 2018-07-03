@@ -26,7 +26,9 @@
         <div class="swiper-container picLun">
             <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for='g in goodsInfo.pic' v-if='g'>
-                    <img :data-src="g" :src='g' alt="">
+                    <div class='swiper-zoom-container'>
+                        <img :data-src="g" :src='g' alt="">
+                    </div>
                 </div>
             </div>
             <!-- 如果需要分页器 -->

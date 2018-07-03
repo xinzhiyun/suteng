@@ -166,6 +166,7 @@ var vm = new Vue({
                             // 轮播图
                             var mySwiper = new Swiper ('.swiper-container', {
                                 // loop: true,
+                                zoom : true,
                                 paginationType: 'fraction',
                                 // 如果需要分页器
                                 pagination: '.swiper-pagination',
