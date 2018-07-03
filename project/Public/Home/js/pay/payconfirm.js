@@ -52,16 +52,26 @@ var payConfirm = new Vue({
 								cname: res.msg[i].Courier[0].cname,
 								cprice: res.msg[i].Courier[0].cprice,
 							})
+							var postage = {
+								gid: vm.goods[0].gid,
+								order_id: vm.order_id,
+								cid: res.msg[0].Courier[0].cid,
+								cname: res.msg[0].Courier[0].cname,
+								cprice: res.msg[0].Courier[0].cprice,
+							};
+							(function(msg){
+								setTimeout(function(){
+									// 提交快递信息
+									vm.upPostage({
+										gid: vm.goods[0].gid,
+										order_id: vm.order_id,
+										cid: msg.Courier[0].cid,
+										cname: msg.Courier[0].cname,
+										cprice: msg.Courier[0].cprice,
+									});
+								},0)
+							})(res.msg[i])
 						}
-						var postage = {
-							gid: vm.goods[0].gid,
-							order_id: vm.order_id,
-							cid: res.msg[0].Courier[0].cid,
-							cname: res.msg[0].Courier[0].cname,
-							cprice: res.msg[0].Courier[0].cprice,
-						};
-						// 提交快递信息
-						vm.upPostage(postage);
 						// 计算价格
 						vm.calcAllmoney();
 					}
@@ -105,13 +115,17 @@ var payConfirm = new Vue({
 			// 商品价格
 			for(var i=0; i<vm.goods.length; i++){
 				vm.allMoney += (+vm.goods[i].price)*(+vm.goods[i].num);
+				console.log('order: %s',i, (+vm.goods[i].price)*(+vm.goods[i].num))
 			}
 			// 快递费
 			for(var j=0; j<vm.einfo.length; j++){
 				for(var k=0; k<vm.goods.length; k++){
 					vm.allMoney += (+vm.einfo[j].cprice)*(+vm.goods[k].num);
+					console.log('express: ',(+vm.einfo[j].cprice)*(+vm.goods[k].num));
+					vm.allMoney -= (+vm.einfo[j].cprice);
 				}
 			}
+			console.log('vm.allMoney: ',vm.allMoney);
 		},
 		// 提交快递信息
 		upPostage(postage) {

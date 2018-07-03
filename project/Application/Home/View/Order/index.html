@@ -353,7 +353,7 @@
      */
     // refundStatus   处理进度（0：未处理 1：同意退款 2：不同意退款 3：同意退货 4：不同意退货 5：已退款 6：正在退货 7：已收货 10.待发货订单退部分商品  11.待收货订单部分商品退货退款  12.待收货订单部分商品进退款 ）
     (function unpaid_order(){
-    	var imgpath = '/Uploads/';
+    	var imgpath = '';
     	var noimg = '__PUBLIC__/images/noimg.jpg';
 		var Rejectednum=0;//退货数量
         $.ajax({//8：未支付
@@ -386,7 +386,7 @@
 								}
 							}
 							skuattr = skuattr.substr(0,skuattr.length-1);
-							console.log('skuattr: ',skuattr);
+							// console.log('skuattr: ',skuattr);
 							// 无图片时显示
 							var noimg_show = waitpaylist[i]['productList'][k]['gpic']
 							? (imgpath + waitpaylist[i]['productList'][k]['gpic'])
@@ -578,10 +578,10 @@
                 	// 查询有数据
                 	
 					var waitsendlist=res.data;
-					
                 	// console.log(waitsendlist.length);
 					for(var i=0;i<waitsendlist.length;i++){//待发货数据遍历
-						postage = 0; // 邮费统计
+						var postage = 0; 	// 邮费统计
+						var allMoney = 0;	// 商品金额统计
                 		dingdanDaifahuo1+='<div class="goods">'+
                 		'<p>订单编号：'+waitsendlist[i]['orderid']+'</p>'+
                 		'<p>下单时间：'+waitsendlist[i]['ordertime'] +
@@ -596,7 +596,7 @@
 								}
 							}
 							skuattr = skuattr.substr(0,skuattr.length-1);
-							console.log('skuattr: ',skuattr);
+							// console.log('skuattr: ',skuattr);
 							// 无图片时显示
 							var noimg_show = waitsendlist[i]['productList'][k]['gpic']
 							? (imgpath + waitsendlist[i]['productList'][k]['gpic'])
@@ -622,15 +622,17 @@
 							'</div>'+
 							'</div>'+
 							'</div>';
-
+							allMoney += (+waitsendlist[i]['productList'][k]['price'])*(+waitsendlist[i]['productList'][k]['productnumber']);
 							// postage += parseFloat(waitsendlist[i]['productList'][k]['cprice']); // 邮费统计
-							postage += parseFloat(waitsendlist[i]['productList'][k]['cprice'] * waitsendlist[i]['productList'][k]['productnumber']); // 邮费统计
+							postage += (+waitsendlist[i]['productList'][k]['cprice'])*(+waitsendlist[i]['productList'][k]['productnumber']); // 邮费统计
+							console.log('cprise: %s, num: %s',waitsendlist[i]['productList'][k]['cprice'], waitsendlist[i]['productList'][k]['productnumber']);
+							console.log('postage: %s, allMoney: %s',postage, allMoney);
 						}
-						dingdanDaifahuo1+=dingdanDaifahuo2+'<div class="calc">'+
+						dingdanDaifahuo1 += dingdanDaifahuo2+'<div class="calc">'+
 						'<div>'+
 						'共'+ waitsendlist[i]['totalnumber'] +'件商品&emsp;'+
 						// '合计：<b class="price">￥'+(Number(waitsendlist[i]['totalprice']) + Number(waitsendlist[i]['postage']))+'</b>'+
-						'合计：<b class="price">￥'+(Number(waitsendlist[i]['totalprice'])+Number(postage))+'</b>'+
+						'合计：<b class="price">￥'+ ((+allMoney)+(+postage)) +'</b>'+
 						'<span class="postage">&nbsp;(含邮费￥'+postage+')</span>'+
 						'</div>'+
 						'<div>'+
@@ -703,7 +705,7 @@
 								}
 							}
 							skuattr = skuattr.substr(0,skuattr.length-1);
-							console.log('skuattr: ',skuattr);
+							// console.log('skuattr: ',skuattr);
 							// 无图片时显示
 							var noimg_show = waitgainlist[i]['productList'][k]['gpic']
 							? (imgpath + waitgainlist[i]['productList'][k]['gpic'])
@@ -833,7 +835,7 @@
 								}
 							}
 							skuattr = skuattr.substr(0,skuattr.length-1);
-							console.log('skuattr: ',skuattr);
+							// console.log('skuattr: ',skuattr);
 							var tuihou = waitcommentlist[i]['productList'][k]['tuihuo'] ? '已退货' : '';
 							// 无图片时显示
 							var noimg_show = waitcommentlist[i]['productList'][k]['gpic']
