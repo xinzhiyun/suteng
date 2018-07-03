@@ -171,13 +171,17 @@ var payConfirm = new Vue({
 				data: {order: vm.order_id},
 				success: function(res){
 					console.log('res: ',res);
-					if(vm.payway == 1 || vm.payway == 2 && res.code == 200){
-						// 金币、银币支付
-						layuiHint('支付成功');
-						setTimeout(function(){
-							history.replaceState({}, null, getURL('Home', 'Shop/index'));//改变历史记录
-							location.href = getURL('Home', 'PaymentSystem/paytosuccess');
-						},500);
+					if(vm.payway == 1 || vm.payway == 2){
+						if(res.code == 200){
+							// 金币、银币支付
+							layuiHint('支付成功');
+							// setTimeout(function(){
+							// 	history.replaceState({}, null, getURL('Home', 'Shop/index'));//改变历史记录
+							// 	location.href = getURL('Home', 'PaymentSystem/paytosuccess');
+							// },500);
+						}else{
+							layuiHint(res.msg);
+						}
 						return;
 					}
 					// 调用微信支付方法

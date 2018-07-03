@@ -44,6 +44,8 @@ class ShoppingCartController extends CommonController
     // 加入购物车
     public function shopAdd()
     {
+        dump($_POST);
+        die;
         try {
             $cart = D('Cart');
             $data['num'] = I('post.num');

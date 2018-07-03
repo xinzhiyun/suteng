@@ -71,10 +71,14 @@
 				:class='{cateSelect: cateSelect == cate}'></p>
 			</li>
 			<li class='cright fr'>
-				<div class='adv'>
-					<a v-for='a in categoryAdv' :href='a.link'>
-						<img :data-src='a.pic' alt="加载中...">
-					</a>
+				<div class="swiper-container1 adv">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide" v-for='a in categoryAdv' :href='a.link' @click='advClk(a.link)'>
+							<img :data-src="a.pic" alt="加载中...">
+						</div>
+					</div>
+					<!-- 如果需要分页器 -->
+					<div class="swiper-pagination"></div>
 				</div>
 				<div class='subBlock'>
 					<p v-text='categoryTitle'></p>
