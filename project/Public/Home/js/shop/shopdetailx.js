@@ -238,6 +238,17 @@ var vm = new Vue({
                     name: vm.goodsInfo.name,
                     desc: vm.goodsInfo.desc
                 };
+                $.ajax({
+                    url: shopAdd,
+                    data: vm.upInfo,
+                    type: 'post',
+                    success: function(res){
+                        console.log('res: ',res);
+                    },
+                    error: function(err){
+                        console.log('err: ',err);
+                    }
+                })
             }
 
             console.log('vm.isBuy: ',vm.isBuy);

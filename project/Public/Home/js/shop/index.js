@@ -174,6 +174,7 @@ var shopindex = new Vue({
 		// 点击分类页的广告
 		advClk(link){
 			console.log('link: ', link);
+			location.href = link;
 		},
 		// 点击商品图片
 		todetail(gid) {
