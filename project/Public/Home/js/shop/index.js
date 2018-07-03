@@ -358,7 +358,7 @@ var shopindex = new Vue({
 					gid: gid,
 					price: price,
 					num: num,
-					skuattr: vm.cartList[index].csku
+					skuattr: JSON.parse(vm.cartList[index].csku)
 				};
 			}else{	// 取消选中
 				el.querySelector('img').setAttribute('src', vm.emptySrc);
@@ -470,7 +470,7 @@ var shopindex = new Vue({
 						gid: vm.cartList[i].gid,
 						price: vm.cartList[i].price,
 						num: vm.cartList[i].num,
-						skuattr: vm.cartList[i].csku,
+						skuattr: JSON.parse(vm.cartList[i].csku),
 					})
 					
 					//打钩

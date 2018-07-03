@@ -44,7 +44,10 @@ var payConfirm = new Vue({
 				success: function(res){
 					if(res.code == 200){
 						$(".loading").css("display", "none");
-						vm.goods = res.msg;
+						for(var i=0;i<3; i++){
+							vm.goods = res.msg;
+						}
+						// vm.goods = res.msg;
 						// 默认第一个快递
 						for(var i=0; i<res.msg.length; i++){
 							vm.einfo.push({
