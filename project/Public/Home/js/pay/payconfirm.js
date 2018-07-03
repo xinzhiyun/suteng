@@ -11,6 +11,7 @@ var payConfirm = new Vue({
 			invoice: '我要开发票', 	//发票信息
 			voiceArr: '',
 			payway: '',		// 1:金币，2：银币，3：微信支付
+			noticeText: '加载中...',
 		}
 	},
 	created() {
@@ -135,7 +136,7 @@ var payConfirm = new Vue({
 		},
 		// 获取支付用的数据
 		prePay() {
-			$('.paystyle').show();
+			$('.paystyle').animate({top: 0});
 		},
 		// 立即支付
 		payNow() {
@@ -169,23 +170,37 @@ var payConfirm = new Vue({
 				type: 'post',
 				data: {order: vm.order_id},
 				success: function(res){
-					if(res.code == 200){
-						// 调用微信支付方法
-						weixinPay(res.msg,function(res){
-							if(res.result == 'ok'){
-								layuiHint('支付成功');
-							}else if(res.result == 'other'){
-								layuiHint('支付失败');
-							}else{
-								layuiHint('遇到未知问题，请稍后再试');
-							}
-						});
-					}else{
-						layuiHint(res.msg);
+					console.log('res: ',res);
+					if(vm.payway == 1 || vm.payway == 2 && res.code == 200){
+						// 金币、银币支付
+						layuiHint('支付成功');
+						setTimeout(function(){
+							history.replaceState({}, null, getURL('Home', 'Shop/index'));//改变历史记录
+							location.href = getURL('Home', 'PaymentSystem/paytosuccess');
+						},500);
+						return;
 					}
+					// 调用微信支付方法
+					weixinPay(res,function(res){
+						if(res.result == 'ok'){
+							layuiHint('支付成功');
+							setTimeout(function(){
+								history.replaceState({}, null, getURL('Home', 'Shop/index'));//改变历史记录
+								location.href = getURL('Home', 'PaymentSystem/paytosuccess');
+							},500);
+						}else if(res.result == 'other'){
+							layuiHint('支付失败');
+						}else{
+							layuiHint('遇到未知问题，请稍后再试');
+						}
+					});
 				}
 			})
 			
+		},
+		// 关闭支付面板
+		closepp() {
+			$('.paystyle').animate({top: '150%'});
 		}
 
 	}

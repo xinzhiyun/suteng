@@ -26,7 +26,9 @@
         <div class="swiper-container picLun">
             <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for='g in goodsInfo.pic' v-if='g'>
-                    <img :data-src="g" :src='g' alt="">
+                    <div class='swiper-zoom-container'>
+                        <img :data-src="g" :src='g' alt="">
+                    </div>
                 </div>
             </div>
             <!-- 如果需要分页器 -->
@@ -105,11 +107,11 @@
             <p @click="addCart(true)">加入购物车</p>
         </div>
         <!-- 加入购物车 -->
-        <div class="goCart" v-if="gocart">
+        <div class="goCart">
             <div>
                 <div class="goodsOne">
                     <p>
-                        <img :src="goodsInfo.pic[0]" alt="">
+                        <!-- <img :src="goodsInfo.pic[0]" alt=""> -->
                     </p>
                     <div>
                         <p v-if="false"><span>商品编号：</span><span>123655487851245</span></p>

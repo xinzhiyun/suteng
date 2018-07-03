@@ -21,7 +21,7 @@ var shopindex = new Vue({
 				public + '/Home/images/shop/addcart',
 				public + '/Home/images/shop/mine'
 			],
-			titleList: ['商城首页','分类','购物车','我的'],
+			titleList: ['商城首页','分类','购物车'],
 			categoryTitle: '',  //二级分类标题
 			noCateContent: '选择左边分类',
 			cart_none: '',
@@ -36,7 +36,7 @@ var shopindex = new Vue({
 		var vm = this;
 		var href = location.href;
 		// 刷新保持状态
-		// 首页_home, 分类category, 购物车cart, 我的mine
+		// 首页_home, 分类category, 购物车cart, 
 		for(var i=0; i<vm.srcArr.length; i++){
 			vm.tabsrc.push(vm.srcArr[i])
 		}
@@ -56,6 +56,16 @@ var shopindex = new Vue({
 		}
 		// 清除大分类点击记录
 		window.clickCid = '';
+		
+		// 获取主题商品数据
+		vm.getGoodsList();
+		// 一级分类
+		vm.categoryList = JSON.parse(category);
+		// console.log('category: ',category);
+		// 加载第一条
+		vm.$nextTick(function(){
+			vm.getCate(vm.categoryList[0], vm.categoryList[0].id)
+		})
 		/**
 		 * 以下是模拟数据
 		 */
@@ -97,37 +107,15 @@ var shopindex = new Vue({
 		// 		]
 		// 	}
 		// ];
-		// 获取主题商品数据
-		vm.getGoodsList();
-		// 一级分类
-		vm.categoryList = JSON.parse(category);
-		// console.log('category: ',category);
-		// 加载第一条
-		vm.$nextTick(function(){
-			vm.getCate(vm.categoryList[0], vm.categoryList[0].id)
-		})
-		// vm.categoryList = [
-		// 	{name: '豪大大大鸡排', id: '1'},
-		// 	{name: '养生瓦胆煲', id: '2'},
-		// 	{name: '光能路灯', id: '3'},
-		// 	{name: '净化器', id: '4'},
-		// 	{name: '电热水器', id: '5'},
-		// 	{name: 'cece2', id: '9'},
-		// 	{name: '', id: '25'}
-		// ]
-		if(localStorage.getItem('cartData')){
-			var data = JSON.parse(localStorage.getItem('cartData'));
-			console.log('data: ',data);
-			vm.cartList = data;
-		}
+
 		// 购物车数据
-		// vm.cartList = [
-		// 	{src: '',gid:'1',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'1'},
-		// 	{src: '',gid:'2',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'16'},
-		// 	{src: '',gid:'3',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'3'},
-		// 	{src: '',gid:'4',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'11'},
-		// 	{src: '',gid:'5',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'6'},
-		// ];
+		vm.cartList = [
+			{src: '',gid:'1',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'1'},
+			{src: '',gid:'2',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'16'},
+			{src: '',gid:'3',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'3'},
+			{src: '',gid:'4',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'11'},
+			{src: '',gid:'5',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'6'},
+		];
 	},
 	mounted() {
 		var cBlock = document.querySelectorAll('.cBlock');	// 购物车商品
@@ -159,6 +147,7 @@ var shopindex = new Vue({
 						var mySwiper = new Swiper ('.swiper-container', {
 							autoplay: 3000,
 							loop: true,
+							preventClicks : false,//默认true
 							// 如果需要分页器
 							pagination: '.swiper-pagination',
 						})
@@ -250,28 +239,6 @@ var shopindex = new Vue({
 				}
 			})
 
-			// this.categoryContentList = [
-			// 	{
-			// 		title: '净水器',
-			// 		subType: [
-			// 			{pic: '',name:'lopo玩具',scid: '12'},
-			// 			{pic: '',name:'毛衣刷',scid: '13'},
-			// 			{pic: '',name:'宝宝杯',scid: '14'},
-			// 			{pic: '',name:'小小苏',scid: '15'},
-			// 			{pic: '',name:'规划局规划国际化',scid: '25'},
-			// 		]
-			// 	},
-			// 	{
-			// 		title: '净化器',
-			// 		subType: [
-			// 			{pic: '',name:'lopo玩具',scid: '12'},
-			// 			{pic: '',name:'毛衣刷',scid: '13'},
-			// 			{pic: '',name:'宝宝杯',scid: '14'},
-			// 			{pic: '',name:'小小苏',scid: '15'},
-			// 			{pic: '',name:'规划局规划国际化',scid: '25'},
-			// 		]
-			// 	}
-			// ];
 		},
 		// 点击大分类下的小分类商品图片
 		subClick(cid) {
@@ -321,7 +288,7 @@ var shopindex = new Vue({
 		// 删除购物车商品
 		deleteCart(index, gid, e) {
 			var vm = this;
-			var el = e.currentTarget.parentNode;
+			var el = e.currentTarget;
 			console.log('gid: ',gid);
 			console.log('index: ',index);
 			layer.confirm('确认删除？删除后无法恢复！', 
@@ -330,31 +297,27 @@ var shopindex = new Vue({
 	            }, 
 	            function(){
 		            // 发送ajax让后台删除这条地址在数据库的数据
-		            // $.ajax({
-		            // 	url: '{{:U("Address/del_address")}}',
-		            // 	type: 'post',
-		            // 	data: {'id': address_id},
-		            // 	success: function(res){
-		            // 		console.log('成功！', res)
-		            // 		//后台返回参数确认删除成功
-		            // 		if(res.code == 200){
-		            // 			_this.parents(".address").remove();
-		            // 			layHint('删除成功！');
-		            // 		}else{
-		            // 			layHint('删除失败！');
-		            // 		}
-		            // 	},
-		            // 	error: function(res){
-		            // 		console.log('失败！', res)
-		            // 		layHint('删除失败！');
-		            // 	}
-					// })
-					var cartData = JSON.parse(localStorage.getItem('cartData'));
-					cartData.splice(index, 1);
-					vm.cartList = cartData;
-					localStorage.setItem('cartData', JSON.stringify(cartData));
-					layuiHint('删除成功！');
-		            return true;
+		            $.ajax({
+		            	url: getURL('Home', 'ShoppingCart/cartDel'),
+		            	type: 'post',
+		            	data: {'id': gid},
+		            	success: function(res){
+		            		console.log('成功！', res)
+		            		//后台返回参数确认删除成功
+		            		if(res.code == 200){
+								// 删除这条数据
+								vm.cartList.splice(index, 1);
+		            			layHint('删除成功！');
+		            		}else{
+		            			layHint('删除失败！');
+		            		}
+							return true;
+		            	},
+		            	error: function(res){
+		            		console.log('失败！', res)
+		            		layHint('删除失败！');
+		            	}
+					})
 	            },
 	            function(){
 	                layer.msg('已取消！', {icon: 1});
@@ -372,7 +335,7 @@ var shopindex = new Vue({
 			console.log('gid: %s, price: %s, index: %s',gid, price, index);
 			if(src.indexOf('select') < 0){	// 选中
 				el.querySelector('img').setAttribute('src', vm.selectedSrc);
-				vm.moneyCalc[index] = {gid: gid,price: price,num: num};
+				vm.moneyCalc[index] = {gid: gid,price: price,num: num,skuattr: ''};
 			}else{	// 取消选中
 				el.querySelector('img').setAttribute('src', vm.emptySrc);
 				vm.moneyCalc[index] = '';
@@ -442,6 +405,7 @@ var shopindex = new Vue({
 					vm.moneyCalc[+index].num = el.value;
 				}
 			}
+			// 同步结算勾选数量、金额
 			vm.calculator();
 		},
 		// 全选、全不选
@@ -458,7 +422,8 @@ var shopindex = new Vue({
 					vm.moneyCalc.push({
 						gid: vm.cartList[i].gid,
 						price: vm.cartList[i].price,
-						num: vm.cartList[i].num
+						num: vm.cartList[i].num,
+						skuattr: '',
 					})
 					
 					//打钩
@@ -488,6 +453,34 @@ var shopindex = new Vue({
 				// 未选中
 				return
 			}
+			var arr = [];
+			// for(var i=0;)
+			// vm.upInfo = {
+			// 	gid: vm.goodsInfo.id,
+			// 	money: (+vm.goodsInfo.price)*(+vm.numVal),  // 总价
+			// 	skuattr: vm.checkList,
+			// 	price: vm.goodsInfo.price,
+			// 	num: vm.numVal
+			// };
+			// arr.push(vm.upInfo);
+				
+			// 购物车结算
+			$.ajax({
+				url: '',
+				data: {info: JSON.stringify(arr)},
+				type: 'post',
+				success: function(res){
+					console.log('res: ',res);
+					if(res.code == 200){
+						location.href = payConfirm;
+					}else{
+						layuiHint(res.msg);
+					}
+				},
+				error: function(err){
+					console.log('err: ',err);
+				}
+			})
 		}
 	}
 })

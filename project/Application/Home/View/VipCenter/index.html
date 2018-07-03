@@ -19,16 +19,16 @@
                 </span>
                 <switch name="user.grade">
                     <case value="4">
-                        <span>{{$user['nickname']}} <img src="__PUBLIC__/Home/images/zs.png" alt=""></span>
+                        <span><i>{{$user['nickname']}}</i><img src="__PUBLIC__/Home/images/zs.png" alt=""></span>
                     </case>
                     <case value="3">
-                        <span>{{$user['nickname']}} <img src="__PUBLIC__/Home/images/hjj.png" alt=""></span>
+                        <span><i>{{$user['nickname']}}</i><img src="__PUBLIC__/Home/images/hjj.png" alt=""></span>
                     </case>
                     <case value="2">
-                        <span>{{$user['nickname']}} <img src="__PUBLIC__/Home/images/pt.png" alt=""></span>
+                        <span><i>{{$user['nickname']}}</i><img src="__PUBLIC__/Home/images/pt.png" alt=""></span>
                     </case>
                     <default />
-                    <span>{{$user['nickname']}} <img src="__PUBLIC__/Home/images/gr.png" alt=""></span>
+                    <span><i>{{$user['nickname']}}</i><img src="__PUBLIC__/Home/images/gr.png" alt=""></span>
                 </switch>
                 <a href="{{:U('Home/Index/index')}}">点我回到首页>></a>
                 <!-- <span><img src="__PUBLIC__/Home/images/gr.png" alt=""></span> -->

@@ -373,33 +373,28 @@ class WeiXinPayController extends Controller
                   // 发票金额录入
                   D('invoice')->where(['oid'=>$order_id])->save(['oprice'=>$orderData['g_price']]);
                   Log::write($order_goods,'微信支付的解析');
-                  // $goods = \array_column($order_goods,'gid');
-                  foreach($order_goods as $good){
-                    //   $inventory->where(['gid'=>$good['gid']])->setDec('allnum',$good['num']);
-                      $display_order[$good['gid']] = $good['num'];
-                  }
+                  // 4. 库存检测，减库存 sku库存
+                foreach($order_goods as $good){
 
-                  // $display_order = array(
-                  //     1 => 4,
-                  //     2 => 1,
-                  //     3 => 2,
-                  //     4 => 3,
-                  //     5 => 9,
-                  //     6 => 5,
-                  //     7 => 8,
-                  //     8 => 9
-                  // );
-                  $ids = implode(',', array_keys($display_order));
+                    $map['gid'] = $good['gid'];
+                    $skuattr = array_column(json_decode($good['gsku'],true),'id');
+                    sort($skuattr);
+                    $sku = implode('_', $skuattr);//属性值id组合
+                    $map['skuattr'] = $sku;
 
-                  $sql = "UPDATE st_inventory SET allnum = CASE gid ";
-                  foreach ($display_order as $id => $ordinal) {
-                      $sql .= sprintf("WHEN %d THEN allnum - %d ", $id, $ordinal);
-                  }
-                  $sql .= "END WHERE gid IN ($ids)";
-                  file_put_contents('./wxcallback.txt',$sql."\r\n\r\n", FILE_APPEND);
-                  // echo $sql;
-                  $Model = new \Think\Model(); // 实例化一个model对象 没有对应任何数据表
-                  $res = $Model->execute($sql);
+                    $skustock = M('GoodsSku')->where($map)->find()['skustock'];
+                    $stock = M('Goods')->where('id='.$good['gid'])->find()['stock'];
+                    //商品主表减库存
+                    $good['stock'] = $stock - $good['num'];
+                    M('goods')->where('id='.$good['gid'])->save($good);
+                    
+                    //sku表减库存
+                    $data['skustock'] = $skustock-$good['num'];
+                    M('GoodsSku')->where($map)->save($data);
+                    //sku属性
+                    
+                    // dump($data);die;
+                }
 
             }
         }
@@ -471,27 +466,26 @@ class WeiXinPayController extends Controller
          */
     public function annualNotify() {
         $xml=file_get_contents('php://input', 'r');
-        file_put_contents('./wx_payFee.txt',$xml."\r\n", FILE_APPEND);
+//        file_put_contents('./wx_payFee.txt',$xml."\r\n", FILE_APPEND);
 // //
 //         $xml= '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
-//<attach><![CDATA[194687810151564]]></attach>
+//<attach><![CDATA[694589055653958]]></attach>
 //<bank_type><![CDATA[CFT]]></bank_type>
 //<cash_fee><![CDATA[1]]></cash_fee>
 //<fee_type><![CDATA[CNY]]></fee_type>
 //<is_subscribe><![CDATA[Y]]></is_subscribe>
 //<mch_id><![CDATA[1501254081]]></mch_id>
-//<nonce_str><![CDATA[tfpol31urbeba1u08qhbkknzz8mpsuli]]></nonce_str>
-//<openid><![CDATA[onLe70SfHSwyjUrqtIgt4MGN7mI8]]></openid>
-//<out_trade_no><![CDATA[870418498981572]]></out_trade_no>
+//<nonce_str><![CDATA[4ulkvmue00xjwu2j7zb9utlfya29swdg]]></nonce_str>
+//<openid><![CDATA[onLe70al8Nsr48CH4lpTPDhAuNVM]]></openid>
+//<out_trade_no><![CDATA[715172178241387]]></out_trade_no>
 //<result_code><![CDATA[SUCCESS]]></result_code>
 //<return_code><![CDATA[SUCCESS]]></return_code>
-//<sign><![CDATA[3D061597929399383B520FAE6DCBE4EE]]></sign>
-//<time_end><![CDATA[20180629194901]]></time_end>
+//<sign><![CDATA[D746D06023FBF074EB3C450708A4AB20]]></sign>
+//<time_end><![CDATA[20180703115759]]></time_end>
 //<total_fee>1</total_fee>
 //<trade_type><![CDATA[JSAPI]]></trade_type>
-//<transaction_id><![CDATA[4200000126201806298964263648]]></transaction_id>
-//</xml>
-//';
+//<transaction_id><![CDATA[4200000123201807034141582473]]></transaction_id>
+//</xml>';
 
         if ($xml) {
             //解析微信返回数据数组格式
@@ -505,7 +499,7 @@ class WeiXinPayController extends Controller
             $ordertype = M('users_order')->where(['user_id'=>$orderData['user_id'],'is_pay'=>1])->field('type')->order('id desc')->find();
 //                dump($ordertype);exit;
             if (empty($orderData['is_pay'])) {
-
+               
                 $save_info =M('users_order')->where($data)->save(['is_pay'=>1]);
 
                 $save_info =M('users_order')->where($data)->find();
@@ -694,9 +688,10 @@ class WeiXinPayController extends Controller
                         }
                     } else {
 
-                        $user_in_info = M('vendors')->where(['code'=>$users_info['code']])->find();
+                        $user_in_info = M('vendors')->where(['code'=>$users_info['invitation_code']])->find();
 
                     }
+
                     if (empty($user_in_info)) {
                         exit;
                     }
@@ -957,23 +952,24 @@ class WeiXinPayController extends Controller
         // file_put_contents('./uid.txt',$uid ."\r\n", FILE_APPEND);
         // file_put_contents('./wx_payFee.txt',$xml."\r\n", FILE_APPEND);
 //        $xml = '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
-//<attach><![CDATA[194687810151564]]></attach>
+//<attach><![CDATA[122110547265130]]></attach>
 //<bank_type><![CDATA[CFT]]></bank_type>
 //<cash_fee><![CDATA[1]]></cash_fee>
 //<fee_type><![CDATA[CNY]]></fee_type>
 //<is_subscribe><![CDATA[Y]]></is_subscribe>
 //<mch_id><![CDATA[1501254081]]></mch_id>
-//<nonce_str><![CDATA[tfpol31urbeba1u08qhbkknzz8mpsuli]]></nonce_str>
-//<openid><![CDATA[onLe70SfHSwyjUrqtIgt4MGN7mI8]]></openid>
-//<out_trade_no><![CDATA[870418498981572]]></out_trade_no>
+//<nonce_str><![CDATA[89ampq1gewqig58y7tp2tjm1gnq4jb8n]]></nonce_str>
+//<openid><![CDATA[onLe70al8Nsr48CH4lpTPDhAuNVM]]></openid>
+//<out_trade_no><![CDATA[546527502855251]]></out_trade_no>
 //<result_code><![CDATA[SUCCESS]]></result_code>
 //<return_code><![CDATA[SUCCESS]]></return_code>
-//<sign><![CDATA[3D061597929399383B520FAE6DCBE4EE]]></sign>
-//<time_end><![CDATA[20180629194901]]></time_end>
+//<sign><![CDATA[6239533C7446FA1D968B4E35A0D76C34]]></sign>
+//<time_end><![CDATA[20180703113856]]></time_end>
 //<total_fee>1</total_fee>
 //<trade_type><![CDATA[JSAPI]]></trade_type>
-//<transaction_id><![CDATA[4200000126201806298964263648]]></transaction_id>
-//</xml>';
+//<transaction_id><![CDATA[4200000133201807031936807117]]></transaction_id>
+//</xml>
+//';
 
 
         if($xml){
@@ -1007,7 +1003,7 @@ class WeiXinPayController extends Controller
 
                 // dump($data);die;
                 // 如果订单未处理，订单支付金额等于订单实际金额
-                if(!empty($orderData['is_pay']) && $orderData['total_price'] == $result['total_fee']){
+                if(empty($orderData['is_pay']) && $orderData['total_price'] == $result['total_fee']){
 
                     //file_put_contents('./wx_pay121.txt',$xml."\r\n", FILE_APPEND);
                     //                    dump($result);
@@ -1245,6 +1241,7 @@ class WeiXinPayController extends Controller
 
                             //如果商品开启了金银币的分红 那就进行分红 1 是开启
                             if ($setmeal_money['status'] ==1 ) {
+
                                 $this->user_commission($user_info,$orderData['order_id'],$setmeal_money['gold_users'],$setmeal_money['silver_users']);
         //                               会员邀请人的金银币分红
                                 if (!empty($user_info['invitation_code'])) {
@@ -1257,6 +1254,7 @@ class WeiXinPayController extends Controller
                             }
                             //分销商
                             if (!empty($user_info['path'])) {
+
                                 $users_path = explode('-',$user_info['path']);
                                 $users_B['id']  = array('in',$users_path);
                                 $users_B['type']  = 1;
@@ -1267,8 +1265,11 @@ class WeiXinPayController extends Controller
                                     exit;
                                 }
                             } else {
+
                                 $user_in_info = $vendors_info->where(['code'=>$user_info['invitation_code']])->find();
+
                             }
+
                             if (empty($user_in_info)) {
                                 exit;
                             }
@@ -2286,10 +2287,11 @@ class WeiXinPayController extends Controller
         // 更新时间
         $saveData['updatetime']     = $saveData['addtime'];
 
-        
+
 
         // 写用户佣金记录
         $userRes = $usersCommission->add($saveData);
+
 
         // 准备更新条件
         $userWhere['id'] = $user['id'];

@@ -82,18 +82,27 @@ var vm = new Vue({
         buyNow(val) {
             // 显示选项面板
             this.gocart = val;
+            $(".goCart").css({"display":"block", "opacity": 0}).children("div").css("height", "0vh");
+            $(".goCart").animate({opacity: 1}, 500).children("div").animate({height: "57vh"}, 500);
             this.isBuy = true;
         },
         // 加入购物车
         addCart(val) {
             // 显示选项面板
             this.gocart = val;
+            $(".goCart").css({"display":"block", "opacity": 0}).children("div").css("height", "0vh");
+            $(".goCart").animate({opacity: 1}, 500).children("div").animate({height: "57vh"}, 500);
+            // $(".goCart>div").animate({height: "57vh"}, 500);
             this.isBuy = false;
         },
         // 关闭面板
         closePanel(val) {
             // 关闭选项面板
             this.gocart = val;
+            $(".goCart").animate({opacity: 0}, 500, function() {
+                $(".goCart").css({"display":"none"})
+            });
+            $(".goCart>div").animate({height: "0vh"}, 500);
             // 清空已选规格
             this.checkList.length = 0;
         },
@@ -114,7 +123,7 @@ var vm = new Vue({
             var ev = e || window.event;
             var target = ev.target || ev.srcElement;
             // console.log(target);
-            $(target).css("border", "1px solid #518CF8").parent().siblings().children().css("border", "1px solid #747474");
+            $(target).css({"border":"1px solid #518CF8", "color": "#518CF8"}).parent().siblings().children().css({"border":"1px solid #747474", "color":"#333333"});
             // 已选规格
             if(vm.lastCheckIndex === index){
                 // 选择同一项目的不同规格
@@ -161,10 +170,12 @@ var vm = new Vue({
                     console.log('res: ',res);
                     if(res.status == 200){
                         vm.goodsInfo = res.data;
-                        vm.$nextTick(function(){// 轮播图
+                        vm.$nextTick(function(){
                             lazyLoad('.main');	// 图片懒加载
+                            // 轮播图
                             var mySwiper = new Swiper ('.swiper-container', {
-                                loop: true,
+                                // loop: true,
+                                zoom : true,
                                 paginationType: 'fraction',
                                 // 如果需要分页器
                                 pagination: '.swiper-pagination',
@@ -227,17 +238,6 @@ var vm = new Vue({
                     name: vm.goodsInfo.name,
                     desc: vm.goodsInfo.desc
                 };
-                // 存到本地
-                if(localStorage.getItem('cartData')){
-                    var data = JSON.parse(localStorage.getItem('cartData'));
-                    data.push(vm.upInfo);
-                    localStorage.setItem('cartData', JSON.stringify(data));
-                }else{
-                    var arr = [];
-                    arr.push(vm.upInfo);
-                    localStorage.setItem('cartData', JSON.stringify(arr));
-                }
-                console.log('arr:', localStorage.getItem('cartData'))
             }
 
             console.log('vm.isBuy: ',vm.isBuy);

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />
-	<title>服务站注册</title>
+	<title>服务站登录</title>
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/service/login.css?v={{:time()}}">
@@ -16,48 +16,42 @@
 		<div class="content">
 			<div class="registerInfos">
 				<div class="touxiang">
-					<div v-if="index==0">
+					<div>
 						<span>
 							<img src="__PUBLIC__/Home/images/fwz.png" alt="">
 						</span>
 						<span>服务站管理</span>
 					</div>
-					<div v-if="index==1">
-						<span>
-							<img src="__PUBLIC__/Home/images/jxs.png" alt="">
-						</span>
-						<span>经销商</span>
-					</div>
-					<div v-if="index==2">
-						<span>
-							<img src="__PUBLIC__/Home/images/az.png" alt="">
-						</span>
-						<span>安装人员</span>
-					</div>
 				</div>
 				<div>
-					<h3 v-if="index==0">服务站管理登录</h3>
-					<h3 v-if="index==1">经销商登录</h3>
-					<h3 v-if="index==2">安装人员登录</h3>
+					<h3>服务站管理登录</h3>
 					<p class="progress"><span></span><span></span></p>
 				</div>
 				<div class="comment">
 					<p>
-						<span class="iconfont icon-user"></span><span>输入用户名</span>
+						<span class="iconfont icon-user"></span><span>用户名</span>
 					</p>
 					<p>
-						<input type="text" placeholder="由6-8位数字或字母组成，不支持中文" name="uname" v-model="userInfos.name">
+						<input type="text" placeholder="请输入用户名" name="uname" v-model="userInfos.name">
 					</p>
-					
 				</div>
 				<div class="comment">
-					<p><span class="iconfont icon-mima2"></span><span>输入密码</span></p>
+					<p><span class="iconfont icon-mima2"></span><span>密码</span></p>
 					<p class="eyesParent">
-						<input :type="passEyes.tY" placeholder="由8-16位数字或字母组成" v-model="userInfos.password" name="userpass"><span :class="passEyes.eye" @click="canEye"></span>
+						<input :type="passEyes.tY" placeholder="请输入密码" v-model="userInfos.password" name="userpass"><span :class="passEyes.eye" @click="canEye"></span>
 					</p>
 				</div>
+				<div class="yCodeP">
+					<p>
+						<span class="iconfont icon-yanzheng"></span>
+						<input type="text" name="usercode" placeholder="验证码" v-model="userInfos.code">
+					</p>
+					<span class="yCord">
+						<img src="{{:U('ServiceLogin/yzm',['s'=>time()])}}" onclick="this.src +='?s'+Math.random">
+					</span>
+				</div>
 				
-				<div class="toNext"><p @click="verify()">下一步</p></div>
+				<div class="toNext"><p @click="verify()">登录</p></div>
 			</div>
 		</div>
 	</div>

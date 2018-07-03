@@ -167,10 +167,11 @@ img {
 .goCart {
     position: fixed;
     top: 0;
+    display: none;
     width: 100vw;
     height: 100vh;
     z-index: 100;
-    background: rgba(30,30,30,.5);
+    background: rgba(30,30,30,.4);
     color: #333333;
 }
 .goCart > div {
@@ -227,7 +228,7 @@ img {
 }
 /* 属性 */
 .property, .numberDo {
-    padding: .5rem;
+    padding: .2rem .5rem;
 }
 .property > h3, .numberDo > h3 {
     margin-bottom: .4rem;
@@ -281,4 +282,17 @@ img {
 }
 .am-thumbnails>li {
     padding: 0 .5rem 0rem .5rem;
+}
+.swiper-pagination-fraction {
+    width: auto !important;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 4px;
+    padding-top: 2px;
+    right: 11px;
+    left: inherit !important;
+    color: #fff;
+    border-radius: 6px;
+    background: rgba(0,0,0,.5);
+    font-size: .5rem;
 }

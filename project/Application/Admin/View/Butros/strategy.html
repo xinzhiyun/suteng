@@ -47,6 +47,12 @@
                                     <input type="text" name="vendor_c" class="form-control" value="{{$data.com_c}}">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">百分D分配占比</label>
+                                <div class="col-md-3">
+                                    <input type="text" name="vendor_d" class="form-control" value="{{$data.com_d}}">
+                                </div>
+                            </div>
 
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
@@ -79,6 +85,7 @@
         var vendor_a    = $("input[name='vendor_a']").val();
         var vendor_b    = $("input[name='vendor_b']").val();
         var vendor_c    = $("input[name='vendor_c']").val();
+        var vendor_d    = $("input[name='vendor_d']").val();
 
 
         $.ajax({
@@ -90,6 +97,7 @@
                 "com_a":vendor_a,
                 "com_b":vendor_b,
                 "com_c":vendor_c,
+                "com_d":vendor_d,
 
             },
             dataType:"json",
