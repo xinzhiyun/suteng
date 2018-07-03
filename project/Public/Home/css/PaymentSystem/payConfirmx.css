@@ -88,6 +88,9 @@ body {
     background: white;
     padding: 0 .5rem 2.1rem .5rem;
 }
+.goods>ul {
+    padding-bottom: 30px;
+}
 .express {
     position: absolute;
     right: 0;

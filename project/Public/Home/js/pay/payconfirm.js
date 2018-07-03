@@ -44,10 +44,7 @@ var payConfirm = new Vue({
 				success: function(res){
 					if(res.code == 200){
 						$(".loading").css("display", "none");
-						for(var i=0;i<3; i++){
-							vm.goods = res.msg;
-						}
-						// vm.goods = res.msg;
+						vm.goods = res.msg;
 						// 默认第一个快递
 						for(var i=0; i<res.msg.length; i++){
 							vm.einfo.push({
@@ -179,10 +176,10 @@ var payConfirm = new Vue({
 						if(res.code == 200){
 							// 金币、银币支付
 							layuiHint('支付成功');
-							// setTimeout(function(){
-							// 	history.replaceState({}, null, getURL('Home', 'Shop/index'));//改变历史记录
-							// 	location.href = getURL('Home', 'PaymentSystem/paytosuccess');
-							// },500);
+							setTimeout(function(){
+								history.replaceState({}, null, getURL('Home', 'Shop/index'));//改变历史记录
+								location.href = getURL('Home', 'PaymentSystem/paytosuccess');
+							},500);
 						}else{
 							layuiHint(res.msg);
 						}
