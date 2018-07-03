@@ -30,6 +30,7 @@ var shopindex = new Vue({
 			checkMoney: 0,	// 结算金额
 			selectedSrc: '',
 			emptySrc: '',
+			cartnum: '',
 		}
 	},
 	created() {
@@ -109,13 +110,13 @@ var shopindex = new Vue({
 		// ];
 
 		// 购物车数据
-		vm.cartList = [
-			{src: '',gid:'1',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'1'},
-			{src: '',gid:'2',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'16'},
-			{src: '',gid:'3',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'3'},
-			{src: '',gid:'4',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'11'},
-			{src: '',gid:'5',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'6'},
-		];
+		// vm.cartList = [
+		// 	{src: '',gid:'1',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'1'},
+		// 	{src: '',gid:'2',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'16'},
+		// 	{src: '',gid:'3',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'3'},
+		// 	{src: '',gid:'4',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'11'},
+		// 	{src: '',gid:'5',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'6'},
+		// ];
 	},
 	mounted() {
 		var cBlock = document.querySelectorAll('.cBlock');	// 购物车商品
@@ -138,6 +139,7 @@ var shopindex = new Vue({
 					vm.blockList = res.goods;
 					vm.menuList = res.cate;
 					vm.banner = res.banner;
+					vm.cartnum = res.cartInfo;
 					vm.menuList.push({
 						pic: public+'/Home/images/shop/house.png',
 						name: '更多...',

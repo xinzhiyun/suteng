@@ -321,6 +321,18 @@ img {
 	border: none;
 	text-align: center;
 }
+#footer>div {
+	position: relative;
+}
+.cartnum {
+	position: absolute;
+	top: 0;
+	left: 66%;
+	padding: 0 4px;
+	color: #fff;
+	border-radius: 30px;
+	background: #AF0815;
+}
 /* 我的 */
 #footer {
 	width: 100%;
