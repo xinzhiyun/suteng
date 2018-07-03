@@ -146,9 +146,9 @@ st_shop_order_detail.gid ='.$value['gid']);
                     //确认收货
                     case '7':
 
+                        // echo 11;die;
                         //先查询该订单的支付类型
                         $order_id = M('refund_goods')->where('rf_id='.$id)->find()['oid'];
-
 
 
                         // dump($order_id);die;
@@ -158,6 +158,7 @@ st_shop_order_detail.gid ='.$value['gid']);
                         $payStatus = $orderData['mode'];
                         switch ($payStatus) {
                             case '0':
+                                // echo 2;die;
                                 //微信
                                 //微信退款
                                 //微信examle的WxPay.JsApiPay.php
@@ -165,8 +166,9 @@ st_shop_order_detail.gid ='.$value['gid']);
                                 // vendor('WxPay.WxPay#Config');
                                 // include VENDOR_PATH."/Wxpay/WxPay.Api.php";  
                                 //查询订单,根据订单里边的数据进行退款  
-                                $order = M('refund')->where(array('id'=>$id,'status'=>0))->find(); 
-
+                                $order = M('refund')->where(array('id'=>$id))->find(); 
+                                // echo M()->getLastSql();
+                                // dump($order);die;
 
                                 $orders = M('refund_goods')->where(array('rf_id'=>$id))->find()['oid'];
 
@@ -198,7 +200,7 @@ st_shop_order_detail.gid ='.$value['gid']);
                                     M('shop_order')->startTrans();
 
                                     //修改退款订单的状态
-                                    $refund['status'] = 11;
+                                    $refund['status'] = 5;
                                     $bool2 = M('refund')->where('id='.$id)->save($refund);
 
                                     //修改订单状态前先判断该订单下是否还有未发货的商品
@@ -435,6 +437,7 @@ st_shop_order_detail.gid ='.$value['gid']);
                                 break;
 
                             case '4':
+                                // echo 123;die;
                                 //银币
                                 //先查询商品订单总价
                                 $odetail = M('shop_order_detail')->where("order_id='{$order_id}'")->select();
