@@ -20,7 +20,7 @@ body {
 }
 .orderAddress > a > p:nth-child(1) {
     width: 20%;
-    margin-right: .4rem;
+    margin-right: .1rem;
 }
 .orderAddress > a > p:nth-child(2) > span:nth-child(1){
     margin-bottom: .1rem;
@@ -119,6 +119,10 @@ body {
 .goods > ul > li > a > p > span:nth-child(1) > img {
     height: 100%;
     width: 100%;
+}
+.goods > ul > li > a > p > span:nth-child(2) {
+    flex: 1;
+    margin-right: .2rem;
 }
 .goods > ul > li > a > p > span > i {
     display: block;
@@ -260,4 +264,11 @@ body {
 	border-radius:0.2rem;
 	color: #FFF;
 	letter-spacing: 0.1rem;
+}
+.loading {
+    position: absolute;
+    top: 10rem;
+    width: 100vw;
+    text-align: center;
+    /* display: none; */
 }
