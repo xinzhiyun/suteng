@@ -73,7 +73,7 @@ var payConfirm = new Vue({
 		expressChange(index){
 			var vm = this;
 			var express = $('.express');
-			vm.einfo = [];
+			vm.einfo.length = 0;
 			var postage = {};
 			for(var i=0; i<express.length; i++){
 				var temp = $(express[i]).find('option:selected');
