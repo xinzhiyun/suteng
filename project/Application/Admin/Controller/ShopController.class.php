@@ -684,8 +684,11 @@ class ShopController extends CommonController
         $where['gid'] = $gid;
 
         //商品会员价格
-        $goodsInfo['prices'] = M('goodsPrice')->field('price')->where($where)->select();
+        $prices = M('goodsPrice')->field('grade,price')->where($where)->select();
 
+        $goodsInfo['prices'] = array_column($prices,'price','grade');
+
+        sort($goodsInfo['prices']);
 
         $goodsInfo['goodsCourier'] = M('goods_courier')->where('gid='.$gid)->field('cid,cname,cprice')->select();;
 
