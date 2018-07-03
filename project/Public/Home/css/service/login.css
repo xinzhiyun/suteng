@@ -60,6 +60,7 @@ body .content .registerInfos {
 	display: flex;
 	/* justify-content: space-between; */
 	padding: 1rem 0 .3rem 0;
+	align-items: baseline;
 	border-bottom: 1px solid #EFEFEF;
 }
 .comment > p:nth-child(1) {
@@ -71,11 +72,11 @@ body .content .registerInfos {
 }
 .comment > p:nth-child(1) > span:nth-child(2) {
 	white-space: nowrap;
-	font-size: .5rem;
+	font-size: .7rem;
 }
 .comment > p > input {
 	border: none !important;
-	font-size: .4rem;
+	font-size: .7rem;
 	width:58vw;
 }
 .toNext p{
@@ -139,12 +140,12 @@ body .content .registerInfos {
 }
 .yCodeP > p > span {
 	/* margin-right: .5rem; */
-	font-size: .9rem;
+	font-size: 1rem;
 }
 .yCodeP > p > input {
 	width: 80%;
 	border: none;
-	font-size: .5rem;
+	font-size: .7rem;
 }
 .yCodeP > .yCord {
 	width: 6rem;
