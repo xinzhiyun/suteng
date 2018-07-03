@@ -291,8 +291,13 @@ class PaymentSystemController extends CommonController
             // print_r($orderData);
             // 判断订单未支付
             if($orderData['status']==8){
+                $orders = M('ShopOrderDetail')->where($showWhere)->field('cprice,num')->select();
+                $yunfei = 0;
+                foreach($orders as $key => $val){
+                    $yunfei += $val['cprice'] * $val['num'];
+                }
                 // 订单金额
-                $money = $orderData['g_price'];
+                $money = $orderData['g_price'] + $yunfei;
                 // 订单号码
                 $order_id = $orderData['order_id'];
 
@@ -334,6 +339,7 @@ class PaymentSystemController extends CommonController
             // 订单金额
             $money = $orderData['g_price'];
             $true_money = $money + $yunfei;
+            // dump($true_money);
             // 订单号码
             $order_id = $orderData['order_id'];
 
@@ -342,7 +348,7 @@ class PaymentSystemController extends CommonController
                 $showUser['open_id'] = $_SESSION['open_id'];
                 $user = M('users');
                 $gold_num = $user->where($showUser)->field('gold_num')->find();
-
+                // dump($gold_num);die;
                 // 1.2 查询相应金币费率
                 $gold_rate = D('website')->field('gold_rate')->find();
                 // 1.3 订单金额与金币
@@ -372,23 +378,34 @@ class PaymentSystemController extends CommonController
                 $rs = $shopOrder->where(['order_id'=>$order_id,'uid'=>$uid])->setField(['status'=>9,'mode'=>3]);
                 \Think\Log::write('地址'.json_encode($rs));
             // 3. 表票金额录入
-                $order_goods = $orderDetail->field('gid,num')->where(['order_id'=>$order_id])->select();
-                // p($order_goods);die;
+                $order_goods = $orderDetail->field('gid,num,gsku')->where(['order_id'=>$order_id])->select();
+                // dump($order_goods);
                 D('invoice')->where(['oid'=>$order_id])->save(['oprice'=>$orderData['g_price']]);
-                foreach($order_goods as $good){
-                    $display_order[$good['gid']] = $good['num'];
-                }
-            // 4. 库存检测，减库存
-                $ids = implode(',', array_keys($display_order));
 
-                $sql = "UPDATE st_inventory SET allnum = CASE gid ";
-                foreach ($display_order as $id => $ordinal) {
-                    $sql .= sprintf("WHEN %d THEN allnum - %d ", $id, $ordinal);
+
+                // 4. 库存检测，减库存 sku库存
+                foreach($order_goods as $good){
+
+                    $map['gid'] = $good['gid'];
+                    $skuattr = array_column(json_decode($good['gsku'],true),'id');
+                    sort($skuattr);
+                    $sku = implode('_', $skuattr);//属性值id组合
+                    $map['skuattr'] = $sku;
+
+                    $skustock = M('GoodsSku')->where($map)->find()['skustock'];
+                    $stock = M('Goods')->where('id='.$good['gid'])->find()['stock'];
+                    //商品主表减库存
+                    $good['stock'] = $stock - $good['num'];
+                    M('goods')->where('id='.$good['gid'])->save($good);
+                    
+                    //sku表减库存
+                    $data['skustock'] = $skustock-$good['num'];
+                    M('GoodsSku')->where($map)->save($data);
+                    //sku属性
+                    
+                    // dump($data);die;
                 }
-                $sql .= "END WHERE gid IN ($ids)";
-                // file_put_contents('./wxcallback.txt',$sql."\r\n\r\n", FILE_APPEND);
-                $Model = new \Think\Model(); // 实例化一个model对象 没有对应任何数据表
-                $res = $Model->execute($sql);
+            
             // 5.地址写入
                     $saveOrder['order_id']  = $orderData['order_id'];
                     // 用户ID
@@ -484,16 +501,29 @@ class PaymentSystemController extends CommonController
                     $display_order[$good['gid']] = $good['num'];
                 }
             // 4. 库存检测，减库存
-                $ids = implode(',', array_keys($display_order));
+                // 4. 库存检测，减库存
+                foreach($order_goods as $good){
 
-                $sql = "UPDATE st_inventory SET allnum = CASE gid ";
-                foreach ($display_order as $id => $ordinal) {
-                    $sql .= sprintf("WHEN %d THEN allnum - %d ", $id, $ordinal);
+                    $map['gid'] = $good['gid'];
+                    $skuattr = array_column(json_decode($good['gsku'],true),'id');
+                    sort($skuattr);
+                    $sku = implode('_', $skuattr);//属性值id组合
+                    $map['skuattr'] = $sku;
+
+                    $skustock = M('GoodsSku')->where($map)->find()['skustock'];
+
+                    $stock = M('Goods')->where('id='.$good['gid'])->find()['stock'];
+                    //商品主表减库存
+                    $good['stock'] = $stock - $good['num'];
+                    M('goods')->where('id='.$good['gid'])->save($good);
+
+                    //sku表减库存
+                    $data['skustock'] = $skustock-$good['num'];
+                    M('GoodsSku')->where($map)->save($data);
+                    //sku属性
+                    
+                    // dump($data);die;
                 }
-                $sql .= "END WHERE gid IN ($ids)";
-                // file_put_contents('./wxcallback.txt',$sql."\r\n\r\n", FILE_APPEND);
-                $Model = new \Think\Model(); // 实例化一个model对象 没有对应任何数据表
-                $res = $Model->execute($sql);
             // 5.地址写入
                 $saveOrder['order_id']  = $orderData['order_id'];
                 // 用户ID
