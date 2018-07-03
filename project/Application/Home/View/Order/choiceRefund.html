@@ -85,8 +85,8 @@
 						var img = res.data[i].gpic || res.data[i].orderimg;
 						refundHTML += '<div class="item clearfix">'+
 								'<div class="appLeft">'+
-									'<i class="iconfont icon-xuanze" gid="'+ res.data[i].gid +'" price="'+ res.data[i].price +'" num="'+ res.data[i].productnumber +'" path="/Uploads/'+ res.data[i].gpic +'"></i>'+
-									'<span><img src="/Uploads/'+ img +'" alt=""></span>'+
+									'<i class="iconfont icon-xuanze" gid="'+ res.data[i].gid +'" price="'+ res.data[i].price +'" num="'+ res.data[i].productnumber +'" path="'+ res.data[i].gpic +'"></i>'+
+									'<span><img src="'+ img +'" alt=""></span>'+
 								'</div>'+
 								'<div class="appRight">'+
 									'<h4 class="title" text="'+ res.data[i].productname +'">'+ res.data[i].productname +'</h4>'+
