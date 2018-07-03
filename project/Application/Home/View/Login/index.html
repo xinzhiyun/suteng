@@ -90,6 +90,10 @@
                     <span></span>
                     <input name="password" type="password" class="form-control" placeholder="密码" required="">
                 </div>
+                <div class="form-group checkCode loginDivs">
+                    <input name="code" type="text"  placeholder="验证码">
+                    <img class="imgs" src="__URL__/yzm?id={{:time()}}"   onclick="this.src='__URL__/yzm?id=' + Math.random()">
+                </div>
                 <!-- <div><a href="{{:U('Home/Vendors/identity_refillings')}}">没经销商账号？去注册</a></div> -->
                 <button type="submit" class="btn btn-primary block full-width m-b loginbtn">登 录</button>
             </form>
