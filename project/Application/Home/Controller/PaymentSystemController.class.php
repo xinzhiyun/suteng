@@ -105,22 +105,23 @@ class PaymentSystemController extends CommonController
     {   
         try {
             
-            // dump($_POST);
-            // die;
+            
             $post = json_decode($_POST['info'],true);
 
-            dump($post);
+            // dump($post);
+            // $ids = implode(',',array_column($post,'gid'));
+            // dump($ids);
             // die;
             foreach ($post as $key => $value) {
                 //检查库存
                 if(empty($value['skuattr']) || empty($value['gid'])){
                     E('数据错误',40001);
                 }
-
+                
                 $sku = $value['skuattr'];
-                dump($sku);
+                // dump($sku);
                 $skuattr = array_column($sku,'id');
-                dump($skuattr);die;
+                // dump($skuattr);die;
                 sort($skuattr);
                 $map['skuattr'] = implode('_', $skuattr);//属性值id组合
 
@@ -129,15 +130,14 @@ class PaymentSystemController extends CommonController
 
                 $map['gid'] = $value['gid'];
                 $res = $goodsSku->where($map)->getField('skustock');
-                echo M()->getLastSql();
-                die;
+                // echo M()->getLastSql();
+                // die;
                 if(!$res){
                     E('该商品类型无库存!',603);
                 }
             }
 
-            // dump($post);
-            // die;
+            
             $goods = D('Goods');
             $orders = D('ShopOrder');
             $order_detail = D('ShopOrderDetail');
@@ -190,7 +190,7 @@ class PaymentSystemController extends CommonController
                 $path = \parse_url($_SERVER['HTTP_REFERER']);
                 $file = pathinfo($path['path'])['basename'];
                 if($file !== 'shoppingdetail.html'){
-                    $ids = implode(',',array_column($data,'gid'));
+                    $ids = implode(',',array_column($post,'gid'));
                     M('Cart')->where(['uid'=>session('user.id'),'gid'=>array('in',$ids)])->delete();
                 }
                 $orders->commit();
