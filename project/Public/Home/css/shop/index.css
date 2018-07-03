@@ -274,6 +274,9 @@ img {
 	padding: 10px 2% 10px 0;
 	display: flex;
 }
+.cBlock>.fr img {
+	height: 100%;
+}
 .cBlock>li:nth-of-type(2)>span {
 	width: 32%;
 	height: 100%;
@@ -320,6 +323,18 @@ img {
 	width: 40%;
 	border: none;
 	text-align: center;
+}
+#footer>div {
+	position: relative;
+}
+.cartnum {
+	position: absolute;
+	top: 0;
+	left: 66%;
+	padding: 0 4px;
+	color: #fff;
+	border-radius: 30px;
+	background: #AF0815;
 }
 /* 我的 */
 #footer {

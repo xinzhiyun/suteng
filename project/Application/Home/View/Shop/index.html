@@ -18,6 +18,7 @@
 		var shopdetail = '{{:U("Home/Shop/shoppingdetail")}}';	// 商品详情页
 		var payConfirm = '{{:U("Home/Pay/payConfirm")}}';		// 订单支付页
 		var category = '{{$category}}';	// 一级分类
+        var getCart = '{{:U("shoppingCart/cart")}}';	// 购物车
 	</script>
 </head>
 <body ontouchstart='console.log()'>
@@ -78,7 +79,7 @@
 						</div>
 					</div>
 					<!-- 如果需要分页器 -->
-					<div class="swiper-pagination"></div>
+					<div class="swiper-pagination1"></div>
 				</div>
 				<div class='subBlock'>
 					<p v-text='categoryTitle'></p>
@@ -105,11 +106,13 @@
 				</li>
 				<li class='fr'>
 					<span @click='todetail(cart.gid)'>
-						<img :data-src="cart.src" src='' alt="加载中">
+						<img :data-src="cart.gpic" alt="加载中">
 					</span>
 					<div>
 						<h3 v-text='cart.name'>商品名称</h3>
-						<p><span v-for='c in cart.skuattr' v-text='c.pname+"|"+c.name'>商品规格</span></p>
+						<p>
+							<span v-for='c in JSON.parse(cart.csku)' v-text='c.pname+"|"+c.name+"，"'>商品规格</span>
+						</p>
 						<b class='cprice' v-text='"￥"+cart.price'>商品价格</b>
 					</div>
 					<p class='numbtn cfix'>
@@ -118,7 +121,7 @@
 						<span class='fl' @click='numChange(1,index,$event)'>+</span>
 					</p>
 				</li>
-				<div class='deleteCart' @touchend='deleteCart(index, cart.gid, $event)'><span>删除</span></div>
+				<div class='deleteCart' @touchend='deleteCart(index, cart.id, $event)'><span>删除</span></div>
 			</ul>
 		</div>
 		<footer id='footer' :style='{display: tabclk == 3 ? "none" : "flex"}'>
@@ -133,6 +136,7 @@
 			<div @click='tabClick(3, "cart")'>
 				<img :src="tabsrc[2]+'.png'" alt="">
 				<p :style='{color: tabclk == 3 ? "#4D70FF" : "#333"}'>购物车</p>
+				<b class='cartnum' v-text='cartnum'>购物车数量</b>
 			</div>
 			<div @click='tabClick(4, "mine")'>
 				<img :src="tabsrc[3]+'.png'" alt="">
