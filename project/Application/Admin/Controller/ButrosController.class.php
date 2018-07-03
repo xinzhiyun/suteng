@@ -329,6 +329,7 @@ class ButrosController extends CommonController
         if (IS_POST) {
             header("Content-type: text/html; charset=utf-8");
             $data = I('post.');
+
             $data['create_time'] = date('Y-m-d H:i:s');
 
 //            dump( urldecode(iconv("gb2312", "UTF-8", $data['per_describe'])));exit;

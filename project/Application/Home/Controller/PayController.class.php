@@ -422,9 +422,11 @@ class PayController extends Controller
 
             //证明是续费
 //            $type_info = M('users_order')->where(['user_id'=>$grade['id'],'is_pay'=>1])->save(['type'=>2]);
-            $type_info = M('users_order')->where(['user_id'=>$grade['id'],'is_pay'=>1])->save(['type'=>2]);
+            $type_info = M('users_order')->where(['user_id'=>$grade['id'],'is_pay'=>1])->save(['type'=>2,'update_time'=>time()]);
 
+            // dump($type_info);exit;
             if ($type_info) {
+
                 switch ($orderData['annual_status']) {
                     case '1':
                         $pp = [
@@ -475,6 +477,12 @@ class PayController extends Controller
                 $this->assign('grade',$grade);
                 $this->assign('annual',$pp);
                 $this->display();
+            } else {
+                $annual = M('annual')->find();
+                $annual['status'] = 0;
+                $this->assign('grade',$grade);
+                $this->assign('annual',$annual);
+                $this->display();
             }
 
 
@@ -486,6 +494,7 @@ class PayController extends Controller
             $this->assign('grade',$grade);
             $this->assign('annual',$annual);
             $this->display();
+
         }
 
 //        if ($grade['grade'] > 1) {

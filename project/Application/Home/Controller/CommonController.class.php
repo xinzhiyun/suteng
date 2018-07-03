@@ -11,7 +11,7 @@ use Home\Controller\WechatController;
 
 class CommonController extends Controller
 {
-	/**
+    /**
      * 初始化
      * @author 吴智彬 <519002008@qq.com>
      */
@@ -22,8 +22,14 @@ class CommonController extends Controller
         $weixin = new WeixinJssdk;
 
         // 前端调试通道
+
+        // $_SESSION['open_id'] = C('open_id');
+//        $_SESSION['open_id'] = 'onLe70SfHSwyjUrqtIgt4MGN7mI8';
+        // dump($_SESSION);exit;
+
         $_SESSION['open_id'] = C('open_id');
        // $_SESSION['open_id'] = 'onLe70bgRT5ayim5QsWjfoAM1ETo';
+
 
         // 获取用户open_id
         if(empty($_SESSION['open_id'])){
@@ -34,6 +40,7 @@ class CommonController extends Controller
 
         // 获取用户open_id
         $showData['open_id'] = $_SESSION['open_id'];
+
 
         // 查询微信信息表
         $wechat = M('wechat')->where($showData)->find();
@@ -54,6 +61,7 @@ class CommonController extends Controller
             $info['did'] = M('user_device')->where(['uid'=>$info['id'],'status'=>1])->getField('did');
             session('user',$info);
         }
+
 
         switch ($type) {
             case '0':
@@ -126,6 +134,16 @@ class CommonController extends Controller
                                 $newData['addtime']         = time();
                                 // 修改时间
                                 $newData['updatetime']      = $newData['addtime'];
+                                //类别
+                                $newData['type'] = 2;
+                                if ($userdata['path']) {
+
+                                    $newData['path']      = $userdata['path'].'-'.$userdata['id'];
+                                } else {
+
+                                    $newData['path']      = $userdata['id'];
+                                }
+
                                 // 获取微信用户基本信息
                                 $weixinData = $this->getWeiXinUserInfo($_SESSION['open_id']);
                                 // 获取用户推荐二维码
@@ -159,6 +177,8 @@ class CommonController extends Controller
                                 $showoffice['vendor_user'] = $wechat['invitation_ticket'];
                                 // 查询分销商
                                 $vendor = M('vendors')->where($showoffice)->find();
+                                $id =  M('users')->field('id,path')->where(['open_id'=>$vendor['open_id']])->find();
+
                                 // 获取分销商级别
                                 $leavel = $vendor['leavel'];
                                 //dump($leavel);die;
@@ -179,6 +199,14 @@ class CommonController extends Controller
                                         $newData['invite']          = 1;
                                         // 分销商邀请人
                                         $newData['vendori_code']    = $vendor['invitation_code'];
+                                        if ($id['path']) {
+                                            $newData['path']      = $id['path'].'-'.$id['id'];
+                                        } else {
+                                            $newData['path']      = $id['id'];
+                                        }
+                                        //类别
+                                        $newData['type'] = 2;
+
                                         break;
                                     case '3':
                                         // B级分销商邀请会员
@@ -194,6 +222,13 @@ class CommonController extends Controller
                                         $newData['vendorc_code']    = $vendor['code'];
                                         // 邀请人类型
                                         $newData['invite']          = 2;
+                                        if ($id['path']) {
+                                            $newData['path']      = $id['path'].'-'.$id['id'];
+                                        } else {
+                                            $newData['path']      = $id['id'];
+                                        }
+                                        //类别
+                                        $newData['type'] = 2;
                                         // 分销商邀请人
                                         $newData['vendori_code']    = $vendor['invitation_code'];
                                         break;
@@ -213,11 +248,19 @@ class CommonController extends Controller
                                         $newData['invite']          = 3;
                                         // 分销商邀请人
                                         $newData['vendori_code']    = $vendor['invitation_code'];
+                                        if ($id['path']) {
+                                            $newData['path']      = $id['path'].'-'.$id['id'];
+                                        } else {
+                                            $newData['path']      = $id['id'];
+                                        }
+                                        //类别
+                                        $newData['type'] = 2;
                                         break;
                                     default:
                                         # code...
                                         break;
                                 }
+
 
                                 // 获取用户唯一标识
                                 $newData['code']            = $this->user_code();
@@ -323,71 +366,80 @@ class CommonController extends Controller
                 // 分销通道
                 // $this->redirect('RegisteredVendor/index');
                 // if(empty($_SESSION['user'])){
-                    // 更新条件
-                    $userWhere['open_id'] = $_SESSION['open_id'];
-                    // 查询用户表
-                    $user = M('users')->where($userWhere)->find();
+                // 更新条件
+                $userWhere['open_id'] = $_SESSION['open_id'];
+                // 查询用户表
+                $user = M('users')->where($userWhere)->find();
 
-                    if($user){
-                        $_SESSION['user'] = $user;
-                    }else{
-                        // 查询用户信息,并缓存
-                        $vendor = M('vendors')->where($userWhere)->find();
-                        // 创建分销商前台用户
-                        $addData['open_id'] = $_SESSION['open_id'];
-                        // 分公司
-                        $addData['office_code']     = $vendor['office_code'];
-                        //
-                        $addData['invitation_code'] = $vendor['invitation_code'];
-                        // A级分销商
-                        $addData['vendora_code']    = 0;
-                        // B级分销商
-                        $addData['vendora_code']    = 0;
-                        // C级分销商
-                        $addData['vendora_code']    = 0;
-                        // 分销商邀请人
-                        $addData['vendori_code']    = 0;
-                        // 分销商唯一标识
-                        $addData['code']            = $vendor['code'];
-                        // 邀请人类型
-                        $addData['invite']          = 0;
-                        // 分销商会员邀请码
-                        $addData['ticket']          = 0;
-                        // 请求二维码的参数
-                        $addData['parameter']       = 0;
-                        // 二维码有效时间
-                        $addData['ticket_time']     = 0;
-                        // 分销商名称
-                        $addData['nickname']        = $vendor['name'];
-                        // 分销商头像
-                        $addData['head']            = $vendor['head'];
-                        // 更新时间
-                        $addData['addtime'] = $addData['updatetime'] = time();
-                        // 分销商会员级别
-                        if ($vendor['status'] == 7) {
-                            $addData['grade']            = 4;
-                            $newData['original_grade'] = 4;
-                        } else {
-                            $addData['grade']            = 1;
-                            $newData['original_grade'] = 1;
-                        }
+                if($user){
+                    $_SESSION['user'] = $user;
+                }else{
+                    // 查询用户信息,并缓存
+                    $vendor = M('vendors')->where($userWhere)->find();
+                    $userdata = M('users')->where(['code'=>$vendor['invitation_code']])->find();
+                    // 创建分销商前台用户
+                    $addData['open_id'] = $_SESSION['open_id'];
+                    // 分公司
+                    $addData['office_code']     = $vendor['office_code'];
+                    //
+                    $addData['invitation_code'] = $vendor['invitation_code'];
+                    // A级分销商
+                    $addData['vendora_code']    = 0;
+                    // B级分销商
+                    $addData['vendora_code']    = 0;
+                    // C级分销商
+                    $addData['vendora_code']    = 0;
+                    // 分销商邀请人
+                    $addData['vendori_code']    = 0;
+                    // 分销商唯一标识
+                    $addData['code']            = $vendor['code'];
+                    // 邀请人类型
+                    $addData['invite']          = 0;
+                    // 分销商会员邀请码
+                    $addData['ticket']          = 0;
+                    // 请求二维码的参数
+                    $addData['parameter']       = 0;
+                    // 二维码有效时间
+                    $addData['ticket_time']     = 0;
+                    // 分销商名称
+                    $addData['nickname']        = $vendor['name'];
+                    // 分销商头像
+                    $addData['head']            = $vendor['head'];
+                    // 更新时间
+                    $addData['addtime'] = $addData['updatetime'] = time();
+                    $addData['type'] = 1;
+                    if ($userdata['path']) {
 
+                        $addData['path']      = $userdata['path'].'-'.$userdata['id'];
+                    } else {
 
-                        // 创建用户
-                        $addRes = M('users')->add($addData);
-
-                        // 如果添加成功
-                        if($addRes){
-                            // 去主页
-                            $this->redirect("Home/Index/index");
-                        }
+                        $addData['path']      = $userdata['id'];
+                    }
+                    // 分销商会员级别
+                    if ($vendor['status'] == 7) {
+                        $addData['grade']            = 4;
+                        $addData['original_grade'] = 4;
+                    } else {
+                        $addData['grade']            = 1;
+                        $addData['original_grade'] = 1;
                     }
 
-                    // dump($_SESSION);die;
 
-                    // if(empty(session('device.id'))){
-                    //     $this->redirect("Device/index");
-                    // }
+                    // 创建用户
+                    $addRes = M('users')->add($addData);
+
+                    // 如果添加成功
+                    if($addRes){
+                        // 去主页
+                        $this->redirect("Home/Index/index");
+                    }
+                }
+
+                // dump($_SESSION);die;
+
+                // if(empty(session('device.id'))){
+                //     $this->redirect("Device/index");
+                // }
                 // }
                 break;
             default:
@@ -462,11 +514,11 @@ class CommonController extends Controller
     public function user_code()
     {
         do {
-          // 生成用户唯一标识
-          $code = strtoupper(substr(md5(mt_rand(100000, 999999)), mt_rand(1,9), 11));
-          // 查询用户标识是否存在
-          $oid = M('vendors')->where("`code`='{$code}'")->field('id')->find();
-          // 用户唯一标识已存在再重新获取一次
+            // 生成用户唯一标识
+            $code = strtoupper(substr(md5(mt_rand(100000, 999999)), mt_rand(1,9), 11));
+            // 查询用户标识是否存在
+            $oid = M('vendors')->where("`code`='{$code}'")->field('id')->find();
+            // 用户唯一标识已存在再重新获取一次
         } while ($oid);
 
         // 绝对唯一的11位code

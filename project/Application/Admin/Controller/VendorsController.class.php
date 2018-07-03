@@ -709,101 +709,260 @@ class VendorsController extends CommonController
      * @return [type] [description]
      */
     public function reviewed()
-    {
+        {
 
-        // 更新条件
-        $saveData['id'] = I('post.id');
-        // 更新数据
-        $data['reviewed'] = I('post.reviewed');
+            // 更新条件
+            $saveData['id'] = I('post.id');
+            // 更新数据
+            $data['reviewed'] = I('post.reviewed');
 
-        if($data['reviewed']==3){
-            // 如果完成审核流程
-            $data['status'] = 7;
-        }
-        // 审核-责任人
-        $data['auditing'] = $_SESSION['adminInfo']['user'];
-        // 执行更新
-        $res = D('vendors')->where($saveData)->save($data);
+            if($data['reviewed']==3){
+                // 如果完成审核流程
+                $data['status'] = 7;
+            }
+            // 审核-责任人
+            $data['auditing'] = $_SESSION['adminInfo']['user'];
+            // 执行更新
+            $res = D('vendors')->where($saveData)->save($data);
+//            $data['updatetime'] = time();
+//            $res = D('vendors')->where($saveData)->find($data);
 
+            $flag = true;
+            $argv = 1;
 
-        // 判断信息是否修改成功
-        if($res){
-            if ($data['reviewed'] == 3) {
-                $where['id'] = I('post.id');
+            // 判断信息是否修改成功
+            if($res){
 
-                $info = M('vendors')->field('invitation_code,id')->where($where)->find();
-                //它的上级
-                $path_code = M('vendors')->field('path,id,leavel,invitation_code')->where(['code'=>$info['invitation_code']])->find();
+                if ($data['reviewed'] == 3) {
 
+                    $where['id'] = I('post.id');
 
-                if ($path_code['path']==null) {
-                    //当他推荐人是最大的时候
-                    $path = $path_code['id'];
-
-                } else{
-                    //当他推荐人还有推荐人的时候
-                    $path = $path_code['path'].'-'.$path_code['id'];
-                }
-
-                $buros_info = M('butros')->field('trader_a,trader_b')->find();
-
-                //多少个儿子
-                $count = M('vendors')->where(['invitation_code'=>$info['invitation_code']])->count();
-
-                $save_path = M('vendors')->where($where)->save(['path'=>$path,'updatetime'=>time()]);
-
-                if ($save_path) {
-
-                    //查找多少个他下面多少个C级
-                    $count_c = M('vendors')->where(['invitation_code'=>$info['invitation_code'],'leavel'=>4])->count();
+                    $info = M('vendors')->field('invitation_code,id')->where($where)->find();
+                    //它的上级
+                    $path_code = M('vendors')->field('path,id,leavel,invitation_code,name')->where(['code'=>$info['invitation_code']])->find();
 
 
-                    if ($count_c >= $buros_info['trader_a']) {
+                    if ($path_code['path']==null) {
+                        //当他推荐人是最大的时候
+                        $path = $path_code['id'];
 
-                        if ($path_code['leavel'] > 3) {
-                            $day = M('vendors')->where(['code'=>$info['invitation_code']])->save(['leavel'=>3]);
-                        } else {
-                            $day = M('vendors')->where(['code'=>$info['invitation_code']])->find();
-                        }
-
-
-                        if ($day) {
-
-                            $count_b = M('vendors')->where(['invitation_code'=>$path_code['invitation_code'],'leavel'=>3])->count();
-
-                            if ($count_b >=$buros_info['trader_b'] ) {
-
-                                M('vendors')->where(['code'=>$path_code['invitation_code']])->save(['leavel'=>2]);
-
-                            }
-                        }
+                    } else{
+                        //当他推荐人还有推荐人的时候
+                        $path = $path_code['path'].'-'.$path_code['id'];
                     }
 
-//                    if ($path_code['leavel'] == 3) {
-//
-//                        $count_b = M('vendors')->where(['invitation_code'=>$info['invitation_code'],'leavel'=>3])->count();
-//                        // 查找父亲
-//                        $grandpa =  M('vendors')->where(['invitation_code'=>$path_code['invitation_code'],'leavel'=>3])->count();
-//
-//                        if ($count_b >=$buros_info['trader_b'] ) {
-//
-//
-//                            M('vendors')->where(['code'=>$info['invitation_code']])->save(['leavel'=>2]);
-//                        }
-//                    }
+                    $buros_info = M('butros')->field('trader_a,trader_b')->find();
 
+                    //多少个儿子
+                    $count = M('vendors')->where(['invitation_code'=>$info['invitation_code']])->count();
+
+
+                    $save_path = M('vendors')->where($where)->save(['path'=>$path,'updatetime'=>time()]);
+
+                    if ($save_path) {
+
+                        $cc_map['leavel'] =  array(array('eq',3),array('eq',4),array('eq',2), 'or');
+                        $cc_map['invitation_code'] = $info['invitation_code'];
+    //                    $cc_map['status'] = 7;
+                        //查找多少个他下面多少个C b级
+                        $count_c = M('vendors')->where($cc_map)->count();
+
+
+    //                    //查看他下面有多少个B级
+    //                    $map['path']=array('like',$info['id']);
+    //                    $map['leavel'] = 3;
+    //                    $count_bb  =  M('vendors')->where($map)->count();
+    //                    $count_c = intval($count_bb)+intval($count_c);
+
+                        if ($count_c >= $buros_info['trader_a']) {
+    //                        if ($path_code['leavel'] == 3) {
+    //                            exit;
+    //                        }
+
+
+                            if ($path_code['leavel'] >= 3) {
+
+                                $day = M('vendors')->where(['code'=>$info['invitation_code']])->save(['leavel'=>3,'updatetime'=>time()]);
+
+                                $tmp[] = '-'.$path_code['id'].'-';
+
+                                if ($day) {
+                                    $code = $path_code['invitation_code'];
+
+                                    do{
+                                        if (empty($path_code['invitation_code'])) {
+                                            $flag = false;
+                                        }
+
+                                        if ($flag) {
+
+                                            $tion = M('vendors')->where(['code'=>$code])->find();
+
+//                                            $tmp[] = '-'.$tion['id'].'-';
+                                            $path = json_decode($tion['records_b'],true);
+
+                                            foreach ($tmp as $item) {
+
+                                                if(in_array($item,$path)){ // 在升级历史中
+
+                                                    $flag = false;
+                                                    break;
+                                                }
+                                            }
+
+                                            if($flag){ //通过升级检测
+
+                                                if (empty($path)) {
+                                                    $path = [];
+                                                }
+
+                                                $newpath = array_merge($path,$tmp);//新的历史路径
+
+                                                $nwe_class_a = $tion['class_b']+1;
+                                                //                                                $nwe_class_b =  $buros_info['trader_b']+$nwe_class_a;
+                                                $newData = ['class_b'=>$nwe_class_a,'records_b'=>json_encode($newpath)];
+                                                if ($nwe_class_a >= $buros_info['trader_b']) {
+                                                    $newData['leavel'] = 2;
+                                                }
+
+
+                                                M('vendors')->where('id='.$tion['id'])->save($newData);
+
+                                                $code = $tion['code'];
+                                            }
+                                            // if ($tion['leavel'] >3) {
+
+                                            //     $flag = false;
+                                            // } else {
+//                                            $tmp[] = '-'.$tion['id'].'-';
+//                                            dump($tmp);
+                                            //     $path = json_decode($tion['records_b'],true);
+                                            //     foreach ($tmp as $item) {
+                                            //         if(in_array($item,$path)){ // 在升级历史中
+                                            //             $flag = false;
+                                            //             break;
+                                            //         }
+                                            //     }
+                                            //     if($flag){ //通过升级检测
+                                            //         if (empty($path)) {
+                                            //             $path = [];
+                                            //         }
+                                            //         $newpath = array_merge($path,$tmp);//新的历史路径
+                                            //         $nwe_class_a = $tion['class_b']+1;
+                                            //         // $nwe_class_b =  $buros_info['trader_b']+$nwe_class_a;
+                                            //         $newData = ['class_b'=>$nwe_class_a,'records_b'=>json_encode($newpath)];
+                                            //         if ($nwe_class_a >= $buros_info['trader_b']) {
+                                            //             $newData['leavel'] = 2;
+                                            //         }
+
+
+
+                                            //         M('vendors')->where('id='.$tion['id'])->save($newData);
+
+                                            //         $code = $tion['code'];
+                                            //     }
+                                            // }
+                                        }
+
+
+                                    }while($flag);
+    //                                $vv_map['path'] = array('like', "%".$path_code['id']."%");
+    //                                $a = M('vendors')->where($vv_map)->order('id desc')->find();
+    //
+    //                                //直线网络B级个数
+    //                                $b_path = explode('-',$path_code['path']);
+    //                                $b_map['id']  = array('in',$b_path);
+    //                                $b_map['records_b']=array('notlike',$path_code['id']);
+    //                                $b_select = M('vendors')->where($b_map)->select();
+
+                                    //找他上级关系下面有多少个 B C级
+    //                                $c_map['id']  = array('in',$b_path);
+    ////                                $c_map['leavel'] =       array(array('eq',3),array('eq',4), 'or') ;
+    //
+    //                                $a_count = M('vendors')->where($c_map)->select();
+    //
+    //                                foreach ($a_count as $v) {
+    //                                    $d_map['leavel'] =       array(array('eq',3),array('eq',4), 'or') ;
+    //                                    $d_map['path']=array('like', "%".$v['id']."%");
+    //                                    $a_count = M('vendors')->where($d_map)->count();
+    //
+    //                                }
+
+
+
+
+
+                                    //查看他下面有多少个B级
+                                    //添加直接网络直接任务个数与关系
+    //                                foreach ($b_select as $v) {
+    //
+    ////                                    dump($ccc_info);
+    ////
+    //                                    if ($v['records_b'] == 0) {
+    //                                        $bb_map['id'] = $v['id'];
+    //                                        $b_data['records_b'] = $path_code['id'].'-';
+    //                                        $b_data['class_b'] = ++$v['class_b'];
+    //                                        $b_data['updatetime'] = time();
+    //                                    } else {
+    //                                        $bb_map['id'] = $v['id'];
+    //                                        $b_data['class_b'] = ++$v['class_b'];
+    //                                        $b_data['records_b'] = $v['records_b'].'-'.$path_code['id'];
+    //                                        $b_data['updatetime'] = time();
+    //                                    }
+    //                                    $succ = M('vendors')->where($bb_map)->save($b_data);
+    //                                    if ($succ) {
+    ////                                        $count_bb  =  M('vendors')->where($map_a)->count();
+    //                                        if ($v['class_b'] >=$buros_info['trader_b']) {
+    //                                            M('vendors')->where(['id'=>$v['id']])->save(['leavel'=>2]);
+    //                                        }
+    //                                    }
+    //                                }
+
+                                }
+                            } else {
+                                $day = M('vendors')->where(['code'=>$info['invitation_code']])->find();
+                            }
+
+
+    //                        if ($day) {
+    //                            $count_a = M('vendors')->where(['invitation_code'=>$path_code['invitation_code'],'leavel'=>3])->count();
+    //                            $map['path']=array('like',$path_code['id']);
+    //                            $map['leavel'] = 2;
+    //                            $count_aa  =  M('vendors')->where($map)->count();
+    //                            if ($count_aa >=$buros_info['trader_b'] ) {
+    //
+    //                                M('vendors')->where(['code'=>$path_code['invitation_code']])->save(['leavel'=>2]);
+    //
+    //                            }
+    //                        }
+                        }
+
+    //                    if ($path_code['leavel'] == 3) {
+    //
+    //                        $count_b = M('vendors')->where(['invitation_code'=>$info['invitation_code'],'leavel'=>3])->count();
+    //                        // 查找父亲
+    //                        $grandpa =  M('vendors')->where(['invitation_code'=>$path_code['invitation_code'],'leavel'=>3])->count();
+    //
+    //                        if ($count_b >=$buros_info['trader_b'] ) {
+    //
+    //
+    //                            M('vendors')->where(['code'=>$info['invitation_code']])->save(['leavel'=>2]);
+    //                        }
+    //                    }
+
+                    }
                 }
+                exit;
+                // 查询成功，设置返回前端的数据
+                $message     = ['code' => 200, 'message' => '审核成功'];
+            } else {
+                // 查询失败，设置返回前端的数据
+                $message     = ['code' => 403, 'message' => '审核失败'];
             }
-            // 查询成功，设置返回前端的数据
-            $message     = ['code' => 200, 'message' => '审核成功'];
-        } else {
-            // 查询失败，设置返回前端的数据
-            $message     = ['code' => 403, 'message' => '审核失败'];
-        }
 
-        // 返回JSON格式数据
-        $this->ajaxReturn($message);
-    }
+            // 返回JSON格式数据
+            $this->ajaxReturn($message);
+        }
 
     /**
      * [vendor_data 分销商审核详情信息]
