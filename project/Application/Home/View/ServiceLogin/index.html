@@ -56,8 +56,17 @@
 						<input :type="passEyes.tY" placeholder="由8-16位数字或字母组成" v-model="userInfos.password" name="userpass"><span :class="passEyes.eye" @click="canEye"></span>
 					</p>
 				</div>
+				<div class="yCodeP">
+					<p>
+						<span class="iconfont icon-yanzheng"></span>
+						<input type="text" name="usercode" placeholder="验证码" v-model="userInfos.code">
+					</p>
+					<span class="yCord">
+						<img src="{{:U('ServiceLogin/yzm',['s'=>time()])}}" onclick="this.src +='?s'+Math.random">
+					</span>
+				</div>
 				
-				<div class="toNext"><p @click="verify()">下一步</p></div>
+				<div class="toNext"><p @click="verify">下一步</p></div>
 			</div>
 		</div>
 	</div>

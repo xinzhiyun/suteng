@@ -30,8 +30,8 @@ body .content .registerInfos {
 	width: 85%;
 	border-radius: 10px;
 	background: white;
-    margin: 4rem auto 0;
-    position: relative;
+	margin: 4rem auto 0;
+	position: relative;
 	padding: 5.5rem .5rem 2rem .5rem;
 }
 .registerInfos > div:nth-child(1) {
@@ -77,8 +77,8 @@ body .content .registerInfos {
 }
 .toNext p{
 	width: 90%;
-	height: 2rem;
-	line-height: 2rem;
+	height: 1.8rem;
+	line-height: 1.8rem;
 	text-align: center;
 	color: white;
 	border-radius: 2rem;
@@ -96,29 +96,61 @@ body .content .registerInfos {
 }
 /* 头像 */
 .touxiang  {
-    position: absolute;
-    top: -3rem;
-    left: 0rem;
-    width: 100%;
+	position: absolute;
+	top: -3rem;
+	left: 0rem;
+	width: 100%;
 }
 .touxiang > div{
-    text-align: center;
-    margin: 0 auto;
+	text-align: center;
+	margin: 0 auto;
 }
 .touxiang > div > span:nth-child(2) {
-    display: block;
-    color: #4C88F6;
+	display: block;
+	color: #4C88F6;
 }
 .touxiang > div > span:nth-child(1){
-    height: 3.5rem;
-    width: 3.5rem;
-    border-radius: 50%;
-    display: inline-block;
-    overflow: hidden;
-    background: white;
-    padding: .5rem;
+	height: 3.5rem;
+	width: 3.5rem;
+	border-radius: 50%;
+	display: inline-block;
+	overflow: hidden;
+	background: white;
+	padding: .5rem;
 }
 .touxiang > div > span > img{
-    height: 100%;
-    width: 100%;
+	height: 100%;
+	width: 100%;
+}
+/* 验证码 */
+.yCodeP {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	padding: .5rem 0 0 0 ;
+}
+.yCodeP > p{
+	border-bottom: 1px solid #EFEFEF;
+	width: 50%;
+	padding-bottom: .3rem;
+}
+.yCodeP > p > span {
+	/* margin-right: .5rem; */
+	font-size: .7rem;
+}
+.yCodeP > p > input {
+	width: 80%;
+	border: none;
+	font-size: .5rem;
+}
+.yCodeP > .yCord {
+	width: 6rem;
+	display: block;
+	height: 2rem;
+	margin: 0;
+	background-color:lightblue;
+}
+img {
+	width: 100%;
+	height: 100%;
 }
