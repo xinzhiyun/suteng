@@ -358,6 +358,7 @@ var shopindex = new Vue({
 					gid: gid,
 					price: price,
 					num: num,
+					money: (+price)*(+num),
 					skuattr: JSON.parse(vm.cartList[index].csku)
 				};
 			}else{	// 取消选中
@@ -398,6 +399,7 @@ var shopindex = new Vue({
 			for(var i=0; i<vm.moneyCalc.length; i++){
 				if(vm.moneyCalc[i]){
 					vm.checkNum++;
+					vm.moneyCalc[i].money = Number(vm.moneyCalc[i].price)*Number(vm.moneyCalc[i].num);
 					vm.checkMoney += Number(vm.moneyCalc[i].price)*Number(vm.moneyCalc[i].num);
 				}
 			}
@@ -470,6 +472,7 @@ var shopindex = new Vue({
 						gid: vm.cartList[i].gid,
 						price: vm.cartList[i].price,
 						num: vm.cartList[i].num,
+						money: (+vm.cartList[i].price)*(+vm.cartList[i].num),
 						skuattr: JSON.parse(vm.cartList[i].csku),
 					})
 					

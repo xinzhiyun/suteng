@@ -108,10 +108,10 @@ class PaymentSystemController extends CommonController
             
             $post = json_decode($_POST['info'],true);
 
-            dump($post);
+            // dump($post);
             // $ids = implode(',',array_column($post,'gid'));
             // dump($ids);
-            die;
+            // die;
             foreach ($post as $key => $value) {
                 //检查库存
                 if(empty($value['skuattr']) || empty($value['gid'])){

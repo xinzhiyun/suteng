@@ -76,6 +76,12 @@
 					for(var i=0; i<res.data.length; i++){
 
 						var productbrief = res.data[i].productbrief ? res.data[i].productbrief : '暂无描述';
+						var skuattr = JSON.parse(res.data[i].gsku);
+						var attr = '';
+						for(var j=0; j<skuattr.length; j++){
+							attr += skuattr[j].pname+"|"+skuattr[j].name+"，";
+						}
+						attr = attr.substr(0,attr.length-1);
 						var img = res.data[i].gpic || res.data[i].orderimg;
 						refundHTML += '<div class="item clearfix">'+
 								'<div class="appLeft">'+
@@ -84,7 +90,7 @@
 								'</div>'+
 								'<div class="appRight">'+
 									'<h4 class="title" text="'+ res.data[i].productname +'">'+ res.data[i].productname +'</h4>'+
-									 '<p class="changTxt">'+ productbrief +'</p>'+
+									 '<p class="changTxt">'+ attr +'</p>'+
 									'<p><b>￥'+ res.data[i].price +'</b><span>X'+ res.data[i].productnumber +'</span></p>'+
 								'</div>'+
 							'</div>';
@@ -143,15 +149,16 @@
 			console.log($(".title"))
 			for(var i=0; i<$(".appContain .icon-xuanze").length; i++){
 				// console.log($(".changTxt")[i].innerText)
+				var par = $(".icon-xuanze").eq(i).parents('.item');
 				//将数据存到本地存储，给退款界面用
 				goodsArr.push({
 					order_id: order_id,
-					title: $(".title").eq(i).attr("text"),
+					title: par.find('.title').attr("text"),
 					path: $(".icon-xuanze")[i].getAttribute("path"),
 					gid: $(".icon-xuanze")[i].getAttribute("gid"),
 					price: $(".icon-xuanze")[i].getAttribute("price"),
 					num: $(".icon-xuanze")[i].getAttribute("num"),
-					brief: $(".changTxt")[i].innerText
+					brief: par.find('.changTxt').text()
 				})
 				 
 			}
