@@ -30,6 +30,7 @@ var shopindex = new Vue({
 			checkMoney: 0,	// 结算金额
 			selectedSrc: '',
 			emptySrc: '',
+			cartnum: '',
 		}
 	},
 	created() {
@@ -109,13 +110,13 @@ var shopindex = new Vue({
 		// ];
 
 		// 购物车数据
-		vm.cartList = [
-			{src: '',gid:'1',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'1'},
-			{src: '',gid:'2',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'16'},
-			{src: '',gid:'3',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'3'},
-			{src: '',gid:'4',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'11'},
-			{src: '',gid:'5',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'6'},
-		];
+		// vm.cartList = [
+		// 	{src: '',gid:'1',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'1'},
+		// 	{src: '',gid:'2',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'16'},
+		// 	{src: '',gid:'3',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'3'},
+		// 	{src: '',gid:'4',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'11'},
+		// 	{src: '',gid:'5',name:'滤芯外部活性炭',attr:'蒂芬妮蓝',price:'1456',num:'6'},
+		// ];
 	},
 	mounted() {
 		var cBlock = document.querySelectorAll('.cBlock');	// 购物车商品
@@ -138,6 +139,7 @@ var shopindex = new Vue({
 					vm.blockList = res.goods;
 					vm.menuList = res.cate;
 					vm.banner = res.banner;
+					vm.cartnum = res.cartInfo;
 					vm.menuList.push({
 						pic: public+'/Home/images/shop/house.png',
 						name: '更多...',
@@ -189,14 +191,9 @@ var shopindex = new Vue({
 				location.href = getURL('Home', 'vipCenter/index');
 				return;
 			}
-			if(tabclk == 2){
-				var mySwiper = new Swiper ('.swiper-container1', {
-					autoplay: 3000,
-					loop: true,
-					preventClicks : false,//默认true
-					// 如果需要分页器
-					pagination: '.swiper-pagination',
-				})
+			if(tabclk == 3){
+				// 获取购物车数据
+				this.getCart();
 			}
 			// tabclk: 1首页，2分类，3购物车，
 			this.tabclk = tabclk;
@@ -241,6 +238,13 @@ var shopindex = new Vue({
 						vm.categoryContentList = res.data;	// 详细分类
 						vm.noCateContent = false;
 						vm.$nextTick(function(){
+							var mySwiper1 = new Swiper ('.swiper-container1', {
+								autoplay: 3000,
+								loop: true,
+								preventClicks : false,//默认true
+								// 如果需要分页器
+								pagination: '.swiper-pagination1',
+							})
 							lazyLoad('.category>.cright');	// 图片懒加载
 						})
 					}else{
@@ -300,10 +304,10 @@ var shopindex = new Vue({
 			window.touchX = '';
 		},
 		// 删除购物车商品
-		deleteCart(index, gid, e) {
+		deleteCart(index, id, e) {
 			var vm = this;
 			var el = e.currentTarget;
-			console.log('gid: ',gid);
+			console.log('id: ',id);
 			console.log('index: ',index);
 			layer.confirm('确认删除？删除后无法恢复！', 
 	            {
@@ -314,22 +318,22 @@ var shopindex = new Vue({
 		            $.ajax({
 		            	url: getURL('Home', 'ShoppingCart/cartDel'),
 		            	type: 'post',
-		            	data: {'id': gid},
+		            	data: {'id': id},
 		            	success: function(res){
-		            		console.log('成功！', res)
+		            		console.log('res: ', res);
 		            		//后台返回参数确认删除成功
 		            		if(res.code == 200){
 								// 删除这条数据
 								vm.cartList.splice(index, 1);
-		            			layHint('删除成功！');
+		            			layuiHint('删除成功！');
 		            		}else{
-		            			layHint('删除失败！');
+		            			layuiHint('删除失败！');
 		            		}
 							return true;
 		            	},
-		            	error: function(res){
-		            		console.log('失败！', res)
-		            		layHint('删除失败！');
+		            	error: function(err){
+		            		console.log('err: ', err);
+		            		layuiHint('系统遇到问题，请稍后再试');
 		            	}
 					})
 	            },
@@ -357,6 +361,28 @@ var shopindex = new Vue({
 			
 			// 同步结算勾选数量、金额
 			vm.calculator();
+		},
+		// 获取购物车数据
+		getCart() {
+			var vm = this;
+			$.ajax({
+				url: getCart,
+				type: 'post',
+				success: function(res){
+					console.log('res: ',res);
+					if(res.code == 200){
+						vm.cartList = res.msg;
+						vm.$nextTick(function(){
+							lazyLoad('.cart');
+						})
+					}else{
+						layuiHint(res.msg);
+					}
+				},
+				error: function(err){
+					layuiHint('系统遇到问题，请售后再试');
+				}
+			})
 		},
 		// 计算金额
 		calculator() {

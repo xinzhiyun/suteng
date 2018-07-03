@@ -244,9 +244,15 @@ var vm = new Vue({
                     type: 'post',
                     success: function(res){
                         console.log('res: ',res);
+                        if(res.code == 200){
+                            layuiHint('加入成功');
+                        }else{
+                            layuiHint(res.msg);
+                        }
                     },
                     error: function(err){
                         console.log('err: ',err);
+                        layuiHint('系统遇到问题，请稍后再试');
                     }
                 })
             }
