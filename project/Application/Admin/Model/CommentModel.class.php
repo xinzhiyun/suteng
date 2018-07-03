@@ -16,7 +16,7 @@ class CommentModel extends RelationModel
                 'class_name'    => 'goods',
                 'foreign_key'   => 'gid',
                 'mapping_name'  => 'good',
-                'mapping_fields' => 'id,name,pic'
+                'mapping_fields' => 'id,name,gpic'
         ),
         'user'=>array(
                 'mapping_type'  => self::BELONGS_TO,

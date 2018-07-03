@@ -7,9 +7,9 @@
 	<link rel="stylesheet" href="https://at.alicdn.com/t/font_527495_3mgodvjd6sp833di.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/order/index.css?v={{:time()}}">
 	<title>商品订单</title>
-    <script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
+    <!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
     <script>
-        var vconsole = new VConsole();
+        // var vconsole = new VConsole();
     </script>
 </head> 
 <body>
@@ -306,6 +306,12 @@
 				$("#content").css({transform: 'translate(-'+ _this.attr("index") +'00vw)'});
 			}, 600);
 			
+			var cindex = _this.attr('index');
+			for(var i=0; i<$('#content>div').length; i++){
+				$('#content>div').eq(i).hide();
+			}
+			console.log('cindex: ',cindex);
+			$('#content>div').eq(+cindex).show();
 			$("#line").css({left: _this.attr("index")*2 + '0%'});
 			$(".tab").css('color','#5A5A5A');
 			_this.css('color','#373737');
@@ -372,6 +378,15 @@
                 		'<span>等待买家付款</span>'+
 							'</p>';//<img src="__PUBLIC__/Pic/repair/2018-02-06/5a7975ef16907.png">
 						for(var k=0;k<waitpaylist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
+							var gsku = JSON.parse(waitpaylist[i]['productList'][k].gsku);
+							var skuattr = '';
+							for(var gs=0; gs<gsku.length; gs++){
+								if(gsku[gs]){
+									skuattr += gsku[gs]['pname']+'|'+gsku[gs]['name'] + '，';
+								}
+							}
+							skuattr = skuattr.substr(0,skuattr.length-1);
+							console.log('skuattr: ',skuattr);
 							// 无图片时显示
 							var noimg_show = waitpaylist[i]['productList'][k]['gpic']
 							? (imgpath + waitpaylist[i]['productList'][k]['gpic'])
@@ -387,6 +402,7 @@
 							'<div class="giDescription">'+
 							'<b>'+gainName+'</b>'+
 							'<p>'+gainBrief+'</p>'+
+							'<p class="skuattr">购买规格：'+skuattr+'</p>'+
 							'<div>'+
 							'<b>￥'+ waitpaylist[i]['productList'][k]['price'] +'</b>'+
 							'<span>X&nbsp;'+waitpaylist[i]['productList'][k]['productnumber']+'</span>'+
@@ -572,6 +588,15 @@
                 		'<span>等待卖家发货</span>'+
                 		'</p>';
 						for(var k=0;k<waitsendlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
+							var gsku = JSON.parse(waitsendlist[i]['productList'][k].gsku);
+							var skuattr = '';
+							for(var gs=0; gs<gsku.length; gs++){
+								if(gsku[gs]){
+									skuattr += gsku[gs]['pname']+'|'+gsku[gs]['name'] + '，';
+								}
+							}
+							skuattr = skuattr.substr(0,skuattr.length-1);
+							console.log('skuattr: ',skuattr);
 							// 无图片时显示
 							var noimg_show = waitsendlist[i]['productList'][k]['gpic']
 							? (imgpath + waitsendlist[i]['productList'][k]['gpic'])
@@ -590,6 +615,7 @@
 							'<div class="giDescription">'+
 							'<b>'+sendName+'</b>'+
 							'<p>'+sendBrief+'</p>'+
+							'<p class="skuattr">购买规格：'+skuattr+'</p>'+
 							'<div>'+
 							'<b>￥'+ waitsendlist[i]['productList'][k]['price'] +'</b>'+
 							'<span>X&nbsp;'+waitsendlist[i]['productList'][k]['productnumber']+'</span>'+
@@ -669,6 +695,15 @@
                 		// '<span>卖家已发货</span>'+
                 		// '</p>';
 						for(var k=0;k<waitgainlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
+							var gsku = JSON.parse(waitgainlist[i]['productList'][k].gsku);
+							var skuattr = '';
+							for(var gs=0; gs<gsku.length; gs++){
+								if(gsku[gs]){
+									skuattr += gsku[gs]['pname']+'|'+gsku[gs]['name'] + '，';
+								}
+							}
+							skuattr = skuattr.substr(0,skuattr.length-1);
+							console.log('skuattr: ',skuattr);
 							// 无图片时显示
 							var noimg_show = waitgainlist[i]['productList'][k]['gpic']
 							? (imgpath + waitgainlist[i]['productList'][k]['gpic'])
@@ -690,6 +725,7 @@
 							'<div class="giDescription">'+
 							'<b>'+productName+'</b>'+
 							'<p>'+productBrief+'</p>'+
+							'<p class="skuattr">购买规格：'+skuattr+'</p>'+
 							'<div>'+
 							'<b>￥'+ waitgainlist[i]['productList'][k]['price'] +'</b>'+
 							'<span>X&nbsp;'+waitgainlist[i]['productList'][k]['productnumber']+'</span>'+
@@ -789,6 +825,15 @@
                 		'<span>交易完成</span>'+
                 		'</p>';
 						for(var k=0;k<waitcommentlist[i]['productList'].length;k++){//每个订单有多种产品，进行遍历
+							var gsku = JSON.parse(waitcommentlist[i]['productList'][k].gsku);
+							var skuattr = '';
+							for(var gs=0; gs<gsku.length; gs++){
+								if(gsku[gs]){
+									skuattr += gsku[gs]['pname']+'|'+gsku[gs]['name'] + '，';
+								}
+							}
+							skuattr = skuattr.substr(0,skuattr.length-1);
+							console.log('skuattr: ',skuattr);
 							var tuihou = waitcommentlist[i]['productList'][k]['tuihuo'] ? '已退货' : '';
 							// 无图片时显示
 							var noimg_show = waitcommentlist[i]['productList'][k]['gpic']
@@ -807,6 +852,7 @@
 							'<div class="giDescription">'+
 							'<b>'+waitcommentlist[i]['productList'][k]['productname']+'</b>'+
 							'<p>'+waitcommentlist[i]['productList'][k]['productbrief']+'</p>'+
+							'<p class="skuattr">购买规格：'+skuattr+'</p>'+
 							'<div>'+
 							'<b>￥'+ waitcommentlist[i]['productList'][k]['price'] +'</b>'+
 							'<span>X&nbsp;'+waitcommentlist[i]['productList'][k]['productnumber']+'&nbsp;</span>'+
