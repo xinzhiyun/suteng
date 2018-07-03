@@ -55,7 +55,7 @@ class SetmealController extends CommonController
     public function add()
     {
         if (IS_POST) {
-            // dump($_POST);die;
+//             dump($_POST);die;
             $_POST['addtime'] = time();
             $setmeal = D('setmeal');
             $info = $setmeal->create();

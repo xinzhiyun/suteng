@@ -95,6 +95,96 @@
                                     <input type="text" name="members_money" class="form-control"  value="{{$data.members_money}}" placeholder="标准价钱格式，例如：2.00">
                                 </div>
                             </div>
+                            <h3>钻石会员 会员奖励金币 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <input type="text" name="diamond_gold" class="form-control"  value="{{$data.diamond_gold}}" placeholder="标准价钱格式，例如：2.00">
+                                </div>
+                            </div>
+                            <h3>钻石会员 会员奖励银币 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <input type="text" name="diamond_silver" class="form-control"  value="{{$data.diamond_silver}}" placeholder="标准价钱格式，例如：2.00">
+                                </div>
+                            </div>
+                            <h3>钻石会员 会员邀请人奖励金币 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <input type="text" name="diamond_b_gold" class="form-control"  value="{{$data.diamond_b_gold}}" placeholder="标准价钱格式，例如：2.00">
+                                </div>
+                            </div>
+                            <h3>钻石会员 会员邀请人奖励银币 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <input type="text" name="diamond_b_silver" class="form-control"  value="{{$data.diamond_b_silver}}" placeholder="标准价钱格式，例如：2.00">
+                                </div>
+                            </div>
+
+                            <h3>黄金会员 会员奖励金币 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <input type="text" name="gold_gold" class="form-control"  value="{{$data.gold_gold}}" placeholder="标准价钱格式，例如：2.00">
+                                </div>
+                            </div>
+                            <h3>黄金会员 会员奖励银币 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <input type="text" name="gold_silver" class="form-control"  value="{{$data.gold_silver}}" placeholder="标准价钱格式，例如：2.00">
+                                </div>
+                            </div>
+                            <h3>黄金会员 会员邀请人奖励金币 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <input type="text" name="gold_b_gold" class="form-control"  value="{{$data.gold_b_gold}}" placeholder="标准价钱格式，例如：2.00">
+                                </div>
+                            </div>
+                            <h3>黄金会员 会员邀请人奖励银币 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <input type="text" name="gold_b_silver" class="form-control"  value="{{$data.gold_b_silver}}" placeholder="标准价钱格式，例如：2.00">
+                                </div>
+                            </div>
+
+
+                            <h3>个人会员 会员奖励金币 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <input type="text" name="per_gold" class="form-control"  value="{{$data.per_gold}}" placeholder="标准价钱格式，例如：2.00">
+                                </div>
+                            </div>
+                            <h3>个人会员 会员奖励银币 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <input type="text" name="per_silver" class="form-control"  value="{{$data.per_silver}}" placeholder="标准价钱格式，例如：2.00">
+                                </div>
+                            </div>
+                            <h3>个人会员 会员邀请人奖励金币 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <input type="text" name="per_b_gold" class="form-control"  value="{{$data.per_b_gold}}" placeholder="标准价钱格式，例如：2.00">
+                                </div>
+                            </div>
+                            <h3>个人会员 会员邀请人奖励银币 <small style="color: red"></small></h3>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <input type="text" name="per_b_silver" class="form-control"  value="{{$data.per_b_silver}}" placeholder="标准价钱格式，例如：2.00">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">奖励
+                                </label>
+
+                                <div class="col-sm-10">
+                                    <div class="radio i-checks col-sm-1" style="width: 150px;">
+                                        <label>
+                                            <input type="radio" checked="" value="1" name="status"> <i></i> 开启</label>
+                                    </div>
+                                    <div class="radio i-checks col-sm-1" style="width: 150px;">
+                                        <label>
+                                            <input type="radio" value="2" name="status"> <i></i> 未开启</label>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
@@ -138,6 +228,20 @@ $(".per_describe").val(decodeURI('{{$data.per_describe}}'));
         var gold_describe      = $("input[name='gold_describe']").val();
         var per_describe      = $("input[name='per_describe']").val();
 
+        var diamond_gold      = $("input[name='diamond_gold']").val();
+        var diamond_silver      = $("input[name='diamond_silver']").val();
+        var diamond_b_gold      = $("input[name='diamond_b_gold']").val();
+        var diamond_b_silver      = $("input[name='diamond_b_silver']").val();
+        var gold_gold      = $("input[name='gold_gold']").val();
+        var gold_silver      = $("input[name='gold_silver']").val();
+        var gold_b_gold      = $("input[name='gold_b_gold']").val();
+        var gold_b_silver      = $("input[name='gold_b_silver']").val();
+        var per_gold      = $("input[name='per_gold']").val();
+        var per_silver      = $("input[name='per_silver']").val();
+        var per_b_gold      = $("input[name='per_b_gold']").val();
+        var per_b_silver      = $("input[name='per_b_silver']").val();
+        var status = $("input[name='status']:checked").val();
+
 
 
         $.ajax({
@@ -154,6 +258,19 @@ $(".per_describe").val(decodeURI('{{$data.per_describe}}'));
                 "per_money":per_money,
                 "single_money":single_money,
                 "members_money":members_money,
+                "diamond_gold":diamond_gold,
+                "diamond_silver":diamond_silver,
+                "diamond_b_gold":diamond_b_gold,
+                "diamond_b_silver":diamond_b_silver,
+                "gold_gold":gold_gold,
+                "gold_silver":gold_silver,
+                "gold_b_gold":gold_b_gold,
+                "gold_b_silver":gold_b_silver,
+                "per_gold":per_gold,
+                "per_silver":per_silver,
+                "per_b_gold":per_b_gold,
+                "per_b_silver":per_b_silver,
+                "status":status,
                 "dia_describe":  encodeURIComponent(dia_describe),
                 "gold_describe":encodeURIComponent(gold_describe),
                 "per_describe":encodeURIComponent(per_describe)

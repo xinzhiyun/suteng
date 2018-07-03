@@ -220,7 +220,7 @@ class WeiXinPayController extends Controller
 //                echo M('ShopOrder as a')->getLastSql();
                 // echo $open_id.'-'.$yj.'-'.$jb.'-'.$yb;die;
                 // 分配佣金
-                $this->branch_commission($open_id,$order_id,$yj,$jb,$yb);
+//                $this->branch_commission($open_id,$order_id,$yj,$jb,$yb);
             }
         }
     }
@@ -329,7 +329,7 @@ class WeiXinPayController extends Controller
                 // echo M('ShopOrder as a')->getLastSql();
                 // echo $open_id.'-'.$yj.'-'.$jb.'-'.$yb;die;
                 // 分配佣金
-                $this->branch_commission($open_id,$order_id,$yj,$jb,$yb);
+//                $this->branch_commission($open_id,$order_id,$yj,$jb,$yb);
 
                 // 设备的安装数据
                 $device_install = M('shop_order_device_install');
@@ -474,23 +474,24 @@ class WeiXinPayController extends Controller
         file_put_contents('./wx_payFee.txt',$xml."\r\n", FILE_APPEND);
 // //
 //         $xml= '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
-//<attach><![CDATA[232551924488665]]></attach>
+//<attach><![CDATA[194687810151564]]></attach>
 //<bank_type><![CDATA[CFT]]></bank_type>
 //<cash_fee><![CDATA[1]]></cash_fee>
 //<fee_type><![CDATA[CNY]]></fee_type>
 //<is_subscribe><![CDATA[Y]]></is_subscribe>
 //<mch_id><![CDATA[1501254081]]></mch_id>
-//<nonce_str><![CDATA[403voozb1vidnchl30ng36ivamli4pob]]></nonce_str>
-//<openid><![CDATA[onLe70al8Nsr48CH4lpTPDhAuNVM]]></openid>
-//<out_trade_no><![CDATA[637858073356141]]></out_trade_no>
+//<nonce_str><![CDATA[tfpol31urbeba1u08qhbkknzz8mpsuli]]></nonce_str>
+//<openid><![CDATA[onLe70SfHSwyjUrqtIgt4MGN7mI8]]></openid>
+//<out_trade_no><![CDATA[870418498981572]]></out_trade_no>
 //<result_code><![CDATA[SUCCESS]]></result_code>
 //<return_code><![CDATA[SUCCESS]]></return_code>
-//<sign><![CDATA[BC26C7FB98087EB78B33FB7820FC90E8]]></sign>
-//<time_end><![CDATA[20180614160147]]></time_end>
+//<sign><![CDATA[3D061597929399383B520FAE6DCBE4EE]]></sign>
+//<time_end><![CDATA[20180629194901]]></time_end>
 //<total_fee>1</total_fee>
 //<trade_type><![CDATA[JSAPI]]></trade_type>
-//<transaction_id><![CDATA[4200000131201806146894374860]]></transaction_id>
-//</xml>';
+//<transaction_id><![CDATA[4200000126201806298964263648]]></transaction_id>
+//</xml>
+//';
 
         if ($xml) {
             //解析微信返回数据数组格式
@@ -506,6 +507,7 @@ class WeiXinPayController extends Controller
             if (empty($orderData['is_pay'])) {
 
                 $save_info =M('users_order')->where($data)->save(['is_pay'=>1]);
+
                 $save_info =M('users_order')->where($data)->find();
 
                 if ($save_info) {
@@ -568,7 +570,7 @@ class WeiXinPayController extends Controller
 //                            }
                         }
                     }
-                    $users_info =  $users_info = M('users')->where(['id'=>$orderData['user_id']])->find();
+                    $users_info  = M('users')->where(['id'=>$orderData['user_id']])->find();
 
                 }
 
@@ -605,6 +607,7 @@ class WeiXinPayController extends Controller
                         $money =    $data['price'];
 
                     }
+
                     if ($money < 0) {
 
                         exit;
@@ -639,8 +642,68 @@ class WeiXinPayController extends Controller
                     //团队管理奖 A级加盟商
 //                    $com_ta =  $money*(($butros['com_a']/100)*((100-50)/100));
                     $com_ta =  $money*(($butros['com_a']/100)*(((100-$butros['com_b']))/100));
+                    switch ($orderData['annual_status']) {
+                        //1钻石会员2黄金会员3个人会员
+                        case '1':
+                            $uz_jb = $annual_money['diamond_gold'];
+                            $uz_yb = $annual_money['diamond_silver'];
+                            $vz_jb = $annual_money['diamond_b_gold'];
+                            $vz_yb = $annual_money['diamond_b_silver'];
+                            break;
+                        case '2':
+                            $uz_jb = $annual_money['gold_gold'];
+                            $uz_yb = $annual_money['gold_silver'];
+                            $vz_jb = $annual_money['gold_b_gold'];
+                            $vz_yb = $annual_money['gold_b_silver'];
+                            break;
+                        case '3':
+                            $uz_jb = $annual_money['per_gold'];
+                            $uz_yb = $annual_money['per_silver'];
+                            $vz_jb = $annual_money['per_b_gold'];
+                            $vz_yb = $annual_money['per_b_silver'];
+                            break;
+
+                    }
+
+
+                    if ($annual_money['status'] == 1) {
+
+                        $this->user_commission($users_info,$orderData['order_id'],$uz_jb,$uz_yb);
+                        //会员邀请人的金银币分红
+                        if (!empty($user_info['invitation_code'])) {
+                            //会员邀请人
+                            $invi_info = M('users')->where(['code'=>$users_info['invitation_code']])->find();
+
+                            if ($invi_info) {
+
+                                $this->invitation_commission($invi_info,$users_info,$orderData['order_id'],$vz_jb,$vz_yb);
+                            }
+                        }
+                    }
+
+                    if (!empty($users_info['path'])) {
+
+                        $users_path = explode('-',$users_info['path']);
+                        $users_B['id']  = array('in',$users_path);
+                        $users_B['type']  = 1;
+                        //查出当前推荐商人
+                        $user_in_info = M('users')->where($users_B)->order('id desc')->find();
+
+                        if (empty($user_in_info)) {
+                            exit;
+                        }
+                    } else {
+
+                        $user_in_info = M('vendors')->where(['code'=>$users_info['code']])->find();
+
+                    }
+                    if (empty($user_in_info)) {
+                        exit;
+                    }
+
                     //查出当前推荐商人
-                    $c_info = M('vendors')->where(['code'=>$user_info['invitation_code'],'status'=>7])->find();
+                    $c_info = M('vendors')->where(['code'=>$user_in_info['code'],'status'=>7])->find();
+
                     //查找所有有直系关系的人
                     $us_path = $c_info['path'].'-'.$c_info['id'];
 
@@ -804,7 +867,7 @@ class WeiXinPayController extends Controller
                                     ,'type_cont'=>'4']);
                             }
                         } else {
-                            $in_info = M('vendors')->where($in_B)->select();
+                            $in_info = M('vendors')->where($in_B)->order('id desc')->select();
                             unset($in_info[0]);
                             if ($in_info) {
                                 $earnings_ta = M('vendors')->where(['id'=>$in_info[1]['id']])->setInc('abonus',$com_t);
@@ -894,22 +957,22 @@ class WeiXinPayController extends Controller
         // file_put_contents('./uid.txt',$uid ."\r\n", FILE_APPEND);
         // file_put_contents('./wx_payFee.txt',$xml."\r\n", FILE_APPEND);
 //        $xml = '<xml><appid><![CDATA[wx676721599e5766c0]]></appid>
-//<attach><![CDATA[878201598080583]]></attach>
+//<attach><![CDATA[194687810151564]]></attach>
 //<bank_type><![CDATA[CFT]]></bank_type>
 //<cash_fee><![CDATA[1]]></cash_fee>
 //<fee_type><![CDATA[CNY]]></fee_type>
 //<is_subscribe><![CDATA[Y]]></is_subscribe>
 //<mch_id><![CDATA[1501254081]]></mch_id>
-//<nonce_str><![CDATA[lwltmatatlrpnbvdk5g1d3gv0axbvxxg]]></nonce_str>
-//<openid><![CDATA[onLe70al8Nsr48CH4lpTPDhAuNVM]]></openid>
-//<out_trade_no><![CDATA[217183193330504]]></out_trade_no>
+//<nonce_str><![CDATA[tfpol31urbeba1u08qhbkknzz8mpsuli]]></nonce_str>
+//<openid><![CDATA[onLe70SfHSwyjUrqtIgt4MGN7mI8]]></openid>
+//<out_trade_no><![CDATA[870418498981572]]></out_trade_no>
 //<result_code><![CDATA[SUCCESS]]></result_code>
 //<return_code><![CDATA[SUCCESS]]></return_code>
-//<sign><![CDATA[BD7B3D74F1D1207DB66E8589B99E0079]]></sign>
-//<time_end><![CDATA[20180614183033]]></time_end>
+//<sign><![CDATA[3D061597929399383B520FAE6DCBE4EE]]></sign>
+//<time_end><![CDATA[20180629194901]]></time_end>
 //<total_fee>1</total_fee>
 //<trade_type><![CDATA[JSAPI]]></trade_type>
-//<transaction_id><![CDATA[4200000138201806148585599289]]></transaction_id>
+//<transaction_id><![CDATA[4200000126201806298964263648]]></transaction_id>
 //</xml>';
 
 
@@ -977,10 +1040,10 @@ class WeiXinPayController extends Controller
                         $isPay['is_recharge'] = 1;
                     }
 
-                    $isPayRes = $orders->where($data)->save($isPay);
-                    $isStatus = $orderSetmeal->where($data)->save(['status'=>1]);
-//                         $isPayRes = $orders->where($data)->find();
-//                     $isStatus = $orderSetmeal->where($data)->find();
+//                    $isPayRes = $orders->where($data)->save($isPay);
+//                    $isStatus = $orderSetmeal->where($data)->find(['status'=>1]);
+                         $isPayRes = $orders->where($data)->find();
+                     $isStatus = $orderSetmeal->where($data)->find();
 
                     // dump($orderSetmealData);die;
                     // 充值状态
@@ -991,7 +1054,7 @@ class WeiXinPayController extends Controller
 
 
                         //查询当前用户
-                        $user_info = M('users')->field('id,invitation_code,open_id')->where(['open_id'=> $result['openid']])->find();
+                        $user_info = M('users')->where(['open_id'=> $result['openid']])->find();
 
 
 //                        file_put_contents('./222222.txt',M('users')->getLastSql() ."\r\n", FILE_APPEND);
@@ -1015,7 +1078,7 @@ class WeiXinPayController extends Controller
 
                             // 查询设备当前剩余流量
                             $devicesStatus = $devicesStatu->where($deviceCode)->find();
-////查找对应的租金总价
+                            ////查找对应的租金总价
                             $setmeal_money = M('setmeal')->field('money,flow,tid,describe')->where(['id'=>$orderSetmealData[0]['setmeal_id']])->find();
                             //查找对应的滤芯成本
                             $setmeal = M('type')->where(['id'=>$setmeal_money['tid']])->find();
@@ -1096,9 +1159,11 @@ class WeiXinPayController extends Controller
                             $flowData['currentflow']    = $Flow['ReFlow'];
                             // 充值时间
                             $flowData['addtime']           = time();
+
                             //show($flowData);die;
                             // 创建充值流水
                             $flowObjRes = $flowObj->add($flowData);
+
 
                             // dump($orderData);
                             // dump($flowObjRes);die;
@@ -1124,7 +1189,9 @@ class WeiXinPayController extends Controller
                         if($countNun == $num && $countNun == $flownum){
 
                             //查找对应的租金总价
-                            $setmeal_money = M('setmeal')->field('money,flow,tid,describe')->where(['id'=>$orderSetmealData[0]['setmeal_id']])->find();
+                            $setmeal_money = M('setmeal')->where(['id'=>$orderSetmealData[0]['setmeal_id']])
+                                ->find();
+
                             //查找对应的滤芯成本
                             $setmeal = M('type')->where(['id'=>$setmeal_money['tid']])->find();
                             //计算出利润
@@ -1138,6 +1205,8 @@ class WeiXinPayController extends Controller
                             if ($money < 0) {
                                 exit;
                             }
+
+
 
 //                            //查询分配比例
 //                            $butros = M('butros')->find();
@@ -1157,7 +1226,7 @@ class WeiXinPayController extends Controller
                             $com_c = $money*($butros['com_c']/ 100);
                             //市场推广奖
 //                          $com_d = $money*(($butros['com_b']/ 100)*(50/ 100));
-                            $com_d = $money*(($butros['com_b']/ 100)*($butros['com_b']/ 100));
+                            $com_d = $money*(($butros['com_b']/ 100)*($butros['com_d']/ 100));
                             //市场培育将
 //                          $com_p = $money*(($butros['com_b']/100)*((50/100)));
                             $com_p = $money*(($butros['com_b']/100)*(((100-$butros['com_b'])/100)));
@@ -1167,12 +1236,50 @@ class WeiXinPayController extends Controller
                             //团队管理奖 A级加盟商
 //                           $com_ta =  $money*(($butros['com_a']/100)*((100-50)/100));
                             $com_ta =  $money*(($butros['com_a']/100)*(((100-$butros['com_b']))/100));
+
+
+                            //分销商
+                            $vendors_info = M('vendors');
+                            // 开启事务
+//                            $vendors_info->startTrans();
+
+                            //如果商品开启了金银币的分红 那就进行分红 1 是开启
+                            if ($setmeal_money['status'] ==1 ) {
+                                $this->user_commission($user_info,$orderData['order_id'],$setmeal_money['gold_users'],$setmeal_money['silver_users']);
+        //                               会员邀请人的金银币分红
+                                if (!empty($user_info['invitation_code'])) {
+                                    //会员邀请人
+                                    $invi_info = M('users')->where(['code'=>$user_info['invitation_code']])->find();
+                                    if ($invi_info) {
+                                        $this->invitation_commission($invi_info,$user_info,$orderData['order_id'],$setmeal_money['gold_inviter'],$setmeal_money['silver_inviter']);
+                                    }
+                                }
+                            }
+                            //分销商
+                            if (!empty($user_info['path'])) {
+                                $users_path = explode('-',$user_info['path']);
+                                $users_B['id']  = array('in',$users_path);
+                                $users_B['type']  = 1;
+                                //查出当前推荐商人
+                                $user_in_info = M('users')->where($users_B)->order('id desc')->find();
+
+                                if (empty($user_in_info)) {
+                                    exit;
+                                }
+                            } else {
+                                $user_in_info = $vendors_info->where(['code'=>$user_info['invitation_code']])->find();
+                            }
+                            if (empty($user_in_info)) {
+                                exit;
+                            }
                             //查出当前推荐商人
-                            $c_info = M('vendors')->where(['code'=>$user_info['invitation_code'],'status'=>7])->find();
+                            $c_info = $vendors_info->where(['open_id'=>$user_in_info['open_id'],'status'=>7])->find();
+
                             //查找所有有直系关系的人
 //                           $us_path = M('vendors')->where(['open_id'=>$user_info['open_id']])->getField('path');
                             //查找所有有直系关系的人
                              $us_path = $c_info['path'].'-'.$c_info['id'];
+
 //                                dump($com_c);
 //                                dump($com_d);
 //                                dump($com_p);
@@ -1205,14 +1312,30 @@ class WeiXinPayController extends Controller
                             //销售奖(卖商品的经销商)
                             if ($c_info) {
 //                          $earnings_comc = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_c);
-                                $earnings_comc = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_c);
-                                //销售奖收益记录
+                                $earnings_comc =  $vendors_info->where(['id'=>$c_info['id']])->setInc('abonus',$com_c);
                                 if ($earnings_comc) {
-//                               M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
-                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'1','type'=>2,'opoen_id'=>$c_info['open_id'],'vid'=>$c_info['id'],
+//                                      M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
+                                     $eaa = M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'1','type'=>2,'opoen_id'=>$c_info['open_id'],'vid'=>$c_info['id'],
                                         'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
+                                //                                if ($earnings_comc) {
+//
+//                                    $vendors_info->commit();
+//                                    //销售奖收益记录
+//                                    if ($earnings_comc) {
+////                                      M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
+//                                        M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'1','type'=>2,'opoen_id'=>$c_info['open_id'],'vid'=>$c_info['id'],
+//                                            'abonus'=>$com_c,'create_time'=>date('Y-m-d H:i:s')]);
+//                                    }
+//                                    return true;
+//                                } else {
+//                                    // 事务回滚
+//                                    $vendors_info->rollback();
+//                                    return false;
+//                                }
+
                             }
+
 //                            //市场推广奖(定义 卖商品的经销商推荐人) 只查询存在的
 //                            if ($c_info){
 //                                $earnings_comd = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_d);
@@ -1228,11 +1351,14 @@ class WeiXinPayController extends Controller
                                 //市场推广奖
                                 if ($f_info) {
                                     $earnings_comd = M('vendors')->where(['id'=>$f_info['id']])->setInc('abonus',$com_d);
+
                                 }
                                 //销售奖收益记录
                                 if ($earnings_comd) {
 //                            M('earnings')->add(['orderid'=>$list['order_id'],'type'=>1,'opoen_id'=>$list['open_id'],'vid'=>$c_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
-                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'2','type'=>2,'opoen_id'=>$f_info['open_id'],'vid'=>$f_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+                                    $ebb = M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'2','type'=>2,'opoen_id'=>$f_info['open_id'],
+                                        'vid'=>$f_info['id'],'abonus'=>$com_d,'create_time'=>date('Y-m-d H:i:s')]);
+
                                 }
                             }
                             //查找直系推荐关系中的最近B级加盟商(包括自己)
@@ -1241,7 +1367,7 @@ class WeiXinPayController extends Controller
 //                            if ($c_info['leavel'] == 3) {
 //
 //                                //                         //市场培育奖励
-//                                //                    M('vendors')->where(['id'=>$my_level_info['id']])->save(['updatetime'=>time()]);
+//                                //                    M('vendors')->where(['id'=>$my_level_info['id']]1)->save(['updatetime'=>time()]);
 //                                $earnings_comp = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_p);
 //                                //市场培育收益记录
 //                                if ($earnings_comp) {
@@ -1274,7 +1400,8 @@ class WeiXinPayController extends Controller
                                 $earnings_comp = M('vendors')->where(['id'=>$c_info['id'],'status'=>7])->setInc('abonus',$com_p);
                                 //市场培育收益记录
                                 if ($earnings_comp) {
-                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'3','type'=>2,'opoen_id'=>$user_info['open_id'],'vid'=>$c_info['id'],
+                                    $ecc = M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'3','type'=>2,'opoen_id'=>$user_info['open_id'],
+                                        'vid'=>$c_info['id'],
                                         'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
                                 }
 
@@ -1291,10 +1418,10 @@ class WeiXinPayController extends Controller
 
                                     if ($my_level_info) {
 //                            M('vendors')->where(['id'=>$my_level_info['id']])->save(['updatetime'=>time()]);
-                                        M('vendors')->where(['id'=>$my_level_info['id']])->setInc('abonus',$com_p);
+                                        $earnings_comp = M('vendors')->where(['id'=>$my_level_info['id']])->setInc('abonus',$com_p);
 //
-                                        if ($earnings_comc) {
-                                            M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'3','type'=>2,'opoen_id'=>$my_level_info['open_id'],
+                                        if ($earnings_comp) {
+                                           $ecc = M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'3','type'=>2,'opoen_id'=>$my_level_info['open_id'],
                                                 'vid'=>$my_level_info['id'],'abonus'=>$com_p,'create_time'=>date('Y-m-d H:i:s')]);
                                         }
                                     }
@@ -1328,21 +1455,23 @@ class WeiXinPayController extends Controller
                                 $ea['bid'] = $user_info['id'];
                                 //查找第一次这个用户产生的团队管理奖1是谁
                                 $vid =  M('earnings')->where($ea)->order('id asc')->getField('vid');
+
                                 if ($vid) {
                                     $earnings_ta = M('vendors')->where(['id'=>$vid])->setInc('abonus',$com_t);
                                     //市场培育收益记录
                                     if ($earnings_ta) {
-                                        M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'],'type_cont'=>'4','type'=>2,'vid'=>$vid,'abonus'=>$com_t,'create_time'=>date
+                                        $edd = M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'],'type_cont'=>'4','type'=>2,'vid'=>$vid,'abonus'=>$com_t,'create_time'=>date
                                         ('Y-m-d H:i:s')
                                             ,'type_cont'=>'4']);
                                     }
                                 } else {
-                                    $in_info = M('vendors')->where($in_B)->select();
+                                    $in_info = M('vendors')->where($in_B)->order('id desc')->select();
+
                                     unset($in_info[0]);
                                     if ($in_info) {
                                         $earnings_ta = M('vendors')->where(['id'=>$in_info[1]['id']])->setInc('abonus',$com_t);
                                         if ($earnings_ta) {
-                                            M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'4','type'=>2,'vid'=>$in_info[1]['id'],
+                                           $edd = M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'4','type'=>2,'vid'=>$in_info[1]['id'],
                                                 'abonus'=>$com_t,'create_time'=>date
                                             ('Y-m-d H:i:s')
                                                 ,'type_cont'=>'4']);
@@ -1350,16 +1479,21 @@ class WeiXinPayController extends Controller
                                     }
                                 }
                             }
+
                             //B级加盟商受益人
                             //如果自己是A级 利润给自己 不是的话 给最近的加盟商呢
                             if ($c_info['leavel'] == 2) {
+
                                 //团队管理奖 A级加盟商
                                 M('vendors')->where(['id'=>$c_info['id']])->save(['updatetime'=>time()]);
-                                $earnings_ta = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_ta);
+                                $earnings_taa = M('vendors')->where(['id'=>$c_info['id']])->setInc('abonus',$com_ta);
 
                                 //市场培育收益记录
-                                if ($earnings_ta) {
-                                    M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'5','type'=>2,'vid'=>$c_info['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
+                                if ($earnings_taa) {
+                                    $eff = M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'5','type'=>2,'vid'=>$c_info['id'],'abonus'=>$com_ta,
+                                        'create_time'=>date('Y-m-d H:i:s')]);
+
+
                                 }
 
                             } else {
@@ -1374,15 +1508,16 @@ class WeiXinPayController extends Controller
 
                                     if ($path_info_A) {
 //                            M('vendors')->where(['id'=>$path_info_A['id']])->save(['updatetime'=>time()]);
-                                        $earnings_ta = M('vendors')->where(['id'=>$path_info_A['id']])->setInc('abonus',$com_ta);
-                                        if ($earnings_ta) {
-                                            M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'5','type'=>2,
+                                        $earnings_taa = M('vendors')->where(['id'=>$path_info_A['id']])->setInc('abonus',$com_ta);
+                                        if ($earnings_taa) {
+                                           $eff =  M('earnings')->add(['orderid'=>$orderData['order_id'],'bid'=>$user_info['id'], 'type_cont'=>'5','type'=>2,
                                                 'vid'=>$path_info_A['id'],
                                                 'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
                                         }
                                     }
                                 }
                             }
+
 //                            if ($c_info['leavel'] == 2) {
 //                                //团队管理奖 A级加盟商
 //                                M('vendors')->where(['id'=>$c_info['id']])->save(['updatetime'=>time()]);
@@ -1405,7 +1540,7 @@ class WeiXinPayController extends Controller
 //                                    if ($path_info_A) {
 ////                            M('vendors')->where(['id'=>$path_info_A['id']])->save(['updatetime'=>time()]);
 //                                        $earnings_ta = M('vendors')->where(['id'=>$path_info_A['id']])->setInc('abonus',$com_ta);
-//                                        if ($earnings_ta) {
+//                                          if ($earnings_ta) {
 //                                            M('earnings')->add(['orderid'=>$orderData['order_id'],'type'=>2,'open_id'=>$path_info_A['open_id'],'vid'=>$path_info_A['id'],'abonus'=>$com_ta,'create_time'=>date('Y-m-d H:i:s')]);
 //                                        }
 //                                    }
@@ -1430,8 +1565,19 @@ class WeiXinPayController extends Controller
                         file_put_contents('./wx22223_payFee.txt',$b."\r\n", FILE_APPEND);
                         $sc=A("Api/Action");
 
-                        $sc->sysnc($deviceCode['DeviceID']);
+//                        $sc->sysnc($deviceCode['DeviceID']);
                         //我觉得应该按订单的总价为标准
+//                        if($earnings_comc && $eaa  && $earnings_comd   &&$ebb  &&$earnings_comp  &&$ecc   &&$earnings_ta  &&$edd  &&$earnings_taa && $eff){
+//                          echo 1;
+//                            // 执行事务
+//                            $vendors_info->commit();
+//                            return true;
+//                        }else{
+//                            // 事务回滚
+//                            $vendors_info->rollback();
+//                            return false;
+//                        }
+
 
 
 
@@ -1855,7 +2001,7 @@ class WeiXinPayController extends Controller
                 // 查询用户信息
                 $invitation = M('users')->where($showinvitationData)->find();
                 // 会员邀请人获得金币和银币
-                $this->invitation_commission($invitation,$user,$commission,$order_id,$jb,$yb);
+//                $this->invitation_commission($invitation,$user,$commission,$order_id,$jb,$yb);
                 // 获取邀请人的邀请人级别
                 $invitationInvite = $invitation['invite'];
                 // 匹配分配商佣金分配
@@ -2038,8 +2184,9 @@ class WeiXinPayController extends Controller
      * @param  [type] $jb         [金币]
      * @return [type]             [布尔值]
      */
-    public function invitation_commission($invitation,$user,$commission,$order_id,$jb,$yb)
+    public function invitation_commission($invitation,$user,$order_id,$jb,$yb)
     {
+
         // 实例化用户佣金模型
         $usersCommission = M('usersCommission');
         // 开启事务
@@ -2051,9 +2198,9 @@ class WeiXinPayController extends Controller
         // 分成的订单号
         $saveData['order_id']   = $order_id;
         // 会员获得银币
-        $saveData['silver']     = $commission['inviter_y'] * $yb / 100;
+        $saveData['silver']     =  $yb;
         // 会员获得金币
-        $saveData['gold_num']   = $commission['inviter_j'] * $jb / 100;
+        $saveData['gold_num']   =   $jb;
         // 会员当前银币
         $saveData['current_silver']     = $invitation['silver'] + $saveData['silver'];
         // 会员当前金币
@@ -2107,22 +2254,24 @@ class WeiXinPayController extends Controller
      * @param  [type] $jb         [金币]
      * @return [type]             [布尔值]
      */
-    public function user_commission($user,$commission,$order_id,$jb,$yb)
+    public function user_commission($user,$order_id,$jb,$yb)
     {
+
         // 实例化用户佣金模型
         $usersCommission = M('usersCommission');
         // 开启事务
         $usersCommission->startTrans();
-        // 会员自己
+        // 会员自己状态{0：启用，1：禁用}
         $saveData['user_code']  = $user['code'];
         // 产生分红的会员
         $saveData['nexus_user']     = $user['code'];
         // 分成的订单号
         $saveData['order_id']   = $order_id;
         // 会员获得银币
-        $saveData['silver']     = $commission['user_y'] * $yb / 100;
+        $saveData['silver']     = $yb;
         // 会员获得金币
-        $saveData['gold_num']   = $commission['user_j'] * $jb / 100;
+        $saveData['gold_num']   = $jb;
+
         // 会员当前银币
         $saveData['current_silver']     = $user['silver'] + $saveData['silver'];
         // 会员当前金币
@@ -2131,15 +2280,17 @@ class WeiXinPayController extends Controller
         $saveData['type']   = 0;
         // 描述
         $saveData['describe']   = '自己购买，单号为['.$order_id.']的商品获得金币奖励:'.$saveData['gold_num'].'个,获得银币奖励：'.$saveData['silver'].'个';
+
         // 创建时间
         $saveData['addtime']    = time();
         // 更新时间
         $saveData['updatetime']     = $saveData['addtime'];
 
-
+        
 
         // 写用户佣金记录
         $userRes = $usersCommission->add($saveData);
+
         // 准备更新条件
         $userWhere['id'] = $user['id'];
         // 准备更新数据

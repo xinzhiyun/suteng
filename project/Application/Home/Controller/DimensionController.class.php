@@ -10,7 +10,7 @@ class DimensionController extends Controller
 	 * @param  [number]		$num    	[二维码数量]
 	 * @param  [boolean]   	$type   	[永久或临时，默认临时]
 	 * @return [string]     $jsoninfo   [带参数二维码票据]
-	 * 临时票据有效时间：2590000秒 (既 29.97685185185天) 或 再次使用同样的参请求，生成新的票据时
+	 * 临时票据有效时间：2590000秒 (既 29.97685185185天) 或 再次使用同样的参请求，生成新的票据
 	 * 永久票据有效时间：长期有效
 	 * 使用票据：<img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.$jsoninfo.'" alt="二维码票据">
 	 */

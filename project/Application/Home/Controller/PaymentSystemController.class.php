@@ -106,8 +106,9 @@ class PaymentSystemController extends CommonController
         // echo json_decode($_POST['data']);
         $data = json_decode($_POST['data'],'true');
         foreach ($data as $val) {
-            $result = D('inventory')->where(['gid'=>$val['gid']])->getField('allnum');
-            if ($result < $val['num']) {
+            $result = D('inventory')->field('allnum,abnormalnum')->where(['gid'=>$val['gid']])->find();
+            $num = $result['allnum']-$result['abnormalnum'];
+            if ($num < $val['num']) {
                 $count[]['gid'] = $val['gid'];
             }
 
