@@ -705,7 +705,7 @@ class ShopController extends CommonController
 
 
         $attrResList = array_values($attr);
-        
+
         $this->assign('skuList',$goodsAttr);//sku库存列表
         $this->assign('courierList',$courierList);//快递公司列表
         $this->assign('attr',$attrRes);//属性列表
