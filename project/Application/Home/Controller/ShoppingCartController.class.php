@@ -19,23 +19,7 @@ class ShoppingCartController extends CommonController
             $cart = D('Cart');
             $where['c.uid'] = session('user.id');
             $where['pr.grade'] = session('user.grade');
-            $data = $cart->getCart($where);
-            
-            foreach ($data as $key => $value) {
-
-                $sku = json_decode($value['csku'],true);
-
-                foreach ($sku as $k => $v) {
-                    $skus .= $v['pname'].":".$v['name'].'|';
-                }
-
-                $newskus = rtrim($skus, '|');
-
-                // dump($newskus);
-                $data[$key]['sku'] = $newskus;
-            }
-            
-
+            $data = $cart->getCart($where);    
             $this->ajaxReturn(array('code'=>200,'msg'=>$data));
         } catch (\Exception $e) {
             $err = [
@@ -115,6 +99,8 @@ class ShoppingCartController extends CommonController
     // 购物车删除
     public function cartDel()
     {
+        dump($_POST);
+        die;
         try {
             $cart = D('Cart');
             $data['id'] = I('post.id');
