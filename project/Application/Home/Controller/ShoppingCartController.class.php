@@ -20,17 +20,9 @@ class ShoppingCartController extends CommonController
             $where['c.uid'] = session('user.id');
             $where['pr.grade'] = session('user.grade');
             $data = $cart->getCart($where);
-            foreach($data as $val){
-        		$key = $val['gid'];
-        		if(isset($arr[$key])) {
-        			$arr[$key]['attr'] .= $val['attr'].':'.$val['val'].'|';
-        		} else {
-                    $arr[$key] = $val;
-        			$arr[$key]['attr'] = $val['attr'].':'.$val['val'].'|';
-        		}
-        	}
-        	$data = array_values($arr);
-            $this->ajaxReturn($data);
+            
+
+            $this->ajaxReturn(array('code'=>200,'msg'=>$data));
         } catch (\Exception $e) {
             $err = [
                 'code' => $e->getCode(),
