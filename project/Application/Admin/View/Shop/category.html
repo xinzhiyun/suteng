@@ -82,7 +82,7 @@
                                                     添加子分类
                                                 </a>
                                                 <a class="btn btn-outline btn-success" href="javascript:;" ruleId="{{$v['id']}}" ruleName="{{$v['name']}}"
-                                                   ruleTitle="{{$v['pid']}}"  sort="{{$v['sort']}}"
+                                                   ruleTitle="{{$v['pid']}}" data-leavel="{{$v['leavel']}}"  sort="{{$v['sort']}}"
                                                 onclick="edit(this)">
                                                     修改
                                                 </a>
@@ -167,7 +167,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="st-edit-file-tr">
                             <th width="20%">
                                 分类图片：
                             </th>
@@ -395,6 +395,12 @@
             var pid = $(obj).attr('ruletitle');
             var ruleName = $(obj).attr('ruleName');
             var sort = $(obj).attr('sort');
+            var leavel = $(obj).data('leavel');
+            if(leavel==1){
+                $('#st-edit .st-edit-file-tr').hide();
+            }else{
+                $('#st-edit .st-edit-file-tr').show();
+            }
             $("input[name='id']").val(ruleId);
             $("input[name='sort']").val(sort);
             $("input[name='name']").val(ruleName);

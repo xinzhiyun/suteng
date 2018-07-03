@@ -162,8 +162,15 @@ var vm = new Vue({
                     if(res.status == 200){
                         vm.goodsInfo = res.data;
                         vm.$nextTick(function(){
-                            // 图片懒加载
-                            lazyLoad('.swiper-wrapper');
+                            lazyLoad('.main');	// 图片懒加载
+                            // 轮播图
+                            var mySwiper = new Swiper ('.swiper-container', {
+                                // loop: true,
+                                zoom : true,
+                                paginationType: 'fraction',
+                                // 如果需要分页器
+                                pagination: '.swiper-pagination',
+                            })
                         })
                     }
                 },
@@ -222,17 +229,6 @@ var vm = new Vue({
                     name: vm.goodsInfo.name,
                     desc: vm.goodsInfo.desc
                 };
-                // 存到本地
-                if(localStorage.getItem('cartData')){
-                    var data = JSON.parse(localStorage.getItem('cartData'));
-                    data.push(vm.upInfo);
-                    localStorage.setItem('cartData', JSON.stringify(data));
-                }else{
-                    var arr = [];
-                    arr.push(vm.upInfo);
-                    localStorage.setItem('cartData', JSON.stringify(arr));
-                }
-                console.log('arr:', localStorage.getItem('cartData'))
             }
 
             console.log('vm.isBuy: ',vm.isBuy);

@@ -174,11 +174,10 @@ body {
 /*付款页面*/
 .paystyle{
 	position:absolute;
-	top:0;
+	top:150%;
 	left: 0;
 	width: 100vw;
 	height: 100vh;
-    display: none;
     z-index: 9999;
 }
 .paystyleTop{
@@ -200,14 +199,16 @@ body {
 	padding:0.5rem;
 	border-bottom: 1px solid #E5E5E5;
 }
-.paytop>.paytopLeft>i{
-	float: left;
-	padding: 0.6rem 0;
-	margin-right: 4rem;
-	font-size: 1.5rem;
+.paytop>.paytopLeft {
+    position: relative;
+    text-align: right;
 }
-.paytop>.paytopRight{
-	float: left;
+.paytop>.paytopLeft>span {
+    font-size: 1rem;
+    position: absolute;
+    right: 0;
+}
+.paytop>.paytopRight {
 	text-align: center;
 }
 .icon-kuang1{

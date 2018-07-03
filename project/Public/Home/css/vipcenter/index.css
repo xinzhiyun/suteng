@@ -9,7 +9,7 @@ body::after {
   content: "";
   height: 25vh;
   width: 100vw;
-  background: url("../../images/myback.png") no-repeat;
+  background: url("../../images/regiterBack.png") no-repeat;
   background-size: 100% 100%;
   position: absolute;
   top:0;
@@ -39,16 +39,23 @@ body::after {
   border-radius: 50%;
 }
 .userInfos > div:nth-child(1) > span:nth-child(2) {
-  display: block;
-  margin: .2rem 0 .4rem 0;
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: .2rem 0 .4rem 3.5rem;
+  /* position: relative; */
+}
+.userInfos > div:nth-child(1) > span:nth-child(2) > i {
+  margin-right: .5rem;
+  font-style: normal;
 }
 .userInfos > div:nth-child(1) > span:nth-child(2) > img {
-  position: absolute;
-  right: 3.8rem;
-  top: 0rem;
+  /* position: absolute; */
+  /* right: 3.8rem; */
+  /* top: 0rem; */
   height: 1rem;
   width: 3rem;
+  /* margin-left:1rem; */
 }
 .userInfos > div:nth-child(1) > a {
   font-size: .5rem;
