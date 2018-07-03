@@ -25,6 +25,13 @@
             });
             // 获取url
             this.index = window.location.search.substr(-1, 1) ? window.location.search.substr(-1, 1) : 0;
+            if(this.index == 0) {
+                $("title").text("服务站登录");
+            }else if(this.index == 1) {
+                $("title").text("经销商登录");
+            }else if(this.index == 2) {
+                $("title").text("安装人员登录");
+            }
         },
         methods: {
             // 密码显示
