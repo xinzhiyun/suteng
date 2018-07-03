@@ -514,7 +514,7 @@ var shopindex = new Vue({
 				success: function(res){
 					console.log('res: ',res);
 					if(res.code == 200){
-						location.href = payConfirm;
+						location.href = payConfirm + '?order_id='+ res.msg;
 					}else{
 						layuiHint(res.msg);
 					}
