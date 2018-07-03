@@ -191,6 +191,10 @@ var shopindex = new Vue({
 				location.href = getURL('Home', 'vipCenter/index');
 				return;
 			}
+			if(tabclk == 3){
+				// 获取购物车数据
+				this.getCart();
+			}
 			// tabclk: 1首页，2分类，3购物车，
 			this.tabclk = tabclk;
 			// console.log('tabclk: ',tabclk);
@@ -321,15 +325,15 @@ var shopindex = new Vue({
 		            		if(res.code == 200){
 								// 删除这条数据
 								vm.cartList.splice(index, 1);
-		            			layHint('删除成功！');
+		            			layuiHint('删除成功！');
 		            		}else{
-		            			layHint('删除失败！');
+		            			layuiHint('删除失败！');
 		            		}
 							return true;
 		            	},
 		            	error: function(res){
 		            		console.log('失败！', res)
-		            		layHint('删除失败！');
+		            		layuiHint('删除失败！');
 		            	}
 					})
 	            },
@@ -357,6 +361,28 @@ var shopindex = new Vue({
 			
 			// 同步结算勾选数量、金额
 			vm.calculator();
+		},
+		// 获取购物车数据
+		getCart() {
+			var vm = this;
+			$.ajax({
+				url: getCart,
+				type: 'post',
+				success: function(res){
+					console.log('res: ',res);
+					if(res.code == 200){
+						vm.cartList = res.msg;
+						vm.$nextTick(function(){
+							lazyLoad('.cart');
+						})
+					}else{
+						layuiHint(res.msg);
+					}
+				},
+				error: function(err){
+					layuiHint('系统遇到问题，请售后再试');
+				}
+			})
 		},
 		// 计算金额
 		calculator() {

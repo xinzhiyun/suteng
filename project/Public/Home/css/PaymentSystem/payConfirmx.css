@@ -86,7 +86,7 @@ body {
 /* 商品 */
 .goods {
     background: white;
-    padding: 0 .5rem;
+    padding: 0 .5rem 2.1rem .5rem;
 }
 .express {
     position: absolute;
@@ -96,6 +96,9 @@ body {
 .express>select {
     padding: 2px 10px;
     background: #f1f1f1;
+}
+.goods > ul > li:last-child {
+    /* border: none; */
 }
 .goods > ul > li {
     position: relative;
@@ -148,6 +151,7 @@ body {
     z-index: 1000;
     width: 100vw;
     display: flex;
+    border-top: 1px solid #D0D0D0;
 }
 .footFix > p:nth-child(1) {
     padding: .6rem 0;
@@ -177,7 +181,7 @@ body {
 }
 /*付款页面*/
 .paystyle{
-	position:absolute;
+	position:fixed;
 	top:150%;
 	left: 0;
 	width: 100vw;

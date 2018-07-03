@@ -18,6 +18,7 @@
 		var shopdetail = '{{:U("Home/Shop/shoppingdetail")}}';	// 商品详情页
 		var payConfirm = '{{:U("Home/Pay/payConfirm")}}';		// 订单支付页
 		var category = '{{$category}}';	// 一级分类
+        var getCart = '{{:U("shoppingCart/cart")}}';	// 购物车
 	</script>
 </head>
 <body ontouchstart='console.log()'>
@@ -105,11 +106,13 @@
 				</li>
 				<li class='fr'>
 					<span @click='todetail(cart.gid)'>
-						<img :data-src="cart.src" src='' alt="加载中">
+						<img :data-src="cart.gpic" alt="加载中">
 					</span>
 					<div>
 						<h3 v-text='cart.name'>商品名称</h3>
-						<p><span v-for='c in cart.skuattr' v-text='c.pname+"|"+c.name'>商品规格</span></p>
+						<p>
+							<span v-for='c in JSON.parse(cart.csku)' v-text='c.pname+"|"+c.name+"，"'>商品规格</span>
+						</p>
 						<b class='cprice' v-text='"￥"+cart.price'>商品价格</b>
 					</div>
 					<p class='numbtn cfix'>
