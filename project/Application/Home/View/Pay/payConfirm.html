@@ -7,9 +7,9 @@
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/PaymentSystem/payConfirmx.css?v={{:time()}}">
 	<title>订单填写</title>
-	<!-- <script src="__PUBLIC__/Home/js/vconsole.min.js"></script> -->
+	<script src="__PUBLIC__/Home/js/vconsole.min.js"></script>
 	<script>
-        // var vConsole = new VConsole();
+        var vConsole = new VConsole();
         // 接收数据
         var info = {
             data: JSON.parse('{{$data}}'),  // 地址信息
@@ -28,6 +28,7 @@
 </head>
 <body>
 	<div class="main payConfirm">
+        <div v-text='noticeText'></div>
         <!-- 地址 -->
         <div class="orderAddress" v-if="info.data">
             <a href="{{:U('Address/newAddress')}}">

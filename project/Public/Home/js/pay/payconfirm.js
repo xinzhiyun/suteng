@@ -11,6 +11,7 @@ var payConfirm = new Vue({
 			invoice: '我要开发票', 	//发票信息
 			voiceArr: '',
 			payway: '',		// 1:金币，2：银币，3：微信支付
+			noticeText: '加载中...',
 		}
 	},
 	created() {
@@ -170,13 +171,21 @@ var payConfirm = new Vue({
 				data: {order: vm.order_id},
 				success: function(res){
 					console.log('res: ',res);
+					if(vm.payway == 1 || vm.payway == 2 && res.code == 200){
+						// 金币、银币支付
+						layuiHint('支付成功');
+						setTimeout(function(){
+							history.replaceState({}, null, getURL('Home', 'Shop/index'));//改变历史记录
+							location.href = getURL('Home', 'PaymentSystem/paytosuccess');
+						},500);
+						return;
+					}
 					// 调用微信支付方法
 					weixinPay(res,function(res){
 						if(res.result == 'ok'){
 							layuiHint('支付成功');
 							setTimeout(function(){
 								history.replaceState({}, null, getURL('Home', 'Shop/index'));//改变历史记录
-								sessionStorage.setItem("goodsPrice", "");//清空总价格
 								location.href = getURL('Home', 'PaymentSystem/paytosuccess');
 							},500);
 						}else if(res.result == 'other'){
