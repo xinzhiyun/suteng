@@ -218,7 +218,7 @@ var vm = new Vue({
                     success: function(res){
                         if(res.code == 200){
                             // 跳转到订单确认页面
-					        location.href = payConfirm+'?order_id='+res.msg;
+					        // location.href = payConfirm+'?order_id='+res.msg;
                         }else{
                             layuiHint(res.msg);
                         }
