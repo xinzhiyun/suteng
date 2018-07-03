@@ -19,6 +19,7 @@
 		var payConfirm = '{{:U("Home/Pay/payConfirm")}}';		// 订单支付页
 		var category = '{{$category}}';	// 一级分类
         var getCart = '{{:U("shoppingCart/cart")}}';	// 购物车
+        var getOrder = '{{:U("Home/PaymentSystem/information")}}';  // 生成订单号
 	</script>
 </head>
 <body ontouchstart='console.log()'>
@@ -101,7 +102,7 @@
 			@touchmove='slideDelete($event, cart.gid)'
 			@touchend='slideEnd()'
 			:gid='cart.gid'>
-				<li class='fl' @click='cartSelect(cart.gid, cart.price, index, cart.num, $event)'>
+				<li class='fl' @click='cartSelect(cart.id, cart.gid, cart.price, index, cart.num, $event)'>
 					<img src="__PUBLIC__/Home/images/shop/cart_none.png" alt="">
 				</li>
 				<li class='fr'>

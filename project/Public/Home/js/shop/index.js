@@ -345,7 +345,7 @@ var shopindex = new Vue({
 			
 		},
 		// 购物车勾选
-		cartSelect(gid, price, index, num, e) {
+		cartSelect(id, gid, price, index, num, e) {
 			var vm = this;
 			var el = e.currentTarget;
 			var src = el.querySelector('img').getAttribute('src');
@@ -353,7 +353,13 @@ var shopindex = new Vue({
 			console.log('gid: %s, price: %s, index: %s',gid, price, index);
 			if(src.indexOf('select') < 0){	// 选中
 				el.querySelector('img').setAttribute('src', vm.selectedSrc);
-				vm.moneyCalc[index] = {gid: gid,price: price,num: num,skuattr: ''};
+				vm.moneyCalc[index] = {
+					id: id,
+					gid: gid,
+					price: price,
+					num: num,
+					skuattr: vm.cartList[index].csku
+				};
 			}else{	// 取消选中
 				el.querySelector('img').setAttribute('src', vm.emptySrc);
 				vm.moneyCalc[index] = '';
@@ -460,10 +466,11 @@ var shopindex = new Vue({
 				vm.moneyCalc.length = 0;	// 清空
 				for(var i=0; i<vm.cartList.length; i++){
 					vm.moneyCalc.push({
+						id: vm.cartList[i].id,
 						gid: vm.cartList[i].gid,
 						price: vm.cartList[i].price,
 						num: vm.cartList[i].num,
-						skuattr: '',
+						skuattr: vm.cartList[i].csku,
 					})
 					
 					//打钩
@@ -494,19 +501,14 @@ var shopindex = new Vue({
 				return
 			}
 			var arr = [];
-			// for(var i=0;)
-			// vm.upInfo = {
-			// 	gid: vm.goodsInfo.id,
-			// 	money: (+vm.goodsInfo.price)*(+vm.numVal),  // 总价
-			// 	skuattr: vm.checkList,
-			// 	price: vm.goodsInfo.price,
-			// 	num: vm.numVal
-			// };
-			// arr.push(vm.upInfo);
-				
+			for(var i=0; i<vm.moneyCalc.length; i++){
+				if(vm.moneyCalc[i]){
+					arr.push(vm.moneyCalc[i]);
+				}
+			}
 			// 购物车结算
 			$.ajax({
-				url: '',
+				url: getOrder,
 				data: {info: JSON.stringify(arr)},
 				type: 'post',
 				success: function(res){

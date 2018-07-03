@@ -200,9 +200,8 @@ var vm = new Vue({
             //     layuiHint('选择的商品已无库存，请选择其他搭配');
             //     return;
             // }
-            if(vm.isBuy){
+            if(vm.isBuy){   // 点击的购买
                 var arr = [];
-                // 点击的购买
                 vm.upInfo = {
                     gid: vm.goodsInfo.id,
                     money: (+vm.goodsInfo.price)*(+vm.numVal),  // 总价
@@ -228,8 +227,8 @@ var vm = new Vue({
                         layuiHint('系统遇到问题，请稍后再试');
                     }
                 })
-            }else{
-                // 加入购物车
+            }else{  // 加入购物车
+                
                 vm.upInfo = {
                     gid: vm.goodsInfo.id,
                     skuattr: vm.checkList,
@@ -246,6 +245,7 @@ var vm = new Vue({
                         console.log('res: ',res);
                         if(res.code == 200){
                             layuiHint('加入成功');
+                            vm.goodsInfo.cartNum = res.msg;
                         }else{
                             layuiHint(res.msg);
                         }
