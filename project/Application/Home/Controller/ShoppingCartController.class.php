@@ -32,7 +32,7 @@ class ShoppingCartController extends CommonController
                 $newskus = rtrim($skus, '|');
 
                 // dump($newskus);
-                $data[$key]['csku'] = $newskus;
+                $data[$key]['sku'] = $newskus;
             }
             
 
