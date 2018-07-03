@@ -93,7 +93,7 @@ class ShoppingCartController extends CommonController
             ];
             $this->ajaxReturn($err);
         }
-        $this->ajaxReturn($cartInfo);
+        $this->ajaxReturn(array('code'=>200,'msg'=>$cartInfo));
     }
 
     // 购物车删除
