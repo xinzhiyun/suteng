@@ -307,7 +307,7 @@ var shopindex = new Vue({
 		deleteCart(index, id, e) {
 			var vm = this;
 			var el = e.currentTarget;
-			console.log('gid: ',gid);
+			console.log('id: ',id);
 			console.log('index: ',index);
 			layer.confirm('确认删除？删除后无法恢复！', 
 	            {
