@@ -259,7 +259,7 @@ img {
 .numberDo > div > span:nth-child(2) > input {
     border: 1px solid #D4D4D4;
     text-align: center;
-    padding: .2rem 0;
+    padding: .3rem 0;
     width: 3.5rem;
 }
 /* 选项卡 */
