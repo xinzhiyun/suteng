@@ -76,6 +76,9 @@ var vm = new Vue({
         if(sessionStorage.getItem("voiceArr")){
             sessionStorage.setItem("voiceArr", '');
         }
+        if(sessionStorage.getItem("order_id")){
+            sessionStorage.setItem("order_id", "");
+        }
     },
     methods: {
         // 立即购买
@@ -105,6 +108,7 @@ var vm = new Vue({
             $(".goCart>div").animate({height: "0vh"}, 500);
             // 清空已选规格
             this.checkList.length = 0;
+            this.numVal = 1;
         },
         // 选项卡
         chooice(e) {
