@@ -3,7 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-	<link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/resetstyle.css">
+    <link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfont.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/fonts/iconfontHome.css">
 	<link rel="stylesheet" href="__PUBLIC__/Home/css/PaymentSystem/payConfirmx.css?v={{:time()}}">
 	<title>订单填写</title>
@@ -136,20 +137,20 @@
                     <div class="paytopLeft"><span @click='closepp' class="iconfont icon-chacha"></span></div>
                     <div class="paytopRight">
                         <h3>付款</h3>
-                        <p v-text='"￥"+allMoney'>￥3620.00</p>
+                        <p v-text='"￥"+prices'>￥3620.00</p>
                     </div>
                 </div>
                 <div class="paymidd">
                     <h3>选择支付方式</h3>
                     <ul class="clearfix">
                         <li index="1" @click='choosePay(1)'>
-                            <i class="iconfont icon-tubiao207"></i>金币<span class="iconfont icon-weixuanzhong"></span>
+                            <i class="iconfont icon-tubiao207" style="color: #E9C341"></i>金币<span class="iconfont icon-weixuanzhong"></span>
                         </li>
                         <li index="2" @click='choosePay(2)'>
-                            <i class="iconfont icon-tubiao207-copy"></i>银币<span class="iconfont icon-weixuanzhong"></span>
+                            <i class="iconfont icon-tubiao207-copy" style="color: #DEDEDB"></i>银币<span class="iconfont icon-weixuanzhong"></span>
                         </li>
                         <li index="3" @click='choosePay(3)'>
-                            <i class="iconfont icon-z-weixin"></i>微信支付<span class="iconfont icon-weixuanzhong"></span>
+                            <i class="iconfont icon-z-weixin" style="color: #09BB07"></i>微信支付<span class="iconfont icon-weixuanzhong"></span>
                         </li>
                         <!-- <li index="4"><i class="iconfont icon-zhifubao"></i>支付宝支付<span class="iconfont icon-kuang1"></span></li>
                             <li index="5"><i class="iconfont icon-yinlian"></i>银联<span class="iconfont icon-kuang1"></span></li> -->

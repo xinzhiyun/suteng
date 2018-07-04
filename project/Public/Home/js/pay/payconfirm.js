@@ -12,6 +12,7 @@ var payConfirm = new Vue({
 			voiceArr: '',
 			payway: '',		// 1:金币，2：银币，3：微信支付
 			noticeText: '加载中...',
+			prices: 0,
 		}
 	},
 	created() {
@@ -131,6 +132,7 @@ var payConfirm = new Vue({
 				console.log('express: ',(+vm.einfo[j].cprice)*(+vm.goods[j].num));
 			}
 			vm.allMoney += postage;
+			vm.prices = vm.allMoney;
 			console.log('vm.allMoney: ',vm.allMoney);
 		},
 		// 提交快递信息
@@ -154,6 +156,17 @@ var payConfirm = new Vue({
 				$('.paymidd span.iconfont').eq(i).attr('class','iconfont icon-weixuanzhong');
 			}
 			$('.paymidd span.iconfont').eq(+index-1).attr('class','iconfont icon-xuanzhongduigou');
+
+			if(index == 1) {
+				console.log("金币")
+				vm.prices = vm.allMoney * vm.info.rate.gold_rate;
+			}else if(index ==2) {
+				console.log("银币")
+				vm.prices = vm.allMoney * vm.info.rate.silver_rate;
+			}else if(index == 3) {
+				console.log("微信");
+				vm.prices = vm.allMoney;
+			}
 		},
 		// 获取支付用的数据
 		prePay() {
