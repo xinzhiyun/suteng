@@ -46,7 +46,7 @@ class ServiceController extends ServiceCommonController
     }
     
     //任务列表
-    public function list()
+    public function worklist()
     {
         $this->display();
     }
