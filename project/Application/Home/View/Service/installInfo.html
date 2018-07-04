@@ -160,7 +160,7 @@
                         _this.getAjax(data, function(res) {
                             console.log("删除数据", res);
                             setTimeout(function() {
-                                location.href = "{{:U('Service/list')}}?result=4";
+                                location.href = "{{:U('Service/worklist')}}?result=4";
                             }, 1000);
                         })
                         layer.close(index);
@@ -181,7 +181,7 @@
                     this.getAjax(data, function(res) {
                         console.log("编辑数据", res);
                         setTimeout(function() {
-                            location.href = "{{:U('Service/list')}}?result=4";
+                            location.href = "{{:U('Service/worklist')}}?result=4";
                         }, 1000);
                     })
                     break;
@@ -206,7 +206,7 @@
                     this.getAjax(data, function(res) {
                         console.log("保存数据", res);
                         setTimeout(function() {
-                            location.href = "{{:U('Service/list')}}?result=4";
+                            location.href = "{{:U('Service/worklist')}}?result=4";
                         }, 1000);
                     })
                     break;
