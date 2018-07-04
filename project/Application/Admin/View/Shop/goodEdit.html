@@ -24,7 +24,7 @@
                     <h5>商城管理 <small>商品添加</small></h5>
                 </div>
                 <div class="ibox-content no-padding">
-                    <form id="form" onsubmit="submit()" class="form-horizontal" enctype="multipart/form-data">
+                    <form id="form" onsubmit="return false" class="form-horizontal" enctype="multipart/form-data">
                         <input type="hidden" name="gid" value="{{$goodsDetail['id']}}">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">商品类别：</label>
@@ -987,6 +987,10 @@
         {
         return a - b
         }
+
+        var skuList = {{$skuList|json_encode}};
+        var skuListLength  = skuList.length;
+
         //打印结果的函数
         function printResult(result){  
             var headhtml = '';
@@ -1002,6 +1006,9 @@
                  console.log('result[i]:', result[i].split('_'));
             }
             console.log('_newArr: ',_newArr);
+            //库存
+
+
             for(var i=0; i<_newArr.length; i++){
                 bodyhtml += '<tr class="attrtr'+ i +'">';
                 thlen = _newArr[i].length;
@@ -1021,15 +1028,13 @@
         
                 attrid = attrid.substr(0,attrid.length -1);
                 
-                //库存
-                var skuList = {{$skuList|json_encode}};
-                var skuListLength  = skuList.length;
+
                 
                 var attrValue ='';
                 if(skuListLength >0){
                     var num = 0;
                     $.each(skuList,function(k,v){
-                        //console.log("库存"+attrid+"||"+v.skuattr+"数量"+v.skustock);
+                        // console.log("库存"+attrid+"||"+v.skuattr+"数量"+v.skustock);
                         if(attrid == v.skuattr){
                             attrValue = v.skustock;
                         }
