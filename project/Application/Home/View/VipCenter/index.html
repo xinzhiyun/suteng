@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="__PUBLIC__/Home/css/vipcenter/index.css?v={{:time()}}">
 </head>
 <body ontouchstart='console.log()'>
+    <div id="qrCode_share">
+        <i class="iconfont icon-erweima"></i>
+        <!-- <i class="iconfont icon-iconfontfenxiang2"></i> -->
+    </div>
     <div class="_Mine">
         <div class="userInfos">
             <div>
@@ -137,6 +141,13 @@
             </div>
         </div>
     </div>
+    <div id="myCode">
+        <!-- <div> -->
+            <img id="qrcode" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{$user['ticket']}}"></img>
+            <a id="saveCode" href="javascript:;" >长按二维码保存到相册</a>
+        <!-- </div> -->
+        <p class="closeQR">X</p>
+    </div>
 </body>
 <script src="__PUBLIC__/Home/js/jquery-1.10.1.js"></script>
 <script src="__PUBLIC__/Home/js/public.js"></script>
@@ -201,6 +212,15 @@
             error: function(res){
                 console.log('请求失败! ',res)
             }
+        })
+        
+        // 查看二维码
+        $("#qrCode_share").on("click", function() {
+            $("#myCode").css("display", "block");
+        })
+        // 关闭页面
+        $(".closeQR").on("click", function() {
+            $("#myCode").css("display", "none");
         })
     })
 </script>
