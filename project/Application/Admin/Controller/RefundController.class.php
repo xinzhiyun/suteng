@@ -27,6 +27,8 @@ class RefundController extends CommonController
         $id = I('get.id');
         $data = D('Refund')->relation(['logistics','goods'])->find($id);
 
+        // dump($data);
+
         //退货的 需要将用户的快递信息显示出来
         if ($data['method'] == '2') {
             $rid = M('Refund')->find($id)['id'];
@@ -53,11 +55,11 @@ class RefundController extends CommonController
 
         $orderDetail = D('ShopOrderDetail');
         foreach ($data['goods'] as $key => $value) {
-            $orderDetail->union('select num,price,st_goods.name,st_shop_order_detail.gpic from st_shop_order_detail LEFT JOIN st_goods ON st_shop_order_detail.gid = st_goods.id  where order_id = 
+            $orderDetail->union('select st_shop_order_detail.num,st_shop_order_detail.price,st_goods.name,st_goods.gpic from st_shop_order_detail LEFT JOIN st_goods ON st_shop_order_detail.gid = st_goods.id  where order_id = 
 '.$value['oid'].' AND 
 st_shop_order_detail.gid ='.$value['gid']);
         } 
-            $orderDetail->field('num,price,st_goods.name,st_shop_order_detail.gpic');
+            $orderDetail->field('st_shop_order_detail.num,st_shop_order_detail.price,st_goods.name,st_goods.gpic');
             $orderDetail->join('st_goods ON st_shop_order_detail.gid = st_goods.id','LEFT');
             // $orderDetail->join('st_pic ON st_order_detail.gid = st_pic.gid','LEFT');
             $orderDetail->where('st_shop_order_detail.id < 0');
@@ -67,7 +69,6 @@ st_shop_order_detail.gid ='.$value['gid']);
         $this->assign('data',$data);
         $this->display();
     }
-
     /**
      * 修改售后状态
      * @param  int $id     退货退款id
