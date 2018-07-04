@@ -42,7 +42,7 @@ var goodsList = new Vue({
         vm.listid = GetQueryString('id');
         vm.listcid = GetQueryString('cid');
         if(GetQueryString('search')){
-            vm.search = GetQueryString('search')
+            vm.search = decodeURI(GetQueryString('search'));
             // 搜索
             vm.searchFn(GetQueryString('search'));
         }else{
