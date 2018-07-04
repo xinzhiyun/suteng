@@ -2011,9 +2011,11 @@ class ShopController extends CommonController
         try {
             $attr = D('attr');
             $post = I('post.');
-
+            $post['updatetime'] = time();
             $where['id'] = $post['id'];
             unset($post['id']);
+            // dump($post);die;
+
             if(!$attr->create($post)) E($cate->getError(),203);
             $res = $attr->where($where)->save($post);
             if(!$res) E('修改失败了', 202);

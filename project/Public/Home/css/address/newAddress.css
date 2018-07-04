@@ -163,13 +163,15 @@ body {
 	border-radius: 4px;
 	background: #fff;
 	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+    transform: translate3d(0,0,0);
 }
 .addrselect {
 	color: #2eb6aa;
 	font-weight: 600;
 }
 .areaDiv>ul p {
-	margin: 20px 0;
+	padding: 16px 0;
 }
 /*详细地址*/
 textarea {

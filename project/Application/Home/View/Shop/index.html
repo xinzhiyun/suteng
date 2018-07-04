@@ -58,7 +58,7 @@
 					<a class='goods' v-for='m in b["0"]' :gid='m.id' @click='todetail(m.id)'>
 						<img :data-src="m.gpic" alt="加载中...">
 						<span v-text='m.name'>商品描述</span>
-						<p><s v-text='m.prices'>划掉的价格</s></p>
+						<!-- <p><s v-text='m.prices'>划掉的价格</s></p> -->
 						<b class='price'>￥<span v-text='m.price'>价格</span></b>
 					</a>
 				</div>
@@ -137,7 +137,7 @@
 			<div @click='tabClick(3, "cart")'>
 				<img :src="tabsrc[2]+'.png'" alt="">
 				<p :style='{color: tabclk == 3 ? "#4D70FF" : "#333"}'>购物车</p>
-				<b class='cartnum' v-text='cartnum'>购物车数量</b>
+				<b class='cartnum' v-text='cartnum'>0</b>
 			</div>
 			<div @click='tabClick(4, "mine")'>
 				<img :src="tabsrc[3]+'.png'" alt="">

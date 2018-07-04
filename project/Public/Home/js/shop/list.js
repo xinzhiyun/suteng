@@ -42,9 +42,9 @@ var goodsList = new Vue({
         vm.listid = GetQueryString('id');
         vm.listcid = GetQueryString('cid');
         if(GetQueryString('search')){
-            vm.search = GetQueryString('search')
+            vm.search = decodeURI(GetQueryString('search'));
             // 搜索
-            vm.searchFn(GetQueryString('search'));
+            vm.searchFn(vm.search);
         }else{
             var option = {
                 id: vm.listid,
@@ -161,6 +161,9 @@ var goodsList = new Vue({
                 id: vm.listid,
                 sort: sorttype,
                 sortmode: vm.sortmode
+            }
+            if(vm.search){
+                option['search'] = vm.search;
             }
             if(vm.listcid){
                 option['cid'] = vm.listcid;

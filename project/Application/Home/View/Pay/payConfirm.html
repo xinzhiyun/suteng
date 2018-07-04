@@ -32,7 +32,7 @@
         <div class="loading"><span v-text='noticeText'>加载中...</span></div>
         <!-- 地址 -->
         <div class="orderAddress" v-if="info.data">
-            <a href="{{:U('Address/newAddress')}}">
+            <a href="javascript:;" @click='addaddr'>
                 <p v-text='info.data.name'>小鸡壳</p>
                 <p>
                     <span v-text='info.data.phone'>1385642454</span>

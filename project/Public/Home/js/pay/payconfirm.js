@@ -20,6 +20,7 @@ var payConfirm = new Vue({
 		vm.order_id = href.substr(href.indexOf('?order_id=')+10);
 		console.log('order_id: ',vm.order_id);
 		sessionStorage.setItem("order_id", vm.order_id);
+		sessionStorage.setItem("goods_data","11111");
 		vm.info = info;
 		// 请求订单数据
 		vm.getOrderInfo();
@@ -73,6 +74,10 @@ var payConfirm = new Vue({
 				},
 				error: function(err){}
 			})
+		},
+		// 点击地址
+		addaddr() {
+			location.href = getURL('Home', 'Address/newAddress') + '?1';
 		},
 		// 快递选择
 		expressChange(index){

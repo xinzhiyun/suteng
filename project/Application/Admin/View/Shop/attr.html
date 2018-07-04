@@ -172,7 +172,7 @@
                                     <!-- {{:dump($category)}} -->
                                     <select name="cid" class="input-medium form-control" id="editattr">
                                         <volist name="category" id="vo">
-                                            <option value="{{$vo['id']}}" {{$vo['leavel']=='1' ? disabled:'' }}>{{$vo['_name']}}</option>
+                                            <option value="{{$vo['id']}}" disabled>{{$vo['_name']}}</option>
                                         </volist>
                                     </select>
                                 </div>
@@ -380,7 +380,7 @@
 
             $.ajax({
                 url:"attrEdit",
-                data:{"id":id,"name":name,"cid":cid,"cname":cname},
+                data:{"id":id,"attr":name,"cid":cid,"cname":cname},
                 dataType:"json",
                 type: 'post',
                 success:function(res){

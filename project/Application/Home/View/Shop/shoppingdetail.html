@@ -130,7 +130,7 @@
                             <span v-if='c' v-text='c.pname+"|"+c.name+","'>智能净水器A套餐</span></span>
                         </p>
                     </div>
-                    <span class="iconfont icon-chacha" @click="closePanel(false)"></span>
+                    <span class="iconfont icon-chacha" @touchend="closePanel(false)"></span>
                 </div>
                 <!-- 规格 -->
                 <div class="property" v-for='(g, index) in goodsInfo.attr'>
